@@ -10,14 +10,14 @@ import gregtech.nei.RecipeDisplayInfo;
 public class IsotopeDecayFrontend extends RecipeMapFrontend {
 
     public IsotopeDecayFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
     public void drawDescription(RecipeDisplayInfo recipeInfo) {
         GTRecipeConstants.DecayType decayType = recipeInfo.recipe
-            .getMetadataOrDefault(GTRecipeConstants.DECAY_TYPE, GTRecipeConstants.DecayType.Unknown);
+                .getMetadataOrDefault(GTRecipeConstants.DECAY_TYPE, GTRecipeConstants.DecayType.Unknown);
 
         recipeInfo.drawText(GTUtility.translate("GT5U.gui.text.decay-type", switch (decayType) {
             case Unknown -> GTUtility.translate("GT5U.gui.text.unknown");
@@ -32,21 +32,17 @@ public class IsotopeDecayFrontend extends RecipeMapFrontend {
         double halflife = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.HALF_LIFE, 1d);
         double perStackSecond = 64d / halflife;
 
-        String unit = GTUtility.translate("GTPP.time.seconds")
-            .toLowerCase();
+        String unit = GTUtility.translate("GTPP.time.seconds").toLowerCase();
 
         if (halflife > (60d * 60d * 24d)) {
             halflife /= 60d * 60d * 24d;
-            unit = GTUtility.translate("GTPP.time.days")
-                .toLowerCase();
+            unit = GTUtility.translate("GTPP.time.days").toLowerCase();
         } else if (halflife > (60d * 60d)) {
             halflife /= 60d * 60d;
-            unit = GTUtility.translate("GTPP.time.hours")
-                .toLowerCase();
+            unit = GTUtility.translate("GTPP.time.hours").toLowerCase();
         } else if (halflife > 60d) {
             halflife /= 60d;
-            unit = GTUtility.translate("GTPP.time.minutes")
-                .toLowerCase();
+            unit = GTUtility.translate("GTPP.time.minutes").toLowerCase();
         }
 
         recipeInfo.drawText(GTUtility.translate("GT5U.gui.text.half-life", String.format("%.2f", halflife), unit));

@@ -77,9 +77,9 @@ public class BlockTintedIndustrialGlass extends BlockCasingsAbstract {
         Block block = worldIn.getBlock(x, y, z);
 
         if (worldIn.getBlockMetadata(x, y, z) != worldIn.getBlockMetadata(
-            x - Facing.offsetsXForSide[side],
-            y - Facing.offsetsYForSide[side],
-            z - Facing.offsetsZForSide[side])) {
+                x - Facing.offsetsXForSide[side],
+                y - Facing.offsetsYForSide[side],
+                z - Facing.offsetsZForSide[side])) {
             return true;
         }
 

@@ -64,7 +64,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         // Variable required outside of loop for
         // multi-hatch scenarios.
         this.realOptFlow = getSpeedMultiplier()
-            * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
+                * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
         // this.realOptFlow = (double) aOptFlow * (double) flowMultipliers[0];
         // Will there be an multiplier for SC?
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
@@ -74,9 +74,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         storedFluid = 0;
         FluidStack tSCSteam = FluidRegistry.getFluidStack("supercriticalsteam", 1);
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
-            String fluidName = aFluids.get(i)
-                .getFluid()
-                .getUnlocalizedName(aFluids.get(i));
+            String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
             if (GTUtility.areFluidsEqual(aFluids.get(i), tSCSteam, true)) {
                 if (!hasConsumedSteam) {
                     hasConsumedSteam = true;
@@ -120,12 +118,13 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
             tEU *= efficiency;
             tEU = Math.max(
-                1,
-                MathUtils.safeInt(
-                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
+                    1,
+                    MathUtils.safeInt(
+                            (long) (tEU
+                                    * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         } else {
-            tEU = MathUtils
-                .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
+            tEU = MathUtils.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
         return tEU;
     }

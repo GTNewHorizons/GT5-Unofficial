@@ -128,7 +128,7 @@ public class BlockLightGlass extends BlockAir {
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(final World world, final int posX, final int posY, final int posZ,
-        final Random random) {
+            final Random random) {
         // Utils.spawnFX(world, posX, posY, posZ, "smoke", "cloud");
 
     }

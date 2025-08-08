@@ -49,41 +49,43 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtractor>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialExtractor> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEIndustrialExtractor>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            (new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CC~CC" },
-                { "CCCCC", " BBB ", " AAA ", " BBB ", "CCCCC" }, { "CCCCC", " BBB ", " ABA ", " BBB ", "CCCCC" },
-                { "CCCCC", " BBB ", " AAA ", " BBB ", "CCCCC" }, { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" } }))
-        .addElement(
-            'C',
-            buildHatchAdder(MTEIndustrialExtractor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
-                .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(1))
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(MTEIndustrialExtractor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement(
-            'B',
-            ofBlocksTiered(
-                MTEIndustrialExtractor::getItemPipeTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTechAPI.sBlockCasings11, 0),
-                    Pair.of(GregTechAPI.sBlockCasings11, 1),
-                    Pair.of(GregTechAPI.sBlockCasings11, 2),
-                    Pair.of(GregTechAPI.sBlockCasings11, 3),
-                    Pair.of(GregTechAPI.sBlockCasings11, 4),
-                    Pair.of(GregTechAPI.sBlockCasings11, 5),
-                    Pair.of(GregTechAPI.sBlockCasings11, 6),
-                    Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                -1,
-                MTEIndustrialExtractor::setItemPipeTier,
-                MTEIndustrialExtractor::getItemPipeTier))
-        .addElement('A', chainAllGlasses())
-        .build();
+            .<MTEIndustrialExtractor>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    (new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CC~CC" },
+                            { "CCCCC", " BBB ", " AAA ", " BBB ", "CCCCC" },
+                            { "CCCCC", " BBB ", " ABA ", " BBB ", "CCCCC" },
+                            { "CCCCC", " BBB ", " AAA ", " BBB ", "CCCCC" },
+                            { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" } }))
+            .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialExtractor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
+                            .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(1)).dot(1)
+                            .buildAndChain(
+                                    onElementPass(
+                                            MTEIndustrialExtractor::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings4, 1))))
+            .addElement(
+                    'B',
+                    ofBlocksTiered(
+                            MTEIndustrialExtractor::getItemPipeTierFromMeta,
+                            ImmutableList.of(
+                                    Pair.of(GregTechAPI.sBlockCasings11, 0),
+                                    Pair.of(GregTechAPI.sBlockCasings11, 1),
+                                    Pair.of(GregTechAPI.sBlockCasings11, 2),
+                                    Pair.of(GregTechAPI.sBlockCasings11, 3),
+                                    Pair.of(GregTechAPI.sBlockCasings11, 4),
+                                    Pair.of(GregTechAPI.sBlockCasings11, 5),
+                                    Pair.of(GregTechAPI.sBlockCasings11, 6),
+                                    Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                            -1,
+                            MTEIndustrialExtractor::setItemPipeTier,
+                            MTEIndustrialExtractor::getItemPipeTier))
+            .addElement('A', chainAllGlasses()).build();
 
     private int itemPipeTier = -1;
 
@@ -122,39 +124,27 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW).extFacing()
+                                .glow().build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW).extFacing().glow()
+                                .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)) };
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)) };
         }
         return rTexture;
     }
@@ -162,21 +152,14 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Extractor")
-            .addInfo("200% faster than single block machines of the same voltage")
-            .addInfo("Only uses 85% of the EU/t normally required")
-            .addInfo("Gains 8 parallels per tier of Item Pipe Casing")
-            .beginStructureBlock(5, 5, 5, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Stainless Steel Machine Casing", 45, false)
-            .addCasingInfoExactly("Item Pipe Casing", 19, true)
-            .addCasingInfoExactly("Any Tiered Glass", 8, false)
-            .addInputBus("Any Stainless Steel Casing", 1)
-            .addOutputBus("Any Stainless Steel Casing", 1)
-            .addEnergyHatch("Any Stainless Steel Casing", 1)
-            .addMaintenanceHatch("Any Stainless Steel Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
+        tt.addMachineType("Extractor").addInfo("200% faster than single block machines of the same voltage")
+                .addInfo("Only uses 85% of the EU/t normally required")
+                .addInfo("Gains 8 parallels per tier of Item Pipe Casing").beginStructureBlock(5, 5, 5, false)
+                .addController("Front Center").addCasingInfoMin("Stainless Steel Machine Casing", 45, false)
+                .addCasingInfoExactly("Item Pipe Casing", 19, true).addCasingInfoExactly("Any Tiered Glass", 8, false)
+                .addInputBus("Any Stainless Steel Casing", 1).addOutputBus("Any Stainless Steel Casing", 1)
+                .addEnergyHatch("Any Stainless Steel Casing", 1).addMaintenanceHatch("Any Stainless Steel Casing", 1)
+                .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher();
         return tt;
     }
 
@@ -208,10 +191,8 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 3F)
-            .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.85F);
+        return new ProcessingLogic().noRecipeCaching().setSpeedBonus(1F / 3F)
+                .setMaxParallelSupplier(this::getTrueParallel).setEuModifier(0.85F);
     }
 
     @Override
@@ -222,20 +203,20 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("maxParallelRecipes"));
+                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                        + EnumChatFormatting.WHITE
+                        + tag.getInteger("maxParallelRecipes"));
     }
 
     @Override

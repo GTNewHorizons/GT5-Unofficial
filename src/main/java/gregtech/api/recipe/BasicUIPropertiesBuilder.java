@@ -37,7 +37,7 @@ public final class BasicUIPropertiesBuilder {
 
     private BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlays = (index, isFluid, isOutput, isSpecial) -> null;
     private BasicUIProperties.SlotOverlayGetter<SteamTexture> slotOverlaysSteam = (index, isFluid, isOutput,
-        isSpecial) -> null;
+            isSpecial) -> null;
 
     @Nullable
     private FallbackableUITexture progressBarTexture;
@@ -57,7 +57,7 @@ public final class BasicUIPropertiesBuilder {
 
     private final ImmutableList.Builder<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures = ImmutableList.builder();
     private final ImmutableList.Builder<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam = ImmutableList
-        .builder();
+            .builder();
 
     private IDrawable logo = GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
     private Size logoSize = new Size(17, 17);
@@ -80,39 +80,39 @@ public final class BasicUIPropertiesBuilder {
         List<Rectangle> builtNEITransferRect = neiTransferRect.build();
         if (builtNEITransferRect.isEmpty()) {
             builtNEITransferRect = Collections.singletonList(
-                new Rectangle(
-                    progressBarPos.x - (16 / 2),
-                    progressBarPos.y,
-                    progressBarSize.width + 16,
-                    progressBarSize.height));
+                    new Rectangle(
+                            progressBarPos.x - (16 / 2),
+                            progressBarPos.y,
+                            progressBarSize.width + 16,
+                            progressBarSize.height));
         }
         return new BasicUIProperties(
-            maxItemInputs,
-            maxItemOutputs,
-            maxFluidInputs,
-            maxFluidOutputs,
-            slotOverlays,
-            slotOverlaysSteam,
-            progressBarTexture,
-            progressBarTextureSteam,
-            progressBarDirection,
-            progressBarSize,
-            progressBarPos,
-            useProgressBar,
-            useSpecialSlot,
-            builtNEITransferRect,
-            neiTransferRectId,
-            specialTextures.build(),
-            specialTexturesSteam.build(),
-            logo,
-            logoSize,
-            logoPos,
-            itemInputPositionsGetter,
-            itemOutputPositionsGetter,
-            specialItemPositionGetter,
-            fluidInputPositionsGetter,
-            fluidOutputPositionsGetter,
-            amperage);
+                maxItemInputs,
+                maxItemOutputs,
+                maxFluidInputs,
+                maxFluidOutputs,
+                slotOverlays,
+                slotOverlaysSteam,
+                progressBarTexture,
+                progressBarTextureSteam,
+                progressBarDirection,
+                progressBarSize,
+                progressBarPos,
+                useProgressBar,
+                useSpecialSlot,
+                builtNEITransferRect,
+                neiTransferRectId,
+                specialTextures.build(),
+                specialTexturesSteam.build(),
+                logo,
+                logoSize,
+                logoPos,
+                itemInputPositionsGetter,
+                itemOutputPositionsGetter,
+                specialItemPositionGetter,
+                fluidInputPositionsGetter,
+                fluidOutputPositionsGetter,
+                amperage);
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -141,7 +141,7 @@ public final class BasicUIPropertiesBuilder {
     }
 
     public BasicUIPropertiesBuilder slotOverlaysSteam(
-        BasicUIProperties.SlotOverlayGetter<SteamTexture> slotOverlaysSteam) {
+            BasicUIProperties.SlotOverlayGetter<SteamTexture> slotOverlaysSteam) {
         this.slotOverlaysSteam = slotOverlaysSteam;
         return this;
     }
@@ -152,7 +152,7 @@ public final class BasicUIPropertiesBuilder {
     }
 
     public BasicUIPropertiesBuilder progressBarTextureSteam(
-        @Nullable FallbackableSteamTexture progressBarTextureSteam) {
+            @Nullable FallbackableSteamTexture progressBarTextureSteam) {
         this.progressBarTextureSteam = progressBarTextureSteam;
         return this;
     }

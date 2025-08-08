@@ -30,8 +30,7 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
  * Used to provide a consistent interface for dealing with colors of blocks for the various spray can items.
  * <p>
  * Call {@link #getInstance(EntityPlayer, MovingObjectPosition)} or
- * {@link #getInstance(World, int, int, int, ForgeDirection, EntityPlayer)}
- * to acquire an instance of this class.
+ * {@link #getInstance(World, int, int, int, ForgeDirection, EntityPlayer)} to acquire an instance of this class.
  */
 public abstract class ColoredBlockContainer {
 
@@ -64,8 +63,8 @@ public abstract class ColoredBlockContainer {
     /**
      * Get the color of the block.
      *
-     * @return an Optional with the color of the block inside, or {@link Optional#empty()} if the block is uncolored
-     *         or invalid
+     * @return an Optional with the color of the block inside, or {@link Optional#empty()} if the block is uncolored or
+     *         invalid
      */
     public abstract Optional<Integer> getColor();
 
@@ -76,12 +75,12 @@ public abstract class ColoredBlockContainer {
             return NULL_INSTANCE;
         }
         return getInstance(
-            player.worldObj,
-            position.blockX,
-            position.blockY,
-            position.blockZ,
-            ForgeDirection.getOrientation(position.sideHit),
-            player);
+                player.worldObj,
+                position.blockX,
+                position.blockY,
+                position.blockZ,
+                ForgeDirection.getOrientation(position.sideHit),
+                player);
     }
 
     public static ColoredBlockContainer getInstance(EntityPlayer player, TileEntity tileEntity, ForgeDirection side) {
@@ -122,20 +121,20 @@ public abstract class ColoredBlockContainer {
     private static class VanillaBlockContainer extends ColoredBlockContainer {
 
         private static final Set<Block> ALLOWED_VANILLA_BLOCKS = ImmutableSet.of(
-            Blocks.glass,
-            Blocks.glass_pane,
-            Blocks.stained_glass,
-            Blocks.stained_glass_pane,
-            Blocks.carpet,
-            Blocks.hardened_clay,
-            Blocks.stained_hardened_clay);
+                Blocks.glass,
+                Blocks.glass_pane,
+                Blocks.stained_glass,
+                Blocks.stained_glass_pane,
+                Blocks.carpet,
+                Blocks.hardened_clay,
+                Blocks.stained_hardened_clay);
         private static final BiMap<Block, Block> TRANSFORMATIONS = ImmutableBiMap.of(
-            Blocks.glass,
-            Blocks.stained_glass,
-            Blocks.glass_pane,
-            Blocks.stained_glass_pane,
-            Blocks.hardened_clay,
-            Blocks.stained_hardened_clay);
+                Blocks.glass,
+                Blocks.stained_glass,
+                Blocks.glass_pane,
+                Blocks.stained_glass_pane,
+                Blocks.hardened_clay,
+                Blocks.stained_hardened_clay);
 
         private final int originalColor;
         private final World world;
@@ -146,7 +145,7 @@ public abstract class ColoredBlockContainer {
         private final ForgeDirection side;
 
         public VanillaBlockContainer(final Block block, final World world, final int x, final int y, final int z,
-            final ForgeDirection side) {
+                final ForgeDirection side) {
             this.world = world;
             this.x = x;
             this.y = y;
@@ -183,14 +182,7 @@ public abstract class ColoredBlockContainer {
         @Override
         public boolean removeColor() {
             if (TRANSFORMATIONS.containsValue(block)) {
-                world.setBlock(
-                    x,
-                    y,
-                    z,
-                    TRANSFORMATIONS.inverse()
-                        .get(block),
-                    0,
-                    3);
+                world.setBlock(x, y, z, TRANSFORMATIONS.inverse().get(block), 0, 3);
                 return true;
             }
 
@@ -208,7 +200,7 @@ public abstract class ColoredBlockContainer {
         private final EntityPlayer player;
 
         public AE2ColorableTileContainer(final IColorableTile colorableTile, final ForgeDirection side,
-            final EntityPlayer player) {
+                final EntityPlayer player) {
             this.colorableTile = colorableTile;
             this.side = side;
             this.player = player;
@@ -216,10 +208,7 @@ public abstract class ColoredBlockContainer {
 
         @Override
         public Optional<Integer> getColor() {
-            return Optional.of(
-                Dyes.transformDyeIndex(
-                    colorableTile.getColor()
-                        .ordinal()));
+            return Optional.of(Dyes.transformDyeIndex(colorableTile.getColor().ordinal()));
         }
 
         @Override
@@ -247,7 +236,7 @@ public abstract class ColoredBlockContainer {
         private final EntityPlayer player;
 
         public AE2BlockCableBusContainer(final BlockCableBus bus, final World world, final int x, final int y,
-            final int z, final ForgeDirection side, final EntityPlayer player) {
+                final int z, final ForgeDirection side, final EntityPlayer player) {
             this.bus = bus;
             this.world = world;
             this.x = x;

@@ -35,31 +35,25 @@ public class RawOreLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        if (werkstoff.hasItemType(rawOre) && werkstoff.hasItemType(ingot)
-            && !werkstoff.getStats()
-                .isBlastFurnace())
-            GTModHandler
-                .addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(rawOre, werkstoff), werkstoff.get(ingot));
+        if (werkstoff.hasItemType(rawOre) && werkstoff.hasItemType(ingot) && !werkstoff.getStats().isBlastFurnace())
+            GTModHandler.addSmeltingRecipe(
+                    WerkstoffLoader.getCorrespondingItemStack(rawOre, werkstoff),
+                    werkstoff.get(ingot));
 
         if (werkstoff.hasItemType(rawOre)) {
 
-            RA.stdBuilder()
-                .itemInputs(werkstoff.get(rawOre))
-                .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
-                .duration(16 * TICKS)
-                .eut(10)
-                .addTo(hammerRecipes);
+            RA.stdBuilder().itemInputs(werkstoff.get(rawOre))
+                    .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
+                    .duration(16 * TICKS).eut(10).addTo(hammerRecipes);
 
-            RA.stdBuilder()
-                .itemInputs(werkstoff.get(rawOre))
-                .itemOutputs(
-                    werkstoff.get(crushed, 2),
-                    werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
-                    Materials.Stone.getDust(1))
-                .outputChances(100_00, werkstoff.getNoOfByProducts() > 0 ? 5_00 : 10_00, 50_00)
-                .eut(2)
-                .duration(20 * SECONDS)
-                .addTo(maceratorRecipes);
+            RA.stdBuilder().itemInputs(werkstoff.get(rawOre))
+                    .itemOutputs(
+                            werkstoff.get(crushed, 2),
+                            werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem)
+                                    : werkstoff.getOreByProduct(0, dust),
+                            Materials.Stone.getDust(1))
+                    .outputChances(100_00, werkstoff.getNoOfByProducts() > 0 ? 5_00 : 10_00, 50_00).eut(2)
+                    .duration(20 * SECONDS).addTo(maceratorRecipes);
         }
     }
 }

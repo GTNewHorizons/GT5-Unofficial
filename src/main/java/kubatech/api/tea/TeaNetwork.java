@@ -66,8 +66,7 @@ public class TeaNetwork {
     }
 
     public boolean canAdd(BigInteger toAdd) {
-        return teaAmount.add(toAdd)
-            .compareTo(teaLimit) <= 0;
+        return teaAmount.add(toAdd).compareTo(teaLimit) <= 0;
     }
 
     public void registerTeaStorageExtender(@NotNull TeaStorageTile storageTile) {

@@ -54,7 +54,7 @@ public class GTPreLoad {
         try {
             GT_FML_LOGGER.info("GTMod: Sorting GregTech to the end of the Mod List for further processing.");
             LoadController tLoadController = (LoadController) GTUtility
-                .getFieldContent(Loader.instance(), "modController", true, true);
+                    .getFieldContent(Loader.instance(), "modController", true, true);
             assert tLoadController != null;
             List<ModContainer> tModList = tLoadController.getActiveModList();
             List<ModContainer> tNewModsList = new ArrayList<>();
@@ -62,8 +62,7 @@ public class GTPreLoad {
             short tModList_sS = (short) tModList.size();
             for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
                 ModContainer tMod = tModList.get(i);
-                if (tMod.getModId()
-                    .equalsIgnoreCase(GregTech.ID)) {
+                if (tMod.getModId().equalsIgnoreCase(GregTech.ID)) {
                     tGregTech = tMod;
                 } else {
                     tNewModsList.add(tMod);
@@ -73,7 +72,7 @@ public class GTPreLoad {
                 tNewModsList.add(tGregTech);
             }
             Objects.requireNonNull(GTUtility.getField(tLoadController, "activeModList", true, true))
-                .set(tLoadController, tNewModsList);
+                    .set(tLoadController, tNewModsList);
         } catch (Throwable e) {
             GTMod.logStackTrace(e);
         }
@@ -82,13 +81,8 @@ public class GTPreLoad {
     public static void initLocalization(File languageDir) {
         GT_FML_LOGGER.info("GTMod: Generating Lang-File");
 
-        if (FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isClient()) {
-            String userLang = Minecraft.getMinecraft()
-                .getLanguageManager()
-                .getCurrentLanguage()
-                .getLanguageCode();
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            String userLang = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
             GT_FML_LOGGER.info("User lang is " + userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
@@ -112,13 +106,10 @@ public class GTPreLoad {
         }
         GTLanguageManager.sEnglishFile.load();
 
-        Materials.getMaterialsMap()
-            .values()
-            .parallelStream()
-            .filter(Objects::nonNull)
-            .forEach(
-                aMaterial -> aMaterial.mLocalizedName = GTLanguageManager
-                    .addStringLocalization("Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
+        Materials.getMaterialsMap().values().parallelStream().filter(Objects::nonNull).forEach(
+                aMaterial -> aMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
+                        "Material." + aMaterial.mName.toLowerCase(),
+                        aMaterial.mDefaultLocalName));
     }
 
     public static void getConfiguration(File configDir) {
@@ -190,8 +181,7 @@ public class GTPreLoad {
         if (globalDir.exists()) {
             final List<String> scripts = new ArrayList<>();
             for (File file : Objects.requireNonNull(globalDir.listFiles())) {
-                if (file.getName()
-                    .endsWith(".zs")) {
+                if (file.getName().endsWith(".zs")) {
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                         String line;
                         while ((line = br.readLine()) != null) {
@@ -205,16 +195,16 @@ public class GTPreLoad {
 
             final Pattern p = Pattern.compile(Pattern.quote("<") + "(.*?)" + Pattern.quote(">"));
             final String[] prefixes1 = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
-                "crushedPurified", "crushedCentrifuged", "gem", "nugget", null, "ingot", "ingotHot", null, null, null,
-                null, "plate", "plateDouble", "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick",
-                "lens", "round", "bolt", "screw", "ring", "foil", "cell", "cellPlasma", "cellMolten", "rawOre",
-                "plateSuperdense" };
+                    "crushedPurified", "crushedCentrifuged", "gem", "nugget", null, "ingot", "ingotHot", null, null,
+                    null, null, "plate", "plateDouble", "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense",
+                    "stick", "lens", "round", "bolt", "screw", "ring", "foil", "cell", "cellPlasma", "cellMolten",
+                    "rawOre", "plateSuperdense" };
             final String[] prefixes2 = { "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
-                "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
-                "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
-                "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall", "rotor", "stickLong",
-                "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless",
-                "gemExquisite", "gearGt" };
+                    "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
+                    "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
+                    "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall", "rotor",
+                    "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed",
+                    "gemFlawless", "gemExquisite", "gearGt" };
             final String[] prefixes3 = { "rawOre", "nanite", "plateSuperdense" };
             for (String text : scripts) {
                 Matcher m = p.matcher(text);
@@ -263,14 +253,14 @@ public class GTPreLoad {
         if (oreTags.isEmpty()) return;
 
         final String[] preS = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed", "crushedPurified",
-            "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble", "plateTriple",
-            "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring", "foil",
-            "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe",
-            "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
-            "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
-            "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
-            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
-            "cellMolten", "rawOre", "plateSuperdense" };
+                "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble", "plateTriple",
+                "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
+                "foil", "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
+                "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
+                "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
+                "toolHeadBuzzSaw", "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall",
+                "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite",
+                "gearGt", "nanite", "cellMolten", "rawOre", "plateSuperdense" };
 
         final ArrayList<String> mMTTags = new ArrayList<>();
         // noinspection ForLoopReplaceableByForEach
@@ -330,10 +320,9 @@ public class GTPreLoad {
         GT_FML_LOGGER.info("GTMod: Removing all original Scrapbox Drops.");
         try {
             Objects.requireNonNull(GTUtility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true))
-                .set(null, 0);
-            ((List<?>) Objects
-                .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
-                    .clear();
+                    .set(null, 0);
+            ((List<?>) Objects.requireNonNull(
+                    GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true))).clear();
         } catch (Throwable e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
@@ -408,8 +397,7 @@ public class GTPreLoad {
         GTValues.mCTMEnabledBlock.addAll(Arrays.asList(Gregtech.general.CTMWhitelist));
         GTValues.mCTMDisabledBlock.addAll(Arrays.asList(Gregtech.general.CTMBlacklist));
         if (Gregtech.general.harderMobSpawner) {
-            Blocks.mob_spawner.setHardness(500.0F)
-                .setResistance(6000000.0F);
+            Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
         }
 
         // machines
@@ -462,11 +450,11 @@ public class GTPreLoad {
         GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond = PollutionConfig.pollutionBaseDieselGeneratorPerSecond;
         double[] mPollutionDieselGeneratorReleasedByTier = PollutionConfig.pollutionDieselGeneratorReleasedByTier;
         if (mPollutionDieselGeneratorReleasedByTier.length
-            == GTMod.proxy.mPollutionDieselGeneratorReleasedByTier.length) {
+                == GTMod.proxy.mPollutionDieselGeneratorReleasedByTier.length) {
             GTMod.proxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
         } else {
             GT_FML_LOGGER
-                .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
+                    .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
         }
         GTMod.proxy.mPollutionBaseGasTurbinePerSecond = PollutionConfig.pollutionBaseGasTurbinePerSecond;
         double[] mPollutionGasTurbineReleasedByTier = PollutionConfig.pollutionGasTurbineReleasedByTier;
@@ -508,12 +496,14 @@ public class GTPreLoad {
             } else if (tPrefix == OrePrefixes.plank) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxPlankStackSize)));
             } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves)
-                || (tPrefix == OrePrefixes.treeSapling)
-                || (tPrefix == OrePrefixes.log)) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
-                } else if (tPrefix.mIsUsedForBlocks) {
+                    || (tPrefix == OrePrefixes.treeSapling)
+                    || (tPrefix == OrePrefixes.log)) {
+                        tPrefix.mDefaultStackSize = ((byte) Math
+                                .min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
+                    } else
+                if (tPrefix.mIsUsedForBlocks) {
                     tPrefix.mDefaultStackSize = ((byte) Math
-                        .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
+                            .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
                 }
         }
 

@@ -62,7 +62,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillationTower>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private Mode mMode = Mode.DistillationTower;
     private boolean mUpgraded = false;
@@ -96,75 +96,80 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     public IStructureDefinition<MTEAdvDistillationTower> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             IHatchElement<MTEAdvDistillationTower> layeredOutputHatch = OutputHatch
-                .withCount(MTEAdvDistillationTower::getCurrentLayerOutputHatchCount)
-                .withAdder(MTEAdvDistillationTower::addLayerOutputHatch);
+                    .withCount(MTEAdvDistillationTower::getCurrentLayerOutputHatchCount)
+                    .withAdder(MTEAdvDistillationTower::addLayerOutputHatch);
             STRUCTURE_DEFINITION = StructureDefinition.<MTEAdvDistillationTower>builder()
-                .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
-                .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
-                .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
-                .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "ttt", "ttt", "ttt" }, }))
-                .addElement(
-                    'b',
-                    ofChain(
-                        buildHatchAdder(MTEAdvDistillationTower.class)
-                            .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
-                            .disallowOnly(ForgeDirection.UP)
-                            .casingIndex(getCasingTextureId())
-                            .dot(1)
-                            .build(),
-                        ofBlock(GregTechAPI.sBlockCasings4, 1)))
-                .addElement(
-                    'l',
-                    ofChain(
-                        buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Energy, Maintenance)
-                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                            .casingIndex(getCasingTextureId())
-                            .dot(2)
-                            .build(),
-                        ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3),
-                        ofBlock(GregTechAPI.sBlockCasings4, 1)))
-                .addElement(
-                    'c',
-                    ofChain(
-                        onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
-                            ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3)),
-                        onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
-                            ofHatchAdder(MTEAdvDistillationTower::addOutputToMachineList, getCasingTextureId(), 3)),
-                        onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
-                            ofHatchAdder(
-                                MTEAdvDistillationTower::addMaintenanceToMachineList,
-                                getCasingTextureId(),
-                                3)),
-                        onElementPass(MTEAdvDistillationTower::onTopLayerFound, ofBlock(GregTechAPI.sBlockCasings4, 1)),
-                        isAir()))
-                .addElement(
-                    't',
-                    buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Muffler)
-                        .disallowOnly(ForgeDirection.DOWN)
-                        .casingIndex(getCasingTextureId())
-                        .dot(2)
-                        .buildAndChain(GregTechAPI.sBlockCasings4, 1))
-                .build();
+                    .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
+                    .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
+                    .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
+                    .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "ttt", "ttt", "ttt" }, }))
+                    .addElement(
+                            'b',
+                            ofChain(
+                                    buildHatchAdder(MTEAdvDistillationTower.class)
+                                            .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
+                                            .disallowOnly(ForgeDirection.UP).casingIndex(getCasingTextureId()).dot(1)
+                                            .build(),
+                                    ofBlock(GregTechAPI.sBlockCasings4, 1)))
+                    .addElement(
+                            'l',
+                            ofChain(
+                                    buildHatchAdder(MTEAdvDistillationTower.class)
+                                            .atLeast(layeredOutputHatch, Energy, Maintenance)
+                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                                            .casingIndex(getCasingTextureId()).dot(2).build(),
+                                    ofHatchAdder(
+                                            MTEAdvDistillationTower::addMufflerToMachineList,
+                                            getCasingTextureId(),
+                                            3),
+                                    ofBlock(GregTechAPI.sBlockCasings4, 1)))
+                    .addElement(
+                            'c',
+                            ofChain(
+                                    onElementPass(
+                                            MTEAdvDistillationTower::onTopLayerFound,
+                                            ofHatchAdder(
+                                                    MTEAdvDistillationTower::addMufflerToMachineList,
+                                                    getCasingTextureId(),
+                                                    3)),
+                                    onElementPass(
+                                            MTEAdvDistillationTower::onTopLayerFound,
+                                            ofHatchAdder(
+                                                    MTEAdvDistillationTower::addOutputToMachineList,
+                                                    getCasingTextureId(),
+                                                    3)),
+                                    onElementPass(
+                                            MTEAdvDistillationTower::onTopLayerFound,
+                                            ofHatchAdder(
+                                                    MTEAdvDistillationTower::addMaintenanceToMachineList,
+                                                    getCasingTextureId(),
+                                                    3)),
+                                    onElementPass(
+                                            MTEAdvDistillationTower::onTopLayerFound,
+                                            ofBlock(GregTechAPI.sBlockCasings4, 1)),
+                                    isAir()))
+                    .addElement(
+                            't',
+                            buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Muffler)
+                                    .disallowOnly(ForgeDirection.DOWN).casingIndex(getCasingTextureId()).dot(2)
+                                    .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
     protected int getCurrentLayerOutputHatchCount() {
         return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-            : mOutputHatchesByLayer.get(mHeight - 1)
-                .size();
+                : mOutputHatchesByLayer.get(mHeight - 1).size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-            || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
+                || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch))
+            return false;
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatchesByLayer.get(mHeight - 1)
-            .add(tHatch) && mOutputHatches.add(tHatch);
+        return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch) && mOutputHatches.add(tHatch);
     }
 
     protected void onTopLayerFound() {
@@ -174,26 +179,17 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Uses 85% less energy in distillery mode")
-            .addInfo("250%/100% faster in DT/distillery mode")
-            .addInfo("Right click the controller with screwdriver to change mode.")
-            .addInfo("Max parallel dictated by tower tier and mode")
-            .addInfo("DTower Mode: T1=4, T2=12")
-            .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
-            .addInfo("Distillery Mode require a full height tower")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom")
-            .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
-            .addInputBus("Bottom Casing", 1)
-            .addOutputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addOutputHatch("One per layer except bottom", 2)
-            .addMufflerHatch("Top Casing", 3)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Uses 85% less energy in distillery mode")
+                .addInfo("250%/100% faster in DT/distillery mode")
+                .addInfo("Right click the controller with screwdriver to change mode.")
+                .addInfo("Max parallel dictated by tower tier and mode").addInfo("DTower Mode: T1=4, T2=12")
+                .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
+                .addInfo("Distillery Mode require a full height tower").addPollutionAmount(getPollutionPerSecond(null))
+                .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true).addController("Front bottom")
+                .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false).addInputBus("Bottom Casing", 1)
+                .addOutputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addOutputHatch("One per layer except bottom", 2)
+                .addMufflerHatch("Top Casing", 3).toolTipFinisher();
         return tt;
     }
 
@@ -222,15 +218,15 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         }
         mHeight = tTotalHeight - 1;
         return survivalBuildPiece(
-            STRUCTURE_PIECE_TOP_HINT,
-            stackSize,
-            1,
-            tTotalHeight - 1,
-            0,
-            elementBudget,
-            env,
-            false,
-            true);
+                STRUCTURE_PIECE_TOP_HINT,
+                stackSize,
+                1,
+                tTotalHeight - 1,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
     }
 
     @Override
@@ -248,8 +244,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
                 return false;
             }
-            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
-                .isEmpty())
+            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
                 // layer without output hatch
                 return false;
             if (mTopLayerFound || !mMufflerHatches.isEmpty()) {
@@ -423,10 +418,9 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public boolean canDumpFluidToME() {
         // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        return this.mOutputHatchesByLayer.stream()
-            .allMatch(
-                tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
+        return this.mOutputHatchesByLayer.stream().allMatch(
+                tLayerOutputHatches -> tLayerOutputHatches.stream().anyMatch(
+                        tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
     }
 
     @Override
@@ -467,21 +461,21 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mMode.ordinal());
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                        + EnumChatFormatting.WHITE
+                        + StatCollector.translateToLocal(
+                                "GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + tag.getInteger("mode"))
+                        + EnumChatFormatting.RESET);
     }
 }

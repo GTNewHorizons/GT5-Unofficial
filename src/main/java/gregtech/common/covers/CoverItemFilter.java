@@ -127,17 +127,17 @@ public class CoverItemFilter extends Cover {
         final List<ItemStack> filter = Collections.singletonList(this.filter.getStackInSlot(0));
 
         moveMultipleItemStacks(
-            fromEntity,
-            toEntity,
-            fromSide,
-            toSide,
-            filter,
-            mWhitelist,
-            (byte) 64,
-            (byte) 1,
-            (byte) 64,
-            (byte) 1,
-            64);
+                fromEntity,
+                toEntity,
+                fromSide,
+                toSide,
+                filter,
+                mWhitelist,
+                (byte) 64,
+                (byte) 1,
+                (byte) 64,
+                (byte) 1,
+                64);
     }
 
     @Override
@@ -157,8 +157,8 @@ public class CoverItemFilter extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mWhitelist = !mWhitelist;
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            mWhitelist ? GTUtility.trans("124.1", "Blacklist Mode") : GTUtility.trans("125.1", "Whitelist Mode"));
+                aPlayer,
+                mWhitelist ? GTUtility.trans("124.1", "Blacklist Mode") : GTUtility.trans("125.1", "Whitelist Mode"));
     }
 
     @Override

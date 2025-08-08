@@ -32,12 +32,8 @@ public class ExoticEnergyInputHelper {
 
     public static boolean drainEnergy(long aEU, Collection<? extends MTEHatch> hatches) {
         for (MTEHatch tHatch : hatches) {
-            long tDrain = Math.min(
-                tHatch.getBaseMetaTileEntity()
-                    .getStoredEU(),
-                aEU);
-            tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(tDrain, false);
+            long tDrain = Math.min(tHatch.getBaseMetaTileEntity().getStoredEU(), aEU);
+            tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tDrain, false);
             aEU -= tDrain;
         }
         return aEU <= 0;
@@ -53,8 +49,7 @@ public class ExoticEnergyInputHelper {
     public static long getTotalEuMulti(Collection<? extends MTEHatch> hatches) {
         long rEU = 0L;
         for (MTEHatch tHatch : validMTEList(hatches)) {
-            rEU += tHatch.getBaseMetaTileEntity()
-                .getInputVoltage() * tHatch.maxWorkingAmperesIn();
+            rEU += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.maxWorkingAmperesIn();
         }
         return rEU;
     }
@@ -62,8 +57,7 @@ public class ExoticEnergyInputHelper {
     public static long getMaxInputVoltageMulti(Collection<? extends MTEHatch> hatches) {
         long rVoltage = 0;
         for (MTEHatch tHatch : validMTEList(hatches)) {
-            rVoltage += tHatch.getBaseMetaTileEntity()
-                .getInputVoltage();
+            rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
         }
         return rVoltage;
     }
@@ -71,8 +65,7 @@ public class ExoticEnergyInputHelper {
     public static long getAverageInputVoltageMulti(Collection<? extends MTEHatch> hatches) {
         long rVoltage = 0;
         for (MTEHatch tHatch : validMTEList(hatches)) {
-            rVoltage += tHatch.getBaseMetaTileEntity()
-                .getInputVoltage();
+            rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
         }
         if (hatches.isEmpty()) {
             return 0;
@@ -83,8 +76,7 @@ public class ExoticEnergyInputHelper {
     public static long getMaxInputAmpsMulti(Collection<? extends MTEHatch> hatches) {
         long rAmp = 0;
         for (MTEHatch tHatch : validMTEList(hatches)) {
-            rAmp += tHatch.getBaseMetaTileEntity()
-                .getInputAmperage();
+            rAmp += tHatch.getBaseMetaTileEntity().getInputAmperage();
         }
         return rAmp;
     }

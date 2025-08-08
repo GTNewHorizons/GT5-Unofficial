@@ -56,62 +56,38 @@ public class MTEScanner extends MTEBasicMachine {
 
     public MTEScanner(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            1,
-            MachineType.SCANNER.tooltipDescription(),
-            1,
-            1,
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_SCANNER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_SCANNER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_SCANNER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_SCANNER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_SCANNER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SCANNER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_SCANNER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SCANNER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_SCANNER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_SCANNER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_SCANNER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_SCANNER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_SCANNER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_SCANNER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_SCANNER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_SCANNER_GLOW)
-                    .glow()
-                    .build()));
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                MachineType.SCANNER.tooltipDescription(),
+                1,
+                1,
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_SIDE_SCANNER_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_SCANNER_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_SIDE_SCANNER),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_SCANNER_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_FRONT_SCANNER_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_SCANNER_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_FRONT_SCANNER),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_SCANNER_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_TOP_SCANNER_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_SCANNER_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_TOP_SCANNER),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_SCANNER_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_BOTTOM_SCANNER_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_SCANNER_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_BOTTOM_SCANNER),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_SCANNER_GLOW).glow().build()));
     }
 
     public MTEScanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -191,10 +167,10 @@ public class MTEScanner extends MTEBasicMachine {
                 }
                 ItemData tData = GTOreDictUnificator.getAssociation(aStack);
                 if ((tData != null) && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
-                    && (tData.mMaterial.mMaterial.mElement != null)
-                    && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
-                    && (tData.mMaterial.mMaterial != Materials.Magic)
-                    && (tData.mMaterial.mMaterial.getMass() > 0L)) {
+                        && (tData.mMaterial.mMaterial.mElement != null)
+                        && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
+                        && (tData.mMaterial.mMaterial != Materials.Magic)
+                        && (tData.mMaterial.mMaterial.getMass() > 0L)) {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;
 
@@ -238,8 +214,10 @@ public class MTEScanner extends MTEBasicMachine {
                     this.mOutputItems[0] = GTUtility.copyAmount(1, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
                     this.mOutputItems[0].setTagCompound(
-                        GTUtility
-                            .getNBTContainingShort(new NBTTagCompound(), "map_id", (short) aStack.getItemDamage()));
+                            GTUtility.getNBTContainingShort(
+                                    new NBTTagCompound(),
+                                    "map_id",
+                                    (short) aStack.getItemDamage()));
                     calculateOverclockedNess(30, 128);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
@@ -247,72 +225,49 @@ public class MTEScanner extends MTEBasicMachine {
                     return 2;
                 }
 
-                if ((aStack.getItem()
-                    .getUnlocalizedName()
-                    .contains("Schematic")
-                    || aStack.getItem()
-                        .getUnlocalizedName()
-                        .contains("schematic"))
-                    && !aStack.getItem()
-                        .getUnlocalizedName()
-                        .contains("Schematics")) {
+                if ((aStack.getItem().getUnlocalizedName().contains("Schematic")
+                        || aStack.getItem().getUnlocalizedName().contains("schematic"))
+                        && !aStack.getItem().getUnlocalizedName().contains("Schematics")) {
                     if (mTier < 3) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     String sTier = "";
 
                     int stackItemID = Item.getIdFromItem(aStack.getItem());
                     int stackItemDamage = aStack.getItemDamage();
                     if (stackItemID == Item.getIdFromItem(
-                        Objects.requireNonNull(GTModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1L, 0))
-                            .getItem())) {
-                        if (stackItemDamage == 0 && aStack.toString()
-                            .equals(
-                                Objects
-                                    .requireNonNull(
-                                        GTModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1L, 0))
-                                    .copy()
-                                    .toString()))
+                            Objects.requireNonNull(
+                                    GTModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1L, 0)).getItem())) {
+                        if (stackItemDamage == 0 && aStack.toString().equals(
+                                Objects.requireNonNull(
+                                        GTModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1L, 0)).copy()
+                                        .toString()))
                             sTier = "100";
-                        else if (stackItemDamage == 1 && aStack.toString()
-                            .equals(
-                                Objects
-                                    .requireNonNull(
-                                        GTModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1L, 1))
-                                    .copy()
-                                    .toString()))
+                        else if (stackItemDamage == 1 && aStack.toString().equals(
+                                Objects.requireNonNull(
+                                        GTModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1L, 1)).copy()
+                                        .toString()))
                             sTier = "2";
                     } else {
                         if (stackItemID == Item.getIdFromItem(
-                            Objects
-                                .requireNonNull(GTModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1L, 0))
-                                .getItem())) {
-                            if (stackItemDamage == 0 && aStack.toString()
-                                .equals(
-                                    Objects
-                                        .requireNonNull(
+                                Objects.requireNonNull(
+                                        GTModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1L, 0))
+                                        .getItem())) {
+                            if (stackItemDamage == 0 && aStack.toString().equals(
+                                    Objects.requireNonNull(
                                             GTModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1L, 0))
-                                        .copy()
-                                        .toString()))
+                                            .copy().toString()))
                                 sTier = "3";
-                            else if (stackItemDamage == 1 && aStack.toString()
-                                .equals(
-                                    Objects
-                                        .requireNonNull(
+                            else if (stackItemDamage == 1 && aStack.toString().equals(
+                                    Objects.requireNonNull(
                                             GTModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1L, 1))
-                                        .copy()
-                                        .toString()))
+                                            .copy().toString()))
                                 sTier = "101";
-                            else if (stackItemDamage == 2 && aStack.toString()
-                                .equals(
-                                    Objects
-                                        .requireNonNull(
+                            else if (stackItemDamage == 2 && aStack.toString().equals(
+                                    Objects.requireNonNull(
                                             GTModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1L, 2))
-                                        .copy()
-                                        .toString()))
+                                            .copy().toString()))
                                 sTier = "102";
-                        } else if (aStack.getUnlocalizedName()
-                            .matches(".*\\d+.*"))
-                            sTier = aStack.getUnlocalizedName()
-                                .split("(?<=\\D)(?=\\d)")[1].substring(0, 1);
+                        } else if (aStack.getUnlocalizedName().matches(".*\\d+.*"))
+                            sTier = aStack.getUnlocalizedName().split("(?<=\\D)(?=\\d)")[1].substring(0, 1);
                         else sTier = "1";
                     }
 
@@ -322,7 +277,10 @@ public class MTEScanner extends MTEBasicMachine {
                     this.mOutputItems[0] = GTUtility.copyAmount(1, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
                     this.mOutputItems[0].setTagCompound(
-                        GTUtility.getNBTContainingShort(new NBTTagCompound(), "rocket_tier", Short.parseShort(sTier)));
+                            GTUtility.getNBTContainingShort(
+                                    new NBTTagCompound(),
+                                    "rocket_tier",
+                                    Short.parseShort(sTier)));
 
                     calculateOverclockedNess(480, 36000);
                     // In case recipe is too OP for that machine
@@ -332,8 +290,7 @@ public class MTEScanner extends MTEBasicMachine {
                 }
             }
             if (getSpecialSlot() == null && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) {
-                if (GTUtility.ItemNBT.getBookTitle(aStack)
-                    .equals("Raw Prospection Data")) {
+                if (GTUtility.ItemNBT.getBookTitle(aStack).equals("Raw Prospection Data")) {
                     GTUtility.ItemNBT.setBookTitle(aStack, "Analyzed Prospection Data");
                     GTUtility.ItemNBT.convertProspectionData(aStack);
                     aStack.stackSize -= 1;
@@ -384,12 +341,11 @@ public class MTEScanner extends MTEBasicMachine {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mProgresstime >= (mMaxProgresstime - 1)) {
-            if ((this.mOutputItems[0] != null) && (this.mOutputItems[0].getUnlocalizedName()
-                .equals("gt.metaitem.01.32707"))) {
+            if ((this.mOutputItems[0] != null)
+                    && (this.mOutputItems[0].getUnlocalizedName().equals("gt.metaitem.01.32707"))) {
                 GTMod.achievements.issueAchievement(
-                    aBaseMetaTileEntity.getWorld()
-                        .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
-                    "scanning");
+                        aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
+                        "scanning");
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -407,9 +363,9 @@ public class MTEScanner extends MTEBasicMachine {
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
-            && getRecipeMap().containsInput(aStack);
+                && getRecipeMap().containsInput(aStack);
     }
 
     @Override

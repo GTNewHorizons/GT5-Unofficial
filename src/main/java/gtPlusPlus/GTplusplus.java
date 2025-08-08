@@ -46,29 +46,29 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-    modid = ModIDs.G_T_PLUS_PLUS,
-    name = GTPPCore.name,
-    version = GTPPCore.VERSION,
-    guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
-    dependencies = "required-after:Forge;" + " after:TConstruct;"
-        + " after:dreamcraft;"
-        + " after:IC2;"
-        + " required-after:gregtech;"
-        + " after:Forestry;"
-        + " after:MagicBees;"
-        + " after:CoFHCore;"
-        + " after:Railcraft;"
-        + " after:CompactWindmills;"
-        + " after:ForbiddenMagic;"
-        + " after:ExtraUtilities;"
-        + " after:Thaumcraft;"
-        + " after:EnderIO;"
-        + " after:tectech;"
-        + " after:OpenBlocks;"
-        + " after:IC2NuclearControl;"
-        + " after:TGregworks;"
-        + " after:StevesCarts;"
-        + " required-after:gtnhlib@[0.0.10,);")
+        modid = ModIDs.G_T_PLUS_PLUS,
+        name = GTPPCore.name,
+        version = GTPPCore.VERSION,
+        guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
+        dependencies = "required-after:Forge;" + " after:TConstruct;"
+                + " after:dreamcraft;"
+                + " after:IC2;"
+                + " required-after:gregtech;"
+                + " after:Forestry;"
+                + " after:MagicBees;"
+                + " after:CoFHCore;"
+                + " after:Railcraft;"
+                + " after:CompactWindmills;"
+                + " after:ForbiddenMagic;"
+                + " after:ExtraUtilities;"
+                + " after:Thaumcraft;"
+                + " after:EnderIO;"
+                + " after:tectech;"
+                + " after:OpenBlocks;"
+                + " after:IC2NuclearControl;"
+                + " after:TGregworks;"
+                + " after:StevesCarts;"
+                + " required-after:gtnhlib@[0.0.10,);")
 public class GTplusplus {
 
     public enum INIT_PHASE {
@@ -121,17 +121,12 @@ public class GTplusplus {
     public static void loadTextures() {
         Logger.INFO("Loading some textures on the client.");
         // Tools
-        Logger.WARNING(
-            "Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile()
-                .getResourcePath());
-        Logger.WARNING(
-            "Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile()
-                .getResourcePath());
+        Logger.WARNING("Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
+        Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
 
         // Blocks
         Logger.WARNING(
-            "Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile()
-                .getResourcePath());
+                "Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
     }
 
     public GTplusplus() {
@@ -177,10 +172,10 @@ public class GTplusplus {
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO(
-            "| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess
-                + " | Failed: "
-                + RegistrationHandler.recipesFailed
-                + " |");
+                "| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess
+                        + " | Failed: "
+                        + RegistrationHandler.recipesFailed
+                        + " |");
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 
@@ -231,22 +226,23 @@ public class GTplusplus {
         SemiFluidFuelHandler.generateFuels();
 
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
-        RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
-        RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
-        RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
+                .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.chemicalDehydratorRecipes,
-            GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
+                RecipeMaps.electrolyzerRecipes,
+                GTPPRecipeMaps.electrolyzerNonCellRecipes);
+        RecipeGenMultisUsingFluidInsteadOfCells
+                .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
+        RecipeGenMultisUsingFluidInsteadOfCells
+                .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.coldTrapRecipes,
-            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+                GTPPRecipeMaps.chemicalDehydratorRecipes,
+                GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.reactorProcessingUnitRecipes,
-            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+                GTPPRecipeMaps.coldTrapRecipes,
+                GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+                GTPPRecipeMaps.reactorProcessingUnitRecipes,
+                GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
 
     private static void setupMaterialBlacklist() {

@@ -27,9 +27,10 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(final ItemRenderType type, final ItemStack item,
-        final ItemRendererHelper helper) {
+            final ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
-            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
+                || (helper == ItemRendererHelper.ENTITY_ROTATION
+                        && Minecraft.getMinecraft().gameSettings.fancyGraphics);
 
     }
 
@@ -69,14 +70,14 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
                 }
 
                 ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    flip ? icon.getMinU() : icon.getMaxU(),
-                    flip ? icon.getMinV() : icon.getMaxV(),
-                    flip ? icon.getMaxU() : icon.getMinU(),
-                    flip ? icon.getMaxV() : icon.getMinV(),
-                    icon.getIconWidth(),
-                    icon.getIconHeight(),
-                    0.0625F);
+                        Tessellator.instance,
+                        flip ? icon.getMinU() : icon.getMaxU(),
+                        flip ? icon.getMinV() : icon.getMaxV(),
+                        flip ? icon.getMaxU() : icon.getMinU(),
+                        flip ? icon.getMaxV() : icon.getMinV(),
+                        icon.getIconWidth(),
+                        icon.getIconHeight(),
+                        0.0625F);
 
                 GL11.glPopMatrix();
             }
@@ -97,12 +98,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
 
-        GL11.glRotatef(
-            (GTMod.clientProxy()
-                .getAnimationTicks() * 3.5f) % 360,
-            0.3f,
-            0.5f,
-            0.2f);
+        GL11.glRotatef((GTMod.clientProxy().getAnimationTicks() * 3.5f) % 360, 0.3f, 0.5f, 0.2f);
 
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 

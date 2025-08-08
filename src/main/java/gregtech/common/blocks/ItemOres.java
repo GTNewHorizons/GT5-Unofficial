@@ -18,8 +18,8 @@ import gregtech.api.enums.Mods;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
-    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-    modid = Mods.ModIDs.RAILCRAFT)
+        iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+        modid = Mods.ModIDs.RAILCRAFT)
 public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
 
     public ItemOres(Block block) {
@@ -45,18 +45,18 @@ public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float hitX, float hitY, float hitZ, int aMeta) {
+            int ordinalSide, float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) getDamage(aStack);
         if (tDamage > 0) {
             if (!aWorld.setBlock(
-                aX,
-                aY,
-                aZ,
-                this.field_150939_a,
-                TileEntityOres.getHarvestData(
-                    tDamage,
-                    ((BlockOresAbstract) field_150939_a).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)),
-                3)) {
+                    aX,
+                    aY,
+                    aZ,
+                    this.field_150939_a,
+                    TileEntityOres.getHarvestData(
+                            tDamage,
+                            ((BlockOresAbstract) field_150939_a).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)),
+                    3)) {
                 return false;
             }
             TileEntityOres tTileEntity = (TileEntityOres) aWorld.getTileEntity(aX, aY, aZ);
@@ -75,7 +75,7 @@ public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         String formula = StatCollector
-            .translateToLocal(field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
+                .translateToLocal(field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
         if (!StringUtils.isBlank(formula)) aList.add(formula);
     }
 

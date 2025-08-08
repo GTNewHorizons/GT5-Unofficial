@@ -50,7 +50,7 @@ public class HazardProtection {
 
     public static boolean protectsAgainstHazard(@Nullable ItemStack stack, @NotNull Hazard hazard) {
         return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
-            && hazardProtector.protectsAgainst(stack, hazard)));
+                && hazardProtector.protectsAgainst(stack, hazard)));
     }
 
     public static boolean providesFullHazmatProtection(@Nullable ItemStack stack) {

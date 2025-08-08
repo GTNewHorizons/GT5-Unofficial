@@ -58,197 +58,207 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * Registers machine with single-line description, specific tank capacity, and sound specified by ResourceLocation.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, ResourceLocation aSound,
-        SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
+            RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, ResourceLocation aSound,
+            SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { aDescription },
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound,
-            aSpecialEffect,
-            aOverlays,
-            aRecipe);
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { aDescription },
+                aRecipes,
+                aInputSlots,
+                aOutputSlots,
+                aTankCapacity,
+                aSound,
+                aSpecialEffect,
+                aOverlays,
+                aRecipe);
     }
 
     /**
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by ResourceLocation.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, ResourceLocation aSound,
-        SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
+            RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, ResourceLocation aSound,
+            SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aRecipes.getAmperage(),
-            aDescription,
-            aInputSlots,
-            aOutputSlots,
-            TextureFactory.of(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                aRecipes.getAmperage(),
+                aDescription,
+                aInputSlots,
+                aOutputSlots,
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE_GLOW")))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW")))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                + "/OVERLAY_SIDE_ACTIVE")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_SIDE_ACTIVE_GLOW")))
+                                .glow().build()),
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE_GLOW")))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW")))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_SIDE_GLOW")))
+                                .glow().build()),
                 TextureFactory.of(
-                    new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW")))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW")))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                + "/OVERLAY_FRONT_ACTIVE")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_FRONT_ACTIVE_GLOW")))
+                                .glow().build()),
                 TextureFactory.of(
-                    new CustomIcon(
-                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (new CustomIcon(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW")))
-                    .glow()
-                    .build()));
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_FRONT_GLOW")))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                + "/OVERLAY_TOP_ACTIVE")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_TOP_ACTIVE_GLOW")))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_TOP_GLOW")))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                + "/OVERLAY_BOTTOM_ACTIVE")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(
+                                new CustomIcon(
+                                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
+                        TextureFactory.builder()
+                                .addIcon(
+                                        (new CustomIcon(
+                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                        + "/OVERLAY_BOTTOM_GLOW")))
+                                .glow().build()));
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
         this.mRecipes = aRecipes;
         this.mSoundResourceLocation = aSound;
-        this.progressBarTexture = mRecipes.getFrontend()
-            .getUIProperties().progressBarTexture;
+        this.progressBarTexture = mRecipes.getFrontend().getUIProperties().progressBarTexture;
 
         GTModHandler.addMachineCraftingRecipe(getStackForm(1), aRecipe, this.mTier);
     }
 
     /**
-     * Registers machine with multi-line descriptions, auto-scaled fluid tank, and sound specified by SoundResource.
-     * Has no recipe.
+     * Registers machine with multi-line descriptions, auto-scaled fluid tank, and sound specified by SoundResource. Has
+     * no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays) {
+            RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids, SoundResource aSound,
+            SpecialEffects aSpecialEffect, String aOverlays) {
         this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            usesFluids ? getCapacityForTier(aTier) : 0,
-            aSound.resourceLocation,
-            aSpecialEffect,
-            aOverlays,
-            null);
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                aDescription,
+                aRecipes,
+                aInputSlots,
+                aOutputSlots,
+                usesFluids ? getCapacityForTier(aTier) : 0,
+                aSound.resourceLocation,
+                aSpecialEffect,
+                aOverlays,
+                null);
     }
 
     /**
-     * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource.
-     * Has no recipe.
+     * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource. Has
+     * no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays) {
+            RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
+            SpecialEffects aSpecialEffect, String aOverlays) {
         this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound.resourceLocation,
-            aSpecialEffect,
-            aOverlays,
-            null);
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                aDescription,
+                aRecipes,
+                aInputSlots,
+                aOutputSlots,
+                aTankCapacity,
+                aSound.resourceLocation,
+                aSpecialEffect,
+                aOverlays,
+                null);
     }
 
     /**
-     * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource.
-     * has no recipe.
+     * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource. has
+     * no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays) {
+            RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
+            SpecialEffects aSpecialEffect, String aOverlays) {
         this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound.resourceLocation,
-            aSpecialEffect,
-            aOverlays,
-            null);
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                aDescription,
+                aRecipes,
+                aInputSlots,
+                aOutputSlots,
+                aTankCapacity,
+                aSound.resourceLocation,
+                aSpecialEffect,
+                aOverlays,
+                null);
     }
 
     /**
      * For {@link #newMetaEntity}.
      */
     public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
-        int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
-        ResourceLocation aSound, SpecialEffects aSpecialEffect) {
+            int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
+            ResourceLocation aSound, SpecialEffects aSpecialEffect) {
         super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots);
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
@@ -259,18 +269,18 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBasicMachineWithRecipe(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mRecipes,
-            this.mInputSlotCount,
-            this.mOutputItems == null ? 0 : this.mOutputItems.length,
-            this.mTankCapacity,
-            this.mAmperage,
-            this.mTextures,
-            this.mSoundResourceLocation,
-            this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture)
-                .setRecipeCatalystPriority(this.recipeCatalystPriority);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mRecipes,
+                this.mInputSlotCount,
+                this.mOutputItems == null ? 0 : this.mOutputItems.length,
+                this.mTankCapacity,
+                this.mAmperage,
+                this.mTextures,
+                this.mSoundResourceLocation,
+                this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture)
+                        .setRecipeCatalystPriority(this.recipeCatalystPriority);
     }
 
     public MTEBasicMachineWithRecipe setProgressBarTexture(FallbackableUITexture progressBarTexture) {
@@ -288,51 +298,36 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)) return false;
         switch (this.mInputSlotCount) {
             case 0 -> {
                 return false;
             }
             case 1 -> {
-                if (this.getFillableStack() == null) return this.getRecipeMap()
-                    .containsInput(aStack);
-                else return this.getRecipeMap()
-                    .findRecipeQuery()
-                    .items(appendSelectedCircuit(aStack))
-                    .fluids(this.getFillableStack())
-                    .specialSlot(this.getSpecialSlot())
-                    .voltage(V[this.mTier])
-                    .cachedRecipe(this.mLastRecipe)
-                    .dontCheckStackSizes(true)
-                    .notUnificated(true)
-                    .find() != null;
+                if (this.getFillableStack() == null) return this.getRecipeMap().containsInput(aStack);
+                else return this.getRecipeMap().findRecipeQuery().items(appendSelectedCircuit(aStack))
+                        .fluids(this.getFillableStack()).specialSlot(this.getSpecialSlot()).voltage(V[this.mTier])
+                        .cachedRecipe(this.mLastRecipe).dontCheckStackSizes(true).notUnificated(true).find() != null;
             }
             case 2 -> {
                 return ((this.getInputAt(0) != null && this.getInputAt(1) != null)
-                    || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeMap()
-                        .containsInput(aStack)
-                        : (this.getRecipeMap()
-                            .containsInput(aStack)
-                            && this.getRecipeMap()
-                                .findRecipeQuery()
-                                .items(
-                                    aIndex == this.getInputSlot() ? appendSelectedCircuit(aStack, this.getInputAt(1))
-                                        : appendSelectedCircuit(this.getInputAt(0), aStack))
-                                .fluids(this.getFillableStack())
-                                .specialSlot(this.getSpecialSlot())
-                                .voltage(V[this.mTier])
-                                .cachedRecipe(this.mLastRecipe)
-                                .dontCheckStackSizes(true)
-                                .notUnificated(true)
-                                .find() != null)));
+                        || (this.getInputAt(0) == null && this.getInputAt(1) == null
+                                ? this.getRecipeMap().containsInput(aStack)
+                                : (this.getRecipeMap().containsInput(aStack) && this.getRecipeMap().findRecipeQuery()
+                                        .items(
+                                                aIndex == this.getInputSlot()
+                                                        ? appendSelectedCircuit(aStack, this.getInputAt(1))
+                                                        : appendSelectedCircuit(this.getInputAt(0), aStack))
+                                        .fluids(this.getFillableStack()).specialSlot(this.getSpecialSlot())
+                                        .voltage(V[this.mTier]).cachedRecipe(this.mLastRecipe).dontCheckStackSizes(true)
+                                        .notUnificated(true).find() != null)));
             }
             default -> {
-                int tID = this.getBaseMetaTileEntity()
-                    .getMetaTileID();
+                int tID = this.getBaseMetaTileEntity().getMetaTileID();
                 if (tID >= ASSEMBLER_LV.ID && tID <= ASSEMBLER_IV.ID
-                    || tID >= CIRCUIT_ASSEMBLER_LV.ID && tID <= CIRCUIT_ASSEMBLER_UV.ID
-                    || tID >= ASSEMBLING_MACHINE_LuV.ID && tID <= ASSEMBLING_MACHINE_UMV.ID) { // assembler
+                        || tID >= CIRCUIT_ASSEMBLER_LV.ID && tID <= CIRCUIT_ASSEMBLER_UV.ID
+                        || tID >= ASSEMBLING_MACHINE_LuV.ID && tID <= ASSEMBLING_MACHINE_UMV.ID) { // assembler
                     // lv-iv;
                     // circuit
                     // asseblers
@@ -341,12 +336,10 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     // assemblers
                     // luv-umv
                     if (GTUtility.isStackValid(aStack)) for (int oreID : OreDictionary.getOreIDs(aStack)) {
-                        if (OreDictionary.getOreName(oreID)
-                            .startsWith("circuit")) return true;
+                        if (OreDictionary.getOreName(oreID).startsWith("circuit")) return true;
                     }
                 }
-                return this.getRecipeMap()
-                    .containsInput(aStack);
+                return this.getRecipeMap().containsInput(aStack);
             }
         }
     }
@@ -364,16 +357,14 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             switch (this.mSpecialEffect) {
                 case TOP_SMOKE -> {
                     if (aBaseMetaTileEntity.getFrontFacing() != UP && !aBaseMetaTileEntity.hasCoverAtSide(UP)
-                        && !aBaseMetaTileEntity.getOpacityAtSide(UP)) {
+                            && !aBaseMetaTileEntity.getOpacityAtSide(UP)) {
 
-                        new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
-                            .setIdentifier(ParticleFX.SMOKE)
-                            .setPosition(
-                                aBaseMetaTileEntity.getXCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F,
-                                aBaseMetaTileEntity.getYCoord() + 0.9F + XSTR_INSTANCE.nextFloat() * 0.2F,
-                                aBaseMetaTileEntity.getZCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F)
-                            .setWorld(aBaseMetaTileEntity.getWorld())
-                            .run();
+                        new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D).setIdentifier(ParticleFX.SMOKE)
+                                .setPosition(
+                                        aBaseMetaTileEntity.getXCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F,
+                                        aBaseMetaTileEntity.getYCoord() + 0.9F + XSTR_INSTANCE.nextFloat() * 0.2F,
+                                        aBaseMetaTileEntity.getZCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F)
+                                .setWorld(aBaseMetaTileEntity.getWorld()).run();
                     }
                 }
                 default -> {}
@@ -399,8 +390,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     final ForgeDirection mainFacing = this.mMainFacing;
 
                     if ((mainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
-                        && !aBaseMetaTileEntity.hasCoverAtSide(mainFacing)
-                        && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
+                            && !aBaseMetaTileEntity.hasCoverAtSide(mainFacing)
+                            && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                         final double oX = aBaseMetaTileEntity.getXCoord();
                         final double oY = aBaseMetaTileEntity.getYCoord();
@@ -436,10 +427,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                         }
 
                         ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(mX, 0, mZ)
-                            .setPosition(x, y, z)
-                            .setWorld(getBaseMetaTileEntity().getWorld());
-                        particleEventBuilder.setIdentifier(ParticleFX.LAVA)
-                            .run();
+                                .setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
+                        particleEventBuilder.setIdentifier(ParticleFX.LAVA).run();
                     }
                 }
             }
@@ -471,8 +460,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1 && this.mSoundResourceLocation != null
-            && GTUtility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
-            && GTUtility.isStringValid(this.mSoundResourceLocation.getResourcePath()))
+                && GTUtility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
+                && GTUtility.isStringValid(this.mSoundResourceLocation.getResourcePath()))
             GTUtility.doSoundAtClient(this.mSoundResourceLocation, 100, 1.0F, aX, aY, aZ);
     }
 
@@ -482,8 +471,9 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
         // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
         if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick + ticksBetweenSounds)) {
             if (this.mSoundResourceLocation != null
-                && GTUtility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
-                && GTUtility.isStringValid(this.mSoundResourceLocation.getResourcePath())) this.sendLoopStart((byte) 1);
+                    && GTUtility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
+                    && GTUtility.isStringValid(this.mSoundResourceLocation.getResourcePath()))
+                this.sendLoopStart((byte) 1);
             // Does not have overflow protection, but they are longs.
             myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
@@ -491,9 +481,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     @Override
     protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder()
-            .progressBarTexture(progressBarTexture)
-            .build();
+        return super.getUIProperties().toBuilder().progressBarTexture(progressBarTexture).build();
     }
 
     public enum X {

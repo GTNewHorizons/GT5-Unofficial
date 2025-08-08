@@ -21,13 +21,13 @@ import gregtech.api.util.GTModHandler;
 public class GTEffectTreeTwister extends GTAlleleEffect {
 
     private static final int[] ALLOWED_DIMS = { 2, // spectre
-        112, // last millenium
-        60, // bedrock
-        69, // pocket plane
+            112, // last millenium
+            60, // bedrock
+            69, // pocket plane
     };
 
     private static final ItemStack TF_TRANS_SAPLING = GTModHandler
-        .getModItem(TwilightForest.ID, "tile.TFSapling", 1, 6);
+            .getModItem(TwilightForest.ID, "tile.TFSapling", 1, 6);
     private static final ItemStack BARN_SAPLING = GTModHandler.getModItem(GalaxySpace.ID, "barnardaCsapling", 1, 1);
 
     static {
@@ -69,17 +69,17 @@ public class GTEffectTreeTwister extends GTAlleleEffect {
         int zCoord = coords.posZ + world.rand.nextInt(zRange) - zRange / 2;
 
         ItemStack sourceBlock = new ItemStack(
-            world.getBlock(xCoord, yCoord, zCoord),
-            1,
-            world.getBlockMetadata(xCoord, yCoord, zCoord));
+                world.getBlock(xCoord, yCoord, zCoord),
+                1,
+                world.getBlockMetadata(xCoord, yCoord, zCoord));
         if (TF_TRANS_SAPLING.isItemEqual(sourceBlock)) {
             world.setBlock(
-                xCoord,
-                yCoord,
-                zCoord,
-                Block.getBlockFromItem(BARN_SAPLING.getItem()),
-                BARN_SAPLING.getItemDamage(),
-                2);
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    Block.getBlockFromItem(BARN_SAPLING.getItem()),
+                    BARN_SAPLING.getItemDamage(),
+                    2);
         }
         return storedData;
     }

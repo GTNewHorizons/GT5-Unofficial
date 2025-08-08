@@ -34,7 +34,7 @@ public class SoundLoopAnyBlock extends MovingSound {
      * @param blockCheck       block that ends the sound when matched at the sound location
      */
     public SoundLoopAnyBlock(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
-        boolean stopWhenInactive, int[] offset, Block blockCheck) {
+            boolean stopWhenInactive, int[] offset, Block blockCheck) {
         super(soundResource);
         this.stopWhenBlockActive = stopWhenActive;
         this.stopWhenBlockInactive = stopWhenInactive;
@@ -67,8 +67,8 @@ public class SoundLoopAnyBlock extends MovingSound {
         }
 
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
-        donePlaying = world.provider.dimensionId != worldID
-            || !world.checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
+        donePlaying = world.provider.dimensionId != worldID || !world
+                .checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
 
         if (donePlaying) return;
 

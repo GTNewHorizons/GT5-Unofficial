@@ -18,6 +18,6 @@ public class GTGenericBlock extends Block {
         setBlockName(mUnlocalizedName = aName);
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
         GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + "." + WILDCARD + ".name", "Any Sub Block of this one");
+                .addStringLocalization(getUnlocalizedName() + "." + WILDCARD + ".name", "Any Sub Block of this one");
     }
 }

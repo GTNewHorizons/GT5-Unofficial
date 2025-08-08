@@ -30,7 +30,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))) {
             GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
             coverData = (coverData & (PRIVATE_MASK | CHECKBOX_MASK))
-                | (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK);
+                    | (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK);
             GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("gt.interact.desc.freq_format", coverData));
             return true;
         }
@@ -40,12 +40,12 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX == 0)
-            || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
+                || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
             GregTechAPI.sWirelessRedstone.put(this.coverData, (byte) 0);
             final float[] tCoords = GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ);
 
             final short tAdjustVal = switch ((byte) ((byte) (int) (tCoords[0] * 2.0F)
-                + 2 * (byte) (int) (tCoords[1] * 2.0F))) {
+                    + 2 * (byte) (int) (tCoords[1] * 2.0F))) {
                 case 0 -> -32;
                 case 1 -> 32;
                 case 2 -> -1024;
@@ -64,8 +64,8 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
             }
         }
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            translateToLocalFormatted("gt.interact.desc.freq_format", this.coverData & PUBLIC_MASK));
+                aPlayer,
+                translateToLocalFormatted("gt.interact.desc.freq_format", this.coverData & PUBLIC_MASK));
     }
 
     @Override

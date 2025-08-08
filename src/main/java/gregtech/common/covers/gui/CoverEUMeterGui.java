@@ -23,27 +23,20 @@ public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         column.child(
-            makeRowLayout().child(positionRow(makeEnergyTypeRow()))
-                .child(positionRow(Rows.makeInvertRedstoneRow(cover)))
-                .child(positionRow(makeEnergyThresholdRow())));
+                makeRowLayout().child(positionRow(makeEnergyTypeRow()))
+                        .child(positionRow(Rows.makeInvertRedstoneRow(cover)))
+                        .child(positionRow(makeEnergyThresholdRow())));
     }
 
     private Flow makeEnergyTypeRow() {
         EnumSyncValue<CoverEUMeter.EnergyType> energyTypeSyncValue = new EnumSyncValue<>(
-            CoverEUMeter.EnergyType.class,
-            cover::getType,
-            cover::setType);
-        return Flow.row()
-            .child(
+                CoverEUMeter.EnergyType.class,
+                cover::getType,
+                cover::setType);
+        return Flow.row().child(
                 addEnergyTypeTooltips(
-                    new CycleButtonWidget().overlay(OVERLAY_BUTTON_CYCLIC)
-                        .value(energyTypeSyncValue)
-                        .size(16)))
-            .child(
-                IKey.dynamic(
-                    () -> cover.getType()
-                        .getTitle())
-                    .asWidget());
+                        new CycleButtonWidget().overlay(OVERLAY_BUTTON_CYCLIC).value(energyTypeSyncValue).size(16)))
+                .child(IKey.dynamic(() -> cover.getType().getTitle()).asWidget());
     }
 
     private CycleButtonWidget addEnergyTypeTooltips(CycleButtonWidget button) {
@@ -55,11 +48,8 @@ public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
 
     private @NotNull Flow makeEnergyThresholdRow() {
         return makeNamedColumn(IKey.str(GTUtility.trans("222.1", "Energy threshold"))).child(
-            makeNumberField(140).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold))
-                .setNumbersLong(
-                    () -> 0L,
-                    () -> cover.getType()
-                        .getTileEntityEnergyCapacity(cover.getTile()))
-                .setFocusOnGuiOpen(true));
+                makeNumberField(140).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold))
+                        .setNumbersLong(() -> 0L, () -> cover.getType().getTileEntityEnergyCapacity(cover.getTile()))
+                        .setFocusOnGuiOpen(true));
     }
 }

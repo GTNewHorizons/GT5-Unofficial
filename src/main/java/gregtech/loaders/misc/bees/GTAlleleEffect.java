@@ -12,7 +12,7 @@ import forestry.core.genetics.alleles.Allele;
 public abstract class GTAlleleEffect extends Allele implements IAlleleBeeEffect {
 
     public static final IAlleleBeeEffect FORESTRY_BASE_EFFECT = (IAlleleBeeEffect) AlleleManager.alleleRegistry
-        .getAllele("forestry.effectNone");
+            .getAllele("forestry.effectNone");
     protected boolean combinable;
     protected int tickThrottle; // If set, this amount of ticks have to pass before an effect ticks
 
@@ -52,7 +52,7 @@ public abstract class GTAlleleEffect extends Allele implements IAlleleBeeEffect 
     }
 
     protected abstract IEffectData doEffectTickThrottled(IBeeGenome genome, IEffectData storedData,
-        IBeeHousing housing);
+            IBeeHousing housing);
 
     @Override
     public IEffectData doFX(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {

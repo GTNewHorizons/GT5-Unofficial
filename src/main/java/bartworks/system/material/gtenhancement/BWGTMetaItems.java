@@ -53,8 +53,8 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
             ItemStack tStack = new ItemStack(this, 1, i);
             Materials material = Materials.values()[i];
             if (material.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten
-                || material.getFluid(1) == null && material.getGas(1) == null
-                    && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
+                    || material.getFluid(1) == null && material.getGas(1) == null
+                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                 continue;
 
             if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""))) {
@@ -62,7 +62,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                 continue;
             }
             GTOreDictUnificator
-                .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
+                    .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
         }
 
         if (noSubIDMaterials != null) {
@@ -72,8 +72,8 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                 ItemStack tStack = new ItemStack(this, 1, i + 1001);
                 Materials w = noSubIDMaterials.get(i);
                 if (w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten
-                    || w.getFluid(1) == null && w.getGas(1) == null
-                        && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
+                        || w.getFluid(1) == null && w.getGas(1) == null
+                                && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                     continue;
 
                 if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""))) {
@@ -160,10 +160,11 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
         for (int i = 0; i < Materials.values().length; i++) {
             Materials w = Materials.values()[i];
             if (w == null || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
-                && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
+                    && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
+                continue;
             if (w.getMolten(1) == null && this.orePrefixes == OrePrefixes.capsuleMolten
-                || w.getFluid(1) == null && w.getGas(1) == null
-                    && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
+                    || w.getFluid(1) == null && w.getGas(1) == null
+                            && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
                 continue;
             else if (this.hiddenThings.contains(i)) continue;
             aList.add(new ItemStack(this, 1, i));
@@ -171,10 +172,11 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
         if (this.hasList) for (int i = 0; i < GTMetaItemEnhancer.NoMetaValue.size(); i++) {
             Materials w = GTMetaItemEnhancer.NoMetaValue.get(i);
             if (w == null || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
-                && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
+                    && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
+                continue;
             if (w.getMolten(1) == null && this.orePrefixes == OrePrefixes.capsuleMolten
-                || w.getFluid(1) == null && w.getGas(1) == null
-                    && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
+                    || w.getFluid(1) == null && w.getGas(1) == null
+                            && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
                 continue;
             else if (this.hiddenThings.contains(i)) continue;
             aList.add(new ItemStack(this, 1, i + 1001));

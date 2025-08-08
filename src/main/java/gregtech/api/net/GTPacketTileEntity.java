@@ -23,7 +23,7 @@ public class GTPacketTileEntity extends GTPacket {
     public GTPacketTileEntity() {}
 
     public GTPacketTileEntity(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5,
-        byte aCommon, byte aUpdate, byte aRedstone, byte aColor) {
+            byte aCommon, byte aUpdate, byte aRedstone, byte aColor) {
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -64,24 +64,24 @@ public class GTPacketTileEntity extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketTileEntity(
-            // Coords
-            aData.readInt(),
-            aData.readShort(),
-            aData.readInt(),
-            // ID
-            aData.readShort(),
-            // Covers
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt(),
-            // Everything else
-            aData.readByte(),
-            aData.readByte(),
-            aData.readByte(),
-            aData.readByte());
+                // Coords
+                aData.readInt(),
+                aData.readShort(),
+                aData.readInt(),
+                // ID
+                aData.readShort(),
+                // Covers
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                // Everything else
+                aData.readByte(),
+                aData.readByte(),
+                aData.readByte(),
+                aData.readByte());
     }
 
     @Override
@@ -96,11 +96,11 @@ public class GTPacketTileEntity extends GTPacket {
             }
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(
-                "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
-                tTileEntity,
-                mX,
-                mY,
-                mZ);
+                    "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
+                    tTileEntity,
+                    mX,
+                    mY,
+                    mZ);
         }
     }
 

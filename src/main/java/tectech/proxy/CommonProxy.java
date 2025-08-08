@@ -40,9 +40,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void broadcast(String str) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(new ChatComponentText(str));
+        MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(str));
     }
 
     public void printInchat(String... strings) {}
@@ -53,12 +51,8 @@ public class CommonProxy implements IGuiHandler {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (EntityPlayer player : worldServer.playerEntities) {
                 if (player == null) continue;
-                if (player.getGameProfile()
-                    .getName()
-                    .equals(name)) {
-                    return player.getGameProfile()
-                        .getId()
-                        .toString();
+                if (player.getGameProfile().getName().equals(name)) {
+                    return player.getGameProfile().getId().toString();
                 }
             }
         }
@@ -69,9 +63,7 @@ public class CommonProxy implements IGuiHandler {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (EntityPlayer player : worldServer.playerEntities) {
                 if (player == null) continue;
-                if (player.getGameProfile()
-                    .getName()
-                    .equals(name)) {
+                if (player.getGameProfile().getName().equals(name)) {
                     return true;
                 }
             }
@@ -83,10 +75,7 @@ public class CommonProxy implements IGuiHandler {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (EntityPlayer player : worldServer.playerEntities) {
                 if (player == null) continue;
-                if (player.getGameProfile()
-                    .getId()
-                    .toString()
-                    .equals(uuid)) {
+                if (player.getGameProfile().getId().toString().equals(uuid)) {
                     return true;
                 }
             }

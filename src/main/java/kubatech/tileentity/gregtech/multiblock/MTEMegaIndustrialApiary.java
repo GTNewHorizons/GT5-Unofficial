@@ -138,7 +138,7 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 
 public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     protected int glassTier = -1;
     protected int mCasing = 0;
@@ -167,7 +167,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected static final int MEGA_APIARY_STORAGE_VERSION = 2;
 
     private static final String[][] struct = transpose(
-        new String[][] { // spotless:off
+            new String[][] { // spotless:off
         {"               ","               ","               ","      HHH      ","    HHAAAHH    ","    HAPLPAH    ","   HAPAAAPAH   ","   HALAAALAH   ","   HAPAAAPAH   ","    HAPLPAH    ","    HHAAAHH    ","      HHH      ","               ","               ","               "},
         {"               ","               ","      GGG      ","    GG   GG    ","   G       G   ","   G       G   ","  G         G  ","  G         G  ","  G         G  ","   G       G   ","   G       G   ","    GG   GG    ","      GGG      ","               ","               "},
         {"               ","      HHH      ","   HHH   HHH   ","  HG       GH  ","  H         H  ","  H         H  "," H           H "," H           H "," H           H ","  H         H  ","  H         H  ","  HG       GH  ","   HHH   HHH   ","      HHH      ","               "},
@@ -188,76 +188,63 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }); // spotless:on
 
     private static final IStructureDefinition<MTEMegaIndustrialApiary> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMegaIndustrialApiary>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, struct)
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(struct)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(
-                            s -> s.replaceAll("W", " ")
-                                .replaceAll("F", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
-        .addShape(
-            STRUCTURE_PIECE_FLOWERS,
-            Arrays.stream(struct)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("[^F]", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
-        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
-        .addElement(
-            'G',
-            buildHatchAdder(MTEMegaIndustrialApiary.class).atLeast(InputBus, OutputBus, Energy, Maintenance)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings1, 10))))
-        .addElement(
-            'H',
-            ofBlocksMap(
-                Collections.singletonMap(
-                    Blocks.planks,
-                    IntStream.rangeClosed(0, 5)
-                        .boxed()
-                        .collect(Collectors.toList())),
-                Blocks.planks,
-                5))
-        .addElement(
-            'I',
-            ofBlocksMap(
-                Collections.singletonMap(
-                    Blocks.wooden_slab,
-                    IntStream.rangeClosed(0, 5)
-                        .boxed()
-                        .collect(Collectors.toList())),
-                Blocks.wooden_slab,
-                5))
-        .addElement('J', ofBlock(PluginApiculture.blocks.apiculture, BlockApicultureType.APIARY.getMeta()))
-        .addElement('K', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.PLAIN.ordinal()))
-        .addElement('L', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HYGRO.ordinal()))
-        .addElement('N', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.STABILIZER.ordinal()))
-        .addElement('O', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HEATER.ordinal()))
-        .addElement('P', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.FAN.ordinal()))
-        .addElement('W', ofAnyWater())
-        .addElement('F', new IStructureElementNoPlacement<>() {
+            .<MTEMegaIndustrialApiary>builder().addShape(STRUCTURE_PIECE_MAIN, struct)
+            .addShape(
+                    STRUCTURE_PIECE_MAIN_SURVIVAL,
+                    Arrays.stream(struct)
+                            .map(
+                                    sa -> Arrays.stream(sa).map(s -> s.replaceAll("W", " ").replaceAll("F", " "))
+                                            .toArray(String[]::new))
+                            .toArray(String[][]::new))
+            .addShape(
+                    STRUCTURE_PIECE_FLOWERS,
+                    Arrays.stream(struct)
+                            .map(sa -> Arrays.stream(sa).map(s -> s.replaceAll("[^F]", " ")).toArray(String[]::new))
+                            .toArray(String[][]::new))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+            .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
+            .addElement(
+                    'G',
+                    buildHatchAdder(MTEMegaIndustrialApiary.class).atLeast(InputBus, OutputBus, Energy, Maintenance)
+                            .casingIndex(CASING_INDEX).dot(1)
+                            .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings1, 10))))
+            .addElement(
+                    'H',
+                    ofBlocksMap(
+                            Collections.singletonMap(
+                                    Blocks.planks,
+                                    IntStream.rangeClosed(0, 5).boxed().collect(Collectors.toList())),
+                            Blocks.planks,
+                            5))
+            .addElement(
+                    'I',
+                    ofBlocksMap(
+                            Collections.singletonMap(
+                                    Blocks.wooden_slab,
+                                    IntStream.rangeClosed(0, 5).boxed().collect(Collectors.toList())),
+                            Blocks.wooden_slab,
+                            5))
+            .addElement('J', ofBlock(PluginApiculture.blocks.apiculture, BlockApicultureType.APIARY.getMeta()))
+            .addElement('K', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.PLAIN.ordinal()))
+            .addElement('L', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HYGRO.ordinal()))
+            .addElement('N', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.STABILIZER.ordinal()))
+            .addElement('O', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HEATER.ordinal()))
+            .addElement('P', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.FAN.ordinal()))
+            .addElement('W', ofAnyWater()).addElement('F', new IStructureElementNoPlacement<>() {
 
-            @Override
-            public boolean check(MTEMegaIndustrialApiary mte, World world, int x, int y, int z) {
-                mte.flowerCheck(world, x, y, z);
-                return true;
-            }
+                @Override
+                public boolean check(MTEMegaIndustrialApiary mte, World world, int x, int y, int z) {
+                    mte.flowerCheck(world, x, y, z);
+                    return true;
+                }
 
-            @Override
-            public boolean spawnHint(MTEMegaIndustrialApiary mte, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 2 - 1);
-                return true;
-            }
-        })
-        .build();
+                @Override
+                public boolean spawnHint(MTEMegaIndustrialApiary mte, World world, int x, int y, int z,
+                        ItemStack trigger) {
+                    StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 2 - 1);
+                    return true;
+                }
+            }).build();
 
     public MTEMegaIndustrialApiary(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -309,21 +296,19 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     /**
      * Checks the block in the given world and block position, and remove the entries in the {@link #flowerCheckingMap}
-     * if it matches any.
-     * This function will be called during the structural check, see structure definition also.
+     * if it matches any. This function will be called during the structural check, see structure definition also.
      *
      * @see #flowerCheckingMap
      */
     private void flowerCheck(final World world, final int x, final int y, final int z) {
         if (!flowerCheckingMap.isEmpty() && !world.isAirBlock(x, y, z)) {
             flowerCheckingMap.keySet()
-                .removeIf(flowerType -> FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, world, x, y, z));
+                    .removeIf(flowerType -> FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, world, x, y, z));
         }
     }
 
     /**
-     * This should be called when {@link #mStorage} is changed.
-     * And this will trigger the flower check update.
+     * This should be called when {@link #mStorage} is changed. And this will trigger the flower check update.
      * <p>
      * The flower check should be ignored when the storage is updated when loading world (or loadNBTData specifically),
      * which the world itself is not ready yet.
@@ -333,8 +318,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      * @see #flowerCheckingMap
      */
     protected void onStorageContentChanged(boolean ignoreFlowerCheck) {
-        flowerRequiredMap = mStorage.stream()
-            .collect(
+        flowerRequiredMap = mStorage.stream().collect(
                 Collectors.toMap(BeeSimulator::getFlowerType, BeeSimulator::getFlowerTypeDescription, (k1, k2) -> k1));
         flowerRequiredMap.remove("");
 
@@ -353,8 +337,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 7, 8, 0, elementBudget, env, true);
         if (built == -1) {
             GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water and flowers yourself !");
+                    env.getActor(),
+                    EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water and flowers yourself !");
             return 0;
         }
         return built;
@@ -373,55 +357,39 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Mega Apiary, Mapiary")
-            .addInfo("The ideal home for your bees")
-            .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
-            .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Input Mode:")
-            .addInfo("- Does not take power")
-            .addInfo("- Put your queens in the input bus to put them in the internal buffer")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Output Mode:")
-            .addInfo("- Does not take power")
-            .addInfo("- Will give your bees back to output bus")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Operating Mode:")
-            .addInfo("- NORMAL:")
-            .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
-            .addInfo("  - Processing time: 5 seconds")
-            .addInfo("  - Uses 1 " + voltageTooltipFormatted(6) + " amp per queen")
-            .addInfo("  - All bees are accelerated 64 times")
-            .addInfo("  - 8 production upgrades are applied")
-            .addInfo("  - Genetic Stabilizer upgrade applied")
-            .addInfo("  - Simulates perfect environment for your bees")
-            .addInfo("  - Additionally you can provide royal jelly to increase the outputs:")
-            .addInfo("    - 1 royal jelly grants 5% bonus per bee")
-            .addInfo("    - They will be consumed on each start of operation")
-            .addInfo("    - and be applied to that operation only")
-            .addInfo("    - Max bonus: 200%")
-            .addInfo("- SWARMER:")
-            .addInfo("  - You can only insert 1 queen")
-            .addInfo("  - It will slowly produce ignoble princesses")
-            .addInfo("  - Consumes 100 royal jelly per operation")
-            .addInfo("  - Base processing time: 1 minute")
-            .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
-            .addInfo("  - Can overclock")
-            .beginStructureBlock(15, 17, 15, false)
-            .addController("Front Bottom Center")
-            .addCasingInfoMin("Bronze Plated Bricks", 190, false)
-            .addCasingInfoExactly("Any Tiered Glass", 121, false)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("kubatech.tooltip.structure.flowers"),
-                "On dirt/grass",
-                2)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .toolTipFinisher(GTValues.AuthorKuba, "Runakai");
+        tt.addMachineType("Mega Apiary, Mapiary").addInfo("The ideal home for your bees")
+                .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
+                .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)").addSeparator()
+                .addInfo(EnumChatFormatting.GOLD + "Input Mode:").addInfo("- Does not take power")
+                .addInfo("- Put your queens in the input bus to put them in the internal buffer").addSeparator()
+                .addInfo(EnumChatFormatting.GOLD + "Output Mode:").addInfo("- Does not take power")
+                .addInfo("- Will give your bees back to output bus").addSeparator()
+                .addInfo(EnumChatFormatting.GOLD + "Operating Mode:").addInfo("- NORMAL:")
+                .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
+                .addInfo("  - Processing time: 5 seconds")
+                .addInfo("  - Uses 1 " + voltageTooltipFormatted(6) + " amp per queen")
+                .addInfo("  - All bees are accelerated 64 times").addInfo("  - 8 production upgrades are applied")
+                .addInfo("  - Genetic Stabilizer upgrade applied")
+                .addInfo("  - Simulates perfect environment for your bees")
+                .addInfo("  - Additionally you can provide royal jelly to increase the outputs:")
+                .addInfo("    - 1 royal jelly grants 5% bonus per bee")
+                .addInfo("    - They will be consumed on each start of operation")
+                .addInfo("    - and be applied to that operation only").addInfo("    - Max bonus: 200%")
+                .addInfo("- SWARMER:").addInfo("  - You can only insert 1 queen")
+                .addInfo("  - It will slowly produce ignoble princesses")
+                .addInfo("  - Consumes 100 royal jelly per operation").addInfo("  - Base processing time: 1 minute")
+                .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5)).addInfo("  - Can overclock")
+                .beginStructureBlock(15, 17, 15, false).addController("Front Bottom Center")
+                .addCasingInfoMin("Bronze Plated Bricks", 190, false)
+                .addCasingInfoExactly("Any Tiered Glass", 121, false)
+                .addStructureInfo("The glass tier limits the Energy Input tier")
+                .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("kubatech.tooltip.structure.flowers"),
+                        "On dirt/grass",
+                        2)
+                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
+                .addMaintenanceHatch("Any casing", 1).toolTipFinisher(GTValues.AuthorKuba, "Runakai");
         return tt;
     }
 
@@ -431,10 +399,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         aNBT.setInteger("mPrimaryMode", mPrimaryMode);
         aNBT.setInteger("mSecondaryMode", mSecondaryMode);
         aNBT.setInteger("mStorageSize", mStorage.size());
-        for (int i = 0; i < mStorage.size(); i++) aNBT.setTag(
-            "mStorage." + i,
-            mStorage.get(i)
-                .toNBTTagCompound());
+        for (int i = 0; i < mStorage.size(); i++) aNBT.setTag("mStorage." + i, mStorage.get(i).toNBTTagCompound());
         aNBT.setInteger("MEGA_APIARY_STORAGE_VERSION", MEGA_APIARY_STORAGE_VERSION);
     }
 
@@ -451,7 +416,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
             GTUtility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
             return;
@@ -509,8 +474,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             if (aBaseMetaTileEntity.isActive() && aTick % 100 == 0) {
                 int[] abc = new int[] { 0, -2, 7 };
                 int[] xyz = new int[] { 0, 0, 0 };
-                this.getExtendedFacing()
-                    .getWorldOffset(abc, xyz);
+                this.getExtendedFacing().getWorldOffset(abc, xyz);
                 xyz[0] += aBaseMetaTileEntity.getXCoord();
                 xyz[1] += aBaseMetaTileEntity.getYCoord();
                 xyz[2] += aBaseMetaTileEntity.getZCoord();
@@ -609,7 +573,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     this.mOutputItems = stacks.toArray(new ItemStack[0]);
                 } else { // SWARMER mode
                     if (!depleteInput(PluginApiculture.items.royalJelly.getItemStack(64))
-                        || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
+                            || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
                         this.updateSlots();
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
@@ -617,8 +581,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (this.lEUt > 0) this.lEUt = -this.lEUt;
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    this.mOutputItems = new ItemStack[] { this.mStorage.get(0)
-                        .createIgnobleCopy() };
+                    this.mOutputItems = new ItemStack[] { this.mStorage.get(0).createIgnobleCopy() };
                     this.updateSlots();
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -632,20 +595,23 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                + EnumChatFormatting.GOLD
-                + (mPrimaryMode == 0 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.input")
-                    : (mPrimaryMode == 1 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
-                        : (mSecondaryMode == 0
-                            ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")
-                            : StatCollector
-                                .translateToLocal("kubatech.infodata.mia.running_mode.operating.swarmer")))));
+                StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
+                        + EnumChatFormatting.GOLD
+                        + (mPrimaryMode == 0
+                                ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.input")
+                                : (mPrimaryMode == 1
+                                        ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
+                                        : (mSecondaryMode == 0
+                                                ? StatCollector.translateToLocal(
+                                                        "kubatech.infodata.mia.running_mode.operating.normal")
+                                                : StatCollector.translateToLocal(
+                                                        "kubatech.infodata.mia.running_mode.operating.swarmer")))));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "kubatech.infodata.mia.running_mode.bee_storage",
-                "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
-                (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
-                    : EnumChatFormatting.GOLD.toString()) + mMaxSlots + EnumChatFormatting.RESET));
+                StatCollector.translateToLocalFormatted(
+                        "kubatech.infodata.mia.running_mode.bee_storage",
+                        "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
+                        (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
+                                : EnumChatFormatting.GOLD.toString()) + mMaxSlots + EnumChatFormatting.RESET));
         HashMap<String, Integer> infos = new HashMap<>();
         for (int i = 0; i < mStorage.size(); i++) {
             StringBuilder builder = new StringBuilder();
@@ -656,11 +622,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             // bee flower info
             String flowerType = beeSimulator.getFlowerType();
             boolean flowerExists = !missingFlowers || flowerCheckingMap.get(flowerType) == null;
-            builder.append(" ")
-                .append(flowerExists ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append("(")
-                .append(flowerType)
-                .append(")");
+            builder.append(" ").append(flowerExists ? EnumChatFormatting.GREEN : EnumChatFormatting.RED).append("(")
+                    .append(flowerType).append(")");
             infos.merge(builder.toString(), 1, Integer::sum);
         }
         infos.forEach((key, value) -> info.add("x" + value + ": " + key));
@@ -704,43 +667,32 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow()
+                            .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     private static final UIInfo<?, ?> MegaApiaryUI = createKTMetaTileEntityUI(
-        KT_ModulaUIContainer_MegaIndustrialApiary::new);
+            KT_ModulaUIContainer_MegaIndustrialApiary::new);
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         MegaApiaryUI.open(
-            aPlayer,
-            aBaseMetaTileEntity.getWorld(),
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
+                aPlayer,
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
         return true;
     }
 
@@ -749,7 +701,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         final WeakReference<MTEMegaIndustrialApiary> parent;
 
         public KT_ModulaUIContainer_MegaIndustrialApiary(ModularUIContext context, ModularWindow mainWindow,
-            MTEMegaIndustrialApiary mte) {
+                MTEMegaIndustrialApiary mte) {
             super(context, mainWindow);
             parent = new WeakReference<>(mte);
         }
@@ -770,8 +722,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
                     return super.transferStackInSlot(aPlayer, aSlotIndex);
                 }
-                World w = mte.getBaseMetaTileEntity()
-                    .getWorld();
+                World w = mte.getBaseMetaTileEntity().getWorld();
                 float t = (float) mte.getVoltageTierExact();
                 BeeSimulator bs = new BeeSimulator(aStack, w, t);
                 if (bs.isValid) {
@@ -787,27 +738,25 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     DynamicInventory<BeeSimulator> dynamicInventory = new DynamicInventory<>(
-        128,
-        60,
-        () -> mMaxSlots,
-        mStorage,
-        s -> s.queenStack).allowInventoryInjection(input -> {
-            World w = getBaseMetaTileEntity().getWorld();
-            float t = (float) getVoltageTierExact();
-            BeeSimulator bs = new BeeSimulator(input, w, t);
-            if (bs.isValid) {
-                mStorage.add(bs);
-                onStorageContentChanged(false);
-                return input;
-            }
-            return null;
-        })
-            .allowInventoryExtraction(index -> {
+            128,
+            60,
+            () -> mMaxSlots,
+            mStorage,
+            s -> s.queenStack).allowInventoryInjection(input -> {
+                World w = getBaseMetaTileEntity().getWorld();
+                float t = (float) getVoltageTierExact();
+                BeeSimulator bs = new BeeSimulator(input, w, t);
+                if (bs.isValid) {
+                    mStorage.add(bs);
+                    onStorageContentChanged(false);
+                    return input;
+                }
+                return null;
+            }).allowInventoryExtraction(index -> {
                 BeeSimulator ret = mStorage.remove(index);
                 onStorageContentChanged(false);
                 return ret;
-            })
-            .allowInventoryReplace((i, stack) -> {
+            }).allowInventoryReplace((i, stack) -> {
                 if (stack.stackSize != 1) return null;
                 World w = getBaseMetaTileEntity().getWorld();
                 float t = (float) getVoltageTierExact();
@@ -819,8 +768,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     return removed.queenStack;
                 }
                 return null;
-            })
-            .setEnabled(() -> this.mMaxProgresstime == 0);
+            }).setEnabled(() -> this.mMaxProgresstime == 0);
 
     @Override
     public void createInventorySlots() {
@@ -833,48 +781,36 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(4, 4)
-                .setSize(190, 85)
-                .setEnabled(w -> !isInInventory));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(190, 85)
+                        .setEnabled(w -> !isInInventory));
         builder.widget(
-            dynamicInventory.asWidget(builder, buildContext)
-                .setPos(10, 16)
-                .setBackground(new Rectangle().setColor(Color.rgb(163, 163, 198)))
-                .setEnabled(w -> isInInventory));
+                dynamicInventory.asWidget(builder, buildContext).setPos(10, 16)
+                        .setBackground(new Rectangle().setColor(Color.rgb(163, 163, 198)))
+                        .setEnabled(w -> isInInventory));
 
         builder.widget(
-            new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
-                .setTextureGetter(
-                    i -> i == 0 ? new Text(StatCollector.translateToLocal("kubatech.gui.text.inventory"))
-                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.status")))
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(140, 91)
-                .setSize(55, 16));
+                new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
+                        .setTextureGetter(
+                                i -> i == 0 ? new Text(StatCollector.translateToLocal("kubatech.gui.text.inventory"))
+                                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.status")))
+                        .setBackground(GTUITextures.BUTTON_STANDARD).setPos(140, 91).setSize(55, 16));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, null);
         builder.widget(
-            new Scrollable().setVerticalScroll()
-                .widget(screenElements)
-                .setPos(10, 7)
-                .setSize(182, 79)
-                .setEnabled(w -> !isInInventory));
+                new Scrollable().setVerticalScroll().widget(screenElements).setPos(10, 7).setSize(182, 79)
+                        .setEnabled(w -> !isInInventory));
 
-        builder.widget(createPowerSwitchButton(builder))
-            .widget(createVoidExcessButton(builder))
-            .widget(createInputSeparationButton(builder))
-            .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder))
-            .widget(createStructureUpdateButton(builder));
+        builder.widget(createPowerSwitchButton(builder)).widget(createVoidExcessButton(builder))
+                .widget(createInputSeparationButton(builder)).widget(createBatchModeButton(builder))
+                .widget(createLockToSingleRecipeButton(builder)).widget(createStructureUpdateButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
 
         builder.widget(
-            configurationElements.setSpace(2)
-                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                .setPos(getRecipeLockingButtonPos().add(18, 0)));
+                configurationElements.setSpace(2).setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                        .setPos(getRecipeLockingButtonPos().add(18, 0)));
     }
 
     @Override
@@ -882,142 +818,165 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
         configurationElements.setSynced(false);
         configurationElements.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(CONFIGURATION_WINDOW_ID);
-                })
-                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.configuration"))
-                .setSize(16, 16));
+                new ButtonWidget()
+                        .setOnClick(
+                                (clickData, widget) -> {
+                                    if (!widget.isClient())
+                                        widget.getContext().openSyncedWindow(CONFIGURATION_WINDOW_ID);
+                                })
+                        .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
+                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setSize(16, 16));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(200, 100);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .setPos(5, 5)
-                .setSize(16, 16))
-            .widget(new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setPos(25, 9))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(185, 3))
-            .widget(
-                new Column().widget(
-                    new CycleButtonWidget().setLength(3)
-                        .setGetter(() -> mPrimaryMode)
-                        .setSetter(val -> {
-                            if (this.mMaxProgresstime > 0) {
-                                GTUtility.sendChatToPlayer(player, "Can't change mode when running !");
-                                return;
-                            }
-                            mPrimaryMode = val;
+                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC).setPos(5, 5).setSize(16, 16))
+                .widget(new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setPos(25, 9))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
+                .widget(
+                        new Column().widget(
+                                new CycleButtonWidget().setLength(3).setGetter(() -> mPrimaryMode).setSetter(val -> {
+                                    if (this.mMaxProgresstime > 0) {
+                                        GTUtility.sendChatToPlayer(player, "Can't change mode when running !");
+                                        return;
+                                    }
+                                    mPrimaryMode = val;
 
-                            if (!(player instanceof EntityPlayerMP)) return;
-                            switch (mPrimaryMode) {
-                                case 0:
-                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Input mode");
-                                    break;
-                                case 1:
-                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Output mode");
-                                    break;
-                                case 2:
-                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Operating mode");
-                                    break;
-                            }
-                        })
-                        .addTooltip(
-                            0,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
-                                .color(Color.YELLOW.dark(3)))
-                        .addTooltip(
-                            1,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
-                                .color(Color.YELLOW.dark(3)))
-                        .addTooltip(
-                            2,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
-                                .color(Color.GREEN.dark(3)))
-                        .setTextureGetter(
-                            i -> i == 0
-                                ? new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
-                                    .color(Color.YELLOW.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                : i == 1
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
-                                        .color(Color.YELLOW.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
-                                        .color(Color.GREEN.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                        .setBackground(
-                            ModularUITextures.VANILLA_BACKGROUND,
-                            GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                        .setSize(70, 18)
-                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.mia.primary_mode")))
-                    .widget(
-                        new CycleButtonWidget().setLength(2)
-                            .setGetter(() -> mSecondaryMode)
-                            .setSetter(val -> {
-                                if (this.mMaxProgresstime > 0) {
-                                    GTUtility.sendChatToPlayer(player, "Can't change mode when running !");
-                                    return;
-                                }
+                                    if (!(player instanceof EntityPlayerMP)) return;
+                                    switch (mPrimaryMode) {
+                                        case 0:
+                                            GTUtility.sendChatToPlayer(player, "Changed primary mode to: Input mode");
+                                            break;
+                                        case 1:
+                                            GTUtility.sendChatToPlayer(player, "Changed primary mode to: Output mode");
+                                            break;
+                                        case 2:
+                                            GTUtility.sendChatToPlayer(
+                                                    player,
+                                                    "Changed primary mode to: Operating mode");
+                                            break;
+                                    }
+                                }).addTooltip(
+                                        0,
+                                        new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
+                                                .color(Color.YELLOW.dark(3)))
+                                        .addTooltip(
+                                                1,
+                                                new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
+                                                        .color(Color.YELLOW.dark(3)))
+                                        .addTooltip(
+                                                2,
+                                                new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
+                                                        .color(Color.GREEN.dark(3)))
+                                        .setTextureGetter(
+                                                i -> i == 0 ? new Text(
+                                                        StatCollector.translateToLocal("kubatech.gui.text.input"))
+                                                                .color(Color.YELLOW.dark(3))
+                                                                .withFixedSize(70 - 18, 18, 15, 0)
+                                                        : i == 1 ? new Text(
+                                                                StatCollector
+                                                                        .translateToLocal("kubatech.gui.text.output"))
+                                                                                .color(Color.YELLOW.dark(3))
+                                                                                .withFixedSize(70 - 18, 18, 15, 0)
+                                                                : new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.operating"))
+                                                                                        .color(Color.GREEN.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0))
+                                        .setBackground(
+                                                ModularUITextures.VANILLA_BACKGROUND,
+                                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                        .setSize(70, 18).addTooltip(
+                                                StatCollector.translateToLocal("kubatech.gui.text.mia.primary_mode")))
+                                .widget(
+                                        new CycleButtonWidget().setLength(2).setGetter(() -> mSecondaryMode)
+                                                .setSetter(val -> {
+                                                    if (this.mMaxProgresstime > 0) {
+                                                        GTUtility.sendChatToPlayer(
+                                                                player,
+                                                                "Can't change mode when running !");
+                                                        return;
+                                                    }
 
-                                mSecondaryMode = val;
+                                                    mSecondaryMode = val;
 
-                                if (!(player instanceof EntityPlayerMP)) return;
-                                switch (mSecondaryMode) {
-                                    case 0:
-                                        GTUtility.sendChatToPlayer(player, "Changed secondary mode to: Normal mode");
-                                        break;
-                                    case 1:
-                                        GTUtility.sendChatToPlayer(player, "Changed secondary mode to: Swarmer mode");
-                                        break;
-                                }
-                            })
-                            .addTooltip(
-                                0,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.normal"))
-                                    .color(Color.GREEN.dark(3)))
-                            .addTooltip(
-                                1,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.swarmer"))
-                                    .color(Color.YELLOW.dark(3)))
-                            .setTextureGetter(
-                                i -> i == 0
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.normal"))
-                                        .color(Color.GREEN.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.swarmer"))
-                                        .color(Color.YELLOW.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                            .setBackground(
-                                ModularUITextures.VANILLA_BACKGROUND,
-                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                            .setSize(70, 18)
-                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.mia.secondary_mode")))
-                    .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                    .setPos(10, 30))
-            .widget(
-                new Column()
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.mia.primary_mode"))
-                            .setSize(100, 18))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.mia.secondary_mode"))
-                            .setSize(100, 18))
-                    .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                    .setPos(80, 30))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setSize(18, 18)
-                    .setPos(10, 30)
-                    .addTooltip(
-                        new Text(StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
-                            .color(Color.RED.dark(3)))
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
+                                                    if (!(player instanceof EntityPlayerMP)) return;
+                                                    switch (mSecondaryMode) {
+                                                        case 0:
+                                                            GTUtility.sendChatToPlayer(
+                                                                    player,
+                                                                    "Changed secondary mode to: Normal mode");
+                                                            break;
+                                                        case 1:
+                                                            GTUtility.sendChatToPlayer(
+                                                                    player,
+                                                                    "Changed secondary mode to: Swarmer mode");
+                                                            break;
+                                                    }
+                                                })
+                                                .addTooltip(
+                                                        0,
+                                                        new Text(
+                                                                StatCollector.translateToLocal(
+                                                                        "kubatech.gui.text.mia.normal"))
+                                                                                .color(Color.GREEN.dark(3)))
+                                                .addTooltip(
+                                                        1,
+                                                        new Text(
+                                                                StatCollector.translateToLocal(
+                                                                        "kubatech.gui.text.mia.swarmer"))
+                                                                                .color(Color.YELLOW.dark(3)))
+                                                .setTextureGetter(
+                                                        i -> i == 0
+                                                                ? new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.mia.normal"))
+                                                                                        .color(Color.GREEN.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0)
+                                                                : new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.mia.swarmer"))
+                                                                                        .color(Color.YELLOW.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0))
+                                                .setBackground(
+                                                        ModularUITextures.VANILLA_BACKGROUND,
+                                                        GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                                .setSize(70, 18).addTooltip(
+                                                        StatCollector.translateToLocal(
+                                                                "kubatech.gui.text.mia.secondary_mode")))
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()).setPos(10, 30))
+                .widget(
+                        new Column().widget(
+                                new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.mia.primary_mode"))
+                                        .setSize(100, 18))
+                                .widget(
+                                        new TextWidget(
+                                                StatCollector.translateToLocal("kubatech.gui.text.mia.secondary_mode"))
+                                                        .setSize(100, 18))
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()).setPos(80, 30))
+                .widget(
+                        new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS).setSize(18, 18)
+                                .setPos(10, 30)
+                                .addTooltip(
+                                        new Text(
+                                                StatCollector
+                                                        .translateToLocal("GT5U.gui.text.cannot_change_when_running"))
+                                                                .color(Color.RED.dark(3)))
+                                .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
         return builder.build();
     }
 
@@ -1033,47 +992,35 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
         if (mOutputItems == null || GUIDropProgress == null) return processingDetails;
 
-        LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet()
-            .stream()
-            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
-                assert mOutputItems != null;
-                return Arrays.stream(mOutputItems)
-                    .filter(s -> s.isItemEqual(entry.getKey()))
-                    .mapToInt(i -> i.stackSize)
-                    .sum();
-            })
-                .reversed())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet().stream()
+                .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
+                    assert mOutputItems != null;
+                    return Arrays.stream(mOutputItems).filter(s -> s.isItemEqual(entry.getKey()))
+                            .mapToInt(i -> i.stackSize).sum();
+                }).reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
         for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
             assert mOutputItems != null;
-            int outputSize = Arrays.stream(mOutputItems)
-                .filter(s -> s.isItemEqual(drop.getKey()))
-                .mapToInt(i -> i.stackSize)
-                .sum();
+            int outputSize = Arrays.stream(mOutputItems).filter(s -> s.isItemEqual(drop.getKey()))
+                    .mapToInt(i -> i.stackSize).sum();
             if (outputSize != 0) {
                 Long itemCount = (long) outputSize;
-                String itemName = drop.getKey()
-                    .getDisplayName();
+                String itemName = drop.getKey().getDisplayName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
-                    + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
+                        + EnumChatFormatting.GOLD
+                        + formatShortenedLong(itemCount)
+                        + EnumChatFormatting.WHITE
+                        + appendRate(false, itemCount, true);
                 String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 20) + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
-                    new MultiChildWidget().addChild(
-                        new ItemDrawable(
-                            drop.getKey()
-                                .copy()).asWidget()
-                                    .setSize(8, 8)
-                                    .setPos(0, 0))
-                        .addChild(
-                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                                .addTooltip(lineTooltip)
-                                .setPos(10, 1)));
+                        new MultiChildWidget()
+                                .addChild(new ItemDrawable(drop.getKey().copy()).asWidget().setSize(8, 8).setPos(0, 0))
+                                .addChild(
+                                        new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                                .addTooltip(lineTooltip).setPos(10, 1)));
             }
         }
         return processingDetails;
@@ -1155,20 +1102,16 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             int h = queen.getMaxHealth();
             maxBeeCycles = (float) h / (1.f / mod);
             IBeeGenome genome = queen.getGenome();
-            this.flowerType = genome.getFlowerProvider()
-                .getFlowerType();
-            this.flowerTypeDescription = genome.getFlowerProvider()
-                .getDescription();
+            this.flowerType = genome.getFlowerProvider().getFlowerType();
+            this.flowerTypeDescription = genome.getFlowerProvider().getDescription();
             IAlleleBeeSpecies primary = genome.getPrimary();
             beeSpeed = genome.getSpeed();
-            genome.getPrimary()
-                .getProductChances()
-                .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed, t)));
-            genome.getSecondary()
-                .getProductChances()
-                .forEach((key, value) -> drops.add(new BeeDrop(key, value / 2.f, beeSpeed, t)));
+            genome.getPrimary().getProductChances()
+                    .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed, t)));
+            genome.getSecondary().getProductChances()
+                    .forEach((key, value) -> drops.add(new BeeDrop(key, value / 2.f, beeSpeed, t)));
             primary.getSpecialtyChances()
-                .forEach((key, value) -> specialDrops.add(new BeeDrop(key, value, beeSpeed, t)));
+                    .forEach((key, value) -> specialDrops.add(new BeeDrop(key, value, beeSpeed, t)));
         }
 
         public BeeSimulator(NBTTagCompound tag) {
@@ -1188,10 +1131,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             } else {
                 IBee queen = beeRoot.getMember(this.queenStack);
                 IBeeGenome genome = queen.getGenome();
-                this.flowerType = genome.getFlowerProvider()
-                    .getFlowerType();
-                this.flowerTypeDescription = genome.getFlowerProvider()
-                    .getDescription();
+                this.flowerType = genome.getFlowerProvider().getFlowerType();
+                this.flowerTypeDescription = genome.getFlowerProvider().getDescription();
             }
         }
 
@@ -1200,15 +1141,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             tag.setTag("queenStack", writeItemStackToNBT(queenStack));
             tag.setBoolean("isValid", isValid);
             tag.setInteger("dropssize", drops.size());
-            for (int i = 0; i < drops.size(); i++) tag.setTag(
-                "drops" + i,
-                drops.get(i)
-                    .toNBTTagCompound());
+            for (int i = 0; i < drops.size(); i++) tag.setTag("drops" + i, drops.get(i).toNBTTagCompound());
             tag.setInteger("specialDropssize", specialDrops.size());
-            for (int i = 0; i < specialDrops.size(); i++) tag.setTag(
-                "specialDrops" + i,
-                specialDrops.get(i)
-                    .toNBTTagCompound());
+            for (int i = 0; i < specialDrops.size(); i++)
+                tag.setTag("specialDrops" + i, specialDrops.get(i).toNBTTagCompound());
             tag.setFloat("beeSpeed", beeSpeed);
             tag.setFloat("maxBeeCycles", maxBeeCycles);
             tag.setString("flowerType", flowerType);
@@ -1228,19 +1164,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
             });
             List<ItemStack> currentDrops = new ArrayList<>();
-            MTE.dropProgress.entrySet()
-                .forEach(e -> {
-                    double v = e.getValue();
-                    while (v > 1.f) {
-                        int size = Math.min((int) v, 64);
-                        ItemStack stack = dropstacks.get(e.getKey())
-                            .copy();
-                        stack.stackSize = size;
-                        currentDrops.add(stack);
-                        v -= size;
-                        e.setValue(v);
-                    }
-                });
+            MTE.dropProgress.entrySet().forEach(e -> {
+                double v = e.getValue();
+                while (v > 1.f) {
+                    int size = Math.min((int) v, 64);
+                    ItemStack stack = dropstacks.get(e.getKey()).copy();
+                    stack.stackSize = size;
+                    currentDrops.add(stack);
+                    v -= size;
+                    e.setValue(v);
+                }
+            });
             return currentDrops;
         }
 
@@ -1293,11 +1227,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
             public void evaluate() {
                 this.amount = Bee.getFinalChance(
-                    chance,
-                    beeSpeed,
-                    MAX_PRODUCTION_MODIFIER_FROM_UPGRADES + mode.getBeeModifier()
-                        .getProductionModifier(null, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES),
-                    t);
+                        chance,
+                        beeSpeed,
+                        MAX_PRODUCTION_MODIFIER_FROM_UPGRADES + mode.getBeeModifier()
+                                .getProductionModifier(null, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES),
+                        t);
             }
 
             public double getAmount(double speedModifier) {

@@ -123,7 +123,7 @@ public abstract class EIGBucket {
      *         0 or less items;
      */
     public int tryAddSeed(@NotNull MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input, int maxConsume,
-        boolean simulate) {
+            boolean simulate) {
         // Abort is input if empty
         if (input == null || input.stackSize <= 0) return -2;
         // Cap max to input count

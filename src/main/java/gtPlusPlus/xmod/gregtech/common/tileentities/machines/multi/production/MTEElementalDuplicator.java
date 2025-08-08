@@ -44,7 +44,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDuplicator>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private final ArrayList<MTEHatchElementalDataOrbHolder> mReplicatorDataOrbHatches = new ArrayList<>();
     private static final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 3);
@@ -72,34 +72,24 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     protected MultiblockTooltipBuilder createTooltip() {
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Produces Elemental Material from UU Matter")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier")
-            .addInfo("Maximum 1x of each bus/hatch.")
-            .addInfo("Requires circuit 1-16 in your Data Orb Repository")
-            .addInfo("depending on what Data Orb you want to prioritize")
-            .addPerfectOCInfo()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 6, 9, true)
-            .addController("Top Center")
-            .addCasingInfoMin("Elemental Confinement Shell", 120, false)
-            .addCasingInfoMin("Matter Fabricator Casing", 24, false)
-            .addCasingInfoMin("Particle Containment Casing", 24, false)
-            .addCasingInfoMin("Matter Generation Coil", 24, false)
-            .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
-            .addCasingInfoMin("Resonance Chamber III", 24, false)
-            .addCasingInfoMin("Modulator III", 16, false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "1x",
-                1)
-            .addInputHatch("Any 1 dot hint", 1)
-            .addOutputBus("Any 1 dot hint", 1)
-            .addOutputHatch("Any 1 dot hint", 1)
-            .addEnergyHatch("Any 1 dot hint", 1)
-            .addMaintenanceHatch("Any 1 dot hint", 1)
-            .addMufflerHatch("Any 1 dot hint", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Produces Elemental Material from UU Matter")
+                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier").addInfo("Maximum 1x of each bus/hatch.")
+                .addInfo("Requires circuit 1-16 in your Data Orb Repository")
+                .addInfo("depending on what Data Orb you want to prioritize").addPerfectOCInfo()
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(9, 6, 9, true)
+                .addController("Top Center").addCasingInfoMin("Elemental Confinement Shell", 120, false)
+                .addCasingInfoMin("Matter Fabricator Casing", 24, false)
+                .addCasingInfoMin("Particle Containment Casing", 24, false)
+                .addCasingInfoMin("Matter Generation Coil", 24, false)
+                .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
+                .addCasingInfoMin("Resonance Chamber III", 24, false).addCasingInfoMin("Modulator III", 16, false)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
+                        "1x",
+                        1)
+                .addInputHatch("Any 1 dot hint", 1).addOutputBus("Any 1 dot hint", 1)
+                .addOutputHatch("Any 1 dot hint", 1).addEnergyHatch("Any 1 dot hint", 1)
+                .addMaintenanceHatch("Any 1 dot hint", 1).addMufflerHatch("Any 1 dot hint", 1).toolTipFinisher();
         return tt;
     }
 
@@ -111,57 +101,61 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEElementalDuplicator>builder()
 
-                // h = Hatch
-                // c = Casing
+                    // h = Hatch
+                    // c = Casing
 
-                // a = MF Casing 1
-                // b = Matter Gen Coil
+                    // a = MF Casing 1
+                    // b = Matter Gen Coil
 
-                // d = Current Capacitor
-                // e = Particle
+                    // d = Current Capacitor
+                    // e = Particle
 
-                // f = Resonance III
-                // g = Modulator III
+                    // f = Resonance III
+                    // g = Modulator III
 
-                .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    (new String[][] {
-                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccccccccc", "cccc~cccc", "ccccccccc", " ccccccc ",
-                            "  ccccc  ", "   ccc   " },
-                        { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc", " abfgfba ",
-                            "  abfba  ", "   cac   " },
-                        { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c", " e     e ",
-                            "  e   e  ", "   cec   " },
-                        { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c", " e     e ",
-                            "  e   e  ", "   cec   " },
-                        { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc", " abfgfba ",
-                            "  abfba  ", "   cac   " },
-                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccccccccc", "ccccccccc", "ccccccccc", " ccccccc ",
-                            "  ccccc  ", "   ccc   " }, }))
-                .addElement('a', ofBlock(getCasingBlock4(), getCasingMeta6()))
-                .addElement('b', ofBlock(getCasingBlock4(), getCasingMeta7()))
-                .addElement('d', ofBlock(getCasingBlock2(), getCasingMeta2()))
-                .addElement('e', ofBlock(getCasingBlock2(), getCasingMeta3()))
-                .addElement('f', ofBlock(getCasingBlock3(), getCasingMeta4()))
-                .addElement('g', ofBlock(getCasingBlock3(), getCasingMeta5()))
-                .addElement(
-                    'c',
-                    lazy(
-                        t -> ofChain(
-                            buildHatchAdder(MTEElementalDuplicator.class)
-                                .atLeast(InputHatch, OutputBus, OutputHatch, Maintenance, Muffler, Energy)
-                                .casingIndex(getCasingTextureIndex())
-                                .dot(1)
-                                .build(),
-                            buildHatchAdder(MTEElementalDuplicator.class)
-                                .hatchClass(MTEHatchElementalDataOrbHolder.class)
-                                .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
-                                .adder(MTEElementalDuplicator::addDataOrbHatch)
-                                .casingIndex(getCasingTextureIndex())
-                                .dot(1)
-                                .build(),
-                            onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))))
-                .build();
+                    .addShape(
+                            STRUCTURE_PIECE_MAIN,
+                            (new String[][] {
+                                    { "   ccc   ", "  ccccc  ", " ccccccc ", "ccccccccc", "cccc~cccc", "ccccccccc",
+                                            " ccccccc ", "  ccccc  ", "   ccc   " },
+                                    { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc",
+                                            " abfgfba ", "  abfba  ", "   cac   " },
+                                    { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c",
+                                            " e     e ", "  e   e  ", "   cec   " },
+                                    { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c",
+                                            " e     e ", "  e   e  ", "   cec   " },
+                                    { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc",
+                                            " abfgfba ", "  abfba  ", "   cac   " },
+                                    { "   ccc   ", "  ccccc  ", " ccccccc ", "ccccccccc", "ccccccccc", "ccccccccc",
+                                            " ccccccc ", "  ccccc  ", "   ccc   " }, }))
+                    .addElement('a', ofBlock(getCasingBlock4(), getCasingMeta6()))
+                    .addElement('b', ofBlock(getCasingBlock4(), getCasingMeta7()))
+                    .addElement('d', ofBlock(getCasingBlock2(), getCasingMeta2()))
+                    .addElement('e', ofBlock(getCasingBlock2(), getCasingMeta3()))
+                    .addElement('f', ofBlock(getCasingBlock3(), getCasingMeta4()))
+                    .addElement(
+                            'g',
+                            ofBlock(getCasingBlock3(), getCasingMeta5()))
+                    .addElement(
+                            'c',
+                            lazy(
+                                    t -> ofChain(
+                                            buildHatchAdder(MTEElementalDuplicator.class).atLeast(
+                                                    InputHatch,
+                                                    OutputBus,
+                                                    OutputHatch,
+                                                    Maintenance,
+                                                    Muffler,
+                                                    Energy).casingIndex(getCasingTextureIndex()).dot(1).build(),
+                                            buildHatchAdder(MTEElementalDuplicator.class)
+                                                    .hatchClass(MTEHatchElementalDataOrbHolder.class)
+                                                    .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
+                                                    .adder(MTEElementalDuplicator::addDataOrbHatch)
+                                                    .casingIndex(getCasingTextureIndex()).dot(1).build(),
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta())))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -292,9 +286,8 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
-            .enablePerfectOverclock()
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 2F).enablePerfectOverclock()
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -331,8 +324,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> tItems = super.getStoredInputsForColor(Optional.empty());
         for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(mReplicatorDataOrbHatches)) {
-            byte busColor = tHatch.getBaseMetaTileEntity()
-                .getColorization();
+            byte busColor = tHatch.getBaseMetaTileEntity().getColorization();
             if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             tItems.add(tHatch.getOrbByCircuit());
         }

@@ -40,14 +40,13 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCompressor>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialCompressor> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEIndustrialCompressor>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            // spotless:off
+            .<MTEIndustrialCompressor>builder().addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    // spotless:off
             transpose(new String[][]{
                 {"       ","  DDD  "," DDDDD "," DDDDD "," DDDDD ","  DDD  ","       "},
                 {"  BBB  "," BBBBB ","BBBBBBB","BBBBBBB","BBBBBBB"," BBBBB ","  BBB  "},
@@ -59,23 +58,23 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
                 {"  B~B  "," BBBBB ","BBBBBBB","BBBBBBB","BBBBBBB"," BBBBB ","  BBB  "}
             }))
             //spotless:on
-        .addElement(
-            'C',
-            buildHatchAdder(MTEIndustrialCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
-                .dot(2)
-                .buildAndChain(
-                    onElementPass(MTEIndustrialCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
-        .addElement(
-            'B',
-            buildHatchAdder(MTEIndustrialCompressor.class).atLeast(Maintenance, Energy)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(4))
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(MTEIndustrialCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
-        .addElement('A', chainAllGlasses())
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 5))
-        .build();
+            .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
+                            .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5)).dot(2)
+                            .buildAndChain(
+                                    onElementPass(
+                                            MTEIndustrialCompressor::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings10, 5))))
+            .addElement(
+                    'B',
+                    buildHatchAdder(MTEIndustrialCompressor.class).atLeast(Maintenance, Energy)
+                            .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(4)).dot(1)
+                            .buildAndChain(
+                                    onElementPass(
+                                            MTEIndustrialCompressor::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings10, 4))))
+            .addElement('A', chainAllGlasses()).addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 5)).build();
 
     public MTEIndustrialCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -97,39 +96,27 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW).extFacing().glow()
+                                .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW).extFacing().glow()
+                                .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)) };
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)) };
         }
         return rTexture;
     }
@@ -137,22 +124,16 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Compressor")
-            .addInfo("100% faster than singleblock machines of the same voltage")
-            .addInfo("Only uses 90% of the EU/t normally required")
-            .addInfo("Gains 2 parallels per voltage tier")
-            .beginStructureBlock(7, 8, 7, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Electric Compressor Casing", 95, false)
-            .addCasingInfoMin("Compressor Pipe Casing", 45, false)
-            .addCasingInfoExactly("Any Tiered Glass", 6, false)
-            .addInputBus("Pipe Casings on Side", 2)
-            .addInputHatch("Pipe Casings on Side", 2)
-            .addOutputBus("Pipe Casings on Side", 2)
-            .addEnergyHatch("Any Electric Compressor Casing", 1)
-            .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(Ollie);
+        tt.addMachineType("Compressor").addInfo("100% faster than singleblock machines of the same voltage")
+                .addInfo("Only uses 90% of the EU/t normally required").addInfo("Gains 2 parallels per voltage tier")
+                .beginStructureBlock(7, 8, 7, true).addController("Front Center")
+                .addCasingInfoMin("Electric Compressor Casing", 95, false)
+                .addCasingInfoMin("Compressor Pipe Casing", 45, false)
+                .addCasingInfoExactly("Any Tiered Glass", 6, false).addInputBus("Pipe Casings on Side", 2)
+                .addInputHatch("Pipe Casings on Side", 2).addOutputBus("Pipe Casings on Side", 2)
+                .addEnergyHatch("Any Electric Compressor Casing", 1)
+                .addMaintenanceHatch("Any Electric Compressor Casing", 1)
+                .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher(Ollie);
         return tt;
     }
 
@@ -190,10 +171,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);
             }
-        }.noRecipeCaching()
-            .setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.9F);
+        }.noRecipeCaching().setSpeedBonus(1F / 2F).setMaxParallelSupplier(this::getTrueParallel).setEuModifier(0.9F);
     }
 
     @Override

@@ -95,15 +95,15 @@ public final class LanthItemList {
 
         BEAMLINE_PIPE = new MTEBeamlinePipe(10502, "Beamline Pipe", "Beamline Pipe").getStackForm(1L);
         LUV_BEAMLINE_INPUT_HATCH = new MTEHatchInputBeamline(
-            10503,
-            "LuV Beamline Input Hatch",
-            "LuV Beamline Input Hatch",
-            6).getStackForm(1L);
+                10503,
+                "LuV Beamline Input Hatch",
+                "LuV Beamline Input Hatch",
+                6).getStackForm(1L);
         LUV_BEAMLINE_OUTPUT_HATCH = new MTEHatchOutputBeamline(
-            10504,
-            "LuV Beamline Output Hatch",
-            "LuV Beamline Output Hatch",
-            6).getStackForm(1L);
+                10504,
+                "LuV Beamline Output Hatch",
+                "LuV Beamline Output Hatch",
+                6).getStackForm(1L);
 
         BEAMLINE_FOCUS_INPUT_BUS = new MTEBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
 
@@ -165,17 +165,14 @@ public final class LanthItemList {
             String descSpectrum = mask.getSpectrum();
 
             ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(
-                mask.getName(),
-                mask.getDamage(),
-                descSpectrum);
+                    mask.getName(),
+                    mask.getDamage(),
+                    descSpectrum);
             GameRegistry.registerItem(maskItem, maskItem.getUnlocalizedName());
 
-            if (!mask.getName()
-                .contains("blank")) {
-                GTOreDictUnificator.registerOre(
-                    OrePrefixes.mask + mask.getName()
-                        .toUpperCase(),
-                    new ItemStack(maskItem));
+            if (!mask.getName().contains("blank")) {
+                GTOreDictUnificator
+                        .registerOre(OrePrefixes.mask + mask.getName().toUpperCase(), new ItemStack(maskItem));
             }
 
             GTLanguageManager.addStringLocalization(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");

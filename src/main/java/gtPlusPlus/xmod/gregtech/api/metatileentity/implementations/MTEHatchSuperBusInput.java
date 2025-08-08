@@ -39,7 +39,7 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
     @Override
     public String[] getDescription() {
         return new String[] { "Item Input for Multiblocks", getSlots(this.mTier) + " Slots",
-            GTPPCore.GT_Tooltip.get() };
+                GTPPCore.GT_Tooltip.get() };
     }
 
     @Override
@@ -54,12 +54,10 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
             int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(
-                    new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
-                        .setSize(18, 18));
+                        new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
+                                .setSize(18, 18));
             }
         }
-        builder.widget(
-            scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(52, 7));
+        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
     }
 }

@@ -246,10 +246,10 @@ public class VoidProtectionHelper {
         // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
         // the lowest priority fluid is the number of complete parallel crafts we can support
         PriorityQueue<ParallelStackInfo<FluidStack>> aParallelQueue = new PriorityQueue<>(
-            Comparator.comparing(i -> i.batch));
+                Comparator.comparing(i -> i.batch));
         for (Map.Entry<FluidStack, ParallelData> entry : tParallels.entrySet()) {
             aParallelQueue
-                .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
+                    .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
         }
         // add extra parallels for open slots as well
         for (IFluidStore tHatch : hatches) {
@@ -296,7 +296,7 @@ public class VoidProtectionHelper {
             // GTRecipeBuilder doesn't handle null item output
             if (tItem == null) continue;
             int itemStackSize = (int) (tItem.stackSize
-                * Math.ceil(chanceMultiplier * chanceGetter.apply(index++) / 10000));
+                    * Math.ceil(chanceMultiplier * chanceGetter.apply(index++) / 10000));
             if (itemStackSize <= 0) continue;
             tItemOutputMap.merge(tItem, itemStackSize, Integer::sum);
             tParallels.put(tItem, new ParallelData(0, 0));
@@ -343,10 +343,10 @@ public class VoidProtectionHelper {
             // now that all partial stacks have been counted, create a priority queue for our outputs
             // the lowest priority item is the number of complete parallel crafts we can support
             PriorityQueue<ParallelStackInfo<ItemStack>> aParallelQueue = new PriorityQueue<>(
-                Comparator.comparing(i -> i.batch));
+                    Comparator.comparing(i -> i.batch));
             for (Map.Entry<ItemStack, ParallelData> entry : tParallels.entrySet()) {
                 aParallelQueue
-                    .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
+                        .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
             }
 
             while (tSlotsFree > 0) {

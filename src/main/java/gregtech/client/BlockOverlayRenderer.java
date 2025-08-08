@@ -51,61 +51,54 @@ public class BlockOverlayRenderer {
     private static final int ROTATION_MARKER_RESOLUTION = 120;
 
     private static final int[][] GRID_SWITCH_TABLE = new int[][] { { 0, 5, 3, 1, 2, 4 }, { 5, 0, 1, 3, 2, 4 },
-        { 1, 3, 0, 5, 2, 4 }, { 3, 1, 5, 0, 2, 4 }, { 4, 2, 3, 1, 0, 5 }, { 2, 4, 3, 1, 5, 0 }, };
+            { 1, 3, 0, 5, 2, 4 }, { 3, 1, 5, 0, 2, 4 }, { 4, 2, 3, 1, 0, 5 }, { 2, 4, 3, 1, 5, 0 }, };
 
     // don't ask. these "just works"
     private static final Transformation ROTATION_MARKER_TRANSFORM_CENTER = new Scale(0.5);
     private static final Transformation[] ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS = {
-        new Scale(0.25).with(new Translation(0, 0, 0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(0.375, 0, 0))
-            .compile(),
-        new Scale(0.25).with(new Translation(0, 0, -0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(-0.375, 0, 0))
-            .compile(), };
+            new Scale(0.25).with(new Translation(0, 0, 0.375)).compile(),
+            new Scale(0.25).with(new Translation(0.375, 0, 0)).compile(),
+            new Scale(0.25).with(new Translation(0, 0, -0.375)).compile(),
+            new Scale(0.25).with(new Translation(-0.375, 0, 0)).compile(), };
     private static final int[] ROTATION_MARKER_TRANSFORMS_SIDES = { -1, -1, 2, 0, 3, 1, -1, -1, 0, 2, 3, 1, 0, 2, -1,
-        -1, 3, 1, 2, 0, -1, -1, 3, 1, 1, 3, 2, 0, -1, -1, 3, 1, 2, 0, -1, -1 };
+            -1, 3, 1, 2, 0, -1, -1, 3, 1, 1, 3, 2, 0, -1, -1, 3, 1, 2, 0, -1, -1 };
     private static final Transformation[] ROTATION_MARKER_TRANSFORMS_CORNER = {
-        new Scale(0.25).with(new Translation(0.375, 0, 0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(-0.375, 0, 0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(0.375, 0, -0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(-0.375, 0, -0.375))
-            .compile(), };
+            new Scale(0.25).with(new Translation(0.375, 0, 0.375)).compile(),
+            new Scale(0.25).with(new Translation(-0.375, 0, 0.375)).compile(),
+            new Scale(0.25).with(new Translation(0.375, 0, -0.375)).compile(),
+            new Scale(0.25).with(new Translation(-0.375, 0, -0.375)).compile(), };
     private static int rotationMarkerDisplayList;
     private static boolean rotationMarkerDisplayListCompiled = false;
 
     static {
         ROTATABLE_VANILLA_BLOCKS = Arrays.asList(
-            Blocks.piston,
-            Blocks.sticky_piston,
-            Blocks.furnace,
-            Blocks.lit_furnace,
-            Blocks.dropper,
-            Blocks.dispenser,
-            Blocks.chest,
-            Blocks.trapped_chest,
-            Blocks.ender_chest,
-            Blocks.hopper,
-            Blocks.pumpkin,
-            Blocks.lit_pumpkin);
+                Blocks.piston,
+                Blocks.sticky_piston,
+                Blocks.furnace,
+                Blocks.lit_furnace,
+                Blocks.dropper,
+                Blocks.dispenser,
+                Blocks.chest,
+                Blocks.trapped_chest,
+                Blocks.ender_chest,
+                Blocks.hopper,
+                Blocks.pumpkin,
+                Blocks.lit_pumpkin);
     }
 
     @SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent event) {
         final Block aBlock = event.player.worldObj
-            .getBlock(event.target.blockX, event.target.blockY, event.target.blockZ);
+                .getBlock(event.target.blockX, event.target.blockY, event.target.blockZ);
         final TileEntity aTileEntity = event.player.worldObj
-            .getTileEntity(event.target.blockX, event.target.blockY, event.target.blockZ);
+                .getTileEntity(event.target.blockX, event.target.blockY, event.target.blockZ);
 
         if (GTUtility.isStackInList(event.currentItem, GregTechAPI.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
-                || aTileEntity instanceof IWrenchable
-                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated())
-                || (aBlock instanceof BlockFrameBox)) drawGrid(event, false, true, event.player.isSneaking());
+                    || aTileEntity instanceof IWrenchable
+                    || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated())
+                    || (aBlock instanceof BlockFrameBox))
+                drawGrid(event, false, true, event.player.isSneaking());
             return;
         }
 
@@ -120,24 +113,24 @@ public class BlockOverlayRenderer {
         if (!(aTileEntity instanceof ICoverable)) return;
 
         if (event.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
-            && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
+                && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
             if (event.currentItem != null && event.currentItem.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[event.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
+                    && GregTechAPI.METATILEENTITIES[event.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
                 drawGrid(event, false, false, false);
             }
         }
 
         if (GTUtility.isStackInList(event.currentItem, GregTechAPI.sWireCutterList)
-            || GTUtility.isStackInList(event.currentItem, GregTechAPI.sSolderingToolList)
-                && event.player.isSneaking()) {
+                || GTUtility.isStackInList(event.currentItem, GregTechAPI.sSolderingToolList)
+                        && event.player.isSneaking()) {
             if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(event.target.sideHit)))
                 drawGrid(event, false, false, event.player.isSneaking());
             return;
         }
 
         if ((event.currentItem == null && event.player.isSneaking())
-            || GTUtility.isStackInList(event.currentItem, GregTechAPI.sCrowbarList)
-            || GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)) {
+                || GTUtility.isStackInList(event.currentItem, GregTechAPI.sCrowbarList)
+                || GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)) {
             if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(event.target.sideHit)))
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     if (((ICoverable) aTileEntity).hasCoverAtSide(tSide)) {
@@ -160,7 +153,7 @@ public class BlockOverlayRenderer {
     }
 
     private static void drawGrid(DrawBlockHighlightEvent aEvent, boolean showCoverConnections, boolean aIsWrench,
-        boolean aIsSneaking) {
+            boolean aIsSneaking) {
 
         GL11.glPushMatrix();
 
@@ -220,8 +213,8 @@ public class BlockOverlayRenderer {
             tConnections |= ForgeDirection.getOrientation(wrenchable.getFacing()).flag;
         } else if (ROTATABLE_VANILLA_BLOCKS.contains(block)) {
             tConnections |= ForgeDirection.getOrientation(meta).flag;
-        } else if (tTile instanceof TileInterface tileInterface) tConnections |= tileInterface.getUp()
-            .getOpposite().flag;
+        } else
+            if (tTile instanceof TileInterface tileInterface) tConnections |= tileInterface.getUp().getOpposite().flag;
 
         if (tConnections != 0) {
             for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
@@ -284,14 +277,13 @@ public class BlockOverlayRenderer {
         Function<ForgeDirection, Transformation[]> getTransform = (ForgeDirection direction) -> {
             try {
                 if (direction.ordinal() == tSideHit) return new Transformation[] { ROTATION_MARKER_TRANSFORM_CENTER };
-                else if (direction.getOpposite()
-                    .ordinal() == tSideHit) {
-                        return ROTATION_MARKER_TRANSFORMS_CORNER;
-                    } else {
-                        return new Transformation[] {
+                else if (direction.getOpposite().ordinal() == tSideHit) {
+                    return ROTATION_MARKER_TRANSFORMS_CORNER;
+                } else {
+                    return new Transformation[] {
                             ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
-                                + direction.ordinal()]] };
-                    }
+                                    + direction.ordinal()]] };
+                }
             } catch (ArrayIndexOutOfBoundsException e) {
                 return new Transformation[] {};
             }
@@ -307,8 +299,8 @@ public class BlockOverlayRenderer {
             }
         }
         if (aIsWrench && tTile instanceof IOrientable orientable
-            && !(tTile instanceof TileInterface)
-            && orientable.canBeRotated()) {
+                && !(tTile instanceof TileInterface)
+                && orientable.canBeRotated()) {
             for (var transform : getTransform.apply(aIsSneaking ? orientable.getForward() : orientable.getUp())) {
                 drawExtendedRotationMarker(transform, aIsSneaking, orientable);
             }
@@ -351,15 +343,15 @@ public class BlockOverlayRenderer {
         tess.startDrawing(GL_LINE_LOOP);
         for (int i = 0; i <= ROTATION_MARKER_RESOLUTION; i++) {
             tess.addVertex(
-                Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4,
-                0,
-                Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4);
+                    Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4,
+                    0,
+                    Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4);
         }
         for (int i = ROTATION_MARKER_RESOLUTION; i >= 0; i--) {
             tess.addVertex(
-                Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24,
-                0,
-                Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24);
+                    Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24,
+                    0,
+                    Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24);
         }
         tess.addVertex(0.141114561800, 0, 0);
         tess.addVertex(0.32, 0, -0.178885438199);

@@ -45,16 +45,16 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     public MTEHatchOutputBus(int id, String name, String nameRegional, int tier, int slots) {
         super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
-                "Left click with data stick to save filter config",
-                "Right click with data stick to load filter config"));
+                id,
+                name,
+                nameRegional,
+                tier,
+                slots,
+                ArrayExt.of(
+                        "Item Output for Multiblocks",
+                        "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
+                        "Left click with data stick to save filter config",
+                        "Right click with data stick to load filter config"));
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -62,7 +62,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        int inventorySize) {
+            int inventorySize) {
         super(aID, aName, aNameRegional, aTier, inventorySize, aDescription);
     }
 
@@ -77,15 +77,15 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GTMod.proxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return GTMod.proxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
@@ -201,7 +201,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
             int inSlot = slot == null ? 0 : slot.stackSize;
 
             int toInsert = Math
-                .min(Math.min(getInventoryStackLimit(), stack.getMaxStackSize() - inSlot), stack.stackSize);
+                    .min(Math.min(getInventoryStackLimit(), stack.getMaxStackSize() - inSlot), stack.stackSize);
 
             if (toInsert == 0) continue;
 
@@ -229,13 +229,13 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
@@ -243,23 +243,23 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
-            && (aTick & 0x7) == 0
-            && pushOutputInventory()) {
+                && (aTick & 0x7) == 0
+                && pushOutputInventory()) {
             final IInventory tTileEntity = aBaseMetaTileEntity
-                .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
+                    .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
                 moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    tTileEntity,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1,
-                    mInventory.length);
+                        aBaseMetaTileEntity,
+                        tTileEntity,
+                        aBaseMetaTileEntity.getFrontFacing(),
+                        aBaseMetaTileEntity.getBackFacing(),
+                        null,
+                        false,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1,
+                        mInventory.length);
                 for (int i = 0; i < mInventory.length; i++)
                     if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
             }
@@ -293,8 +293,8 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
         if (acceptsItemLock()) {
             builder.widget(
-                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
-                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
+                    new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
+                            .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
 

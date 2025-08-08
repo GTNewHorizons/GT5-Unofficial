@@ -49,26 +49,23 @@ public class EIGIC2Bucket extends EIGBucket {
      */
     private static final boolean IS_ON_WET_FARMLAND = true;
     /**
-     * The amount of water stored in the crop stick when hydration is turned on.
-     * bounds of 0 to 200 inclusive
+     * The amount of water stored in the crop stick when hydration is turned on. bounds of 0 to 200 inclusive
      */
     private static final int WATER_STORAGE_VALUE = 200;
     // nutrient factors
     /**
-     * The number of blocks of dirt we assume are under. Subtract 1 if we have a block under our crop.
-     * bounds of 0 to 3, inclusive
+     * The number of blocks of dirt we assume are under. Subtract 1 if we have a block under our crop. bounds of 0 to 3,
+     * inclusive
      */
     private static final int NUMBER_OF_DIRT_BLOCKS_UNDER = 0;
     /**
-     * The amount of fertilizer stored in the crop stick
-     * bounds of 0 to 200, inclusive
+     * The amount of fertilizer stored in the crop stick bounds of 0 to 200, inclusive
      */
     private static final int FERTILIZER_STORAGE_VALUE = 0;
     // air quality factors
     /**
-     * How many blocks in a 3x3 area centered on the crop do not contain solid blocks or other crops.
-     * Max value is 8 because the crop always counts itself.
-     * bound of 0-8 inclusive
+     * How many blocks in a 3x3 area centered on the crop do not contain solid blocks or other crops. Max value is 8
+     * because the crop always counts itself. bound of 0-8 inclusive
      */
     private static final int CROP_OBSTRUCTION_VALUE = 5;
     /**
@@ -180,9 +177,7 @@ public class EIGIC2Bucket extends EIGBucket {
 
     @Override
     protected void getAdditionalInfoData(StringBuilder sb) {
-        sb.append(" | ")
-            .append(StatCollector.translateToLocal("kubatech.infodata.bucket.humidity"))
-            .append(" ");
+        sb.append(" | ").append(StatCollector.translateToLocal("kubatech.infodata.bucket.humidity")).append(" ");
         sb.append(this.useNoHumidity ? "Off" : "On");
     }
 
@@ -204,23 +199,18 @@ public class EIGIC2Bucket extends EIGBucket {
      */
     public void recalculateDrops(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.isValid = false;
-        World world = greenhouse.getBaseMetaTileEntity()
-            .getWorld();
+        World world = greenhouse.getBaseMetaTileEntity().getWorld();
         int[] abc = new int[] { 0, -2, 3 };
         int[] xyz = new int[] { 0, 0, 0 };
-        greenhouse.getExtendedFacing()
-            .getWorldOffset(abc, xyz);
-        xyz[0] += greenhouse.getBaseMetaTileEntity()
-            .getXCoord();
-        xyz[1] += greenhouse.getBaseMetaTileEntity()
-            .getYCoord();
-        xyz[2] += greenhouse.getBaseMetaTileEntity()
-            .getZCoord();
+        greenhouse.getExtendedFacing().getWorldOffset(abc, xyz);
+        xyz[0] += greenhouse.getBaseMetaTileEntity().getXCoord();
+        xyz[1] += greenhouse.getBaseMetaTileEntity().getYCoord();
+        xyz[2] += greenhouse.getBaseMetaTileEntity().getZCoord();
         boolean cheating = false;
         FakeTileEntityCrop crop;
         try {
             if (world.getBlock(xyz[0], xyz[1] - 2, xyz[2]) != GregTechAPI.sBlockCasings4
-                || world.getBlockMetadata(xyz[0], xyz[1] - 2, xyz[2]) != 1) {
+                    || world.getBlockMetadata(xyz[0], xyz[1] - 2, xyz[2]) != 1) {
                 // no
                 cheating = true;
                 return;
@@ -400,13 +390,14 @@ public class EIGIC2Bucket extends EIGBucket {
         short tDamage = (short) item.getDamage(stack);
         if (item instanceof ItemOres && tDamage > 0) {
             if (!world.setBlock(
-                x,
-                y,
-                z,
-                b,
-                TileEntityOres
-                    .getHarvestData(tDamage, ((BlockOresAbstract) b).getBaseBlockHarvestLevel(tDamage % 16000 / 1000)),
-                0)) {
+                    x,
+                    y,
+                    z,
+                    b,
+                    TileEntityOres.getHarvestData(
+                            tDamage,
+                            ((BlockOresAbstract) b).getBaseBlockHarvestLevel(tDamage % 16000 / 1000)),
+                    0)) {
                 return false;
             }
             TileEntityOres tTileEntity = (TileEntityOres) world.getTileEntity(x, y, z);
@@ -467,8 +458,8 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     /**
-     * Calculates the average drop of the stack size caused by seed's gain using information obtained by
-     * decompiling IC2.
+     * Calculates the average drop of the stack size caused by seed's gain using information obtained by decompiling
+     * IC2.
      *
      * @see TileEntityCrop#harvest_automated(boolean)
      * @param te The {@link TileEntityCrop} holding the crop
@@ -493,7 +484,7 @@ public class EIGIC2Bucket extends EIGBucket {
      * @return The average growth rate as a floating point number
      */
     private static double calcRealAvgGrowthRate(TileEntityCrop te, CropCard cc,
-        HashMap<Integer, Integer> sizeAfterHarvestFrequencies) {
+            HashMap<Integer, Integer> sizeAfterHarvestFrequencies) {
         // Compute growth speeds.
         int[] growthSpeeds = new int[7];
         for (int i = 0; i < 7; i++) growthSpeeds[i] = calcAvgGrowthRate(te, cc, i);
@@ -530,46 +521,39 @@ public class EIGIC2Bucket extends EIGBucket {
      * @return The average growth rate as a floating point number
      */
     public static double calcRealAvgGrowthRate(int[] growthSpeeds, int[] stageGoals,
-        HashMap<Integer, Integer> startStageFrequency) {
+            HashMap<Integer, Integer> startStageFrequency) {
 
         // taking out the zero rolls out of the calculation tends to make the math more accurate for lower speeds.
-        int[] nonZeroSpeeds = Arrays.stream(growthSpeeds)
-            .filter(x -> x > 0)
-            .toArray();
+        int[] nonZeroSpeeds = Arrays.stream(growthSpeeds).filter(x -> x > 0).toArray();
         int zeroRolls = growthSpeeds.length - nonZeroSpeeds.length;
         if (zeroRolls >= growthSpeeds.length) return -1;
 
         // compute stage lengths and stage frequencies
         double[] avgCyclePerStage = new double[stageGoals.length];
         double[] normalizedStageFrequencies = new double[stageGoals.length];
-        long frequenciesSum = startStageFrequency.values()
-            .parallelStream()
-            .mapToInt(x -> x)
-            .sum();
+        long frequenciesSum = startStageFrequency.values().parallelStream().mapToInt(x -> x).sum();
         for (int i = 0; i < stageGoals.length; i++) {
             avgCyclePerStage[i] = calcAvgCyclesToGoal(nonZeroSpeeds, stageGoals[i]);
             normalizedStageFrequencies[i] = startStageFrequency.getOrDefault(i, 0) * stageGoals.length
-                / (double) frequenciesSum;
+                    / (double) frequenciesSum;
         }
 
         // Compute multipliers based on how often the growth starts at a given rate.
         double[] frequencyMultipliers = new double[avgCyclePerStage.length];
         Arrays.fill(frequencyMultipliers, 1.0d);
         conv1DAndCopyToSignal(
-            frequencyMultipliers,
-            normalizedStageFrequencies,
-            new double[avgCyclePerStage.length],
-            0,
-            frequencyMultipliers.length,
-            0);
+                frequencyMultipliers,
+                normalizedStageFrequencies,
+                new double[avgCyclePerStage.length],
+                0,
+                frequencyMultipliers.length,
+                0);
 
         // apply multipliers to length
         for (int i = 0; i < avgCyclePerStage.length; i++) avgCyclePerStage[i] *= frequencyMultipliers[i];
 
         // lengthen average based on number of 0 rolls.
-        double average = Arrays.stream(avgCyclePerStage)
-            .average()
-            .orElse(-1);
+        double average = Arrays.stream(avgCyclePerStage).average().orElse(-1);
         if (average <= 0) return -1;
         if (zeroRolls > 0) {
             average = average / nonZeroSpeeds.length * growthSpeeds.length;
@@ -636,8 +620,8 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     /**
-     * Computes a 1D convolution of a signal and stores the results in the signal array.
-     * Essentially performs `X <- convolve(X,rev(Y))[1:length(X)]` in R
+     * Computes a 1D convolution of a signal and stores the results in the signal array. Essentially performs `X <-
+     * convolve(X,rev(Y))[1:length(X)]` in R
      *
      * @param signal            The signal to apply the convolution to.
      * @param kernel            The kernel to compute with.
@@ -645,7 +629,7 @@ public class EIGIC2Bucket extends EIGBucket {
      *                          Should be the same length as the signal.
      */
     private static double conv1DAndCopyToSignal(double[] signal, double[] kernel, double[] fixedLengthTarget,
-        int minValue, int maxValue, int iterNo) {
+            int minValue, int maxValue, int iterNo) {
         // for a 1d convolution we would usually use kMax = signal.length + kernel.length - 1
         // but since we are directly applying our result to our signal, there is no reason to compute
         // values where k > signal.length.
@@ -669,8 +653,8 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     /**
-     * Calculates the average growth rate of an ic2 crop using information obtained though decompiling IC2.
-     * Calls to random functions have been either replaced with customisable values or boundary tests.
+     * Calculates the average growth rate of an ic2 crop using information obtained though decompiling IC2. Calls to
+     * random functions have been either replaced with customisable values or boundary tests.
      *
      * @see TileEntityCrop#calcGrowthRate()
      * @param te      The {@link TileEntityCrop} holding the crop
@@ -710,8 +694,8 @@ public class EIGIC2Bucket extends EIGBucket {
     // region deterministic environmental calculations
 
     /**
-     * Calculates the humidity at the location of the controller using information obtained by decompiling IC2.
-     * Returns 0 if the greenhouse is in no humidity mode.
+     * Calculates the humidity at the location of the controller using information obtained by decompiling IC2. Returns
+     * 0 if the greenhouse is in no humidity mode.
      *
      * @see EIGIC2Bucket#IS_ON_WET_FARMLAND
      * @see EIGIC2Bucket#WATER_STORAGE_VALUE
@@ -721,9 +705,7 @@ public class EIGIC2Bucket extends EIGBucket {
      */
     public static byte getHumidity(MTEExtremeIndustrialGreenhouse greenhouse, boolean useNoHumidity) {
         if (useNoHumidity) return 0;
-        int value = Crops.instance.getHumidityBiomeBonus(
-            greenhouse.getBaseMetaTileEntity()
-                .getBiome());
+        int value = Crops.instance.getHumidityBiomeBonus(greenhouse.getBaseMetaTileEntity().getBiome());
         if (IS_ON_WET_FARMLAND) value += 2;
         // we add 2 if we have more than 5 water in storage
         if (WATER_STORAGE_VALUE >= 5) value += 2;
@@ -742,9 +724,7 @@ public class EIGIC2Bucket extends EIGBucket {
      * @return The nutrient environmental value at the controller's location.
      */
     public static byte getNutrients(MTEExtremeIndustrialGreenhouse greenhouse) {
-        int value = Crops.instance.getNutrientBiomeBonus(
-            greenhouse.getBaseMetaTileEntity()
-                .getBiome());
+        int value = Crops.instance.getNutrientBiomeBonus(greenhouse.getBaseMetaTileEntity().getBiome());
         value += NUMBER_OF_DIRT_BLOCKS_UNDER;
         value += (FERTILIZER_STORAGE_VALUE + 19) / 20;
         return (byte) value;
@@ -762,12 +742,7 @@ public class EIGIC2Bucket extends EIGBucket {
     public static byte getAirQuality(MTEExtremeIndustrialGreenhouse greenhouse) {
         // clamp height bonus to 0-4, use the height of the crop itself
         // TODO: check if we want to add the extra +2 for the actual height of the crop stick in the EIG.
-        int value = Math.max(
-            0,
-            Math.min(
-                4,
-                (greenhouse.getBaseMetaTileEntity()
-                    .getYCoord() - 64) / 15));
+        int value = Math.max(0, Math.min(4, (greenhouse.getBaseMetaTileEntity().getYCoord() - 64) / 15));
         // min value of fresh is technically 8 since the crop itself will count as an obstruction at xOff = 0, zOff = 0
         value += CROP_OBSTRUCTION_VALUE / 2;
         // you get a +2 bonus for being able to see the sky
@@ -796,9 +771,7 @@ public class EIGIC2Bucket extends EIGBucket {
             this.setGrowth(nbt.getByte("growth"));
             this.setGain(nbt.getByte("gain"));
             this.setResistance(nbt.getByte("resistance"));
-            this.setWorldObj(
-                greenhouse.getBaseMetaTileEntity()
-                    .getWorld());
+            this.setWorldObj(greenhouse.getBaseMetaTileEntity().getWorld());
 
             this.xCoord = xyz[0];
             this.yCoord = xyz[1];
@@ -884,9 +857,7 @@ public class EIGIC2Bucket extends EIGBucket {
          */
         public void updateNutrientsForBlockUnder() {
             // -1 because the farm land is included in the root check.
-            if ((this.getCrop()
-                .getrootslength(this) - 1
-                - NUMBER_OF_DIRT_BLOCKS_UNDER) <= 0 && this.nutrients > 0) {
+            if ((this.getCrop().getrootslength(this) - 1 - NUMBER_OF_DIRT_BLOCKS_UNDER) <= 0 && this.nutrients > 0) {
                 this.nutrients--;
             }
         }

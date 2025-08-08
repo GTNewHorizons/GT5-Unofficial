@@ -50,7 +50,7 @@ public abstract class GenerateNodeMap {
 
     // gets the next node
     protected void generateNextNode(BaseMetaPipeEntity aPipe, Node aPipeNode, ForgeDirection aInvalidSide,
-        int aNextNodeValue, ArrayList<ConsumerNode> tConsumers, HashSet<Node> tNodeMap) {
+            int aNextNodeValue, ArrayList<ConsumerNode> tConsumers, HashSet<Node> tNodeMap) {
         final MetaPipeEntity tMetaPipe = (MetaPipeEntity) aPipe.getMetaTileEntity();
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side == aInvalidSide) {
@@ -62,13 +62,13 @@ public abstract class GenerateNodeMap {
             final Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, side, tNodeMap);
             if (nextTileEntity != null) {
                 final Node tNextNode = generateNode(
-                    nextTileEntity.mTileEntity,
-                    aPipeNode,
-                    aNextNodeValue + 1,
-                    tNewPipes,
-                    nextTileEntity.mSide,
-                    tConsumers,
-                    tNodeMap);
+                        nextTileEntity.mTileEntity,
+                        aPipeNode,
+                        aNextNodeValue + 1,
+                        tNewPipes,
+                        nextTileEntity.mSide,
+                        tConsumers,
+                        tNodeMap);
                 if (tNextNode != null) {
                     final int i = side.ordinal();
                     aNextNodeValue = tNextNode.mHighestNodeValue;
@@ -85,8 +85,8 @@ public abstract class GenerateNodeMap {
 
     // on a valid tile entity create a new node
     protected Node generateNode(TileEntity aTileEntity, Node aPreviousNode, int aNextNodeValue,
-        ArrayList<MetaPipeEntity> aPipes, ForgeDirection side, ArrayList<ConsumerNode> aConsumers,
-        HashSet<Node> aNodeMap) {
+            ArrayList<MetaPipeEntity> aPipes, ForgeDirection side, ArrayList<ConsumerNode> aConsumers,
+            HashSet<Node> aNodeMap) {
         if (aTileEntity.isInvalid()) return null;
         final ForgeDirection oppositeSide = side.getOpposite();
         final ForgeDirection tInvalidSide = aPreviousNode == null ? ForgeDirection.UNKNOWN : oppositeSide;
@@ -134,7 +134,7 @@ public abstract class GenerateNodeMap {
 
     // go over the pipes until we see a valid tile entity that needs a node
     protected Pair getNextValidTileEntity(TileEntity aTileEntity, ArrayList<MetaPipeEntity> aPipes, ForgeDirection side,
-        HashSet<Node> aNodeMap) {
+            HashSet<Node> aNodeMap) {
         if (isPipe(aTileEntity)) {
             final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
             final MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
@@ -172,20 +172,20 @@ public abstract class GenerateNodeMap {
 
     // checks if the tile entity is a consumer and add to the list
     protected abstract boolean addConsumer(TileEntity aTileEntity, ForgeDirection side, int aNodeValue,
-        ArrayList<ConsumerNode> aConsumers);
+            ArrayList<ConsumerNode> aConsumers);
 
     // get correct pathClass that you need for your node network
     protected abstract NodePath getNewPath(MetaPipeEntity[] aPipes);
 
     // used for if you need to use dead ends for something can be null
     protected Node getEmptyNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity,
-        ArrayList<ConsumerNode> aConsumers) {
+            ArrayList<ConsumerNode> aConsumers) {
         return null;
     }
 
     // get correct node type you need for your network
     protected Node getPipeNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity,
-        ArrayList<ConsumerNode> aConsumers) {
+            ArrayList<ConsumerNode> aConsumers) {
         return new Node(aNodeValue, aTileEntity, aConsumers);
     }
 

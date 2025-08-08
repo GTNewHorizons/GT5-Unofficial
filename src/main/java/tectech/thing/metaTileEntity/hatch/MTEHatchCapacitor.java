@@ -43,13 +43,13 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
     public MTEHatchCapacitor(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            16,
-            new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                16,
+                new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") });
     }
 
     public MTEHatchCapacitor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -96,13 +96,13 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
@@ -155,24 +155,19 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15)
+                        .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
+                            @Override
+                            public int getSlotStackLimit() {
+                                return 1;
+                            }
 
-                    @Override
-                    public boolean isEnabled() {
-                        return !getBaseMetaTileEntity().isActive();
-                    }
-                })
-                .background(getGUITextureSet().getItemSlot())
-                .build()
-                .setPos(52, 7));
+                            @Override
+                            public boolean isEnabled() {
+                                return !getBaseMetaTileEntity().isActive();
+                            }
+                        }).background(getGUITextureSet().getItemSlot()).build().setPos(52, 7));
     }
 
     public static void run() {

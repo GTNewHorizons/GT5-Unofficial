@@ -25,8 +25,9 @@ public abstract class MixinIC2IronFurnacePollution extends TileEntity {
             return;
         }
         if ((worldObj.getTotalWorldTime() % 20) == 0) {
-            Pollution
-                .addPollution(worldObj.getChunkFromBlockCoords(xCoord, zCoord), PollutionConfig.furnacePollutionAmount);
+            Pollution.addPollution(
+                    worldObj.getChunkFromBlockCoords(xCoord, zCoord),
+                    PollutionConfig.furnacePollutionAmount);
         }
     }
 }

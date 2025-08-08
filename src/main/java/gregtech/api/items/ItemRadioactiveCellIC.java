@@ -28,7 +28,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
     public final boolean sMox;
 
     public ItemRadioactiveCellIC(String aUnlocalized, String aEnglish, int aCellcount, int maxDamage, float aEnergy,
-        int aRadiation, float aHeat, ItemStack aDepleted, boolean aMox) {
+            int aRadiation, float aHeat, ItemStack aDepleted, boolean aMox) {
         super(aUnlocalized, aEnglish, aCellcount);
         setMaxStackSize(64);
         this.maxDmg = maxDamage;
@@ -47,35 +47,33 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
             // see ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric.getOfferedEnergy
             // don't ask, just accept
             float nukePowerMult = 5.0f * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear");
-            GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(this))
-                .itemOutputs(aDepleted)
-                .setNEIDesc(
-                    StatCollector
-                        .translateToLocal(aMox ? "GT5U.nei.nuclear.model.mox" : "GT5U.nei.nuclear.model.uranium"),
-                    StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.neutron_pulse", aCellcount),
-                    aCellcount == 1 ? StatCollector
-                        .translateToLocalFormatted("GT5U.nei.nuclear.heat.0", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
-                        : StatCollector.translateToLocalFormatted(
-                            "GT5U.nei.nuclear.heat.1",
-                            (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f,
-                            aCellcount,
-                            aCellcount + 1),
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.nei.nuclear.energy",
-                        aEnergy * aCellcount * pulses * nukePowerMult,
-                        aEnergy * nukePowerMult))
-                .duration(0)
-                .eut(0)
-                .addTo(RecipeMaps.ic2NuclearFakeRecipes);
+            GTValues.RA.stdBuilder().itemInputs(new ItemStack(this)).itemOutputs(aDepleted)
+                    .setNEIDesc(
+                            StatCollector.translateToLocal(
+                                    aMox ? "GT5U.nei.nuclear.model.mox" : "GT5U.nei.nuclear.model.uranium"),
+                            StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.neutron_pulse", aCellcount),
+                            aCellcount == 1
+                                    ? StatCollector.translateToLocalFormatted(
+                                            "GT5U.nei.nuclear.heat.0",
+                                            (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
+                                    : StatCollector.translateToLocalFormatted(
+                                            "GT5U.nei.nuclear.heat.1",
+                                            (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f,
+                                            aCellcount,
+                                            aCellcount + 1),
+                            StatCollector.translateToLocalFormatted(
+                                    "GT5U.nei.nuclear.energy",
+                                    aEnergy * aCellcount * pulses * nukePowerMult,
+                                    aEnergy * nukePowerMult))
+                    .duration(0).eut(0).addTo(RecipeMaps.ic2NuclearFakeRecipes);
         }
     }
 
     private static int checkPulseable(IReactor reactor, int x, int y, ItemStack me, int mex, int mey, boolean heatrun) {
         ItemStack other = reactor.getItemAt(x, y);
         if ((other != null) && ((other.getItem() instanceof IReactorComponent))
-            && (((IReactorComponent) other.getItem())
-                .acceptUraniumPulse(reactor, other, me, x, y, mex, mey, heatrun))) {
+                && (((IReactorComponent) other.getItem())
+                        .acceptUraniumPulse(reactor, other, me, x, y, mex, mey, heatrun))) {
             return 1;
         }
         return 0;
@@ -98,9 +96,9 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                 checkPulseable(reactor, x, y + 1, yourStack, x, y, heatrun);
             } else {
                 pulses += checkPulseable(reactor, x - 1, y, yourStack, x, y, heatrun)
-                    + checkPulseable(reactor, x + 1, y, yourStack, x, y, heatrun)
-                    + checkPulseable(reactor, x, y - 1, yourStack, x, y, heatrun)
-                    + checkPulseable(reactor, x, y + 1, yourStack, x, y, heatrun);
+                        + checkPulseable(reactor, x + 1, y, yourStack, x, y, heatrun)
+                        + checkPulseable(reactor, x, y - 1, yourStack, x, y, heatrun)
+                        + checkPulseable(reactor, x, y + 1, yourStack, x, y, heatrun);
 
                 // int heat = sumUp(pulses) * 4;
 
@@ -119,11 +117,11 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                     int dheat = heat / heatAcceptors.size();
                     heat -= dheat;
                     dheat = ((IReactorComponent) heatAcceptors.get(0).stack.getItem()).alterHeat(
-                        reactor,
-                        heatAcceptors.get(0).stack,
-                        heatAcceptors.get(0).x,
-                        heatAcceptors.get(0).y,
-                        dheat);
+                            reactor,
+                            heatAcceptors.get(0).stack,
+                            heatAcceptors.get(0).x,
+                            heatAcceptors.get(0).y,
+                            dheat);
                     heat += dheat;
                     heatAcceptors.remove(0);
                 }
@@ -152,14 +150,14 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
     private void checkHeatAcceptor(IReactor reactor, int x, int y, ArrayList<ItemStackCoord> heatAcceptors) {
         ItemStack thing = reactor.getItemAt(x, y);
         if ((thing != null) && ((thing.getItem() instanceof IReactorComponent))
-            && (((IReactorComponent) thing.getItem()).canStoreHeat(reactor, thing, x, y))) {
+                && (((IReactorComponent) thing.getItem()).canStoreHeat(reactor, thing, x, y))) {
             heatAcceptors.add(new ItemStackCoord(thing, x, y));
         }
     }
 
     @Override
     public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
-        int pulseX, int pulseY, boolean heatrun) {
+            int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
             if (sMox) {
                 float breedereffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();

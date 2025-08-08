@@ -17,8 +17,7 @@ public class CheckRecipeResultAdapter implements IByteBufAdapter<CheckRecipeResu
     @Override
     public CheckRecipeResult deserialize(PacketBuffer buffer) throws IOException {
         String id = NetworkUtils.readStringSafe(buffer);
-        CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id)
-            .newInstance();
+        CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id).newInstance();
         result.decode(buffer);
         return result;
     }

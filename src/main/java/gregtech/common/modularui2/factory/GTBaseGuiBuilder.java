@@ -158,30 +158,18 @@ public final class GTBaseGuiBuilder {
 
     private IWidget createTitle() {
         String title = mte.getLocalName();
-        return new ParentWidget<>().coverChildren()
-            .topRelAnchor(0, 1)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                IKey.str(title)
-                    .asWidget()
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
+        return new ParentWidget<>().coverChildren().topRelAnchor(0, 1).widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+                .child(
+                        IKey.str(title).asWidget().widgetTheme(GTWidgetThemes.TEXT_TITLE).marginLeft(5).marginRight(5)
+                                .marginTop(5).marginBottom(1));
     }
 
     private IWidget createCoverTabs() {
-        Flow column = Flow.column()
-            .coverChildren()
-            .leftRel(0f, 2, 1f)
-            .top(1)
-            .childPadding(2);
+        Flow column = Flow.column().coverChildren().leftRel(0f, 2, 1f).top(1).childPadding(2);
         for (int i = 0; i < 6; i++) {
             column.child(getCoverTabButton(mte.getBaseMetaTileEntity(), ForgeDirection.getOrientation(i)));
         }
-        uiSettings.getNEISettings()
-            .addNEIExclusionArea(column);
+        uiSettings.getNEISettings().addNEIExclusionArea(column);
         return column;
     }
 
@@ -190,14 +178,12 @@ public final class GTBaseGuiBuilder {
     }
 
     private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side) {
-        String panelKey = "cover_panel_" + side.toString()
-            .toLowerCase();
+        String panelKey = "cover_panel_" + side.toString().toLowerCase();
         return syncManager.panel(
-            panelKey,
-            (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(panelKey, syncManager, uiSettings)
-                .child(ButtonWidget.panelCloseButton()),
-            true);
+                panelKey,
+                (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
+                        .buildPopUpUI(panelKey, syncManager, uiSettings).child(ButtonWidget.panelCloseButton()),
+                true);
     }
 
     private IWidget createGhostCircuitSlot() {
@@ -215,13 +201,12 @@ public final class GTBaseGuiBuilder {
         });
         syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
         return new GhostCircuitSlotWidget(mte, selectedSyncHandler)
-            .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
-            .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
+                .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
+                .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
 
     private IWidget createGregTechLogo() {
-        return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
-            .size(17, 17) // todo: size
-            .pos(152, 63);
+        return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO).size(17, 17) // todo: size
+                .pos(152, 63);
     }
 }

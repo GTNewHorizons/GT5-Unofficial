@@ -14,7 +14,7 @@ public class GTPacketDecodeAtProcess extends GTPacket {
     private final BiConsumer<ByteArrayDataInput, IBlockAccess> decodingProcessor;
 
     public GTPacketDecodeAtProcess(ByteArrayDataInput dataInput,
-        BiConsumer<ByteArrayDataInput, IBlockAccess> decodingProcessor) {
+            BiConsumer<ByteArrayDataInput, IBlockAccess> decodingProcessor) {
         this.dataInput = dataInput;
         this.decodingProcessor = decodingProcessor;
     }

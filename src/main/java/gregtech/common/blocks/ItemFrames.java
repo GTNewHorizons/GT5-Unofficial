@@ -26,9 +26,7 @@ public class ItemFrames extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
-        return this.block()
-            .getUnlocalizedName() + "."
-            + getDamage(aStack);
+        return this.block().getUnlocalizedName() + "." + getDamage(aStack);
     }
 
     @Override

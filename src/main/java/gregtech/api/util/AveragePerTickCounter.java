@@ -115,8 +115,7 @@ public class AveragePerTickCounter {
     }
 
     private int getWorldTimeInTicks() {
-        return MinecraftServer.getServer()
-            .getTickCounter();
+        return MinecraftServer.getServer().getTickCounter();
     }
 
     private final ArrayDeque<Measurement> values;

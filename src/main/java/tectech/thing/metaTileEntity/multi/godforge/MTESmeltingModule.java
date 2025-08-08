@@ -111,9 +111,7 @@ public class MTESmeltingModule extends MTEBaseModule {
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
                 if (!furnaceMode) {
                     addToRecipeTally(calculatedParallels);
                 }
@@ -128,12 +126,10 @@ public class MTESmeltingModule extends MTEBaseModule {
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getSafeProcessingVoltage())
-                    .setRecipeHeat(recipe.mSpecialValue)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
-                    .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
-                    .setHeatDiscountMultiplier(getHeatEnergyDiscount())
-                    .setDurationDecreasePerOC(getOverclockTimeFactor());
+                        .setRecipeHeat(recipe.mSpecialValue).setHeatOC(true).setHeatDiscount(true)
+                        .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
+                        .setHeatDiscountMultiplier(getHeatEnergyDiscount())
+                        .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
         };
     }
@@ -160,26 +156,22 @@ public class MTESmeltingModule extends MTEBaseModule {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
             furnaceMode = !furnaceMode;
             widget.notifyTooltipChange();
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                if (isFurnaceModeOn()) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE);
-                } else {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE_OFF);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
-            .dynamicTooltip(
-                () -> Collections.singletonList(
-                    translateToLocal(
-                        furnaceMode ? "fog.button.furnacemode.tooltip.02" : "fog.button.furnacemode.tooltip.01")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 91)
-            .setSize(16, 16);
+        }).setPlayClickSound(false).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
+            if (isFurnaceModeOn()) {
+                ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE);
+            } else {
+                ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE_OFF);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
+                .dynamicTooltip(
+                        () -> Collections.singletonList(
+                                translateToLocal(
+                                        furnaceMode ? "fog.button.furnacemode.tooltip.02"
+                                                : "fog.button.furnacemode.tooltip.01")))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 91).setSize(16, 16);
         return (ButtonWidget) button;
     }
 
@@ -207,70 +199,71 @@ public class MTESmeltingModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.progress",
-                GREEN + formatNumbers(mProgresstime / 20) + RESET,
-                YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.progress",
+                        GREEN + formatNumbers(mProgresstime / 20) + RESET,
+                        YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.currently_using",
-                RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0") + RESET));
+                StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.currently_using",
+                        RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.max_parallel",
-                RESET + formatNumbers(getActualParallel())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.max_parallel",
+                        RESET + formatNumbers(getActualParallel())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.parallel.current",
+                        RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
         str.add(
-            YELLOW + StatCollector
-                .translateToLocalFormatted("tt.infodata.multi.capacity.heat", RESET + formatNumbers(getHeat())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.capacity.heat",
+                        RESET + formatNumbers(getHeat())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.capacity.heat.effective",
-                RESET + formatNumbers(getHeatForOC())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.capacity.heat.effective",
+                        RESET + formatNumbers(getHeatForOC())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumbers(getSpeedBonus())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.multiplier.recipe_time",
+                        RESET + formatNumbers(getSpeedBonus())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumbers(getEnergyDiscount())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.multiplier.energy",
+                        RESET + formatNumbers(getEnergyDiscount())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumbers(getOverclockTimeFactor())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
+                        RESET + formatNumbers(getOverclockTimeFactor())));
         return str.toArray(new String[0]);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for basic smelting operations at various temperatures.")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("As the first of the Godforge modules, this module performs the most basic")
-            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
-            .addInfo("The desired method of processing can be selected in the gui.")
-            .addInfo("This module is specialized towards speed and high heat levels.")
-            .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+        tt.addMachineType("Blast Furnace, Furnace").addInfo("This is a module of the Godforge.")
+                .addInfo("Must be part of a Godforge to function.")
+                .addInfo("Used for basic smelting operations at various temperatures.")
+                .addSeparator(EnumChatFormatting.AQUA, 74)
+                .addInfo("As the first of the Godforge modules, this module performs the most basic")
+                .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
+                .addInfo("The desired method of processing can be selected in the gui.")
+                .addInfo("This module is specialized towards speed and high heat levels.")
+                .beginStructureBlock(7, 7, 13, false)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20"
+                                + EnumChatFormatting.GRAY
+                                + " Singularity Reinforced Stellar Shielding Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20"
+                                + EnumChatFormatting.GRAY
+                                + " Boundless Gravitationally Severed Structure Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
+                .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 

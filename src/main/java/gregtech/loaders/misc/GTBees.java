@@ -92,8 +92,8 @@ public class GTBees {
         noWork = new AlleleFloat("speedUnproductive", 0, false);
         superSpeed = new AlleleFloat("speedAccelerated", 4F, false);
         speedBlinding = AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding") == null
-            ? new AlleleFloat("speedBlinding", 2f, false)
-            : (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding");
+                ? new AlleleFloat("speedBlinding", 2f, false)
+                : (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding");
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
@@ -104,7 +104,7 @@ public class GTBees {
             treetwisterEffect = new GTEffectTreeTwister();
         } else {
             GTMod.GT_FML_LOGGER
-                .info("treetwisterEffect: GalaxySpace or TwilightForest was not loaded, using fallback impl");
+                    .info("treetwisterEffect: GalaxySpace or TwilightForest was not loaded, using fallback impl");
             treetwisterEffect = GTAlleleEffect.FORESTRY_BASE_EFFECT;
         }
     }
@@ -169,7 +169,7 @@ public class GTBees {
 
         @Override
         public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-            IGenome genome1, IClimateProvider climate) {
+                IGenome genome1, IClimateProvider climate) {
             if (world.provider.dimensionId == dimID) return 1;
             return 0;
         }
@@ -192,7 +192,7 @@ public class GTBees {
 
         @Override
         public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-            IGenome genome1, IClimateProvider climate) {
+                IGenome genome1, IClimateProvider climate) {
             if (climate.getBiome().biomeID == biomeID) return 1;
             return 0;
         }
@@ -214,7 +214,7 @@ public class GTBees {
 
         @Override
         public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-            IGenome genome1, IClimateProvider climate) {
+                IGenome genome1, IClimateProvider climate) {
             TileEntity tile;
             int depth = 0;
             // Checks for the first non BeeHousing block below the given location, necessary for multiblocks

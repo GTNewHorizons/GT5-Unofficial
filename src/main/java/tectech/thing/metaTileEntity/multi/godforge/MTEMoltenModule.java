@@ -73,12 +73,10 @@ public class MTEMoltenModule extends MTEBaseModule {
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getSafeProcessingVoltage())
-                    .setRecipeHeat(recipe.mSpecialValue)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
-                    .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
-                    .setHeatDiscountMultiplier(getHeatEnergyDiscount())
-                    .setDurationDecreasePerOC(getOverclockTimeFactor());
+                        .setRecipeHeat(recipe.mSpecialValue).setHeatOC(true).setHeatDiscount(true)
+                        .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
+                        .setHeatDiscountMultiplier(getHeatEnergyDiscount())
+                        .setDurationDecreasePerOC(getOverclockTimeFactor());
 
             }
 
@@ -88,9 +86,7 @@ public class MTEMoltenModule extends MTEBaseModule {
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
@@ -121,71 +117,72 @@ public class MTEMoltenModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.progress",
-                GREEN + formatNumbers(mProgresstime / 20) + RESET,
-                YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.progress",
+                        GREEN + formatNumbers(mProgresstime / 20) + RESET,
+                        YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.currently_using",
-                RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0") + RESET));
+                StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.currently_using",
+                        RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.max_parallel",
-                RESET + formatNumbers(getActualParallel())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.max_parallel",
+                        RESET + formatNumbers(getActualParallel())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.parallel.current",
+                        RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
         str.add(
-            YELLOW + StatCollector
-                .translateToLocalFormatted("tt.infodata.multi.capacity.heat", RESET + formatNumbers(getHeat())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.capacity.heat",
+                        RESET + formatNumbers(getHeat())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.capacity.heat.effective",
-                RESET + formatNumbers(getHeatForOC())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.capacity.heat.effective",
+                        RESET + formatNumbers(getHeatForOC())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumbers(getSpeedBonus())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.multiplier.recipe_time",
+                        RESET + formatNumbers(getSpeedBonus())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumbers(getEnergyDiscount())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.multiplier.energy",
+                        RESET + formatNumbers(getEnergyDiscount())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumbers(getOverclockTimeFactor())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
+                        RESET + formatNumbers(getOverclockTimeFactor())));
         return str.toArray(new String[0]);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Smelter")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for high temperature material liquefaction.")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The second module of the Godforge, this module melts materials directly into")
-            .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
-            .addInfo("as a regular solid instead.")
-            .addInfo("This module is specialized towards parallel processing.")
-            .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+        tt.addMachineType("Blast Smelter").addInfo("This is a module of the Godforge.")
+                .addInfo("Must be part of a Godforge to function.")
+                .addInfo("Used for high temperature material liquefaction.").addSeparator(EnumChatFormatting.AQUA, 74)
+                .addInfo("The second module of the Godforge, this module melts materials directly into")
+                .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
+                .addInfo("as a regular solid instead.")
+                .addInfo("This module is specialized towards parallel processing.").beginStructureBlock(7, 7, 13, false)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20"
+                                + EnumChatFormatting.GRAY
+                                + " Singularity Reinforced Stellar Shielding Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20"
+                                + EnumChatFormatting.GRAY
+                                + " Boundless Gravitationally Severed Structure Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "5"
+                                + EnumChatFormatting.GRAY
+                                + " Harmonic Phonon Transmission Conduit")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
+                .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 

@@ -17,14 +17,14 @@ public class GTGUIClientConfig extends SimpleGuiConfig {
 
     public GTGUIClientConfig(GuiScreen parentScreen) throws ConfigException {
         super(
-            parentScreen,
-            GregTech.ID,
-            "GregTech",
-            true,
-            Client.class,
-            Gregtech.class,
-            MachineStats.class,
-            PollutionConfig.class,
-            Worldgen.class);
+                parentScreen,
+                GregTech.ID,
+                "GregTech",
+                true,
+                Client.class,
+                Gregtech.class,
+                MachineStats.class,
+                PollutionConfig.class,
+                Worldgen.class);
     }
 }

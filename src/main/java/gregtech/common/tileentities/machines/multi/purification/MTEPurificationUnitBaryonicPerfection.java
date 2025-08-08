@@ -57,7 +57,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 
 public class MTEPurificationUnitBaryonicPerfection
-    extends MTEPurificationUnitBase<MTEPurificationUnitBaryonicPerfection> implements ISurvivalConstructable {
+        extends MTEPurificationUnitBase<MTEPurificationUnitBaryonicPerfection> implements ISurvivalConstructable {
 
     public static long BARYONIC_MATTER_OUTPUT = 2000L;
 
@@ -67,7 +67,7 @@ public class MTEPurificationUnitBaryonicPerfection
     private static final int STRUCTURE_Z_OFFSET = 0;
 
     static final String[][] structure = new String[][] {
-        // spotless:off
+            // spotless:off
         { "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      ", "      AAAAA      ", "      AA~AA      ", "      AAAAA      ", "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 " },
         { "                 ", "        E        ", "        E        ", "        E        ", "        E        ", "        E        ", "      AAAAA      ", "      AAAAA      ", " EEEEEAAAAAEEEEE ", "      AAAAA      ", "      AAAAA      ", "        E        ", "        E        ", "        E        ", "        E        ", "        E        ", "                 " },
         { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "      CCCCC      ", "      CDDDC      ", " E    CDBDC    E ", "      CDDDC      ", "      CCCCC      ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
@@ -91,27 +91,23 @@ public class MTEPurificationUnitBaryonicPerfection
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTechAPI.sBlockCasings10, 2);
 
     private static final IStructureDefinition<MTEPurificationUnitBaryonicPerfection> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEPurificationUnitBaryonicPerfection>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Quark Exclusion Casing
-        .addElement(
-            'A',
-            ofChain(
-                lazy(
-                    t -> GTStructureUtility.<MTEPurificationUnitBaryonicPerfection>buildHatchAdder()
-                        .atLeastList(Arrays.asList(InputBus, OutputBus, InputHatch, OutputHatch))
-                        .dot(1)
-                        .casingIndex(CASING_INDEX_MAIN)
-                        .build()),
-                onElementPass(t -> t.numCasings++, ofBlock(GregTechAPI.sBlockCasings10, 2))))
-        // Particle Beam Guidance Pipe Casing
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 14))
-        // Femtometer-Calibrated Particle Beam Casing
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 15))
-        // Non-Photonic Matter Exclusion Glass
-        .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        .addElement('E', ofFrame(Materials.Bedrockium))
-        .build();
+            .<MTEPurificationUnitBaryonicPerfection>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
+            // Quark Exclusion Casing
+            .addElement(
+                    'A',
+                    ofChain(
+                            lazy(
+                                    t -> GTStructureUtility.<MTEPurificationUnitBaryonicPerfection>buildHatchAdder()
+                                            .atLeastList(Arrays.asList(InputBus, OutputBus, InputHatch, OutputHatch))
+                                            .dot(1).casingIndex(CASING_INDEX_MAIN).build()),
+                            onElementPass(t -> t.numCasings++, ofBlock(GregTechAPI.sBlockCasings10, 2))))
+            // Particle Beam Guidance Pipe Casing
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 14))
+            // Femtometer-Calibrated Particle Beam Casing
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 15))
+            // Non-Photonic Matter Exclusion Glass
+            .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 3)).addElement('E', ofFrame(Materials.Bedrockium))
+            .build();
 
     private static class CatalystCombination {
 
@@ -119,9 +115,9 @@ public class MTEPurificationUnitBaryonicPerfection
         public ItemStack secondCatalyst;
 
         public static ItemList[] CATALYST_ITEMS = new ItemList[] { ItemList.Quark_Creation_Catalyst_Up,
-            ItemList.Quark_Creation_Catalyst_Down, ItemList.Quark_Creation_Catalyst_Bottom,
-            ItemList.Quark_Creation_Catalyst_Top, ItemList.Quark_Creation_Catalyst_Strange,
-            ItemList.Quark_Creation_Catalyst_Charm };
+                ItemList.Quark_Creation_Catalyst_Down, ItemList.Quark_Creation_Catalyst_Bottom,
+                ItemList.Quark_Creation_Catalyst_Top, ItemList.Quark_Creation_Catalyst_Strange,
+                ItemList.Quark_Creation_Catalyst_Charm };
 
         public CatalystCombination(ItemStack first, ItemStack second) {
             firstCatalyst = first;
@@ -130,7 +126,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
         public boolean matches(ItemStack a, ItemStack b) {
             return (a.isItemEqual(firstCatalyst) && b.isItemEqual(secondCatalyst))
-                || (b.isItemEqual(firstCatalyst) && a.isItemEqual(secondCatalyst));
+                    || (b.isItemEqual(firstCatalyst) && a.isItemEqual(secondCatalyst));
         }
 
         public NBTTagCompound saveToNBT() {
@@ -148,8 +144,8 @@ public class MTEPurificationUnitBaryonicPerfection
             NBTTagCompound first = nbt.getCompoundTag("first");
             NBTTagCompound second = nbt.getCompoundTag("second");
             return new CatalystCombination(
-                ItemStack.loadItemStackFromNBT(first),
-                ItemStack.loadItemStackFromNBT(second));
+                    ItemStack.loadItemStackFromNBT(first),
+                    ItemStack.loadItemStackFromNBT(second));
         }
     }
 
@@ -163,8 +159,8 @@ public class MTEPurificationUnitBaryonicPerfection
         }
 
         return new CatalystCombination(
-            CatalystCombination.CATALYST_ITEMS[firstIndex].get(1),
-            CatalystCombination.CATALYST_ITEMS[secondIndex].get(1));
+                CatalystCombination.CATALYST_ITEMS[firstIndex].get(1),
+                CatalystCombination.CATALYST_ITEMS[secondIndex].get(1));
     }
 
     private CatalystCombination currentCombination = null;
@@ -192,28 +188,14 @@ public class MTEPurificationUnitBaryonicPerfection
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
+            int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW).extFacing().glow().build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_WATER_T8).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_WATER_T8_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
     }
@@ -221,25 +203,25 @@ public class MTEPurificationUnitBaryonicPerfection
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            hintsOnly,
-            STRUCTURE_X_OFFSET,
-            STRUCTURE_Y_OFFSET,
-            STRUCTURE_Z_OFFSET);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                hintsOnly,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            STRUCTURE_X_OFFSET,
-            STRUCTURE_Y_OFFSET,
-            STRUCTURE_Z_OFFSET,
-            elementBudget,
-            env,
-            true);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                elementBudget,
+                env,
+                true);
     }
 
     @Override
@@ -264,134 +246,130 @@ public class MTEPurificationUnitBaryonicPerfection
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
-            .addSeparator()
-            .addInfo(
-                "Insert " + EnumChatFormatting.WHITE
-                    + "Quark Releasing Catalysts "
-                    + EnumChatFormatting.GRAY
-                    + "into the input bus while running.")
-            .addInfo(
-                "Every recipe cycle, a different combination of " + EnumChatFormatting.RED
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " different "
-                    + EnumChatFormatting.WHITE
-                    + "Quark Releasing Catalysts")
-            .addInfo("will correctly identify the lone quark and succeed the recipe.")
-            .addInfo(
-                "The order of catalysts in the combination does not matter, so " + EnumChatFormatting.BLUE
-                    + "Up"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Down"
-                    + EnumChatFormatting.GRAY
-                    + " can be identified by inserting "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Down"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.BLUE
-                    + "Up"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addSeparator()
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "20"
-                    + EnumChatFormatting.GRAY
-                    + " ticks, consumes ALL catalysts in the input bus.")
-            .addInfo(
-                "The base cost of inserting a catalyst is " + EnumChatFormatting.RED
-                    + CATALYST_BASE_COST
-                    + "L"
-                    + EnumChatFormatting.WHITE
-                    + " Molten Infinity"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled.")
-            .addSeparator()
-            .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
-            .addInfo(
-                "If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs "
-                    + EnumChatFormatting.RED
-                    + BARYONIC_MATTER_OUTPUT
-                    + "L "
-                    + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo(
-                "At the end of a successful recipe, outputs additional " + EnumChatFormatting.RED
-                    + PurifiedWaterRecipes.extraBaryonicOutput
-                    + "L "
-                    + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter"
-                    + EnumChatFormatting.GRAY
-                    + " per parallel.")
-            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus.")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The final stage of water purification goes beyond subatomic particles and identifies the smallest")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "possible imperfections within the baryons themselves. By correctly identifying which pairs of quark")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles.")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
-            .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center")
-            .addCasingInfoMinColored(
-                "Quark Exclusion Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASINGS,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Femtometer-Calibrated Particle Beam Casing",
-                EnumChatFormatting.GRAY,
-                96,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Particle Beam Guidance Pipe Casing",
-                EnumChatFormatting.GRAY,
-                37,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Non-Photonic Matter Exclusion Glass",
-                EnumChatFormatting.GRAY,
-                240,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Bedrockium Frame Box",
-                EnumChatFormatting.GRAY,
-                108,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
-            .addInputHatch("Any Quark Exclusion Casing", 1)
-            .addOutputBus("Any Quark Exclusion Casing", 1)
-            .addOutputHatch("Any Quark Exclusion Casing", 1)
-            .toolTipFinisher(AuthorNotAPenguin);
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.BOLD
+                                + "Water Tier: "
+                                + EnumChatFormatting.WHITE
+                                + GTUtility.formatNumbers(getWaterTier())
+                                + EnumChatFormatting.RESET)
+                .addInfo("Must be linked to a Purification Plant using a data stick to work.").addSeparator()
+                .addInfo(
+                        "Insert " + EnumChatFormatting.WHITE
+                                + "Quark Releasing Catalysts "
+                                + EnumChatFormatting.GRAY
+                                + "into the input bus while running.")
+                .addInfo(
+                        "Every recipe cycle, a different combination of " + EnumChatFormatting.RED
+                                + "2"
+                                + EnumChatFormatting.GRAY
+                                + " different "
+                                + EnumChatFormatting.WHITE
+                                + "Quark Releasing Catalysts")
+                .addInfo("will correctly identify the lone quark and succeed the recipe.")
+                .addInfo(
+                        "The order of catalysts in the combination does not matter, so " + EnumChatFormatting.BLUE
+                                + "Up"
+                                + EnumChatFormatting.GRAY
+                                + "/"
+                                + EnumChatFormatting.LIGHT_PURPLE
+                                + "Down"
+                                + EnumChatFormatting.GRAY
+                                + " can be identified by inserting "
+                                + EnumChatFormatting.LIGHT_PURPLE
+                                + "Down"
+                                + EnumChatFormatting.GRAY
+                                + "/"
+                                + EnumChatFormatting.BLUE
+                                + "Up"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addSeparator()
+                .addInfo(
+                        "Every " + EnumChatFormatting.RED
+                                + "20"
+                                + EnumChatFormatting.GRAY
+                                + " ticks, consumes ALL catalysts in the input bus.")
+                .addInfo(
+                        "The base cost of inserting a catalyst is " + EnumChatFormatting.RED
+                                + CATALYST_BASE_COST
+                                + "L"
+                                + EnumChatFormatting.WHITE
+                                + " Molten Infinity"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addInfo(
+                        "For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled.")
+                .addSeparator().addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
+                .addInfo(
+                        "If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs "
+                                + EnumChatFormatting.RED
+                                + BARYONIC_MATTER_OUTPUT
+                                + "L "
+                                + EnumChatFormatting.WHITE
+                                + "Stabilised Baryonic Matter"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addInfo(
+                        "At the end of a successful recipe, outputs additional " + EnumChatFormatting.RED
+                                + PurifiedWaterRecipes.extraBaryonicOutput
+                                + "L "
+                                + EnumChatFormatting.WHITE
+                                + "Stabilised Baryonic Matter"
+                                + EnumChatFormatting.GRAY
+                                + " per parallel.")
+                .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus.")
+                .addSeparator()
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "The final stage of water purification goes beyond subatomic particles and identifies the smallest")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "possible imperfections within the baryons themselves. By correctly identifying which pairs of quark")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles.")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
+                .beginStructureBlock(17, 17, 17, false).addController("Front center")
+                .addCasingInfoMinColored(
+                        "Quark Exclusion Casing",
+                        EnumChatFormatting.GRAY,
+                        MIN_CASINGS,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Femtometer-Calibrated Particle Beam Casing",
+                        EnumChatFormatting.GRAY,
+                        96,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Particle Beam Guidance Pipe Casing",
+                        EnumChatFormatting.GRAY,
+                        37,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Non-Photonic Matter Exclusion Glass",
+                        EnumChatFormatting.GRAY,
+                        240,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Bedrockium Frame Box",
+                        EnumChatFormatting.GRAY,
+                        108,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
+                .addInputHatch("Any Quark Exclusion Casing", 1).addOutputBus("Any Quark Exclusion Casing", 1)
+                .addOutputHatch("Any Quark Exclusion Casing", 1).toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -412,7 +390,7 @@ public class MTEPurificationUnitBaryonicPerfection
         if (stack.getItem() instanceof MetaGeneratedItem03) {
             int meta = stack.getItemDamage() - 32000; // why, greg.
             return meta >= IDMetaItem03.Quark_Creation_Catalyst_Up.ID
-                && meta <= IDMetaItem03.Quark_Creation_Catalyst_Top.ID;
+                    && meta <= IDMetaItem03.Quark_Creation_Catalyst_Top.ID;
         }
         return false;
     }
@@ -536,11 +514,7 @@ public class MTEPurificationUnitBaryonicPerfection
         if (aNBT.hasKey("insertedItems")) {
             NBTTagCompound insertedList = aNBT.getCompoundTag("insertedItems");
             // Initialize empty list with correct size
-            this.insertedCatalysts = new ArrayList<>(
-                Collections.nCopies(
-                    insertedList.func_150296_c()
-                        .size(),
-                    null));
+            this.insertedCatalysts = new ArrayList<>(Collections.nCopies(insertedList.func_150296_c().size(), null));
             for (String key : insertedList.func_150296_c()) {
                 NBTTagCompound itemCompound = insertedList.getCompoundTag(key);
                 int index = Integer.parseInt(key);
@@ -579,18 +553,19 @@ public class MTEPurificationUnitBaryonicPerfection
             String name = stack.getDisplayName();
             String[] split = name.split("-");
             info.add(
-                EnumChatFormatting.YELLOW + ""
-                    + (i + 1)
-                    + ": "
-                    + getQuarkColor(stack)
-                    + split[0]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + split[1]);
+                    EnumChatFormatting.YELLOW + ""
+                            + (i + 1)
+                            + ": "
+                            + getQuarkColor(stack)
+                            + split[0]
+                            + EnumChatFormatting.GRAY
+                            + "-"
+                            + split[1]);
         }
         info.add(
-            StatCollector
-                .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.pubp.quark_combination",
+                        getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
     }
 

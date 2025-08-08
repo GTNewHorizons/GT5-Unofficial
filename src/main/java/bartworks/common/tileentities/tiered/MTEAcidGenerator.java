@@ -61,95 +61,93 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")),
-            TextureFactory.builder()
-                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
-                .glow()
-                .build() };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")),
+                TextureFactory.builder()
+                        .addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
+                        .glow().build() };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            TextureFactory
-                .of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
-            TextureFactory.builder()
-                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
-                .glow()
-                .build() };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
+                TextureFactory
+                        .of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.builder().addIcon(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
+                        .glow().build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
     }
 
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.acidgen.0.name"),
-            StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GTValues.V[this.mTier],
-            StatCollector.translateToLocal("tooltip.rotor.2.name") + " "
-                + EnumChatFormatting.YELLOW
-                + this.getEfficiency(),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
-                + EnumChatFormatting.YELLOW
-                + this.maxAmperesOut(),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+                StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"),
+                StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
+                        + EnumChatFormatting.YELLOW
+                        + GTValues.V[this.mTier],
+                StatCollector.translateToLocal("tooltip.rotor.2.name") + " "
+                        + EnumChatFormatting.YELLOW
+                        + this.getEfficiency(),
+                StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
+                        + EnumChatFormatting.YELLOW
+                        + this.maxAmperesOut(),
+                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
     }
 }

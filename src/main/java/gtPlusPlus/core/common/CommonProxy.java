@@ -91,8 +91,7 @@ public class CommonProxy implements IFuelHandler {
     public void init(final FMLInitializationEvent e) {
         CI.init();
 
-        if (e.getSide()
-            .isClient() && Mods.AdvancedSolarPanel.isModLoaded()) {
+        if (e.getSide().isClient() && Mods.AdvancedSolarPanel.isModLoaded()) {
             MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
         }
         // Handles Sleep Benefits
@@ -162,10 +161,10 @@ public class CommonProxy implements IFuelHandler {
             ItemStack aBlizz = Materials.Blizz.getDust(1);
             ItemStack aCryo = Materials.Cryotheum.getDust(1);
             EntityUtils.registerDropsForMob(
-                EntityEvolvedColdBlaze.class,
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),
-                1,
-                2500);
+                    EntityEvolvedColdBlaze.class,
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),
+                    1,
+                    2500);
             if (aBlizz != null) {
                 EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aBlizz, 1, 5000);
             }
@@ -190,9 +189,7 @@ public class CommonProxy implements IFuelHandler {
     public int getBurnTime(ItemStack aStack) {
         for (Pair<Integer, ItemStack> temp : GTPPCore.burnables) {
             int aStackID = Item.getIdFromItem(aStack.getItem());
-            int burnID = Item.getIdFromItem(
-                temp.getValue()
-                    .getItem());
+            int burnID = Item.getIdFromItem(temp.getValue().getItem());
             if (aStackID == burnID) {
                 int burn = temp.getKey();
                 ItemStack fuel = temp.getValue();
@@ -218,15 +215,13 @@ public class CommonProxy implements IFuelHandler {
         }
         final ItemStack bauble1 = baubles.getStackInSlot(1);
         if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
-            && gtBauble.getDamageNegations()
-                .contains(event.source.damageType)) {
+                && gtBauble.getDamageNegations().contains(event.source.damageType)) {
             event.setCanceled(true);
             return;
         }
         final ItemStack bauble2 = baubles.getStackInSlot(2);
         if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
-            && gtBauble.getDamageNegations()
-                .contains(event.source.damageType)) {
+                && gtBauble.getDamageNegations().contains(event.source.damageType)) {
             event.setCanceled(true);
         }
     }

@@ -36,10 +36,10 @@ public class ResultInsufficientHeat implements CheckRecipeResult {
     @Nonnull
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.insufficient_heat",
-                GTUtility.formatNumbers(required),
-                HeatingCoilLevel.getDisplayNameFromHeat(required, true)));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.insufficient_heat",
+                        GTUtility.formatNumbers(required),
+                        HeatingCoilLevel.getDisplayNameFromHeat(required, true)));
     }
 
     @Override

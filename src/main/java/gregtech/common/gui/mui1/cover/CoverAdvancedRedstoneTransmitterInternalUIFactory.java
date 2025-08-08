@@ -8,7 +8,7 @@ import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterInternal;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 
 public class CoverAdvancedRedstoneTransmitterInternalUIFactory
-    extends AdvancedRedstoneTransmitterBaseUIFactory<CoverAdvancedRedstoneTransmitterInternal> {
+        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverAdvancedRedstoneTransmitterInternal> {
 
     public CoverAdvancedRedstoneTransmitterInternalUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);

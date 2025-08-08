@@ -30,46 +30,37 @@ public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
-            RedstoneCondition.class,
-            cover::getRedstoneCondition,
-            cover::setRedstoneCondition);
+                RedstoneCondition.class,
+                cover::getRedstoneCondition,
+                cover::setRedstoneCondition);
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
 
         column.child(
-            new Grid().marginLeft(WIDGET_MARGIN)
-                .coverChildren()
-                .minElementMarginRight(WIDGET_MARGIN)
-                .minElementMarginBottom(2)
-                .minElementMarginTop(0)
-                .minElementMarginLeft(0)
-                .alignment(Alignment.CenterLeft)
-                .row(
-                    new SelectButton()
-                        .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
-                        .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                        .size(16),
-                    IKey.str(GTUtility.trans("243", "Enable with Redstone"))
-                        .asWidget())
-                .row(
-                    new SelectButton()
-                        .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE_WITH_REDSTONE))
-                        .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                        .size(16),
-                    IKey.str(GTUtility.trans("244", "Disable with Redstone"))
-                        .asWidget())
-                .row(
-                    new SelectButton().value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
-                        .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                        .size(16),
-                    IKey.str(GTUtility.trans("245", "Disable machine"))
-                        .asWidget())
-                .row(
-                    new ToggleButton().value(safeModeSyncValue)
-                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                        .size(16),
-                    IKey.str(GTUtility.trans("507", "Safe Mode"))
-                        .asWidget()));
+                new Grid().marginLeft(WIDGET_MARGIN).coverChildren().minElementMarginRight(WIDGET_MARGIN)
+                        .minElementMarginBottom(2).minElementMarginTop(0).minElementMarginLeft(0)
+                        .alignment(Alignment.CenterLeft)
+                        .row(
+                                new SelectButton().value(
+                                        LinkedBoolValue
+                                                .of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
+                                        .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON).size(16),
+                                IKey.str(GTUtility.trans("243", "Enable with Redstone")).asWidget())
+                        .row(
+                                new SelectButton().value(
+                                        LinkedBoolValue
+                                                .of(conditionModeSyncValue, RedstoneCondition.DISABLE_WITH_REDSTONE))
+                                        .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF).size(16),
+                                IKey.str(GTUtility.trans("244", "Disable with Redstone")).asWidget())
+                        .row(
+                                new SelectButton()
+                                        .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
+                                        .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS).size(16),
+                                IKey.str(GTUtility.trans("245", "Disable machine")).asWidget())
+                        .row(
+                                new ToggleButton().value(safeModeSyncValue)
+                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS).size(16),
+                                IKey.str(GTUtility.trans("507", "Safe Mode")).asWidget()));
     }
 }

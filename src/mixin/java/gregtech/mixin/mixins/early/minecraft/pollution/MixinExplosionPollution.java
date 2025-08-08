@@ -32,8 +32,8 @@ public class MixinExplosionPollution {
     public void gt5u$addExplosionPollution(CallbackInfo ci) {
         if (!this.worldObj.isRemote) {
             Pollution.addPollution(
-                this.worldObj.getChunkFromBlockCoords((int) this.explosionX, (int) this.explosionZ),
-                (int) Math.ceil(explosionSize * PollutionConfig.explosionPollutionAmount));
+                    this.worldObj.getChunkFromBlockCoords((int) this.explosionX, (int) this.explosionZ),
+                    (int) Math.ceil(explosionSize * PollutionConfig.explosionPollutionAmount));
         }
     }
 }

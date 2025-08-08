@@ -22,37 +22,36 @@ public class PlayerDetectorUIFactory extends CoverLegacyDataUIFactory {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder
-            .widget(
+        builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::getCover,
-                    (index, coverData) -> index == coverData.getVariable(),
-                    (index, coverData) -> coverData.setVariable(index),
-                    getUIBuildContext())
-                        .addToggleButton(
-                            0,
-                            CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(GTUtility.trans("068.1", "Emit if any Player is close"))
-                                .setPos(spaceX * 0, spaceY * 0))
-                        .addToggleButton(
-                            1,
-                            CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(GTUtility.trans("069.1", "Emit if other Player is close"))
-                                .setPos(spaceX * 0, spaceY * 1))
-                        .addToggleButton(
-                            2,
-                            CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(GTUtility.trans("070", "Emit if you are close"))
-                                .setPos(spaceX * 0, spaceY * 2))
-                        .setPos(startX, startY))
-            .widget(
-                new TextWidget(GTUtility.trans("319", "Any player")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
-            .widget(
-                new TextWidget(GTUtility.trans("320", "Other players")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-            .widget(
-                new TextWidget(GTUtility.trans("321", "Only owner")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2));
+                        this::getCover,
+                        (index, coverData) -> index == coverData.getVariable(),
+                        (index, coverData) -> coverData.setVariable(index),
+                        getUIBuildContext()).addToggleButton(
+                                0,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(GTUtility.trans("068.1", "Emit if any Player is close"))
+                                        .setPos(spaceX * 0, spaceY * 0))
+                                .addToggleButton(
+                                        1,
+                                        CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                        widget -> widget
+                                                .addTooltip(GTUtility.trans("069.1", "Emit if other Player is close"))
+                                                .setPos(spaceX * 0, spaceY * 1))
+                                .addToggleButton(
+                                        2,
+                                        CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                        widget -> widget.addTooltip(GTUtility.trans("070", "Emit if you are close"))
+                                                .setPos(spaceX * 0, spaceY * 2))
+                                .setPos(startX, startY))
+                .widget(
+                        new TextWidget(GTUtility.trans("319", "Any player")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+                .widget(
+                        new TextWidget(GTUtility.trans("320", "Other players")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
+                .widget(
+                        new TextWidget(GTUtility.trans("321", "Only owner")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2));
     }
 }

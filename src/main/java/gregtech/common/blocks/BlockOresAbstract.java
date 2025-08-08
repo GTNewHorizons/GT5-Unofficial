@@ -49,7 +49,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
     public static Set<Materials> aBlockedOres = new HashSet<>();
 
     protected BlockOresAbstract(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta,
-        Material aMaterial) {
+            Material aMaterial) {
         super(ItemOres.class, aUnlocalizedName, aMaterial);
         this.isBlockContainer = true;
         setStepSound(soundTypeStone);
@@ -62,33 +62,34 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
                 for (int j = 0; j < aOreMetaCount; j++) {
                     if (!this.getEnabledMetas()[j]) continue;
                     GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_NAME,
-                        GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
-                            : getLocalizedName(GregTechAPI.sGeneratedMaterials[i]));
+                            getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_NAME,
+                            GTLanguageManager.i18nPlaceholder
+                                    ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
+                                    : getLocalizedName(GregTechAPI.sGeneratedMaterials[i]));
                     GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_TOOLTIP,
-                        GregTechAPI.sGeneratedMaterials[i].getToolTip());
+                            getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_TOOLTIP,
+                            GregTechAPI.sGeneratedMaterials[i].getToolTip());
                     GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_NAME,
-                        "Small " + (GTLanguageManager.i18nPlaceholder
-                            ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
-                            : getLocalizedName(GregTechAPI.sGeneratedMaterials[i])));
+                            getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_NAME,
+                            "Small " + (GTLanguageManager.i18nPlaceholder
+                                    ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
+                                    : getLocalizedName(GregTechAPI.sGeneratedMaterials[i])));
                     GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_TOOLTIP,
-                        GregTechAPI.sGeneratedMaterials[i].getToolTip());
+                            getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_TOOLTIP,
+                            GregTechAPI.sGeneratedMaterials[i].getToolTip());
                     if ((GregTechAPI.sGeneratedMaterials[i].mTypes & 0x8) != 0
-                        && !aBlockedOres.contains(GregTechAPI.sGeneratedMaterials[i])) {
+                            && !aBlockedOres.contains(GregTechAPI.sGeneratedMaterials[i])) {
                         if (this.getProcessingPrefix()[j] != null && this.getProcessingPrefix()[j].mIsUnificatable) {
                             GTOreDictUnificator.set(
-                                this.getProcessingPrefix()[j],
-                                GregTechAPI.sGeneratedMaterials[i],
-                                new ItemStack(this, 1, i + (j * 1000)));
+                                    this.getProcessingPrefix()[j],
+                                    GregTechAPI.sGeneratedMaterials[i],
+                                    new ItemStack(this, 1, i + (j * 1000)));
                         } else {
-                            GTOreDictUnificator.registerOre(
-                                this.getProcessingPrefix()[j] != null
-                                    ? this.getProcessingPrefix()[j].get(GregTechAPI.sGeneratedMaterials[i])
-                                    : "",
-                                new ItemStack(this, 1, i + (j * 1000)));
+                            GTOreDictUnificator
+                                    .registerOre(
+                                            this.getProcessingPrefix()[j] != null ? this.getProcessingPrefix()[j]
+                                                    .get(GregTechAPI.sGeneratedMaterials[i]) : "",
+                                            new ItemStack(this, 1, i + (j * 1000)));
                         }
                         if (tHideOres) {
                             if (!(j == 0 && !aHideFirstMeta)) {
@@ -144,7 +145,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
 
     @Override
     public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide,
-        float aOffsetX, float aOffsetY, float aOffsetZ) {
+            float aOffsetX, float aOffsetY, float aOffsetZ) {
         if (!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) {
             return false;
         }
@@ -161,7 +162,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
 
     @Override
     public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_,
-        int p_149696_5_, int p_149696_6_) {
+            int p_149696_5_, int p_149696_6_) {
         super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
         TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
         return tileentity != null && tileentity.receiveClientEvent(p_149696_5_, p_149696_6_);
@@ -189,7 +190,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
 
     @Override
     public float getExplosionResistance(Entity entity, World aWorld, int aX, int aY, int aZ, double explosionX,
-        double explosionY, double explosionZ) {
+            double explosionY, double explosionZ) {
         return 1.0F + getHarvestLevel(aWorld.getBlockMetadata(aX, aY, aZ)) * 1.0F;
     }
 
@@ -268,8 +269,14 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
-        GTRendererBlock
-            .addHitEffects(effectRenderer, this, worldObj, target.blockX, target.blockY, target.blockZ, target.sideHit);
+        GTRendererBlock.addHitEffects(
+                effectRenderer,
+                this,
+                worldObj,
+                target.blockX,
+                target.blockY,
+                target.blockZ,
+                target.sideHit);
         return true;
     }
 
@@ -315,8 +322,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
             return ((TileEntityOres) tTileEntity).getDrops(getDroppedBlock(), aFortune);
         }
         return mTemporaryTileEntity.get() == null ? new ArrayList<>()
-            : mTemporaryTileEntity.get()
-                .getDrops(getDroppedBlock(), aFortune);
+                : mTemporaryTileEntity.get().getDrops(getDroppedBlock(), aFortune);
     }
 
     @Override
@@ -333,8 +339,8 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
             Materials tMaterial = GregTechAPI.sGeneratedMaterials[i];
             if ((tMaterial != null) && ((tMaterial.mTypes & 0x8) != 0) && !aBlockedOres.contains(tMaterial)) {
                 for (int meta = i; meta < 23000 + i; meta += 1000) {
-                    if (!(new ItemStack(aItem, 1, meta).getDisplayName()
-                        .contains(DOT_NAME))) aList.add(new ItemStack(aItem, 1, meta));
+                    if (!(new ItemStack(aItem, 1, meta).getDisplayName().contains(DOT_NAME)))
+                        aList.add(new ItemStack(aItem, 1, meta));
                 }
             }
         }

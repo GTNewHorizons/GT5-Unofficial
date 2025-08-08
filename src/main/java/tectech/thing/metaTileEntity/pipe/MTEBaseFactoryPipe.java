@@ -49,22 +49,18 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int aConnections, int colorIndex,
-        boolean aConnected, boolean aRedstone) {
+            boolean aConnected, boolean aRedstone) {
 
         List<ITexture> textures = new ArrayList<>(2);
 
         textures.add(
-            TextureFactory.builder()
-                .addIcon(EM_PIPE)
-                .setRGBA(Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA()))
-                .build());
+                TextureFactory.builder().addIcon(EM_PIPE)
+                        .setRGBA(Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())).build());
 
         if (getActive()) {
             textures.add(
-                TextureFactory.builder()
-                    .addIcon(EM_BAR)
-                    .setRGBA(Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA()))
-                    .build());
+                    TextureFactory.builder().addIcon(EM_BAR)
+                            .setRGBA(Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())).build());
         }
 
         return textures.toArray(new ITexture[0]);
@@ -72,13 +68,13 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
@@ -158,13 +154,16 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
                 if (isActive != prevActivity || aTick % (60 * SECONDS) == 0) {
                     prevActivity = isActive;
 
-                    PipeActivity
-                        .enqueueUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord(), isActive);
+                    PipeActivity.enqueueUpdate(
+                            base.getWorld(),
+                            base.getXCoord(),
+                            base.getYCoord(),
+                            base.getZCoord(),
+                            isActive);
                 }
             }
         } else {
-            if (GTMod.clientProxy()
-                .changeDetected() == 4) {
+            if (GTMod.clientProxy().changeDetected() == 4) {
                 base.issueTextureUpdate();
             }
         }
@@ -187,7 +186,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     @Override
     public String[] getInfoData() {
         return new String[] {
-            getActive() ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("tt.infodata.pipe.active")
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("tt.infodata.pipe.inactive") };
+                getActive() ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("tt.infodata.pipe.active")
+                        : EnumChatFormatting.RED + StatCollector.translateToLocal("tt.infodata.pipe.inactive") };
     }
 }

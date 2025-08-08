@@ -22,8 +22,8 @@ import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
- * Data object to store properties, used to draw both basic machine GUI and NEI recipe GUI, mainly GUI widgets.
- * Not all the info used to draw NEI are listed here, see also {@link NEIRecipeProperties}.
+ * Data object to store properties, used to draw both basic machine GUI and NEI recipe GUI, mainly GUI widgets. Not all
+ * the info used to draw NEI are listed here, see also {@link NEIRecipeProperties}.
  * <p>
  * Use {@link #builder()} for creation.
  */
@@ -43,52 +43,38 @@ public final class BasicUIProperties {
      * Creates new builder from this instance.
      */
     public BasicUIPropertiesBuilder toBuilder() {
-        return new BasicUIPropertiesBuilder().maxItemInputs(maxItemInputs)
-            .maxItemOutputs(maxItemOutputs)
-            .maxFluidInputs(maxFluidInputs)
-            .maxFluidOutputs(maxFluidOutputs)
-            .slotOverlays(slotOverlays)
-            .slotOverlaysSteam(slotOverlaysSteam)
-            .progressBarTexture(progressBarTexture)
-            .progressBarTextureSteam(progressBarTextureSteam)
-            .progressBarDirection(progressBarDirection)
-            .progressBarSize(progressBarSize)
-            .progressBarPos(progressBarPos)
-            .useProgressBar(useProgressBar)
-            .useSpecialSlot(useSpecialSlot)
-            .neiTransferRect(neiTransferRect)
-            .neiTransferRectId(neiTransferRectId)
-            .specialTextures(specialTextures)
-            .specialTexturesSteam(specialTexturesSteam)
-            .logo(logo)
-            .logoSize(logoSize)
-            .logoPos(logoPos)
-            .itemInputPositionsGetter(itemInputPositionsGetter)
-            .itemOutputPositionsGetter(itemOutputPositionsGetter)
-            .specialItemPositionGetter(specialItemPositionGetter)
-            .fluidInputPositionsGetter(fluidInputPositionsGetter)
-            .fluidOutputPositionsGetter(fluidOutputPositionsGetter)
-            .amperage(amperage);
+        return new BasicUIPropertiesBuilder().maxItemInputs(maxItemInputs).maxItemOutputs(maxItemOutputs)
+                .maxFluidInputs(maxFluidInputs).maxFluidOutputs(maxFluidOutputs).slotOverlays(slotOverlays)
+                .slotOverlaysSteam(slotOverlaysSteam).progressBarTexture(progressBarTexture)
+                .progressBarTextureSteam(progressBarTextureSteam).progressBarDirection(progressBarDirection)
+                .progressBarSize(progressBarSize).progressBarPos(progressBarPos).useProgressBar(useProgressBar)
+                .useSpecialSlot(useSpecialSlot).neiTransferRect(neiTransferRect).neiTransferRectId(neiTransferRectId)
+                .specialTextures(specialTextures).specialTexturesSteam(specialTexturesSteam).logo(logo)
+                .logoSize(logoSize).logoPos(logoPos).itemInputPositionsGetter(itemInputPositionsGetter)
+                .itemOutputPositionsGetter(itemOutputPositionsGetter)
+                .specialItemPositionGetter(specialItemPositionGetter)
+                .fluidInputPositionsGetter(fluidInputPositionsGetter)
+                .fluidOutputPositionsGetter(fluidOutputPositionsGetter).amperage(amperage);
     }
 
     /**
-     * How many item inputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many item inputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * in the recipe.
      */
     public final int maxItemInputs;
     /**
-     * How many item outputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many item outputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * in the recipe.
      */
     public final int maxItemOutputs;
     /**
-     * How many fluid inputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many fluid inputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * in the recipe.
      */
     public final int maxFluidInputs;
     /**
-     * How many fluid outputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many fluid outputs does this recipemap usually has at most. It does not actually restrict number of items
+     * used in the recipe.
      */
     public final int maxFluidOutputs;
 
@@ -171,24 +157,26 @@ public final class BasicUIProperties {
     public final IntFunction<List<Pos2d>> fluidOutputPositionsGetter;
 
     /**
-     * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it,
-     * some machine logic also use this variable.
+     * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it, some
+     * machine logic also use this variable.
      */
     public final int amperage;
 
     BasicUIProperties(int maxItemInputs, int maxItemOutputs, int maxFluidInputs, int maxFluidOutputs,
-        SlotOverlayGetter<IDrawable> slotOverlays, SlotOverlayGetter<SteamTexture> slotOverlaysSteam,
-        @Nullable FallbackableUITexture progressBarTexture, @Nullable FallbackableSteamTexture progressBarTextureSteam,
-        ProgressBar.Direction progressBarDirection, Size progressBarSize, Pos2d progressBarPos, boolean useProgressBar,
-        boolean useSpecialSlot, List<Rectangle> neiTransferRect, @Nullable String neiTransferRectId,
-        List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures,
-        List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize, Pos2d logoPos,
-        IntFunction<List<Pos2d>> itemInputPositionsGetter, IntFunction<List<Pos2d>> itemOutputPositionsGetter,
-        Supplier<Pos2d> specialItemPositionGetter, IntFunction<List<Pos2d>> fluidInputPositionsGetter,
-        IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage) {
+            SlotOverlayGetter<IDrawable> slotOverlays, SlotOverlayGetter<SteamTexture> slotOverlaysSteam,
+            @Nullable FallbackableUITexture progressBarTexture,
+            @Nullable FallbackableSteamTexture progressBarTextureSteam, ProgressBar.Direction progressBarDirection,
+            Size progressBarSize, Pos2d progressBarPos, boolean useProgressBar, boolean useSpecialSlot,
+            List<Rectangle> neiTransferRect, @Nullable String neiTransferRectId,
+            List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures,
+            List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize,
+            Pos2d logoPos, IntFunction<List<Pos2d>> itemInputPositionsGetter,
+            IntFunction<List<Pos2d>> itemOutputPositionsGetter, Supplier<Pos2d> specialItemPositionGetter,
+            IntFunction<List<Pos2d>> fluidInputPositionsGetter, IntFunction<List<Pos2d>> fluidOutputPositionsGetter,
+            int amperage) {
         if (maxItemInputs < 0 || maxItemOutputs < 0 || maxFluidInputs < 0 || maxFluidOutputs < 0) {
             throw new IllegalArgumentException(
-                "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
+                    "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
         }
         if (amperage < 1) {
             throw new IllegalArgumentException("Amperage cannot be lower than 1");

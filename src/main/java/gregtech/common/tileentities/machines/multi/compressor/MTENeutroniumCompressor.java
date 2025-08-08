@@ -48,14 +48,13 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTENeutroniumCompressor>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTENeutroniumCompressor> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTENeutroniumCompressor>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            // spotless:off
+            .<MTENeutroniumCompressor>builder().addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    // spotless:off
             transpose(new String[][]{
                 {"  CEEEEEC  "," CE     EC ","CE       EC","E         E","E         E","E         E","E         E","E         E","CE       EC"," CE     EC ","  CEEEEEC  "},
                 {" CE     EC ","C  BBBBB  C","E BBBBBBB E"," BBCCCCCBB "," BBCBBBCBB "," BBCCCCCBB "," BBCBBBCBB "," BBCCCCCBB ","E BBBBBBB E","C  BBBBB  C"," CE     EC "},
@@ -70,18 +69,18 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                 {"  CEEEEEC  "," CE     EC ","CE       EC","E         E","E         E","E         E","E         E","E         E","CE       EC"," CE     EC ","  CEEEEEC  "}
             }))
             //spotless:on
-        .addElement('A', chainAllGlasses())
-        .addElement(
-            'B',
-            buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(6))
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(MTENeutroniumCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 6))))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 8))
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 7))
-        .addElement('E', ofFrame(Materials.NaquadahAlloy))
-        .build();
+            .addElement('A', chainAllGlasses())
+            .addElement(
+                    'B',
+                    buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
+                            .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(6)).dot(1)
+                            .buildAndChain(
+                                    onElementPass(
+                                            MTENeutroniumCompressor::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings10, 6))))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 8))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 7)).addElement('E', ofFrame(Materials.NaquadahAlloy))
+            .build();
 
     public MTENeutroniumCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -103,39 +102,26 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
+                        TextureFactory.builder().addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW).extFacing().glow()
+                                .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_NEUTRONIUM)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
+                        TextureFactory.builder().addIcon(OVERLAY_MULTI_NEUTRONIUM).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_MULTI_NEUTRONIUM_GLOW).extFacing().glow().build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)) };
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)) };
         }
         return rTexture;
     }
@@ -143,23 +129,18 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutronium Compressor")
-            .addInfo("Has a static 8 parallels")
-            .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
-            .addInfo("More advanced singularities will require even stronger compression...")
-            .beginStructureBlock(11, 11, 11, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Neutronium Casing", 220, false)
-            .addCasingInfoExactly("Active Neutronium Casing", 63, false)
-            .addCasingInfoExactly("Any Tiered Glass", 25, false)
-            .addCasingInfoExactly("Naquadah Alloy Frame Box", 108, false)
-            .addCasingInfoExactly("Neutronium Stabilization Casing", 67, false)
-            .addInputBus("Any Neutronium Casing", 1)
-            .addOutputBus("Any Neutronium Casing", 1)
-            .addEnergyHatch("Any Neutronium Casing", 1)
-            .addMaintenanceHatch("Any Neutronium Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(Ollie);
+        tt.addMachineType("Neutronium Compressor").addInfo("Has a static 8 parallels")
+                .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
+                .addInfo("More advanced singularities will require even stronger compression...")
+                .beginStructureBlock(11, 11, 11, true).addController("Front Center")
+                .addCasingInfoMin("Neutronium Casing", 220, false)
+                .addCasingInfoExactly("Active Neutronium Casing", 63, false)
+                .addCasingInfoExactly("Any Tiered Glass", 25, false)
+                .addCasingInfoExactly("Naquadah Alloy Frame Box", 108, false)
+                .addCasingInfoExactly("Neutronium Stabilization Casing", 67, false)
+                .addInputBus("Any Neutronium Casing", 1).addOutputBus("Any Neutronium Casing", 1)
+                .addEnergyHatch("Any Neutronium Casing", 1).addMaintenanceHatch("Any Neutronium Casing", 1)
+                .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher(Ollie);
         return tt;
     }
 
@@ -200,8 +181,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                 }
                 return super.validateRecipe(recipe);
             }
-        }.noRecipeCaching()
-            .setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

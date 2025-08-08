@@ -27,10 +27,7 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        setLockedFluidName(
-            MaterialsUEVplus.Antimatter.getFluid(1)
-                .getFluid()
-                .getName());
+        setLockedFluidName(MaterialsUEVplus.Antimatter.getFluid(1).getFluid().getName());
     }
 
     @Override
@@ -55,17 +52,15 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (!getBaseMetaTileEntity().getCoverAtSide(side)
-            .isGUIClickable()) return;
+            ItemStack aTool) {
+        if (!getBaseMetaTileEntity().getCoverAtSide(side).isGUIClickable()) return;
         mMode ^= 1;
         GTUtility.sendChatToPlayer(aPlayer, "Front face input " + (mMode == 1 ? "enabled" : "disabled"));
     }
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
-        return mMode == 1 || side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return mMode == 1 || side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override

@@ -49,17 +49,17 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.RodUranium4.get(1), Materials.Uranium, 12);
 
             giveItemStackRadioHatchAbilites(
-                ItemList.RodTiberium.get(1),
-                WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                3);
+                    ItemList.RodTiberium.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    3);
             giveItemStackRadioHatchAbilites(
-                ItemList.RodTiberium2.get(1),
-                WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                6);
+                    ItemList.RodTiberium2.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    6);
             giveItemStackRadioHatchAbilites(
-                ItemList.RodTiberium4.get(1),
-                WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                12);
+                    ItemList.RodTiberium4.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    12);
 
             giveItemStackRadioHatchAbilites(ItemList.RodNaquadah32.get(1), Materials.Naquadah, 96);
 
@@ -80,20 +80,20 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.DepletedRodUranium4.get(1), Materials.Uranium, 12, 10);
 
             giveItemStackRadioHatchAbilites(
-                ItemList.DepletedRodTiberium.get(1),
-                WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                3,
-                10);
+                    ItemList.DepletedRodTiberium.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    3,
+                    10);
             giveItemStackRadioHatchAbilites(
-                ItemList.DepletedRodTiberium2.get(1),
-                WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                6,
-                10);
+                    ItemList.DepletedRodTiberium2.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    6,
+                    10);
             giveItemStackRadioHatchAbilites(
-                ItemList.DepletedRodTiberium4.get(1),
-                WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                12,
-                10);
+                    ItemList.DepletedRodTiberium4.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    12,
+                    10);
 
             giveItemStackRadioHatchAbilites(ItemList.DepletedRodNaquadah32.get(1), Materials.Naquadah, 96, 10);
 
@@ -149,7 +149,7 @@ public final class BioVatLogicAdder {
         }
 
         public static void giveItemStackRadioHatchAbilites(ItemStack stack, @NotNull Materials materials, int kg,
-            int divider) {
+                int divider) {
             giveItemStackRadioHatchAbilites(stack, BWUtil.calculateSv(materials) / divider, kg);
             IsColor.put(stack, materials.getRGBA());
         }
@@ -189,7 +189,7 @@ public final class BioVatLogicAdder {
             if (o == null || this.getClass() != o.getClass()) return false;
             BioVatLogicAdder.MaterialSvPair that = (BioVatLogicAdder.MaterialSvPair) o;
             return Objects.equals(this.getMaterials(), that.getMaterials())
-                && Objects.equals(this.getSievert(), that.getSievert());
+                    && Objects.equals(this.getSievert(), that.getSievert());
         }
 
         @Override

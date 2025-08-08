@@ -51,8 +51,8 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
     public boolean isOutputFacing(ForgeDirection side) {
         if (side == ForgeDirection.UNKNOWN) return false;
         return ((side.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0)
-            && (side != getBaseMetaTileEntity().getFrontFacing())
-            && (side != getBaseMetaTileEntity().getBackFacing());
+                && (side != getBaseMetaTileEntity().getFrontFacing())
+                && (side != getBaseMetaTileEntity().getBackFacing());
     }
 
     @Override
@@ -76,8 +76,9 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
 
     @Override
     public int getCapacity() {
-        return getRecipeMap() != null ? getRecipeMap().getBackend()
-            .getProperties().minFluidInputs > 0 ? 8000 * (mTier + 1) : 0 : 0;
+        return getRecipeMap() != null
+                ? getRecipeMap().getBackend().getProperties().minFluidInputs > 0 ? 8000 * (mTier + 1) : 0
+                : 0;
     }
 
     @Override
@@ -88,101 +89,72 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
-            TextureFactory.of(
-                TextureFactory.of(NAQUADAH_REACTOR_SOLID_FRONT),
-                TextureFactory.builder()
-                    .addIcon(NAQUADAH_REACTOR_SOLID_FRONT_GLOW)
-                    .glow()
-                    .build()) };
+                TextureFactory.of(
+                        TextureFactory.of(NAQUADAH_REACTOR_SOLID_FRONT),
+                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_FRONT_GLOW).glow().build()) };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0],
-            TextureFactory.of(
-                TextureFactory.of(NAQUADAH_REACTOR_SOLID_BACK),
-                TextureFactory.builder()
-                    .addIcon(NAQUADAH_REACTOR_SOLID_BACK_GLOW)
-                    .glow()
-                    .build()) };
+                TextureFactory.of(
+                        TextureFactory.of(NAQUADAH_REACTOR_SOLID_BACK),
+                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BACK_GLOW).glow().build()) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-            TextureFactory.of(
-                TextureFactory.of(NAQUADAH_REACTOR_SOLID_BOTTOM),
-                TextureFactory.builder()
-                    .addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_GLOW)
-                    .glow()
-                    .build()) };
+                TextureFactory.of(
+                        TextureFactory.of(NAQUADAH_REACTOR_SOLID_BOTTOM),
+                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_GLOW).glow().build()) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-            TextureFactory.of(
-                TextureFactory.of(NAQUADAH_REACTOR_SOLID_TOP),
-                TextureFactory.builder()
-                    .addIcon(NAQUADAH_REACTOR_SOLID_TOP_GLOW)
-                    .glow()
-                    .build()) };
+                TextureFactory.of(
+                        TextureFactory.of(NAQUADAH_REACTOR_SOLID_TOP),
+                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_TOP_GLOW).glow().build()) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0],
-            TextureFactory.of(
-                TextureFactory.of(NAQUADAH_REACTOR_SOLID_SIDE),
-                TextureFactory.builder()
-                    .addIcon(NAQUADAH_REACTOR_SOLID_SIDE_GLOW)
-                    .glow()
-                    .build()) };
+                TextureFactory.of(
+                        TextureFactory.of(NAQUADAH_REACTOR_SOLID_SIDE),
+                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_SIDE_GLOW).glow().build()) };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE),
-            TextureFactory.builder()
-                .addIcon(NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_BACK_ACTIVE),
-            TextureFactory.builder()
-                .addIcon(NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-            TextureFactory.of(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE), TextureFactory.builder()
-                .addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.of(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE),
+                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            TextureFactory.builder()
-                .addIcon(NAQUADAH_REACTOR_SOLID_TOP_ACTIVE_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_TOP_ACTIVE_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE),
-            TextureFactory.builder()
-                .addIcon(NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE_GLOW).glow().build() };
     }
 
     @Override

@@ -70,15 +70,16 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         tEU = totalFlow;
         addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         if (totalFlow == realOptFlow) {
-            tEU = GTUtility
-                .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
+            tEU = GTUtility.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         } else {
             float efficiency = 1.0f - (float) Math.abs((totalFlow - realOptFlow) / (float) realOptFlow);
             tEU *= efficiency;
             tEU = Math.max(
-                1,
-                GTUtility.safeInt(
-                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
+                    1,
+                    GTUtility.safeInt(
+                            (long) (tEU
+                                    * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         }
 
         if (tEU > maxPower) {
@@ -90,13 +91,13 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GTUtility.sendChatToPlayer(
-                aPlayer,
-                looseFit ? trans("500", "Fitting: Loose - More Flow")
-                    : trans("501", "Fitting: Tight - More Efficiency"));
+                    aPlayer,
+                    looseFit ? trans("500", "Fitting: Loose - More Flow")
+                            : trans("501", "Fitting: Tight - More Efficiency"));
         }
     }
 
@@ -142,20 +143,15 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Supercritical Steam Turbine")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power.")
-            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
-            .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfoMin("SC Turbine Casing", 24, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Supercritical Fluid, Side centered", 2)
-            .addOutputHatch("Superheated Steam, Side centered", 3)
-            .toolTipFinisher();
+        tt.addMachineType("Supercritical Steam Turbine").addInfo("Needs a Turbine, place inside controller")
+                .addInfo("Use Supercritical Steam to generate power.")
+                .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
+                .addInfo("Power output depends on turbine and fitting")
+                .addInfo("Use screwdriver to adjust fitting of turbine").beginStructureBlock(3, 3, 4, true)
+                .addController("Front center").addCasingInfoMin("SC Turbine Casing", 24, false)
+                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
+                .addInputHatch("Supercritical Fluid, Side centered", 2)
+                .addOutputHatch("Superheated Steam, Side centered", 3).toolTipFinisher();
         return tt;
     }
 
@@ -166,11 +162,11 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1538),
-            facing == side
-                ? (aActive ? TextureFactory.of(turbineOn)
-                    : hasTurbine() ? TextureFactory.of(turbineOff) : TextureFactory.of(turbineEmpty))
-                : Textures.BlockIcons.getCasingTextureForId(1538) };
+                facing == side
+                        ? (aActive ? TextureFactory.of(turbineOn)
+                                : hasTurbine() ? TextureFactory.of(turbineOff) : TextureFactory.of(turbineEmpty))
+                        : Textures.BlockIcons.getCasingTextureForId(1538) };
     }
 }

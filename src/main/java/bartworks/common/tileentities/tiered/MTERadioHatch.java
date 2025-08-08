@@ -104,17 +104,16 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
 
     public MTERadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            1,
-            new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
-                (isDeprecated
-                    ? EnumChatFormatting.RED
-                        + "DEPRECATED! This hatch will be removed in the next major update, use \"Radio Hatch\" instead"
-                    : StatCollector.translateToLocal("tooltip.tile.radhatch.1.name")),
-                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
+                        (isDeprecated ? EnumChatFormatting.RED
+                                + "DEPRECATED! This hatch will be removed in the next major update, use \"Radio Hatch\" instead"
+                                : StatCollector.translateToLocal("tooltip.tile.radhatch.1.name")),
+                        BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
     }
 
     public MTERadioHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -190,7 +189,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
             }
 
             if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds
-                && this.sievert > 0) {
+                    && this.sievert > 0) {
                 this.sendLoopStart((byte) 1);
                 myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
             }
@@ -267,27 +266,27 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     @Override
     public String[] getInfoData() {
         if (this.sievert != 0) return new String[] {
-            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                + StatCollector.translateToLocal(this.material),
-            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
-            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass,
-            StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " "
-                + (this.decayTime - this.timer % (this.decayTime * 60))
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20 / 60
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name") };
+                StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
+                        + StatCollector.translateToLocal(this.material),
+                StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
+                StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass,
+                StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " "
+                        + (this.decayTime - this.timer % (this.decayTime * 60))
+                        + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name")
+                        + "/"
+                        + (this.decayTime - this.timer % this.decayTime) / 20
+                        + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name")
+                        + "/"
+                        + (this.decayTime - this.timer % this.decayTime) / 20 / 60
+                        + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name")
+                        + "/"
+                        + (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60
+                        + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name") };
         return new String[] {
-            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                + StatCollector.translateToLocal("tooltip.bw.empty.name"),
-            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
-            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0" };
+                StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
+                        + StatCollector.translateToLocal("tooltip.bw.empty.name"),
+                StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
+                StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0" };
     }
 
     @Override
@@ -302,15 +301,15 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return side == this.getBaseMetaTileEntity()
-            .getFrontFacing() && BartWorksRecipeMaps.radioHatchFakeRecipes.containsInput(aStack);
+            ItemStack aStack) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing()
+                && BartWorksRecipeMaps.radioHatchFakeRecipes.containsInput(aStack);
     }
 
     @Override
@@ -370,111 +369,83 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         syncManager.syncValue("color2", new IntSyncValue(() -> colorForGUI[2], c -> colorForGUI[2] = (short) c));
         syncManager.syncValue("coverage", 0, new IntSyncValue(() -> coverage, value -> coverage = (byte) value));
 
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .doesAddGregTechLogo(false)
-            .build()
-            .child(
-                gridTemplate1by1(
-                    index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))))
-            .child(
-                GTGuiTextures.PICTURE_SIEVERT_CONTAINER.asWidget()
-                    .pos(61, 9)
-                    .size(56, 24))
-            .child(
-                new ProgressWidget().progress(() -> this.getSievert() / 148f)
-                    .direction(ProgressWidget.Direction.RIGHT)
-                    .texture(GTGuiTextures.PROGRESSBAR_SIEVERT, 24)
-                    .pos(65, 13)
-                    .size(48, 16))
-            .child(
-                GTGuiTextures.PICTURE_DECAY_TIME_INSIDE.asWidget()
-                    .pos(124, 18)
-                    .size(16, 48))
-            .child(new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
-                if (MTERadioHatch.this.decayTime > 0) {
-                    int drawableHeight = MathUtils.ceilInt(
-                        48 * ((MTERadioHatch.this.decayTime - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
-                            / (float) MTERadioHatch.this.decayTime));
-                    new com.cleanroommc.modularui.drawable.Rectangle()
-                        .setColor(
-                            com.cleanroommc.modularui.utils.Color.rgb(
-                                MTERadioHatch.this.colorForGUI[0],
-                                MTERadioHatch.this.colorForGUI[1],
-                                MTERadioHatch.this.colorForGUI[2]))
-                        .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
-                }
-            }).pos(124, 18)
-                .size(18, 48))
-            .child(createDurationMeterContainer(syncManager))
-            .child(
-                IKey.dynamic(() -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
-                    .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
-                    .asWidget()
-                    .pos(65, 62))
-            .child(
-                IKey.dynamic(
-                    () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
-                    .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                    .asWidget()
-                    .pos(60, 72)
-                    .size(80, 8))
-            .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
-                popupPanel.openPanel();
-                return popupPanel.isPanelOpen();
-            })
-                .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
-                .disableHoverBackground()
-                .tooltip(tooltip -> tooltip.add("Radiation Shutter"))
-                .pos(153, 5)
-                .size(18, 18))
-            .child(
-                GTGuiTextures.PICTURE_BARTWORKS_LOGO_STANDARD.asWidget()
-                    .pos(10, 53)
-                    .size(47, 21))
-            .bindPlayerInventory();
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).doesAddGregTechLogo(false).build()
+                .child(
+                        gridTemplate1by1(
+                                index -> new ItemSlot()
+                                        .slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))))
+                .child(GTGuiTextures.PICTURE_SIEVERT_CONTAINER.asWidget().pos(61, 9).size(56, 24))
+                .child(
+                        new ProgressWidget().progress(() -> this.getSievert() / 148f)
+                                .direction(ProgressWidget.Direction.RIGHT)
+                                .texture(GTGuiTextures.PROGRESSBAR_SIEVERT, 24).pos(65, 13).size(48, 16))
+                .child(GTGuiTextures.PICTURE_DECAY_TIME_INSIDE.asWidget().pos(124, 18).size(16, 48))
+                .child(new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
+                    if (MTERadioHatch.this.decayTime > 0) {
+                        int drawableHeight = MathUtils.ceilInt(
+                                48 * ((MTERadioHatch.this.decayTime
+                                        - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
+                                        / (float) MTERadioHatch.this.decayTime));
+                        new com.cleanroommc.modularui.drawable.Rectangle()
+                                .setColor(
+                                        com.cleanroommc.modularui.utils.Color.rgb(
+                                                MTERadioHatch.this.colorForGUI[0],
+                                                MTERadioHatch.this.colorForGUI[1],
+                                                MTERadioHatch.this.colorForGUI[2]))
+                                .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
+                    }
+                }).pos(124, 18).size(18, 48)).child(createDurationMeterContainer(syncManager))
+                .child(
+                        IKey.dynamic(
+                                () -> StatCollector
+                                        .translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
+                                .alignment(com.cleanroommc.modularui.utils.Alignment.Center).asWidget().pos(65, 62))
+                .child(
+                        IKey.dynamic(
+                                () -> StatCollector
+                                        .translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
+                                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft).asWidget().pos(60, 72)
+                                .size(80, 8))
+                .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
+                    popupPanel.openPanel();
+                    return popupPanel.isPanelOpen();
+                }).background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+                        .disableHoverBackground().tooltip(tooltip -> tooltip.add("Radiation Shutter")).pos(153, 5)
+                        .size(18, 18))
+                .child(GTGuiTextures.PICTURE_BARTWORKS_LOGO_STANDARD.asWidget().pos(10, 53).size(47, 21))
+                .bindPlayerInventory();
     }
 
     private ModularPanel createShutterUI(PanelSyncManager syncManager) {
         IntSyncValue coverageSyncer = (IntSyncValue) syncManager.getSyncHandler("coverage:0");
         return createPopUpPanel("bw:radio_hatch_shutter", false, false).size(176, 107)
-            .child(
-                IKey.str("Radiation Shutter Control")
-                    .color(this.COLOR_TITLE.get())
-                    .asWidget()
-                    .pos(10, 9))
-            .child(
-                GTGuiTextures.PICTURE_RADIATION_SHUTTER_FRAME.asWidget()
-                    .pos(14, 27)
-                    .size(55, 54))
-            .child(
-                new ProgressWidget().progress(() -> 1 - ((double) this.coverage / 100D))
-                    .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE, 50)
-                    .direction(ProgressWidget.Direction.UP)
-                    .pos(16, 29)
-                    .size(51, 50))
-            .child(
-                new TextFieldWidget().setNumbers(0, 100)
-                    .value(new StringSyncValue(coverageSyncer::getStringValue, coverageSyncer::setStringValue))
-                    .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))
-                    .setTextAlignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                    .pos(86, 27)
-                    .size(30, 12))
-            .child(
-                IKey.str("%")
-                    .asWidget()
-                    .pos(118, 31));
+                .child(IKey.str("Radiation Shutter Control").color(this.COLOR_TITLE.get()).asWidget().pos(10, 9))
+                .child(GTGuiTextures.PICTURE_RADIATION_SHUTTER_FRAME.asWidget().pos(14, 27).size(55, 54))
+                .child(
+                        new ProgressWidget().progress(() -> 1 - ((double) this.coverage / 100D))
+                                .texture(
+                                        GTGuiTextures.PICTURE_TRANSPARENT,
+                                        GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE,
+                                        50)
+                                .direction(ProgressWidget.Direction.UP).pos(16, 29).size(51, 50))
+                .child(
+                        new TextFieldWidget().setNumbers(0, 100).value(
+                                new StringSyncValue(coverageSyncer::getStringValue, coverageSyncer::setStringValue))
+                                .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))
+                                .setTextAlignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft).pos(86, 27)
+                                .size(30, 12))
+                .child(IKey.str("%").asWidget().pos(118, 31));
     }
 
     private IWidget createDurationMeterContainer(PanelSyncManager syncManager) {
         IWidget widget = GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
-            .tooltipBuilder(
-                tooltip -> tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "tooltip.tile.radhatch.10.name",
-                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
-                        this.timer <= 1 ? 0 : this.decayTime / 20)))
-            .pos(120, 14)
-            .size(24, 56);
+                .tooltipBuilder(
+                        tooltip -> tooltip.add(
+                                StatCollector.translateToLocalFormatted(
+                                        "tooltip.tile.radhatch.10.name",
+                                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
+                                        this.timer <= 1 ? 0 : this.decayTime / 20)))
+                .pos(120, 14).size(24, 56);
 
         LongSyncValue timeSyncHandler = new LongSyncValue(() -> timer, time -> timer = time);
         timeSyncHandler.setChangeListener(widget::markTooltipDirty);
@@ -487,93 +458,79 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(RADIATION_SHUTTER_WINDOW_ID, this::createMui1ShutterWindow);
 
-        this.getBaseMetaTileEntity()
-            .add1by1Slot(builder);
+        this.getBaseMetaTileEntity().add1by1Slot(builder);
         builder.widget(
-            new DrawableWidget().setBackground(BWUITextures.PICTURE_SIEVERT_CONTAINER)
-                .setPos(61, 9)
-                .setSize(56, 24))
-            .widget(
-                new ProgressBar().setProgress(() -> this.getSievert() / 148f)
-                    .setDirection(ProgressBar.Direction.RIGHT)
-                    .setTexture(BWUITextures.PROGRESSBAR_SIEVERT, 24)
-                    .setPos(65, 13)
-                    .setSize(48, 16))
-            .widget(
-                new DrawableWidget().setBackground(BWUITextures.PICTURE_DECAY_TIME_INSIDE)
-                    .setPos(124, 18)
-                    .setSize(16, 48))
-            .widget(new DrawableWidget() {
+                new DrawableWidget().setBackground(BWUITextures.PICTURE_SIEVERT_CONTAINER).setPos(61, 9)
+                        .setSize(56, 24))
+                .widget(
+                        new ProgressBar().setProgress(() -> this.getSievert() / 148f)
+                                .setDirection(ProgressBar.Direction.RIGHT)
+                                .setTexture(BWUITextures.PROGRESSBAR_SIEVERT, 24).setPos(65, 13).setSize(48, 16))
+                .widget(
+                        new DrawableWidget().setBackground(BWUITextures.PICTURE_DECAY_TIME_INSIDE).setPos(124, 18)
+                                .setSize(16, 48))
+                .widget(new DrawableWidget() {
 
-                @Override
-                public void draw(float partialTicks) {
-                    if (MTERadioHatch.this.decayTime > 0) {
-                        int height = MathUtils.ceilInt(
-                            48 * ((MTERadioHatch.this.decayTime
-                                - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
-                                / (float) MTERadioHatch.this.decayTime));
-                        new Rectangle()
-                            .setColor(
-                                Color.argb(
-                                    MTERadioHatch.this.colorForGUI[0],
-                                    MTERadioHatch.this.colorForGUI[1],
-                                    MTERadioHatch.this.colorForGUI[2],
-                                    255))
-                            .draw(new Pos2d(0, 48 - height), new Size(16, height), partialTicks);
+                    @Override
+                    public void draw(float partialTicks) {
+                        if (MTERadioHatch.this.decayTime > 0) {
+                            int height = MathUtils.ceilInt(
+                                    48 * ((MTERadioHatch.this.decayTime
+                                            - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
+                                            / (float) MTERadioHatch.this.decayTime));
+                            new Rectangle()
+                                    .setColor(
+                                            Color.argb(
+                                                    MTERadioHatch.this.colorForGUI[0],
+                                                    MTERadioHatch.this.colorForGUI[1],
+                                                    MTERadioHatch.this.colorForGUI[2],
+                                                    255))
+                                    .draw(new Pos2d(0, 48 - height), new Size(16, height), partialTicks);
+                        }
                     }
-                }
-            }.dynamicTooltip(
-                () -> Collections.singletonList(
-                    StatCollector.translateToLocalFormatted(
-                        "tooltip.tile.radhatch.10.name",
-                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
-                        this.timer <= 1 ? 0 : this.decayTime / 20)))
-                .setPos(124, 18)
-                .setSize(16, 48)
-                .attachSyncer(
-                    new FakeSyncWidget.LongSyncer(() -> this.decayTime, val -> this.decayTime = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .attachSyncer(
-                    new FakeSyncWidget.LongSyncer(() -> this.timer, val -> this.timer = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange()))
-            .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[0], val -> this.colorForGUI[0] = val))
-            .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[1], val -> this.colorForGUI[1] = val))
-            .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[2], val -> this.colorForGUI[2] = val))
-            .widget(
-                new DrawableWidget().setBackground(BWUITextures.PICTURE_DECAY_TIME_CONTAINER)
-                    .setPos(120, 14)
-                    .setSize(24, 56))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.mass))
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(65, 62))
-            .widget(new FakeSyncWidget.ByteSyncer(() -> this.mass, val -> this.mass = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(60, 72))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> this.sievert, val -> this.sievert = val))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!widget.isClient()) {
-                    widget.getContext()
-                        .openSyncedWindow(RADIATION_SHUTTER_WINDOW_ID);
-                }
-            })
-                .addTooltip(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter"))
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(153, 5)
-                .setSize(18, 18))
-            .widget(
-                new ItemDrawable(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, null, null, null))
-                        .asWidget()
-                        .setPos(154, 6));
+                }.dynamicTooltip(
+                        () -> Collections.singletonList(
+                                StatCollector.translateToLocalFormatted(
+                                        "tooltip.tile.radhatch.10.name",
+                                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
+                                        this.timer <= 1 ? 0 : this.decayTime / 20)))
+                        .setPos(124, 18).setSize(16, 48)
+                        .attachSyncer(
+                                new FakeSyncWidget.LongSyncer(() -> this.decayTime, val -> this.decayTime = val),
+                                builder,
+                                (widget, val) -> widget.notifyTooltipChange())
+                        .attachSyncer(
+                                new FakeSyncWidget.LongSyncer(() -> this.timer, val -> this.timer = val),
+                                builder,
+                                (widget, val) -> widget.notifyTooltipChange()))
+                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[0], val -> this.colorForGUI[0] = val))
+                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[1], val -> this.colorForGUI[1] = val))
+                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[2], val -> this.colorForGUI[2] = val))
+                .widget(
+                        new DrawableWidget().setBackground(BWUITextures.PICTURE_DECAY_TIME_CONTAINER).setPos(120, 14)
+                                .setSize(24, 56))
+                .widget(
+                        new TextWidget().setStringSupplier(
+                                () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.mass))
+                                .setTextAlignment(Alignment.Center).setPos(65, 62))
+                .widget(new FakeSyncWidget.ByteSyncer(() -> this.mass, val -> this.mass = val))
+                .widget(
+                        new TextWidget().setStringSupplier(
+                                () -> StatCollector
+                                        .translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
+                                .setTextAlignment(Alignment.Center).setPos(60, 72))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> this.sievert, val -> this.sievert = val))
+                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (!widget.isClient()) {
+                        widget.getContext().openSyncedWindow(RADIATION_SHUTTER_WINDOW_ID);
+                    }
+                }).addTooltip(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter"))
+                        .setBackground(GTUITextures.BUTTON_STANDARD).setPos(153, 5).setSize(18, 18))
+                .widget(
+                        new ItemDrawable(
+                                MetaGeneratedTool01.INSTANCE
+                                        .getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, null, null, null)).asWidget()
+                                                .setPos(154, 6));
     }
 
     private ModularWindow createMui1ShutterWindow(EntityPlayer player) {
@@ -582,36 +539,27 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         builder.setGuiTint(this.getGUIColorization());
 
         builder.widget(
-            new TextWidget(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter_control"))
-                .setDefaultColor(this.COLOR_TITLE.get())
-                .setPos(10, 9))
-            .widget(
-                new DrawableWidget().setDrawable(BWUITextures.PICTURE_RADIATION_SHUTTER_FRAME)
-                    .setPos(14, 27)
-                    .setSize(55, 54))
-            .widget(
-                new DrawableWidget()
-                    .setDrawable(() -> this.coverage < 100 ? BWUITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
-                    .setPos(16, 29)
-                    .setSize(51, 50)
-                    .attachSyncer(
-                        new FakeSyncWidget.ByteSyncer(this::getCoverage, this::setCoverage),
-                        builder,
-                        (widget, val) -> widget.setPos(16, 29 + this.coverage / 2)
-                            .setSize(51, 50 - this.coverage / 2)))
-            .widget(
-                new NumericWidget().setSetter(val -> this.coverage = (byte) val)
-                    .setGetter(() -> this.coverage)
-                    .setBounds(0, 100)
-                    .setScrollValues(1, 5, 50)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(86, 27)
-                    .setSize(30, 12))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(176 - 15, 3));
+                new TextWidget(
+                        StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter_control"))
+                                .setDefaultColor(this.COLOR_TITLE.get()).setPos(10, 9))
+                .widget(
+                        new DrawableWidget().setDrawable(BWUITextures.PICTURE_RADIATION_SHUTTER_FRAME).setPos(14, 27)
+                                .setSize(55, 54))
+                .widget(
+                        new DrawableWidget().setDrawable(
+                                () -> this.coverage < 100 ? BWUITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
+                                .setPos(16, 29).setSize(51, 50).attachSyncer(
+                                        new FakeSyncWidget.ByteSyncer(this::getCoverage, this::setCoverage),
+                                        builder,
+                                        (widget, val) -> widget.setPos(16, 29 + this.coverage / 2)
+                                                .setSize(51, 50 - this.coverage / 2)))
+                .widget(
+                        new NumericWidget().setSetter(val -> this.coverage = (byte) val).setGetter(() -> this.coverage)
+                                .setBounds(0, 100).setScrollValues(1, 5, 50).setTextColor(Color.WHITE.dark(1))
+                                .setTextAlignment(Alignment.CenterLeft)
+                                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                                .setPos(86, 27).setSize(30, 12))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(176 - 15, 3));
 
         return builder.build();
     }
@@ -619,15 +567,13 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X21)
-                .setSize(47, 21)
-                .setPos(10, 53));
+                new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X21).setSize(47, 21).setPos(10, 53));
     }
 
     @Override
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setMainBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
-            .setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
+                .setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
     }
 
     public static long calcDecayTicks(int x) {

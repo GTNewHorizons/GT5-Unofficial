@@ -23,24 +23,19 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+        String casings = getCasingBlockItem().get(0).getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Pump, FDP")
-            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo("Base cycle time: 1 tick")
-            .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
-            .addOutputHatch("Any base casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType("Pump, FDP").addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
+                .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+                .addInfo("Base cycle time: 1 tick").beginStructureBlock(3, 7, 3, false).addController("Front bottom")
+                .addOtherStructurePart(casings, "form the 3x1x3 Base")
+                .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
+                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
+                .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
+                .addMaintenanceHatch("Any base casing", 1)
+                .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
+                .addOutputHatch("Any base casing", 1).toolTipFinisher();
         return tt;
     }
 

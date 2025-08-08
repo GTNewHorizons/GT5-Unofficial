@@ -57,62 +57,38 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     public MTEMassfabricator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            8,
-            MachineType.MATTER_FABRICATOR.tooltipDescription(),
-            1,
-            1,
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_MASSFAB),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_MASSFAB_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_MASSFAB),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MASSFAB_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_MASSFAB),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_MASSFAB_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_MASSFAB),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW)
-                    .glow()
-                    .build()));
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                8,
+                MachineType.MATTER_FABRICATOR.tooltipDescription(),
+                1,
+                1,
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_SIDE_MASSFAB),
+                        TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_FRONT_MASSFAB),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_TOP_MASSFAB),
+                        TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(OVERLAY_BOTTOM_MASSFAB),
+                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW).glow().build()));
     }
 
     public MTEMassfabricator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -168,9 +144,9 @@ public class MTEMassfabricator extends MTEBasicMachine {
                 return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
             }
             return sRequiresUUA || Arrays.stream(getAllInputs())
-                .anyMatch(s -> ItemList.Circuit_Integrated.isStackEqual(s, true, true))
-                    ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS
-                    : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                    .anyMatch(s -> ItemList.Circuit_Integrated.isStackEqual(s, true, true))
+                            ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS
+                            : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
         return DID_NOT_FIND_RECIPE;
     }
@@ -205,8 +181,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
         @Override
         public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
             return super.createCalculator(template, recipe).setEUt(Ints.saturatedCast(V[tier] * amperage))
-                .setEUtIncreasePerOC(2.0)
-                .setMaxOverclocks(tier - 1);
+                    .setEUtIncreasePerOC(2.0).setMaxOverclocks(tier - 1);
         }
 
         @Override
@@ -219,9 +194,9 @@ public class MTEMassfabricator extends MTEBasicMachine {
             // standard amperage calculation doesn't work here
             long voltage = V[mTier];
             String voltageString = StatCollector.translateToLocalFormatted(
-                "GT5U.nei.display.voltage",
-                GTUtility.formatNumbers(voltage),
-                GTUtility.getTierNameWithParentheses(voltage));
+                    "GT5U.nei.display.voltage",
+                    GTUtility.formatNumbers(voltage),
+                    GTUtility.getTierNameWithParentheses(voltage));
 
             if (wasOverclocked(calculator)) {
                 voltageString += StatCollector.translateToLocal("GT5U.nei.display.overclock");

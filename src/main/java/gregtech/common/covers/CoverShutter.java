@@ -98,7 +98,7 @@ public class CoverShutter extends CoverLegacyData {
             return this.coverData == shutterMode;
         }
         return !(coveredTile.get() instanceof IMachineProgress machine)
-            || machine.isAllowedToWork() == (this.coverData % 2 == 0);
+                || machine.isAllowedToWork() == (this.coverData % 2 == 0);
     }
 
     @Override

@@ -13,8 +13,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 public class CoverPowerPassUpgrade extends Cover {
 
     public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
-        IMetaTileEntity iGregTechTileEntityOffset = coverable.getIGregTechTileEntityOffset(0, 0, 0)
-            .getMetaTileEntity();
+        IMetaTileEntity iGregTechTileEntityOffset = coverable.getIGregTechTileEntityOffset(0, 0, 0).getMetaTileEntity();
         if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {
             return !multi.ePowerPassCover;
         }
@@ -29,7 +28,7 @@ public class CoverPowerPassUpgrade extends Cover {
     public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.getIGregTechTileEntityOffset(0, 0, 0)
-            .getMetaTileEntity() instanceof TTMultiblockBase multi) {
+                .getMetaTileEntity() instanceof TTMultiblockBase multi) {
             multi.ePowerPassCover = true;
             multi.ePowerPass = true;
         }
@@ -39,7 +38,7 @@ public class CoverPowerPassUpgrade extends Cover {
     public void onCoverRemoval() {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.getIGregTechTileEntityOffset(0, 0, 0)
-            .getMetaTileEntity() instanceof TTMultiblockBase multi) {
+                .getMetaTileEntity() instanceof TTMultiblockBase multi) {
             multi.ePowerPassCover = false;
             multi.ePowerPass = false;
         }

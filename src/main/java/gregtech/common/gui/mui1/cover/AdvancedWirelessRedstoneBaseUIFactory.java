@@ -14,7 +14,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase>
-    extends CoverUIFactory<C> {
+        extends CoverUIFactory<C> {
 
     protected static final int startX = 10;
     protected static final int startY = 25;
@@ -41,38 +41,34 @@ public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvan
         addUIForDataController(dataController);
 
         builder.widget(dataController)
-            .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
-            .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
+                .widget(
+                        new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
+                .widget(
+                        new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
     }
 
     protected void addUIForDataController(CoverDataControllerWidget<C> controller) {
         controller.addFollower(
-            new CoverDataFollowerTextFieldWidget<>(),
-            CoverAdvancedWirelessRedstoneBase::getFrequency,
-            (coverData, state) -> {
-                coverData.setFrequency(state);
-                return coverData;
-            },
-            widget -> widget.setPos(1, 2 + spaceY * getFrequencyRow())
-                .setSize(spaceX * 5 - 4, 12))
-            .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                coverData -> coverData.getUuid() != null,
+                new CoverDataFollowerTextFieldWidget<>(),
+                CoverAdvancedWirelessRedstoneBase::getFrequency,
                 (coverData, state) -> {
-                    if (state) {
-                        coverData.setUuid(
-                            getUIBuildContext().getPlayer()
-                                .getUniqueID());
-                    } else {
-                        coverData.setUuid(null);
-                    }
+                    coverData.setFrequency(state);
                     return coverData;
                 },
-                widget -> widget.setPos(0, spaceY * getButtonRow()));
+                widget -> widget.setPos(1, 2 + spaceY * getFrequencyRow()).setSize(spaceX * 5 - 4, 12)).addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofCheck(),
+                        coverData -> coverData.getUuid() != null,
+                        (coverData, state) -> {
+                            if (state) {
+                                coverData.setUuid(getUIBuildContext().getPlayer().getUniqueID());
+                            } else {
+                                coverData.setUuid(null);
+                            }
+                            return coverData;
+                        },
+                        widget -> widget.setPos(0, spaceY * getButtonRow()));
     }
 
     protected abstract int getFrequencyRow();

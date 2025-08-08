@@ -17,18 +17,18 @@ import thaumcraft.common.tiles.TileAlchemyFurnace;
 public abstract class MixinThaumcraftAlchemyFurnacePollution extends TileEntity {
 
     @Inject(
-        method = "updateEntity",
-        at = @At(
-            value = "FIELD",
-            target = "thaumcraft/common/tiles/TileAlchemyFurnace.furnaceBurnTime:I",
-            opcode = Opcodes.PUTFIELD,
-            ordinal = 0,
-            remap = false))
+            method = "updateEntity",
+            at = @At(
+                    value = "FIELD",
+                    target = "thaumcraft/common/tiles/TileAlchemyFurnace.furnaceBurnTime:I",
+                    opcode = Opcodes.PUTFIELD,
+                    ordinal = 0,
+                    remap = false))
     private void gt5u$addPollution(CallbackInfo ci) {
         if (!this.worldObj.isRemote && (this.worldObj.getTotalWorldTime() % 20) == 0) {
             Pollution.addPollution(
-                this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord),
-                PollutionConfig.furnacePollutionAmount);
+                    this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord),
+                    PollutionConfig.furnacePollutionAmount);
         }
     }
 }

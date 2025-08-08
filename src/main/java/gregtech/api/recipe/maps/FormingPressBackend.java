@@ -28,7 +28,7 @@ public class FormingPressBackend extends RecipeMapBackend {
 
     @Override
     protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot) {
+            @Nullable ItemStack specialSlot) {
         for (ItemStack mold : items) {
             if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
                 NBTTagCompound nbt = mold.getTagCompound();
@@ -62,15 +62,8 @@ public class FormingPressBackend extends RecipeMapBackend {
         ItemStack output = GTUtility.copyAmount(1, input);
         if (output == null) return null;
         output.setStackDisplayName(mold.getDisplayName());
-        return GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, mold), GTUtility.copyAmount(1, input))
-            .itemOutputs(output)
-            .duration(128)
-            .eut(8)
-            .noBuffer()
-            .nbtSensitive()
-            .build()
-            .orElse(null);
+        return GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(0, mold), GTUtility.copyAmount(1, input))
+                .itemOutputs(output).duration(128).eut(8).noBuffer().nbtSensitive().build().orElse(null);
     }
 
     @Nullable

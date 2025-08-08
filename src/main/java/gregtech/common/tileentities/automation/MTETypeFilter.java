@@ -35,27 +35,27 @@ public class MTETypeFilter extends MTESpecialFilter {
     public OrePrefixes mPrefix = OrePrefixes.ore;
 
     public static ImmutableList<OrePrefixes> OREBLOCK_PREFIXES = ImmutableList.of(
-        OrePrefixes.oreBlackgranite,
-        OrePrefixes.oreDense,
-        OrePrefixes.oreEnd,
-        OrePrefixes.oreEndstone,
-        OrePrefixes.oreNether,
-        OrePrefixes.oreNetherrack,
-        OrePrefixes.oreNormal,
-        OrePrefixes.orePoor,
-        OrePrefixes.oreRedgranite,
-        OrePrefixes.oreRich,
-        OrePrefixes.oreSmall,
-        OrePrefixes.oreBasalt,
-        OrePrefixes.oreMarble);
+            OrePrefixes.oreBlackgranite,
+            OrePrefixes.oreDense,
+            OrePrefixes.oreEnd,
+            OrePrefixes.oreEndstone,
+            OrePrefixes.oreNether,
+            OrePrefixes.oreNetherrack,
+            OrePrefixes.oreNormal,
+            OrePrefixes.orePoor,
+            OrePrefixes.oreRedgranite,
+            OrePrefixes.oreRich,
+            OrePrefixes.oreSmall,
+            OrePrefixes.oreBasalt,
+            OrePrefixes.oreMarble);
 
     public MTETypeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Filters 1 Item Type", "Use Screwdriver to regulate output stack size" });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { "Filters 1 Item Type", "Use Screwdriver to regulate output stack size" });
     }
 
     public MTETypeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -65,21 +65,18 @@ public class MTETypeFilter extends MTESpecialFilter {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTETypeFilter(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-            TextureFactory.of(AUTOMATION_TYPEFILTER),
-            TextureFactory.builder()
-                .addIcon(AUTOMATION_TYPEFILTER_GLOW)
-                .glow()
-                .build());
+                TextureFactory.of(AUTOMATION_TYPEFILTER),
+                TextureFactory.builder().addIcon(AUTOMATION_TYPEFILTER_GLOW).glow().build());
     }
 
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
@@ -137,9 +134,9 @@ public class MTETypeFilter extends MTESpecialFilter {
             return;
         }
         this.mInventory[FILTER_SLOT_INDEX] = GTUtility.copyAmount(
-            1,
-            this.mPrefix.mPrefixedItems
-                .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
+                1,
+                this.mPrefix.mPrefixedItems
+                        .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
         if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == WILDCARD) this.mInventory[9].setItemDamage(0);
     }
@@ -171,9 +168,9 @@ public class MTETypeFilter extends MTESpecialFilter {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-            new FakeSyncWidget.StringSyncer(
-                () -> this.mPrefix.toString(),
-                (prefix) -> this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix)));
+                new FakeSyncWidget.StringSyncer(
+                        () -> this.mPrefix.toString(),
+                        (prefix) -> this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix)));
     }
 
     @Override

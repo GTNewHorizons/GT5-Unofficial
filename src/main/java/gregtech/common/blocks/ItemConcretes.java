@@ -11,7 +11,7 @@ import gregtech.api.util.GTLanguageManager;
 public class ItemConcretes extends ItemStonesAbstract {
 
     private final String mRunFasterToolTip = GTLanguageManager
-        .addStringLocalization("gt.runfastertooltip", "You can walk faster on this Block");
+            .addStringLocalization("gt.runfastertooltip", "You can walk faster on this Block");
 
     public ItemConcretes(Block block) {
         super(block);

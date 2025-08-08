@@ -17,16 +17,17 @@ public class InfiniteSprayCanRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-            || type == ItemRenderType.INVENTORY
-            || type == ItemRenderType.ENTITY;
+                || type == ItemRenderType.INVENTORY
+                || type == ItemRenderType.ENTITY;
 
     }
 
     @Override
     public boolean shouldUseRenderHelper(final ItemRenderType type, final ItemStack item,
-        final ItemRendererHelper helper) {
+            final ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
-            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
+                || (helper == ItemRendererHelper.ENTITY_ROTATION
+                        && Minecraft.getMinecraft().gameSettings.fancyGraphics);
 
     }
 

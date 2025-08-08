@@ -51,13 +51,13 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     private static ITexture[] getTexture(IMetaTileEntity tile, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean arg5) {
+            int colorIndex, boolean active, boolean arg5) {
         final IGregTechTileEntity gtTile = tile.getBaseMetaTileEntity();
         return tile.getTexture(gtTile, side, facing, (byte) colorIndex, active, arg5);
     }
 
     private static ITexture[] getTexture(IMetaTileEntity tile, ForgeDirection side, int facingMask, int colorIndex,
-        boolean active, boolean arg5) {
+            boolean active, boolean arg5) {
         final MetaPipeEntity gtTile = (MetaPipeEntity) tile.getBaseMetaTileEntity();
         return gtTile.getTexture((IGregTechTileEntity) tile, side, facingMask, colorIndex, active, arg5);
     }
@@ -139,13 +139,13 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public boolean renderStandardBlock(SBRContext ctx) {
         final TileEntity te = ctx.world.getTileEntity(ctx.x, ctx.y, ctx.z);
         return te instanceof ITexturedTileEntity && renderStandardBlock(
-            ctx,
-            new ITexture[][] { GTMethodHelper.getTexture(te, ctx.block, DOWN),
-                GTMethodHelper.getTexture(te, ctx.block, UP),
-                GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.NORTH),
-                GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.SOUTH),
-                GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.WEST),
-                GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.EAST) });
+                ctx,
+                new ITexture[][] { GTMethodHelper.getTexture(te, ctx.block, DOWN),
+                        GTMethodHelper.getTexture(te, ctx.block, UP),
+                        GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.NORTH),
+                        GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.SOUTH),
+                        GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.WEST),
+                        GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.EAST) });
     }
 
     public boolean renderStandardBlock(SBRContext ctx, ITexture[][] aTextures) {
@@ -485,11 +485,11 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderNegativeYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y - 1, ctx.z, 0)) {
+                    && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y - 1, ctx.z, 0)) {
                 return;
             }
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y - 1 : ctx.y, ctx.z));
+                    ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y - 1 : ctx.y, ctx.z));
         }
 
         if (aIcon != null) {
@@ -507,12 +507,12 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderPositiveYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y + 1, ctx.z, 1)) {
+                    && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y + 1, ctx.z, 1)) {
                 return;
             }
 
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y + 1 : ctx.y, ctx.z));
+                    ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y + 1 : ctx.y, ctx.z));
         }
 
         if (aIcon != null) {
@@ -530,12 +530,12 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderNegativeZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z - 1, 2)) {
+                    && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z - 1, 2)) {
                 return;
             }
 
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z - 1 : ctx.z));
+                    ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z - 1 : ctx.z));
         }
 
         ctx.renderer.flipTexture = !aFullBlock;
@@ -554,12 +554,12 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderPositiveZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z + 1, 3)) {
+                    && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z + 1, 3)) {
                 return;
             }
 
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z + 1 : ctx.z));
+                    ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z + 1 : ctx.z));
         }
 
         if (aIcon != null) {
@@ -577,12 +577,12 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderNegativeXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x - 1, ctx.y, ctx.z, 4)) {
+                    && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x - 1, ctx.y, ctx.z, 4)) {
                 return;
             }
 
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x - 1 : ctx.x, ctx.y, ctx.z));
+                    ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x - 1 : ctx.x, ctx.y, ctx.z));
         }
 
         if (aIcon != null) {
@@ -600,12 +600,12 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderPositiveXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x + 1, ctx.y, ctx.z, 5)) {
+                    && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x + 1, ctx.y, ctx.z, 5)) {
                 return;
             }
 
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x + 1 : ctx.x, ctx.y, ctx.z));
+                    ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x + 1 : ctx.x, ctx.y, ctx.z));
         }
 
         ctx.renderer.flipTexture = !aFullBlock;
@@ -626,8 +626,8 @@ public class MachineBlockRenderer extends GTRendererBlock {
         aMeta += 30400;
         if (aBlock instanceof BlockMachines) {
             if (aMeta > 0 && aMeta < GregTechAPI.METATILEENTITIES.length
-                && GregTechAPI.METATILEENTITIES[aMeta] != null
-                && !GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer)) {
+                    && GregTechAPI.METATILEENTITIES[aMeta] != null
+                    && !GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer)) {
                 renderNormalInventoryMetaTileEntity(ctx);
             }
         }
@@ -638,19 +638,19 @@ public class MachineBlockRenderer extends GTRendererBlock {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
-        RenderBlocks aRenderer) {
+            RenderBlocks aRenderer) {
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
         final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity != null && (aTileEntity instanceof IGregTechTileEntity
-            && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null
-            && tessAccess.gt5u$hasVertices()
-            && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity()
-                .renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)
-            || (aTileEntity instanceof IPipeRenderedTileEntity
-                ? renderPipeBlock(ctx, (IPipeRenderedTileEntity) aTileEntity)
-                : renderStandardBlock(ctx)));
+                && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null
+                && tessAccess.gt5u$hasVertices()
+                && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity()
+                        .renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)
+                || (aTileEntity instanceof IPipeRenderedTileEntity
+                        ? renderPipeBlock(ctx, (IPipeRenderedTileEntity) aTileEntity)
+                        : renderStandardBlock(ctx)));
     }
 
     @Override

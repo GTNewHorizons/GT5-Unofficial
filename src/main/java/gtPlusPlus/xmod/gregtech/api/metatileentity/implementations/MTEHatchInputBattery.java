@@ -119,17 +119,17 @@ public class MTEHatchInputBattery extends MTEHatch {
             if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
                 if (mMetaTileEntity.rechargerSlotCount() > 0 && aBaseMetaTileEntity.getStoredEU() > 0) {
                     for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
-                        k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
+                            k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                         if (aBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
                             for (int u = 0; u < 10; u++) {
                                 aBaseMetaTileEntity.decreaseStoredEnergyUnits(
-                                    GTModHandler.chargeElectricItem(
-                                        mMetaTileEntity.mInventory[i],
-                                        (int) Math.min(V[this.mTier] * 15, aBaseMetaTileEntity.getStoredEU()),
-                                        (int) Math.min(Integer.MAX_VALUE, GTValues.V[u]),
-                                        false,
-                                        false),
-                                    true);
+                                        GTModHandler.chargeElectricItem(
+                                                mMetaTileEntity.mInventory[i],
+                                                (int) Math.min(V[this.mTier] * 15, aBaseMetaTileEntity.getStoredEU()),
+                                                (int) Math.min(Integer.MAX_VALUE, GTValues.V[u]),
+                                                false,
+                                                false),
+                                        true);
                                 if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
                                     mMetaTileEntity.mInventory[i] = null;
                                 }
@@ -151,31 +151,31 @@ public class MTEHatchInputBattery extends MTEHatch {
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
             for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
+                    && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                        GTUtility.moveStackFromSlotAToSlotB(
+                                getBaseMetaTileEntity(),
+                                getBaseMetaTileEntity(),
+                                j,
+                                i,
+                                (byte) 64,
+                                (byte) 1,
+                                (byte) 64,
+                                (byte) 1);
+                    }
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing()
-            && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
+                && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing()
-            && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
+                && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
     }
 
     @Override
@@ -188,8 +188,8 @@ public class MTEHatchInputBattery extends MTEHatch {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (mTier == 2) {
             for (int i = 0; i < 4; i++) {
-                builder
-                    .widget(new ElectricSlotWidget(inventoryHandler, i).setPos(70 + (i % 2) * 18, 25 + (i / 2) * 18));
+                builder.widget(
+                        new ElectricSlotWidget(inventoryHandler, i).setPos(70 + (i % 2) * 18, 25 + (i / 2) * 18));
             }
         } else {
             for (int i = 0; i < 16; i++) {

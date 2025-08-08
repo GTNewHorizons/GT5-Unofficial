@@ -38,7 +38,7 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
      * @param transferRectTooltip Tooltip shown when hovering over this widget.
      */
     public GTProgressWidget neiTransferRect(String transferRectID, Object[] transferRectArgs,
-        String transferRectTooltip) {
+            String transferRectTooltip) {
         this.transferRectID = transferRectID;
         this.transferRectArgs = transferRectArgs == null ? GTValues.emptyObjectArray : transferRectArgs;
         if (transferRectTooltip != null) {
@@ -56,9 +56,9 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
      */
     public GTProgressWidget neiTransferRect(String transferRectID) {
         return neiTransferRect(
-            transferRectID,
-            GTValues.emptyObjectArray,
-            StatCollector.translateToLocal("nei.recipe.tooltip"));
+                transferRectID,
+                GTValues.emptyObjectArray,
+                StatCollector.translateToLocal("nei.recipe.tooltip"));
     }
 
     /**
@@ -67,9 +67,7 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
      * @param recipeMap RecipeMap whose recipes get displayed on widget click.
      */
     public GTProgressWidget neiTransferRect(RecipeMap<?> recipeMap) {
-        return neiTransferRect(
-            recipeMap.getFrontend()
-                .getUIProperties().neiTransferRectId);
+        return neiTransferRect(recipeMap.getFrontend().getUIProperties().neiTransferRectId);
     }
 
     @Override
@@ -77,9 +75,9 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
         WidgetTheme widgetTheme = getWidgetTheme(getContext().getTheme());
         if (widgetTheme instanceof ProgressbarWidgetTheme progressbarWidgetTheme) {
             texture(
-                progressbarWidgetTheme.getEmptyTexture(),
-                progressbarWidgetTheme.getFullTexture(),
-                progressbarWidgetTheme.getImageSize());
+                    progressbarWidgetTheme.getEmptyTexture(),
+                    progressbarWidgetTheme.getFullTexture(),
+                    progressbarWidgetTheme.getImageSize());
         }
         super.onInit();
     }

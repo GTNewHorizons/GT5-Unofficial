@@ -167,8 +167,7 @@ public class BaseTinkersMaterial {
 
         Block aMatBlock = aMaterial.getBlock();
         int aMelt = aMaterial.getMeltingPointC();
-        Fluid aFluid = aMaterial.getFluidStack(0)
-            .getFluid();
+        Fluid aFluid = aMaterial.getFluidStack(0).getFluid();
 
         if (aMatBlock == null || aFluid == null) {
             return false;
@@ -181,7 +180,7 @@ public class BaseTinkersMaterial {
             ItemStack ingotcast = TinkersUtils.getPattern(1);
             TinkersUtils.addBasinRecipe(aMaterial.getBlock(1), aMaterial.getFluidStack(144 * 9), null, true, 100);
             TinkersUtils
-                .addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
+                    .addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
         }
         TinkersUtils.generateCastingRecipes(aMaterial, aID);
 

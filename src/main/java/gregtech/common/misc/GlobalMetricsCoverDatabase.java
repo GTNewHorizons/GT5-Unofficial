@@ -44,8 +44,7 @@ import gregtech.common.events.MetricsCoverSelfDestructEvent;
 
 /**
  * Catches and provides data transmitted from deployed Metrics Transmitter covers. Only stores one result per frequency
- * at a time. Metrics covers are intended to overwrite an old result every time they emit a new event.
- * <br />
+ * at a time. Metrics covers are intended to overwrite an old result every time they emit a new event. <br />
  * <br />
  * This information is only partially persisted; frequencies that are in a non-operational state will be written to
  * disk, while operational frequencies are volatile. The assumption is that any frequency with a broadcasting card will,
@@ -82,8 +81,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         if (!REVERSE_LOOKUP.containsKey(coordinates)) {
             REVERSE_LOOKUP.put(coordinates, new HashSet<>());
         }
-        REVERSE_LOOKUP.get(coordinates)
-            .add(event.getFrequency());
+        REVERSE_LOOKUP.get(coordinates).add(event.getFrequency());
     }
 
     @SuppressWarnings("unused")
@@ -127,10 +125,11 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         final Set<UUID> uuids = REVERSE_LOOKUP.get(coords);
         if (uuids != null) {
             uuids.forEach(
-                uuid -> MinecraftForge.EVENT_BUS.post(
-                    ForgeHooks.canHarvestBlock(event.block, event.getPlayer(), event.blockMetadata)
-                        && !event.getPlayer().capabilities.isCreativeMode ? new MetricsCoverHostDeconstructedEvent(uuid)
-                            : new MetricsCoverSelfDestructEvent(uuid)));
+                    uuid -> MinecraftForge.EVENT_BUS.post(
+                            ForgeHooks.canHarvestBlock(event.block, event.getPlayer(), event.blockMetadata)
+                                    && !event.getPlayer().capabilities.isCreativeMode
+                                            ? new MetricsCoverHostDeconstructedEvent(uuid)
+                                            : new MetricsCoverSelfDestructEvent(uuid)));
         }
     }
 
@@ -165,7 +164,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     @SubscribeEvent
     public void onItemExpiration(ItemExpireEvent event) {
         getCoverUUIDsFromItemStack(event.entityItem.getEntityItem())
-            .forEach(uuid -> MinecraftForge.EVENT_BUS.post(new MetricsCoverSelfDestructEvent(uuid)));
+                .forEach(uuid -> MinecraftForge.EVENT_BUS.post(new MetricsCoverSelfDestructEvent(uuid)));
     }
 
     /**
@@ -180,8 +179,8 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     /**
-     * Once a card has received the fact that it has self-destructed, this method can be called to free up its spot
-     * in the database. Does nothing if the frequency is missing or is not in a self-destructed state.
+     * Once a card has received the fact that it has self-destructed, this method can be called to free up its spot in
+     * the database. Does nothing if the frequency is missing or is not in a self-destructed state.
      *
      * @param frequency The UUID corresponding to the frequency to possibly cull.
      */
@@ -202,13 +201,13 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         for (int i = 0; i < deconstructed.tagCount(); i++) {
             final NBTTagByteArray byteArray = (NBTTagByteArray) deconstructed.removeTag(0);
             reconstituteUUID(byteArray.func_150292_c())
-                .ifPresent(uuid -> DATABASE.put(uuid, new Data(State.HOST_DECONSTRUCTED)));
+                    .ifPresent(uuid -> DATABASE.put(uuid, new Data(State.HOST_DECONSTRUCTED)));
         }
 
         for (int i = 0; i < selfDestructed.tagCount(); i++) {
             final NBTTagByteArray byteArray = (NBTTagByteArray) selfDestructed.removeTag(0);
             reconstituteUUID(byteArray.func_150292_c())
-                .ifPresent(uuid -> DATABASE.put(uuid, new Data(State.SELF_DESTRUCTED)));
+                    .ifPresent(uuid -> DATABASE.put(uuid, new Data(State.SELF_DESTRUCTED)));
         }
     }
 
@@ -253,7 +252,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
      * @param coordinates Coordinates of the active machine (including dimension.)
      */
     private static void store(@NotNull UUID frequency, @NotNull State state, @Nullable List<String> payload,
-        @Nullable Coordinates coordinates) {
+            @Nullable Coordinates coordinates) {
         final Data newData = new Data(state, payload, coordinates);
         final Data oldData = DATABASE.put(frequency, newData);
 
@@ -298,19 +297,17 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     private static Stream<UUID> getCoverUUIDsFromItemStack(final ItemStack stack) {
-        return CoverableTileEntity.readCoversNBT(stack.getTagCompound(), null)
-            .stream()
-            .filter(cover -> cover instanceof CoverMetricsTransmitter)
-            .map(cover -> ((CoverMetricsTransmitter) cover).getFrequency());
+        return CoverableTileEntity.readCoversNBT(stack.getTagCompound(), null).stream()
+                .filter(cover -> cover instanceof CoverMetricsTransmitter)
+                .map(cover -> ((CoverMetricsTransmitter) cover).getFrequency());
     }
 
     /**
      * Data transmitted by a Metrics Transmitter cover.
      * <p>
-     * Since only negative states ({@link State#HOST_DECONSTRUCTED HOST_DECONSTRUCTED} and
-     * {@link State#SELF_DESTRUCTED SELF DESTRUCTED}) are persisted, additional fields can be added to this data with
-     * little consequence. Ensure that any new fields are nullable, and make any getter for these fields return an
-     * {@link Optional}.
+     * Since only negative states ({@link State#HOST_DECONSTRUCTED HOST_DECONSTRUCTED} and {@link State#SELF_DESTRUCTED
+     * SELF DESTRUCTED}) are persisted, additional fields can be added to this data with little consequence. Ensure that
+     * any new fields are nullable, and make any getter for these fields return an {@link Optional}.
      */
     public static class Data {
 
@@ -341,9 +338,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         }
 
         /**
-         * Retrieves the payload for this data. Only present if the frequency is in an
-         * {@link State#OPERATIONAL operational} state. Will be cleared if the frequency goes into a
-         * {@link State#HOST_DECONSTRUCTED host-deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
+         * Retrieves the payload for this data. Only present if the frequency is in an {@link State#OPERATIONAL
+         * operational} state. Will be cleared if the frequency goes into a {@link State#HOST_DECONSTRUCTED
+         * host-deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
          *
          * @return The data if present, or an empty Optional otherwise.
          */
@@ -379,7 +376,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
             if (o == null || getClass() != o.getClass()) return false;
             final Data data = (Data) o;
             return state == data.state && Objects.equals(payload, data.payload)
-                && Objects.equals(coordinates, data.coordinates);
+                    && Objects.equals(coordinates, data.coordinates);
         }
 
         @Override
@@ -421,10 +418,10 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
 
         public String getLocalizedCoordinates() {
             return StatCollector.translateToLocalFormatted(
-                "gt.db.metrics_cover.coords",
-                GTUtility.formatNumbers(x),
-                GTUtility.formatNumbers(y),
-                GTUtility.formatNumbers(z));
+                    "gt.db.metrics_cover.coords",
+                    GTUtility.formatNumbers(x),
+                    GTUtility.formatNumbers(y),
+                    GTUtility.formatNumbers(z));
         }
 
         @Override
@@ -459,7 +456,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         SELF_DESTRUCTED(3);
 
         private static final Map<Integer, State> VALID_TYPE_INTEGERS = Arrays.stream(State.values())
-            .collect(Collectors.toMap(State::getType, Function.identity()));
+                .collect(Collectors.toMap(State::getType, Function.identity()));
         private final int type;
 
         State(final int type) {

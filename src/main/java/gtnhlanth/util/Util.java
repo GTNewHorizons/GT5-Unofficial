@@ -30,7 +30,7 @@ public class Util {
     }
 
     public static List<Pos2d> getGridPositions(int totalCount, int xOrigin, int yOrigin, int xDirMaxCount,
-        int yDirMaxCount, int distanceBetweenSlots) {
+            int yDirMaxCount, int distanceBetweenSlots) {
         // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
         // around them.
 
@@ -50,8 +50,7 @@ public class Util {
 
     public static boolean coolantFluidCheck(FluidStack inStack, int fluidToConsume) {
         return (inStack.amount < fluidToConsume
-            || (!inStack.isFluidEqual(GTModHandler.getIC2Coolant(1)) && inStack.getFluid()
-                .getTemperature() > 200));
+                || (!inStack.isFluidEqual(GTModHandler.getIC2Coolant(1)) && inStack.getFluid().getTemperature() > 200));
     }
 
     public static int coolantFluidTemperature(FluidStack inStack) {
@@ -60,8 +59,7 @@ public class Util {
         if (inStack.isFluidEqual(GTModHandler.getIC2Coolant(1))) {
             fluidTemperature = 60; // Default temp of 300 is unreasonable
         } else {
-            fluidTemperature = inStack.getFluid()
-                .getTemperature();
+            fluidTemperature = inStack.getFluid().getTemperature();
         }
 
         return fluidTemperature;

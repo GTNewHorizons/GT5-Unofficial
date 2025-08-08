@@ -82,7 +82,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private int mCasing;
     protected int mCraftingTier = 0;
@@ -94,11 +94,10 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
     private static final IStructureDefinition<MTEQuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEQuantumForceTransformer>builder()
-        .addShape(
-            MAIN_PIECE,
-            new String[][] { // A - 142, B - 234, C - 177, D - 96, E - 224, H - 36, M - 21
-                // spotless:off
+            .<MTEQuantumForceTransformer>builder().addShape(
+                    MAIN_PIECE,
+                    new String[][] { // A - 142, B - 234, C - 177, D - 96, E - 224, H - 36, M - 21
+                            // spotless:off
                 { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   BBBBABBBB   ", "   BAAAAAAAB   ", "   BABBABBAB   ", "   BA     AB   ", "    A     A    ", "    A     A    ", "    A     A    " },
                 { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   AAABBBAAA   ", "  BAAAAAAAAAB  ", "  B         B  ", "  A         A  ", "  A         A  ", "               ", "               ", "               " },
                 { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "    AA   AA    ", "  AA       AA  ", " BAA       AAB ", " B           B ", " A           A ", " A           A ", "               ", "               ", "               " },
@@ -115,46 +114,44 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   AAABBBAAA   ", "  BAAAAAAAAAB  ", "  B         B  ", "  A         A  ", "  A         A  ", "               ", "               ", "               " },
                 { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   BBBBABBBB   ", "   BBBAAABBB   ", "   ABBAAABBA   ", "   A BA AB A   ", "      A A      ", "      A A      ", "      A A      " }, })
                 // spotless:on
-        .addElement(
-            'A',
-            GTStructureChannels.QFT_MANIPULATOR.use(
-                StructureUtility.ofBlocksTiered(
-                    craftingTierConverter(),
-                    getAllCraftingTiers(),
-                    0,
-                    MTEQuantumForceTransformer::setCraftingTier,
-                    MTEQuantumForceTransformer::getCraftingTier)))
-        .addElement(
-            'B',
-            GTStructureChannels.QFT_SHIELDING.use(
-                StructureUtility.ofBlocksTiered(
-                    focusingTierConverter(),
-                    getAllFocusingTiers(),
-                    0,
-                    MTEQuantumForceTransformer::setFocusingTier,
-                    MTEQuantumForceTransformer::getFocusingTier)))
-        .addElement('C', ofBlock(ModBlocks.blockCasings4Misc, 4))
-        .addElement('D', ofBlock(ModBlocks.blockCasings2Misc, 12))
-        .addElement('E', lazy(t -> ofBlock(t.getCasingBlock1(), t.getCasingMeta1())))
-        .addElement(
-            'H',
-            buildHatchAdder(MTEQuantumForceTransformer.class)
-                .atLeast(
-                    InputBus,
-                    InputHatch,
-                    Maintenance,
-                    Energy.or(ExoticEnergy),
-                    SpecialHatchElement.CatalystHousing)
-                .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(4)
-                .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-        .addElement(
-            'T',
-            buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch, Maintenance)
-                .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(5)
-                .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-        .build();
+            .addElement(
+                    'A',
+                    GTStructureChannels.QFT_MANIPULATOR.use(
+                            StructureUtility.ofBlocksTiered(
+                                    craftingTierConverter(),
+                                    getAllCraftingTiers(),
+                                    0,
+                                    MTEQuantumForceTransformer::setCraftingTier,
+                                    MTEQuantumForceTransformer::getCraftingTier)))
+            .addElement(
+                    'B',
+                    GTStructureChannels.QFT_SHIELDING.use(
+                            StructureUtility.ofBlocksTiered(
+                                    focusingTierConverter(),
+                                    getAllFocusingTiers(),
+                                    0,
+                                    MTEQuantumForceTransformer::setFocusingTier,
+                                    MTEQuantumForceTransformer::getFocusingTier)))
+            .addElement('C', ofBlock(ModBlocks.blockCasings4Misc, 4))
+            .addElement('D', ofBlock(ModBlocks.blockCasings2Misc, 12))
+            .addElement('E', lazy(t -> ofBlock(t.getCasingBlock1(), t.getCasingMeta1())))
+            .addElement(
+                    'H',
+                    buildHatchAdder(MTEQuantumForceTransformer.class)
+                            .atLeast(
+                                    InputBus,
+                                    InputHatch,
+                                    Maintenance,
+                                    Energy.or(ExoticEnergy),
+                                    SpecialHatchElement.CatalystHousing)
+                            .casingIndex(TAE.getIndexFromPage(0, 10)).dot(4)
+                            .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
+            .addElement(
+                    'T',
+                    buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch, Maintenance)
+                            .casingIndex(TAE.getIndexFromPage(0, 10)).dot(5)
+                            .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
+            .build();
 
     public MTEQuantumForceTransformer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -173,46 +170,42 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Quantum Force Transformer, QFT")
-            .addInfo("Allows Complex chemical lines to be performed instantly in one step")
-            .addInfo("Every recipe requires a catalyst, each catalyst adds 1 parallel and lasts forever")
-            .addInfo("Catalysts have to be placed in a Bulk Catalyst Housing")
-            .addInfo("All inputs go on the bottom, all outputs go on the top")
-            .addInfo("Put a circuit in the controller to specify the focused output")
-            .addInfo("Check NEI to see the order of outputs, and which circuit number you need")
-            .addInfo("If separate input buses are enabled put the circuit in the circuit slot of the bus")
-            .addInfo("Uses FocusTier*4*sqrt(parallels) Neptunium Plasma if focusing")
-            .addInfo("Can use FocusTier*4*sqrt(parallels) Fermium Plasma for additional chance output")
-            .addInfo("Use a screwdriver to enable Fluid mode")
-            .addInfo(
-                "Fluid mode turns all possible outputs into their fluid variant, those which can't are left as they were")
-            .addInfo("This multi gets improved when all casings of some types are upgraded")
-            .addInfo("Casing functions:")
-            .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
-            .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
-            .addTecTechHatchInfo()
-            .addUnlimitedTierSkips()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(15, 21, 15, true)
-            .addController("Bottom Center")
-            .addCasingInfoMin("Bulk Production Frame", 80, false)
-            .addCasingInfoMin("Quantum Force Conductor", 177, false)
-            .addCasingInfoMin("Force Field Glass", 224, false)
-            .addCasingInfoMin("Pulse Manipulators", 236, true)
-            .addCasingInfoMin("Shielding Cores", 142, true)
-            .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
-            .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
-            .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Bulk Catalyst Housing: "
-                    + EnumChatFormatting.BLUE
-                    + "Bottom"
-                    + EnumChatFormatting.GRAY
-                    + " Layer")
-            .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
-            .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
-            .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
+                .addInfo("Allows Complex chemical lines to be performed instantly in one step")
+                .addInfo("Every recipe requires a catalyst, each catalyst adds 1 parallel and lasts forever")
+                .addInfo("Catalysts have to be placed in a Bulk Catalyst Housing")
+                .addInfo("All inputs go on the bottom, all outputs go on the top")
+                .addInfo("Put a circuit in the controller to specify the focused output")
+                .addInfo("Check NEI to see the order of outputs, and which circuit number you need")
+                .addInfo("If separate input buses are enabled put the circuit in the circuit slot of the bus")
+                .addInfo("Uses FocusTier*4*sqrt(parallels) Neptunium Plasma if focusing")
+                .addInfo("Can use FocusTier*4*sqrt(parallels) Fermium Plasma for additional chance output")
+                .addInfo("Use a screwdriver to enable Fluid mode")
+                .addInfo(
+                        "Fluid mode turns all possible outputs into their fluid variant, those which can't are left as they were")
+                .addInfo("This multi gets improved when all casings of some types are upgraded")
+                .addInfo("Casing functions:")
+                .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
+                .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
+                .addTecTechHatchInfo().addUnlimitedTierSkips().addPollutionAmount(getPollutionPerSecond(null))
+                .beginStructureBlock(15, 21, 15, true).addController("Bottom Center")
+                .addCasingInfoMin("Bulk Production Frame", 80, false)
+                .addCasingInfoMin("Quantum Force Conductor", 177, false)
+                .addCasingInfoMin("Force Field Glass", 224, false).addCasingInfoMin("Pulse Manipulators", 236, true)
+                .addCasingInfoMin("Shielding Cores", 142, true)
+                .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
+                .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
+                .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
+                .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
+                .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
+                .addStructureInfo(
+                        EnumChatFormatting.WHITE + "Bulk Catalyst Housing: "
+                                + EnumChatFormatting.BLUE
+                                + "Bottom"
+                                + EnumChatFormatting.GRAY
+                                + " Layer")
+                .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
+                .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
+                .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
 
@@ -392,12 +385,10 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 if (recipe.getMetadataOrDefault(GTRecipeConstants.QFT_FOCUS_TIER, 1) <= getFocusingTier()) {
                     FluidStack[] fluids = inputFluids;
                     for (FluidStack fluid : fluids) {
-                        if (fluid.getFluid()
-                            .equals(mNeptunium)) {
+                        if (fluid.getFluid().equals(mNeptunium)) {
                             doNeptunium = true;
                         }
-                        if (fluid.getFluid()
-                            .equals(mFermium)) {
+                        if (fluid.getFluid().equals(mFermium)) {
                             doFermium = true;
                         }
                     }
@@ -443,35 +434,34 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
 
                     return items.toArray(new ItemStack[0]);
-                })
-                    .setCustomFluidOutputCalculation(parallel -> {
-                        ArrayList<FluidStack> fluids = new ArrayList<>();
+                }).setCustomFluidOutputCalculation(parallel -> {
+                    ArrayList<FluidStack> fluids = new ArrayList<>();
 
-                        if (mFluidMode) {
-                            for (int i = 0; i < recipe.mOutputs.length; i++) {
-                                FluidStack fluid = fluidModeItems[i];
-                                if (fluid == null) continue;
-                                FluidStack fluidToAdd = fluid.copy();
-                                long outputMultiplier = calculateIntegralChancedOutputMultiplier(chances[i], parallel);
-                                int itemAmount = recipe.mOutputs[i].stackSize;
-                                long fluidAmount = fluidToAdd.amount * outputMultiplier * itemAmount;
-                                addFluidsLong(fluids, fluidToAdd, fluidAmount);
-                            }
-                        }
-
-                        for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
-                            FluidStack fluid = recipe.getFluidOutput(i);
+                    if (mFluidMode) {
+                        for (int i = 0; i < recipe.mOutputs.length; i++) {
+                            FluidStack fluid = fluidModeItems[i];
                             if (fluid == null) continue;
                             FluidStack fluidToAdd = fluid.copy();
-                            long outputMultiplier = calculateIntegralChancedOutputMultiplier(
-                                chances[i + recipe.mOutputs.length],
-                                parallel);
-                            long fluidAmount = fluidToAdd.amount * outputMultiplier;
+                            long outputMultiplier = calculateIntegralChancedOutputMultiplier(chances[i], parallel);
+                            int itemAmount = recipe.mOutputs[i].stackSize;
+                            long fluidAmount = fluidToAdd.amount * outputMultiplier * itemAmount;
                             addFluidsLong(fluids, fluidToAdd, fluidAmount);
                         }
+                    }
 
-                        return fluids.toArray(new FluidStack[0]);
-                    });
+                    for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+                        FluidStack fluid = recipe.getFluidOutput(i);
+                        if (fluid == null) continue;
+                        FluidStack fluidToAdd = fluid.copy();
+                        long outputMultiplier = calculateIntegralChancedOutputMultiplier(
+                                chances[i + recipe.mOutputs.length],
+                                parallel);
+                        long fluidAmount = fluidToAdd.amount * outputMultiplier;
+                        addFluidsLong(fluids, fluidToAdd, fluidAmount);
+                    }
+
+                    return fluids.toArray(new FluidStack[0]);
+                });
             }
 
             private int findProgrammedCircuitNumber() {
@@ -512,7 +502,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
         if (runningTick % 20 == 0) {
             int amount = (int) (getFocusingTier() * 4
-                * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
+                    * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
 
             if (doNeptunium || doFermium) {
                 startRecipeProcessing();
@@ -627,11 +617,11 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         mFluidMode = !mFluidMode;
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("miscutils.machines.QFTFluidMode") + " " + mFluidMode);
+                aPlayer,
+                StatCollector.translateToLocal("miscutils.machines.QFTFluidMode") + " " + mFluidMode);
     }
 
     public boolean addCatalystHousingToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
@@ -648,7 +638,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private enum SpecialHatchElement implements IHatchElement<MTEQuantumForceTransformer> {
 
         CatalystHousing(MTEQuantumForceTransformer::addCatalystHousingToMachineList,
-            MTEHatchBulkCatalystHousing.class) {
+                MTEHatchBulkCatalystHousing.class) {
 
             @Override
             public long count(MTEQuantumForceTransformer gtMetaTileEntityQFT) {
@@ -661,7 +651,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
         @SafeVarargs
         SpecialHatchElement(IGTHatchAdder<MTEQuantumForceTransformer> adder,
-            Class<? extends IMetaTileEntity>... mteClasses) {
+                Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -710,28 +700,17 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
+            int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) {
-                return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTActive)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCAQFTActiveGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                return new ITexture[] { getCasingTexture(),
+                        TextureFactory.builder().addIcon(TexturesGtBlock.oMCAQFTActive).extFacing().build(),
+                        TextureFactory.builder().addIcon(TexturesGtBlock.oMCAQFTActiveGlow).extFacing().glow()
+                                .build() };
             }
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAQFT)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            return new ITexture[] { getCasingTexture(),
+                    TextureFactory.builder().addIcon(TexturesGtBlock.oMCAQFT).extFacing().build(),
+                    TextureFactory.builder().addIcon(TexturesGtBlock.oMCAQFTGlow).extFacing().glow().build() };
         }
         return new ITexture[] { getCasingTexture() };
     }
@@ -742,7 +721,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @SideOnly(Side.CLIENT)
     private void renderForceField(double x, double y, double z, int side, double minU, double maxU, double minV,
-        double maxV) {
+            double maxV) {
         // spotless:off
         Tessellator tes = Tessellator.instance;
         switch (side) {
@@ -889,7 +868,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

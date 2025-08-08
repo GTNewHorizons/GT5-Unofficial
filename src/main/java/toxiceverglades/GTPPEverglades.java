@@ -27,10 +27,10 @@ import toxiceverglades.gen.WorldGenEvergladesOreLayer;
 import toxiceverglades.gen.WorldGenEvergladesOres;
 
 @Mod(
-    modid = Mods.ModIDs.G_T_PLUS_PLUS_EVERGLADES,
-    name = GTPPEverglades.NAME,
-    version = GTPPEverglades.VERSION,
-    dependencies = "required-after:Forge; after:dreamcraft; after:IC2; required-after:gregtech; required-after:miscutils;")
+        modid = Mods.ModIDs.G_T_PLUS_PLUS_EVERGLADES,
+        name = GTPPEverglades.NAME,
+        version = GTPPEverglades.VERSION,
+        dependencies = "required-after:Forge; after:dreamcraft; after:IC2; required-after:gregtech; required-after:miscutils;")
 public class GTPPEverglades {
 
     public static final String NAME = "GT++ Toxic Everglades";
@@ -148,8 +148,11 @@ public class GTPPEverglades {
     }
 
     public void addVMDrop(Block block, int meta, float weight) {
-        VoidMinerUtility
-            .addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
+        VoidMinerUtility.addBlockToDimensionList(
+                gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID,
+                block,
+                meta,
+                weight);
     }
 
     @EventHandler

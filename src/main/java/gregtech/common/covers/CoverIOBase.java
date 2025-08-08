@@ -118,9 +118,9 @@ public abstract class CoverIOBase extends CoverLegacyData {
             case 8 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_allow_cond"));
             case 9 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_allow_cond"));
             case 10 -> GTUtility
-                .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_allow_invert_cond"));
+                    .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.export_allow_invert_cond"));
             case 11 -> GTUtility
-                .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_allow_invert_cond"));
+                    .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_allow_invert_cond"));
         }
     }
 }

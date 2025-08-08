@@ -22,14 +22,10 @@ import gregtech.common.covers.CoverNone;
 
 public final class CoverRegistry {
 
-    private static final CoverPlacer DEFAULT_COVER_PLACER = CoverPlacer.builder()
-        .build();
-    public static final CoverPlacer PRIMITIVE_COVER_PLACER = CoverPlacer.builder()
-        .allowOnPrimitiveBlock()
-        .build();
+    private static final CoverPlacer DEFAULT_COVER_PLACER = CoverPlacer.builder().build();
+    public static final CoverPlacer PRIMITIVE_COVER_PLACER = CoverPlacer.builder().allowOnPrimitiveBlock().build();
     public static final CoverPlacer INTERCEPTS_RIGHT_CLICK_COVER_PLACER = CoverPlacer.builder()
-        .blocksCoverableGuiOpening()
-        .build();
+            .blocksCoverableGuiOpening().build();
 
     /**
      * The List of Cover Registrations for the Covers containing cover factories, placement conditions and base textures
@@ -37,9 +33,9 @@ public final class CoverRegistry {
     private static final Map<GTItemStack, CoverRegistration> covers = new ConcurrentHashMap<>();
     public static final Cover NO_COVER = new CoverNone(new CoverContext(null, ForgeDirection.UNKNOWN, null));
     private static final CoverRegistration coverNone = new CoverRegistration(
-        CoverNone::new,
-        PRIMITIVE_COVER_PLACER,
-        null);
+            CoverNone::new,
+            PRIMITIVE_COVER_PLACER,
+            null);
 
     private static GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
@@ -58,20 +54,20 @@ public final class CoverRegistry {
     }
 
     public static void registerCover(@NotNull ItemStack coverItem, ITexture coverTexture,
-        @NotNull CoverFactory constructor, CoverPlacer factory) {
+            @NotNull CoverFactory constructor, CoverPlacer factory) {
         GTItemStack key = new GTItemStack(coverItem);
         if (!covers.containsKey(key)) {
             CoverRegistration coverRegistration = new CoverRegistration(
-                constructor,
-                factory,
-                sanitizeTexture(coverTexture));
+                    constructor,
+                    factory,
+                    sanitizeTexture(coverTexture));
             covers.put(key, coverRegistration);
         }
     }
 
     private static ITexture sanitizeTexture(ITexture coverTexture) {
         return coverTexture == null || !coverTexture.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0]
-            : coverTexture;
+                : coverTexture;
     }
 
     @NotNull
@@ -88,8 +84,7 @@ public final class CoverRegistry {
 
     public static @NotNull Cover buildCover(ItemStack coverItem, ForgeDirection side, ICoverable coverable) {
         CoverRegistration registration = getRegistration(coverItem);
-        return registration.getFactory()
-            .buildCover(new CoverContext(coverItem, side, coverable));
+        return registration.getFactory().buildCover(new CoverContext(coverItem, side, coverable));
     }
 
     public static CoverPlacer getCoverPlacer(ItemStack coverItem) {
@@ -101,8 +96,7 @@ public final class CoverRegistry {
     }
 
     public static ITexture getCoverTexture(ItemStack coverItem) {
-        return covers.get(new GTItemStack(coverItem))
-            .getCoverTexture();
+        return covers.get(new GTItemStack(coverItem)).getCoverTexture();
     }
 
     public static void reloadCoverColorOverrides() {
@@ -116,8 +110,7 @@ public final class CoverRegistry {
     public static Cover buildCoverFromNbt(NBTTagCompound nbt, ForgeDirection side, ICoverable coverable) {
         ItemStack coverItem = GTUtility.intToStack(nbt.getInteger(NBT_ID));
         CoverRegistration registration = getRegistration(coverItem);
-        Cover cover = registration.getFactory()
-            .buildCover(new CoverContext(coverItem, side, coverable));
+        Cover cover = registration.getFactory().buildCover(new CoverContext(coverItem, side, coverable));
         cover.readFromNbt(nbt);
         return cover;
     }

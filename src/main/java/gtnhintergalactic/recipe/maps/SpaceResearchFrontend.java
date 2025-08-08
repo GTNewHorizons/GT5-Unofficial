@@ -24,10 +24,10 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 public class SpaceResearchFrontend extends RecipeMapFrontend {
 
     public SpaceResearchFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-            uiPropertiesBuilder,
-            neiPropertiesBuilder.neiSpecialInfoFormatter(new SpaceResearchSpecialValueFormatter()));
+                uiPropertiesBuilder,
+                neiPropertiesBuilder.neiSpecialInfoFormatter(new SpaceResearchSpecialValueFormatter()));
     }
 
     @Override
@@ -59,24 +59,23 @@ public class SpaceResearchFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> specialInfo = new ArrayList<>();
             specialInfo.add(
-                GCCoreUtil.translateWithFormat("tt.nei.research.min_computation", recipeInfo.recipe.mSpecialValue));
+                    GCCoreUtil.translateWithFormat("tt.nei.research.min_computation", recipeInfo.recipe.mSpecialValue));
 
             String neededProject = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
             String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
             if (neededProject != null && !neededProject.isEmpty()) {
                 specialInfo.add(
-                    String.format(
-                        GCCoreUtil.translate("ig.nei.spaceassembler.project"),
-                        SpaceProjectManager.getProject(neededProject)
-                            .getLocalizedName()));
+                        String.format(
+                                GCCoreUtil.translate("ig.nei.spaceassembler.project"),
+                                SpaceProjectManager.getProject(neededProject).getLocalizedName()));
                 specialInfo.add(
-                    String.format(
-                        GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
-                        neededProjectLocation == null || neededProjectLocation.isEmpty()
-                            ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
-                            : GCCoreUtil.translate(
-                                SpaceProjectManager.getLocation(neededProjectLocation)
-                                    .getUnlocalizedName())));
+                        String.format(
+                                GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
+                                neededProjectLocation == null || neededProjectLocation.isEmpty()
+                                        ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
+                                        : GCCoreUtil.translate(
+                                                SpaceProjectManager.getLocation(neededProjectLocation)
+                                                        .getUnlocalizedName())));
             }
             return specialInfo;
         }

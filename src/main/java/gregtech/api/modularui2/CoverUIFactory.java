@@ -41,12 +41,12 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
     public void open(EntityPlayerMP player, int coverID, ICoverable tile, ForgeDirection side) {
         if (player instanceof FakePlayer) return;
         CoverGuiData guiData = new CoverGuiData(
-            player,
-            coverID,
-            tile.getXCoord(),
-            tile.getYCoord(),
-            tile.getZCoord(),
-            side);
+                player,
+                coverID,
+                tile.getXCoord(),
+                tile.getYCoord(),
+                tile.getZCoord(),
+                side);
         GuiManager.open(this, guiData, player);
     }
 
@@ -56,23 +56,23 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
         // TODO: Figure out a more graceful way to handle mismatches.
         if (!(tile instanceof ICoverable coverable)) {
             throw new RuntimeException(
-                String.format(
-                    "TileEntity at %s, %s, %s is not an instance of ICoverable!",
-                    tile.xCoord,
-                    tile.yCoord,
-                    tile.zCoord));
+                    String.format(
+                            "TileEntity at %s, %s, %s is not an instance of ICoverable!",
+                            tile.xCoord,
+                            tile.yCoord,
+                            tile.zCoord));
         }
         Cover cover = coverable.getCoverAtSide(data.getSide());
         if (!(cover.getCoverID() == data.getCoverID())) {
             throw new RuntimeException(
-                String.format(
-                    "Cover at %s, %s, %s on side %s is not the expected kind! Expected %s, got %s",
-                    tile.xCoord,
-                    tile.yCoord,
-                    tile.zCoord,
-                    data.getSide(),
-                    data.getCoverID(),
-                    cover.getCoverID()));
+                    String.format(
+                            "Cover at %s, %s, %s on side %s is not the expected kind! Expected %s, got %s",
+                            tile.xCoord,
+                            tile.yCoord,
+                            tile.zCoord,
+                            data.getSide(),
+                            data.getCoverID(),
+                            cover.getCoverID()));
         }
         return cover;
     }
@@ -80,9 +80,8 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
     @Override
     public boolean canInteractWith(EntityPlayer player, CoverGuiData guiData) {
         return super.canInteractWith(player, guiData) && guiData.getTileEntity() instanceof ICoverable coverable
-            && coverable.getCoverAtSide(guiData.getSide())
-                .getCoverID() == guiData.getCoverID()
-            && guiData.getSquaredDistance(player) <= MAX_INTERACTION_DISTANCE;
+                && coverable.getCoverAtSide(guiData.getSide()).getCoverID() == guiData.getCoverID()
+                && guiData.getSquaredDistance(player) <= MAX_INTERACTION_DISTANCE;
     }
 
     @Override
@@ -91,19 +90,17 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
         buffer.writeVarIntToBuffer(guiData.getX());
         buffer.writeVarIntToBuffer(guiData.getY());
         buffer.writeVarIntToBuffer(guiData.getZ());
-        buffer.writeByte(
-            guiData.getSide()
-                .ordinal());
+        buffer.writeByte(guiData.getSide().ordinal());
     }
 
     @Override
     public @NotNull CoverGuiData readGuiData(EntityPlayer player, PacketBuffer buffer) {
         return new CoverGuiData(
-            player,
-            buffer.readVarIntFromBuffer(),
-            buffer.readVarIntFromBuffer(),
-            buffer.readVarIntFromBuffer(),
-            buffer.readVarIntFromBuffer(),
-            ForgeDirection.getOrientation(buffer.readByte()));
+                player,
+                buffer.readVarIntFromBuffer(),
+                buffer.readVarIntFromBuffer(),
+                buffer.readVarIntFromBuffer(),
+                buffer.readVarIntFromBuffer(),
+                ForgeDirection.getOrientation(buffer.readByte()));
     }
 }

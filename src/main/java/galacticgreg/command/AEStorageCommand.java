@@ -58,10 +58,10 @@ public class AEStorageCommand extends GTBaseCommand {
 
                     // Export structure
                     GalacticGreg.Logger.info(
-                        "Creating Structure from Spatial AE drive. Dimensions: X [%d] Y [%d] Z [%d]",
-                        storedSize.x,
-                        storedSize.y,
-                        storedSize.z);
+                            "Creating Structure from Spatial AE drive. Dimensions: X [%d] Y [%d] Z [%d]",
+                            storedSize.x,
+                            storedSize.y,
+                            storedSize.z);
                     SpaceSchematic tSchematic = SpaceSchematicFactory.createSchematic(tName);
                     boolean tTEWarningSend = false;
 
@@ -90,10 +90,10 @@ public class AEStorageCommand extends GTBaseCommand {
                                     if (bTE != null) {
                                         // Print a warning on the console
                                         GalacticGreg.Logger.warn(
-                                            "Warning: Found TileEntity at X[%d] Y[%d] Z[%d]. NBT States are not exported!",
-                                            lX,
-                                            lY,
-                                            lZ);
+                                                "Warning: Found TileEntity at X[%d] Y[%d] Z[%d]. NBT States are not exported!",
+                                                lX,
+                                                lY,
+                                                lZ);
                                         if (!tTEWarningSend) {
                                             // Send a warning ingame, once per export command
                                             tTEWarningSend = true;
@@ -103,8 +103,8 @@ public class AEStorageCommand extends GTBaseCommand {
                                     }
 
                                     // If the block is not air, add it to the structure
-                                    if (b != Blocks.air) tSchematic
-                                        .addStructureInfo(SpaceSchematicFactory.createStructureInfo(lX, lY, lZ, b, bm));
+                                    if (b != Blocks.air) tSchematic.addStructureInfo(
+                                            SpaceSchematicFactory.createStructureInfo(lX, lY, lZ, b, bm));
                                 }
                             }
                         }
@@ -117,12 +117,11 @@ public class AEStorageCommand extends GTBaseCommand {
                     } else {
                         // All good, xml exported. Notify player that he needs to edit the file
                         PlayerChatHelper.SendInfo(
-                            sender,
-                            "Structure has been exported to " + tSchematic.getName()
-                                + ".xml. It contains "
-                                + tSchematic.coordInfo()
-                                    .size()
-                                + " Blocks");
+                                sender,
+                                "Structure has been exported to " + tSchematic.getName()
+                                        + ".xml. It contains "
+                                        + tSchematic.coordInfo().size()
+                                        + " Blocks");
                         PlayerChatHelper.SendInfo(sender, "You have to edit the file before a reload will accept it!");
                     }
                 } else PlayerChatHelper.SendError(sender, "Error: Item in your hand is not a spatial storage drive!");

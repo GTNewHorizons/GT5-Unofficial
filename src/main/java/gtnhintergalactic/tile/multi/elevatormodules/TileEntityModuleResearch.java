@@ -62,19 +62,19 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc0"))
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc1"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
-            .beginStructureBlock(1, 5, 2, false)
-            .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-            .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .toolTipFinisher();
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc0"))
+                .addInfo(
+                        EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .toolTipFinisher();
         return tt;
     }
 
@@ -121,8 +121,10 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
                 if (lastRecipe != recipe) {
                     String neededProject = recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
                     String neededLocation = recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
-                    if (!ElevatorUtil
-                        .isProjectAvailable(getBaseMetaTileEntity().getOwnerUuid(), neededProject, neededLocation)) {
+                    if (!ElevatorUtil.isProjectAvailable(
+                            getBaseMetaTileEntity().getOwnerUuid(),
+                            neededProject,
+                            neededLocation)) {
                         return new ResultNoSpaceProject(neededProject, neededLocation);
                     }
                 }

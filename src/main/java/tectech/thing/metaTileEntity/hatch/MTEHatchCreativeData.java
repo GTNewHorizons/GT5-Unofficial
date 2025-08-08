@@ -34,13 +34,13 @@ public class MTEHatchCreativeData extends MTEHatchDataConnector<QuantumDataPacke
 
     public MTEHatchCreativeData(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.debug.tt.data.desc.0"),
-                translateToLocal("gt.blockmachines.debug.tt.data.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.data.desc.2") });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.debug.tt.data.desc.0"),
+                        translateToLocal("gt.blockmachines.debug.tt.data.desc.1"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.data.desc.2") });
     }
 
     public MTEHatchCreativeData(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -115,11 +115,9 @@ public class MTEHatchCreativeData extends MTEHatchDataConnector<QuantumDataPacke
             ((MTEPipeData) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         } else if (meta instanceof MTEHatchDataInput && ((MTEHatchDataInput) meta).getColorization() == color
-            && ((MTEHatchDataInput) meta).canConnectData(
-                base.getFrontFacing()
-                    .getOpposite())) {
-                        return (IConnectsToDataPipe) meta;
-                    }
+                && ((MTEHatchDataInput) meta).canConnectData(base.getFrontFacing().getOpposite())) {
+                    return (IConnectsToDataPipe) meta;
+                }
         return null;
     }
 
@@ -141,7 +139,7 @@ public class MTEHatchCreativeData extends MTEHatchDataConnector<QuantumDataPacke
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
 
         openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
@@ -153,19 +151,11 @@ public class MTEHatchCreativeData extends MTEHatchDataConnector<QuantumDataPacke
         builder.setGuiTint(getGUIColorization());
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
-        builder.widget(
-            TextWidget.localised("GT5U.machines.computation_hatch.computation")
-                .setPos(x, y)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> production = (long) val)
-                    .setGetter(() -> production)
-                    .setBounds(1, Long.MAX_VALUE)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(x, y + 16)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(TextWidget.localised("GT5U.machines.computation_hatch.computation").setPos(x, y).setSize(74, 14))
+                .widget(
+                        new NumericWidget().setSetter(val -> production = (long) val).setGetter(() -> production)
+                                .setBounds(1, Long.MAX_VALUE).setScrollValues(1, 4, 64)
+                                .setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal).setSize(70, 18)
+                                .setPos(x, y + 16).setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 }

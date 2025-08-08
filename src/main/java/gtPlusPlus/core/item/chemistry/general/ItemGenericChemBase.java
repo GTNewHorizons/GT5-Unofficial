@@ -30,40 +30,22 @@ public class ItemGenericChemBase extends Item {
     private final int aMetaSize = 36;
 
     /*
-     * 0 - Red Metal Catalyst //FeCu
-     * 1 - Yellow Metal Catalyst //WNi
-     * 2 - Blue Metal Catalyst //CoTi
-     * 3 - Orange Metal Catalyst //Vanadium Pd
-     * 4 - Purple Metal Catalyst //IrIdium Ruthenium
-     * 5 - Brown Metal Catalyst //NiAl
-     * 6 - Pink Metal Catalyst //PtRh
-     * 7 - Alumina Grinding Ball
-     * 8 - Soapstone Grinding Ball
-     * 9 - Sodium Ethoxide //2 Sodium + 1 Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2
-     * 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na
-     * 11 - Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
-     * 12 - Potassium Hydroxide // KOH
-     * 13 - Formaldehyde Catalyst //Fe16V1
-     * 14 - Solid Acid Catalyst //H2SO4
-     * 15 - Infinite Mutation Catalyst (for Mutated Living Solder)
-     * 16 - Platinum Group Catalyst (for platline skip)
-     * 17 - Plastic Polymer Catalyst (for early plastics skip)
-     * 18 - Rubber Polymer Catalyst (for early rubbers skip)
-     * 19 - Adhesion Promoter Catalyst (for glue/solder skip)
-     * 20 - Tita-Tungsten Indium Catalyst (for titanium/tungsten/indium skip)
-     * 21 - Radioactivity Catalyst (for thorium/uranium/plutonium skip)
-     * 22 - Rare-Earth Group Catalyst (for monaline skip)
-     * 23 - Simple Naquadah Catalyst (for early naqline skip)
-     * 24 - Advanced Naquadah Catalyst (for late naqline skip)
-     * 25 - Raw Intelligence Catalyst (for stem cells skip)
-     * 26 - Ultimate Plasticizer Catalyst (for late plastics skip)
-     * 27 - Biological Intelligence Catalyst (for bio cells skip)
-     * 28 - Temporal Harmonizer Catalyst (for Eternity processing)
-     * 29 - Limpid Water Catalyst (for early waterline skip)
-     * 30 - Flawless Water Catalyst (for advanced waterline skip)
-     * 33 - Algagenic Growth Promoter Catalyst (for seaweed skip)
-     * 34 - Hellish Force Catalyst (for Netherite skip)
-     * 35 - Crystal Colorization Catalyst (for Prismatic Acid)
+     * 0 - Red Metal Catalyst //FeCu 1 - Yellow Metal Catalyst //WNi 2 - Blue Metal Catalyst //CoTi 3 - Orange Metal
+     * Catalyst //Vanadium Pd 4 - Purple Metal Catalyst //IrIdium Ruthenium 5 - Brown Metal Catalyst //NiAl 6 - Pink
+     * Metal Catalyst //PtRh 7 - Alumina Grinding Ball 8 - Soapstone Grinding Ball 9 - Sodium Ethoxide //2 Sodium + 1
+     * Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na 11 -
+     * Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O 12 - Potassium Hydroxide // KOH 13 -
+     * Formaldehyde Catalyst //Fe16V1 14 - Solid Acid Catalyst //H2SO4 15 - Infinite Mutation Catalyst (for Mutated
+     * Living Solder) 16 - Platinum Group Catalyst (for platline skip) 17 - Plastic Polymer Catalyst (for early plastics
+     * skip) 18 - Rubber Polymer Catalyst (for early rubbers skip) 19 - Adhesion Promoter Catalyst (for glue/solder
+     * skip) 20 - Tita-Tungsten Indium Catalyst (for titanium/tungsten/indium skip) 21 - Radioactivity Catalyst (for
+     * thorium/uranium/plutonium skip) 22 - Rare-Earth Group Catalyst (for monaline skip) 23 - Simple Naquadah Catalyst
+     * (for early naqline skip) 24 - Advanced Naquadah Catalyst (for late naqline skip) 25 - Raw Intelligence Catalyst
+     * (for stem cells skip) 26 - Ultimate Plasticizer Catalyst (for late plastics skip) 27 - Biological Intelligence
+     * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 29 - Limpid Water
+     * Catalyst (for early waterline skip) 30 - Flawless Water Catalyst (for advanced waterline skip) 33 - Algagenic
+     * Growth Promoter Catalyst (for seaweed skip) 34 - Hellish Force Catalyst (for Netherite skip) 35 - Crystal
+     * Colorization Catalyst (for Prismatic Acid)
      */
 
     public ItemGenericChemBase() {
@@ -96,7 +78,7 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-        boolean p_77663_5_) {
+            boolean p_77663_5_) {
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 
@@ -173,15 +155,13 @@ public class ItemGenericChemBase extends Item {
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
         if (MTEIsaMill.isMillingBall(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound()
-                .hasNoTags()) {
+            if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
                 createMillingBallNBT(aStack);
             }
             double currentDamage = getMillingBallDamage(aStack);
             return currentDamage / getMaxBallDurability(aStack);
         } else if (MTEChemicalPlant.isCatalyst(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound()
-                .hasNoTags()) {
+            if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
                 createCatalystNBT(aStack);
             }
             double currentDamage = getCatalystDamage(aStack);
@@ -208,8 +188,8 @@ public class ItemGenericChemBase extends Item {
         }
         if (MTEChemicalPlant.isCatalyst(aStack)) {
             list.add(
-                EnumChatFormatting.GRAY
-                    + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
+                    EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
             aMaxDamage = getCatalystMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getCatalystDamage(aStack);
@@ -253,23 +233,19 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getMillingBallDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
             createMillingBallNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("MillingBall")
-            .getInteger("Damage");
+        return aNBT.getCompoundTag("MillingBall").getInteger("Damage");
     }
 
     public static int getMillingBallMaxDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
             createMillingBallNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("MillingBall")
-            .getInteger("MaxDamage");
+        return aNBT.getCompoundTag("MillingBall").getInteger("MaxDamage");
     }
 
     public static void setMillingBallDamage(ItemStack aStack, int aAmount) {
@@ -299,23 +275,19 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getCatalystDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
             createCatalystNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("catalyst")
-            .getInteger("Damage");
+        return aNBT.getCompoundTag("catalyst").getInteger("Damage");
     }
 
     public static int getCatalystMaxDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound()
-            .hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
             createCatalystNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("catalyst")
-            .getInteger("MaxDamage");
+        return aNBT.getCompoundTag("catalyst").getInteger("MaxDamage");
     }
 
     public static void setCatalystDamage(ItemStack aStack, int aAmount) {

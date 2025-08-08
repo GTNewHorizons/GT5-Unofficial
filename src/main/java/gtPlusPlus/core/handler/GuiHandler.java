@@ -58,7 +58,7 @@ public class GuiHandler implements IGuiHandler {
 
     @Override // ContainerModTileEntity
     public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x,
-        final int y, final int z) {
+            final int y, final int z) {
         final TileEntity te = world.getTileEntity(x, y, z);
 
         if (te != null) {
@@ -89,18 +89,18 @@ public class GuiHandler implements IGuiHandler {
 
     @Override // GuiModTileEntity
     public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x,
-        final int y, final int z) {
+            final int y, final int z) {
         Logger.WARNING(
-            "getClientGuiElement Called by: " + player
-                + ", in world: "
-                + player.dimension
-                + " at x:"
-                + x
-                + ", y:"
-                + y
-                + ", z:"
-                + z
-                + ".");
+                "getClientGuiElement Called by: " + player
+                        + ", in world: "
+                        + player.dimension
+                        + " at x:"
+                        + x
+                        + ", y:"
+                        + y
+                        + ", z:"
+                        + z
+                        + ".");
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te != null) {
             if (ID == GUI1) {
@@ -119,7 +119,7 @@ public class GuiHandler implements IGuiHandler {
                 return new GUIPestKiller(player.inventory, (TileEntityPestKiller) te);
             } else if (ID == GUI18) {
                 return new GUIVolumetricFlaskSetter(
-                    new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
+                        new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
             }
         }
 
@@ -135,12 +135,12 @@ public class GuiHandler implements IGuiHandler {
         final int guiData = encodeGuiData(guiHandler, data);
         final ChunkCoordinates coordinates = guiHandler.getCoordinates();
         entityplayer.openGui(
-            GTplusplus.instance,
-            guiData,
-            entityplayer.worldObj,
-            coordinates.posX,
-            coordinates.posY,
-            coordinates.posZ);
+                GTplusplus.instance,
+                guiData,
+                entityplayer.worldObj,
+                coordinates.posX,
+                coordinates.posY,
+                coordinates.posZ);
     }
 
     private static int encodeGuiData(final IGuiManager guiHandler, final short data) {

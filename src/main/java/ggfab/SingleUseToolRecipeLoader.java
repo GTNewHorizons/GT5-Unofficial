@@ -23,8 +23,7 @@ import gregtech.api.util.GTUtility;
 class SingleUseToolRecipeLoader implements Runnable {
 
     /*
-     * MARKED FOR DEPRECATION, will be moved to just the fluid solidifer.
-     * REMOVE TOOLCAST SEGMENT IN NEXT MAJOR UPDATE
+     * MARKED FOR DEPRECATION, will be moved to just the fluid solidifer. REMOVE TOOLCAST SEGMENT IN NEXT MAJOR UPDATE
      */
     public static final int RECIPE_DURATION = 6 * SECONDS;
     public static final int OUTPUT_QUANTITY_MIN = 2 * 64;
@@ -50,8 +49,8 @@ class SingleUseToolRecipeLoader implements Runnable {
         // Mold recipes
         for (SingleUseTool singleUseTool : SingleUseTool.values()) {
             GTModHandler.addCraftingRecipe(
-                singleUseTool.mold.get(1L),
-                new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', singleUseTool.toolDictName });
+                    singleUseTool.mold.get(1L),
+                    new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', singleUseTool.toolDictName });
         }
     }
 
@@ -101,7 +100,7 @@ class SingleUseToolRecipeLoader implements Runnable {
                 solidifierFluidPerCraft = Math.max((long) (solidifierFluidPerCraft / divisor), 1L);
                 solidifierRecipeDuration = Math.max((long) (solidifierRecipeDuration / divisor), 1L);
                 solidifierOutputQuantity = Math
-                    .min((long) (solidifierOutputQuantity / divisor), SOLIDIFIER_QUANTITY_MAX);
+                        .min((long) (solidifierOutputQuantity / divisor), SOLIDIFIER_QUANTITY_MAX);
             } else if (solidifierOutputQuantity < SOLIDIFIER_QUANTITY_MIN) {
                 // Too little output — scale up.
                 long multiplier = GTUtility.ceilDiv(SOLIDIFIER_QUANTITY_MIN, outputQuantity);
@@ -134,24 +133,16 @@ class SingleUseToolRecipeLoader implements Runnable {
             while (output.stackSize > maxStackSize) outputs.add(output.splitStack(maxStackSize));
             outputs.add(output);
 
-            GTValues.RA.stdBuilder()
-                .fluidInputs(material.getMolten(fluidPerCraft))
-                .itemInputs(singleUseTool.mold.get(0L))
-                .itemOutputs(outputs.toArray(new ItemStack[0]))
-                .eut(TierEU.RECIPE_MV)
-                .duration(recipeDuration)
-                .addTo(GGFabRecipeMaps.toolCastRecipes);
+            GTValues.RA.stdBuilder().fluidInputs(material.getMolten(fluidPerCraft))
+                    .itemInputs(singleUseTool.mold.get(0L)).itemOutputs(outputs.toArray(new ItemStack[0]))
+                    .eut(TierEU.RECIPE_MV).duration(recipeDuration).addTo(GGFabRecipeMaps.toolCastRecipes);
 
             ItemStack solidifierOutput = singleUseTool.tool.get(0L);
             solidifierOutput.stackSize = (int) solidifierOutputQuantity;
 
-            GTValues.RA.stdBuilder()
-                .fluidInputs(material.getMolten(solidifierFluidPerCraft))
-                .itemInputs(singleUseTool.mold.get(0L))
-                .itemOutputs(solidifierOutput)
-                .eut(TierEU.RECIPE_MV)
-                .duration(solidifierRecipeDuration)
-                .addTo(RecipeMaps.fluidSolidifierRecipes);
+            GTValues.RA.stdBuilder().fluidInputs(material.getMolten(solidifierFluidPerCraft))
+                    .itemInputs(singleUseTool.mold.get(0L)).itemOutputs(solidifierOutput).eut(TierEU.RECIPE_MV)
+                    .duration(solidifierRecipeDuration).addTo(RecipeMaps.fluidSolidifierRecipes);
         }
     }
 }

@@ -38,8 +38,7 @@ public class CommandHelp extends CommandBase {
         final String key;
 
         Translations() {
-            key = "kubatech.command.help." + this.name()
-                .toLowerCase();
+            key = "kubatech.command.help." + this.name().toLowerCase();
         }
 
         public String get() {
@@ -79,6 +78,6 @@ public class CommandHelp extends CommandBase {
     public void processCommand(ICommandSender sender, String[] args) {
         sender.addChatMessage(new ChatComponentText(POSSIBLE_COMMANDS.get()));
         CommandHandler.childCommands.values()
-            .forEach(c -> sender.addChatMessage(new ChatComponentText("/kubatech " + c.getCommandUsage(sender))));
+                .forEach(c -> sender.addChatMessage(new ChatComponentText("/kubatech " + c.getCommandUsage(sender))));
     }
 }

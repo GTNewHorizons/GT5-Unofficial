@@ -42,7 +42,7 @@ public class ResultMissingItem implements CheckRecipeResult {
     @Nonnull
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
-            I18n.format("GT5U.gui.text.missing_item", itemStack != null ? itemStack.getDisplayName() : "null"));
+                I18n.format("GT5U.gui.text.missing_item", itemStack != null ? itemStack.getDisplayName() : "null"));
     }
 
     @Override

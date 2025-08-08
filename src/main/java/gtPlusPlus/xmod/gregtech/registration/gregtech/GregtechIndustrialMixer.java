@@ -16,9 +16,9 @@ public class GregtechIndustrialMixer {
     private static void run1() {
         // Industrial Mixer Multiblock
         GregtechItemList.Industrial_Mixer.set(
-            new MTEIndustrialMixer(
-                Industrial_Mixer.ID,
-                "industrialmixer.controller.tier.single",
-                "Industrial Mixing Machine").getStackForm(1L));
+                new MTEIndustrialMixer(
+                        Industrial_Mixer.ID,
+                        "industrialmixer.controller.tier.single",
+                        "Industrial Mixing Machine").getStackForm(1L));
     }
 }

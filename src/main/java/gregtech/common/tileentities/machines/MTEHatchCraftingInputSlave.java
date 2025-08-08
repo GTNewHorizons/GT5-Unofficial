@@ -43,14 +43,14 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            11,
-            0,
-            new String[] { "Proxy for Crafting Input Buffer/Bus", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
-                "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
-                "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them", });
+                aID,
+                aName,
+                aNameRegional,
+                11,
+                0,
+                new String[] { "Proxy for Crafting Input Buffer/Bus", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
+                        "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
+                        "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them", });
         disableSort = true;
     }
 
@@ -117,11 +117,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         var ret = new ArrayList<String>();
         if (getMaster() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_slave.linked_to",
-                    masterX,
-                    masterY,
-                    masterZ));
+                    StatCollector.translateToLocalFormatted(
+                            "GT5U.infodata.hatch.crafting_input_slave.linked_to",
+                            masterX,
+                            masterY,
+                            masterZ));
             ret.addAll(Arrays.asList(getMaster().getInfoData()));
         } else ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_slave.not_linked_to"));
         return ret.toArray(new String[0]);
@@ -142,13 +142,13 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
@@ -178,8 +178,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     public MTEHatchCraftingInputME trySetMasterFromCoord(int x, int y, int z) {
-        var tileEntity = getBaseMetaTileEntity().getWorld()
-            .getTileEntity(x, y, z);
+        var tileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x, y, z);
         if (tileEntity == null) return null;
         if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
@@ -198,8 +197,8 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
             return false;
         }
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
-            .equals("CraftingInputBuffer")) {
+        if (!dataStick.hasTagCompound()
+                || !dataStick.stackTagCompound.getString("type").equals("CraftingInputBuffer")) {
             return false;
         }
 
@@ -278,14 +277,14 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add((tag.getBoolean("linked") ? "Linked" : "Not linked"));
 
         if (tag.hasKey("masterX")) {
             currenttip.add(
-                "Bound to " + tag
-                    .getInteger("masterX") + ", " + tag.getInteger("masterY") + ", " + tag.getInteger("masterZ"));
+                    "Bound to " + tag.getInteger(
+                            "masterX") + ", " + tag.getInteger("masterY") + ", " + tag.getInteger("masterZ"));
         }
 
         if (tag.hasKey("masterName")) {
@@ -297,7 +296,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
 
         tag.setBoolean("linked", getMaster() != null);
         if (masterSet) {

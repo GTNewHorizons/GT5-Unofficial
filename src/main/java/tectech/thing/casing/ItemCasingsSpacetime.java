@@ -32,12 +32,13 @@ public class ItemCasingsSpacetime extends ItemCasings {
             case 7:
             case 8:
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "tt.eoh.spacetime.standard.tooltip.0",
-                        formatNumbers(pow(10, 5 + aStack.getItemDamage()))));
+                        StatCollector.translateToLocalFormatted(
+                                "tt.eoh.spacetime.standard.tooltip.0",
+                                formatNumbers(pow(10, 5 + aStack.getItemDamage()))));
                 tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("tt.eoh.spacetime.standard.tooltip.1", aStack.getItemDamage() + 1));
+                        StatCollector.translateToLocalFormatted(
+                                "tt.eoh.spacetime.standard.tooltip.1",
+                                aStack.getItemDamage() + 1));
                 break;
             default:
                 tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));

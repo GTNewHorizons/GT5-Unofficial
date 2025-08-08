@@ -13,10 +13,10 @@ import ic2.core.item.ItemIC2;
 public class MixinIc2FissionFuelRemoval {
 
     @WrapWithCondition(
-        method = "<init>",
-        at = @At(
-            value = "INVOKE",
-            target = "Lcpw/mods/fml/common/registry/GameRegistry;registerItem(Lnet/minecraft/item/Item;Ljava/lang/String;)V"))
+            method = "<init>",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcpw/mods/fml/common/registry/GameRegistry;registerItem(Lnet/minecraft/item/Item;Ljava/lang/String;)V"))
     private boolean gt5u$wrapRegister(Item item, String name) {
         switch (name) {
             case "reactorMOXSimpledepleted":

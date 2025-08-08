@@ -71,107 +71,107 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         }
 
         GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 0L),
-            GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { OrePrefixes.circuit.get(Materials.LV) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 0L),
+                GTModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[] { OrePrefixes.circuit.get(Materials.LV) });
         long bits = GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE;
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 1L),
-            bits,
-            new Object[] { "d  ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 1L),
+                bits,
+                new Object[] { "d  ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 2L),
-            bits,
-            new Object[] { " d ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 2L),
+                bits,
+                new Object[] { " d ", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 3L),
-            bits,
-            new Object[] { "  d", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 3L),
+                bits,
+                new Object[] { "  d", " P ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 4L),
-            bits,
-            new Object[] { aTextEmptyRow, " Pd", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 4L),
+                bits,
+                new Object[] { aTextEmptyRow, " Pd", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 5L),
-            bits,
-            new Object[] { aTextEmptyRow, " P ", "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 5L),
+                bits,
+                new Object[] { aTextEmptyRow, " P ", "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 6L),
-            bits,
-            new Object[] { aTextEmptyRow, " P ", " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 6L),
+                bits,
+                new Object[] { aTextEmptyRow, " P ", " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 7L),
-            bits,
-            new Object[] { aTextEmptyRow, " P ", "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 7L),
+                bits,
+                new Object[] { aTextEmptyRow, " P ", "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 8L),
-            bits,
-            new Object[] { aTextEmptyRow, "dP ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 8L),
+                bits,
+                new Object[] { aTextEmptyRow, "dP ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 9L),
-            bits,
-            new Object[] { "P d", aTextEmptyRow, aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 9L),
+                bits,
+                new Object[] { "P d", aTextEmptyRow, aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 10L),
-            bits,
-            new Object[] { "P  ", "  d", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 10L),
+                bits,
+                new Object[] { "P  ", "  d", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 11L),
-            bits,
-            new Object[] { "P  ", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 11L),
+                bits,
+                new Object[] { "P  ", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 12L),
-            bits,
-            new Object[] { "P  ", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 12L),
+                bits,
+                new Object[] { "P  ", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 13L),
-            bits,
-            new Object[] { "  P", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 13L),
+                bits,
+                new Object[] { "  P", aTextEmptyRow, "  d", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 14L),
-            bits,
-            new Object[] { "  P", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 14L),
+                bits,
+                new Object[] { "  P", aTextEmptyRow, " d ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 15L),
-            bits,
-            new Object[] { "  P", aTextEmptyRow, "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 15L),
+                bits,
+                new Object[] { "  P", aTextEmptyRow, "d  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 16L),
-            bits,
-            new Object[] { "  P", "d  ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 16L),
+                bits,
+                new Object[] { "  P", "d  ", aTextEmptyRow, 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 17L),
-            bits,
-            new Object[] { aTextEmptyRow, aTextEmptyRow, "d P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 17L),
+                bits,
+                new Object[] { aTextEmptyRow, aTextEmptyRow, "d P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 18L),
-            bits,
-            new Object[] { aTextEmptyRow, "d  ", "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 18L),
+                bits,
+                new Object[] { aTextEmptyRow, "d  ", "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 19L),
-            bits,
-            new Object[] { "d  ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 19L),
+                bits,
+                new Object[] { "d  ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 20L),
-            bits,
-            new Object[] { " d ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 20L),
+                bits,
+                new Object[] { " d ", aTextEmptyRow, "  P", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 21L),
-            bits,
-            new Object[] { "d  ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 21L),
+                bits,
+                new Object[] { "d  ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 22L),
-            bits,
-            new Object[] { " d ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 22L),
+                bits,
+                new Object[] { " d ", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 23L),
-            bits,
-            new Object[] { "  d", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 23L),
+                bits,
+                new Object[] { "  d", aTextEmptyRow, "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Circuit_Integrated.getWithDamage(1L, 24L),
-            bits,
-            new Object[] { aTextEmptyRow, "  d", "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
+                ItemList.Circuit_Integrated.getWithDamage(1L, 24L),
+                bits,
+                new Object[] { aTextEmptyRow, "  d", "P  ", 'P', ItemList.Circuit_Integrated.getWildcard(1L) });
     }
 
     private static String getModeString(int aMetaData) {
@@ -193,9 +193,9 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.item.programmed_circuit.tooltip.0",
-                getConfigurationString(getDamage(aStack))));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.item.programmed_circuit.tooltip.0",
+                        getConfigurationString(getDamage(aStack))));
         aList.add(StatCollector.translateToLocal("GT5U.item.programmed_circuit.tooltip.1"));
         aList.add(StatCollector.translateToLocal("GT5U.item.programmed_circuit.tooltip.2"));
     }
@@ -217,7 +217,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         super.registerIcons(aIconRegister);
         for (int i = 0; i < mIconDamage.length; i++) {
             mIconDamage[i] = aIconRegister
-                .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+                    .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
         if (GregTechAPI.sPostloadFinished) {
             GTLog.out.println("GTMod: Starting Item Icon Load Phase");
@@ -267,18 +267,18 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             if (configuratorStack == null) {
                 int count;
                 try {
-                    count = Integer
-                        .parseInt(StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
+                    count = Integer.parseInt(
+                            StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
                 } catch (NumberFormatException e) {
                     player.addChatComponentMessage(
-                        new ChatComponentText(
-                            "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
-                                + e.getMessage()));
+                            new ChatComponentText(
+                                    "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
+                                            + e.getMessage()));
                     count = 1;
                 }
                 player.addChatComponentMessage(
-                    new ChatComponentTranslation(
-                        "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
+                        new ChatComponentTranslation(
+                                "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return stack;
             }
         }
@@ -288,14 +288,14 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
 
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
         UIInfos.openClientUI(
-            player,
-            buildContext -> new SelectItemUIFactory(
-                StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
-                configurator,
-                ItemIntegratedCircuit::onConfigured,
-                ALL_VARIANTS,
-                meta,
-                true).createWindow(buildContext));
+                player,
+                buildContext -> new SelectItemUIFactory(
+                        StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
+                        configurator,
+                        ItemIntegratedCircuit::onConfigured,
+                        ALL_VARIANTS,
+                        meta,
+                        true).createWindow(buildContext));
     }
 
     private static void onConfigured(ItemStack stack) {
@@ -339,8 +339,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                     for (int id : OreDictionary.getOreIDs(toolboxStack)) {
                         if (id == screwdriverOreId) {
                             if (doDamage) {
-                                toolboxStack = toolboxStack.getItem()
-                                    .getContainerItem(toolboxStack);
+                                toolboxStack = toolboxStack.getItem().getContainerItem(toolboxStack);
                                 if (toolboxStack != null && toolboxStack.stackSize <= 0) {
                                     toolboxInventory.setInventorySlotContents(j, null);
                                 } else {
@@ -357,12 +356,10 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             for (int id : OreDictionary.getOreIDs(potentialStack)) {
                 if (id == screwdriverOreId) {
                     if (doDamage) {
-                        if (potentialStack.getItem()
-                            .equals(SingleUseScrewdriver.getItem())) {
+                        if (potentialStack.getItem().equals(SingleUseScrewdriver.getItem())) {
                             potentialStack.stackSize -= 1;
                         } else {
-                            potentialStack = potentialStack.getItem()
-                                .getContainerItem(potentialStack);
+                            potentialStack = potentialStack.getItem().getContainerItem(potentialStack);
                         }
                         if (potentialStack != null && potentialStack.stackSize <= 0) {
                             mainInventory[i] = null;

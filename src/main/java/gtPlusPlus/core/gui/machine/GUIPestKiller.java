@@ -24,8 +24,8 @@ import gtPlusPlus.core.util.math.MathUtils;
 public class GUIPestKiller extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-        GTPlusPlus.ID,
-        "textures/gui/PestKiller.png");
+            GTPlusPlus.ID,
+            "textures/gui/PestKiller.png");
     private final TileEntityPestKiller mTileKiller;
 
     public GUIPestKiller(final InventoryPlayer player_inventory, final TileEntityPestKiller te) {
@@ -94,19 +94,8 @@ public class GUIPestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Tier: 1", 4, 18, 4210752);
                     this.fontRendererObj.drawString("Range: 5x5", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
-                    this.fontRendererObj.drawString(
-                        aTile.getTank()
-                            .getFluid()
-                            .getLocalizedName(),
-                        4,
-                        54,
-                        4210752);
-                    this.fontRendererObj.drawString(
-                        "Amount: " + aTile.getTank()
-                            .getFluidAmount(),
-                        4,
-                        64,
-                        4210752);
+                    this.fontRendererObj.drawString(aTile.getTank().getFluid().getLocalizedName(), 4, 54, 4210752);
+                    this.fontRendererObj.drawString("Amount: " + aTile.getTank().getFluidAmount(), 4, 64, 4210752);
                     didRender = true;
                 } else if (aTier == 2) {
                     if (aTank != null && aTank.getFluidAmount() > 0) {
@@ -120,19 +109,8 @@ public class GUIPestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Tier: 2", 4, 18, 4210752);
                     this.fontRendererObj.drawString("Range: 9x9", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
-                    this.fontRendererObj.drawString(
-                        aTile.getTank()
-                            .getFluid()
-                            .getLocalizedName(),
-                        4,
-                        54,
-                        4210752);
-                    this.fontRendererObj.drawString(
-                        "Amount: " + aTile.getTank()
-                            .getFluidAmount(),
-                        4,
-                        64,
-                        4210752);
+                    this.fontRendererObj.drawString(aTile.getTank().getFluid().getLocalizedName(), 4, 54, 4210752);
+                    this.fontRendererObj.drawString("Amount: " + aTile.getTank().getFluidAmount(), 4, 64, 4210752);
                     didRender = true;
                 }
             }

@@ -10,8 +10,6 @@ import gregtech.api.recipe.RecipeMapBuilder;
 public class GGFabRecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> toolCastRecipes = RecipeMapBuilder.of("ggfab.recipe.toolcast")
-        .maxIO(1, 4, 1, 0)
-        .minInputs(1, 1)
-        .progressBar(GTUITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-        .build();
+            .maxIO(1, 4, 1, 0).minInputs(1, 1).progressBar(GTUITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+            .build();
 }

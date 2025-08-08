@@ -115,16 +115,16 @@ public class BTF_Inventory implements ISidedInventory {
     @Override
     public boolean canInsertItem(int aIndex, @Nullable ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
-            && aIndex < this.mInventory.length
-            && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(aStack, this.mInventory[aIndex]))
-            && this.allowPutStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
+                && aIndex < this.mInventory.length
+                && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(aStack, this.mInventory[aIndex]))
+                && this.allowPutStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
     @Override
     public boolean canExtractItem(int aIndex, @Nullable ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
-            && aIndex < this.mInventory.length
-            && this.allowPullStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
+                && aIndex < this.mInventory.length
+                && this.allowPullStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
     public boolean allowPullStack(TileEntityBase mTile2, int aIndex, ForgeDirection side, ItemStack aStack) {
@@ -132,9 +132,9 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     public boolean allowPutStack(TileEntityBase aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return (aIndex >= 0 && aIndex < this.getSizeInventory())
-            && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(this.mInventory[aIndex], aStack));
+                && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(this.mInventory[aIndex], aStack));
     }
 
     @Override
@@ -197,8 +197,7 @@ public class BTF_Inventory implements ISidedInventory {
                     this.setInventorySlotContents(s, aInput);
                     return true;
                 } else if (slot.getItem() != null && GTUtility.areStacksEqual(aInput, slot)
-                    && slot.stackSize != slot.getItem()
-                        .getItemStackLimit(slot)) {
+                        && slot.stackSize != slot.getItem().getItemStackLimit(slot)) {
                             slot.stackSize += aInput.stackSize;
                             this.setInventorySlotContents(s, slot);
                             return true;

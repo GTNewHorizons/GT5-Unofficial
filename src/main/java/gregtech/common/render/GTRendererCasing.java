@@ -74,11 +74,8 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         for (int i = 0, validDirectionsLength = validDirections.length; i < validDirectionsLength; i++) {
             ForgeDirection tFace = validDirections[i];
             if (noCoord) {
-                textureArray[i][0] = TextureFactory.builder()
-                    .setFromBlock(aBlock, aMeta)
-                    .setFromSide(tFace)
-                    .noWorldCoord()
-                    .build();
+                textureArray[i][0] = TextureFactory.builder().setFromBlock(aBlock, aMeta).setFromSide(tFace)
+                        .noWorldCoord().build();
             } else {
                 textureArray[i][0] = TextureFactory.of(aBlock, aMeta, tFace);
             }
@@ -88,7 +85,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
-        RenderBlocks aRenderer) {
+            RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled();
         aRenderer.useInventoryTint = false;
 

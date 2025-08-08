@@ -37,12 +37,12 @@ public class MTEHatchInput extends MTEHatch {
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
         this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
+                        "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -51,12 +51,12 @@ public class MTEHatchInput extends MTEHatch {
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
         this(
-            aID,
-            aSlot,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Fluid Input for Multiblocks", "", "Can hold " + aSlot + " types of fluid." });
+                aID,
+                aSlot,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { "Fluid Input for Multiblocks", "", "Can hold " + aSlot + " types of fluid." });
         mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)) + "L";
     }
 
@@ -81,9 +81,9 @@ public class MTEHatchInput extends MTEHatch {
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
         return GTMod.proxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
-                TextureFactory.of(FLUID_IN_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
+                        TextureFactory.of(FLUID_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
     }
 
     @Override
@@ -91,9 +91,9 @@ public class MTEHatchInput extends MTEHatch {
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
         return GTMod.proxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
-                TextureFactory.of(FLUID_IN_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
+                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
+                        TextureFactory.of(FLUID_IN_SIGN) }
+                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
     }
 
     @Override
@@ -140,7 +140,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", getBaseMetaTileEntity().getColorization());
 
@@ -148,12 +148,11 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        byte color = accessor.getNBTData()
-            .getByte("color");
+        byte color = accessor.getNBTData().getByte("color");
         if (color >= 0 && color < 16) currenttip.add(
-            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
     }
 
     @Override
@@ -189,17 +188,17 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0
-            && (mRecipeMap == null || disableFilter
-                || mRecipeMap.containsInput(aStack)
-                || mRecipeMap.containsInput(GTUtility.getFluidForFilledItem(aStack, true)));
+                && (mRecipeMap == null || disableFilter
+                        || mRecipeMap.containsInput(aStack)
+                        || mRecipeMap.containsInput(GTUtility.getFluidForFilledItem(aStack, true)));
     }
 
     @Override
@@ -209,13 +208,13 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (!getBaseMetaTileEntity().getCoverAtSide(side)
-            .isGUIClickable()) return;
+            ItemStack aTool) {
+        if (!getBaseMetaTileEntity().getCoverAtSide(side).isGUIClickable()) return;
         else {
             disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+            GTUtility.sendChatToPlayer(
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
         }
     }
 }

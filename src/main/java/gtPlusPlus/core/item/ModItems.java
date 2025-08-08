@@ -202,16 +202,16 @@ public final class ModItems {
         GregtechItemList.MagicFeather.set(new ItemMagicFeather());
 
         GregtechItemList.AlkalusDisk.set(
-            new BaseItemDamageable(
-                "itemAlkalusDisk",
-                AddToCreativeTab.tabMisc,
-                1,
-                0,
-                "Unknown Use",
-                EnumRarity.rare,
-                EnumChatFormatting.AQUA,
-                false,
-                null));
+                new BaseItemDamageable(
+                        "itemAlkalusDisk",
+                        AddToCreativeTab.tabMisc,
+                        1,
+                        0,
+                        "Unknown Use",
+                        EnumRarity.rare,
+                        EnumChatFormatting.AQUA,
+                        false,
+                        null));
 
         itemGenericToken = new ItemGenericToken();
         itemDummyResearch = new ItemDummyResearch();
@@ -229,15 +229,15 @@ public final class ModItems {
         GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
 
         itemHalfCompleteCasings = new ItemHalfCompleteCasings(
-            "itemHalfCompleteCasings",
-            AddToCreativeTab.tabMisc,
-            32,
-            0,
-            "This isn't quite finished yet.",
-            EnumRarity.common,
-            EnumChatFormatting.GRAY,
-            false,
-            Utils.rgbtoHexValue(255, 255, 255)).setTextureName(GregTech.ID + ":" + "gt.metaitem.01/" + "761");
+                "itemHalfCompleteCasings",
+                AddToCreativeTab.tabMisc,
+                32,
+                0,
+                "This isn't quite finished yet.",
+                EnumRarity.common,
+                EnumChatFormatting.GRAY,
+                false,
+                Utils.rgbtoHexValue(255, 255, 255)).setTextureName(GregTech.ID + ":" + "gt.metaitem.01/" + "761");
 
         // Start meta Item Generation
         ItemsFoods.load();
@@ -457,80 +457,80 @@ public final class ModItems {
         dustAqua = ItemUtils.generateSpecialUseDusts(MaterialsElements.getInstance().AQUA, true)[0];
 
         ItemUtils.generateSpecialUseDusts(MaterialMisc.WOODS_GLASS, false);
-        cellHydrogenChlorideMix = MaterialMisc.HYDROGEN_CHLORIDE_MIX.getCell(1)
-            .getItem();
+        cellHydrogenChlorideMix = MaterialMisc.HYDROGEN_CHLORIDE_MIX.getCell(1).getItem();
 
         // Nuclear Fuel Dusts
         dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts(
-            "LithiumCarbonate",
-            "Lithium Carbonate",
-            "Li2CO3",
-            Utils.rgbtoHexValue(240, 240, 240))[0]; // https://en.wikipedia.org/wiki/Lithium_carbonate
+                "LithiumCarbonate",
+                "Lithium Carbonate",
+                "Li2CO3",
+                Utils.rgbtoHexValue(240, 240, 240))[0]; // https://en.wikipedia.org/wiki/Lithium_carbonate
         dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts(
-            "LithiumPeroxide",
-            "Lithium Peroxide",
-            "Li2O2",
-            Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_peroxide
+                "LithiumPeroxide",
+                "Lithium Peroxide",
+                "Li2O2",
+                Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_peroxide
         dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts(
-            "LithiumHydroxide",
-            "Lithium Hydroxide",
-            "LiOH",
-            Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
+                "LithiumHydroxide",
+                "Lithium Hydroxide",
+                "LiOH",
+                Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
 
         if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) == null) {
             dustQuicklime = ItemUtils
-                .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
+                    .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
         }
         dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts(
-            "CalciumHydroxide",
-            "Hydrated Lime",
-            "CaO2H2",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_hydroxide
+                "CalciumHydroxide",
+                "Hydrated Lime",
+                "CaO2H2",
+                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_hydroxide
         dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts(
-            "CalciumCarbonate",
-            "Calcium Carbonate",
-            "CaCO3",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
+                "CalciumCarbonate",
+                "Calcium Carbonate",
+                "CaCO3",
+                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1) == null)
-            || (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustCalciumSulfate", 1) == null)) {
+                || (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustCalciumSulfate", 1) == null)) {
             dustCalciumSulfate = ItemUtils.generateSpecialUseDusts(
-                "Gypsum",
-                "Calcium Sulfate (Gypsum)",
-                "CaSO4",
-                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
+                    "Gypsum",
+                    "Calcium Sulfate (Gypsum)",
+                    "CaSO4",
+                    Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
             GTOreDictUnificator.registerOre("dustCalciumSulfate", new ItemStack(dustCalciumSulfate));
         } else {
-            GTOreDictUnificator
-                .registerOre("dustCalciumSulfate", ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
+            GTOreDictUnificator.registerOre(
+                    "dustCalciumSulfate",
+                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
         }
         dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts(
-            "Li2CO3CaOH2",
-            "Li2CO3 + CaO2H2 Compound",
-            "Li2CO3CaO2H2",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
+                "Li2CO3CaOH2",
+                "Li2CO3 + CaO2H2 Compound",
+                "Li2CO3CaO2H2",
+                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.SODIUM_FLUORIDE, false);
         // FLiBe Fuel Compounds
         dustLi2BeF4 = ItemUtils.generateSpecialUseDusts(
-            "Li2BeF4",
-            "Lithium Tetrafluoroberyllate Fuel Compound",
-            "Li2BeF4",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
+                "Li2BeF4",
+                "Lithium Tetrafluoroberyllate Fuel Compound",
+                "Li2BeF4",
+                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
         Material.registerComponentForMaterial(MaterialsNuclides.Li2BeF4, OrePrefixes.dust, new ItemStack(dustLi2BeF4));
 
         Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
-            "PhthalicAnhydride",
-            "Phthalic Anhydride",
-            "C6H4(CO)2O",
-            Utils.rgbtoHexValue(175, 175, 175));
+                "PhthalicAnhydride",
+                "Phthalic Anhydride",
+                "C6H4(CO)2O",
+                Utils.rgbtoHexValue(175, 175, 175));
         GregtechItemList.PhthalicAnhydrideDust.set(phthalicAnhydride[0]);
         GregtechItemList.SmallPhthalicAnhydrideDust.set(phthalicAnhydride[1]);
         GregtechItemList.TinyPhthalicAnhydrideDust.set(phthalicAnhydride[2]);
 
         Item[] lithiumHydroperoxide = ItemUtils.generateSpecialUseDusts(
-            "LithiumHydroperoxide",
-            "Lithium Hydroperoxide",
-            "HLiO2",
-            Utils.rgbtoHexValue(125, 125, 125));
+                "LithiumHydroperoxide",
+                "Lithium Hydroperoxide",
+                "HLiO2",
+                Utils.rgbtoHexValue(125, 125, 125));
         GregtechItemList.LithiumHydroperoxide.set(lithiumHydroperoxide[0]);
         GregtechItemList.SmallLithiumHydroperoxide.set(lithiumHydroperoxide[1]);
         GregtechItemList.TinyLithiumHydroperoxide.set(lithiumHydroperoxide[2]);
@@ -552,28 +552,28 @@ public final class ModItems {
         // 800, null, CI.emptyCells(1), 1000, true);
         // LFTR Blanket Fluid Processing
         fluidNuclearWaste = FluidUtils.addGTFluidNoPrefix(
-            "nuclear.waste",
-            "Nuclear Waste",
-            new short[] { 10, 250, 10, 100 },
-            0,
-            1000,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            true);
+                "nuclear.waste",
+                "Nuclear Waste",
+                new short[] { 10, 250, 10, 100 },
+                0,
+                1000,
+                null,
+                ItemList.Cell_Empty.get(1),
+                1000,
+                true);
 
         // LFTR Control Circuit
         itemCircuitLFTR = new CoreItem(
-            "itemCircuitLFTR",
-            EnumChatFormatting.GREEN + "Control Circuit",
-            AddToCreativeTab.tabMisc,
-            1,
-            0,
-            new String[] { "Keeps Multiblocks Stable" },
-            EnumRarity.epic,
-            EnumChatFormatting.DARK_GREEN,
-            false,
-            null);
+                "itemCircuitLFTR",
+                EnumChatFormatting.GREEN + "Control Circuit",
+                AddToCreativeTab.tabMisc,
+                1,
+                0,
+                new String[] { "Keeps Multiblocks Stable" },
+                EnumRarity.epic,
+                EnumChatFormatting.DARK_GREEN,
+                false,
+                null);
 
         Item basicTurbine = new ItemBasicScrubberTurbine();
         GregtechItemList.BasicIronTurbine.set(new ItemStack(basicTurbine));
@@ -583,14 +583,14 @@ public final class ModItems {
         // Zirconium
         // Cinter Pellet.
         itemZirconiumChlorideCinterPellet = new CoreItem(
-            "itemZirconiumPellet",
-            "Zirconium Pellet [" + StringUtils.subscript("ZrCl4") + "]",
-            tabMisc).setTextureName(GTPlusPlus.ID + ":itemShard");
+                "itemZirconiumPellet",
+                "Zirconium Pellet [" + StringUtils.subscript("ZrCl4") + "]",
+                tabMisc).setTextureName(GTPlusPlus.ID + ":itemShard");
         GTOreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
         // Zirconium Chloride
         dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
         dustCookedZrCl4 = ItemUtils
-            .generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+                .generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 
         // Zirconium Tetrafluoride
         /*
@@ -600,10 +600,10 @@ public final class ModItems {
          * ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
          */
         fluidZrF4 = FluidUtils.generateFluidNoPrefix(
-            "ZirconiumTetrafluoride",
-            "Zirconium Tetrafluoride",
-            500,
-            new short[] { 170, 170, 140, 100 }); // https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+                "ZirconiumTetrafluoride",
+                "Zirconium Tetrafluoride",
+                500,
+                new short[] { 170, 170, 140, 100 }); // https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
         MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.setFluid(fluidZrF4);
 
         // Coolant Salt
@@ -614,46 +614,42 @@ public final class ModItems {
         // Load Tree Farmer
         // https://en.wikipedia.org/wiki/UAN
         dustFertUN18 = ItemUtils
-            .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
+                .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
         dustFertUN32 = ItemUtils
-            .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
+                .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
         if (Forestry.isModLoaded()) {
             ItemStack temp1 = ItemList.IC2_Fertilizer.get(1);
             ItemStack temp2 = ItemList.FR_Fertilizer.get(1);
             if (temp1 != null && temp2 != null) {
                 fluidFertBasic = FluidUtils.generateFluidNonMolten(
-                    "Fertiliser",
-                    "Fertiliser",
-                    32,
-                    new short[] { 45, 170, 45, 100 },
-                    temp1,
-                    null,
-                    true);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(temp2)
-                    .fluidOutputs(new FluidStack(fluidFertBasic, 36))
-                    .duration(5 * TICKS)
-                    .eut(16)
-                    .addTo(fluidExtractionRecipes);
+                        "Fertiliser",
+                        "Fertiliser",
+                        32,
+                        new short[] { 45, 170, 45, 100 },
+                        temp1,
+                        null,
+                        true);
+                GTValues.RA.stdBuilder().itemInputs(temp2).fluidOutputs(new FluidStack(fluidFertBasic, 36))
+                        .duration(5 * TICKS).eut(16).addTo(fluidExtractionRecipes);
             }
         }
         fluidFertUN32 = FluidUtils.generateFluidNonMolten(
-            "UN32Fertiliser",
-            "UN-32 Fertiliser",
-            24,
-            new short[] { 55, 190, 55, 100 },
-            null,
-            null,
-            true);
+                "UN32Fertiliser",
+                "UN-32 Fertiliser",
+                24,
+                new short[] { 55, 190, 55, 100 },
+                null,
+                null,
+                true);
         fluidFertUN18 = FluidUtils.generateFluidNonMolten(
-            "UN18Fertiliser",
-            "UN-18 Fertiliser",
-            22,
-            new short[] { 60, 155, 60, 100 },
-            null,
-            null,
-            true);
+                "UN18Fertiliser",
+                "UN-18 Fertiliser",
+                22,
+                new short[] { 60, 155, 60, 100 },
+                null,
+                null,
+                true);
 
         /*
          * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
@@ -662,14 +658,14 @@ public final class ModItems {
 
         // Juice
         FluidUtils.generateFluidNonMolten(
-            "RaisinJuice",
-            "Raisin Juice",
-            2,
-            new short[] { 51, 0, 51, 100 },
-            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1),
-            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1),
-            50,
-            true);
+                "RaisinJuice",
+                "Raisin Juice",
+                2,
+                new short[] { 51, 0, 51, 100 },
+                ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1),
+                ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1),
+                50,
+                true);
 
         // Test items
         toolGregtechPump = new ItemGregtechPump();
@@ -691,55 +687,55 @@ public final class ModItems {
         }
 
         dustNeptunium238 = new DustDecayable(
-            "dustNeptunium238",
-            0xAFF04B,
-            50000,
-            new String[] { StringUtils.superscript("238Np"),
-                "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
-            MaterialsElements.getInstance().PLUTONIUM238.getDust(1),
-            5,
-            GTRecipeConstants.DecayType.BetaMinus);
+                "dustNeptunium238",
+                0xAFF04B,
+                50000,
+                new String[] { StringUtils.superscript("238Np"),
+                        "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
+                MaterialsElements.getInstance().PLUTONIUM238.getDust(1),
+                5,
+                GTRecipeConstants.DecayType.BetaMinus);
         dustNeptunium239 = new DustDecayable(
-            "dustNeptunium239",
-            0x71F045,
-            25000,
-            new String[] { StringUtils.superscript("238Np"),
-                "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
-            Materials.Plutonium.getDust(1),
-            5,
-            GTRecipeConstants.DecayType.BetaMinus);
+                "dustNeptunium239",
+                0x71F045,
+                25000,
+                new String[] { StringUtils.superscript("238Np"),
+                        "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
+                Materials.Plutonium.getDust(1),
+                5,
+                GTRecipeConstants.DecayType.BetaMinus);
         dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts(
-            "DecayedRadium226",
-            "Decayed Radium-226",
-            "Contains Radon (" + StringUtils.superscript("222Rn") + ")",
-            MaterialsElements.getInstance().RADIUM.getRgbAsHex())[0];
+                "DecayedRadium226",
+                "Decayed Radium-226",
+                "Contains Radon (" + StringUtils.superscript("222Rn") + ")",
+                MaterialsElements.getInstance().RADIUM.getRgbAsHex())[0];
         dustRadium226 = new DustDecayable(
-            "dustRadium226",
-            MaterialsElements.getInstance().RADIUM.getRgbAsHex(),
-            90000,
-            new String[] { StringUtils.superscript("226Ra"),
-                "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
-            new ItemStack(dustDecayedRadium226),
-            5,
-            GTRecipeConstants.DecayType.Alpha);
+                "dustRadium226",
+                MaterialsElements.getInstance().RADIUM.getRgbAsHex(),
+                90000,
+                new String[] { StringUtils.superscript("226Ra"),
+                        "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
+                new ItemStack(dustDecayedRadium226),
+                5,
+                GTRecipeConstants.DecayType.Alpha);
         dustProtactinium233 = new DustDecayable(
-            "dustProtactinium233",
-            MaterialsElements.getInstance().PROTACTINIUM.getRgbAsHex(),
-            32000,
-            new String[] { StringUtils.superscript("233Pa"),
-                "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
-            MaterialsElements.getInstance().URANIUM233.getDust(1),
-            6,
-            GTRecipeConstants.DecayType.BetaMinus);
+                "dustProtactinium233",
+                MaterialsElements.getInstance().PROTACTINIUM.getRgbAsHex(),
+                32000,
+                new String[] { StringUtils.superscript("233Pa"),
+                        "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
+                MaterialsElements.getInstance().URANIUM233.getDust(1),
+                6,
+                GTRecipeConstants.DecayType.BetaMinus);
 
         itemIonParticleBase = new IonParticles();
         itemStandarParticleBase = new StandardBaseParticles();
 
         Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 16000);
         Item a64kFlask = VolumetricFlaskHelper
-            .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 256000);
+                .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 256000);
         Item aMAXINTFlask = VolumetricFlaskHelper
-            .generateNewFlask("Volumetric_Flask_Infinite", "Klein Bottle", 2147483647);
+                .generateNewFlask("Volumetric_Flask_Infinite", "Klein Bottle", 2147483647);
         GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
         GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
         GregtechItemList.KLEIN_BOTTLE.set(aMAXINTFlask);
@@ -757,19 +753,19 @@ public final class ModItems {
 
         // Chemistry
         Item[] formaldehydeCatalyst = ItemUtils.generateSpecialUseDusts(
-            "FormaldehydeCatalyst",
-            "Formaldehyde Catalyst",
-            "Fe16V1",
-            Utils.rgbtoHexValue(25, 5, 25));
+                "FormaldehydeCatalyst",
+                "Formaldehyde Catalyst",
+                "Fe16V1",
+                Utils.rgbtoHexValue(25, 5, 25));
         GregtechItemList.FormaldehydeCatalystDust.set(formaldehydeCatalyst[0]);
         GregtechItemList.SmallFormaldehydeCatalystDust.set(formaldehydeCatalyst[1]);
         GregtechItemList.TinyFormaldehydeCatalystDust.set(formaldehydeCatalyst[2]);
 
         Item[] ammoniumNitrate = ItemUtils.generateSpecialUseDusts(
-            "AmmoniumNitrate",
-            "Ammonium Nitrate",
-            "N2H4O3",
-            Utils.rgbtoHexValue(150, 75, 150));
+                "AmmoniumNitrate",
+                "Ammonium Nitrate",
+                "N2H4O3",
+                Utils.rgbtoHexValue(150, 75, 150));
         GregtechItemList.AmmoniumNitrateDust.set(ammoniumNitrate[0]);
         GregtechItemList.SmallAmmoniumNitrateDust.set(ammoniumNitrate[1]);
         GregtechItemList.TinyAmmoniumNitrateDust.set(ammoniumNitrate[2]);
@@ -777,20 +773,20 @@ public final class ModItems {
         // Farm Animal Fun
         // Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
         Item[] manureByproducts = ItemUtils.generateSpecialUseDusts(
-            "ManureByproducts",
-            "Manure Byproduct",
-            "(N2H4O3)N2P2Ca3CuC8",
-            Utils.rgbtoHexValue(110, 75, 25));
+                "ManureByproducts",
+                "Manure Byproduct",
+                "(N2H4O3)N2P2Ca3CuC8",
+                Utils.rgbtoHexValue(110, 75, 25));
         GregtechItemList.ManureByproductsDust.set(manureByproducts[0]);
         GregtechItemList.SmallManureByproductsDust.set(manureByproducts[1]);
         GregtechItemList.TinyManureByproductsDust.set(manureByproducts[2]);
 
         // Basically Guano
         Item[] organicFertilizer = ItemUtils.generateSpecialUseDusts(
-            "OrganicFertilizer",
-            "Organic Fertilizer",
-            "Ca5(PO4)3(OH)",
-            Utils.rgbtoHexValue(240, 240, 240));
+                "OrganicFertilizer",
+                "Organic Fertilizer",
+                "Ca5(PO4)3(OH)",
+                Utils.rgbtoHexValue(240, 240, 240));
         GregtechItemList.OrganicFertilizerDust.set(organicFertilizer[0]);
         GregtechItemList.SmallOrganicFertilizerDust.set(organicFertilizer[1]);
         GregtechItemList.TinyOrganicFertilizerDust.set(organicFertilizer[2]);
@@ -809,49 +805,38 @@ public final class ModItems {
 
         Item agrichemItem = new ItemAgrichemBase();
         GregtechItemList.AlgaeBiomass.set(new ItemStack(agrichemItem));
-        GregtechItemList.GreenAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 1))
-            .registerOre("biomassGreenAlgae");
-        GregtechItemList.BrownAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 2))
-            .registerOre("biomassBrownAlgae");
+        GregtechItemList.GreenAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 1)).registerOre("biomassGreenAlgae");
+        GregtechItemList.BrownAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 2)).registerOre("biomassBrownAlgae");
         GregtechItemList.GoldenBrownAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 3))
-            .registerOre("biomassGoldenBrownAlgae");
-        GregtechItemList.RedAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 4))
-            .registerOre("biomassRedAlgae");
+                .registerOre("biomassGoldenBrownAlgae");
+        GregtechItemList.RedAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 4)).registerOre("biomassRedAlgae");
 
-        GregtechItemList.CelluloseFiber.set(new ItemStack(agrichemItem, 1, 5))
-            .registerOre("fiberCellulose");
+        GregtechItemList.CelluloseFiber.set(new ItemStack(agrichemItem, 1, 5)).registerOre("fiberCellulose");
         GregtechItemList.GoldenBrownCelluloseFiber.set(new ItemStack(agrichemItem, 1, 6))
-            .registerOre("fiberCellulose", "fiberGoldenBrownCellulose");
+                .registerOre("fiberCellulose", "fiberGoldenBrownCellulose");
         GregtechItemList.RedCelluloseFiber.set(new ItemStack(agrichemItem, 1, 7))
-            .registerOre("fiberCellulose", "fiberRedCellulose");
+                .registerOre("fiberCellulose", "fiberRedCellulose");
 
         GregtechItemList.Compost.set(new ItemStack(agrichemItem, 1, 8));
-        GregtechItemList.WoodPellet.set(new ItemStack(agrichemItem, 1, 9))
-            .registerOre("pelletWood");
-        GregtechItemList.WoodBrick.set(new ItemStack(agrichemItem, 1, 10))
-            .registerOre("brickWood");
-        GregtechItemList.CellulosePulp.set(new ItemStack(agrichemItem, 1, 11))
-            .registerOre("pulpCellulose");
+        GregtechItemList.WoodPellet.set(new ItemStack(agrichemItem, 1, 9)).registerOre("pelletWood");
+        GregtechItemList.WoodBrick.set(new ItemStack(agrichemItem, 1, 10)).registerOre("brickWood");
+        GregtechItemList.CellulosePulp.set(new ItemStack(agrichemItem, 1, 11)).registerOre("pulpCellulose");
         GregtechItemList.RawBioResin.set(new ItemStack(agrichemItem, 1, 12));
 
-        GregtechItemList.EmptyCatalystCarrier.set(new ItemStack(agrichemItem, 1, 13))
-            .registerOre("catalystEmpty");
+        GregtechItemList.EmptyCatalystCarrier.set(new ItemStack(agrichemItem, 1, 13)).registerOre("catalystEmpty");
         GregtechItemList.GreenMetalCatalyst.set(new ItemStack(agrichemItem, 1, 14))
-            .registerOre("catalystAluminiumSilver");
+                .registerOre("catalystAluminiumSilver");
 
-        GregtechItemList.AlginicAcid.set(new ItemStack(agrichemItem, 1, 15))
-            .registerOre("dustAlginicAcid");
+        GregtechItemList.AlginicAcid.set(new ItemStack(agrichemItem, 1, 15)).registerOre("dustAlginicAcid");
         // metadata 16 no longer used
-        GregtechItemList.AluminiumPellet.set(new ItemStack(agrichemItem, 1, 17))
-            .registerOre("pelletAluminium");
+        GregtechItemList.AluminiumPellet.set(new ItemStack(agrichemItem, 1, 17)).registerOre("pelletAluminium");
         // metadata 18-21 no longer used
         GregtechItemList.Pellet_Mold.set(new ItemStack(agrichemItem, 1, 22));
         GregtechItemList.CleanAluminiumMix.set(new ItemStack(agrichemItem, 1, 23));
 
-        GregtechItemList.Pinecone.set(new ItemStack(agrichemItem, 1, 24))
-            .registerOre("pinecone");
+        GregtechItemList.Pinecone.set(new ItemStack(agrichemItem, 1, 24)).registerOre("pinecone");
         GregtechItemList.CrushedPineMaterials.set(new ItemStack(agrichemItem, 1, 25))
-            .registerOre("crushedPineMaterial");
+                .registerOre("crushedPineMaterial");
 
         // General Chemistry
         // TODO Remove after 2.8
@@ -860,100 +845,97 @@ public final class ModItems {
 
         Item genericChemItem = new ItemGenericChemBase();
 
-        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem))
-            .registerOre("catalystIronCopper");
+        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem)).registerOre("catalystIronCopper");
         GregtechItemList.YellowMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1))
-            .registerOre("catalystTungstenNickel");
+                .registerOre("catalystTungstenNickel");
         GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2))
-            .registerOre("catalystCobaltTitanium");
+                .registerOre("catalystCobaltTitanium");
         GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3))
-            .registerOre("catalystVanadiumPalladium");
+                .registerOre("catalystVanadiumPalladium");
         GregtechItemList.PurpleMetalCatalyst.set(new ItemStack(genericChemItem, 1, 4))
-            .registerOre("catalystIridiumRuthenium");
+                .registerOre("catalystIridiumRuthenium");
         GregtechItemList.BrownMetalCatalyst.set(new ItemStack(genericChemItem, 1, 5))
-            .registerOre("catalystNickelAluminium");
+                .registerOre("catalystNickelAluminium");
         GregtechItemList.PinkMetalCatalyst.set(new ItemStack(genericChemItem, 1, 6))
-            .registerOre("catalystPlatinumRhodium");
+                .registerOre("catalystPlatinumRhodium");
 
         GregtechItemList.Milling_Ball_Alumina.set(new ItemStack(genericChemItem, 1, 7))
-            .registerOre("millingballAlumina");
+                .registerOre("millingballAlumina");
         GregtechItemList.Milling_Ball_Soapstone.set(new ItemStack(genericChemItem, 1, 8))
-            .registerOre("millingballSoapstone");
+                .registerOre("millingballSoapstone");
 
-        GregtechItemList.SodiumEthoxide.set(new ItemStack(genericChemItem, 1, 9))
-            .registerOre("dustSodiumEthoxide");
+        GregtechItemList.SodiumEthoxide.set(new ItemStack(genericChemItem, 1, 9)).registerOre("dustSodiumEthoxide");
         GregtechItemList.SodiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 10))
-            .registerOre("dustSodiumEthylXanthate");
+                .registerOre("dustSodiumEthylXanthate");
         GregtechItemList.PotassiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 11))
-            .registerOre("dustPotassiumEthylXanthate");
+                .registerOre("dustPotassiumEthylXanthate");
         GregtechItemList.PotassiumHydroxide.set(new ItemStack(genericChemItem, 1, 12))
-            .registerOre("dustPotassiumHydroxide");
+                .registerOre("dustPotassiumHydroxide");
 
         GregtechItemList.FormaldehydeCatalyst.set(new ItemStack(genericChemItem, 1, 13))
-            .registerOre("catalystFormaldehyde");
-        GregtechItemList.SolidAcidCatalyst.set(new ItemStack(genericChemItem, 1, 14))
-            .registerOre("catalystSolidAcid");
+                .registerOre("catalystFormaldehyde");
+        GregtechItemList.SolidAcidCatalyst.set(new ItemStack(genericChemItem, 1, 14)).registerOre("catalystSolidAcid");
         GregtechItemList.InfiniteMutationCatalyst.set(new ItemStack(genericChemItem, 1, 15))
-            .registerOre("catalystInfiniteMutation");
+                .registerOre("catalystInfiniteMutation");
 
         // QFT Catalysts
         GregtechItemList.PlatinumGroupCatalyst.set(new ItemStack(genericChemItem, 1, 16))
-            .registerOre("catalystPlatinumGroup");
+                .registerOre("catalystPlatinumGroup");
         GregtechItemList.PlasticPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 17))
-            .registerOre("catalystPlasticPolymer");
+                .registerOre("catalystPlasticPolymer");
         GregtechItemList.RubberPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 18))
-            .registerOre("catalystRubberPolymer");
+                .registerOre("catalystRubberPolymer");
         GregtechItemList.AdhesionPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 19))
-            .registerOre("catalystAdhesionPromoter");
+                .registerOre("catalystAdhesionPromoter");
         GregtechItemList.TitaTungstenIndiumCatalyst.set(new ItemStack(genericChemItem, 1, 20))
-            .registerOre("catalystTitaTungstenIndium");
+                .registerOre("catalystTitaTungstenIndium");
         GregtechItemList.RadioactivityCatalyst.set(new ItemStack(genericChemItem, 1, 21))
-            .registerOre("catalystRadioactivity");
+                .registerOre("catalystRadioactivity");
         GregtechItemList.RareEarthGroupCatalyst.set(new ItemStack(genericChemItem, 1, 22))
-            .registerOre("catalystRareEarthGroup");
+                .registerOre("catalystRareEarthGroup");
         GregtechItemList.SimpleNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 23))
-            .registerOre("catalystSimpleNaquadah");
+                .registerOre("catalystSimpleNaquadah");
         GregtechItemList.AdvancedNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 24))
-            .registerOre("catalystAdvancedNaquadah");
+                .registerOre("catalystAdvancedNaquadah");
         GregtechItemList.RawIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 25))
-            .registerOre("catalystRawIntelligence");
+                .registerOre("catalystRawIntelligence");
         GregtechItemList.UltimatePlasticCatalyst.set(new ItemStack(genericChemItem, 1, 26))
-            .registerOre("catalystUltimatePlastic");
+                .registerOre("catalystUltimatePlastic");
         GregtechItemList.BiologicalIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 27))
-            .registerOre("catalystBiologicalIntelligence");
+                .registerOre("catalystBiologicalIntelligence");
         GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 28))
-            .registerOre("catalystTemporalHarmony");
+                .registerOre("catalystTemporalHarmony");
         GregtechItemList.ParticleAccelerationCatalyst.set(new ItemStack(genericChemItem, 1, 31))
-            .registerOre("catalystParticleAcceleration");
+                .registerOre("catalystParticleAcceleration");
         GregtechItemList.SynchrotronCapableCatalyst.set(new ItemStack(genericChemItem, 1, 32))
-            .registerOre("catalystSynchrotronCapable");
+                .registerOre("catalystSynchrotronCapable");
         GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33))
-            .registerOre("catalystAlgagenicGrowthPromoter");
+                .registerOre("catalystAlgagenicGrowthPromoter");
         GregtechItemList.HellishForceCatalyst.set(new ItemStack(genericChemItem, 1, 34))
-            .registerOre("catalystHellishForce");
+                .registerOre("catalystHellishForce");
         GregtechItemList.CrystalColorizationCatalyst.set(new ItemStack(genericChemItem, 1, 35))
-            .registerOre("catalystCrystalColorization");
+                .registerOre("catalystCrystalColorization");
 
         // Milled Ore Processing
         GregtechItemList.MilledSphalerite
-            .set(BaseItemMilledOre.generate(Materials.Sphalerite, (int) TierEU.RECIPE_LuV));
+                .set(BaseItemMilledOre.generate(Materials.Sphalerite, (int) TierEU.RECIPE_LuV));
         GregtechItemList.MilledChalcopyrite
-            .set(BaseItemMilledOre.generate(Materials.Chalcopyrite, (int) TierEU.RECIPE_IV));
+                .set(BaseItemMilledOre.generate(Materials.Chalcopyrite, (int) TierEU.RECIPE_IV));
         GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, (int) TierEU.RECIPE_IV));
         GregtechItemList.MilledPlatinum.set(BaseItemMilledOre.generate(Materials.Platinum, (int) TierEU.RECIPE_LuV));
         GregtechItemList.MilledPentlandite
-            .set(BaseItemMilledOre.generate(Materials.Pentlandite, (int) TierEU.RECIPE_LuV));
+                .set(BaseItemMilledOre.generate(Materials.Pentlandite, (int) TierEU.RECIPE_LuV));
 
         GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, (int) TierEU.RECIPE_IV));
         GregtechItemList.MilledSpessartine
-            .set(BaseItemMilledOre.generate(Materials.Spessartine, (int) TierEU.RECIPE_LuV));
+                .set(BaseItemMilledOre.generate(Materials.Spessartine, (int) TierEU.RECIPE_LuV));
         GregtechItemList.MilledGrossular.set(BaseItemMilledOre.generate(Materials.Grossular, (int) TierEU.RECIPE_LuV));
         GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, (int) TierEU.RECIPE_LuV));
         GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, (int) TierEU.RECIPE_EV));
         GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, (int) TierEU.RECIPE_ZPM));
         GregtechItemList.MilledNetherite.set(
-            BaseItemMilledOre
-                .generate(Materials.Netherrack, (int) TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
+                BaseItemMilledOre
+                        .generate(Materials.Netherrack, (int) TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
 
         // Baubles
         if (Baubles.isModLoaded()) {
@@ -992,34 +974,34 @@ public final class ModItems {
          */
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
-                "Gadolinium",
-                "Gadolinium",
-                Materials.Gadolinium.mElement.name(),
-                Utils.rgbtoHexValue(226, 172, 9));
+                    "Gadolinium",
+                    "Gadolinium",
+                    Materials.Gadolinium.mElement.name(),
+                    Utils.rgbtoHexValue(226, 172, 9));
         }
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
-                "Ytterbium",
-                "Ytterbium",
-                Materials.Ytterbium.mElement.name(),
-                Utils.rgbtoHexValue(
-                    Materials.Yttrium.mRGBa[0] - 60,
-                    Materials.Yttrium.mRGBa[1] - 60,
-                    Materials.Yttrium.mRGBa[2] - 60));
+                    "Ytterbium",
+                    "Ytterbium",
+                    Materials.Ytterbium.mElement.name(),
+                    Utils.rgbtoHexValue(
+                            Materials.Yttrium.mRGBa[0] - 60,
+                            Materials.Yttrium.mRGBa[1] - 60,
+                            Materials.Yttrium.mRGBa[2] - 60));
         }
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
-                "Samarium",
-                "Samarium",
-                Materials.Samarium.mElement.name(),
-                Utils.rgbtoHexValue(161, 168, 114));
+                    "Samarium",
+                    "Samarium",
+                    Materials.Samarium.mElement.name(),
+                    Utils.rgbtoHexValue(161, 168, 114));
         }
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
-                "Lanthanum",
-                "Lanthanum",
-                Materials.Lanthanum.mElement.name(),
-                Utils.rgbtoHexValue(106, 127, 163));
+                    "Lanthanum",
+                    "Lanthanum",
+                    Materials.Lanthanum.mElement.name(),
+                    Utils.rgbtoHexValue(106, 127, 163));
         }
 
         // Just an unusual plate needed for some black magic.
@@ -1042,7 +1024,7 @@ public final class ModItems {
         // Krypton Processing
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1) == null) {
             itemHotTitaniumIngot = new ItemStack(
-                new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
+                    new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
         } else {
             itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
         }
@@ -1054,10 +1036,10 @@ public final class ModItems {
 
         // Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(
-            ComponentTypes.SPRING,
-            MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+                ComponentTypes.SPRING,
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
         MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, MaterialsElements.STANDALONE.WHITE_METAL);
+                .generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, MaterialsAlloy.NITINOL_60);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, MaterialsAlloy.AQUATIC_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, MaterialsAlloy.EGLIN_STEEL);
@@ -1068,20 +1050,22 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.BLACK_TITANIUM);
 
         // Fine Wire
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.STANDALONE.WHITE_METAL);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(
+                ComponentTypes.FINEWIRE,
+                MaterialsElements.STANDALONE.WHITE_METAL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(
+                ComponentTypes.FINEWIRE,
+                MaterialsElements.getInstance().ZIRCONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.LEAGRISIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.BABBIT_ALLOY);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.KOBOLDITE);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.HG1223);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.QUANTUM);
         MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.STANDALONE.HYPOGEN);
+                .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.STANDALONE.HYPOGEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(
-            ComponentTypes.FINEWIRE,
-            MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+                ComponentTypes.FINEWIRE,
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
 
         // Foil
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsAlloy.BLACK_TITANIUM);
@@ -1092,22 +1076,25 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsAlloy.LAURENIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsElements.STANDALONE.HYPOGEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(
-            ComponentTypes.FOIL,
-            MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
+                ComponentTypes.FOIL,
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+        MaterialUtils.generateComponentAndAssignToAMaterial(
+                ComponentTypes.FOIL,
+                MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsElements.STANDALONE.RHUGNOR);
         MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsElements.STANDALONE.WHITE_METAL);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
+                .generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsElements.STANDALONE.WHITE_METAL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(
+                ComponentTypes.FOIL,
+                MaterialsElements.STANDALONE.ADVANCED_NITINOL);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsAlloy.PIKYONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsAlloy.CINOBITE);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsAlloy.LAFIUM);
         MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+                .generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(
+                ComponentTypes.FOIL,
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
 
         // Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.GEAR, MaterialsElements.STANDALONE.RHUGNOR);
@@ -1144,7 +1131,7 @@ public final class ModItems {
 
         // Tumbaga Mix (For Simple Crafting)
         Item[] tumbagaMix = ItemUtils
-            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
+                .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
         GregtechItemList.TumbagaMixDust.set(tumbagaMix[0]);
         GregtechItemList.SmallTumbagaMixDust.set(tumbagaMix[1]);
         GregtechItemList.TinyTumbagaMixDust.set(tumbagaMix[2]);

@@ -26,7 +26,6 @@ public class BioTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return BioItemList.getPetriDish(null)
-            .getItem();
+        return BioItemList.getPetriDish(null).getItem();
     }
 }

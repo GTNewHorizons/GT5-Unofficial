@@ -35,12 +35,7 @@ public class EIGStemBucket extends EIGBucket {
             // Check if input is a flower, reed or cacti. They all drop their source item multiplied by their seed count
             Item item = input.getItem();
             if (!(item instanceof IPlantable)) return null;
-            Block block = ((IPlantable) item).getPlant(
-                greenhouse.getBaseMetaTileEntity()
-                    .getWorld(),
-                0,
-                0,
-                0);
+            Block block = ((IPlantable) item).getPlant(greenhouse.getBaseMetaTileEntity().getWorld(), 0, 0, 0);
             if (!(block instanceof BlockStem)) return null;
             return new EIGStemBucket(greenhouse, input);
         }
@@ -106,12 +101,7 @@ public class EIGStemBucket extends EIGBucket {
         this.isValid = false;
         Item item = this.seed.getItem();
         if (!(item instanceof IPlantable)) return;
-        Block stemBlock = ((IPlantable) item).getPlant(
-            greenhouse.getBaseMetaTileEntity()
-                .getWorld(),
-            0,
-            0,
-            0);
+        Block stemBlock = ((IPlantable) item).getPlant(greenhouse.getBaseMetaTileEntity().getWorld(), 0, 0, 0);
         if (!(stemBlock instanceof BlockStem)) return;
         Block cropBlock = ((IBlockStemAccessor) stemBlock).gt5u$getCropBlock();
         if (cropBlock == null || cropBlock == Blocks.air) return;
@@ -123,16 +113,12 @@ public class EIGStemBucket extends EIGBucket {
         for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
             // simulate 1 round of drops
             ArrayList<ItemStack> blockDrops = cropBlock.getDrops(
-                greenhouse.getBaseMetaTileEntity()
-                    .getWorld(),
-                greenhouse.getBaseMetaTileEntity()
-                    .getXCoord(),
-                greenhouse.getBaseMetaTileEntity()
-                    .getYCoord(),
-                greenhouse.getBaseMetaTileEntity()
-                    .getZCoord(),
-                metadata,
-                0);
+                    greenhouse.getBaseMetaTileEntity().getWorld(),
+                    greenhouse.getBaseMetaTileEntity().getXCoord(),
+                    greenhouse.getBaseMetaTileEntity().getYCoord(),
+                    greenhouse.getBaseMetaTileEntity().getZCoord(),
+                    metadata,
+                    0);
             if (blockDrops == null || blockDrops.isEmpty()) continue;
             // if the droped item is a block that places itself, assume this is the only possible drop
             // eg: pumpkin, redlon

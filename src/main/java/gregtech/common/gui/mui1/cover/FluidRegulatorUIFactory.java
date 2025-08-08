@@ -52,113 +52,110 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
         AtomicBoolean warn = new AtomicBoolean(false);
 
         builder.widget(
-            new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
-                .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.getSpeed() >= 0,
-                    (coverData, state) -> coverData.setSpeed(Math.abs(coverData.getSpeed())),
-                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                        .addTooltip(translateToLocal("gt.interact.desc.export"))
-                        .setPos(spaceX * 0, spaceY * 0))
-                .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.getSpeed() <= 0,
-                    (coverData, state) -> coverData.setSpeed(-Math.abs(coverData.getSpeed())),
-                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                        .addTooltip(translateToLocal("gt.interact.desc.import"))
-                        .setPos(spaceX * 1, spaceY * 0))
-                .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Always,
-                    (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Always),
-                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltip(GTUtility.trans("224", "Always On"))
-                        .setPos(spaceX * 0, spaceY * 1))
-                .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Conditional,
-                    (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Conditional),
-                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                        .addTooltip(GTUtility.trans("343", "Use Machine " + "Processing State"))
-                        .setPos(spaceX * 1, spaceY * 1))
-                .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Inverted,
-                    (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Inverted),
-                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                        .addTooltip(GTUtility.trans("343.1", "Use " + "Inverted Machine Processing State"))
-                        .setPos(spaceX * 2, spaceY * 1))
-                .addFollower(
-                    new CoverDataFollowerNumericWidget<>(),
-                    coverData -> (double) coverData.getSpeed(),
-                    (coverData, state) -> coverData.setSpeed(state.intValue()),
-                    widget -> widget.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
-                        .setValidator(val -> {
-                            CoverFluidRegulator cover = getCover();
-                            final int tickRate = cover != null ? cover.getTickRateForUi() : 0;
-                            final long maxFlow = (cover != null ? (long) cover.getTransferRate() : 0)
-                                * GTUtility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
-                            warn.set(false);
-                            if (val > maxFlow) {
-                                val = maxFlow;
-                                warn.set(true);
-                            } else if (val < -maxFlow) {
-                                val = -maxFlow;
-                                warn.set(true);
-                            }
-                            return val;
-                        })
-                        .setScrollValues(1, 144, 1000)
-                        .setFocusOnGuiOpen(true)
-                        .setPos(spaceX * 0, spaceY * 2 + 2)
-                        .setSize(spaceX * 4 - 3, 12))
-                .addFollower(
-                    new CoverDataFollowerNumericWidget<>(),
-                    coverData -> (double) coverData.getTickRateForUi(),
-                    (coverData, state) -> coverData.setTickRateForUi(state.intValue()),
-                    widget -> widget.setBounds(0, TICK_RATE_MAX)
-                        .setValidator(val -> {
-                            CoverFluidRegulator cover = getCover();
-                            final int speed = cover != null ? cover.getSpeed() : 0;
-                            final long transferRate = cover != null ? (long) cover.getTransferRate() : 0;
-                            warn.set(false);
-                            if (val > TICK_RATE_MAX) {
-                                val = (long) TICK_RATE_MAX;
-                                warn.set(true);
-                            } else if (Math.abs(speed) > transferRate * val) {
-                                val = Math.min(TICK_RATE_MAX, (Math.abs(speed) + transferRate - 1) / transferRate);
-                                warn.set(true);
-                            } else if (val < TICK_RATE_MIN) {
-                                val = 1L;
-                            }
-                            return val;
-                        })
-                        .setPos(spaceX * 5, spaceY * 2 + 2)
-                        .setSize(spaceX * 2 - 3, 12))
-                .setPos(startX, startY))
-            .widget(
-                new TextWidget(GTUtility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 0))
-            .widget(
-                new TextWidget(GTUtility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 1))
-            .widget(
-                new TextWidget(GTUtility.trans("208", " L")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
-            .widget(
-                new TextWidget(GTUtility.trans("209", " ticks")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
-            .widget(new TextWidget().setTextSupplier(() -> {
-                CoverFluidRegulator cover = getCover();
-                if (cover == null) return new Text("");
-                int tickRate = cover.getTickRateForUi();
-                return new Text(
-                    GTUtility.trans("210.1", "Average:") + " "
-                        + numberFormat.format(tickRate == 0 ? 0 : cover.getSpeed() * 20d / tickRate)
-                        + " "
-                        + GTUtility.trans("210.2", "L/sec"))
-                            .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
-            })
-                .setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));
+                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
+                        .addFollower(
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                coverData -> coverData.getSpeed() >= 0,
+                                (coverData, state) -> coverData.setSpeed(Math.abs(coverData.getSpeed())),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
+                                        .addTooltip(translateToLocal("gt.interact.desc.export"))
+                                        .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                coverData -> coverData.getSpeed() <= 0,
+                                (coverData, state) -> coverData.setSpeed(-Math.abs(coverData.getSpeed())),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
+                                        .addTooltip(translateToLocal("gt.interact.desc.import"))
+                                        .setPos(spaceX * 1, spaceY * 0))
+                        .addFollower(
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Always,
+                                (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Always),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
+                                        .addTooltip(GTUtility.trans("224", "Always On")).setPos(spaceX * 0, spaceY * 1))
+                        .addFollower(
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Conditional,
+                                (coverData, state) -> coverData
+                                        .setCondition(CoverFluidRegulator.Conditional.Conditional),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                                        .addTooltip(GTUtility.trans("343", "Use Machine " + "Processing State"))
+                                        .setPos(spaceX * 1, spaceY * 1))
+                        .addFollower(
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Inverted,
+                                (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Inverted),
+                                widget -> widget
+                                        .setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                                        .addTooltip(
+                                                GTUtility.trans("343.1", "Use " + "Inverted Machine Processing State"))
+                                        .setPos(spaceX * 2, spaceY * 1))
+                        .addFollower(
+                                new CoverDataFollowerNumericWidget<>(),
+                                coverData -> (double) coverData.getSpeed(),
+                                (coverData, state) -> coverData.setSpeed(state.intValue()),
+                                widget -> widget.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
+                                        .setValidator(val -> {
+                                            CoverFluidRegulator cover = getCover();
+                                            final int tickRate = cover != null ? cover.getTickRateForUi() : 0;
+                                            final long maxFlow = (cover != null ? (long) cover.getTransferRate() : 0)
+                                                    * GTUtility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
+                                            warn.set(false);
+                                            if (val > maxFlow) {
+                                                val = maxFlow;
+                                                warn.set(true);
+                                            } else if (val < -maxFlow) {
+                                                val = -maxFlow;
+                                                warn.set(true);
+                                            }
+                                            return val;
+                                        }).setScrollValues(1, 144, 1000).setFocusOnGuiOpen(true)
+                                        .setPos(spaceX * 0, spaceY * 2 + 2).setSize(spaceX * 4 - 3, 12))
+                        .addFollower(
+                                new CoverDataFollowerNumericWidget<>(),
+                                coverData -> (double) coverData.getTickRateForUi(),
+                                (coverData, state) -> coverData.setTickRateForUi(state.intValue()),
+                                widget -> widget.setBounds(0, TICK_RATE_MAX).setValidator(val -> {
+                                    CoverFluidRegulator cover = getCover();
+                                    final int speed = cover != null ? cover.getSpeed() : 0;
+                                    final long transferRate = cover != null ? (long) cover.getTransferRate() : 0;
+                                    warn.set(false);
+                                    if (val > TICK_RATE_MAX) {
+                                        val = (long) TICK_RATE_MAX;
+                                        warn.set(true);
+                                    } else if (Math.abs(speed) > transferRate * val) {
+                                        val = Math.min(
+                                                TICK_RATE_MAX,
+                                                (Math.abs(speed) + transferRate - 1) / transferRate);
+                                        warn.set(true);
+                                    } else if (val < TICK_RATE_MIN) {
+                                        val = 1L;
+                                    }
+                                    return val;
+                                }).setPos(spaceX * 5, spaceY * 2 + 2).setSize(spaceX * 2 - 3, 12))
+                        .setPos(startX, startY))
+                .widget(
+                        new TextWidget(GTUtility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 0))
+                .widget(
+                        new TextWidget(GTUtility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 1))
+                .widget(
+                        new TextWidget(GTUtility.trans("208", " L")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
+                .widget(
+                        new TextWidget(GTUtility.trans("209", " ticks")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
+                .widget(new TextWidget().setTextSupplier(() -> {
+                    CoverFluidRegulator cover = getCover();
+                    if (cover == null) return new Text("");
+                    int tickRate = cover.getTickRateForUi();
+                    return new Text(
+                            GTUtility.trans("210.1", "Average:") + " "
+                                    + numberFormat.format(tickRate == 0 ? 0 : cover.getSpeed() * 20d / tickRate)
+                                    + " "
+                                    + GTUtility.trans("210.2", "L/sec"))
+                                            .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
+                }).setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));
     }
 }

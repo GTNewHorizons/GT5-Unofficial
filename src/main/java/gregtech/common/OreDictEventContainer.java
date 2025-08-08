@@ -14,7 +14,7 @@ public class OreDictEventContainer {
     public final String mModID;
 
     public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Materials aMaterial,
-        String aModID) {
+            String aModID) {
         this.mEvent = aEvent;
         this.mPrefix = aPrefix;
         this.mMaterial = aMaterial;
@@ -23,8 +23,8 @@ public class OreDictEventContainer {
 
     public static void registerRecipes(OreDictEventContainer ore) {
         if ((ore.mEvent.Ore == null) || (ore.mEvent.Ore.getItem() == null)
-            || (ore.mPrefix == null)
-            || (ore.mPrefix.isIgnored(ore.mMaterial))) {
+                || (ore.mPrefix == null)
+                || (ore.mPrefix.isIgnored(ore.mMaterial))) {
             return;
         }
         if (ore.mEvent.Ore.stackSize != 1) {
@@ -32,9 +32,9 @@ public class OreDictEventContainer {
         }
 
         ore.mPrefix.processOre(
-            ore.mMaterial == null ? Materials._NULL : ore.mMaterial,
-            ore.mEvent.Name,
-            ore.mModID,
-            GTUtility.copyAmount(1, ore.mEvent.Ore));
+                ore.mMaterial == null ? Materials._NULL : ore.mMaterial,
+                ore.mEvent.Name,
+                ore.mModID,
+                GTUtility.copyAmount(1, ore.mEvent.Ore));
     }
 }

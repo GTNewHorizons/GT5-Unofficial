@@ -33,7 +33,7 @@ public class GTFoodStat implements IFoodStat {
      *                            III] The likelihood that this Potion Effect takes place upon being eaten [1 - 100]
      */
     public GTFoodStat(int aFoodLevel, float aSaturation, EnumAction aAction, ItemStack aEmptyContainer,
-        boolean aAlwaysEdible, boolean aInvisibleParticles, boolean aIsRotten, int... aPotionEffects) {
+            boolean aAlwaysEdible, boolean aInvisibleParticles, boolean aIsRotten, int... aPotionEffects) {
         mFoodLevel = aFoodLevel;
         mSaturation = aSaturation;
         mAction = aAction == null ? EnumAction.eat : aAction;
@@ -72,11 +72,8 @@ public class GTFoodStat implements IFoodStat {
             aPlayer.dropPlayerItemWithRandomChoice(tStack, true);
 
         new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setIdentifier(SoundResource.RANDOM_BURP)
-            .setVolume(0.5F)
-            .setPitch(aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F)
-            .setEntity(aPlayer)
-            .setWorld(aPlayer.worldObj)
-            .run();
+                .setVolume(0.5F).setPitch(aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F).setEntity(aPlayer)
+                .setWorld(aPlayer.worldObj).run();
 
         if (!aPlayer.worldObj.isRemote) {
             if (mMilk) {
@@ -85,21 +82,17 @@ public class GTFoodStat implements IFoodStat {
             for (int i = 3; i < mPotionEffects.length; i += 4) {
                 if (aPlayer.worldObj.rand.nextInt(100) < mPotionEffects[i]) {
                     aPlayer.addPotionEffect(
-                        new PotionEffect(
-                            mPotionEffects[i - 3],
-                            mPotionEffects[i - 2],
-                            mPotionEffects[i - 1],
-                            mInvisibleParticles));
+                            new PotionEffect(
+                                    mPotionEffects[i - 3],
+                                    mPotionEffects[i - 2],
+                                    mPotionEffects[i - 1],
+                                    mInvisibleParticles));
                 }
             }
             if (mExplosive) {
-                new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true)
-                    .setFlaming(true)
-                    .setStrength(4f)
-                    .setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ)
-                    .setEntity(aPlayer)
-                    .setWorld(aPlayer.worldObj)
-                    .run();
+                new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true).setFlaming(true)
+                        .setStrength(4f).setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ).setEntity(aPlayer)
+                        .setWorld(aPlayer.worldObj).run();
                 aPlayer.attackEntityFrom(GTDamageSources.getExplodingDamage(), Float.MAX_VALUE);
             }
         }

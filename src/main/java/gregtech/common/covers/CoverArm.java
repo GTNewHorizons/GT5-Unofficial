@@ -42,7 +42,7 @@ public class CoverArm extends CoverLegacyData {
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null || (((coverable instanceof IMachineProgress machine)) && (!machine.isAllowedToWork()))
-            || !(coverable instanceof TileEntity tileEntity)) {
+                || !(coverable instanceof TileEntity tileEntity)) {
             return;
         }
 
@@ -66,9 +66,24 @@ public class CoverArm extends CoverLegacyData {
         if (fromSlot > 0 && toSlot > 0) {
             if (fromTile instanceof IInventory fromInventory && toTile instanceof IInventory toInventory)
                 GTUtility.moveFromSlotToSlot(
-                    fromInventory,
-                    toInventory,
-                    fromSlot - 1,
+                        fromInventory,
+                        toInventory,
+                        fromSlot - 1,
+                        toSlot - 1,
+                        null,
+                        false,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1);
+        } else if (toSlot > 0) {
+            final ForgeDirection toSide;
+            if ((this.coverData & EXPORT_MASK) > 0) toSide = coverSide;
+            else toSide = coverSide.getOpposite();
+            GTUtility.moveOneItemStackIntoSlot(
+                    fromTile,
+                    toTile,
+                    toSide,
                     toSlot - 1,
                     null,
                     false,
@@ -76,36 +91,21 @@ public class CoverArm extends CoverLegacyData {
                     (byte) 1,
                     (byte) 64,
                     (byte) 1);
-        } else if (toSlot > 0) {
-            final ForgeDirection toSide;
-            if ((this.coverData & EXPORT_MASK) > 0) toSide = coverSide;
-            else toSide = coverSide.getOpposite();
-            GTUtility.moveOneItemStackIntoSlot(
-                fromTile,
-                toTile,
-                toSide,
-                toSlot - 1,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
         } else if (fromSlot > 0) {
             final ForgeDirection toSide;
             if ((this.coverData & EXPORT_MASK) > 0) toSide = coverSide;
             else toSide = coverSide.getOpposite();
             if (fromTile instanceof IInventory fromInventory) GTUtility.moveFromSlotToSide(
-                fromInventory,
-                toTile,
-                fromSlot - 1,
-                toSide,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
+                    fromInventory,
+                    toTile,
+                    fromSlot - 1,
+                    toSide,
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    (byte) 64,
+                    (byte) 1);
         } else {
             final ForgeDirection fromSide;
             final ForgeDirection toSide;
@@ -117,16 +117,16 @@ public class CoverArm extends CoverLegacyData {
                 toSide = coverSide;
             }
             GTUtility.moveOneItemStack(
-                fromTile,
-                toTile,
-                fromSide,
-                toSide,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
+                    fromTile,
+                    toTile,
+                    fromSide,
+                    toSide,
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    (byte) 64,
+                    (byte) 1);
         }
     }
 
@@ -154,10 +154,10 @@ public class CoverArm extends CoverLegacyData {
 
     private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
         if ((var & EXPORT_MASK) != 0) GTUtility.sendChatToPlayer(
-            aPlayer,
-            translateToLocal("gt.interact.desc.out_slot") + (((var >> 14) & SLOT_ID_MASK) - 1));
+                aPlayer,
+                translateToLocal("gt.interact.desc.out_slot") + (((var >> 14) & SLOT_ID_MASK) - 1));
         else GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.in_slot") + ((var & SLOT_ID_MASK) - 1));
+                .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.in_slot") + ((var & SLOT_ID_MASK) - 1));
     }
 
     private int getNewVar(int var, int step) {

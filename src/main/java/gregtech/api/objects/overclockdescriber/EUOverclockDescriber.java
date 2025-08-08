@@ -60,13 +60,14 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
      * @return Whole original EU/t usage. Also displays voltage tier if it should be shown.
      */
     protected String getOriginalEUtDisplay(RecipeDisplayInfo recipeInfo) {
-        OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
-            .calculate();
+        OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe).calculate();
         String original_tier_displayed = shouldShowAmperage(originalPowerCalculator) ? ""
-            : GTUtility.getTierNameWithParentheses(originalPowerCalculator.getConsumption());
+                : GTUtility.getTierNameWithParentheses(originalPowerCalculator.getConsumption());
         String original_voltage = GTUtility.formatNumbers(originalPowerCalculator.getConsumption());
-        return StatCollector
-            .translateToLocalFormatted("GT5U.nei.display.usage.original", original_voltage, original_tier_displayed);
+        return StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.usage.original",
+                original_voltage,
+                original_tier_displayed);
     }
 
     protected boolean wasOverclocked(OverclockCalculator calculator) {

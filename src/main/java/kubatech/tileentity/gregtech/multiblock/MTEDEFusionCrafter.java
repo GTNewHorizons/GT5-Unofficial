@@ -76,19 +76,18 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final List<Pair<Block, Integer>> fusionCasingTiers = Arrays
-        .asList(Pair.of(GregTechAPI.sBlockCasings4, 6), Pair.of(GregTechAPI.sBlockCasings4, 8));
+            .asList(Pair.of(GregTechAPI.sBlockCasings4, 6), Pair.of(GregTechAPI.sBlockCasings4, 8));
     private static final List<Pair<Block, Integer>> coreTiers = Arrays.asList(
-        Pair.of(BlockLoader.defcCasingBlock, 8),
-        Pair.of(BlockLoader.defcCasingBlock, 9),
-        Pair.of(BlockLoader.defcCasingBlock, 10),
-        Pair.of(BlockLoader.defcCasingBlock, 11),
-        Pair.of(BlockLoader.defcCasingBlock, 12));
+            Pair.of(BlockLoader.defcCasingBlock, 8),
+            Pair.of(BlockLoader.defcCasingBlock, 9),
+            Pair.of(BlockLoader.defcCasingBlock, 10),
+            Pair.of(BlockLoader.defcCasingBlock, 11),
+            Pair.of(BlockLoader.defcCasingBlock, 12));
     private static final IStructureDefinition<MTEDEFusionCrafter> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEDEFusionCrafter>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { // spotless:off
+            .<MTEDEFusionCrafter>builder().addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { // spotless:off
                     { "nnnnn", "nnnnn", "nnnnn", "nnnnn", "nnnnn" },
                     { "     ", "  F  ", " FfF ", "  F  ", "     " },
                     { "     ", "  F  ", " FfF ", "  F  ", "     " },
@@ -100,24 +99,22 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
                     { "     ", "  F  ", " FfF ", "  F  ", "     " },
                     { "NN~NN", "NNNNN", "NNNNN", "NNNNN", "NNNNN" }
                 })) // spotless:on
-        .addElement(
-            'N',
-            buildHatchAdder(MTEDEFusionCrafter.class)
-                .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy, Maintenance)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7))))
-        .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)))
-        .addElement('f', ofBlock(GregTechAPI.sBlockCasings4, 7))
-        .addElement('F', ofBlocksTiered((Block b, int m) -> {
-            if (b != GregTechAPI.sBlockCasings4 || (m != 6 && m != 8)) return null;
-            return m == 6 ? 1 : 2;
-        }, fusionCasingTiers, -1, (e, i) -> e.mFusionTierCasing = i, e -> e.mFusionTierCasing))
-        .addElement('R', ofBlocksTiered((Block b, int m) -> {
-            if (b != BlockLoader.defcCasingBlock || m < 8 || m > 12) return null;
-            return m - 7;
-        }, coreTiers, -1, (e, i) -> e.mTierCasing = i, e -> e.mTierCasing))
-        .build();
+            .addElement(
+                    'N',
+                    buildHatchAdder(MTEDEFusionCrafter.class)
+                            .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy, Maintenance)
+                            .casingIndex(CASING_INDEX).dot(1)
+                            .buildAndChain(onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7))))
+            .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)))
+            .addElement('f', ofBlock(GregTechAPI.sBlockCasings4, 7))
+            .addElement('F', ofBlocksTiered((Block b, int m) -> {
+                if (b != GregTechAPI.sBlockCasings4 || (m != 6 && m != 8)) return null;
+                return m == 6 ? 1 : 2;
+            }, fusionCasingTiers, -1, (e, i) -> e.mFusionTierCasing = i, e -> e.mFusionTierCasing))
+            .addElement('R', ofBlocksTiered((Block b, int m) -> {
+                if (b != BlockLoader.defcCasingBlock || m < 8 || m > 12) return null;
+                return m - 7;
+            }, coreTiers, -1, (e, i) -> e.mTierCasing = i, e -> e.mTierCasing)).build();
 
     @Override
     public IStructureDefinition<MTEDEFusionCrafter> getStructureDefinition() {
@@ -137,67 +134,37 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Crafter, DEFC")
-            .addInfo("Gains One perfect overclock per casing tier above recipe")
-            .addInfo("Normal EU OC still applies !")
-            .beginStructureBlock(5, 10, 5, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)
-            .addOtherStructurePart("Fusion Coil Block", "Center pillar")
-            .addOtherStructurePart("Fusion Machine Casing", "Touching Fusion Coil Block at every side")
-            .addOtherStructurePart("Tiered Fusion Casing", "Rings (5x5 hollow) at layer 4 and 7")
-            .addStructureInfo("Bloody Ichorium for tier 1, Draconium for tier 2, etc")
-            .addStructureInfo("To use tier 3 + you have to use fusion casing MK II")
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .toolTipFinisher(GTValues.AuthorKuba, "Prometheus0000");
+        tt.addMachineType("Fusion Crafter, DEFC").addInfo("Gains One perfect overclock per casing tier above recipe")
+                .addInfo("Normal EU OC still applies !").beginStructureBlock(5, 10, 5, false)
+                .addController("Front bottom center").addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)
+                .addOtherStructurePart("Fusion Coil Block", "Center pillar")
+                .addOtherStructurePart("Fusion Machine Casing", "Touching Fusion Coil Block at every side")
+                .addOtherStructurePart("Tiered Fusion Casing", "Rings (5x5 hollow) at layer 4 and 7")
+                .addStructureInfo("Bloody Ichorium for tier 1, Draconium for tier 2, etc")
+                .addStructureInfo("To use tier 3 + you have to use fusion casing MK II")
+                .addInputBus("Any bottom casing", 1).addInputHatch("Any bottom casing", 1)
+                .addOutputBus("Any bottom casing", 1).addOutputHatch("Any bottom casing", 1)
+                .addEnergyHatch("Any bottom casing", 1).addMaintenanceHatch("Any bottom casing", 1)
+                .toolTipFinisher(GTValues.AuthorKuba, "Prometheus0000");
         return tt;
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC), TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC), TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TELEPORTER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (aActive) return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC),
+                    TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW).extFacing().glow().build() };
+            return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC),
+                    TextureFactory.builder().addIcon(OVERLAY_TELEPORTER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).extFacing().glow().build() };
         }
-        if (aActive) return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC), TextureFactory.builder()
-            .addIcon(MACHINE_CASING_MAGIC_ACTIVE)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
-        return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC), TextureFactory.builder()
-            .addIcon(MACHINE_CASING_MAGIC)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_MAGIC_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+        if (aActive) return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE).extFacing().build(),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).extFacing().glow().build() };
+        return new ITexture[] { TextureFactory.of(MACHINE_CASING_MAGIC),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC).extFacing().build(),
+                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).extFacing().glow().build() };
     }
 
     @Override
@@ -215,7 +182,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
                 int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
 
                 return recipetier <= mTierCasing ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.insufficientMachineTier(recipetier);
+                        : CheckRecipeResultRegistry.insufficientMachineTier(recipetier);
             }
 
             @NotNull
@@ -223,10 +190,8 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
                 return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(mTierCasing > recipetier ? 1800 * (mTierCasing - recipetier) : 1)
-                    .setRecipeHeat(0)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false);
+                        .setMachineHeat(mTierCasing > recipetier ? 1800 * (mTierCasing - recipetier) : 1)
+                        .setRecipeHeat(0).setHeatOC(true).setHeatDiscount(false);
             }
 
         };

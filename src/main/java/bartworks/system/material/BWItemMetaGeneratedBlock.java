@@ -65,7 +65,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
 
     @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
-        float hitX, float hitY, float hitZ, int aMeta) {
+            float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) this.getDamage(aStack);
         if (tDamage > 0) {
             if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {

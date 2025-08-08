@@ -52,7 +52,7 @@ public class BWItemRenderer implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType aType, ItemStack aStack,
-        IItemRenderer.ItemRendererHelper aHelper) {
+            IItemRenderer.ItemRendererHelper aHelper) {
         if (GTUtility.isStackInvalid(aStack)) {
             return false;
         }
@@ -86,27 +86,27 @@ public class BWItemRenderer implements IItemRenderer {
                     else {
                         for (int i = 0; i < 4; i++) {
                             GTRenderUtil.renderItemIcon(
-                                tIcon,
-                                0.0D + i * 2D,
-                                0.0D + i * 2D,
-                                10.0D + i * 2D,
-                                10.0D + i * 2D,
-                                0.001D,
-                                0.0F,
-                                0.0F,
-                                -1.0F);
+                                    tIcon,
+                                    0.0D + i * 2D,
+                                    0.0D + i * 2D,
+                                    10.0D + i * 2D,
+                                    10.0D + i * 2D,
+                                    0.001D,
+                                    0.0F,
+                                    0.0F,
+                                    -1.0F);
                         }
                     }
                 } else if (aMetaData < CircuitImprintLoader.reverseIDs) {
                     ItemRenderer.renderItemIn2D(
-                        tess,
-                        tIcon.getMaxU(),
-                        tIcon.getMinV(),
-                        tIcon.getMinU(),
-                        tIcon.getMaxV(),
-                        tIcon.getIconWidth(),
-                        tIcon.getIconHeight(),
-                        0.0625F);
+                            tess,
+                            tIcon.getMaxU(),
+                            tIcon.getMinV(),
+                            tIcon.getMinU(),
+                            tIcon.getMaxV(),
+                            tIcon.getIconWidth(),
+                            tIcon.getIconHeight(),
+                            0.0625F);
                 }
 
                 IIcon tOverlay = (IIcon) BWUtil.get2DCoordFrom1DArray(aMetaData, 1, 2, aItem.mIconList);
@@ -118,14 +118,14 @@ public class BWItemRenderer implements IItemRenderer {
                         GTRenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
                         ItemRenderer.renderItemIn2D(
-                            tess,
-                            tOverlay.getMaxU(),
-                            tOverlay.getMinV(),
-                            tOverlay.getMinU(),
-                            tOverlay.getMaxV(),
-                            tOverlay.getIconWidth(),
-                            tOverlay.getIconHeight(),
-                            0.0625F);
+                                tess,
+                                tOverlay.getMaxU(),
+                                tOverlay.getMinV(),
+                                tOverlay.getMinU(),
+                                tOverlay.getMaxV(),
+                                tOverlay.getIconWidth(),
+                                tOverlay.getIconHeight(),
+                                0.0625F);
                     }
                 }
             }

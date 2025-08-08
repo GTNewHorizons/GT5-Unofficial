@@ -100,22 +100,16 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Grows Algae!")
-            .addInfo("Provide compost to boost production by one tier")
-            .addInfo("Does not require power or maintenance")
-            .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
-            .addInfo("Requires one Input Hatch that matches the tier of the Casings")
-            .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 3, 9, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Machine Casings", 64, true)
-            .addCasingInfoMin("Sterile Farm Casings", 64, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Grows Algae!")
+                .addInfo("Provide compost to boost production by one tier")
+                .addInfo("Does not require power or maintenance")
+                .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
+                .addInfo("Requires one Input Hatch that matches the tier of the Casings")
+                .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(9, 3, 9, true)
+                .addController("Front Center").addCasingInfoMin("Machine Casings", 64, true)
+                .addCasingInfoMin("Sterile Farm Casings", 64, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -131,40 +125,37 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     public IStructureDefinition<MTEAlgaePondBase> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEAlgaePondBase>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] {
-                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
-                                "X       X", "XXXXXXXXX" },
-                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
-                                "X       X", "XXXXXXXXX" },
-                            { "CCCC~CCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC",
-                                "CCCCCCCCC", "CCCCCCCCC" }, }))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildHatchAdder(MTEAlgaePondBase.class).atLeast(InputHatch, InputBus, OutputBus)
-                            .casingIndex(TAE.getIndexFromPage(1, 15))
-                            .dot(1)
-                            .build(),
-                        onElementPass(
-                            x -> ++x.mCasing,
-                            addTieredBlock(
-                                GregTechAPI.sBlockCasings1,
-                                MTEAlgaePondBase::setMeta,
-                                MTEAlgaePondBase::getMeta,
-                                10)),
-                        onElementPass(
-                            x -> ++x.mCasing,
-                            addTieredBlock(
-                                GregTechAPI.sBlockCasingsNH,
-                                MTEAlgaePondBase::setMeta,
-                                MTEAlgaePondBase::getMeta,
-                                10,
-                                15))))
-                .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] {
+                                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X",
+                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
+                                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X",
+                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
+                                            { "CCCC~CCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC",
+                                                    "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC" }, }))
+                    .addElement(
+                            'C',
+                            ofChain(
+                                    buildHatchAdder(MTEAlgaePondBase.class).atLeast(InputHatch, InputBus, OutputBus)
+                                            .casingIndex(TAE.getIndexFromPage(1, 15)).dot(1).build(),
+                                    onElementPass(
+                                            x -> ++x.mCasing,
+                                            addTieredBlock(
+                                                    GregTechAPI.sBlockCasings1,
+                                                    MTEAlgaePondBase::setMeta,
+                                                    MTEAlgaePondBase::getMeta,
+                                                    10)),
+                                    onElementPass(
+                                            x -> ++x.mCasing,
+                                            addTieredBlock(
+                                                    GregTechAPI.sBlockCasingsNH,
+                                                    MTEAlgaePondBase::setMeta,
+                                                    MTEAlgaePondBase::getMeta,
+                                                    10,
+                                                    15))))
+                    .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -187,9 +178,9 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         checkMeta = 0;
 
         if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
-            && checkMeta > 0
-            && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()) {
+                && checkMeta > 0
+                && !mInputHatches.isEmpty()
+                && !mOutputBusses.isEmpty()) {
             mLevel = checkMeta - 1;
             for (MTEHatchInput inputHatch : mInputHatches) {
                 if (inputHatch.mTier < mLevel) {
@@ -284,8 +275,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;
                                         Block fluidUsed = Blocks.water;
-                                        aBaseMetaTileEntity.getWorld()
-                                            .setBlock(
+                                        aBaseMetaTileEntity.getWorld().setBlock(
                                                 aBaseMetaTileEntity.getXCoord() + xDir + i,
                                                 aBaseMetaTileEntity.getYCoord() + h,
                                                 aBaseMetaTileEntity.getZCoord() + zDir + j,
@@ -297,7 +287,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     }
                     tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                     if (tBlock == Blocks.water || tBlock == Blocks.flowing_water
-                        || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
+                            || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
                         ++tAmount;
                         // Logger.INFO("Found Water");
                     }
@@ -317,7 +307,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     private boolean isNotStaticWater(Block block, int meta) {
         return block == Blocks.air || block == Blocks.flowing_water
-            || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
+                || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
     }
 
     @Override
@@ -352,13 +342,11 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setEuModifier(0F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        }.setEuModifier(0F).setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int getCasingTier() {
-        if (this.getBaseMetaTileEntity()
-            .getWorld() == null) {
+        if (this.getBaseMetaTileEntity().getWorld() == null) {
             return 0;
         }
         try {
@@ -370,7 +358,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
             if (aInitStructureCheck == GregTechAPI.sBlockCasings1
-                || aInitStructureCheck == GregTechAPI.sBlockCasingsNH) {
+                    || aInitStructureCheck == GregTechAPI.sBlockCasingsNH) {
                 return aInitStructureCheckMeta;
             }
             return 0;
@@ -432,22 +420,22 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         ItemStack[] aOutputs = getOutputsForTier(aTier);
         GTRecipe tRecipe = new GTRecipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            GTValues.emptyIntArray,
-            new FluidStack[] { GTValues.NF },
-            new FluidStack[] { GTValues.NF },
-            getRecipeDuration(aTier),
-            0,
-            0);
+                false,
+                aInputs,
+                aOutputs,
+                null,
+                GTValues.emptyIntArray,
+                new FluidStack[] { GTValues.NF },
+                new FluidStack[] { GTValues.NF },
+                getRecipeDuration(aTier),
+                0,
+                0);
         tRecipe.mSpecialValue = tRecipe.hashCode();
         return tRecipe;
     }
 
     private static final int[] aDurations = new int[] { 2000, 1800, 1600, 1400, 1200, 1000, 512, 256, 128, 64, 32, 16,
-        8, 4, 2, 1 };
+            8, 4, 2, 1 };
 
     private static int getRecipeDuration(int aTier) {
         final float randFloat = GTPPCore.RANDOM.nextFloat();

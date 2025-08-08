@@ -33,10 +33,10 @@ public class CircularGaugeDrawable implements IDrawable {
         GlStateManager.enableAlpha();
         GlStateManager.disableLighting();
         GlStateManager.tryBlendFuncSeparate(
-            GlStateManager.SourceFactor.SRC_ALPHA,
-            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-            GlStateManager.SourceFactor.ONE,
-            GlStateManager.DestFactor.ZERO);
+                GlStateManager.SourceFactor.SRC_ALPHA,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+                GlStateManager.SourceFactor.ONE,
+                GlStateManager.DestFactor.ZERO);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         final Tessellator tessellator = Tessellator.instance;
 
@@ -55,7 +55,7 @@ public class CircularGaugeDrawable implements IDrawable {
         tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
 
         tessellator
-            .setColorRGBA(Color.getRed(color), Color.getGreen(color), Color.getBlue(color), Color.getAlpha(color));
+                .setColorRGBA(Color.getRed(color), Color.getGreen(color), Color.getBlue(color), Color.getAlpha(color));
         tessellator.addVertex(x0 + width * cosA, y0 - width * sinA, 0.0f);
         tessellator.addVertex(x0 - height * sinA, y0 - height * cosA, 0.0f);
         tessellator.addVertex(x0 + height * sinA, y0 + height * cosA, 0.0f);

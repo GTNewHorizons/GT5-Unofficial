@@ -38,7 +38,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.gui.TecTechUITextures;
 
 public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
-    implements IAddGregtechLogo, IAddUIWidgets, IDataCopyable {
+        implements IAddGregtechLogo, IAddUIWidgets, IDataCopyable {
 
     public long requiredComputation = 10000;
     public static final String COPIED_DATA_IDENTIFIER = "cloudComputationInput";
@@ -79,10 +79,9 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && q == null) {
             q = WirelessComputationPacket.downloadData(
-                aBaseMetaTileEntity.getOwnerUuid(),
-                requiredComputation,
-                MinecraftServer.getServer()
-                    .getTickCounter());
+                    aBaseMetaTileEntity.getOwnerUuid(),
+                    requiredComputation,
+                    MinecraftServer.getServer().getTickCounter());
         }
 
     }
@@ -95,9 +94,8 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
-                .setSize(18, 18)
-                .setPos(151, 63));
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO).setSize(18, 18)
+                        .setPos(151, 63));
     }
 
     @Override
@@ -114,7 +112,7 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+            float aX, float aY, float aZ) {
         if (!aBaseMetaTileEntity.isServerSide()) {
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         }
@@ -162,39 +160,29 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("requiredComputation", requiredComputation);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            translateToLocal("GT5U.machines.computation_hatch.computation") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
-                    accessor.getNBTData()
-                        .getLong("requiredComputation")));
+                translateToLocal("GT5U.machines.computation_hatch.computation") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(accessor.getNBTData().getLong("requiredComputation")));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            TextWidget.localised("tt.wirelessInputData.config.text")
-                .setPos(20, 12)
-                .setSize(140, 14))
-            .widget(
+        builder.widget(TextWidget.localised("tt.wirelessInputData.config.text").setPos(20, 12).setSize(140, 14)).widget(
                 new TextFieldWidget().setSetterInt(val -> requiredComputation = val)
-                    .setGetterLong(() -> requiredComputation)
-                    .setNumbers(1, Integer.MAX_VALUE)
-                    .setOnScrollNumbers(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(54, 36)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+                        .setGetterLong(() -> requiredComputation).setNumbers(1, Integer.MAX_VALUE)
+                        .setOnScrollNumbers(1, 4, 64).setTextAlignment(Alignment.Center)
+                        .setTextColor(Color.WHITE.normal).setSize(70, 18).setPos(54, 36)
+                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 
     private static String[] tooltips;

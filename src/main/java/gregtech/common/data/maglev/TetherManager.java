@@ -25,8 +25,13 @@ public class TetherManager {
     private final Map<EntityPlayerMP, MTEMagLevPylon> PLAYER_TETHERS = new HashMap<>();
 
     public void registerPylon(IGregTechTileEntity mte, MTEMagLevPylon tether, int range) {
-        ACTIVE_PYLONS
-            .put(tether, mte.getWorld().provider.dimensionId, mte.getXCoord(), mte.getYCoord(), mte.getZCoord(), range);
+        ACTIVE_PYLONS.put(
+                tether,
+                mte.getWorld().provider.dimensionId,
+                mte.getXCoord(),
+                mte.getYCoord(),
+                mte.getZCoord(),
+                range);
     }
 
     public void unregisterPylon(IGregTechTileEntity mte) {

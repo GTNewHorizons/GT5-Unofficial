@@ -12,17 +12,18 @@ import forestry.apiculture.genetics.alleles.AlleleBeeSpecies;
 public class GTPPAlleleBeeSpecies extends AlleleBeeSpecies {
 
     public GTPPAlleleBeeSpecies(String uid, boolean dominant, String unlocalizedName, String authority,
-        String unlocalizedDescription, IClassification branch, String binomial, int primaryColor, int secondaryColor) {
+            String unlocalizedDescription, IClassification branch, String binomial, int primaryColor,
+            int secondaryColor) {
         super(
-            uid,
-            unlocalizedName,
-            authority,
-            unlocalizedDescription,
-            dominant,
-            branch,
-            binomial,
-            primaryColor,
-            secondaryColor);
+                uid,
+                unlocalizedName,
+                authority,
+                unlocalizedDescription,
+                dominant,
+                branch,
+                binomial,
+                primaryColor,
+                secondaryColor);
         AlleleManager.alleleRegistry.registerAllele(this, EnumBeeChromosome.SPECIES);
     }
 

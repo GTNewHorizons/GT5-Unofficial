@@ -59,10 +59,8 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
         FluidStack fs = cell.getFluid(item);
         if (fs != null) {
             IIcon iconWindow = cell.iconWindow;
-            IIcon fluidicon = fs.getFluid()
-                .getIcon(fs);
-            int fluidColor = fs.getFluid()
-                .getColor(fs);
+            IIcon fluidicon = fs.getFluid().getIcon(fs);
+            int fluidColor = fs.getFluid().getColor(fs);
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
             GL11.glBlendFunc(0, 1);
             if (type.equals(ItemRenderType.INVENTORY)) {
@@ -93,14 +91,14 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
             DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                icon.getMaxU(),
-                icon.getMinV(),
-                icon.getMinU(),
-                icon.getMaxV(),
-                icon.getIconWidth(),
-                icon.getIconHeight(),
-                0.0625F);
+                    Tessellator.instance,
+                    icon.getMaxU(),
+                    icon.getMinV(),
+                    icon.getMinU(),
+                    icon.getMaxV(),
+                    icon.getIconWidth(),
+                    icon.getIconHeight(),
+                    0.0625F);
         }
         GL11.glDisable(3008);
         GL11.glDisable(3042);

@@ -24,13 +24,13 @@ public class MTESuperBuffer extends MTEChestBuffer {
 
     public MTESuperBuffer(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            257,
-            new String[] { "Buffers up to 256 Item Stacks", "Use Screwdriver to regulate output stack size",
-                getTickRateDesc(aTier) });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                257,
+                new String[] { "Buffers up to 256 Item Stacks", "Use Screwdriver to regulate output stack size",
+                        getTickRateDesc(aTier) });
     }
 
     public MTESuperBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -40,21 +40,18 @@ public class MTESuperBuffer extends MTEChestBuffer {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESuperBuffer(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-            TextureFactory.of(AUTOMATION_SUPERBUFFER),
-            TextureFactory.builder()
-                .addIcon(AUTOMATION_SUPERBUFFER_GLOW)
-                .glow()
-                .build());
+                TextureFactory.of(AUTOMATION_SUPERBUFFER),
+                TextureFactory.builder().addIcon(AUTOMATION_SUPERBUFFER_GLOW).glow().build());
     }
 
     @Override
@@ -79,8 +76,7 @@ public class MTESuperBuffer extends MTEChestBuffer {
         for (Map.Entry<GTUtility.ItemId, Integer> entry : slots.entrySet()) {
             do {
                 int slot = validSlots.get(i);
-                mInventory[slot] = stacks.get(entry.getKey())
-                    .copy();
+                mInventory[slot] = stacks.get(entry.getKey()).copy();
                 int toSet = Math.min(entry.getValue(), mInventory[slot].getMaxStackSize());
                 mInventory[slot].stackSize = toSet;
                 entry.setValue(entry.getValue() - toSet);
@@ -92,8 +88,6 @@ public class MTESuperBuffer extends MTEChestBuffer {
     @Override
     protected void addMainUI(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SUPER_BUFFER)
-                .setPos(61, 4)
-                .setSize(54, 54));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SUPER_BUFFER).setPos(61, 4).setSize(54, 54));
     }
 }

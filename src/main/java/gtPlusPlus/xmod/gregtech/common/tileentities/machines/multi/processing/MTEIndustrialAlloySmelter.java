@@ -39,7 +39,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialAlloySmelter>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     private HeatingCoilLevel mHeatingCapacity;
@@ -105,47 +105,41 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Processes Voltage Tier * Coil Tier items")
-            .addInfo("Gains a 5% speed bonus for each coil tier")
-            .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, true)
-            .addController("Bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
-            .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
-            .addInputBus("Any Inconel Reinforced Casing", 1)
-            .addOutputBus("Any Inconel Reinforced Casing", 1)
-            .addEnergyHatch("Any Inconel Reinforced Casing", 1)
-            .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-            .addMufflerHatch("Any Inconel Reinforced Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Processes Voltage Tier * Coil Tier items")
+                .addInfo("Gains a 5% speed bonus for each coil tier")
+                .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 5, 3, true)
+                .addController("Bottom center").addCasingInfoMin("Inconel Reinforced Casings", 8, false)
+                .addOtherStructurePart("Integral Encasement V", "Middle Layer")
+                .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
+                .addInputBus("Any Inconel Reinforced Casing", 1).addOutputBus("Any Inconel Reinforced Casing", 1)
+                .addEnergyHatch("Any Inconel Reinforced Casing", 1)
+                .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
+                .addMufflerHatch("Any Inconel Reinforced Casing", 1).toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialAlloySmelter> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialAlloySmelter>builder()
-                .addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialAlloySmelter>builder().addShape(
                     mName,
                     transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "VVV", "V-V", "VVV" },
-                            { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialAlloySmelter.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(CASING_TEXTURE_ID)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
-                .addElement(
-                    'H',
-                    activeCoils(
-                        ofCoil(MTEIndustrialAlloySmelter::setCoilLevel, MTEIndustrialAlloySmelter::getCoilLevel)))
-                .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4))
-                .build();
+                            new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "VVV", "V-V", "VVV" },
+                                    { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEIndustrialAlloySmelter.class)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                                    .casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
+                    .addElement(
+                            'H',
+                            activeCoils(
+                                    ofCoil(
+                                            MTEIndustrialAlloySmelter::setCoilLevel,
+                                            MTEIndustrialAlloySmelter::getCoilLevel)))
+                    .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -167,9 +161,9 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         mLevel = 0;
         setCoilLevel(HeatingCoilLevel.None);
         return checkPiece(mName, 1, 4, 0) && mCasing >= 8
-            && getCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getCoilLevel().getTier() + 1) > 0
-            && checkHatch();
+                && getCoilLevel() != HeatingCoilLevel.None
+                && (mLevel = getCoilLevel().getTier() + 1) > 0
+                && checkHatch();
     }
 
     @Override
@@ -185,12 +179,11 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setDurationModifier(100.0 / (100 + 5 * mLevel))
-                    .setHeatOC(true)
-                    .setRecipeHeat(0)
-                    // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once
-                    // every
-                    // 900
-                    .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
+                        .setHeatOC(true).setRecipeHeat(0)
+                        // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once
+                        // every
+                        // 900
+                        .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

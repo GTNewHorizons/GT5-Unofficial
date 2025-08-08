@@ -46,12 +46,12 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     private long mMax = 0;
 
     public MTEBasicBatteryBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        int aSlotCount) {
+            int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
     public MTEBasicBatteryBuffer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        int aSlotCount) {
+            int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
@@ -69,16 +69,16 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                mInventory.length == 16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]
-                    : mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
-                        : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                    mInventory.length == 16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]
+                            : mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
+                                    : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
         }
         return rTextures;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         return mTextures[side == aFacing ? 1 : 0][colorIndex + 1];
     }
 
@@ -200,15 +200,14 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        if (GTModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName()
-            .startsWith("gt.metaitem.01.")) {
+            ItemStack aStack) {
+        if (GTModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")) {
             String name = aStack.getUnlocalizedName();
             if (name.equals("gt.metaitem.01.32510") || name.equals("gt.metaitem.01.32511")
-                || name.equals("gt.metaitem.01.32520")
-                || name.equals("gt.metaitem.01.32521")
-                || name.equals("gt.metaitem.01.32530")
-                || name.equals("gt.metaitem.01.32531")) {
+                    || name.equals("gt.metaitem.01.32520")
+                    || name.equals("gt.metaitem.01.32521")
+                    || name.equals("gt.metaitem.01.32530")
+                    || name.equals("gt.metaitem.01.32531")) {
                 return ic2.api.item.ElectricItem.manager.getCharge(aStack) == 0;
             }
         }
@@ -217,7 +216,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         if (!GTUtility.isStackValid(aStack)) {
             return false;
         }
@@ -273,16 +272,16 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         updateStorageInfo();
 
         return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.battery_buffer.stored_items",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMax) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.battery_buffer.average_input",
-                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.battery_buffer.average_output",
-                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())) };
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.battery_buffer.stored_items",
+                        EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored) + EnumChatFormatting.RESET,
+                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMax) + EnumChatFormatting.RESET),
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.battery_buffer.average_input",
+                        GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())),
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.battery_buffer.average_output",
+                        GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())) };
     }
 
     private void updateStorageInfo() {
@@ -296,33 +295,33 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.stored",
-                GTUtility.formatNumbers(tag.getLong("mStored")),
-                GTUtility.formatNumbers(tag.getLong("mMax"))));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.energy.stored",
+                        GTUtility.formatNumbers(tag.getLong("mStored")),
+                        GTUtility.formatNumbers(tag.getLong("mMax"))));
         long avgIn = tag.getLong("AvgIn");
         long avgOut = tag.getLong("AvgOut");
         currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_in_with_amperage",
-                GTUtility.formatNumbers(avgIn),
-                GTUtility.getAmperageForTier(avgIn, (byte) getInputTier()),
-                GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.energy.avg_in_with_amperage",
+                        GTUtility.formatNumbers(avgIn),
+                        GTUtility.getAmperageForTier(avgIn, (byte) getInputTier()),
+                        GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
         currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_out_with_amperage",
-                GTUtility.formatNumbers(avgOut),
-                GTUtility.getAmperageForTier(avgOut, (byte) getOutputTier()),
-                GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.energy.avg_out_with_amperage",
+                        GTUtility.formatNumbers(avgOut),
+                        GTUtility.getAmperageForTier(avgOut, (byte) getOutputTier()),
+                        GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         updateStorageInfo();
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("mStored", mStored);
@@ -340,61 +339,41 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mInventory.length) {
             case 4 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 2)
-                    .startFromSlot(0)
-                    .endAtSlot(3)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                    SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3)
+                            .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(70, 25));
+                                @Override
+                                public int getSlotStackLimit() {
+                                    return 1;
+                                }
+                            }).background(getGUITextureSet().getItemSlot()).build().setPos(70, 25));
             case 9 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(0)
-                    .endAtSlot(8)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                    SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8)
+                            .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(61, 16));
+                                @Override
+                                public int getSlotStackLimit() {
+                                    return 1;
+                                }
+                            }).background(getGUITextureSet().getItemSlot()).build().setPos(61, 16));
             case 16 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4)
-                    .startFromSlot(0)
-                    .endAtSlot(15)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                    SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15)
+                            .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(52, 7));
+                                @Override
+                                public int getSlotStackLimit() {
+                                    return 1;
+                                }
+                            }).background(getGUITextureSet().getItemSlot()).build().setPos(52, 7));
             default -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 1)
-                    .startFromSlot(0)
-                    .endAtSlot(0)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                    SlotGroup.ofItemHandler(inventoryHandler, 1).startFromSlot(0).endAtSlot(0)
+                            .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(79, 34));
+                                @Override
+                                public int getSlotStackLimit() {
+                                    return 1;
+                                }
+                            }).background(getGUITextureSet().getItemSlot()).build().setPos(79, 34));
         }
     }
 }

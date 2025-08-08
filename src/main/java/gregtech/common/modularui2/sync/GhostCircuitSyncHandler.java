@@ -18,8 +18,7 @@ import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
- * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget
- * GhostCircuitSlotWidget}.
+ * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget GhostCircuitSlotWidget}.
  */
 public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
 
@@ -98,7 +97,7 @@ public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
         IItemHandler handler = getSlot().getItemHandler();
         if (!(handler instanceof GhostCircuitItemStackHandler ghostHandler)) {
             throw new IllegalStateException(
-                "GhostCircuitSyncHandler has IItemHandler that is not GhostCircuitItemStackHandler");
+                    "GhostCircuitSyncHandler has IItemHandler that is not GhostCircuitItemStackHandler");
         }
         return ghostHandler;
     }

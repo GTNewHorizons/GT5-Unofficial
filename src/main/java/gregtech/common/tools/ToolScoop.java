@@ -39,7 +39,7 @@ public class ToolScoop extends GTTool {
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "scoop")
-            || GTToolHarvestHelper.isAppropriateMaterial(aBlock, sBeeHiveMaterial);
+                || GTToolHarvestHelper.isAppropriateMaterial(aBlock, sBeeHiveMaterial);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ToolScoop extends GTTool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -65,11 +65,11 @@ public class ToolScoop extends GTTool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-            EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                + EnumChatFormatting.WHITE
-                + " got scooped up by "
-                + EnumChatFormatting.GREEN
-                + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE);
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " got scooped up by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 }

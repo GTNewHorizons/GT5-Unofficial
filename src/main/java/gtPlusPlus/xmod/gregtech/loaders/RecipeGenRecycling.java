@@ -55,22 +55,22 @@ public class RecipeGenRecycling implements Runnable {
         if (material != null) Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
 
         final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
-            OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
-            OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.stick, OrePrefixes.stickLong,
-            OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.rotor, OrePrefixes.gearGt,
-            OrePrefixes.gearGtSmall, OrePrefixes.block, OrePrefixes.cableGt01, OrePrefixes.cableGt02,
-            OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12, OrePrefixes.wireFine,
-            OrePrefixes.wireGt01, OrePrefixes.wireGt02, OrePrefixes.wireGt04, OrePrefixes.wireGt08,
-            OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil, OrePrefixes.frameGt, OrePrefixes.pipeHuge,
-            OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny, };
+                OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
+                OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.stick, OrePrefixes.stickLong,
+                OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.rotor, OrePrefixes.gearGt,
+                OrePrefixes.gearGtSmall, OrePrefixes.block, OrePrefixes.cableGt01, OrePrefixes.cableGt02,
+                OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12, OrePrefixes.wireFine,
+                OrePrefixes.wireGt01, OrePrefixes.wireGt02, OrePrefixes.wireGt04, OrePrefixes.wireGt08,
+                OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil, OrePrefixes.frameGt, OrePrefixes.pipeHuge,
+                OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny, };
 
         int mSlotIndex = 0;
         Pair<OrePrefixes, ItemStack>[] mValidPairs = new Pair[mValidPrefixesAsString.length];
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].name() + StringUtils.sanitizeString(material.getLocalizedName()),
-                1);
+                    mValidPrefixesAsString[r].name() + StringUtils.sanitizeString(material.getLocalizedName()),
+                    1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
             }
@@ -82,9 +82,7 @@ public class RecipeGenRecycling implements Runnable {
             if (temp2 == null) {
                 continue;
             }
-            Logger.WARNING(
-                "Valid: " + temp2.getValue()
-                    .getDisplayName());
+            Logger.WARNING("Valid: " + temp2.getValue().getDisplayName());
             validCounter++;
         }
         Pair<OrePrefixes, ItemStack>[] temp3 = new Pair[validCounter];
@@ -102,8 +100,8 @@ public class RecipeGenRecycling implements Runnable {
 
         for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
             if (material == null || validPrefix == null
-                || (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID)
-                || validPrefix.getKey() == OrePrefixes.ingotHot) {
+                    || (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID)
+                    || validPrefix.getKey() == OrePrefixes.ingotHot) {
                 continue;
             }
 
@@ -112,18 +110,14 @@ public class RecipeGenRecycling implements Runnable {
 
             // Maceration
             if (tempStack != null && mDust != null) {
-                RA.stdBuilder()
-                    .itemInputs(tempStack)
-                    .itemOutputs(mDust)
-                    .eut(2)
-                    .duration(20 * SECONDS)
-                    .addTo(maceratorRecipes);
+                RA.stdBuilder().itemInputs(tempStack).itemOutputs(mDust).eut(2).duration(20 * SECONDS)
+                        .addTo(maceratorRecipes);
                 Logger.WARNING(
-                    "Recycle Recipe: " + material.getLocalizedName()
-                        + " - Success - Recycle "
-                        + tempStack.getDisplayName()
-                        + " and obtain "
-                        + mDust.getDisplayName());
+                        "Recycle Recipe: " + material.getLocalizedName()
+                                + " - Success - Recycle "
+                                + tempStack.getDisplayName()
+                                + " and obtain "
+                                + mDust.getDisplayName());
             }
 
             // Fluid Extractor
@@ -132,26 +126,21 @@ public class RecipeGenRecycling implements Runnable {
                 int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
                 FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
                 if (fluidOutput != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tempStack)
-                        .fluidOutputs(fluidOutput)
-                        .duration(aDuration)
-                        .eut(material.vVoltageMultiplier)
-                        .addTo(fluidExtractionRecipes);
+                    GTValues.RA.stdBuilder().itemInputs(tempStack).fluidOutputs(fluidOutput).duration(aDuration)
+                            .eut(material.vVoltageMultiplier).addTo(fluidExtractionRecipes);
 
                     Logger.WARNING(
-                        "Fluid Recycle Recipe: " + material.getLocalizedName()
-                            + " - Success - Recycle "
-                            + tempStack.getDisplayName()
-                            + " and obtain "
-                            + aFluidAmount
-                            + "mb of "
-                            + material.getFluidStack(1)
-                                .getLocalizedName()
-                            + ". Time: "
-                            + aDuration
-                            + ", Voltage: "
-                            + material.vVoltageMultiplier);
+                            "Fluid Recycle Recipe: " + material.getLocalizedName()
+                                    + " - Success - Recycle "
+                                    + tempStack.getDisplayName()
+                                    + " and obtain "
+                                    + aFluidAmount
+                                    + "mb of "
+                                    + material.getFluidStack(1).getLocalizedName()
+                                    + ". Time: "
+                                    + aDuration
+                                    + ", Voltage: "
+                                    + material.vVoltageMultiplier);
                 }
             }
         }
@@ -230,31 +219,29 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
-        final long aAmount) {
+            final long aAmount) {
         return get(
-            aPrefix.name() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
-            aReplacement,
-            aAmount,
-            false,
-            true);
+                aPrefix.name() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
+                aReplacement,
+                aAmount,
+                false,
+                true);
     }
 
     public static ItemStack get(final Object aName, final ItemStack aReplacement, final long aAmount,
-        final boolean aMentionPossibleTypos, final boolean aNoInvalidAmounts) {
+            final boolean aMentionPossibleTypos, final boolean aNoInvalidAmounts) {
         if (aNoInvalidAmounts && (aAmount < 1L)) {
             Logger.modLogger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
-        if (!GTOreDictUnificator.getName2StackMap()
-            .containsKey(aName.toString()) && aMentionPossibleTypos) {
+        if (!GTOreDictUnificator.getName2StackMap().containsKey(aName.toString()) && aMentionPossibleTypos) {
             Logger.WARNING("Unknown Key for Unification, Typo? " + aName);
         }
         return GTUtility.copyAmount(
-            aAmount,
-            GTOreDictUnificator.getName2StackMap()
-                .get(aName.toString()),
-            getFirstOre(aName, aAmount),
-            aReplacement);
+                aAmount,
+                GTOreDictUnificator.getName2StackMap().get(aName.toString()),
+                getFirstOre(aName, aAmount),
+                aReplacement);
     }
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {
@@ -262,8 +249,7 @@ public class RecipeGenRecycling implements Runnable {
             Logger.modLogger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
-        final ItemStack tStack = GTOreDictUnificator.getName2StackMap()
-            .get(aName.toString());
+        final ItemStack tStack = GTOreDictUnificator.getName2StackMap().get(aName.toString());
         if (GTUtility.isStackValid(tStack)) {
             Logger.WARNING("Found valid stack.");
             return GTUtility.copyAmount(aAmount, new Object[] { tStack });
@@ -295,10 +281,8 @@ public class RecipeGenRecycling implements Runnable {
 
         // Adds a check to grab dusts using GT methodology if possible.
         ItemStack returnValue = null;
-        if (oredictName.toLowerCase()
-            .contains("dust")) {
-            final String MaterialName = oredictName.toLowerCase()
-                .replace("dust", "");
+        if (oredictName.toLowerCase().contains("dust")) {
+            final String MaterialName = oredictName.toLowerCase().replace("dust", "");
             final Materials m = Materials.get(MaterialName);
             if (m != null && m != Materials._NULL) {
                 returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1L);
@@ -320,15 +304,13 @@ public class RecipeGenRecycling implements Runnable {
 
         // Banned Materials and replacements for GT5.8 compat.
 
-        if (oredictName.toLowerCase()
-            .contains("ingotclay")) {
+        if (oredictName.toLowerCase().contains("ingotclay")) {
             return new ItemStack(Items.clay_ball, amount);
         }
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
         if (!oreDictList.isEmpty()) {
-            final ItemStack returnValue = oreDictList.get(0)
-                .copy();
+            final ItemStack returnValue = oreDictList.get(0).copy();
             returnValue.stackSize = amount;
             return returnValue;
         }

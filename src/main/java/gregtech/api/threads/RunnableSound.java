@@ -16,7 +16,7 @@ public class RunnableSound implements Runnable {
     private final float mSoundStrength, mSoundModulation;
 
     public RunnableSound(World aWorld, double aX, double aY, double aZ, int aTimeUntilNextSound,
-        ResourceLocation aSoundResourceLocation, float aSoundStrength, float aSoundModulation) {
+            ResourceLocation aSoundResourceLocation, float aSoundStrength, float aSoundModulation) {
         mWorld = aWorld;
         mX = aX;
         mY = aY;

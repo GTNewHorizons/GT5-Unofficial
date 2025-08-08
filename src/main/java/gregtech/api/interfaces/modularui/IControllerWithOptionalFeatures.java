@@ -32,8 +32,8 @@ import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.common.config.Gregtech;
 
 /**
- * Machines implementing this interface can have logic and GUI buttons
- * to configure various behaviors regarding multiblock.
+ * Machines implementing this interface can have logic and GUI buttons to configure various behaviors regarding
+ * multiblock.
  * <ul>
  * <li>Power switch</li>
  * <li>Void protection</li>
@@ -62,27 +62,22 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             } else {
                 enableWorking();
             }
-        })
-            .setPlayClickSoundResource(
+        }).setPlayClickSoundResource(
                 () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
-                    : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
-            .setBackground(() -> {
-                if (isAllowedToWork()) {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                } else {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
-                }
-            })
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
-                if (val) enableWorking();
-                else disableWorking();
-            }), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getPowerSwitchButtonPos())
-            .setSize(16, 16);
+                        : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
+                .setBackground(() -> {
+                    if (isAllowedToWork()) {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                                GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    } else {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                                GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    }
+                }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
+                    if (val) enableWorking();
+                    else disableWorking();
+                }), builder).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getPowerSwitchButtonPos()).setSize(16, 16);
         return (ButtonWidget) button;
     }
 
@@ -98,29 +93,24 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 }
                 widget.notifyTooltipChange();
             }
-        })
-            .setPlayClickSound(supportsVoidProtection())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(getVoidingMode().buttonTextureLegacy);
-                ret.add(getVoidingMode().buttonOverlayLegacy);
-                if (!supportsVoidProtection()) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(
+        }).setPlayClickSound(supportsVoidProtection()).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(getVoidingMode().buttonTextureLegacy);
+            ret.add(getVoidingMode().buttonOverlayLegacy);
+            if (!supportsVoidProtection()) {
+                ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).attachSyncer(
                 new FakeSyncWidget.IntegerSyncer(
-                    () -> getVoidingMode().ordinal(),
-                    val -> setVoidingMode(VoidingMode.fromOrdinal(val))),
+                        () -> getVoidingMode().ordinal(),
+                        val -> setVoidingMode(VoidingMode.fromOrdinal(val))),
                 builder)
-            .dynamicTooltip(
-                () -> Arrays.asList(
-                    StatCollector.translateToLocal("GT5U.gui.button.voiding_mode"),
-                    StatCollector.translateToLocal(getVoidingMode().getTransKey())))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getVoidingModeButtonPos())
-            .setSize(16, 16);
+                .dynamicTooltip(
+                        () -> Arrays.asList(
+                                StatCollector.translateToLocal("GT5U.gui.button.voiding_mode"),
+                                StatCollector.translateToLocal(getVoidingMode().getTransKey())))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getVoidingModeButtonPos()).setSize(16, 16);
         if (!supportsVoidProtection()) {
             button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
@@ -189,21 +179,16 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 onMachineModeSwitchClick();
                 setMachineMode(nextMachineMode());
             }
-        })
-            .setPlayClickSound(supportsMachineModeSwitch())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (supportsMachineModeSwitch()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(getMachineModeIcon(getMachineMode()));
-                } else return null;
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getMachineModeSwitchButtonPos())
-            .setSize(16, 16);
+        }).setPlayClickSound(supportsMachineModeSwitch()).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            if (supportsMachineModeSwitch()) {
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(getMachineModeIcon(getMachineMode()));
+            } else return null;
+            return ret.toArray(new IDrawable[0]);
+        }).attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getMachineModeSwitchButtonPos()).setSize(16, 16);
         return (ButtonWidget) button;
     }
 
@@ -232,43 +217,37 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 setInputSeparation(!isInputSeparationEnabled());
                 widget.notifyTooltipChange();
             }
-        })
-            .setPlayClickSound(supportsInputSeparation())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (isInputSeparationEnabled()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    if (supportsInputSeparation()) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
-                    }
+        }).setPlayClickSound(supportsInputSeparation()).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            if (isInputSeparationEnabled()) {
+                ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                if (supportsInputSeparation()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
                 } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    if (supportsInputSeparation()) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
-                    }
+                    ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
                 }
-                if (!supportsInputSeparation()) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+            } else {
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                if (supportsInputSeparation()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
+                } else {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
                 }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(
+            }
+            if (!supportsInputSeparation()) {
+                ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(this::isInputSeparationEnabled, this::setInputSeparation),
-                builder)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getInputSeparationButtonPos())
-            .setSize(16, 16);
+                builder).setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getInputSeparationButtonPos()).setSize(16, 16);
 
         addDynamicTooltipOfFeatureToButton(
-            button,
-            this::supportsInputSeparation,
-            this::isInputSeparationEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+                button,
+                this::supportsInputSeparation,
+                this::isInputSeparationEnabled,
+                StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
+                StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
 
         return (ButtonWidget) button;
     }
@@ -285,21 +264,15 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     default ButtonWidget createPowerPanelButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsPowerPanel()) {
-                if (!widget.isClient()) widget.getContext()
-                    .openSyncedWindow(POWER_PANEL_WINDOW_ID);
+                if (!widget.isClient()) widget.getContext().openSyncedWindow(POWER_PANEL_WINDOW_ID);
             }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                ret.add(OVERLAY_BUTTON_POWER_PANEL);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_panel"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getPowerPanelButtonPos())
-            .setSize(16, 16);
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GTUITextures.BUTTON_STANDARD);
+            ret.add(OVERLAY_BUTTON_POWER_PANEL);
+            return ret.toArray(new IDrawable[0]);
+        }).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_panel"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getPowerPanelButtonPos()).setSize(16, 16);
         return (ButtonWidget) button;
     }
 
@@ -327,41 +300,36 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 setBatchMode(!isBatchModeEnabled());
                 widget.notifyTooltipChange();
             }
-        })
-            .setPlayClickSound(supportsBatchMode())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (isBatchModeEnabled()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    if (supportsBatchMode()) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
-                    }
+        }).setPlayClickSound(supportsBatchMode()).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            if (isBatchModeEnabled()) {
+                ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                if (supportsBatchMode()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
                 } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    if (supportsBatchMode()) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
-                    }
+                    ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
                 }
-                if (!supportsBatchMode()) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+            } else {
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                if (supportsBatchMode()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
+                } else {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
                 }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isBatchModeEnabled, this::setBatchMode), builder)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getBatchModeButtonPos())
-            .setSize(16, 16);
+            }
+            if (!supportsBatchMode()) {
+                ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isBatchModeEnabled, this::setBatchMode), builder)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getBatchModeButtonPos()).setSize(16, 16);
 
         addDynamicTooltipOfFeatureToButton(
-            button,
-            this::supportsBatchMode,
-            this::isBatchModeEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+                button,
+                this::supportsBatchMode,
+                this::isBatchModeEnabled,
+                StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
+                StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
 
         return (ButtonWidget) button;
     }
@@ -374,43 +342,36 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 setRecipeLocking(!isRecipeLockingEnabled());
                 widget.notifyTooltipChange();
             }
-        })
-            .setPlayClickSound(supportsSingleRecipeLocking())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (isRecipeLockingEnabled()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    if (supportsSingleRecipeLocking()) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
-                    }
+        }).setPlayClickSound(supportsSingleRecipeLocking()).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            if (isRecipeLockingEnabled()) {
+                ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                if (supportsSingleRecipeLocking()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
                 } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    if (supportsSingleRecipeLocking()) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
-                    }
+                    ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
                 }
-                if (!supportsSingleRecipeLocking()) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+            } else {
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                if (supportsSingleRecipeLocking()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
+                } else {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
                 }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(this::isRecipeLockingEnabled, this::setRecipeLocking),
-                builder)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getRecipeLockingButtonPos())
-            .setSize(16, 16);
+            }
+            if (!supportsSingleRecipeLocking()) {
+                ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isRecipeLockingEnabled, this::setRecipeLocking), builder)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getRecipeLockingButtonPos()).setSize(16, 16);
 
         addDynamicTooltipOfFeatureToButton(
-            button,
-            this::supportsSingleRecipeLocking,
-            this::isRecipeLockingEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+                button,
+                this::supportsSingleRecipeLocking,
+                this::isRecipeLockingEnabled,
+                StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
+                StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
 
         return (ButtonWidget) button;
     }
@@ -426,8 +387,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
      * </ul>
      *
      * <p>
-     * <strong>Important:</strong> When implementing this method, ensure that any action that changes
-     * the feature's enabled state calls {@code widget.notifyTooltipChange()} to refresh the tooltip display.
+     * <strong>Important:</strong> When implementing this method, ensure that any action that changes the feature's
+     * enabled state calls {@code widget.notifyTooltipChange()} to refresh the tooltip display.
      *
      * @param widget                 the widget button to add the tooltip to
      * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
@@ -439,7 +400,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
      *      Supplier, Supplier, String, String) For equivalent method but made for non-ModularUI
      */
     default void addDynamicTooltipOfFeatureToButton(Widget widget, Supplier<Boolean> supportsFeature,
-        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
+            Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
 
         if (supportsFeature.get()) {
             widget.dynamicTooltip(() -> {
@@ -468,25 +429,22 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
 
     default ButtonWidget createStructureUpdateButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget()
-            .setOnClick((clickData, widget) -> { if (getStructureUpdateTime() <= -20) setStructureUpdateTime(1); })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (getStructureUpdateTime() > -20) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                }
-                ret.add(GTUITextures.OVERLAY_BUTTON_STRUCTURE_UPDATE);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(
-                new FakeSyncWidget.IntegerSyncer(this::getStructureUpdateTime, this::setStructureUpdateTime),
-                builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.structure_update"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getStructureUpdateButtonPos())
-            .setSize(16, 16);
+                .setOnClick((clickData, widget) -> { if (getStructureUpdateTime() <= -20) setStructureUpdateTime(1); })
+                .setPlayClickSound(true).setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    if (getStructureUpdateTime() > -20) {
+                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    } else {
+                        ret.add(GTUITextures.BUTTON_STANDARD);
+                    }
+                    ret.add(GTUITextures.OVERLAY_BUTTON_STRUCTURE_UPDATE);
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(this::getStructureUpdateTime, this::setStructureUpdateTime),
+                        builder)
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.structure_update"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(getStructureUpdateButtonPos()).setSize(16, 16);
         return (ButtonWidget) button;
     }
 }

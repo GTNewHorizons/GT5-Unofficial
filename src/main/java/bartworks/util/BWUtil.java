@@ -107,8 +107,7 @@ public class BWUtil {
     }
 
     public static String subscriptNumber(Number b) {
-        char[] chars = Long.toString(b.longValue())
-            .toCharArray();
+        char[] chars = Long.toString(b.longValue()).toCharArray();
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
@@ -152,13 +151,12 @@ public class BWUtil {
 
     public static int calculateSv(Materials materials) {
         for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
-            if (pair.getMaterials()
-                .equals(materials)) return pair.getSievert();
+            if (pair.getMaterials().equals(materials)) return pair.getSievert();
         }
         return (int) (materials.getProtons() == 43L
-            ? materials.equals(Materials.NaquadahEnriched) ? 140
-                : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43
-            : materials.getProtons());
+                ? materials.equals(Materials.NaquadahEnriched) ? 140
+                        : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43
+                : materials.getProtons());
     }
 
     public static ItemStack setStackSize(ItemStack stack, int size) {
@@ -168,9 +166,9 @@ public class BWUtil {
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
         return itemStack != null && GTOreDictUnificator.getAssociation(itemStack) != null
-            && GTOreDictUnificator.getAssociation(itemStack).mPrefix != null
-            && GTOreDictUnificator.getAssociation(itemStack).mMaterial != null
-            && GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
+                && GTOreDictUnificator.getAssociation(itemStack).mPrefix != null
+                && GTOreDictUnificator.getAssociation(itemStack).mMaterial != null
+                && GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
     }
 
     @Deprecated
@@ -269,11 +267,11 @@ public class BWUtil {
      */
     @Deprecated
     public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
-        BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
+            BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
         return new IStructureElement<>() {
 
             private final IStructureElement<T> placementDelegate = BorosilicateGlass
-                .ofBoroGlass(notset, mintier, maxtier, setter, getter);
+                    .ofBoroGlass(notset, mintier, maxtier, setter, getter);
 
             @Override
             public boolean check(T te, World world, int x, int y, int z) {
@@ -315,7 +313,7 @@ public class BWUtil {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
+                    AutoPlaceEnvironment env) {
                 return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         };
@@ -326,7 +324,7 @@ public class BWUtil {
         return new IStructureElement<>() {
 
             private final IStructureElement<T> placementDelegate = BorosilicateGlass
-                .ofBoroGlass((byte) 0, mintier, maxtier, (v1, v2) -> {}, v1 -> (byte) 0);
+                    .ofBoroGlass((byte) 0, mintier, maxtier, (v1, v2) -> {}, v1 -> (byte) 0);
 
             @Override
             public boolean check(T te, World world, int x, int y, int z) {
@@ -357,7 +355,7 @@ public class BWUtil {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
+                    AutoPlaceEnvironment env) {
                 return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         };
@@ -365,31 +363,31 @@ public class BWUtil {
 
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return createGTCraftingRecipe(
-            aResult,
-            null,
-            null,
-            (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DISMANTLEABLE) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.NOT_REMOVABLE) == 0L,
-            (aBitMask & GTModHandler.RecipeBits.REVERSIBLE) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0L,
-            (aBitMask & GTModHandler.RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0L,
-            aRecipe);
+                aResult,
+                null,
+                null,
+                (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.DISMANTLEABLE) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.NOT_REMOVABLE) == 0L,
+                (aBitMask & GTModHandler.RecipeBits.REVERSIBLE) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0L,
+                (aBitMask & GTModHandler.RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0L,
+                (aBitMask & GTModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0L,
+                aRecipe);
     }
 
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable,
-        boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
-        boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
-        boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
-        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
+            int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT,
+            boolean aDismantleable, boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
+            boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
+            boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
+            boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
@@ -407,9 +405,9 @@ public class BWUtil {
                 continue;
             }
             if (aRecipe[i] != null && !(aRecipe[i] instanceof ItemStack)
-                && !(aRecipe[i] instanceof ItemData)
-                && !(aRecipe[i] instanceof String)
-                && !(aRecipe[i] instanceof Character)) {
+                    && !(aRecipe[i] instanceof ItemData)
+                    && !(aRecipe[i] instanceof String)
+                    && !(aRecipe[i] instanceof Character)) {
                 aRecipe[i] = aRecipe[i].toString();
             }
         }
@@ -429,8 +427,7 @@ public class BWUtil {
             while (s.length() < 3) s.append(" ");
             if (s.length() > 3) throw new IllegalArgumentException();
 
-            for (char c : s.toString()
-                .toCharArray()) {
+            for (char c : s.toString().toCharArray()) {
                 switch (c) {
                     case 'b':
                         tRecipeList.add(c);
@@ -507,8 +504,8 @@ public class BWUtil {
             if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                 if (D1) {
                     GTLog.err.println(
-                        "WARNING: Missing Item for shaped Recipe: "
-                            + (aResult == null ? "null" : aResult.getDisplayName()));
+                            "WARNING: Missing Item for shaped Recipe: "
+                                    + (aResult == null ? "null" : aResult.getDisplayName()));
                     for (Object tContent : aRecipe) GTLog.err.println(tContent);
                 }
                 return null;
@@ -565,8 +562,7 @@ public class BWUtil {
         if (aReversible && aResult != null) {
             ItemData[] tData = new ItemData[9];
             int x = -1;
-            for (char chr : shape.toString()
-                .toCharArray()) {
+            for (char chr : shape.toString().toCharArray()) {
                 x++;
                 tData[x] = tItemDataMap.get(chr);
             }
@@ -576,8 +572,7 @@ public class BWUtil {
         if (aCheckForCollisions && tRemoveRecipe) {
             ItemStack[] tRecipe = new ItemStack[9];
             int x = -1;
-            for (char chr : shape.toString()
-                .toCharArray()) {
+            for (char chr : shape.toString().toCharArray()) {
                 x++;
                 tRecipe[x] = tItemStackMap.get(chr);
                 if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == WILDCARD)
@@ -589,24 +584,20 @@ public class BWUtil {
         if (aResult == null || aResult.stackSize <= 0) return null;
 
         if (aRemoveAllOthersWithSameOutput || aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT
-            || aRemoveAllOtherShapedsWithSameOutput
-            || aRemoveAllOtherNativeRecipes)
+                || aRemoveAllOtherShapedsWithSameOutput
+                || aRemoveAllOtherNativeRecipes)
             tThereWasARecipe = GTModHandler.removeRecipeByOutput(
-                aResult,
-                !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
-                aRemoveAllOtherShapedsWithSameOutput,
-                aRemoveAllOtherNativeRecipes) || tThereWasARecipe;
+                    aResult,
+                    !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
+                    aRemoveAllOtherShapedsWithSameOutput,
+                    aRemoveAllOtherNativeRecipes) || tThereWasARecipe;
 
         if (aOnlyAddIfThereIsAnyRecipeOutputtingThis && !tThereWasARecipe) {
-            ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                .getRecipeList();
+            ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
             int tList_sS = tList.size();
             for (int i = 0; i < tList_sS && !tThereWasARecipe; i++) {
                 IRecipe tRecipe = tList.get(i);
-                if (GTModHandler.sSpecialRecipeClasses.contains(
-                    tRecipe.getClass()
-                        .getName()))
-                    continue;
+                if (GTModHandler.sSpecialRecipeClasses.contains(tRecipe.getClass().getName())) continue;
                 if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
                     tList.remove(i);
                     i--;
@@ -622,12 +613,12 @@ public class BWUtil {
         GTUtility.updateItemStack(aResult);
 
         return new GTShapedRecipe(
-            GTUtility.copy(aResult),
-            aRemovable,
-            aKeepNBT,
-            aEnchantmentsAdded,
-            aEnchantmentLevelsAdded,
-            aRecipe).setMirrored(aMirrored);
+                GTUtility.copy(aResult),
+                aRemovable,
+                aKeepNBT,
+                aEnchantmentsAdded,
+                aEnchantmentLevelsAdded,
+                aRecipe).setMirrored(aMirrored);
     }
 
     public static void shortSleep(long nanos) {

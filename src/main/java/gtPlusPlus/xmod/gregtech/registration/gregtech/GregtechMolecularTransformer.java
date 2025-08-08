@@ -15,9 +15,9 @@ public class GregtechMolecularTransformer {
 
     private static void run1() {
         GregtechItemList.Controller_MolecularTransformer.set(
-            new MTEIndustrialMolecularTransformer(
-                Controller_MolecularTransformer.ID,
-                "moleculartransformer.controller.tier.single",
-                "Molecular Transformer").getStackForm(1L));
+                new MTEIndustrialMolecularTransformer(
+                        Controller_MolecularTransformer.ID,
+                        "moleculartransformer.controller.tier.single",
+                        "Molecular Transformer").getStackForm(1L));
     }
 }

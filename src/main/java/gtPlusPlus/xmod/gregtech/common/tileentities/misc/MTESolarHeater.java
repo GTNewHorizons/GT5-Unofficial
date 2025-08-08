@@ -27,12 +27,12 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     private Byte mRequiredFacing;
 
     public MTESolarHeater(final int aID, final String aName, final String aNameRegional, final int aTier,
-        final String aDescription, final int aSlotCount) {
+            final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
     public MTESolarHeater(final String aName, final int aTier, final String[] aDescription,
-        final ITexture[][][] aTextures, final int aSlotCount) {
+            final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
@@ -61,15 +61,17 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
-            : side == facing.getOpposite() ? 1
-                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0)
+                + (side == facing ? 0
+                        : side == facing.getOpposite() ? 1
+                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
+                                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
-            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
+                TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBack(final byte aColor) {
@@ -82,17 +84,17 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
-            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LuV) };
+                TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
-            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
+                TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
-            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
+                TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
@@ -105,12 +107,12 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
-            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LuV) };
+                TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
-            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
+                TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     @Override
@@ -120,20 +122,20 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public String[] getInfoData() {
         return new String[] { this.getLocalName(),
-            StatCollector.translateToLocal("gtpp.infodata.solar_heater.testificate") };
+                StatCollector.translateToLocal("gtpp.infodata.solar_heater.testificate") };
     }
 
     @Override
@@ -232,25 +234,17 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     public boolean canSeeSky() {
-        return this.getBaseMetaTileEntity()
-            .getWorld()
-            .canBlockSeeTheSky(
-                this.getBaseMetaTileEntity()
-                    .getXCoord(),
-                this.getBaseMetaTileEntity()
-                    .getYCoord() + 1,
-                this.getBaseMetaTileEntity()
-                    .getZCoord());
+        return this.getBaseMetaTileEntity().getWorld().canBlockSeeTheSky(
+                this.getBaseMetaTileEntity().getXCoord(),
+                this.getBaseMetaTileEntity().getYCoord() + 1,
+                this.getBaseMetaTileEntity().getZCoord());
     }
 
     public boolean setSolarTower(MTESolarTower aTowerTile) {
         if (!hasSolarTower()) {
-            this.mTX = aTowerTile.getBaseMetaTileEntity()
-                .getXCoord();
-            this.mTY = aTowerTile.getBaseMetaTileEntity()
-                .getYCoord();
-            this.mTZ = aTowerTile.getBaseMetaTileEntity()
-                .getZCoord();
+            this.mTX = aTowerTile.getBaseMetaTileEntity().getXCoord();
+            this.mTY = aTowerTile.getBaseMetaTileEntity().getYCoord();
+            this.mTZ = aTowerTile.getBaseMetaTileEntity().getZCoord();
             this.mHasTower = true;
             this.mTower = aTowerTile;
             return true;

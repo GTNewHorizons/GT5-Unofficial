@@ -27,8 +27,9 @@ public class TileEntities {
     public static void preInit() {
         if (Mods.Thaumcraft.isModLoaded()) {
             GameRegistry.registerTileEntity(TileEntityThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
-            GameRegistry
-                .registerTileEntity(TileEntityThaumiumReinforcedVoidJar.class, "kekztech_thaumiumreinforcedvoidjar");
+            GameRegistry.registerTileEntity(
+                    TileEntityThaumiumReinforcedVoidJar.class,
+                    "kekztech_thaumiumreinforcedvoidjar");
             GameRegistry.registerTileEntity(TileEntityIchorJar.class, "kekztech_ichorjar");
             GameRegistry.registerTileEntity(TileEntityIchorVoidJar.class, "kekztech_ichorvoidjar");
         }
@@ -37,18 +38,18 @@ public class TileEntities {
     public static void init() {
         // Multiblock controllers
         sofc1 = new MTESOFuelCellMK1(
-            MetaTileEntityIDs.sofc1.ID,
-            "multimachine.fuelcellmk1",
-            "Solid-Oxide Fuel Cell Mk I");
+                MetaTileEntityIDs.sofc1.ID,
+                "multimachine.fuelcellmk1",
+                "Solid-Oxide Fuel Cell Mk I");
         sofc2 = new MTESOFuelCellMK2(
-            MetaTileEntityIDs.sofc2.ID,
-            "multimachine.fuelcellmk2",
-            "Solid-Oxide Fuel Cell Mk II");
+                MetaTileEntityIDs.sofc2.ID,
+                "multimachine.fuelcellmk2",
+                "Solid-Oxide Fuel Cell Mk II");
         tfft = new MTETankTFFT(MetaTileEntityIDs.tfft.ID, "multimachine.tfft", "T.F.F.T");
         lsc = new MTELapotronicSuperCapacitor(
-            MetaTileEntityIDs.lsc.ID,
-            "multimachine.supercapacitor",
-            "Lapotronic Supercapacitor");
+                MetaTileEntityIDs.lsc.ID,
+                "multimachine.supercapacitor",
+                "Lapotronic Supercapacitor");
 
         // Singleblocks
         tfftHatch = new MTEHatchTFFT(MetaTileEntityIDs.tfftHatch.ID, "machine.tffthatch", "T.F.F.T Multi I/O Hatch");

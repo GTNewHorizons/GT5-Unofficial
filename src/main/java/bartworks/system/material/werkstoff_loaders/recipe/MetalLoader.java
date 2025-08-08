@@ -29,28 +29,14 @@ public class MetalLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(ingot)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0))
-                .itemOutputs(werkstoff.get(block))
-                .duration(
-                    (int) werkstoff.getStats()
-                        .getMass())
-                .eut(
-                    8 * werkstoff.getStats()
-                        .getMeltingPoint() >= 2800 ? 60 : 15)
-                .addTo(extruderRecipes);
+            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0))
+                    .itemOutputs(werkstoff.get(block)).duration((int) werkstoff.getStats().getMass())
+                    .eut(8 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15).addTo(extruderRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Mold_Block.get(0L))
-                .itemOutputs(werkstoff.get(block))
-                .duration(
-                    (int) (werkstoff.getStats()
-                        .getMass() / 2))
-                .eut(
-                    4 * werkstoff.getStats()
-                        .getMeltingPoint() >= 2800 ? 60 : 15)
-                .recipeCategory(RecipeCategories.alloySmelterMolding)
-                .addTo(RecipeMaps.alloySmelterRecipes);
+            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Mold_Block.get(0L))
+                    .itemOutputs(werkstoff.get(block)).duration((int) (werkstoff.getStats().getMass() / 2))
+                    .eut(4 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15)
+                    .recipeCategory(RecipeCategories.alloySmelterMolding).addTo(RecipeMaps.alloySmelterRecipes);
         }
     }
 }

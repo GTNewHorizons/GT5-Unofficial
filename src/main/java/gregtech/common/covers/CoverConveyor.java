@@ -43,17 +43,17 @@ public class CoverConveyor extends CoverIOBase {
         final ForgeDirection toSide = this.coverData % 2 == 0 ? coverSide.getOpposite() : coverSide;
 
         moveMultipleItemStacks(
-            fromEntity,
-            toEntity,
-            fromSide,
-            toSide,
-            null,
-            false,
-            (byte) 64,
-            (byte) 1,
-            (byte) 64,
-            (byte) 1,
-            this.mMaxStacks);
+                fromEntity,
+                toEntity,
+                fromSide,
+                toSide,
+                null,
+                false,
+                (byte) 64,
+                (byte) 1,
+                (byte) 64,
+                (byte) 1,
+                this.mMaxStacks);
     }
 
     @Override

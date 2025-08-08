@@ -32,12 +32,12 @@ public abstract class GTWorldgen {
      * @return if the Worldgeneration has been successfully completed
      */
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return false;
     }
 
     public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-        int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+            int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return 4; // This is for the empty Orevein
     }
 
@@ -54,8 +54,9 @@ public abstract class GTWorldgen {
             return false;
         }
         if (!(aDimName.equalsIgnoreCase("Overworld") || aDimName.equalsIgnoreCase("Nether")
-            || aDimName.equalsIgnoreCase("The End")
-            || aDimName.equalsIgnoreCase("Twilight Forest"))) return false;
+                || aDimName.equalsIgnoreCase("The End")
+                || aDimName.equalsIgnoreCase("Twilight Forest")))
+            return false;
 
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
@@ -99,16 +100,15 @@ public abstract class GTWorldgen {
             return false;
         }
         if (!(aDimName.equalsIgnoreCase("Overworld") || aDimName.equalsIgnoreCase("Nether")
-            || aDimName.equalsIgnoreCase("The End")
-            || aDimName.equalsIgnoreCase("Twilight Forest"))) return false;
+                || aDimName.equalsIgnoreCase("The End")
+                || aDimName.equalsIgnoreCase("Twilight Forest")))
+            return false;
 
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
             if (blackListedProviders != null) {
                 for (String dimClass : blackListedProviders) {
-                    if (dimClass.equals(
-                        aWorld.provider.getClass()
-                            .getName())) {
+                    if (dimClass.equals(aWorld.provider.getClass().getName())) {
                         return false;
                     }
                 }

@@ -22,12 +22,12 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
 
     public MTEHatchLensHousing(int id, String name, String nameRegional) {
         super(
-            id,
-            name,
-            nameRegional,
-            GTTooltipHandler.Tier.UV.ordinal(),
-            1,
-            new String[] { "Holds a lens for UV laser focusing." });
+                id,
+                name,
+                nameRegional,
+                GTTooltipHandler.Tier.UV.ordinal(),
+                1,
+                new String[] { "Holds a lens for UV laser focusing." });
     }
 
     public MTEHatchLensHousing(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -62,11 +62,9 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 1);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build().child(
                 gridTemplate1by1(
-                    index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));
+                        index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));
     }
 
     @Override

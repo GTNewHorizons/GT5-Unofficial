@@ -67,8 +67,7 @@ import gregtech.common.covers.CoverPosition;
 public class GregTechAPI {
 
     /**
-     * Fixes the HashMap Mappings for ItemStacks once the Server started
-     * <br>
+     * Fixes the HashMap Mappings for ItemStacks once the Server started <br>
      * <br>
      * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
      * {@link GTItemStack}
@@ -84,14 +83,14 @@ public class GregTechAPI {
      * My Creative Tab
      */
     public static final CreativeTabs TAB_GREGTECH = new GTCreativeTab("Main", "Main"),
-        TAB_GREGTECH_MATERIALS = new GTCreativeTab("Materials", "Materials"),
-        TAG_GREGTECH_CASINGS = new GTCreativeTab("Casings", "Casings") {
+            TAB_GREGTECH_MATERIALS = new GTCreativeTab("Materials", "Materials"),
+            TAG_GREGTECH_CASINGS = new GTCreativeTab("Casings", "Casings") {
 
-            @Override
-            public ItemStack getIconItemStack() {
-                return ItemList.Casing_RobustTungstenSteel.get(1);
-            }
-        }, TAB_GREGTECH_ORES = new GTCreativeTab("Ores", "Ores");
+                @Override
+                public ItemStack getIconItemStack() {
+                    return ItemList.Casing_RobustTungstenSteel.get(1);
+                }
+            }, TAB_GREGTECH_ORES = new GTCreativeTab("Ores", "Ores");
 
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
 
@@ -124,9 +123,9 @@ public class GregTechAPI {
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
     public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
-        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftMalletList = new GTHashSet(),
-        sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
-        sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
+            sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftMalletList = new GTHashSet(),
+            sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
+            sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
 
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
@@ -152,17 +151,18 @@ public class GregTechAPI {
      */
     public static IThaumcraftCompat sThaumcraftCompat;
     /**
-     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time.
-     * The Lists are not Threaded - a native Java interface is used for their execution.
-     * Add your "commands" in the constructor or in the static-code-block of your mod's Main class.
-     * Implement the method {@code run()}, and everything should work.
+     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time. The
+     * Lists are not Threaded - a native Java interface is used for their execution. Add your "commands" in the
+     * constructor or in the static-code-block of your mod's Main class. Implement the method {@code run()}, and
+     * everything should work.
      */
     public static List<Runnable> sBeforeGTPreload = new ArrayList<>(), sAfterGTPreload = new ArrayList<>(),
-        sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
-        sAfterGTPostload = new ArrayList<>(), sFirstWorldTick = new ArrayList<>(),
-        sBeforeGTServerstart = new ArrayList<>(), sAfterGTServerstart = new ArrayList<>(),
-        sBeforeGTServerstop = new ArrayList<>(), sAfterGTServerstop = new ArrayList<>(),
-        sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>(), sGTCompleteLoad = new ArrayList<>();
+            sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
+            sAfterGTPostload = new ArrayList<>(), sFirstWorldTick = new ArrayList<>(),
+            sBeforeGTServerstart = new ArrayList<>(), sAfterGTServerstart = new ArrayList<>(),
+            sBeforeGTServerstop = new ArrayList<>(), sAfterGTServerstop = new ArrayList<>(),
+            sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>(),
+            sGTCompleteLoad = new ArrayList<>();
     /**
      * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as
      * executed in the Runnable List above.
@@ -177,14 +177,14 @@ public class GregTechAPI {
     public static Block sBlockMachines;
 
     public static Block sBlockOres1, sBlockOresUb1, sBlockOresUb2, sBlockOresUb3,
-        /* sBlockGem, */
-        sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8,
-        sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
+            /* sBlockGem, */
+            sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7,
+            sBlockMetal8, sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
-        sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
-        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsSE, sBlockCasingsSEMotor, sBlockCasingsDyson,
-        sBlockCasingsSiphon;
+            sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
+            sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsSE, sBlockCasingsSEMotor, sBlockCasingsDyson,
+            sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;
@@ -199,10 +199,10 @@ public class GregTechAPI {
      * Getting assigned by the Config
      */
     public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false,
-        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true,
-        sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true,
-        sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false,
-        mInputRF = false, mRFExplosions = false, mServerStarted = false;
+            sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true,
+            sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true,
+            sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false,
+            mInputRF = false, mRFExplosions = false, mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -218,8 +218,8 @@ public class GregTechAPI {
      * Getting assigned by the Mod loading
      */
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
-        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
-        sFullLoadFinished = false;
+            sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
+            sFullLoadFinished = false;
 
     @SuppressWarnings("unchecked")
     private static final IntFunction<TileEntity>[] teCreators = new IntFunction[16];
@@ -260,10 +260,10 @@ public class GregTechAPI {
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
         if (!GregTechAPI.sPreloadFinished) GTLog.err.println(
-            "GregTechAPI ERROR: " + aOreStack.getItem()
-                + "."
-                + aOreStack.getItemDamage()
-                + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
+                "GregTechAPI ERROR: " + aOreStack.getItem()
+                        + "."
+                        + aOreStack.getItemDamage()
+                        + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
         return GTOreDictUnificator.get(true, aOreStack);
     }
 
@@ -454,8 +454,8 @@ public class GregTechAPI {
      */
     public static boolean registerTool(ItemStack aTool, Collection<GTItemStack> aToolList) {
         if (aTool == null || GTUtility.isStackInList(aTool, sToolList)
-            || (!aTool.getItem()
-                .isDamageable() && !GTModHandler.isElectricItem(aTool) && !(aTool.getItem() instanceof IDamagableItem)))
+                || (!aTool.getItem().isDamageable() && !GTModHandler.isElectricItem(aTool)
+                        && !(aTool.getItem() instanceof IDamagableItem)))
             return false;
         aToolList.add(new GTItemStack(GTUtility.copyAmount(1, aTool)));
         sToolList.add(new GTItemStack(GTUtility.copyAmount(1, aTool)));
@@ -485,7 +485,7 @@ public class GregTechAPI {
     public static void registerTileEntityConstructor(int meta, IntFunction<TileEntity> constructor) {
         if (meta < 0 || meta > 15 || constructor == null) throw new IllegalArgumentException();
         if (teCreators[meta] != null) throw new IllegalStateException(
-            "previous constructor: " + teCreators[meta] + " new constructor: " + constructor + " meta:" + meta);
+                "previous constructor: " + teCreators[meta] + " new constructor: " + constructor + " meta:" + meta);
         teCreators[meta] = constructor;
     }
 

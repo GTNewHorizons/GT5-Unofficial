@@ -53,7 +53,7 @@ public class ItemBaseBook extends ItemWritableBook {
             return NBTUtils.getString(tItem, "title");
         } else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() < BookHandler.mBookMap.size()) {
             return EnumChatFormatting.ITALIC
-                + Utils.addBookTitleLocalization(BookHandler.mBookMap.get(tItem.getItemDamage()).mTitle);
+                    + Utils.addBookTitleLocalization(BookHandler.mBookMap.get(tItem.getItemDamage()).mTitle);
         }
         // NBTUtils.tryIterateNBTData(tItem);
         return "GT++ Storybook";
@@ -65,21 +65,23 @@ public class ItemBaseBook extends ItemWritableBook {
         if (bookTemplate == null) return;
         if (NBTUtils.hasKey(tItem, "author")) {
             list.add(
-                EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("gtpp.tooltip.book.author", NBTUtils.getString(tItem, "author")));
+                    EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                            "gtpp.tooltip.book.author",
+                            NBTUtils.getString(tItem, "author")));
         } else if (bookTemplate.mAuthor != null) {
             list.add(
-                EnumChatFormatting.WHITE
-                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.book.author", bookTemplate.mAuthor));
+                    EnumChatFormatting.WHITE + StatCollector
+                            .translateToLocalFormatted("gtpp.tooltip.book.author", bookTemplate.mAuthor));
         }
         if (NBTUtils.hasKey(tItem, "title")) {
             list.add(
-                EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("gtpp.tooltip.book.pages.s", NBTUtils.getString(tItem, "pages")));
+                    EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                            "gtpp.tooltip.book.pages.s",
+                            NBTUtils.getString(tItem, "pages")));
         } else if (bookTemplate.mPages != null) {
             list.add(
-                EnumChatFormatting.WHITE
-                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.book.pages.d", bookTemplate.mPages.length));
+                    EnumChatFormatting.WHITE + StatCollector
+                            .translateToLocalFormatted("gtpp.tooltip.book.pages.d", bookTemplate.mPages.length));
         }
     }
 
@@ -100,15 +102,14 @@ public class ItemBaseBook extends ItemWritableBook {
             BookHandler.BookTemplate bookTemplate = BookHandler.mBookMap.get(item.getItemDamage());
             if (bookTemplate == null) return item;
             ItemStack bookstack = Utils.getWrittenBook(
-                null,
-                bookTemplate.mMeta,
-                bookTemplate.mMapping,
-                bookTemplate.mTitle,
-                bookTemplate.mAuthor,
-                bookTemplate.mPages);
+                    null,
+                    bookTemplate.mMeta,
+                    bookTemplate.mMapping,
+                    bookTemplate.mTitle,
+                    bookTemplate.mAuthor,
+                    bookTemplate.mPages);
             if (bookstack != null) {
-                Minecraft.getMinecraft()
-                    .displayGuiScreen(new GuiScreenBook(player, bookstack, false));
+                Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(player, bookstack, false));
             }
         }
         return item;

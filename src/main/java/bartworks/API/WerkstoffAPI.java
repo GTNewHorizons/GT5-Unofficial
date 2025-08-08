@@ -21,8 +21,7 @@ import bartworks.system.material.WerkstoffLoader;
 public final class WerkstoffAPI {
 
     public static Werkstoff getWerkstoff(@NotNull String aName) throws NoSuchFieldException, IllegalAccessException {
-        return (Werkstoff) WerkstoffLoader.class.getField(aName)
-            .get(null);
+        return (Werkstoff) WerkstoffLoader.class.getField(aName).get(null);
     }
 
 }

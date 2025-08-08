@@ -38,7 +38,7 @@ public class TFBlockFluidEnder extends BlockFluidCoFHBase {
 
     @Override
     public void onEntityCollidedWithBlock(World paramWorld, int paramInt1, int paramInt2, int paramInt3,
-        Entity paramEntity) {
+            Entity paramEntity) {
         if ((!effect) || (paramWorld.isRemote)) {
             return;
         }
@@ -46,9 +46,7 @@ public class TFBlockFluidEnder extends BlockFluidCoFHBase {
             int i = paramInt1 - 8 + paramWorld.rand.nextInt(17);
             int j = paramInt2 + paramWorld.rand.nextInt(8);
             int k = paramInt3 - 8 + paramWorld.rand.nextInt(17);
-            if (!paramWorld.getBlock(i, j, k)
-                .getMaterial()
-                .isSolid()) {
+            if (!paramWorld.getBlock(i, j, k).getMaterial().isSolid()) {
                 CoreUtils.teleportEntityTo(paramEntity, i, j, k);
             }
         }

@@ -20,22 +20,22 @@ import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.proxy.CommonProxy;
 
 @Mod(
-    modid = GTNHIntergalactic.MODID,
-    version = GT_Version.VERSION,
-    name = GTNHIntergalactic.MODNAME,
-    acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
-        + "required-after:gregtech;"
-        + "required-after:gtnhlib@[0.5.21,);"
-        + "required-after:tectech;"
-        + "required-after:structurelib;"
-        + "after:GalaxySpace;"
-        + "after:bartworks;"
-        + "after:GoodGenerator;"
-        + "after:miscutils;"
-        + "after:dreamcraft;"
-        + "after:openmodularturrets;"
-        + "after:IronChest;")
+        modid = GTNHIntergalactic.MODID,
+        version = GT_Version.VERSION,
+        name = GTNHIntergalactic.MODNAME,
+        acceptedMinecraftVersions = "[1.7.10]",
+        dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
+                + "required-after:gregtech;"
+                + "required-after:gtnhlib@[0.5.21,);"
+                + "required-after:tectech;"
+                + "required-after:structurelib;"
+                + "after:GalaxySpace;"
+                + "after:bartworks;"
+                + "after:GoodGenerator;"
+                + "after:miscutils;"
+                + "after:dreamcraft;"
+                + "after:openmodularturrets;"
+                + "after:IronChest;")
 public class GTNHIntergalactic {
 
     static {
@@ -69,8 +69,7 @@ public class GTNHIntergalactic {
 
             @Override
             public int func_151243_f() {
-                return ItemList.SpaceElevatorController.get(1)
-                    .getItemDamage();
+                return ItemList.SpaceElevatorController.get(1).getItemDamage();
             }
         };
         proxy.init(event);

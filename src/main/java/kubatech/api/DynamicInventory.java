@@ -61,7 +61,7 @@ public class DynamicInventory<T> {
     boolean isEnabled = true;
 
     public DynamicInventory(int width, int height, Supplier<Integer> slotsGetter, List<T> inventory,
-        TInventoryGetter<T> inventoryGetter) {
+            TInventoryGetter<T> inventoryGetter) {
         this.width = width;
         this.height = height;
         this.slotsGetter = slotsGetter;
@@ -110,61 +110,58 @@ public class DynamicInventory<T> {
                 slots = i;
                 container.notifyChangeNoSync();
             }
-        }), builder)
-            .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
-                if (usedSlots != inventory.size()) {
-                    usedSlots = inventory.size();
-                    container.notifyChangeNoSync();
-                }
-                return usedSlots;
-            }, i -> {
-                if (usedSlots != i) {
-                    usedSlots = i;
-                    container.notifyChangeNoSync();
-                }
-            }), builder)
-            .attachSyncer(new FakeSyncWidget.ListSyncer<>(() -> {
-                HashMap<ItemId, Integer> itemMap = new HashMap<>();
-                HashMap<ItemId, ItemStack> stackMap = new HashMap<>();
-                HashMap<ItemId, ArrayList<Integer>> realSlotMap = new HashMap<>();
-                for (int i = 0, mStorageSize = inventory.size(); i < mStorageSize; i++) {
-                    ItemStack stack = inventoryGetter.get(inventory.get(i));
-                    ItemId id = ItemId.createNoCopyWithStackSize(stack);
-                    itemMap.merge(id, 1, Integer::sum);
-                    stackMap.putIfAbsent(id, stack);
-                    realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>())
-                        .add(i);
-                }
-                List<GTHelper.StackableItemSlot> newDrawables = new ArrayList<>();
-                for (Map.Entry<ItemId, Integer> entry : itemMap.entrySet()) {
-                    newDrawables.add(
-                        new GTHelper.StackableItemSlot(
-                            entry.getValue(),
-                            stackMap.get(entry.getKey()),
-                            realSlotMap.get(entry.getKey())));
-                }
-                if (!Objects.equals(newDrawables, drawables)) {
-                    drawables = newDrawables;
-                    container.notifyChangeNoSync();
-                }
-                return drawables;
-            }, l -> {
-                drawables.clear();
-                drawables.addAll(l);
+        }), builder).attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
+            if (usedSlots != inventory.size()) {
+                usedSlots = inventory.size();
                 container.notifyChangeNoSync();
-            }, (buffer, i) -> {
-                try {
-                    i.write(buffer);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }, buffer -> {
-                try {
-                    return GTHelper.StackableItemSlot.read(buffer);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }), builder);
+            }
+            return usedSlots;
+        }, i -> {
+            if (usedSlots != i) {
+                usedSlots = i;
+                container.notifyChangeNoSync();
+            }
+        }), builder).attachSyncer(new FakeSyncWidget.ListSyncer<>(() -> {
+            HashMap<ItemId, Integer> itemMap = new HashMap<>();
+            HashMap<ItemId, ItemStack> stackMap = new HashMap<>();
+            HashMap<ItemId, ArrayList<Integer>> realSlotMap = new HashMap<>();
+            for (int i = 0, mStorageSize = inventory.size(); i < mStorageSize; i++) {
+                ItemStack stack = inventoryGetter.get(inventory.get(i));
+                ItemId id = ItemId.createNoCopyWithStackSize(stack);
+                itemMap.merge(id, 1, Integer::sum);
+                stackMap.putIfAbsent(id, stack);
+                realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>()).add(i);
+            }
+            List<GTHelper.StackableItemSlot> newDrawables = new ArrayList<>();
+            for (Map.Entry<ItemId, Integer> entry : itemMap.entrySet()) {
+                newDrawables.add(
+                        new GTHelper.StackableItemSlot(
+                                entry.getValue(),
+                                stackMap.get(entry.getKey()),
+                                realSlotMap.get(entry.getKey())));
+            }
+            if (!Objects.equals(newDrawables, drawables)) {
+                drawables = newDrawables;
+                container.notifyChangeNoSync();
+            }
+            return drawables;
+        }, l -> {
+            drawables.clear();
+            drawables.addAll(l);
+            container.notifyChangeNoSync();
+        }, (buffer, i) -> {
+            try {
+                i.write(buffer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }, buffer -> {
+            try {
+                return GTHelper.StackableItemSlot.read(buffer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }), builder);
         if (isEnabledGetter != null) {
             container.attachSyncer(new FakeSyncWidget.BooleanSyncer(isEnabledGetter, i -> isEnabled = i), builder);
         }
@@ -188,16 +185,15 @@ public class DynamicInventory<T> {
                 ItemId id = ItemId.createNoCopyWithStackSize(stack);
                 itemMap.merge(id, 1, Integer::sum);
                 stackMap.putIfAbsent(id, stack);
-                realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>())
-                    .add(i);
+                realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>()).add(i);
             }
             drawables = new ArrayList<>();
             for (Map.Entry<ItemId, Integer> entry : itemMap.entrySet()) {
                 drawables.add(
-                    new GTHelper.StackableItemSlot(
-                        entry.getValue(),
-                        stackMap.get(entry.getKey()),
-                        realSlotMap.get(entry.getKey())));
+                        new GTHelper.StackableItemSlot(
+                                entry.getValue(),
+                                stackMap.get(entry.getKey()),
+                                realSlotMap.get(entry.getKey())));
             }
         }
 
@@ -217,119 +213,111 @@ public class DynamicInventory<T> {
                         GL11.glDisable(GL11.GL_BLEND);
                     }
                     // Copied from SlotWidget#draw
-                    else if (isHovering() && !getContext().getCursor()
-                        .hasDraggable()) {
-                            GL11.glDisable(GL11.GL_LIGHTING);
-                            GL11.glEnable(GL11.GL_BLEND);
-                            GlStateManager.colorMask(true, true, true, false);
-                            ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
-                            GlStateManager.colorMask(true, true, true, true);
-                            GL11.glDisable(GL11.GL_BLEND);
-                        }
+                    else if (isHovering() && !getContext().getCursor().hasDraggable()) {
+                        GL11.glDisable(GL11.GL_LIGHTING);
+                        GL11.glEnable(GL11.GL_BLEND);
+                        GlStateManager.colorMask(true, true, true, false);
+                        ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
+                        GlStateManager.colorMask(true, true, true, true);
+                        GL11.glDisable(GL11.GL_BLEND);
+                    }
                 }
-            }.setPlayClickSound(false)
-                .setOnClick((clickData, widget) -> {
-                    if (!(player instanceof EntityPlayerMP)) return;
-                    if (!isEnabledGetter.get()) return;
+            }.setPlayClickSound(false).setOnClick((clickData, widget) -> {
+                if (!(player instanceof EntityPlayerMP)) return;
+                if (!isEnabledGetter.get()) return;
 
-                    if (clickData.mouseButton == 2) {
-                        // special button handler goes here
-                        if (drawables.size() <= finalID) return;
-                        if (player.capabilities.isCreativeMode && player.inventory.getItemStack() == null) {
+                if (clickData.mouseButton == 2) {
+                    // special button handler goes here
+                    if (drawables.size() <= finalID) return;
+                    if (player.capabilities.isCreativeMode && player.inventory.getItemStack() == null) {
+                        int realID = drawables.get(finalID).realSlots.get(0);
+                        ItemStack stack = inventoryGetter.get(inventory.get(realID)).copy();
+                        stack.stackSize = stack.getMaxStackSize();
+                        player.inventory.setItemStack(stack);
+                        ((EntityPlayerMP) player).isChangingQuantityOnly = false;
+                        ((EntityPlayerMP) player).updateHeldItem();
+                    }
+                } else if (clickData.shift) {
+                    if (inventoryExtractor == null) return;
+                    if (drawables.size() <= finalID) return;
+                    int realID = drawables.get(finalID).realSlots.get(0);
+                    T removed = inventoryExtractor.extract(realID);
+                    if (removed != null) {
+                        ItemStack stack = inventoryGetter.get(removed);
+                        if (player.inventory.addItemStackToInventory(stack))
+                            player.inventoryContainer.detectAndSendChanges();
+                        else player.entityDropItem(stack, 0.f);
+
+                    }
+                } else {
+                    ItemStack input = player.inventory.getItemStack();
+                    if (input != null) {
+                        if (drawables.size() > finalID) {
+                            if (inventoryReplacer == null) return;
                             int realID = drawables.get(finalID).realSlots.get(0);
-                            ItemStack stack = inventoryGetter.get(inventory.get(realID))
-                                .copy();
-                            stack.stackSize = stack.getMaxStackSize();
-                            player.inventory.setItemStack(stack);
-                            ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                            ((EntityPlayerMP) player).updateHeldItem();
+                            ItemStack removed = inventoryReplacer.replaceOrMerge(realID, input);
+                            if (removed == null) return;
+                            player.inventory.setItemStack(removed.stackSize == 0 ? null : removed);
+                        } else {
+                            if (inventoryInjector == null) return;
+                            if (clickData.mouseButton == 1) {
+                                ItemStack copy = input.copy();
+                                copy.stackSize = 1;
+                                ItemStack leftover = inventoryInjector.inject(copy);
+                                if (leftover == null) return;
+                                input.stackSize--;
+                            } else {
+                                ItemStack leftover = inventoryInjector.inject(input);
+                                if (leftover == null) return;
+                            }
+                            if (input.stackSize > 0) {
+                                ((EntityPlayerMP) player).isChangingQuantityOnly = true;
+                                ((EntityPlayerMP) player).updateHeldItem();
+                                return;
+                            } else player.inventory.setItemStack(null);
                         }
-                    } else if (clickData.shift) {
+                        ((EntityPlayerMP) player).isChangingQuantityOnly = false;
+                        ((EntityPlayerMP) player).updateHeldItem();
+                        return;
+                    }
+                    if (drawables.size() > finalID) {
                         if (inventoryExtractor == null) return;
-                        if (drawables.size() <= finalID) return;
                         int realID = drawables.get(finalID).realSlots.get(0);
                         T removed = inventoryExtractor.extract(realID);
                         if (removed != null) {
                             ItemStack stack = inventoryGetter.get(removed);
-                            if (player.inventory.addItemStackToInventory(stack))
-                                player.inventoryContainer.detectAndSendChanges();
-                            else player.entityDropItem(stack, 0.f);
-
-                        }
-                    } else {
-                        ItemStack input = player.inventory.getItemStack();
-                        if (input != null) {
-                            if (drawables.size() > finalID) {
-                                if (inventoryReplacer == null) return;
-                                int realID = drawables.get(finalID).realSlots.get(0);
-                                ItemStack removed = inventoryReplacer.replaceOrMerge(realID, input);
-                                if (removed == null) return;
-                                player.inventory.setItemStack(removed.stackSize == 0 ? null : removed);
-                            } else {
-                                if (inventoryInjector == null) return;
-                                if (clickData.mouseButton == 1) {
-                                    ItemStack copy = input.copy();
-                                    copy.stackSize = 1;
-                                    ItemStack leftover = inventoryInjector.inject(copy);
-                                    if (leftover == null) return;
-                                    input.stackSize--;
-                                } else {
-                                    ItemStack leftover = inventoryInjector.inject(input);
-                                    if (leftover == null) return;
-                                }
-                                if (input.stackSize > 0) {
-                                    ((EntityPlayerMP) player).isChangingQuantityOnly = true;
-                                    ((EntityPlayerMP) player).updateHeldItem();
-                                    return;
-                                } else player.inventory.setItemStack(null);
-                            }
+                            player.inventory.setItemStack(stack);
                             ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
-                            return;
-                        }
-                        if (drawables.size() > finalID) {
-                            if (inventoryExtractor == null) return;
-                            int realID = drawables.get(finalID).realSlots.get(0);
-                            T removed = inventoryExtractor.extract(realID);
-                            if (removed != null) {
-                                ItemStack stack = inventoryGetter.get(removed);
-                                player.inventory.setItemStack(stack);
-                                ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                                ((EntityPlayerMP) player).updateHeldItem();
-                            }
                         }
                     }
-                })
-                .setBackground(
+                }
+            }).setBackground(
                     () -> new IDrawable[] { getItemSlot(),
-                        new ItemDrawable(drawables.size() > finalID ? drawables.get(finalID).stack : null)
-                            .withFixedSize(16, 16, 1, 1),
-                        new Text(
-                            (drawables.size() > finalID && drawables.get(finalID).count > 1)
-                                ? (drawables.get(finalID).count > 99 ? "+99"
-                                    : String.valueOf(drawables.get(finalID).count))
-                                : "").color(Color.WHITE.normal)
-                                    .alignment(Alignment.TopLeft)
-                                    .withOffset(1, 1),
-                        new Text(
-                            (drawables.size() > finalID && drawables.get(finalID).stack.stackSize > 1)
-                                ? String.valueOf(drawables.get(finalID).stack.stackSize)
-                                : "").color(Color.WHITE.normal)
-                                    .shadow()
-                                    .alignment(Alignment.BottomRight) })
-                .dynamicTooltip(() -> {
-                    if (drawables.size() > finalID) {
-                        List<String> tip = new ArrayList<>(
-                            Collections.singletonList(drawables.get(finalID).stack.getDisplayName()));
-                        if (drawables.get(finalID).count > 1) tip.add(
-                            EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
-                                "kubatech.gui.tooltip.dynamic_inventory.identical_slots",
-                                drawables.get(finalID).count));
-                        return tip;
-                    }
-                    return Collections.emptyList();
-                })
-                .setSize(18, 18));
+                            new ItemDrawable(drawables.size() > finalID ? drawables.get(finalID).stack : null)
+                                    .withFixedSize(16, 16, 1, 1),
+                            new Text(
+                                    (drawables.size() > finalID && drawables.get(finalID).count > 1)
+                                            ? (drawables.get(finalID).count > 99 ? "+99"
+                                                    : String.valueOf(drawables.get(finalID).count))
+                                            : "").color(Color.WHITE.normal).alignment(Alignment.TopLeft)
+                                                    .withOffset(1, 1),
+                            new Text(
+                                    (drawables.size() > finalID && drawables.get(finalID).stack.stackSize > 1)
+                                            ? String.valueOf(drawables.get(finalID).stack.stackSize)
+                                            : "").color(Color.WHITE.normal).shadow().alignment(Alignment.BottomRight) })
+                    .dynamicTooltip(() -> {
+                        if (drawables.size() > finalID) {
+                            List<String> tip = new ArrayList<>(
+                                    Collections.singletonList(drawables.get(finalID).stack.getDisplayName()));
+                            if (drawables.get(finalID).count > 1) tip.add(
+                                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                                            "kubatech.gui.tooltip.dynamic_inventory.identical_slots",
+                                            drawables.get(finalID).count));
+                            return tip;
+                        }
+                        return Collections.emptyList();
+                    }).setSize(18, 18));
         }
 
         buttons.add(new ButtonWidget() {
@@ -346,61 +334,56 @@ public class DynamicInventory<T> {
                     GL11.glDisable(GL11.GL_BLEND);
                 }
                 // Copied from SlotWidget#draw
-                else if (isHovering() && !getContext().getCursor()
-                    .hasDraggable()) {
-                        GL11.glDisable(GL11.GL_LIGHTING);
-                        GL11.glEnable(GL11.GL_BLEND);
-                        GlStateManager.colorMask(true, true, true, false);
-                        ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
-                        GlStateManager.colorMask(true, true, true, true);
-                        GL11.glDisable(GL11.GL_BLEND);
-                    }
-            }
-        }.setPlayClickSound(false)
-            .setOnClick((clickData, widget) -> {
-                if (!(player instanceof EntityPlayerMP)) return;
-                if (!isEnabledGetter.get()) return;
-                ItemStack input = player.inventory.getItemStack();
-                if (input != null) {
-                    if (clickData.mouseButton == 1) {
-                        ItemStack copy = input.copy();
-                        copy.stackSize = 1;
-                        ItemStack leftover = inventoryInjector.inject(copy);
-                        if (leftover == null) return;
-                        input.stackSize--;
-                    } else {
-                        ItemStack leftover = inventoryInjector.inject(input);
-                        if (leftover == null) return;
-                    }
-                    if (input.stackSize > 0) {
-                        ((EntityPlayerMP) player).isChangingQuantityOnly = true;
-                        ((EntityPlayerMP) player).updateHeldItem();
-                        return;
-                    } else player.inventory.setItemStack(null);
-                    ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                    ((EntityPlayerMP) player).updateHeldItem();
+                else if (isHovering() && !getContext().getCursor().hasDraggable()) {
+                    GL11.glDisable(GL11.GL_LIGHTING);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GlStateManager.colorMask(true, true, true, false);
+                    ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
+                    GlStateManager.colorMask(true, true, true, true);
+                    GL11.glDisable(GL11.GL_BLEND);
                 }
-            })
-            .setBackground(
+            }
+        }.setPlayClickSound(false).setOnClick((clickData, widget) -> {
+            if (!(player instanceof EntityPlayerMP)) return;
+            if (!isEnabledGetter.get()) return;
+            ItemStack input = player.inventory.getItemStack();
+            if (input != null) {
+                if (clickData.mouseButton == 1) {
+                    ItemStack copy = input.copy();
+                    copy.stackSize = 1;
+                    ItemStack leftover = inventoryInjector.inject(copy);
+                    if (leftover == null) return;
+                    input.stackSize--;
+                } else {
+                    ItemStack leftover = inventoryInjector.inject(input);
+                    if (leftover == null) return;
+                }
+                if (input.stackSize > 0) {
+                    ((EntityPlayerMP) player).isChangingQuantityOnly = true;
+                    ((EntityPlayerMP) player).updateHeldItem();
+                    return;
+                } else player.inventory.setItemStack(null);
+                ((EntityPlayerMP) player).isChangingQuantityOnly = false;
+                ((EntityPlayerMP) player).updateHeldItem();
+            }
+        }).setBackground(
                 () -> new IDrawable[] { getItemSlot(),
-                    new Text(
-                        (slots - usedSlots) <= 1 ? ""
-                            : ((slots - usedSlots) > 99 ? "+99" : String.valueOf((slots - usedSlots))))
-                                .color(Color.WHITE.normal)
-                                .alignment(Alignment.TopLeft)
-                                .withOffset(1, 1) })
-            .dynamicTooltip(() -> {
-                List<String> tip = new ArrayList<>(
-                    Collections.singleton(
-                        EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocal("kubatech.gui.tooltip.dynamic_inventory.empty_slot")));
-                if (slots - usedSlots > 1) tip.add(
-                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
-                        "kubatech.gui.tooltip.dynamic_inventory.identical_slots",
-                        slots - usedSlots));
-                return tip;
-            })
-            .setSize(18, 18));
+                        new Text(
+                                (slots - usedSlots) <= 1 ? ""
+                                        : ((slots - usedSlots) > 99 ? "+99" : String.valueOf((slots - usedSlots))))
+                                                .color(Color.WHITE.normal).alignment(Alignment.TopLeft)
+                                                .withOffset(1, 1) })
+                .dynamicTooltip(() -> {
+                    List<String> tip = new ArrayList<>(
+                            Collections.singleton(
+                                    EnumChatFormatting.GRAY + StatCollector
+                                            .translateToLocal("kubatech.gui.tooltip.dynamic_inventory.empty_slot")));
+                    if (slots - usedSlots > 1) tip.add(
+                            EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                                    "kubatech.gui.tooltip.dynamic_inventory.identical_slots",
+                                    slots - usedSlots));
+                    return tip;
+                }).setSize(18, 18));
 
         final int perRow = width / 18;
         for (int i = 0, imax = ((buttons.size() - 1) / perRow); i <= imax; i++) {

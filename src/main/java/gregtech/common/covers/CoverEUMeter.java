@@ -154,7 +154,7 @@ public class CoverEUMeter extends Cover implements Invertable {
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int num = (getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
-            % (EnergyType.values().length * 2);
+                % (EnergyType.values().length * 2);
         switch (num) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.univ_normal"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.univ_invert"));
@@ -240,34 +240,34 @@ public class CoverEUMeter extends Cover implements Invertable {
     public enum EnergyType {
 
         UNIVERSAL_STORAGE(GTUtility.trans("301", "Universal"), GTUtility.trans("256", "Universal Storage"),
-            ICoverable::getUniversalEnergyStored, ICoverable::getUniversalEnergyCapacity),
+                ICoverable::getUniversalEnergyStored, ICoverable::getUniversalEnergyCapacity),
         ELECTRICITY_STORAGE(GTUtility.trans("302", "Int. EU"), GTUtility.trans("257", "Electricity Storage"),
-            ICoverable::getStoredEU, ICoverable::getEUCapacity),
+                ICoverable::getStoredEU, ICoverable::getEUCapacity),
         STEAM_STORAGE(GTUtility.trans("303", "Steam"), GTUtility.trans("258", "Steam Storage"),
-            ICoverable::getStoredSteam, ICoverable::getSteamCapacity),
+                ICoverable::getStoredSteam, ICoverable::getSteamCapacity),
         AVERAGE_ELECTRIC_INPUT(GTUtility.trans("304", "Avg. Input"), GTUtility.trans("259", "Average Electric Input"),
-            ICoverable::getAverageElectricInput, (te) -> te.getInputVoltage() * te.getInputAmperage()),
+                ICoverable::getAverageElectricInput, (te) -> te.getInputVoltage() * te.getInputAmperage()),
         AVERAGE_ELECTRIC_OUTPUT(GTUtility.trans("305", "Avg. Output"),
-            GTUtility.trans("260", "Average Electric Output"), ICoverable::getAverageElectricOutput,
-            (te) -> te.getOutputVoltage() * te.getOutputAmperage()),
+                GTUtility.trans("260", "Average Electric Output"), ICoverable::getAverageElectricOutput,
+                (te) -> te.getOutputVoltage() * te.getOutputAmperage()),
         ELECTRICITY_STORAGE_INCLUDING_BATTERIES(GTUtility.trans("306", "EU stored"),
-            GTUtility.trans("261", "Electricity Storage(Including Batteries)"), (te) -> {
-                if (te instanceof IGregTechTileEntity) {
-                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (mte instanceof MTEBasicBatteryBuffer buffer) {
-                        return buffer.getStoredEnergy()[0];
+                GTUtility.trans("261", "Electricity Storage(Including Batteries)"), (te) -> {
+                    if (te instanceof IGregTechTileEntity) {
+                        IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                        if (mte instanceof MTEBasicBatteryBuffer buffer) {
+                            return buffer.getStoredEnergy()[0];
+                        }
                     }
-                }
-                return te.getStoredEU();
-            }, (te) -> {
-                if (te instanceof IGregTechTileEntity) {
-                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (mte instanceof MTEBasicBatteryBuffer buffer) {
-                        return buffer.getStoredEnergy()[1];
+                    return te.getStoredEU();
+                }, (te) -> {
+                    if (te instanceof IGregTechTileEntity) {
+                        IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                        if (mte instanceof MTEBasicBatteryBuffer buffer) {
+                            return buffer.getStoredEnergy()[1];
+                        }
                     }
-                }
-                return te.getEUCapacity();
-            });
+                    return te.getEUCapacity();
+                });
 
         private final String title;
         private final String tooltip;
@@ -275,7 +275,7 @@ public class CoverEUMeter extends Cover implements Invertable {
         private final Function<ICoverable, Long> getTileEntityEnergyCapacityFunc;
 
         EnergyType(String title, String tooltip, Function<ICoverable, Long> getTileEntityStoredEnergyFunc,
-            Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
+                Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
             this.title = title;
             this.tooltip = tooltip;
             this.getTileEntityStoredEnergyFunc = getTileEntityStoredEnergyFunc;

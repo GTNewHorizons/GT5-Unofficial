@@ -75,10 +75,10 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderThings() {
         // Entities
         RenderingRegistry
-            .registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
+                .registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
         RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
         RenderingRegistry
-            .registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
+                .registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
         RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
         // Tiles
@@ -104,8 +104,7 @@ public class ClientProxy extends CommonProxy {
 
     private void hideUniversalCells() {
         ArrayList<ItemStack> itemList = new ArrayList<>();
-        for (Fluid fluid : FluidRegistry.getRegisteredFluids()
-            .values()) {
+        for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
             if (fluid == null) {
                 continue;
             }
@@ -118,8 +117,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public World getClientWorld() {
-        return FMLClientHandler.instance()
-            .getClient().theWorld;
+        return FMLClientHandler.instance().getClient().theWorld;
     }
 
     @Override

@@ -58,8 +58,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
         if (aLiquid == null) {
             return 0;
         }
-        GTRecipe tFuel = getRecipeMap().getBackend()
-            .findFuel(aLiquid);
+        GTRecipe tFuel = getRecipeMap().getBackend().findFuel(aLiquid);
         if (tFuel != null) {
             return tFuel.mSpecialValue;
         }
@@ -108,28 +107,24 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
             // At this point all turbines are equivalent in all hatches, use the stats of the first turbine for
             // calculations
-            ItemStack turbineItem = mTurbineRotorHatches.get(0)
-                .getTurbine();
+            ItemStack turbineItem = mTurbineRotorHatches.get(0).getTurbine();
             TurbineStatCalculator turbine = new TurbineStatCalculator(
-                (MetaGeneratedTool) turbineItem.getItem(),
-                turbineItem);
+                    (MetaGeneratedTool) turbineItem.getItem(),
+                    turbineItem);
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
             if (!tFluids.isEmpty()) {
                 if (baseEff == 0 || optFlow == 0
-                    || counter >= 512
-                    || this.getBaseMetaTileEntity()
-                        .hasWorkJustBeenEnabled()
-                    || this.getBaseMetaTileEntity()
-                        .hasInventoryBeenModified()) {
+                        || counter >= 512
+                        || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
+                        || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
                     counter = 0;
 
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    ItemStack aStack = getFullTurbineAssemblies().get(0)
-                        .getTurbine();
+                    ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
                     aTotalBaseEff += turbine.getPlasmaEfficiency() * 10000;
                     aTotalOptimalFlow += turbine.getOptimalPlasmaFlow();
 
@@ -216,9 +211,9 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             }
 
             actualOptimalFlow = GTUtility.safeInt(
-                (long) ((getSpeedMultiplier()
-                    * (isLooseMode() ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow())
-                    * 20) / (double) fuelValue)); // Check recipe runs once every 20 ticks
+                    (long) ((getSpeedMultiplier()
+                            * (isLooseMode() ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow())
+                            * 20) / (double) fuelValue)); // Check recipe runs once every 20 ticks
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
@@ -258,7 +253,8 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 tEU = (int) (tEU * efficiency);
             }
             tEU = GTUtility.safeInt(
-                (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency()) * tEU));
+                    (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
+                            * tEU));
 
             return tEU;
         }

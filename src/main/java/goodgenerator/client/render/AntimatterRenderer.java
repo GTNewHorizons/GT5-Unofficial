@@ -56,18 +56,18 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
     private int uGlowColor = -1;
 
     private static final float[] promomatterVerticies = {
-        // Front Face
-        -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f,
-        // Back Face
-        -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, -0.5f, -0.5f,
-        // Left face
-        -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, -0.5f,
-        // Right face
-        0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0.5f,
-        // Top face
-        -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f,
-        // Bottom face
-        -0.5f, -0.5f, 0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, };
+            // Front Face
+            -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f,
+            // Back Face
+            -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, -0.5f, -0.5f,
+            // Left face
+            -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, -0.5f,
+            // Right face
+            0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0.5f,
+            // Top face
+            -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f,
+            // Bottom face
+            -0.5f, -0.5f, 0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, };
 
     public AntimatterRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntimatter.class, this);
@@ -75,8 +75,8 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
 
     public void loadModels() {
         ResourceLocation antimatterLocation = new ResourceLocation(
-            GoodGenerator.resourceDomain,
-            "models/Antimatter.obj");
+                GoodGenerator.resourceDomain,
+                "models/Antimatter.obj");
         antimatterModel = new WavefrontObject(antimatterLocation);
 
         ResourceLocation location = new ResourceLocation(GoodGenerator.resourceDomain, "models/SmoothSphere.obj");
@@ -89,9 +89,9 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
     private void init() {
         try {
             antimatterProgram = new ShaderProgram(
-                GoodGenerator.resourceDomain,
-                "shaders/antimatter.vert.glsl",
-                "shaders/antimatter.frag.glsl");
+                    GoodGenerator.resourceDomain,
+                    "shaders/antimatter.vert.glsl",
+                    "shaders/antimatter.frag.glsl");
 
             uScale = antimatterProgram.getUniformLocation("u_Scale");
             uScaleSnapshot = antimatterProgram.getUniformLocation("u_ScaleSnapshot");
@@ -120,9 +120,9 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
 
         try {
             protomatterProgram = new ShaderProgram(
-                GoodGenerator.resourceDomain,
-                "shaders/protomatter.vert.glsl",
-                "shaders/protomatter.frag.glsl");
+                    GoodGenerator.resourceDomain,
+                    "shaders/protomatter.vert.glsl",
+                    "shaders/protomatter.frag.glsl");
 
             uProtomatterVertices = protomatterProgram.getUniformLocation("u_Vertices");
             uCubeCount = protomatterProgram.getUniformLocation("u_CubeCount");
@@ -146,8 +146,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, bufferBeamVertexID, GL15.GL_STATIC_DRAW);
 
         FloatBuffer bufferBeamVertex = BufferUtils.createFloatBuffer(promomatterVerticies.length);
-        bufferBeamVertex.put(promomatterVerticies)
-            .flip();
+        bufferBeamVertex.put(promomatterVerticies).flip();
         GL20.glUniform3(uProtomatterVertices, bufferBeamVertex);
         GL20.glUniform1f(uCubeCount, particleCount);
 
@@ -156,9 +155,9 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
 
         try {
             glowProgram = new ShaderProgram(
-                GoodGenerator.resourceDomain,
-                "shaders/glow.vert.glsl",
-                "shaders/glow.frag.glsl");
+                    GoodGenerator.resourceDomain,
+                    "shaders/glow.vert.glsl",
+                    "shaders/glow.frag.glsl");
 
             uGlowColor = glowProgram.getUniformLocation("u_Color");
         } catch (Exception e) {
@@ -283,9 +282,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         float ty = (float) y + 0.5f;
         float tz = (float) z + 0.5f;
 
-        float timer = tile.getWorldObj()
-            .getWorldInfo()
-            .getWorldTotalTime() + timeSinceLastTick;
+        float timer = tile.getWorldObj().getWorldInfo().getWorldTotalTime() + timeSinceLastTick;
         renderAntimatter(Antimatter, tx, ty, tz, timer);
 
         if (!Antimatter.protomatterRender) return;

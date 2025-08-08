@@ -34,7 +34,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) { // this is only ever called by client
+            int ordinalSide, float hitX, float hitY, float hitZ) { // this is only ever called by client
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof IGregTechTileEntity te) {
             if (te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor) {
@@ -48,16 +48,16 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                     NW.sendToServer(new GTPacketUpdateItem(tag));
                     stack.setTagCompound(tag);
                     player.addChatMessage(
-                        new ChatComponentText(
-                            StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
+                            new ChatComponentText(
+                                    StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
                 }
             } else {
                 player.addChatMessage(
-                    new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
+                        new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
             }
         } else {
-            player
-                .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
+            player.addChatMessage(
+                    new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
         }
         return true;
     }
@@ -68,8 +68,8 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         if (!world.isRemote) {
             if (player.isSneaking()) {
                 stack.setTagCompound(new NBTTagCompound());
-                player
-                    .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
+                player.addChatMessage(
+                        new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
             } else {
 
                 InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
@@ -105,15 +105,14 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
         super.addInformation(stack, player, tooltip, bool);
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && !stack.getTagCompound()
-            .hasNoTags()) {
+        if (tag != null && !stack.getTagCompound().hasNoTags()) {
             tooltip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.power_goggles.link_tooltip",
-                    tag.getInteger("x"),
-                    tag.getInteger("y"),
-                    tag.getInteger("z"),
-                    tag.getString("dimName")));
+                    StatCollector.translateToLocalFormatted(
+                            "GT5U.power_goggles.link_tooltip",
+                            tag.getInteger("x"),
+                            tag.getInteger("y"),
+                            tag.getInteger("z"),
+                            tag.getString("dimName")));
         }
     }
 
@@ -132,14 +131,14 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         DimensionalCoord coords = null;
         if (tag != null && !tag.hasNoTags()) {
             coords = new DimensionalCoord(
-                tag.getInteger("x"),
-                tag.getInteger("y"),
-                tag.getInteger("z"),
-                tag.getInteger("dim"));
+                    tag.getInteger("x"),
+                    tag.getInteger("y"),
+                    tag.getInteger("z"),
+                    tag.getInteger("dim"));
         }
         DimensionalCoord current = PowerGogglesEventHandler.getLscLink(player.getUniqueID());
         if ((coords != null && current == null) || (coords == null && current != null)
-            || (current != null && !current.isEqual(coords))) {
+                || (current != null && !current.isEqual(coords))) {
             PowerGogglesEventHandler.setLscLink(playerMP, coords);
             PowerGogglesEventHandler.forceUpdate = true;
             PowerGogglesEventHandler.forceRefresh = true;

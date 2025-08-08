@@ -55,7 +55,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTEPurificationUnitPlasmaHeater>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private static final int CASING_INDEX_HEATER = getTextureIndex(GregTechAPI.sBlockCasings9, 11);
     private static final int CASING_INDEX_TOWER = getTextureIndex(GregTechAPI.sBlockCasings9, 5);
@@ -115,7 +115,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     private MTEHatchInput coolantInputHatch;
 
     private static final String[][] structure = new String[][] {
-        // spotless:off
+            // spotless:off
         { "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDKDD     " },
         { "           DD     DD   ", "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DDDDDDDDD   " },
         { "          D         D  ", "           DD     DD   ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          D         D  ", "          DDDDDDDDDDD  " },
@@ -137,59 +137,52 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     private static final int MIN_CASING = 50;
 
     private static final IStructureDefinition<MTEPurificationUnitPlasmaHeater> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEPurificationUnitPlasmaHeater>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Superconducting coil block
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 15))
-        // Plasma Heating Casing
-        .addElement(
-            'B',
-            ofChain(
-                lazy(
-                    t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                        .atLeastList(t.getAllowedHatches())
-                        .dot(1)
-                        .casingIndex(CASING_INDEX_HEATER)
-                        .build()),
-                onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
-        // Reinforced Sterile Water Plant Casing
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 5))
-        // Any Tinted Glass
-        .addElement('E', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
-        // Neonite, with fallback to air
-        .addElement('F', lazy(t -> {
-            if (Mods.Chisel.isModLoaded()) {
-                Block neonite = GameRegistry.findBlock(Mods.Chisel.ID, "neonite");
-                return ofBlockAnyMeta(neonite, 7);
-            } else {
-                return ofBlockAnyMeta(Blocks.air);
-            }
-        }))
-        // Superconductor Base ZPM frame box
-        .addElement('G', ofFrame(Materials.Tetranaquadahdiindiumhexaplatiumosminid))
-        // Coolant input hatch
-        .addElement(
-            'K',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .dot(2)
-                    .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (Coolant)")
-                    .casingIndex(CASING_INDEX_TOWER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 5))))
-        // Plasma input hatch
-        .addElement(
-            'P',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .dot(3)
-                    .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (Plasma)")
-                    .casingIndex(CASING_INDEX_HEATER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11))))
-        .build();
+            .<MTEPurificationUnitPlasmaHeater>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
+            // Superconducting coil block
+            .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 15))
+            // Plasma Heating Casing
+            .addElement(
+                    'B',
+                    ofChain(
+                            lazy(
+                                    t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
+                                            .atLeastList(t.getAllowedHatches()).dot(1).casingIndex(CASING_INDEX_HEATER)
+                                            .build()),
+                            onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
+            // Reinforced Sterile Water Plant Casing
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 5))
+            // Any Tinted Glass
+            .addElement('E', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
+            // Neonite, with fallback to air
+            .addElement('F', lazy(t -> {
+                if (Mods.Chisel.isModLoaded()) {
+                    Block neonite = GameRegistry.findBlock(Mods.Chisel.ID, "neonite");
+                    return ofBlockAnyMeta(neonite, 7);
+                } else {
+                    return ofBlockAnyMeta(Blocks.air);
+                }
+            }))
+            // Superconductor Base ZPM frame box
+            .addElement('G', ofFrame(Materials.Tetranaquadahdiindiumhexaplatiumosminid))
+            // Coolant input hatch
+            .addElement(
+                    'K',
+                    lazy(
+                            t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
+                                    .hatchClass(MTEHatchInput.class).dot(2)
+                                    .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
+                                    .cacheHint(() -> "Input Hatch (Coolant)").casingIndex(CASING_INDEX_TOWER)
+                                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 5))))
+            // Plasma input hatch
+            .addElement(
+                    'P',
+                    lazy(
+                            t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
+                                    .hatchClass(MTEHatchInput.class).dot(3)
+                                    .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
+                                    .cacheHint(() -> "Input Hatch (Plasma)").casingIndex(CASING_INDEX_HEATER)
+                                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11))))
+            .build();
 
     private List<IHatchElement<? super MTEPurificationUnitPlasmaHeater>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, OutputHatch);
@@ -210,28 +203,16 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
+            int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_HEATER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing()
+                            .glow().build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_HEATER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow()
+                            .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_HEATER) };
     }
@@ -239,25 +220,25 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            hintsOnly,
-            STRUCTURE_X_OFFSET,
-            STRUCTURE_Y_OFFSET,
-            STRUCTURE_Z_OFFSET);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                hintsOnly,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            STRUCTURE_X_OFFSET,
-            STRUCTURE_Y_OFFSET,
-            STRUCTURE_Z_OFFSET,
-            elementBudget,
-            env,
-            true);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                elementBudget,
+                env,
+                true);
     }
 
     @Override
@@ -274,144 +255,143 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
-            .addSeparator()
-            .addInfo(
-                "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
-                    + HEATING_POINT
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo(
-                "and then cooling it back down to " + EnumChatFormatting.RED + "0K" + EnumChatFormatting.GRAY + ".")
-            .addInfo(
-                "Initial temperature is reset to " + EnumChatFormatting.RED
-                    + "0K"
-                    + EnumChatFormatting.GRAY
-                    + " on recipe start.")
-            .addInfo(
-                // TODO: Refer to heating cycles in another way to avoid confusion
-                "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
-                    + SUCCESS_PER_CYCLE
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo(
-                "If the temperature ever reaches " + EnumChatFormatting.RED
-                    + MAX_TEMP
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + " the recipe will fail and output steam.")
-            .addSeparator()
-            .addInfo(
-                "Consumes up to " + EnumChatFormatting.RED
-                    + MAX_PLASMA_PER_SEC
-                    + "L/s "
-                    + EnumChatFormatting.WHITE
-                    + plasmaMaterial.getPlasma(1)
-                        .getLocalizedName()
-                    + EnumChatFormatting.GRAY
-                    + " and up to "
-                    + EnumChatFormatting.RED
-                    + MAX_COOLANT_PER_SEC
-                    + "L/s "
-                    + EnumChatFormatting.WHITE
-                    + coolantMaterial.getFluid(1)
-                        .getLocalizedName()
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo(
-                EnumChatFormatting.RED + "Raises "
-                    + EnumChatFormatting.GRAY
-                    + "the temperature by "
-                    + EnumChatFormatting.RED
-                    + PLASMA_TEMP_PER_LITER
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + " per liter of plasma consumed.")
-            .addInfo(
-                EnumChatFormatting.RED + "Lowers "
-                    + EnumChatFormatting.GRAY
-                    + "the temperature by "
-                    + EnumChatFormatting.RED
-                    + -COOLANT_TEMP_PER_LITER
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + " per liter of coolant consumed.")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Step five of water purification is to evaporate complex organic polymers and extremophile organisms")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "that might be resistant to simple acids, clarifying agents, and filters. Using an ultra high")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "pressure chamber in combination with extreme temperature fluctuations allows the water to remain")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "supercritical while evaporating any remaining contaminants, ready for filtration.")
-            .beginStructureBlock(23, 15, 15, false)
-            .addController("Front center")
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                669,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Heat-Resistant Trinium Plated Casing",
-                EnumChatFormatting.GRAY,
-                54,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Any Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                64,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Superconductor Base ZPM Frame Box",
-                EnumChatFormatting.GRAY,
-                40,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored("Any Neonite", EnumChatFormatting.GRAY, 8, EnumChatFormatting.GOLD, false)
-            .addCasingInfoExactlyColored(
-                "Superconducting Coil Block",
-                EnumChatFormatting.GRAY,
-                9,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
-                EnumChatFormatting.GOLD + "1+",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
-                EnumChatFormatting.GOLD + "1",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"),
-                EnumChatFormatting.GOLD + "1",
-                2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"),
-                EnumChatFormatting.GOLD + "1",
-                3)
-            .toolTipFinisher(AuthorNotAPenguin);
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.BOLD
+                                + "Water Tier: "
+                                + EnumChatFormatting.WHITE
+                                + GTUtility.formatNumbers(getWaterTier())
+                                + EnumChatFormatting.RESET)
+                .addInfo("Must be linked to a Purification Plant using a data stick to work.").addSeparator()
+                .addInfo(
+                        "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
+                                + HEATING_POINT
+                                + "K"
+                                + EnumChatFormatting.GRAY
+                                + ",")
+                .addInfo(
+                        "and then cooling it back down to " + EnumChatFormatting.RED
+                                + "0K"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addInfo(
+                        "Initial temperature is reset to " + EnumChatFormatting.RED
+                                + "0K"
+                                + EnumChatFormatting.GRAY
+                                + " on recipe start.")
+                .addInfo(
+                        // TODO: Refer to heating cycles in another way to avoid confusion
+                        "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
+                                + SUCCESS_PER_CYCLE
+                                + "%"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addInfo(
+                        "If the temperature ever reaches " + EnumChatFormatting.RED
+                                + MAX_TEMP
+                                + "K"
+                                + EnumChatFormatting.GRAY
+                                + " the recipe will fail and output steam.")
+                .addSeparator()
+                .addInfo(
+                        "Consumes up to " + EnumChatFormatting.RED
+                                + MAX_PLASMA_PER_SEC
+                                + "L/s "
+                                + EnumChatFormatting.WHITE
+                                + plasmaMaterial.getPlasma(1).getLocalizedName()
+                                + EnumChatFormatting.GRAY
+                                + " and up to "
+                                + EnumChatFormatting.RED
+                                + MAX_COOLANT_PER_SEC
+                                + "L/s "
+                                + EnumChatFormatting.WHITE
+                                + coolantMaterial.getFluid(1).getLocalizedName()
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addInfo(
+                        EnumChatFormatting.RED + "Raises "
+                                + EnumChatFormatting.GRAY
+                                + "the temperature by "
+                                + EnumChatFormatting.RED
+                                + PLASMA_TEMP_PER_LITER
+                                + "K"
+                                + EnumChatFormatting.GRAY
+                                + " per liter of plasma consumed.")
+                .addInfo(
+                        EnumChatFormatting.RED + "Lowers "
+                                + EnumChatFormatting.GRAY
+                                + "the temperature by "
+                                + EnumChatFormatting.RED
+                                + -COOLANT_TEMP_PER_LITER
+                                + "K"
+                                + EnumChatFormatting.GRAY
+                                + " per liter of coolant consumed.")
+                .addSeparator()
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "Step five of water purification is to evaporate complex organic polymers and extremophile organisms")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "that might be resistant to simple acids, clarifying agents, and filters. Using an ultra high")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "pressure chamber in combination with extreme temperature fluctuations allows the water to remain")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "supercritical while evaporating any remaining contaminants, ready for filtration.")
+                .beginStructureBlock(23, 15, 15, false).addController("Front center")
+                .addCasingInfoExactlyColored(
+                        "Reinforced Sterile Water Plant Casing",
+                        EnumChatFormatting.GRAY,
+                        669,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Heat-Resistant Trinium Plated Casing",
+                        EnumChatFormatting.GRAY,
+                        54,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Any Tinted Industrial Glass",
+                        EnumChatFormatting.GRAY,
+                        64,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Superconductor Base ZPM Frame Box",
+                        EnumChatFormatting.GRAY,
+                        40,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored("Any Neonite", EnumChatFormatting.GRAY, 8, EnumChatFormatting.GOLD, false)
+                .addCasingInfoExactlyColored(
+                        "Superconducting Coil Block",
+                        EnumChatFormatting.GRAY,
+                        9,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
+                        EnumChatFormatting.GOLD + "1+",
+                        1)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
+                        EnumChatFormatting.GOLD + "1",
+                        1)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"),
+                        EnumChatFormatting.GOLD + "1",
+                        2)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"),
+                        EnumChatFormatting.GOLD + "1",
+                        3)
+                .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -460,9 +440,9 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             // Drain plasma and coolant up to limited amount per second
             long plasmaDrained = drainFluidLimited(plasmaInputHatch, plasmaMaterial.getPlasma(1L), MAX_PLASMA_PER_SEC);
             long coolantDrained = drainFluidLimited(
-                coolantInputHatch,
-                coolantMaterial.getFluid(1L),
-                MAX_COOLANT_PER_SEC);
+                    coolantInputHatch,
+                    coolantMaterial.getFluid(1L),
+                    MAX_COOLANT_PER_SEC);
             // Calculate temperature change
             long tempChance = plasmaDrained * PLASMA_TEMP_PER_LITER + coolantDrained * COOLANT_TEMP_PER_LITER;
             currentTemperature = Math.max(0, currentTemperature + tempChance);
@@ -525,13 +505,13 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.purification_unit_plasma_heater.temperature",
-                "" + EnumChatFormatting.YELLOW + currentTemperature));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.purification_unit_plasma_heater.temperature",
+                        "" + EnumChatFormatting.YELLOW + currentTemperature));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.purification_unit_plasma_heater.heating_cycles",
-                "" + EnumChatFormatting.YELLOW + cyclesCompleted));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.purification_unit_plasma_heater.heating_cycles",
+                        "" + EnumChatFormatting.YELLOW + cyclesCompleted));
         return infoData.toArray(new String[] {});
     }
 

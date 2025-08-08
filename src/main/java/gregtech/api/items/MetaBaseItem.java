@@ -42,7 +42,7 @@ import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 
 public abstract class MetaBaseItem extends GTGenericItem
-    implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
+        implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
     private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<MetaBaseItem>>> mItemBehaviors = new ConcurrentHashMap<>();
@@ -70,7 +70,7 @@ public abstract class MetaBaseItem extends GTGenericItem
     public final MetaBaseItem addItemBehavior(int aMetaValue, IItemBehaviour<MetaBaseItem> aBehavior) {
         if (aMetaValue < 0 || aMetaValue >= 32766 || aBehavior == null) return this;
         ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors
-            .computeIfAbsent((short) aMetaValue, k -> new ArrayList<>(1));
+                .computeIfAbsent((short) aMetaValue, k -> new ArrayList<>(1));
         tList.add(aBehavior);
         return this;
     }
@@ -89,7 +89,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
-        double aZ) {
+            double aZ) {
         ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors.get((short) getDamage(aStack));
         if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList) {
             EntityArrow rArrow = tBehavior.getProjectile(this, aProjectileType, aStack, aWorld, aX, aY, aZ);
@@ -100,7 +100,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
-        float aSpeed) {
+            float aSpeed) {
         ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors.get((short) getDamage(aStack));
         if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList) {
             EntityArrow rArrow = tBehavior.getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
@@ -156,7 +156,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
+            int ordinalSide, float hitX, float hitY, float hitZ) {
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors.get((short) getDamage(aStack));
@@ -178,26 +178,26 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
+            int ordinalSide, float hitX, float hitY, float hitZ) {
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList) if (tBehavior.onItemUseFirst(
-                this,
-                aStack,
-                aPlayer,
-                aWorld,
-                aX,
-                aY,
-                aZ,
-                ForgeDirection.getOrientation(ordinalSide),
-                hitX,
-                hitY,
-                hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
-                    return true;
-                }
+                    this,
+                    aStack,
+                    aPlayer,
+                    aWorld,
+                    aX,
+                    aY,
+                    aZ,
+                    ForgeDirection.getOrientation(ordinalSide),
+                    hitX,
+                    hitY,
+                    hitZ)) {
+                        if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                        return true;
+                    }
             if (aStack.stackSize <= 0) {
                 aPlayer.destroyCurrentEquippedItem();
                 return false;
@@ -225,8 +225,7 @@ public abstract class MetaBaseItem extends GTGenericItem
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         String tKey = getUnlocalizedName(aStack) + ".tooltip";
-        String[] tStrings = GTLanguageManager.getTranslation(tKey)
-            .split("/n ");
+        String[] tStrings = GTLanguageManager.getTranslation(tKey).split("/n ");
         for (String tString : tStrings)
             if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
 
@@ -234,27 +233,27 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                    EnumChatFormatting.AQUA
-                        + translateToLocalFormatted(
-                            "gt.item.desc.stored_eu",
-                            formatNumbers(tStats[3]),
-                            "" + (tStats[2] >= 0 ? tStats[2] : 0))
-                        + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA
+                                + translateToLocalFormatted(
+                                        "gt.item.desc.stored_eu",
+                                        formatNumbers(tStats[3]),
+                                        "" + (tStats[2] >= 0 ? tStats[2] : 0))
+                                + EnumChatFormatting.GRAY);
             } else {
                 long tCharge = getRealCharge(aStack);
                 if (tStats[3] == -2 && tCharge <= 0) {
                     aList.add(
-                        EnumChatFormatting.AQUA + translateToLocal("gt.item.desc.empty") + EnumChatFormatting.GRAY);
+                            EnumChatFormatting.AQUA + translateToLocal("gt.item.desc.empty") + EnumChatFormatting.GRAY);
                 } else {
                     int voltageTier = (int) GTUtility.clamp(tStats[2], 0, V.length - 1);
                     aList.add(
-                        EnumChatFormatting.AQUA
-                            + translateToLocalFormatted(
-                                "gt.item.desc.eu_info",
-                                formatNumbers(tCharge),
-                                formatNumbers(Math.abs(tStats[0])),
-                                formatNumbers(V[voltageTier]))
-                            + EnumChatFormatting.GRAY);
+                            EnumChatFormatting.AQUA
+                                    + translateToLocalFormatted(
+                                            "gt.item.desc.eu_info",
+                                            formatNumbers(tCharge),
+                                            formatNumbers(Math.abs(tStats[0])),
+                                            formatNumbers(V[voltageTier]))
+                                    + EnumChatFormatting.GRAY);
                 }
             }
         }
@@ -263,23 +262,23 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null && tStats[0] > 0) {
             FluidStack tFluid = getFluidContent(aStack);
             aList.add(
-                EnumChatFormatting.BLUE + ((tFluid == null ? translateToLocal("gt.item.desc.no_fluid")
-                    : GTUtility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.BLUE + ((tFluid == null ? translateToLocal("gt.item.desc.no_fluid")
+                            : GTUtility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
             aList.add(
-                EnumChatFormatting.BLUE
-                    + translateToLocalFormatted(
-                        "gt.item.desc.fluid_info",
-                        tFluid == null ? 0 : formatNumbers(tFluid.amount),
-                        formatNumbers(tStats[0]))
-                    + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.BLUE
+                            + translateToLocalFormatted(
+                                    "gt.item.desc.fluid_info",
+                                    tFluid == null ? 0 : formatNumbers(tFluid.amount),
+                                    formatNumbers(tStats[0]))
+                            + EnumChatFormatting.GRAY);
         }
 
         ArrayList<IItemBehaviour<MetaBaseItem>> behaviours = mItemBehaviors.get((short) getDamage(aStack));
         if (behaviours != null) {
             for (IItemBehaviour<MetaBaseItem> behavior : behaviours) {
                 final Optional<List<String>> shiftTooltips = KeyboardUtil.isShiftKeyDown()
-                    ? behavior.getAdditionalToolTipsWhileSneaking(this, aList, aStack)
-                    : Optional.empty();
+                        ? behavior.getAdditionalToolTipsWhileSneaking(this, aList, aStack)
+                        : Optional.empty();
                 if (shiftTooltips.isPresent()) {
                     aList = shiftTooltips.get();
                 } else {
@@ -321,22 +320,23 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final double charge(ItemStack aStack, double aCharge, int aTier, boolean aIgnoreTransferLimit,
-        boolean aSimulate) {
+            boolean aSimulate) {
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null || tStats[2] > aTier
-            || !(tStats[3] == -1 || tStats[3] == -3 || (tStats[3] < 0 && aCharge == Integer.MAX_VALUE))
-            || aStack.stackSize != 1) return 0;
+                || !(tStats[3] == -1 || tStats[3] == -3 || (tStats[3] < 0 && aCharge == Integer.MAX_VALUE))
+                || aStack.stackSize != 1)
+            return 0;
         long tTransfer = aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge);
         long tChargeBefore = getRealCharge(aStack), tNewCharge = Math.min(
-            Math.abs(tStats[0]),
-            Long.MAX_VALUE - tTransfer >= tChargeBefore ? tChargeBefore + tTransfer : Long.MAX_VALUE);
+                Math.abs(tStats[0]),
+                Long.MAX_VALUE - tTransfer >= tChargeBefore ? tChargeBefore + tTransfer : Long.MAX_VALUE);
         if (!aSimulate) setCharge(aStack, tNewCharge);
         return tNewCharge - tChargeBefore;
     }
 
     @Override
     public final double discharge(ItemStack aStack, double aCharge, int aTier, boolean aIgnoreTransferLimit,
-        boolean aBatteryAlike, boolean aSimulate) {
+            boolean aBatteryAlike, boolean aSimulate) {
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null || tStats[2] > aTier) return 0;
         if (aBatteryAlike && !canProvideEnergy(aStack)) return 0;
@@ -346,7 +346,7 @@ public abstract class MetaBaseItem extends GTGenericItem
             return tStats[3];
         }
         long tChargeBefore = getRealCharge(aStack), tNewCharge = Math
-            .max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
+                .max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
         if (!aSimulate) setCharge(aStack, tNewCharge);
         return tChargeBefore - tNewCharge;
     }
@@ -385,12 +385,12 @@ public abstract class MetaBaseItem extends GTGenericItem
                 IElectricItem tArmorItem = (IElectricItem) tArmor.getItem();
                 if (tArmorItem.canProvideEnergy(tArmor) && tArmorItem.getTier(tArmor) >= getTier(aStack)) {
                     double tCharge = ElectricItem.manager.discharge(
-                        tArmor,
-                        charge(aStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
-                        Integer.MAX_VALUE,
-                        true,
-                        true,
-                        false);
+                            tArmor,
+                            charge(aStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
+                            Integer.MAX_VALUE,
+                            true,
+                            true,
+                            false);
                     if (tCharge > 0) {
                         charge(aStack, tCharge, Integer.MAX_VALUE, true, false);
                         if (aPlayer instanceof EntityPlayer) {
@@ -497,16 +497,12 @@ public abstract class MetaBaseItem extends GTGenericItem
         }
 
         Long[] tStats = getFluidContainerStats(aStack);
-        if (tStats == null || tStats[0] <= 0
-            || aFluid == null
-            || aFluid.getFluid()
-                .getID() <= 0
-            || aFluid.amount <= 0) return 0;
+        if (tStats == null || tStats[0] <= 0 || aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0)
+            return 0;
 
         FluidStack tFluid = getFluidContent(aStack);
 
-        if (tFluid == null || tFluid.getFluid()
-            .getID() <= 0) {
+        if (tFluid == null || tFluid.getFluid().getID() <= 0) {
             if (aFluid.amount <= tStats[0]) {
                 if (doFill) {
                     setFluidContent(aStack, aFluid);

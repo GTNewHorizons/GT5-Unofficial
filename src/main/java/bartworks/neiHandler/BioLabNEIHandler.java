@@ -30,10 +30,10 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
         super(recipeCategory);
         if (!NEIBWConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
-                GTMod.GT,
-                "NEIPlugins",
-                "register-crafting-handler",
-                "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
+                    GTMod.GT,
+                    "NEIPlugins",
+                    "register-crafting-handler",
+                    "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -47,8 +47,8 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
     @Override
     public void loadCraftingRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof ItemLabParts
-            && aResult.getItemDamage() < 3
-            && aResult.getTagCompound() != null) {
+                && aResult.getItemDamage() < 3
+                && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : this.getCache())
                 if (NEIBWConfig.checkRecipe(aResult, recipe.mOutputs)) this.arecipes.add(recipe);
         } else {
@@ -59,8 +59,8 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
     @Override
     public void loadUsageRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof ItemLabParts
-            && aResult.getItemDamage() < 3
-            && aResult.getTagCompound() != null) {
+                && aResult.getItemDamage() < 3
+                && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : this.getCache())
                 if (NEIBWConfig.checkRecipe(aResult, recipe.mInputs)) this.arecipes.add(recipe);
         } else {

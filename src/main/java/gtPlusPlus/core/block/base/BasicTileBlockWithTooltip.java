@@ -139,9 +139,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     @SideOnly(Side.CLIENT)
     public final IIcon getIcon(final int ordinalSide, final int aMeta) {
-        return mSidedTextureArray.get(aMeta)
-            .get(ForgeDirection.getOrientation(ordinalSide))
-            .getIcon();
+        return mSidedTextureArray.get(aMeta).get(ForgeDirection.getOrientation(ordinalSide)).getIcon();
     }
 
     @Override
@@ -210,12 +208,12 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                 aStringRight = aTexPathBuilt + aStringRight;
                 // Convenience Blob
                 CubicObject<String> aMetaBlob = new CubicObject<>(
-                    aStringBot,
-                    aStringTop,
-                    aStringBack,
-                    aStringFront,
-                    aStringLeft,
-                    aStringRight);
+                        aStringBot,
+                        aStringTop,
+                        aStringBack,
+                        aStringFront,
+                        aStringLeft,
+                        aStringRight);
                 sidedTexturePathArray.add(aMetaBlob);
                 Logger.INFO("[TeTexture] Added Texture Path data to map for meta " + i);
             }
@@ -260,7 +258,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public final void breakBlock(final World world, final int x, final int y, final int z, final Block block,
-        final int number) {
+            final int number) {
         onBlockBreak();
         InventoryUtils.dropInventoryItems(world, x, y, z, block);
         super.breakBlock(world, x, y, z, block, number);
@@ -280,7 +278,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
+            final int z) {
         return false;
     }
 

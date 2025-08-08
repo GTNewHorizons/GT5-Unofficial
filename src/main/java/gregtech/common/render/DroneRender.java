@@ -20,7 +20,7 @@ public class DroneRender extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation DroneTexture = new ResourceLocation(GregTech.ID, "textures/model/drone.png");
     private static final IModelCustom Drone = AdvancedModelLoader
-        .loadModel(new ResourceLocation(GregTech.ID, "textures/model/drone.obj"));
+            .loadModel(new ResourceLocation(GregTech.ID, "textures/model/drone.obj"));
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {

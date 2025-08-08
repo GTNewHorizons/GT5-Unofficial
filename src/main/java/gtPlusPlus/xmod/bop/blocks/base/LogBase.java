@@ -69,7 +69,7 @@ public abstract class LogBase extends BlockLog {
         for (int i = 0; i < this.textureSide.length; ++i) {
             this.textureSide[i] = iIcon.registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i]);
             this.textureTop[i] = iIcon
-                .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
+                    .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
         }
         // TODO uncomment the line below, I don't want to do it now in case it causes a crash
         // this.field_150167_a = this.textureSide;

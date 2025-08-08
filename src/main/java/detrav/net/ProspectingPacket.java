@@ -66,7 +66,7 @@ public class ProspectingPacket extends DetravPacket {
                         Materials tMaterial = GregTechAPI.sGeneratedMaterials[meta % 1000];
                         rgba = tMaterial.getRGBA();
                         name = tMaterial.getLocalizedNameForItem(
-                            GTLanguageManager.getTranslation("gt.blockores." + meta + ".name"));
+                                GTLanguageManager.getTranslation("gt.blockores." + meta + ".name"));
                     } else {
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
                         String translated = GTLanguageManager.getTranslation("bw.blocktype.ore");
@@ -82,9 +82,8 @@ public class ProspectingPacket extends DetravPacket {
                 // Fluid
                 rgba = FluidColors.getColor(meta);
                 name = Objects.firstNonNull(
-                    FluidRegistry.getFluid(meta)
-                        .getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),
-                    StatCollector.translateToLocal("gui.detrav.scanner.unknown_fluid"));
+                        FluidRegistry.getFluid(meta).getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),
+                        StatCollector.translateToLocal("gui.detrav.scanner.unknown_fluid"));
             } else if (packet.ptype == 3) {
                 // Pollution
                 name = StatCollector.translateToLocal("gui.detrav.scanner.pollution");
@@ -102,12 +101,12 @@ public class ProspectingPacket extends DetravPacket {
     public static Object decode(InputStream in) throws IOException {
         DataInput aData = new DataInputStream(new GZIPInputStream(in));
         ProspectingPacket packet = new ProspectingPacket(
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt(),
-            aData.readInt());
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt());
         packet.level = aData.readInt();
 
         int aSize = (packet.size * 2 + 1) * 16;
@@ -152,9 +151,7 @@ public class ProspectingPacket extends DetravPacket {
             HashMap<Byte, Short> data = map[i][j];
             if (data == null) tOut.writeByte(0);
             else {
-                tOut.writeByte(
-                    data.keySet()
-                        .size());
+                tOut.writeByte(data.keySet().size());
                 for (byte key : data.keySet()) {
                     tOut.writeByte(key);
                     tOut.writeShort(data.get(key));

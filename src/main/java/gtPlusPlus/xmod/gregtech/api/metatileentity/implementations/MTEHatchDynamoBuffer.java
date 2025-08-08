@@ -15,7 +15,7 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
     }
 
     public MTEHatchDynamoBuffer(final String aName, final int aTier, final String[] aDescription,
-        final ITexture[][][] aTextures) {
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -48,8 +48,8 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
     public String[] getDescription() {
         String[] g;
         g = new String[] { "Dynamo with internal storage and additional Amp capacity",
-            "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
-            GTPPCore.GT_Tooltip.get() };
+                "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
+                GTPPCore.GT_Tooltip.get() };
 
         return g;
     }

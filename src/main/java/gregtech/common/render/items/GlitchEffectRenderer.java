@@ -29,7 +29,7 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
     double offsetCyan = 0;
 
     private void applyGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, int[] color,
-        IIcon... icons) {
+            IIcon... icons) {
         for (IIcon icon : icons) {
             if (icon == null) continue;
             Tessellator t = Tessellator.instance;
@@ -52,7 +52,7 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
 
     @Override
     protected void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor,
-        int pass, Object... data) {
+            int pass, Object... data) {
         short metaData = (short) item.getItemDamage();
         if (!(item.getItem() instanceof IGT_ItemWithMaterialRenderer itemRenderer)) return;
 
@@ -75,10 +75,10 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
         if (shouldModulateColor) {
             short[] modulation = itemRenderer.getRGBa(item);
             GL11.glColor4f(
-                modulation[0] / 255.0F,
-                modulation[1] / 255.0F,
-                modulation[2] / 255.0F,
-                modulation[3] / 255.0F);
+                    modulation[0] / 255.0F,
+                    modulation[1] / 255.0F,
+                    modulation[2] / 255.0F,
+                    modulation[3] / 255.0F);
         }
 
         if (itemIcon != null) {
@@ -87,8 +87,7 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
         }
 
         if (overlay != null && aFluid != null && aFluid.getFluid() != null) {
-            IIcon fluidIcon = aFluid.getFluid()
-                .getIcon(aFluid);
+            IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
             if (fluidIcon != null) {
                 markNeedsAnimationUpdate(fluidIcon);
                 // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.

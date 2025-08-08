@@ -16,17 +16,16 @@ import gregtech.client.SeekingOggCodec;
 public abstract class SoundManagerInnerMixin {
 
     @WrapOperation(
-        method = "getInputStream",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/resources/IResourceManager;getResource(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/client/resources/IResource;"))
+            method = "getInputStream",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/resources/IResourceManager;getResource(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/client/resources/IResource;"))
     IResource gt5u$stripSeekParams(IResourceManager instance, ResourceLocation location,
-        Operation<IResource> original) {
-        if (location.getResourcePath()
-            .endsWith(SeekingOggCodec.EXTENSION)) {
+            Operation<IResource> original) {
+        if (location.getResourcePath().endsWith(SeekingOggCodec.EXTENSION)) {
             location = new ResourceLocation(
-                location.getResourceDomain(),
-                SeekingOggCodec.stripSeekMetadata(location.getResourcePath()));
+                    location.getResourceDomain(),
+                    SeekingOggCodec.stripSeekMetadata(location.getResourcePath()));
         }
         return original.call(instance, location);
     }

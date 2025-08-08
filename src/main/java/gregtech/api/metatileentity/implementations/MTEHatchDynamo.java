@@ -14,12 +14,12 @@ public class MTEHatchDynamo extends MTEHatch {
 
     public MTEHatchDynamo(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { "Generating electric Energy from Multiblocks", "Puts out up to 1 Amp" });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { "Generating electric Energy from Multiblocks", "Puts out up to 1 Amp" });
     }
 
     public MTEHatchDynamo(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -77,13 +77,13 @@ public class MTEHatchDynamo extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 }

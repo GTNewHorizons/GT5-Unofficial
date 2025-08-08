@@ -59,31 +59,30 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     private static final int CASING_INDEX = 50;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHeatExchanger> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEHeatExchanger>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { { "ccc", "cCc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
-                    { "c~c", "cHc", "ccc" }, }))
-        .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 14))
-        .addElement(
-            'C',
-            OutputHatch.withAdder(MTEHeatExchanger::addColdFluidOutputToMachineList)
-                .withCount(t -> t.mOutputColdFluidHatch.isValid() ? 1 : 0)
-                .newAny(CASING_INDEX, 3))
-        .addElement(
-            'H',
-            InputHatch.withAdder(MTEHeatExchanger::addHotFluidInputToMachineList)
-                .withCount(t -> t.mInputHotFluidHatch.isValid() ? 1 : 0)
-                .newAny(CASING_INDEX, 2))
-        .addElement(
-            'c',
-            buildHatchAdder(MTEHeatExchanger.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(MTEHeatExchanger::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, (byte) 2))))
-        .build();
+            .<MTEHeatExchanger>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { "ccc", "cCc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
+                                    { "c~c", "cHc", "ccc" }, }))
+            .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 14))
+            .addElement(
+                    'C',
+                    OutputHatch.withAdder(MTEHeatExchanger::addColdFluidOutputToMachineList)
+                            .withCount(t -> t.mOutputColdFluidHatch.isValid() ? 1 : 0).newAny(CASING_INDEX, 3))
+            .addElement(
+                    'H',
+                    InputHatch.withAdder(MTEHeatExchanger::addHotFluidInputToMachineList)
+                            .withCount(t -> t.mInputHotFluidHatch.isValid() ? 1 : 0).newAny(CASING_INDEX, 2))
+            .addElement(
+                    'c',
+                    buildHatchAdder(MTEHeatExchanger.class)
+                            .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
+                                    onElementPass(
+                                            MTEHeatExchanger::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings4, (byte) 2))))
+            .build();
     public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-25)
 
     private MTEHatchInput mInputHotFluidHatch;
@@ -113,21 +112,16 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger, LHE")
-            .addInfo("More complicated than a Fusion Reactor. Seriously")
-            .addInfo("Inputs are Lava, Hot Coolant, or Hot Solar Salt")
-            .addInfo("Outputs Pahoehoe Lava, IC2 Coolant, or Cold Solar Salt")
-            .addInfo("Converts Distilled Water into Steam/SH Steam in the process")
-            .beginStructureBlock(3, 4, 3, false)
-            .addController("Front bottom")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
-            .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot Fluid, bottom center casing", 2)
-            .addInputHatch("Distilled water, any casing", 1)
-            .addOutputHatch("Cold Fluid, top center casing", 3)
-            .addOutputHatch("Steam/SH Steam, any casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType("Heat Exchanger, LHE").addInfo("More complicated than a Fusion Reactor. Seriously")
+                .addInfo("Inputs are Lava, Hot Coolant, or Hot Solar Salt")
+                .addInfo("Outputs Pahoehoe Lava, IC2 Coolant, or Cold Solar Salt")
+                .addInfo("Converts Distilled Water into Steam/SH Steam in the process")
+                .beginStructureBlock(3, 4, 3, false).addController("Front bottom")
+                .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
+                .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks").addMaintenanceHatch("Any casing", 1)
+                .addInputHatch("Hot Fluid, bottom center casing", 2).addInputHatch("Distilled water, any casing", 1)
+                .addOutputHatch("Cold Fluid, top center casing", 3).addOutputHatch("Steam/SH Steam, any casing", 1)
+                .toolTipFinisher();
         return tt;
     }
 
@@ -147,26 +141,15 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
@@ -200,8 +183,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
 
         // Do we have an integrated circuit with a valid configuration?
-        if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
-            .startsWith("gt.integrated_circuit")) {
+        if (mInventory[1] != null && mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, apply the penalty and reduce the threshold.
@@ -230,7 +212,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2);
         // the 3-arg drain will work on both normal hatch and ME hatch
         mInputHotFluidHatch
-            .drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), fluidAmountToConsume), true);
+                .drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), fluidAmountToConsume), true);
         mOutputColdFluidHatch.fill(coolant.getColdFluid(fluidAmountToConsume), true);
 
         this.mMaxProgresstime = 20;
@@ -338,43 +320,43 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.steam")
-                + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(superheated ? -2L * mEUt : -mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
-                + superheated
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.threshold")
-                + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(superheated_threshold)
-                + EnumChatFormatting.RESET };
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
+                        + StatCollector.translateToLocal("GT5U.LHE.steam")
+                        + ": "
+                        + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                        + GTUtility.formatNumbers(superheated ? -2L * mEUt : -mEUt)
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (getIdealStatus() - getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + mEfficiency / 100.0F
+                        + EnumChatFormatting.RESET
+                        + " %",
+                StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
+                        + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
+                        + superheated
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
+                        + StatCollector.translateToLocal("GT5U.LHE.threshold")
+                        + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(superheated_threshold)
+                        + EnumChatFormatting.RESET };
     }
 
     @Override

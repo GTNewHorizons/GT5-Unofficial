@@ -33,120 +33,71 @@ public class FuelLoader implements Runnable {
     public void run() {
         GTLog.out.println("GTMod: Initializing various Fuels.");
         ItemList.sBlueVitriol = GTFluidFactory
-            .of("solution.bluevitriol", "Blue Vitriol Water Solution", null, FluidState.LIQUID, 295);
+                .of("solution.bluevitriol", "Blue Vitriol Water Solution", null, FluidState.LIQUID, 295);
         ItemList.sNickelSulfate = GTFluidFactory
-            .of("solution.nickelsulfate", "Nickel Sulfate Water Solution", null, FluidState.LIQUID, 295);
+                .of("solution.nickelsulfate", "Nickel Sulfate Water Solution", null, FluidState.LIQUID, 295);
         ItemList.sGreenVitriol = GTFluidFactory
-            .of("solution.greenvitriol", "Green Vitriol Water Solution", null, FluidState.LIQUID, 295);
+                .of("solution.greenvitriol", "Green Vitriol Water Solution", null, FluidState.LIQUID, 295);
         ItemList.sIndiumConcentrate = GTFluidFactory
-            .of("indiumconcentrate", "Indium Concentrate", null, FluidState.LIQUID, 295); // TODO CHECK NEW x3
+                .of("indiumconcentrate", "Indium Concentrate", null, FluidState.LIQUID, 295); // TODO CHECK NEW x3
         ItemList.sLeadZincSolution = GTFluidFactory
-            .of("leadzincsolution", "Lead-Zinc Solution", null, FluidState.LIQUID, 295);
+                .of("leadzincsolution", "Lead-Zinc Solution", null, FluidState.LIQUID, 295);
         ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", null, FluidState.LIQUID, 295);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 50_000)
-            .addTo(smallNaquadahReactorFuels);
+        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L)).duration(0).eut(0)
+                .metadata(FUEL_VALUE, 50_000).addTo(smallNaquadahReactorFuels);
+
+        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L)).duration(0).eut(0)
+                .metadata(FUEL_VALUE, 250_000).addTo(largeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 250_000)
-            .addTo(largeNaquadahReactorFuels);
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L)).duration(0).eut(0)
+                .metadata(FUEL_VALUE, 500_000).addTo(hugeNaquadahReactorFuels);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 500_000)
-            .addTo(hugeNaquadahReactorFuels);
+        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L)).duration(0).eut(0)
+                .metadata(FUEL_VALUE, 250_000).addTo(extremeNaquadahReactorFuels);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 250_000)
-            .addTo(extremeNaquadahReactorFuels);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 1_000_000)
-            .addTo(ultraHugeNaquadahReactorFuels);
+        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L)).duration(0).eut(0)
+                .metadata(FUEL_VALUE, 1_000_000).addTo(ultraHugeNaquadahReactorFuels);
 
         // BloodMagic
         if (BloodMagic.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
-                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L))
-                .duration(0)
-                .eut(0)
-                .metadata(FUEL_VALUE, 400)
-                .addTo(magicFuels);
+            GTValues.RA.stdBuilder().itemInputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
+                    .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L)).duration(0).eut(0)
+                    .metadata(FUEL_VALUE, 400).addTo(magicFuels);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
-                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
-                .duration(0)
-                .eut(0)
-                .metadata(FUEL_VALUE, 1000)
-                .addTo(magicFuels);
+            GTValues.RA.stdBuilder().itemInputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
+                    .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L)).duration(0).eut(0)
+                    .metadata(FUEL_VALUE, 1000).addTo(magicFuels);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
-                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
-                .duration(0)
-                .eut(0)
-                .metadata(FUEL_VALUE, 8000)
-                .addTo(magicFuels);
+            GTValues.RA.stdBuilder().itemInputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
+                    .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L)).duration(0).eut(0)
+                    .metadata(FUEL_VALUE, 8000).addTo(magicFuels);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27))
-                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
-                .duration(0)
-                .eut(0)
-                .metadata(FUEL_VALUE, 20000)
-                .addTo(magicFuels);
+            GTValues.RA.stdBuilder().itemInputs(GTModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27))
+                    .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L)).duration(0).eut(0)
+                    .metadata(FUEL_VALUE, 20000).addTo(magicFuels);
         }
 
         if (Mods.Thaumcraft.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(Mods.Thaumcraft.ID, "ItemResource", 1L, 4))
-                .metadata(FUEL_VALUE, 4)
-                .metadata(FUEL_TYPE, 5)
-                .addTo(GTRecipeConstants.Fuel);
+            GTValues.RA.stdBuilder().itemInputs(GTModHandler.getModItem(Mods.Thaumcraft.ID, "ItemResource", 1L, 4))
+                    .metadata(FUEL_VALUE, 4).metadata(FUEL_TYPE, 5).addTo(GTRecipeConstants.Fuel);
         }
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.experience_bottle, 1))
-            .metadata(FUEL_VALUE, 10)
-            .metadata(FUEL_TYPE, 5)
-            .addTo(GTRecipeConstants.Fuel);
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.ghast_tear, 1))
-            .metadata(FUEL_VALUE, 50)
-            .metadata(FUEL_TYPE, 5)
-            .addTo(GTRecipeConstants.Fuel);
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.beacon, 1))
-            .metadata(FUEL_VALUE, Materials.NetherStar.mFuelPower * 2)
-            .metadata(FUEL_TYPE, Materials.NetherStar.mFuelType)
-            .addTo(GTRecipeConstants.Fuel);
+        GTValues.RA.stdBuilder().itemInputs(new ItemStack(Items.experience_bottle, 1)).metadata(FUEL_VALUE, 10)
+                .metadata(FUEL_TYPE, 5).addTo(GTRecipeConstants.Fuel);
+        GTValues.RA.stdBuilder().itemInputs(new ItemStack(Items.ghast_tear, 1)).metadata(FUEL_VALUE, 50)
+                .metadata(FUEL_TYPE, 5).addTo(GTRecipeConstants.Fuel);
+        GTValues.RA.stdBuilder().itemInputs(new ItemStack(Blocks.beacon, 1))
+                .metadata(FUEL_VALUE, Materials.NetherStar.mFuelPower * 2)
+                .metadata(FUEL_TYPE, Materials.NetherStar.mFuelType).addTo(GTRecipeConstants.Fuel);
         if (Mods.EnderIO.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1))
-                .metadata(FUEL_VALUE, 250)
-                .metadata(FUEL_TYPE, 1)
-                .addTo(GTRecipeConstants.Fuel);
+            GTValues.RA.stdBuilder().itemInputs(GTModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1))
+                    .metadata(FUEL_VALUE, 250).metadata(FUEL_TYPE, 1).addTo(GTRecipeConstants.Fuel);
         }
     }
 }

@@ -65,9 +65,7 @@ public abstract class GTBaseCommand extends CommandBase {
     protected static boolean isOpedPlayer(ICommandSender sender) {
         if (sender instanceof EntityPlayerMP player) {
             // func_152596_g = canSendCommands
-            return MinecraftServer.getServer()
-                .getConfigurationManager()
-                .func_152596_g(player.getGameProfile());
+            return MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile());
         }
         return false;
     }
@@ -78,18 +76,11 @@ public abstract class GTBaseCommand extends CommandBase {
      * @return an array of all online player names.
      */
     protected static String[] getAllUsernames() {
-        if (FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isServer()) {
-            return MinecraftServer.getServer()
-                .getAllUsernames();
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+            return MinecraftServer.getServer().getAllUsernames();
         } else {
-            return Objects.requireNonNull(
-                Minecraft.getMinecraft()
-                    .getNetHandler()).playerInfoList.stream()
-                        .map(p -> p.name)
-                        .filter(Objects::nonNull)
-                        .toArray(String[]::new);
+            return Objects.requireNonNull(Minecraft.getMinecraft().getNetHandler()).playerInfoList.stream()
+                    .map(p -> p.name).filter(Objects::nonNull).toArray(String[]::new);
         }
     }
 }

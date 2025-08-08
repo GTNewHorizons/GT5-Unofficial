@@ -51,14 +51,14 @@ public class DetravMapTexture extends AbstractTexture {
                         }
                     } else if (packet.ptype == 2) {
                         final short fluidId = packet.map[i][j].get((byte) 1),
-                            fluidSize = packet.map[i][j].get((byte) 2);
+                                fluidSize = packet.map[i][j].get((byte) 2);
                         final String name = packet.metaMap.get(fluidId);
 
                         // Variables used to locate within a chunk.
                         final int k = (i % 16), l = (j % 16);
 
                         if (((k + l * 16) * 3) < (fluidSize + 48)
-                            && (selected.equals("All") || selected.equals(name))) {
+                                && (selected.equals("All") || selected.equals(name))) {
                             image.setRGB(i, j, packet.ores.getOrDefault(name, Color.BLACK.getRGB()) | 0XFF000000);
                         }
                     } else if (packet.ptype == 3) {

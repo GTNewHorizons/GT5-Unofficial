@@ -33,10 +33,10 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
         super(recipeCategory);
         if (!NEIBWConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
-                GTMod.GT,
-                "NEIPlugins",
-                "register-crafting-handler",
-                "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
+                    GTMod.GT,
+                    "NEIPlugins",
+                    "register-crafting-handler",
+                    "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -53,7 +53,8 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
             // see constructor of CachedDefaultRecipe on why relx==120 and rely==52 means special slot
             for (PositionedStack stack : recipe.mInputs) {
                 if (stack.relx == 120 && stack.rely == 52
-                    && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
+                        && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack)))
+                    this.arecipes.add(recipe);
             }
         }
     }
@@ -61,8 +62,8 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
     @Override
     public void loadUsageRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof ItemLabParts
-            && aResult.getItemDamage() < 3
-            && aResult.getTagCompound() != null) {
+                && aResult.getItemDamage() < 3
+                && aResult.getTagCompound() != null) {
             this.loadLabPartRecipes(aResult);
         } else {
             super.loadUsageRecipes(aResult);

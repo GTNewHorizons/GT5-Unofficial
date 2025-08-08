@@ -43,8 +43,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
 
     /** Location of the climber texture */
     private static final ResourceLocation climberTexture = new ResourceLocation(
-        GTNHIntergalactic.ASSET_PREFIX,
-        "textures/models/climber.png");
+            GTNHIntergalactic.ASSET_PREFIX,
+            "textures/models/climber.png");
 
     /** Model of the climber */
     private static IModelCustom modelCustom;
@@ -64,10 +64,10 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     private static final double CABLE_HEIGHT = 512.0;
     /** X edges of the helix */
     private static final float[] edgeX = { LONG_DISTANCE, LONG_DISTANCE, SHORT_DISTANCE, -SHORT_DISTANCE,
-        -LONG_DISTANCE, -LONG_DISTANCE, -SHORT_DISTANCE, SHORT_DISTANCE };
+            -LONG_DISTANCE, -LONG_DISTANCE, -SHORT_DISTANCE, SHORT_DISTANCE };
     /** Z edges of the helix */
     private static final float[] edgeZ = { SHORT_DISTANCE, -SHORT_DISTANCE, -LONG_DISTANCE, -LONG_DISTANCE,
-        -SHORT_DISTANCE, SHORT_DISTANCE, LONG_DISTANCE, LONG_DISTANCE };
+            -SHORT_DISTANCE, SHORT_DISTANCE, LONG_DISTANCE, LONG_DISTANCE };
 
     private static ShaderProgram cableProgram;
     private static int uModelProjectionMatrix;
@@ -94,7 +94,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      */
     public RenderSpaceElevatorCable() {
         modelCustom = AdvancedModelLoader
-            .loadModel(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
+                .loadModel(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
     }
 
     /**
@@ -121,11 +121,12 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             GL11.glPushMatrix();
             // If the Space Elevator is build on a low Y level the climber should reach a minimum height
             GL11.glTranslated(
-                x + 0.5,
-                y + 0.5
-                    + cableTile.getClimberHeight()
-                    + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT : CLIMBER_OFFSET),
-                z + 0.5);
+                    x + 0.5,
+                    y + 0.5
+                            + cableTile.getClimberHeight()
+                            + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT
+                                    : CLIMBER_OFFSET),
+                    z + 0.5);
             GL11.glRotated(cableTile.getClimberRotation(), 0.0, 1.0, 0.0);
             renderClimber();
             GL11.glPopMatrix();
@@ -175,9 +176,9 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             final float glowMaxV = Math.lerp(minV, maxV, 9f / 16f);
 
             cableProgram = new ShaderProgram(
-                "gtnhintergalactic",
-                "shaders/spacecable.vert.glsl",
-                "shaders/spacecable.frag.glsl");
+                    "gtnhintergalactic",
+                    "shaders/spacecable.vert.glsl",
+                    "shaders/spacecable.frag.glsl");
             cableProgram.use();
 
             aVertexID = cableProgram.getAttribLocation("vertexId");
@@ -222,10 +223,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
 
         cableProgram.use();
         GL20.glUniform1f(
-            uTime,
-            ((tile.getWorldObj()
-                .getWorldInfo()
-                .getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
+                uTime,
+                ((tile.getWorldObj().getWorldInfo().getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
         GL20.glUniform1i(uBaseY, (int) y - 23);
 
         modelProjection.identity();
@@ -306,7 +305,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      */
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-        RenderBlocks renderer) {
+            RenderBlocks renderer) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntitySpaceElevatorCable) {
             if (!((TileEntitySpaceElevatorCable) te).shouldRender()) {

@@ -81,32 +81,31 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     @Override
     public IStructureDefinition<MTECyclotron> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTECyclotron>builder()
-                .addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTECyclotron>builder().addShape(
                     mName,
                     transpose(
-                        new String[][] {
-                            { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
-                                "  h         h  ", "  h         h  ", " h           h ", " h           h ",
-                                " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                "    hh   hh    ", "      hhh      ", "               ", },
-                            { "      hhh      ", "    hhccchh    ", "   hcchhhcch   ", "  hchh   hhch  ",
-                                " hch       hch ", " hch       hch ", "hch         hch", "hch         hch",
-                                "hch         hch", " hch       hch ", " hch       hch ", "  hchh   hhch  ",
-                                "   hcch~hcch   ", "    hhccchh    ", "      hhh      ", },
-                            { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
-                                "  h         h  ", "  h         h  ", " h           h ", " h           h ",
-                                " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                "    hh   hh    ", "      hhh      ", "               ", } }))
-                .addElement(
-                    'h',
-                    buildHatchAdder(MTECyclotron.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
-                        .casingIndex(44)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta()))
-                .build();
+                            new String[][] {
+                                    { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
+                                            "  h         h  ", "  h         h  ", " h           h ", " h           h ",
+                                            " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                            "    hh   hh    ", "      hhh      ", "               ", },
+                                    { "      hhh      ", "    hhccchh    ", "   hcchhhcch   ", "  hchh   hhch  ",
+                                            " hch       hch ", " hch       hch ", "hch         hch", "hch         hch",
+                                            "hch         hch", " hch       hch ", " hch       hch ", "  hchh   hhch  ",
+                                            "   hcch~hcch   ", "    hhccchh    ", "      hhh      ", },
+                                    { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
+                                            "  h         h  ", "  h         h  ", " h           h ", " h           h ",
+                                            " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                            "    hh   hh    ", "      hhh      ", "               ", } }))
+                    .addElement(
+                            'h',
+                            buildHatchAdder(MTECyclotron.class)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
+                                    .casingIndex(44).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
+                    .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta())).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -153,25 +152,17 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Super Magnetic Speed Shooter")
-            .addSeparator()
-            .addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
-            .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
-            .addInfo("Which will be extracted from the Isochronous Cyclotron")
-            .addSeparator()
-            .addInfo("Similar structure to the Fusion Reactor")
-            .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
-            .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .addCasingInfoMin("Cyclotron Machine Casings", 40, false)
-            .addCasingInfoMin("Cyclotron Coil", 32, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Super Magnetic Speed Shooter").addSeparator()
+                .addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
+                .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
+                .addInfo("Which will be extracted from the Isochronous Cyclotron").addSeparator()
+                .addInfo("Similar structure to the Fusion Reactor")
+                .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
+                .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
+                .addPollutionAmount(getPollutionPerSecond(null))
+                .addCasingInfoMin("Cyclotron Machine Casings", 40, false).addCasingInfoMin("Cyclotron Coil", 32, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -201,16 +192,14 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     public IIconContainer getIconOverlay() {
-        if (this.getBaseMetaTileEntity()
-            .isActive()) {
+        if (this.getBaseMetaTileEntity().isActive()) {
             return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
         }
         return TexturesGtBlock.Overlay_MatterFab_Animated;
     }
 
     public IIconContainer getIconGlowOverlay() {
-        if (this.getBaseMetaTileEntity()
-            .isActive()) {
+        if (this.getBaseMetaTileEntity().isActive()) {
             return TexturesGtBlock.Overlay_MatterFab_Active_Animated_Glow;
         }
         return TexturesGtBlock.Overlay_MatterFab_Animated_Glow;
@@ -236,12 +225,12 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
                                 long aCharge = IonParticles.getChargeState(s);
                                 if (aCharge == 0) {
                                     IonParticles.setChargeState(
-                                        s,
-                                        MathUtils.getRandomFromArray(
-                                            new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2,
-                                                -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
-                                                5, 5, 5, 6, 6 }));
+                                            s,
+                                            MathUtils.getRandomFromArray(
+                                                    new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2,
+                                                            -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1,
+                                                            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                                            3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
                                 }
                             }
                         }
@@ -263,12 +252,12 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
                                 long aCharge = IonParticles.getChargeState(s);
                                 if (aCharge == 0) {
                                     IonParticles.setChargeState(
-                                        s,
-                                        MathUtils.getRandomFromArray(
-                                            new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2,
-                                                -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
-                                                5, 5, 5, 6, 6 }));
+                                            s,
+                                            MathUtils.getRandomFromArray(
+                                                    new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2,
+                                                            -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1,
+                                                            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                                            3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
                                 }
                             }
                         }
@@ -287,7 +276,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
         }
 
         return new String[] { "COMET - Compact Cyclotron MK I", "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
+                "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
     }
 
     @Override

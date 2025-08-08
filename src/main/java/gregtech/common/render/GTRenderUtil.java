@@ -29,7 +29,7 @@ public class GTRenderUtil {
     }
 
     public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
-        IIcon aIcon, ForgeDirection side) {
+            IIcon aIcon, ForgeDirection side) {
         switch (side) {
             case DOWN -> aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
             case UP -> aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
@@ -45,7 +45,7 @@ public class GTRenderUtil {
     }
 
     public static void renderItemIcon(IIcon icon, double xStart, double yStart, double xEnd, double yEnd, double z,
-        float nx, float ny, float nz) {
+            float nx, float ny, float nz) {
         if (icon == null) {
             return;
         }
@@ -78,14 +78,14 @@ public class GTRenderUtil {
             case ENTITY -> {
                 if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                     ItemRenderer.renderItemIn2D(
-                        tess,
-                        maxU,
-                        minV,
-                        minU,
-                        maxV,
-                        icon.getIconWidth(),
-                        icon.getIconHeight(),
-                        0.0625F);
+                            tess,
+                            maxU,
+                            minV,
+                            minU,
+                            maxV,
+                            icon.getIconWidth(),
+                            icon.getIconHeight(),
+                            0.0625F);
                 } else {
                     GL11.glPushMatrix();
 
@@ -105,8 +105,15 @@ public class GTRenderUtil {
                 }
             }
             case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
-                ItemRenderer
-                    .renderItemIn2D(tess, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
+                ItemRenderer.renderItemIn2D(
+                        tess,
+                        maxU,
+                        minV,
+                        minU,
+                        maxV,
+                        icon.getIconWidth(),
+                        icon.getIconHeight(),
+                        0.0625F);
             }
             case INVENTORY -> {
                 renderItemIcon(icon, 16.0D, 0.001, 0.0F, 0.0F, -1.0F);

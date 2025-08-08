@@ -91,12 +91,12 @@ public class GTPacketLMACraftingFX extends GTPacket {
     @SideOnly(Side.CLIENT)
     private void spawnFX() {
         LMACraftingFX fx = new LMACraftingFX(
-            Minecraft.getMinecraft().theWorld,
-            this.x,
-            this.y,
-            this.z,
-            this.age,
-            this.itemStack);
+                Minecraft.getMinecraft().theWorld,
+                this.x,
+                this.y,
+                this.z,
+                this.age,
+                this.itemStack);
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     }
 }

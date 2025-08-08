@@ -81,8 +81,8 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
         if (cal == null) cal = ItemRegistry.cal;
 
         arecipes.add(
-            new CachedShapelessRecipe(
-                new Object[] { GTUtility.copyAmount(1, cal), GTUtility.copyAmount(1, imprint), },
-                CALImprintRecipe.installImprint(GTUtility.copyAmount(1, cal), imprint)));
+                new CachedShapelessRecipe(
+                        new Object[] { GTUtility.copyAmount(1, cal), GTUtility.copyAmount(1, imprint), },
+                        CALImprintRecipe.installImprint(GTUtility.copyAmount(1, cal), imprint)));
     }
 }

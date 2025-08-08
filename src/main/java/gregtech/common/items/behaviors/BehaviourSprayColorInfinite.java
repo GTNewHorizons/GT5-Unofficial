@@ -83,7 +83,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack itemStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (itemStack.stackSize != 1)) {
             return false;
         }
@@ -109,7 +109,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     public List<String> getAdditionalToolTips(final MetaBaseItem aItem, final List<String> aList,
-        final ItemStack itemStack) {
+            final ItemStack itemStack) {
         final List<String> statuses = new ArrayList<>();
         if (isLocked(itemStack)) {
             statuses.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.locked"));
@@ -132,7 +132,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     public Optional<List<String>> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
-        final ItemStack aStack) {
+            final ItemStack aStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
         aList.add(" ");
@@ -141,9 +141,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
         aList.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
-                GameSettings.getKeyDisplayString(GTMod.clientProxy().shakeLockKey.getKeyCode())));
+                StatCollector.translateToLocalFormatted(
+                        "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
+                        GameSettings.getKeyDisplayString(GTMod.clientProxy().shakeLockKey.getKeyCode())));
         aList.add(" ");
         aList.add(AuthorQuerns);
 
@@ -179,12 +179,8 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
             if (position != null && position.typeOfHit == BLOCK) {
                 final ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, position);
-                if (block.getColor()
-                    .isPresent()) {
-                    sendPacket(
-                        GTPacketInfiniteSpraycan.Action.SET_COLOR,
-                        block.getColor()
-                            .get());
+                if (block.getColor().isPresent()) {
+                    sendPacket(GTPacketInfiniteSpraycan.Action.SET_COLOR, block.getColor().get());
                     return true;
                 }
             }
@@ -200,16 +196,16 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // region GUI
     private void openGUI(final EntityPlayer player, final ItemStack itemStack) {
         UIInfos.openClientUI(
-            player,
-            buildContext -> new DyeSelectGUI(
-                StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.header"),
-                itemStack,
-                selectedStack -> sendPacket(
-                    GTPacketInfiniteSpraycan.Action.SET_COLOR,
-                    selectedStack.getItem() == Items.dye ? selectedStack.getItemDamage() : REMOVE_COLOR),
-                COLOR_SELECTIONS,
-                getColor(itemStack),
-                true).createWindow(buildContext));
+                player,
+                buildContext -> new DyeSelectGUI(
+                        StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.header"),
+                        itemStack,
+                        selectedStack -> sendPacket(
+                                GTPacketInfiniteSpraycan.Action.SET_COLOR,
+                                selectedStack.getItem() == Items.dye ? selectedStack.getItemDamage() : REMOVE_COLOR),
+                        COLOR_SELECTIONS,
+                        getColor(itemStack),
+                        true).createWindow(buildContext));
     }
 
     private byte getColor(ItemStack sprayCan) {
@@ -225,10 +221,10 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     private static void displayLockedMessage() {
         GTNHLib.proxy.printMessageAboveHotbar(
-            StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.lock_error"),
-            120,
-            true,
-            true);
+                StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.lock_error"),
+                120,
+                true,
+                true);
     }
     // endregion
 
@@ -238,7 +234,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     private static void sendPacket(@SuppressWarnings("SameParameterValue") GTPacketInfiniteSpraycan.Action action,
-        int newColor) {
+            int newColor) {
         GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(action, newColor));
     }
     // endregion
@@ -296,16 +292,17 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         if (mCurrentColor == REMOVE_COLOR) {
             itemStack.setStackDisplayName(
-                StatCollector
-                    .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket));
+                    StatCollector.translateToLocalFormatted(
+                            "item.GT5U.infinite_spray_can.name.solvent",
+                            lBracket,
+                            rBracket));
         } else {
             itemStack.setStackDisplayName(
-                StatCollector.translateToLocalFormatted(
-                    "item.GT5U.infinite_spray_can.name.colored",
-                    lBracket,
-                    Dyes.get(mCurrentColor)
-                        .getLocalizedDyeName(),
-                    rBracket));
+                    StatCollector.translateToLocalFormatted(
+                            "item.GT5U.infinite_spray_can.name.colored",
+                            lBracket,
+                            Dyes.get(mCurrentColor).getLocalizedDyeName(),
+                            rBracket));
         }
     }
 
@@ -323,8 +320,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     public static Dyes getDye(ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
-            final byte color = itemStack.getTagCompound()
-                .getByte(COLOR_NBT_TAG);
+            final byte color = itemStack.getTagCompound().getByte(COLOR_NBT_TAG);
             if (color != REMOVE_COLOR) {
                 return Dyes.getOrDefault(color, Dyes.MACHINE_METAL);
             }
@@ -334,34 +330,32 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     public boolean isLocked(final ItemStack itemStack) {
-        return itemStack.hasTagCompound() && itemStack.getTagCompound()
-            .getBoolean(LOCK_NBT_TAG);
+        return itemStack.hasTagCompound() && itemStack.getTagCompound().getBoolean(LOCK_NBT_TAG);
     }
 
     private boolean isPreventingShake(final ItemStack itemStack) {
-        return itemStack.hasTagCompound() && itemStack.getTagCompound()
-            .getBoolean(PREVENT_SHAKE_TAG);
+        return itemStack.hasTagCompound() && itemStack.getTagCompound().getBoolean(PREVENT_SHAKE_TAG);
     }
 
     private static class DyeSelectGUI extends SelectItemUIFactory {
 
         public DyeSelectGUI(final String header, final ItemStack headerItem, final Consumer<ItemStack> selectedCallback,
-            final List<ItemStack> stacks, final int selected, final boolean noDeselect) {
+                final List<ItemStack> stacks, final int selected, final boolean noDeselect) {
             super(header, headerItem, selectedCallback, stacks, selected, noDeselect);
         }
 
         @Override
         public void setSelected(final int selected, Widget widget) {
             super.setSelected(selected, widget);
-            widget.getWindow()
-                .closeWindow();
+            widget.getWindow().closeWindow();
         }
 
         @Override
         protected List<String> getItemTooltips(final int index) {
             return ImmutableList.of(
-                index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
-                    : Dyes.getOrDefault(index, Dyes.MACHINE_METAL).mName);
+                    index == REMOVE_COLOR
+                            ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
+                            : Dyes.getOrDefault(index, Dyes.MACHINE_METAL).mName);
         }
     }
 }

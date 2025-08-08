@@ -67,7 +67,7 @@ public class ContainerFishTrap extends Container {
 
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-        final EntityPlayer aPlayer) {
+            final EntityPlayer aPlayer) {
 
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }

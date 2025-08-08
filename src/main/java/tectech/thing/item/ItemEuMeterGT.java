@@ -41,7 +41,7 @@ public class ItemEuMeterGT extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
+            int ordinalSide, float hitX, float hitY, float hitZ) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity == null || aPlayer instanceof FakePlayer) {
@@ -57,87 +57,87 @@ public class ItemEuMeterGT extends Item {
 
             if (tTileEntity instanceof BaseMetaTileEntity) {
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
-                        + "-----"
-                        + EnumChatFormatting.RESET
-                        + EnumChatFormatting.AQUA
-                        + " X:"
-                        + aX
-                        + " Y:"
-                        + aY
-                        + " Z:"
-                        + aZ
-                        + " D:"
-                        + aWorld.provider.dimensionId
-                        + " S:"
-                        + ordinalSide
-                        + " "
-                        + EnumChatFormatting.STRIKETHROUGH
-                        + "-----");
+                        aPlayer,
+                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
+                                + "-----"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.AQUA
+                                + " X:"
+                                + aX
+                                + " Y:"
+                                + aY
+                                + " Z:"
+                                + aZ
+                                + " D:"
+                                + aWorld.provider.dimensionId
+                                + " S:"
+                                + ordinalSide
+                                + " "
+                                + EnumChatFormatting.STRIKETHROUGH
+                                + "-----");
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Stored_energy", clientLocale) + ": "
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyStored())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GREEN
-                        + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
+                        aPlayer,
+                        translateToLocalFormatted("tt.keyphrase.Stored_energy", clientLocale) + ": "
+                                + EnumChatFormatting.YELLOW
+                                + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyStored())
+                                + EnumChatFormatting.RESET
+                                + '/'
+                                + EnumChatFormatting.GREEN
+                                + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Stored_EU", clientLocale) + ": "
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getStoredEU())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GREEN
-                        + (((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
+                        aPlayer,
+                        translateToLocalFormatted("tt.keyphrase.Stored_EU", clientLocale) + ": "
+                                + EnumChatFormatting.YELLOW
+                                + (((BaseMetaTileEntity) tTileEntity).getStoredEU())
+                                + EnumChatFormatting.RESET
+                                + '/'
+                                + EnumChatFormatting.GREEN
+                                + (((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Average_IO", clientLocale) + ": "
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getAverageElectricInput())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
+                        aPlayer,
+                        translateToLocalFormatted("tt.keyphrase.Average_IO", clientLocale) + ": "
+                                + EnumChatFormatting.YELLOW
+                                + (((BaseMetaTileEntity) tTileEntity).getAverageElectricInput())
+                                + EnumChatFormatting.RESET
+                                + '/'
+                                + EnumChatFormatting.YELLOW
+                                + (((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Average_IO_(max)", clientLocale) + ": "
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getInputVoltage())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
+                        aPlayer,
+                        translateToLocalFormatted("tt.keyphrase.Average_IO_(max)", clientLocale) + ": "
+                                + EnumChatFormatting.GOLD
+                                + (((BaseMetaTileEntity) tTileEntity).getInputVoltage())
+                                + EnumChatFormatting.RESET
+                                + '/'
+                                + EnumChatFormatting.GOLD
+                                + (((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Average_IO_max", clientLocale) + ": "
-                        + EnumChatFormatting.RED
-                        + (((BaseMetaTileEntity) tTileEntity).getMaxSafeInput())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.RED
-                        + (((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
+                        aPlayer,
+                        translateToLocalFormatted("tt.keyphrase.Average_IO_max", clientLocale) + ": "
+                                + EnumChatFormatting.RED
+                                + (((BaseMetaTileEntity) tTileEntity).getMaxSafeInput())
+                                + EnumChatFormatting.RESET
+                                + '/'
+                                + EnumChatFormatting.RED
+                                + (((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Amperage_IO_(max)", clientLocale) + ": "
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getInputAmperage())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
+                        aPlayer,
+                        translateToLocalFormatted("tt.keyphrase.Amperage_IO_(max)", clientLocale) + ": "
+                                + EnumChatFormatting.GOLD
+                                + (((BaseMetaTileEntity) tTileEntity).getInputAmperage())
+                                + EnumChatFormatting.RESET
+                                + '/'
+                                + EnumChatFormatting.GOLD
+                                + (((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
                 GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Side_capabilities", clientLocale) + ": "
-                        + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom(side)
-                            ? translateToLocalFormatted("tt.keyword.input", clientLocale) + " "
-                            : "")
-                        + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo(side)
-                            ? translateToLocalFormatted("tt.keyword.output", clientLocale)
-                            : ""));
+                        aPlayer,
+                        translateToLocalFormatted("tt.keyphrase.Side_capabilities", clientLocale) + ": "
+                                + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom(side)
+                                        ? translateToLocalFormatted("tt.keyword.input", clientLocale) + " "
+                                        : "")
+                                + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo(side)
+                                        ? translateToLocalFormatted("tt.keyword.output", clientLocale)
+                                        : ""));
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MTECable) {

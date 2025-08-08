@@ -22,9 +22,9 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         int heat = recipeInfo.recipe.mSpecialValue;
         return Collections.singletonList(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.nei.heat_capacity",
-                GTUtility.formatNumbers(heat),
-                HeatingCoilLevel.getDisplayNameFromHeat(heat, false)));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.nei.heat_capacity",
+                        GTUtility.formatNumbers(heat),
+                        HeatingCoilLevel.getDisplayNameFromHeat(heat, false)));
     }
 }

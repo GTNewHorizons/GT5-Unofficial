@@ -72,64 +72,57 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
         setMaxThreshold();
         super.addUIWidgets(builder);
         builder.widget(
-            new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
-                .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
-            .widget(
-                new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
-            .widget(
-                new TextWidget(GTUtility.trans("254", "Detect Slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        getCoverString(
-                            c -> c.isPhysical()
-                                ? StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.1")
-                                : StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.0")))
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 5 + startY + spaceY * 4)
-                    .setSize(spaceX * 10, 12));
+                new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
+                        .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
+                .widget(
+                        new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+                .widget(
+                        new TextWidget(GTUtility.trans("254", "Detect Slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        getCoverString(
+                                                c -> c.isPhysical()
+                                                        ? StatCollector.translateToLocal(
+                                                                "gt.cover" + ".wirelessdetector.redstone.1")
+                                                        : StatCollector.translateToLocal(
+                                                                "gt.cover" + ".wirelessdetector.redstone.0")))
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setTextAlignment(Alignment.CenterLeft).setPos(startX + spaceX, 5 + startY + spaceY * 4)
+                                .setSize(spaceX * 10, 12));
     }
 
     @Override
     protected void addUIForDataController(CoverDataControllerWidget<CoverWirelessItemDetector> controller) {
         super.addUIForDataController(controller);
         controller
-            .addFollower(
-                new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.getThreshold(),
-                (coverData, state) -> coverData.setThresdhold(state.intValue()),
-                widget -> widget.setBounds(0, maxThreshold)
-                    .setScrollValues(1, 64, 1000)
-                    .setFocusOnGuiOpen(true)
-                    .setPos(1, 2 + spaceY * 2)
-                    .setSize(spaceX * 5 - 4, 12))
-            .addFollower(
-                new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.getSlot(),
-                (coverData, state) -> coverData.setSlot(state.intValue()),
-                widget -> widget.setBounds(-1, maxSlot)
-                    .setDefaultValue(-1)
-                    .setScrollValues(1, 100, 10)
-                    .setNumberFormat(numberFormatAll)
-                    .setPos(1, 2 + spaceY * 3)
-                    .setSize(spaceX * 4 - 8, 12))
-            .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                CoverWirelessItemDetector::isPhysical,
-                CoverWirelessItemDetector::setPhysical,
-                widget -> widget
-                    .addTooltip(StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.tooltip"))
-                    .setPos(0, 2 + spaceY * 4));
+                .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getThreshold(),
+                        (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                        widget -> widget.setBounds(0, maxThreshold).setScrollValues(1, 64, 1000).setFocusOnGuiOpen(true)
+                                .setPos(1, 2 + spaceY * 2).setSize(spaceX * 5 - 4, 12))
+                .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getSlot(),
+                        (coverData, state) -> coverData.setSlot(state.intValue()),
+                        widget -> widget.setBounds(-1, maxSlot).setDefaultValue(-1).setScrollValues(1, 100, 10)
+                                .setNumberFormat(numberFormatAll).setPos(1, 2 + spaceY * 3).setSize(spaceX * 4 - 8, 12))
+                .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                        CoverWirelessItemDetector::isPhysical,
+                        CoverWirelessItemDetector::setPhysical,
+                        widget -> widget.addTooltip(
+                                StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.tooltip"))
+                                .setPos(0, 2 + spaceY * 4));
     }
 
     private void setMaxSlot() {
         final ICoverable tile = getUIBuildContext().getTile();
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
-            && !(gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase)) {
+                && !(gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase)) {
             maxSlot = tile.getSizeInventory() - 1;
         } else {
             maxSlot = -1;
@@ -139,7 +132,7 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
     private void setMaxThreshold() {
         final ICoverable tile = getUIBuildContext().getTile();
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
-            && gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase) {
+                && gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase) {
             maxThreshold = gtTile.getMaxItemCount();
         } else {
             maxThreshold = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
@@ -150,9 +143,9 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
         final ICoverable tile = getUIBuildContext().getTile();
         final CoverWirelessItemDetector cover = getCover();
         if (cover != null && cover.getSlot() >= 0
-            && tile instanceof TileEntity
-            && !tile.isDead()
-            && tile.getSizeInventory() >= cover.getSlot()) {
+                && tile instanceof TileEntity
+                && !tile.isDead()
+                && tile.getSizeInventory() >= cover.getSlot()) {
             return tile.getStackInSlot(cover.getSlot());
         } else {
             return null;

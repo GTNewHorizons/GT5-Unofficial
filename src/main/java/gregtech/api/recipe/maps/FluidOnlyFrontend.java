@@ -17,7 +17,7 @@ import gregtech.common.gui.modularui.UIHelper;
 public class FluidOnlyFrontend extends RecipeMapFrontend {
 
     public FluidOnlyFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

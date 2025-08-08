@@ -31,8 +31,8 @@ public class BehaviourSwitchMode extends BehaviourNone {
                     keyName = Keyboard.getKeyName(keyCode);
                 }
                 aList.add(
-                    EnumChatFormatting.DARK_GRAY
-                        + StatCollector.translateToLocalFormatted("gt.behaviour.switch_mode.tooltip", keyName));
+                        EnumChatFormatting.DARK_GRAY
+                                + StatCollector.translateToLocalFormatted("gt.behaviour.switch_mode.tooltip", keyName));
             }
         }
 

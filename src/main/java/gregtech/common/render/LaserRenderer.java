@@ -21,7 +21,7 @@ public class LaserRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderFakeLine(TileEntityLaser laser, double x1, double y1, double z1, double x2, double y2,
-        double z2) {
+            double z2) {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         float lineOpacity = 0.7F;

@@ -41,22 +41,17 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-            .addInfo("§b524,288§7 EU/t and §b1.28B§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo("Performs 4/4 overclocks")
-            .beginStructureBlock(15, 3, 15, false)
-            .addController("See diagram when placed")
-            .addCasingInfoMin("Fusion Machine Casings MK IV", 79, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Advanced Fusion Coils II", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified casings", 2)
-            .addInputHatch("2-16, Specified casings", 1)
-            .addOutputHatch("1-16, Specified casings", 3)
-            .addStructureInfo("ALL Hatches must be UEV or better")
-            .toolTipFinisher();
+        tt.addMachineType("Fusion Reactor").addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
+                .addInfo("§b524,288§7 EU/t and §b1.28B§7 EU capacity per Energy Hatch")
+                .addInfo("If the recipe has a startup cost greater than the")
+                .addInfo("number of energy hatches * cap, you can't do it").addInfo("Performs 4/4 overclocks")
+                .beginStructureBlock(15, 3, 15, false).addController("See diagram when placed")
+                .addCasingInfoMin("Fusion Machine Casings MK IV", 79, false)
+                .addStructureInfo("Cover the coils with casing")
+                .addOtherStructurePart("Advanced Fusion Coils II", "Center part of the ring")
+                .addEnergyHatch("1-16, Specified casings", 2).addInputHatch("2-16, Specified casings", 1)
+                .addOutputHatch("1-16, Specified casings", 3).addStructureInfo("ALL Hatches must be UEV or better")
+                .toolTipFinisher();
         return tt;
     }
 
@@ -112,33 +107,30 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)),
-                TextureFactory.builder()
-                    .addIcon(this.getIconOverlay())
-                    .extFacing()
-                    .build() };
+                    TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)),
+                    TextureFactory.builder().addIcon(this.getIconOverlay()).extFacing().build() };
         } else if (!aActive) {
             return new ITexture[] {
-                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
+                    TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         } else {
             return new ITexture[] {
-                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER, Dyes.getModulation(-1)) };
+                    TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER, Dyes.getModulation(-1)) };
         }
     }
 
     @Override
     public ITexture getTextureOverlay() {
         return TextureFactory.of(
-            this.getBaseMetaTileEntity()
-                .isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow : TexturesGtBlock.Casing_Machine_Screen_1);
+                this.getBaseMetaTileEntity().isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow
+                        : TexturesGtBlock.Casing_Machine_Screen_1);
     }
 
     public IIconContainer getIconOverlay() {
-        return this.getBaseMetaTileEntity()
-            .isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow : TexturesGtBlock.Casing_Machine_Screen_1;
+        return this.getBaseMetaTileEntity().isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow
+                : TexturesGtBlock.Casing_Machine_Screen_1;
     }
 
     @Override
@@ -174,8 +166,8 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
         }
 
         return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut) };
+                StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
+                StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
+                StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut) };
     }
 }

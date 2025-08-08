@@ -48,8 +48,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final ITexture texture) {
-        return builder().addLayer(texture)
-            .build();
+        return builder().addLayer(texture).build();
     }
 
     /**
@@ -59,8 +58,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final ITexture... textures) {
-        return builder().addLayer(textures)
-            .build();
+        return builder().addLayer(textures).build();
     }
 
     /**
@@ -76,11 +74,8 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
-        final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
-        return builder().addIcon(bottom, top, north, south, west, east)
-            .setRGBA(rgba)
-            .setAllowAlpha(true)
-            .build();
+            final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
+        return builder().addIcon(bottom, top, north, south, west, east).setRGBA(rgba).setAllowAlpha(true).build();
     }
 
     /**
@@ -93,11 +88,8 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
-        final short[] rgba) {
-        return builder().addIcon(bottom, top, sides, sides, sides, sides)
-            .setRGBA(rgba)
-            .setAllowAlpha(true)
-            .build();
+            final short[] rgba) {
+        return builder().addIcon(bottom, top, sides, sides, sides, sides).setRGBA(rgba).setAllowAlpha(true).build();
     }
 
     /**
@@ -109,21 +101,15 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba, final boolean allowAlpha) {
-        return builder().addIcon(iconContainer)
-            .setRGBA(rgba)
-            .setAllowAlpha(allowAlpha)
-            .build();
+        return builder().addIcon(iconContainer).setRGBA(rgba).setAllowAlpha(allowAlpha).build();
     }
 
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {
-        return builder().addIcon(iconContainer)
-            .setRGBA(rgba)
-            .build();
+        return builder().addIcon(iconContainer).setRGBA(rgba).build();
     }
 
     public static ITexture of(final IIconContainer iconContainer) {
-        return builder().addIcon(iconContainer)
-            .build();
+        return builder().addIcon(iconContainer).build();
     }
 
     /**
@@ -136,21 +122,15 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final Block block, final int meta, final ForgeDirection side, final short[] rgba) {
-        return builder().setFromBlock(block, meta)
-            .setFromSide(side)
-            .setRGBA(rgba)
-            .build();
+        return builder().setFromBlock(block, meta).setFromSide(side).setRGBA(rgba).build();
     }
 
     public static ITexture of(final Block block, final int meta, final ForgeDirection side) {
-        return builder().setFromBlock(block, meta)
-            .setFromSide(side)
-            .build();
+        return builder().setFromBlock(block, meta).setFromSide(side).build();
     }
 
     public static ITexture of(final Block block, final int meta) {
-        return builder().setFromBlock(block, meta)
-            .build();
+        return builder().setFromBlock(block, meta).build();
     }
 
     public static ITexture of(final Block block) {

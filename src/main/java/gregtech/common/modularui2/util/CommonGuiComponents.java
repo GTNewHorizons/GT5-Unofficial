@@ -16,9 +16,7 @@ public final class CommonGuiComponents {
      * @param widgetCreator Takes index of the grid and returns corresponding widget.
      */
     public static Grid gridTemplate1by1(IntFunction<IWidget> widgetCreator) {
-        return new Grid().coverChildren()
-            .pos(79, 34)
-            .mapTo(1, 1, widgetCreator);
+        return new Grid().coverChildren().pos(79, 34).mapTo(1, 1, widgetCreator);
     }
 
     /**
@@ -27,9 +25,7 @@ public final class CommonGuiComponents {
      * @param widgetCreator Takes index of the grid and returns corresponding widget.
      */
     public static Grid gridTemplate2by2(IntFunction<IWidget> widgetCreator) {
-        return new Grid().coverChildren()
-            .pos(70, 25)
-            .mapTo(2, 4, widgetCreator);
+        return new Grid().coverChildren().pos(70, 25).mapTo(2, 4, widgetCreator);
     }
 
     /**
@@ -38,9 +34,7 @@ public final class CommonGuiComponents {
      * @param widgetCreator Takes index of the grid and returns corresponding widget.
      */
     public static Grid gridTemplate3by3(IntFunction<IWidget> widgetCreator) {
-        return new Grid().coverChildren()
-            .pos(61, 16)
-            .mapTo(3, 9, widgetCreator);
+        return new Grid().coverChildren().pos(61, 16).mapTo(3, 9, widgetCreator);
     }
 
     /**
@@ -49,8 +43,6 @@ public final class CommonGuiComponents {
      * @param widgetCreator Takes index of the grid and returns corresponding widget.
      */
     public static Grid gridTemplate4by4(IntFunction<IWidget> widgetCreator) {
-        return new Grid().coverChildren()
-            .pos(52, 7)
-            .mapTo(4, 16, widgetCreator);
+        return new Grid().coverChildren().pos(52, 7).mapTo(4, 16, widgetCreator);
     }
 }

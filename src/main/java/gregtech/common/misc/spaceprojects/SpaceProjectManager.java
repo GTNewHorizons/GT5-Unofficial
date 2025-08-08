@@ -110,12 +110,11 @@ public class SpaceProjectManager {
     public static void putInTeam(UUID teamMember, UUID teamLeader) {
         if (teamMember.equals(teamLeader)) {
             spaceTeams.put(teamMember, teamLeader);
-        } else if (!spaceTeams.get(teamLeader)
-            .equals(teamLeader)) {
-                putInTeam(teamMember, spaceTeams.get(teamLeader));
-            } else {
-                spaceTeams.put(teamMember, teamLeader);
-            }
+        } else if (!spaceTeams.get(teamLeader).equals(teamLeader)) {
+            putInTeam(teamMember, spaceTeams.get(teamLeader));
+        } else {
+            spaceTeams.put(teamMember, teamLeader);
+        }
 
         if (SpaceProjectWorldSavedData.INSTANCE != null) {
             SpaceProjectWorldSavedData.INSTANCE.markDirty();
@@ -194,7 +193,7 @@ public class SpaceProjectManager {
         public final String projectName;
 
         public FakeSpaceProjectRecipe(boolean aOptimize, ItemStack[] aInputs, FluidStack[] aFluidInputs, int aDuration,
-            int aEUt, int aSpecialValue, String projectName) {
+                int aEUt, int aSpecialValue, String projectName) {
             super(aOptimize, aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
             this.projectName = projectName;
         }
@@ -208,14 +207,14 @@ public class SpaceProjectManager {
     public static void addProject(ISpaceProject project) {
         spaceProjects.put(project.getProjectName(), project);
         RecipeMaps.spaceProjectFakeRecipes.add(
-            new FakeSpaceProjectRecipe(
-                false,
-                project.getTotalItemsCost(),
-                project.getTotalFluidsCost(),
-                project.getProjectBuildTime(),
-                (int) project.getProjectVoltage(),
-                project.getTotalStages(),
-                project.getProjectName()));
+                new FakeSpaceProjectRecipe(
+                        false,
+                        project.getTotalItemsCost(),
+                        project.getTotalFluidsCost(),
+                        project.getProjectBuildTime(),
+                        (int) project.getProjectVoltage(),
+                        project.getTotalStages(),
+                        project.getProjectName()));
     }
 
     /**
@@ -291,19 +290,17 @@ public class SpaceProjectManager {
      * Gets the UUID using the player's username
      */
     public static UUID getPlayerUUIDFromName(String playerName) {
-        return MinecraftServer.getServer()
-            .func_152358_ax()
-            .func_152655_a(playerName)
-            .getId();
+        return MinecraftServer.getServer().func_152358_ax().func_152655_a(playerName).getId();
     }
 
     /**
      * Gets the player's name using their UUID
      */
     public static String getPlayerNameFromUUID(UUID playerUUID) {
-        GameProfile profile = MinecraftServer.getServer()
-            .func_152358_ax()
-            .func_152652_a(playerUUID); // The profile can be null (offline mode issue?)
+        GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(playerUUID); // The profile can
+                                                                                                      // be null
+                                                                                                      // (offline mode
+                                                                                                      // issue?)
         return profile == null ? "ERROR_NULL_PROFILE" : profile.getName();
     }
 

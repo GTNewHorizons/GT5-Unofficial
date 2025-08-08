@@ -47,8 +47,8 @@ public class TimeAccelerationFieldCasing extends BlockCasingsAbstract {
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
             GTLanguageManager.addStringLocalization(
-                getUnlocalizedName() + "." + i + ".name",
-                WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Time Dilation Field Generator");
+                    getUnlocalizedName() + "." + i + ".name",
+                    WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Time Dilation Field Generator");
             GTStructureChannels.EOH_DILATION.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
         }
 

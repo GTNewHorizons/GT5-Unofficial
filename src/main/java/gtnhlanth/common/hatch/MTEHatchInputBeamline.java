@@ -35,18 +35,16 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            TextureFactory
+        return new ITexture[] { aBaseTexture, TextureFactory
                 .of(activeIcon, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(connIcon) };
+                TextureFactory.of(connIcon) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            TextureFactory
+        return new ITexture[] { aBaseTexture, TextureFactory
                 .of(sideIcon, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(connIcon) };
+                TextureFactory.of(connIcon) };
     }
 
     @Override
@@ -88,8 +86,7 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
         if (in == null) {
             this.dataPacket = null;
         } else {
-            if (in.getContent()
-                .getRate() > 0) {
+            if (in.getContent().getRate() > 0) {
                 this.dataPacket = in;
                 delay = true;
             } else {

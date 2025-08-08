@@ -65,21 +65,13 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Highly Advanced Assembling Machine")
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Processes two items per voltage tier")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoRange("Bulk Production Frame", 10, 25, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Highly Advanced Assembling Machine")
+                .addInfo("200% faster than using single block machines of the same voltage")
+                .addInfo("Processes two items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
+                .beginStructureBlock(3, 3, 3, true).addController("Front Center")
+                .addCasingInfoRange("Bulk Production Frame", 10, 25, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -112,18 +104,18 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     public IStructureDefinition<MTEAutoCrafter> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEAutoCrafter>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEAutoCrafter.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Muffler)
-                        .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEAutoCrafter.class)
+                                    .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Muffler)
+                                    .casingIndex(TAE.getIndexFromPage(0, 10)).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -152,8 +144,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 3F).setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -165,7 +156,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     public String[] getExtraInfoData() {
         final String running = (this.mMaxProgresstime > 0 ? "Auto-Crafter running" : "Auto-Crafter stopped");
         final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-            : "Needs Maintenance");
+                : "Needs Maintenance");
         String tSpecialText;
 
         if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {

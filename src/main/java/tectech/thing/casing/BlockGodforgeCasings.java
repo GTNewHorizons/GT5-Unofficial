@@ -38,21 +38,22 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = TextureFactory.of(this, b);
         }
 
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".0.name", "Singularity Reinforced Stellar Shielding Casing");
+        GTLanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".0.name",
+                "Singularity Reinforced Stellar Shielding Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Celestial Matter Guidance Casing");
         GTLanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".2.name",
-            "Boundless Gravitationally Severed Structure Casing");
+                getUnlocalizedName() + ".2.name",
+                "Boundless Gravitationally Severed Structure Casing");
         GTLanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".3.name",
-            "Transcendentally Amplified Magnetic Confinement Casing");
+                getUnlocalizedName() + ".3.name",
+                "Transcendentally Amplified Magnetic Confinement Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Stellar Energy Siphon Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Remote Graviton Flow Modulator");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Medial Graviton Flow Modulator");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Central Graviton Flow Modulator");
         GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".8.name", "Harmonic Phonon Transmission Conduit");
+                .addStringLocalization(getUnlocalizedName() + ".8.name", "Harmonic Phonon Transmission Conduit");
 
         CustomItemList.Godforge_SingularityShieldingCasing.set(new ItemStack(this, 1, 0));
         CustomItemList.Godforge_GuidanceCasing.set(new ItemStack(this, 1, 1));

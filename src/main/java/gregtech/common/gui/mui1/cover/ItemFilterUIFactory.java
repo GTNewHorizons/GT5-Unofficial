@@ -36,26 +36,25 @@ public class ItemFilterUIFactory extends CoverUIFactory<CoverItemFilter> {
     protected void addUIWidgets(ModularWindow.Builder builder) {
         CoverItemFilter cover = getCover();
         assert cover != null;
-        builder
-            .widget(
+        builder.widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
-                    new CoverDataFollowerToggleButtonWidget<>(),
-                    CoverItemFilter::isWhitelist,
-                    CoverItemFilter::setWhitelist,
-                    widget -> widget
-                        .setToggleTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST, GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                        .addTooltip(0, GTUtility.trans("125.1", "Whitelist Mode"))
-                        .addTooltip(1, GTUtility.trans("124.1", "Blacklist Mode"))
-                        .setPos(spaceX * 0, spaceY * 0))
-                    .setPos(startX, startY))
-            .widget(
-                new TextWidget(GTUtility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
-            .widget(
-                new TextWidget(GTUtility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0))
-            .widget(
-                SlotWidget.phantom(cover.getFilter(), 0)
-                    .setPos(startX + spaceX * 0, startY + spaceY * 2));
+                        new CoverDataFollowerToggleButtonWidget<>(),
+                        CoverItemFilter::isWhitelist,
+                        CoverItemFilter::setWhitelist,
+                        widget -> widget
+                                .setToggleTexture(
+                                        GTUITextures.OVERLAY_BUTTON_BLACKLIST,
+                                        GTUITextures.OVERLAY_BUTTON_WHITELIST)
+                                .addTooltip(0, GTUtility.trans("125.1", "Whitelist Mode"))
+                                .addTooltip(1, GTUtility.trans("124.1", "Blacklist Mode"))
+                                .setPos(spaceX * 0, spaceY * 0))
+                        .setPos(startX, startY))
+                .widget(
+                        new TextWidget(GTUtility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
+                .widget(
+                        new TextWidget(GTUtility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0))
+                .widget(SlotWidget.phantom(cover.getFilter(), 0).setPos(startX + spaceX * 0, startY + spaceY * 2));
     }
 }

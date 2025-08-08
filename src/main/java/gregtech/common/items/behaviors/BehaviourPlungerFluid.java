@@ -22,8 +22,8 @@ public class BehaviourPlungerFluid extends BehaviourNone {
 
     private final int mCosts;
     private final String mTooltip = GTLanguageManager.addStringLocalization(
-        "gt.behaviour.plunger.fluid",
-        "Clears 1000 Liters of Fluid from Tanks. Fully clears when sneaking.");
+            "gt.behaviour.plunger.fluid",
+            "Clears 1000 Liters of Fluid from Tanks. Fully clears when sneaking.");
 
     public BehaviourPlungerFluid(int aCosts) {
         this.mCosts = aCosts;
@@ -31,7 +31,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -41,16 +41,16 @@ public class BehaviourPlungerFluid extends BehaviourNone {
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
                 if (((IFluidHandler) aTileEntity).drain(tDirection, drainAmount, false) != null) {
                     if ((aPlayer.capabilities.isCreativeMode)
-                        || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
+                            || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IFluidHandler) aTileEntity).drain(tDirection, drainAmount, true);
                         GTUtility.sendSoundToPlayers(
-                            aWorld,
-                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
-                            1.0F,
-                            -1.0F,
-                            aX,
-                            aY,
-                            aZ);
+                                aWorld,
+                                SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                                1.0F,
+                                -1.0F,
+                                aX,
+                                aY,
+                                aZ);
                         return true;
                     }
                 }
@@ -62,7 +62,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
                 if (machine.mFluid != null && machine.mFluid.amount > 0)
                     machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, drainAmount);
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
                 return true;
             }
         }

@@ -24,7 +24,7 @@ public class GTDummyWorld extends World {
     public ItemStack mLastSetBlock = null;
 
     public GTDummyWorld(ISaveHandler saveHandler, String name, WorldProvider worldProvider, WorldSettings worldSettings,
-        Profiler profiler) {
+            Profiler profiler) {
         super(saveHandler, name, worldSettings, worldProvider, profiler);
         this.rand = this.mRandom;
     }

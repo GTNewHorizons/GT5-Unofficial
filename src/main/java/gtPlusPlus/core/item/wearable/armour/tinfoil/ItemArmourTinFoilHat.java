@@ -90,7 +90,7 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
 
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
-        int slot) {
+            int slot) {
         return new ArmorProperties(0, 0, 0);
     }
 
@@ -101,7 +101,7 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_,
-        EntityLivingBase p_111207_3_) {
+            EntityLivingBase p_111207_3_) {
         return super.itemInteractionForEntity(p_111207_1_, p_111207_2_, p_111207_3_);
     }
 
@@ -126,15 +126,15 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
             final AxisAlignedBB box = player.getBoundingBox();
             if (box != null) {
                 List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(
-                    player,
-                    box.expand(5, 5, 5),
-                    e -> e instanceof EntityXPOrb || e instanceof EntityBoat
-                        || e instanceof EntitySnowball
-                        || e instanceof EntityFireball
-                        || e instanceof EntityEgg
-                        || e instanceof EntityExpBottle
-                        || e instanceof EntityEnderEye
-                        || e instanceof EntityEnderPearl);
+                        player,
+                        box.expand(5, 5, 5),
+                        e -> e instanceof EntityXPOrb || e instanceof EntityBoat
+                                || e instanceof EntitySnowball
+                                || e instanceof EntityFireball
+                                || e instanceof EntityEgg
+                                || e instanceof EntityExpBottle
+                                || e instanceof EntityEnderEye
+                                || e instanceof EntityEnderPearl);
                 for (Entity e : list) {
                     final float dist = e.getDistanceToEntity(player);
                     if (dist == 0) continue;

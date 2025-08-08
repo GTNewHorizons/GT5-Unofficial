@@ -67,16 +67,16 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
-    implements ISurvivalConstructable, IOverclockDescriptionProvider {
+        implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(1L),
-        MaterialsUEVplus.Time.getMolten(1L), MaterialsUEVplus.MagMatter.getMolten(1L) };
+            MaterialsUEVplus.Time.getMolten(1L), MaterialsUEVplus.MagMatter.getMolten(1L) };
     private static final FluidStack[] gravityUpgrades = { MaterialsUEVplus.SpaceTime.getMolten(1L),
-        MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
+            MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
     private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
-        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1L) };
+            MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1L) };
     private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
-        GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
+            GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
 
     private static final int MAGNETIC_ID = 0;
     private static final int GRAVITY_ID = 1;
@@ -117,38 +117,32 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         @Override
         protected IStructureDefinition<AntimatterForge> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterForge>builder()
-                .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_FORGE)
-                .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
-                .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2))))
-                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1))))
-                .addElement(
-                    'F',
-                    lazy(
-                        x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(HatchElement.InputHatch)
-                            .adder(AntimatterForge::addFluidIO)
-                            .casingIndex(x.textureIndex(2))
-                            .dot(1)
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
-                .addElement(
-                    'E',
-                    lazy(
-                        x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
-                            .hatchClass(AntimatterOutputHatch.class)
-                            .casingIndex(x.textureIndex(1))
-                            .dot(3)
-                            .build()))
-                .addElement(
-                    'H',
-                    lazy(
-                        x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
-                            .adder(AntimatterForge::addEnergyInjector)
-                            .casingIndex(x.textureIndex(2))
-                            .dot(2)
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
-                .build();
+                    .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_FORGE)
+                    .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
+                    .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
+                    .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2))))
+                    .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1))))
+                    .addElement(
+                            'F',
+                            lazy(
+                                    x -> HatchElementBuilder.<AntimatterForge>builder().anyOf(HatchElement.InputHatch)
+                                            .adder(AntimatterForge::addFluidIO).casingIndex(x.textureIndex(2)).dot(1)
+                                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
+                    .addElement(
+                            'E',
+                            lazy(
+                                    x -> buildHatchAdder(AntimatterForge.class)
+                                            .adder(AntimatterForge::addAntimatterHatch)
+                                            .hatchClass(AntimatterOutputHatch.class).casingIndex(x.textureIndex(1))
+                                            .dot(3).build()))
+                    .addElement(
+                            'H',
+                            lazy(
+                                    x -> HatchElementBuilder.<AntimatterForge>builder()
+                                            .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
+                                            .adder(AntimatterForge::addEnergyInjector).casingIndex(x.textureIndex(2))
+                                            .dot(2).buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
+                    .build();
         }
     };
 
@@ -169,163 +163,166 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Antimatter Forge, SSASS")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
-            .addInfo("Converts protomatter into antimatter")
-            .addInfo("Use screwdriver to disable rendering")
-            .addInfo(
-                "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
-                    + " + ("
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " * "
-                    + passiveBaseMult
-                    + ")^("
-                    + passiveBaseExp
-                    + " - "
-                    + EnumChatFormatting.GREEN
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "M"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") EU/t")
-            .addInfo("The consumption decays by 0.5% every tick when empty")
-            .addInfo(
-                "Actively uses (" + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " * "
-                    + GTUtility.formatNumbers(activeBaseMult)
-                    + ")^("
-                    + activeBaseExp
-                    + " - "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "G"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") EU per cycle to produce antimatter")
-            .addSeparator()
-            .addInfo("Cycles every second")
-            .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
-            .addInfo(
-                "All hatches with more than the lowest amount will " + EnumChatFormatting.RED
-                    + "lose half the difference!"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                EnumChatFormatting.RED + "Voids 10% of antimatter "
-                    + EnumChatFormatting.GRAY
-                    + "if it runs out of energy/protomatter during a cycle")
-            .addInfo(
-                "Base production per hatch is (1/16) * (" + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^("
-                    + coefficientBaseExp
-                    + " + "
-                    + EnumChatFormatting.GOLD
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "C"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ")) of antimatter each cycle")
-            .addInfo("Each hatch will multiply the base production per hatch with a random number pulled from")
-            .addInfo(
-                "a normal distribution with a mean of " + baseSkew
-                    + " + "
-                    + EnumChatFormatting.AQUA
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "A"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " and a variance of 1")
-            .addInfo("The total gain of antimatter can be negative!")
-            .addSeparator()
-            .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
-            .addInfo(
-                "" + EnumChatFormatting.GREEN
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "M"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GREEN
-                    + "agnetic Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^0.5 L of fluid per cycle)")
-            .addInfo("1. Molten Purified Tengam = " + EnumChatFormatting.GREEN + "0.1" + EnumChatFormatting.GRAY)
-            .addInfo("2. Tachyon Rich Fluid = " + EnumChatFormatting.GREEN + "0.2" + EnumChatFormatting.GRAY)
-            .addInfo("3. Molten MagMatter = " + EnumChatFormatting.GREEN + "0.3" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "" + EnumChatFormatting.DARK_PURPLE
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "G"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "ravity Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^0.5 L of fluid per cycle)")
-            .addInfo("1. Molten Spacetime = " + EnumChatFormatting.DARK_PURPLE + "0.05" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "2. Spatially Enlarged Fluid = " + EnumChatFormatting.DARK_PURPLE + "0.10" + EnumChatFormatting.GRAY)
-            .addInfo("3. Molten Eternity = " + EnumChatFormatting.DARK_PURPLE + "0.15" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "" + EnumChatFormatting.GOLD
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "C"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GOLD
-                    + "ontainment Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^(2/7) L of fluid per cycle)")
-            .addInfo("1. Molten Shirabon = " + EnumChatFormatting.GOLD + "0.05" + EnumChatFormatting.GRAY)
-            .addInfo("2. Molten MHDCSM = " + EnumChatFormatting.GOLD + "0.10" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "" + EnumChatFormatting.AQUA
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "A"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.AQUA
-                    + "ctivation Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^(1/3) L of fluid per cycle)")
-            .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
-            .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
-            .addInfo("Each stabilization can only use one of the fluids at a time")
-            .beginStructureBlock(53, 53, 47, false)
-            .addCasingInfoMin("Antimatter Containment Casing", 512, false)
-            .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
-            .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
-            .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint block with dot 1", 1)
-            .addEnergyHatch("1-9, Hint block with dot 2", 2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint Block with dot 3",
-                3)
-            .toolTipFinisher();
+                .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
+                .addInfo("Converts protomatter into antimatter").addInfo("Use screwdriver to disable rendering")
+                .addInfo(
+                        "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
+                                + " + ("
+                                + EnumChatFormatting.DARK_AQUA
+                                + "Antimatter"
+                                + EnumChatFormatting.GRAY
+                                + " * "
+                                + passiveBaseMult
+                                + ")^("
+                                + passiveBaseExp
+                                + " - "
+                                + EnumChatFormatting.GREEN
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "M"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY
+                                + ") EU/t")
+                .addInfo("The consumption decays by 0.5% every tick when empty")
+                .addInfo(
+                        "Actively uses (" + EnumChatFormatting.DARK_AQUA
+                                + "Antimatter"
+                                + EnumChatFormatting.GRAY
+                                + " * "
+                                + GTUtility.formatNumbers(activeBaseMult)
+                                + ")^("
+                                + activeBaseExp
+                                + " - "
+                                + EnumChatFormatting.DARK_PURPLE
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "G"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY
+                                + ") EU per cycle to produce antimatter")
+                .addSeparator().addInfo("Cycles every second")
+                .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
+                .addInfo(
+                        "All hatches with more than the lowest amount will " + EnumChatFormatting.RED
+                                + "lose half the difference!"
+                                + EnumChatFormatting.GRAY)
+                .addInfo(
+                        EnumChatFormatting.RED + "Voids 10% of antimatter "
+                                + EnumChatFormatting.GRAY
+                                + "if it runs out of energy/protomatter during a cycle")
+                .addInfo(
+                        "Base production per hatch is (1/16) * (" + EnumChatFormatting.DARK_AQUA
+                                + "Antimatter"
+                                + EnumChatFormatting.GRAY
+                                + "^("
+                                + coefficientBaseExp
+                                + " + "
+                                + EnumChatFormatting.GOLD
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "C"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY
+                                + ")) of antimatter each cycle")
+                .addInfo("Each hatch will multiply the base production per hatch with a random number pulled from")
+                .addInfo(
+                        "a normal distribution with a mean of " + baseSkew
+                                + " + "
+                                + EnumChatFormatting.AQUA
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "A"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GRAY
+                                + " and a variance of 1")
+                .addInfo("The total gain of antimatter can be negative!").addSeparator()
+                .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
+                .addInfo(
+                        "" + EnumChatFormatting.GREEN
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "M"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GREEN
+                                + "agnetic Stabilization"
+                                + EnumChatFormatting.GRAY
+                                + " (Consumes "
+                                + EnumChatFormatting.DARK_AQUA
+                                + "Antimatter"
+                                + EnumChatFormatting.GRAY
+                                + "^0.5 L of fluid per cycle)")
+                .addInfo("1. Molten Purified Tengam = " + EnumChatFormatting.GREEN + "0.1" + EnumChatFormatting.GRAY)
+                .addInfo("2. Tachyon Rich Fluid = " + EnumChatFormatting.GREEN + "0.2" + EnumChatFormatting.GRAY)
+                .addInfo("3. Molten MagMatter = " + EnumChatFormatting.GREEN + "0.3" + EnumChatFormatting.GRAY)
+                .addInfo(
+                        "" + EnumChatFormatting.DARK_PURPLE
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "G"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.DARK_PURPLE
+                                + "ravity Stabilization"
+                                + EnumChatFormatting.GRAY
+                                + " (Consumes "
+                                + EnumChatFormatting.DARK_AQUA
+                                + "Antimatter"
+                                + EnumChatFormatting.GRAY
+                                + "^0.5 L of fluid per cycle)")
+                .addInfo("1. Molten Spacetime = " + EnumChatFormatting.DARK_PURPLE + "0.05" + EnumChatFormatting.GRAY)
+                .addInfo(
+                        "2. Spatially Enlarged Fluid = " + EnumChatFormatting.DARK_PURPLE
+                                + "0.10"
+                                + EnumChatFormatting.GRAY)
+                .addInfo("3. Molten Eternity = " + EnumChatFormatting.DARK_PURPLE + "0.15" + EnumChatFormatting.GRAY)
+                .addInfo(
+                        "" + EnumChatFormatting.GOLD
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "C"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.GOLD
+                                + "ontainment Stabilization"
+                                + EnumChatFormatting.GRAY
+                                + " (Consumes "
+                                + EnumChatFormatting.DARK_AQUA
+                                + "Antimatter"
+                                + EnumChatFormatting.GRAY
+                                + "^(2/7) L of fluid per cycle)")
+                .addInfo("1. Molten Shirabon = " + EnumChatFormatting.GOLD + "0.05" + EnumChatFormatting.GRAY)
+                .addInfo("2. Molten MHDCSM = " + EnumChatFormatting.GOLD + "0.10" + EnumChatFormatting.GRAY)
+                .addInfo(
+                        "" + EnumChatFormatting.AQUA
+                                + EnumChatFormatting.BOLD
+                                + EnumChatFormatting.UNDERLINE
+                                + "A"
+                                + EnumChatFormatting.RESET
+                                + EnumChatFormatting.AQUA
+                                + "ctivation Stabilization"
+                                + EnumChatFormatting.GRAY
+                                + " (Consumes "
+                                + EnumChatFormatting.DARK_AQUA
+                                + "Antimatter"
+                                + EnumChatFormatting.GRAY
+                                + "^(1/3) L of fluid per cycle)")
+                .addInfo(
+                        "1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA
+                                + "0.05"
+                                + EnumChatFormatting.GRAY)
+                .addInfo(
+                        "2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA
+                                + "0.10"
+                                + EnumChatFormatting.GRAY)
+                .addInfo("Each stabilization can only use one of the fluids at a time")
+                .beginStructureBlock(53, 53, 47, false).addCasingInfoMin("Antimatter Containment Casing", 512, false)
+                .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
+                .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
+                .addCasingInfoMin("Protomatter Activation Coil", 126, false)
+                .addInputHatch("1-6, Hint block with dot 1", 1).addEnergyHatch("1-9, Hint block with dot 2", 2)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
+                        "16, Hint Block with dot 3",
+                        3)
+                .toolTipFinisher();
         return tt;
     }
 
@@ -392,33 +389,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_ANTIMATTER)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FUSION1)
-                .extFacing()
-                .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FUSION1_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
-        if (aActive) return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_ANTIMATTER)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
-        return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_ANTIMATTER)
-            .extFacing()
-            .build() };
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing)
+            return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_ANTIMATTER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FUSION1).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build() };
+        if (aActive)
+            return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_ANTIMATTER).extFacing().build(),
+                    TextureFactory.builder().addIcon(MACHINE_CASING_ANTIMATTER_GLOW).extFacing().glow().build() };
+        return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_ANTIMATTER).extFacing().build() };
     }
 
     @Override
@@ -433,14 +412,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             FluidStack[] antimatterStored = new FluidStack[16];
             long totalAntimatterAmount = 0;
             for (int i = 0; i < amOutputHatches.size(); i++) {
-                if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                    .isValid()
-                    || amOutputHatches.get(i)
-                        .getFluid() == null)
+                if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid()
+                        || amOutputHatches.get(i).getFluid() == null)
                     continue;
-                antimatterStored[i] = amOutputHatches.get(i)
-                    .getFluid()
-                    .copy();
+                antimatterStored[i] = amOutputHatches.get(i).getFluid().copy();
                 totalAntimatterAmount += antimatterStored[i].amount;
             }
             drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
@@ -481,14 +456,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // Calculate the total amount of antimatter in all 16 hatches and the minimum amount found in any individual
         // hatch
         for (int i = 0; i < amOutputHatches.size(); i++) {
-            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                .isValid()
-                || amOutputHatches.get(i)
-                    .getFluid() == null)
+            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid()
+                    || amOutputHatches.get(i).getFluid() == null)
                 continue;
-            antimatterStored[i] = amOutputHatches.get(i)
-                .getFluid()
-                .copy();
+            antimatterStored[i] = amOutputHatches.get(i).getFluid().copy();
             totalAntimatterAmount += antimatterStored[i].amount;
             minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
         }
@@ -497,8 +468,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // hatch contents
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
             if (amOutputHatch != null && amOutputHatch.isValid() && amOutputHatch.getFluid() != null) {
-                FluidStack fluid = amOutputHatch.getFluid()
-                    .copy();
+                FluidStack fluid = amOutputHatch.getFluid().copy();
                 ratioLosses -= amOutputHatch.drain((int) ((fluid.amount - minAntimatterAmount) * 0.5), true).amount;
             }
         }
@@ -548,9 +518,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         int antimatterChange = distributeAntimatterToHatch(
-            amOutputHatches,
-            totalAntimatterAmount,
-            containedProtomatter);
+                amOutputHatches,
+                totalAntimatterAmount,
+                containedProtomatter);
 
         // We didn't have enough protomatter, reduce antimatter by 10% and stop the machine.
         if (!this.depleteInput(MaterialsUEVplus.Protomatter.getFluid(Math.abs(antimatterChange)))) {
@@ -578,11 +548,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     /*
-     * How much passive energy is drained every tick
-     * Base containment cost: 10M EU/t
-     * The containment cost ramps up by the amount of antimatter each tick, up to 1000 times
-     * If the current cost is more than 1000 times the amount of antimatter, or
-     * if no antimatter is in the hatches, the value will decay by 1% every tick
+     * How much passive energy is drained every tick Base containment cost: 10M EU/t The containment cost ramps up by
+     * the amount of antimatter each tick, up to 1000 times If the current cost is more than 1000 times the amount of
+     * antimatter, or if no antimatter is in the hatches, the value will decay by 1% every tick
      */
     private long calculateEnergyContainmentCost(long antimatterAmount) {
         if (antimatterAmount == 0) {
@@ -609,15 +577,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private void decimateAntimatter() {
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
             if (amOutputHatch != null && amOutputHatch.isValid() && amOutputHatch.getFluid() != null) {
-                FluidStack fluid = amOutputHatch.getFluid()
-                    .copy();
+                FluidStack fluid = amOutputHatch.getFluid().copy();
                 amOutputHatch.drain((int) Math.floor(fluid.amount * 0.1), true);
             }
         }
     }
 
     private int distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount,
-        long protomatterAmount) {
+            long protomatterAmount) {
         double coeff = Math.pow((totalAntimatterAmount), 0.5 + modifiers[CONTAINMENT_ID]);
         int difference = 0;
 
@@ -721,54 +688,52 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         long maxEnergy = 0;
 
         for (MTEHatch tHatch : mExoticEnergyHatches) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
-                + " "
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(getAntimatterAmount())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getPassiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + GTUtility.formatNumbers(getActiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(getAntimatterChange())
-                + EnumChatFormatting.RESET
-                + " L" };
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
+                        + " "
+                        + EnumChatFormatting.GRAY,
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(mProgresstime)
+                        + EnumChatFormatting.RESET
+                        + "t / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(mMaxProgresstime)
+                        + EnumChatFormatting.RESET
+                        + "t",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
+                        + EnumChatFormatting.BLUE
+                        + GTUtility.formatNumbers(getAntimatterAmount())
+                        + EnumChatFormatting.RESET
+                        + " L",
+                StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
+                        + EnumChatFormatting.RED
+                        + GTUtility.formatNumbers(getPassiveConsumption())
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
+                        + EnumChatFormatting.LIGHT_PURPLE
+                        + GTUtility.formatNumbers(getActiveConsumption())
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
+                        + EnumChatFormatting.AQUA
+                        + GTUtility.formatNumbers(getAntimatterChange())
+                        + EnumChatFormatting.RESET
+                        + " L" };
     }
 
     private long getAntimatterAmount() {
@@ -798,50 +763,46 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                            + EnumChatFormatting.BLUE
-                            + numberFormat.format(antimatterAmountCache)
-                            + EnumChatFormatting.WHITE
-                            + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterAmount, val -> antimatterAmountCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                            + EnumChatFormatting.RED
-                            + GTUtility.scientificFormat(passiveCostCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getPassiveConsumption, val -> passiveCostCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                            + EnumChatFormatting.LIGHT_PURPLE
-                            + GTUtility.scientificFormat(activeCostCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getActiveConsumption, val -> activeCostCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                            + EnumChatFormatting.AQUA
-                            + numberFormat.format(antimatterChangeCache)
-                            + EnumChatFormatting.WHITE
-                            + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
+                                                + EnumChatFormatting.BLUE
+                                                + numberFormat.format(antimatterAmountCache)
+                                                + EnumChatFormatting.WHITE
+                                                + " L")
+                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterAmount, val -> antimatterAmountCache = val))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
+                                                + EnumChatFormatting.RED
+                                                + GTUtility.scientificFormat(passiveCostCache)
+                                                + EnumChatFormatting.WHITE
+                                                + " EU/t")
+                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(new FakeSyncWidget.LongSyncer(this::getPassiveConsumption, val -> passiveCostCache = val))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
+                                                + EnumChatFormatting.LIGHT_PURPLE
+                                                + GTUtility.scientificFormat(activeCostCache)
+                                                + EnumChatFormatting.WHITE
+                                                + " EU/t")
+                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(new FakeSyncWidget.LongSyncer(this::getActiveConsumption, val -> activeCostCache = val))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
+                                                + EnumChatFormatting.AQUA
+                                                + numberFormat.format(antimatterChangeCache)
+                                                + EnumChatFormatting.WHITE
+                                                + " L")
+                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
     }
 
     @Override
@@ -877,7 +838,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         this.canRender = !this.canRender;
         if (!this.canRender) {
             aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.disableRender"));
@@ -955,8 +916,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        if (world.getBlock(x, y, z)
-            .equals(Loaders.antimatterRenderBlock)) {
+        if (world.getBlock(x, y, z).equals(Loaders.antimatterRenderBlock)) {
             world.setBlock(x, y, z, Blocks.air);
         }
     }

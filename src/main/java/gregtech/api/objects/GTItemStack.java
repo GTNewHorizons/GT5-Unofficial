@@ -22,8 +22,7 @@ public class GTItemStack {
 
         @Override
         public int hashCode(ItemStack o) {
-            return o.getItem()
-                .hashCode() * 38197 + Items.feather.getDamage(o);
+            return o.getItem().hashCode() * 38197 + Items.feather.getDamage(o);
         }
 
         @Override
@@ -50,9 +49,9 @@ public class GTItemStack {
 
     public GTItemStack(ItemStack aStack, boolean wildcard) {
         this(
-            aStack == null ? null : aStack.getItem(),
-            aStack == null ? 0 : aStack.stackSize,
-            aStack == null ? 0 : wildcard ? WILDCARD : Items.feather.getDamage(aStack));
+                aStack == null ? null : aStack.getItem(),
+                aStack == null ? 0 : aStack.stackSize,
+                aStack == null ? 0 : wildcard ? WILDCARD : Items.feather.getDamage(aStack));
     }
 
     public GTItemStack(int aHashCode) {

@@ -30,7 +30,7 @@ public class ForgeHooksMixin {
      */
     @ModifyReturnValue(method = "blockStrength", at = @At("RETURN"))
     private static float gt$blockStrengthHack(float original, Block block, EntityPlayer player, World world, int x,
-        int y, int z) {
+            int y, int z) {
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack != null && stack.getItem() instanceof MetaGeneratedTool tool) {
             return tool.getBlockStrength(stack, block, player, world, x, y, z, original);

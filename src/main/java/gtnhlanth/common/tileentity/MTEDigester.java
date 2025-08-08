@@ -53,25 +53,23 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     private HeatingCoilLevel heatLevel;
 
     private final IStructureDefinition<MTEDigester> multiDefinition = StructureDefinition.<MTEDigester>builder()
-        .addShape(
-            mName,
-            transpose(
-                new String[][] { { "       ", " ttttt ", " t---t ", " t---t ", " t---t ", " ttttt ", "       " },
-                    { "  ttt  ", " t---t ", "t-----t", "t-----t", "t-----t", " t---t ", "  ttt  " },
-                    { " tccct ", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", " tccct " },
-                    { " tt~tt ", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", " ttttt " }, }))
+            .addShape(
+                    mName,
+                    transpose(
+                            new String[][] {
+                                    { "       ", " ttttt ", " t---t ", " t---t ", " t---t ", " ttttt ", "       " },
+                                    { "  ttt  ", " t---t ", "t-----t", "t-----t", "t-----t", " t---t ", "  ttt  " },
+                                    { " tccct ", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", " tccct " },
+                                    { " tt~tt ", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", " ttttt " }, }))
 
-        .addElement(
-            't',
-            buildHatchAdder(MTEDigester.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
-                .casingIndex(47)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 0))
-        .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
-        .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('c', activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel)))
-        .build();
+            .addElement(
+                    't',
+                    buildHatchAdder(MTEDigester.class)
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
+                            .casingIndex(47).dot(1).buildAndChain(GregTechAPI.sBlockCasings4, 0))
+            .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
+            .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
+            .addElement('c', activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel))).build();
 
     public MTEDigester(String name) {
         super(name);
@@ -111,8 +109,8 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= MTEDigester.this.getCoilLevel()
-                    .getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= MTEDigester.this.getCoilLevel().getHeat()
+                        ? CheckRecipeResultRegistry.SUCCESSFUL
                         : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
 
@@ -166,29 +164,18 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     }
 
     public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
-        boolean active, boolean redstone) {
+            boolean active, boolean redstone) {
 
         // Oil Cracker textures cuz I'm lazy
 
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (active) return new ITexture[] { casingTexturePages[0][47],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { casingTexturePages[0][47],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { casingTexturePages[0][47] };
     }
@@ -196,23 +183,15 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Digester")
-            .addInfo("Input ores and fluid, output water.")
-            .addPerfectOCInfo()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 4, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
-            .addCasingInfoExactly("Coil", 16, true)
-            .addInputHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addOutputHatch("Hint block with dot 1")
-            .addOutputBus("Hint block with dot 1")
-            .addMaintenanceHatch("Hint block with dot 1")
-            .addMufflerHatch("Hint block with dot 1")
-            .toolTipFinisher();
+        tt.addMachineType("Digester").addInfo("Input ores and fluid, output water.").addPerfectOCInfo()
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(7, 7, 4, true)
+                .addController("Front bottom").addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
+                .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
+                .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
+                .addCasingInfoExactly("Coil", 16, true).addInputHatch("Hint block with dot 1")
+                .addInputBus("Hint block with dot 1").addOutputHatch("Hint block with dot 1")
+                .addOutputBus("Hint block with dot 1").addMaintenanceHatch("Hint block with dot 1")
+                .addMufflerHatch("Hint block with dot 1").toolTipFinisher();
         return tt;
     }
 

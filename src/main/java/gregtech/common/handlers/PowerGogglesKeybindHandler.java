@@ -12,13 +12,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 public final class PowerGogglesKeybindHandler {
 
     public static final KeyBinding openConfigGui = new KeyBinding(
-        "GT5U.power_goggles.open_config_gui",
-        Keyboard.KEY_NONE,
-        "Gregtech");
+            "GT5U.power_goggles.open_config_gui",
+            Keyboard.KEY_NONE,
+            "Gregtech");
     public static final KeyBinding toggleChart = new KeyBinding(
-        "GT5U.power_goggles.toggle_power_chart",
-        Keyboard.KEY_NONE,
-        "Gregtech");
+            "GT5U.power_goggles.toggle_power_chart",
+            Keyboard.KEY_NONE,
+            "Gregtech");
 
     private PowerGogglesKeybindHandler() {}
 

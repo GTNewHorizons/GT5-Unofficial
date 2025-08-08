@@ -23,25 +23,20 @@ public class Mixer implements Runnable {
 
         // YSZ Ceramic Dust
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                Items.YttriaDust.getOreDictedItemStack(1),
-                Items.ZirconiaDust.getOreDictedItemStack(5),
-                GTUtility.getIntegratedCircuit(6))
-            .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6))
-            .duration(20 * SECONDS)
-            .eut(96)
-            .addTo(mixerRecipes);
+                .itemInputs(
+                        Items.YttriaDust.getOreDictedItemStack(1),
+                        Items.ZirconiaDust.getOreDictedItemStack(5),
+                        GTUtility.getIntegratedCircuit(6))
+                .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6))
+                .duration(20 * SECONDS).eut(96).addTo(mixerRecipes);
 
         // GDC Ceramic Dust
-        GTValues.RA.stdBuilder()
-            .itemInputs(
+        GTValues.RA.stdBuilder().itemInputs(
                 GTOreDictUnificator
-                    .get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
+                        .get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
                 craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9),
                 GTUtility.getIntegratedCircuit(6))
-            .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(mixerRecipes);
+                .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10))
+                .duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(mixerRecipes);
     }
 }

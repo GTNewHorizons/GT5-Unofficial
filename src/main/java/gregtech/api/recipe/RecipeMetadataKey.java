@@ -34,7 +34,7 @@ public abstract class RecipeMetadataKey<T> {
         this.identifier = identifier;
         if (allIdentifiers.contains(this)) {
             throw new IllegalArgumentException(
-                "Cannot register metadata key with exact same properties: " + identifier + "@" + clazz);
+                    "Cannot register metadata key with exact same properties: " + identifier + "@" + clazz);
         }
         allIdentifiers.add(this);
     }

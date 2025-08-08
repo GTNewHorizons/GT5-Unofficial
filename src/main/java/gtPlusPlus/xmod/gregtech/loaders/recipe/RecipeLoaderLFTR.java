@@ -28,12 +28,8 @@ public class RecipeLoaderLFTR {
     private static void configureSparging() {
         if (mSpargeGases == null) {
             mSpargeGases = new ArrayList<>();
-            mSpargeGases.add(
-                Materials.Helium.getGas(1)
-                    .getFluid());
-            mSpargeGases.add(
-                Materials.Fluorine.getGas(1)
-                    .getFluid());
+            mSpargeGases.add(Materials.Helium.getGas(1).getFluid());
+            mSpargeGases.add(Materials.Fluorine.getGas(1).getFluid());
         }
         if (mNobleGases == null) {
             mNobleGases = new ArrayList<>();
@@ -67,89 +63,74 @@ public class RecipeLoaderLFTR {
         FluidStack Li2BeF4 = MaterialsNuclides.Li2BeF4.getFluidStack(200);
 
         // LiFBeF2ThF4UF4 - T3
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ThF4UF4.getFluidStack(100), Li2BeF4)
-            .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(100),
-                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(200),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(20),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10))
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut(0)
-            .metadata(LFTR_OUTPUT_POWER, 32768 * 4)
-            .addTo(liquidFluorineThoriumReactorRecipes);
+        GTValues.RA.stdBuilder().fluidInputs(MaterialsNuclides.LiFBeF2ThF4UF4.getFluidStack(100), Li2BeF4)
+                .fluidOutputs(
+                        MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(100),
+                        MaterialsNuclides.LiFBeF2ThF4.getFluidStack(200),
+                        MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(20),
+                        MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10))
+                .duration(1 * MINUTES + 40 * SECONDS).eut(0).metadata(LFTR_OUTPUT_POWER, 32768 * 4)
+                .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4UF4 - T2
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4UF4.getFluidStack(100), Li2BeF4)
-            .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50),
-                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(100),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(5))
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut(0)
-            .metadata(LFTR_OUTPUT_POWER, 8192 * 4)
-            .addTo(liquidFluorineThoriumReactorRecipes);
+        GTValues.RA.stdBuilder().fluidInputs(MaterialsNuclides.LiFBeF2ZrF4UF4.getFluidStack(100), Li2BeF4)
+                .fluidOutputs(
+                        MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50),
+                        MaterialsNuclides.LiFBeF2ThF4.getFluidStack(100),
+                        MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10),
+                        MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(5))
+                .duration(1 * MINUTES + 40 * SECONDS).eut(0).metadata(LFTR_OUTPUT_POWER, 8192 * 4)
+                .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4U235 - T1
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(100), Li2BeF4)
-            .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(25),
-                MaterialsNuclides.LiFThF4.getFluidStack(50),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(4),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(2))
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut(0)
-            .metadata(LFTR_OUTPUT_POWER, 8192)
-            .addTo(liquidFluorineThoriumReactorRecipes);
+        GTValues.RA.stdBuilder().fluidInputs(MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(100), Li2BeF4)
+                .fluidOutputs(
+                        MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(25),
+                        MaterialsNuclides.LiFThF4.getFluidStack(50),
+                        MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(4),
+                        MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(2))
+                .duration(1 * MINUTES + 40 * SECONDS).eut(0).metadata(LFTR_OUTPUT_POWER, 8192)
+                .addTo(liquidFluorineThoriumReactorRecipes);
 
         // Sparging Recipes
         // For no randomization, set metadata to 0 with key SPARGE_MAX_BYPRODUCT.
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Helium.getGas(1_000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
-            .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
-                Materials.Helium.getGas(0),
-                new FluidStack(mNobleGases.get(1), 0),
-                new FluidStack(mNobleGases.get(2), 0),
-                new FluidStack(mNobleGases.get(3), 0),
-                new FluidStack(mNobleGases.get(4), 0),
-                new FluidStack(mNobleGases.get(5), 0))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .metadata(SPARGE_MAX_BYPRODUCT, 200)
-            .addTo(spargeTowerRecipes);
+                .fluidInputs(Materials.Helium.getGas(1_000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
+                .fluidOutputs(
+                        MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
+                        Materials.Helium.getGas(0),
+                        new FluidStack(mNobleGases.get(1), 0),
+                        new FluidStack(mNobleGases.get(2), 0),
+                        new FluidStack(mNobleGases.get(3), 0),
+                        new FluidStack(mNobleGases.get(4), 0),
+                        new FluidStack(mNobleGases.get(5), 0))
+                .duration(25 * SECONDS).eut(TierEU.RECIPE_IV).metadata(SPARGE_MAX_BYPRODUCT, 200)
+                .addTo(spargeTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFThF4.getFluidStack(50))
-            .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(0),
-                new FluidStack(mFluorideGases.get(1), 0),
-                new FluidStack(mFluorideGases.get(2), 0),
-                new FluidStack(mFluorideGases.get(3), 0),
-                new FluidStack(mFluorideGases.get(4), 0),
-                new FluidStack(mFluorideGases.get(5), 0))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .metadata(SPARGE_MAX_BYPRODUCT, 10)
-            .addTo(spargeTowerRecipes);
+                .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFThF4.getFluidStack(50))
+                .fluidOutputs(
+                        MaterialsNuclides.Sparged_LiFThF4.getFluidStack(50),
+                        Materials.Fluorine.getGas(0),
+                        new FluidStack(mFluorideGases.get(1), 0),
+                        new FluidStack(mFluorideGases.get(2), 0),
+                        new FluidStack(mFluorideGases.get(3), 0),
+                        new FluidStack(mFluorideGases.get(4), 0),
+                        new FluidStack(mFluorideGases.get(5), 0))
+                .duration(25 * SECONDS).eut(TierEU.RECIPE_IV).metadata(SPARGE_MAX_BYPRODUCT, 10)
+                .addTo(spargeTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFBeF2ThF4.getFluidStack(50))
-            .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(0),
-                new FluidStack(mFluorideGases.get(1), 0),
-                new FluidStack(mFluorideGases.get(2), 0),
-                new FluidStack(mFluorideGases.get(3), 0),
-                new FluidStack(mFluorideGases.get(4), 0),
-                new FluidStack(mFluorideGases.get(5), 0))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .metadata(SPARGE_MAX_BYPRODUCT, 20)
-            .addTo(spargeTowerRecipes);
+                .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFBeF2ThF4.getFluidStack(50))
+                .fluidOutputs(
+                        MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(50),
+                        Materials.Fluorine.getGas(0),
+                        new FluidStack(mFluorideGases.get(1), 0),
+                        new FluidStack(mFluorideGases.get(2), 0),
+                        new FluidStack(mFluorideGases.get(3), 0),
+                        new FluidStack(mFluorideGases.get(4), 0),
+                        new FluidStack(mFluorideGases.get(5), 0))
+                .duration(25 * SECONDS).eut(TierEU.RECIPE_IV).metadata(SPARGE_MAX_BYPRODUCT, 20)
+                .addTo(spargeTowerRecipes);
     }
 }

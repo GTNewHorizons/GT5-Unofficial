@@ -58,27 +58,24 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
- * Base class for purification units. This class handles all shared behaviour between units.
- * When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
- * if you override these methods, or linking will break.
+ * Base class for purification units. This class handles all shared behaviour between units. When inheriting from this,
+ * make sure to call super.loadNBTData() and super.saveNBTData() if you override these methods, or linking will break.
  */
 public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> {
+        extends MTEExtendedPowerMultiBlockBase<T> {
 
     /**
-     * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost".
-     * Must be in [0, 1].
+     * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost". Must be in [0, 1].
      */
     public static final float WATER_BOOST_NEEDED_FLUID = 0.1f;
     /**
-     * Additive bonus to success chance when water boost is active.
-     * Must be in [0, 1]
+     * Additive bonus to success chance when water boost is active. Must be in [0, 1]
      */
     public static final float WATER_BOOST_BONUS_CHANCE = 0.15f;
 
     /**
-     * Small internal enum to report back the various error cases when linking purification units to the
-     * purification plant.
+     * Small internal enum to report back the various error cases when linking purification units to the purification
+     * plant.
      */
     private enum LinkResult {
         /**
@@ -96,8 +93,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Coordinates of the main purification plant controller. These can be used to find the controller again
-     * on world load.
+     * Coordinates of the main purification plant controller. These can be used to find the controller again on world
+     * load.
      */
     private int controllerX, controllerY, controllerZ;
 
@@ -112,9 +109,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private MTEPurificationPlant controller = null;
 
     /**
-     * The current recipe being run in the purification unit. Note that purification unit recipes are a bit special,
-     * so input and output in the recipe might not exactly match the required inputs and produced outputs.
-     * For more information, always look at the purification unit tooltip and implementation.
+     * The current recipe being run in the purification unit. Note that purification unit recipes are a bit special, so
+     * input and output in the recipe might not exactly match the required inputs and produced outputs. For more
+     * information, always look at the purification unit tooltip and implementation.
      */
     protected GTRecipe currentRecipe = null;
 
@@ -201,13 +198,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         RecipeMap<?> recipeMap = this.getRecipeMap();
 
         // Grab a stream of recipes and find the one with the highest success chance
-        Stream<GTRecipe> recipes = recipeMap.findRecipeQuery()
-            .fluids(fluidInputs)
-            .items(itemInputs)
-            .findAll();
+        Stream<GTRecipe> recipes = recipeMap.findRecipeQuery().fluids(fluidInputs).items(itemInputs).findAll();
         GTRecipe recipe = recipes
-            .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
-            .orElse(null);
+                .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
+                .orElse(null);
 
         if (recipe == null) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -261,8 +255,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe()
-     * is protected.
+     * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe() is
+     * protected.
      *
      * @return True if successfully found a recipe and/or started processing/
      */
@@ -272,9 +266,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Get the success chance of the recipe, from 0 to 100. Never call this while a recipe is running, because items
-     * or modifiers used to boost might disappear by the time recipe check comes around,
-     * which would invalidate this result.
+     * Get the success chance of the recipe, from 0 to 100. Never call this while a recipe is running, because items or
+     * modifiers used to boost might disappear by the time recipe check comes around, which would invalidate this
+     * result.
      */
     public float calculateBoostedSuccessChance() {
         // If this.currentRecipe is null, there is a bug, so throwing a NPE is fine.
@@ -287,10 +281,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * By default, the final recipe success chance is simply the success chance calculated on recipe check.
-     * This applies water boosts when needed to the base chance. Purification units can override this to perform
-     * more complex success chance calculations, that even take into account what happened during the runtime of the
-     * recipe.
+     * By default, the final recipe success chance is simply the success chance calculated on recipe check. This applies
+     * water boosts when needed to the base chance. Purification units can override this to perform more complex success
+     * chance calculations, that even take into account what happened during the runtime of the recipe.
      *
      * @return The success chance of the recipe, at the point in time the outputs are to be produced.
      */
@@ -314,9 +307,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe.
-     * This should only be called during recipe check! Never call this while a recipe is running, because water used to
-     * boost might disappear by the time recipe check comes around, which would invalidate this result.
+     * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe. This
+     * should only be called during recipe check! Never call this while a recipe is running, because water used to boost
+     * might disappear by the time recipe check comes around, which would invalidate this result.
      *
      * @param recipe The recipe to check the water boost of
      */
@@ -327,8 +320,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Consumes all <b>fluid</b> inputs of the current recipe.
-     * Should only scale the first fluid input with water
+     * Consumes all <b>fluid</b> inputs of the current recipe. Should only scale the first fluid input with water
      */
     public void depleteRecipeInputs() {
         for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
@@ -452,8 +444,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * On recipe fail, water quality may degrade to the same or lower tier. This function returns the water to output
-     * in this case, or null if no water is produced at all.
+     * On recipe fail, water quality may degrade to the same or lower tier. This function returns the water to output in
+     * this case, or null if no water is produced at all.
      */
     private FluidStack getDegradedOutputWater() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -556,8 +548,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             return LinkResult.TOO_FAR;
 
         // Find the block at the requested coordinated and check if it is a purification plant controller.
-        var tileEntity = getBaseMetaTileEntity().getWorld()
-            .getTileEntity(x, y, z);
+        var tileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x, y, z);
         if (tileEntity == null) return LinkResult.NO_VALID_PLANT;
         if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return LinkResult.NO_VALID_PLANT;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
@@ -589,8 +580,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
-            .equals("PurificationPlant")) {
+        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type").equals("PurificationPlant")) {
             return false;
         }
 
@@ -657,46 +647,46 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.purification_unit_base.linked_at",
-                    controllerX,
-                    controllerY,
-                    controllerZ));
+                    StatCollector.translateToLocalFormatted(
+                            "GT5U.infodata.purification_unit_base.linked_at",
+                            controllerX,
+                            controllerY,
+                            controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.purification_unit_base.success_chance",
-                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
-                            + "%"
-                            + EnumChatFormatting.RESET));
+                        StatCollector.translateToLocalFormatted(
+                                "GT5U.infodata.purification_unit_base.success_chance",
+                                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
+                                        + "%"
+                                        + EnumChatFormatting.RESET));
             }
 
         } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
         ret.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.parallel.current",
+                        "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
 
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Purification Plant at "
-                    + EnumChatFormatting.WHITE
-                    + tag.getInteger("controllerX")
-                    + ", "
-                    + tag.getInteger("controllerY")
-                    + ", "
-                    + tag.getInteger("controllerZ")
-                    + EnumChatFormatting.RESET);
+                    EnumChatFormatting.AQUA + "Linked to Purification Plant at "
+                            + EnumChatFormatting.WHITE
+                            + tag.getInteger("controllerX")
+                            + ", "
+                            + tag.getInteger("controllerY")
+                            + ", "
+                            + tag.getInteger("controllerZ")
+                            + EnumChatFormatting.RESET);
         } else {
             currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
         }
@@ -706,7 +696,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
 
         tag.setBoolean("linked", getController() != null);
         if (getController() != null) {
@@ -733,8 +723,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
      */
     public Widget makeSyncerWidgets() {
         return new MultiChildWidget()
-            .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
-            .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
+                .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
+                .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
     }
 
     private static final int PARALLEL_WINDOW_ID = 10;
@@ -744,21 +734,15 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(PARALLEL_WINDOW_ID);
+                widget.getContext().openSyncedWindow(PARALLEL_WINDOW_ID);
             }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16));
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GTUITextures.BUTTON_STANDARD);
+            ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+            return ret.toArray(new IDrawable[0]);
+        }).addTooltip(translateToLocal("GT5U.tpm.parallelwindow")).setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 112)
+                .setSize(16, 16));
         super.addUIWidgets(builder, buildContext);
     }
 
@@ -772,29 +756,17 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)
-                        .subtract(0, 10)));
-        builder.widget(
-            TextWidget.localised("GTPP.CC.parallel")
-                .setPos(3, 4)
-                .setSize(150, 20))
-            .widget(
-                new NumericWidget().setSetter(val -> maxParallel = (int) val)
-                    .setGetter(() -> maxParallel)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setDefaultValue(1)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(150, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
-                        builder));
+                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
+                        Alignment.BottomRight
+                                .getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                                .add(WIDTH - 3, 0).subtract(0, 10)));
+        builder.widget(TextWidget.localised("GTPP.CC.parallel").setPos(3, 4).setSize(150, 20)).widget(
+                new NumericWidget().setSetter(val -> maxParallel = (int) val).setGetter(() -> maxParallel)
+                        .setBounds(1, Integer.MAX_VALUE).setDefaultValue(1).setScrollValues(1, 4, 64)
+                        .setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal).setSize(150, 18)
+                        .setPos(4, 25).setBackground(GTUITextures.BACKGROUND_TEXT_FIELD).attachSyncer(
+                                new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
+                                builder));
         return builder.build();
     }
 

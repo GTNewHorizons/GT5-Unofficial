@@ -25,46 +25,42 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.mixin.interfaces.accessors.ChunkCacheAccessor;
 
 /**
- * Allows you to render an overlay above supported blocks. This overlay is rendered above any original block texture
- * the overlayed block would have, be it textures or covers.
+ * Allows you to render an overlay above supported blocks. This overlay is rendered above any original block texture the
+ * overlayed block would have, be it textures or covers.
  *
  * All overlays must have an owner, and each owner can have at most one ITexture assigned to each render location.
  * Different overlays from different owners will be rendered in the zlevel specified, with biggest zlevel meaning
- * rendered
- * on top. The exact render order remain unspecified if multiple overlay has the same zlevel.
+ * rendered on top. The exact render order remain unspecified if multiple overlay has the same zlevel.
  *
  * read methods are thread safe, but write methods are only supposed to be called on main thread only.
  *
  * Current supported blocks include all subclasses of {@link gregtech.common.blocks.BlockCasingsAbstract} and meta tile
- * entities that is rendered as a full block (e.g. very large pipes, frames or hatches)
- * To add support to a new type of block...
- * * if it's a simple dumb block, i.e. render type of 0, just switch to {@link gregtech.common.render.GTRendererCasing}
- * * if it already has a ISBRH/TESR, you need to render the overlay of each side after your blocks' main texture of each
- * side rendered
+ * entities that is rendered as a full block (e.g. very large pipes, frames or hatches) To add support to a new type of
+ * block... * if it's a simple dumb block, i.e. render type of 0, just switch to
+ * {@link gregtech.common.render.GTRendererCasing} * if it already has a ISBRH/TESR, you need to render the overlay of
+ * each side after your blocks' main texture of each side rendered
  *
  * {@link OverlayTicket OverlayTickets} returned by set methods will strongly hold a reference to RenderOverlay
- * instances.
- * Do not keep them around indefinitely or else there will be a memory leak
+ * instances. Do not keep them around indefinitely or else there will be a memory leak
  *
  * This obviously doesn't work on server side...
  */
 public class RenderOverlay {
 
-    private static final LoadingCache<World, RenderOverlay> instances = CacheBuilder.newBuilder()
-        .weakKeys()
-        .build(new CacheLoader<>() {
+    private static final LoadingCache<World, RenderOverlay> instances = CacheBuilder.newBuilder().weakKeys()
+            .build(new CacheLoader<>() {
 
-            @Override
-            public RenderOverlay load(World key) {
-                return new RenderOverlay();
-            }
-        });
+                @Override
+                public RenderOverlay load(World key) {
+                    return new RenderOverlay();
+                }
+            });
     private final Map<ChunkCoordinates, ITexture[]> overlays = new ConcurrentHashMap<>();
     private final ListMultimap<RenderLocation, OverlayTicket> ticketsByLocation = ArrayListMultimap.create();
     private final ListMultimap<ChunkCoordIntPair, OverlayTicket> byChunk = ArrayListMultimap.create();
 
     public OverlayTicket set(int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
-        ITexture texture, int zlevel) {
+            ITexture texture, int zlevel) {
         ChunkCoordinates loc = new ChunkCoordinates(x, y, z);
         RenderLocation renderLoc = new RenderLocation(x, y, z, dir);
         ITexture[] holder = overlays.computeIfAbsent(loc, xx -> new ITexture[6]);
@@ -85,11 +81,7 @@ public class RenderOverlay {
             return null;
         }
         // composing into a single object makes it easier to handle everywhere
-        return TextureFactory.of(
-            tickets.stream()
-                .sorted()
-                .map(t -> t.texture)
-                .toArray(ITexture[]::new));
+        return TextureFactory.of(tickets.stream().sorted().map(t -> t.texture).toArray(ITexture[]::new));
     }
 
     public ITexture[] get(int x, int y, int z) {
@@ -137,7 +129,7 @@ public class RenderOverlay {
     }
 
     public static void set(World world, int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
-        ITexture texture, int zlevel) {
+            ITexture texture, int zlevel) {
         getOrCreate(world).set(xOwner, yOwner, zOwner, x, y, z, dir, texture, zlevel);
     }
 
@@ -171,7 +163,7 @@ public class RenderOverlay {
         final int order;
 
         public OverlayTicket(int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
-            ITexture texture, int order) {
+                ITexture texture, int order) {
             this.xOwner = xOwner;
             this.yOwner = yOwner;
             this.zOwner = zOwner;

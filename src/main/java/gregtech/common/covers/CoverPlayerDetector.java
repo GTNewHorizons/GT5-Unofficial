@@ -64,18 +64,17 @@ public class CoverPlayerDetector extends CoverLegacyData {
         for (Object tObject : coverable.getWorld().playerEntities) {
             if ((tObject instanceof EntityPlayerMP tEntity)) {
                 int dist = Math.max(
-                    1,
-                    (int) tEntity.getDistance(
-                        coverable.getXCoord() + 0.5D,
-                        coverable.getYCoord() + 0.5D,
-                        coverable.getZCoord() + 0.5D));
+                        1,
+                        (int) tEntity.getDistance(
+                                coverable.getXCoord() + 0.5D,
+                                coverable.getYCoord() + 0.5D,
+                                coverable.getZCoord() + 0.5D));
                 if (dist < range) {
                     if (this.coverData == 0) {
                         playerDetected = true;
                         break;
                     }
-                    if (tEntity.getDisplayName()
-                        .equalsIgnoreCase(placer)) {
+                    if (tEntity.getDisplayName().equalsIgnoreCase(placer)) {
                         if (this.coverData == 1) {
                             playerDetected = true;
                             break;

@@ -33,10 +33,10 @@ public class ReasonOutOfFluid implements ShutDownReason {
     @Override
     public String getDisplayString() {
         return Objects.requireNonNull(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.out_of_fluid",
-                requiredFluid.getLocalizedName(),
-                formatNumbers(requiredFluid.amount)));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.out_of_fluid",
+                        requiredFluid.getLocalizedName(),
+                        formatNumbers(requiredFluid.amount)));
     }
 
     @Override

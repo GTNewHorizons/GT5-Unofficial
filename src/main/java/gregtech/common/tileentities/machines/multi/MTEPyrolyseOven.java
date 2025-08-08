@@ -51,28 +51,31 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     private HeatingCoilLevel coilHeat;
     private static final int CASING_INDEX = 1090;
     private static final IStructureDefinition<MTEPyrolyseOven> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEPyrolyseOven>builder()
-        .addShape(
-            "main",
-            transpose(
-                new String[][] { { "ccccc", "ctttc", "ctttc", "ctttc", "ccccc" },
-                    { "ccccc", "c---c", "c---c", "c---c", "ccccc" }, { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
-                    { "bb~bb", "bCCCb", "bCCCb", "bCCCb", "bbbbb" }, }))
-        .addElement('c', onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2)))
-        .addElement('C', activeCoils(ofCoil(MTEPyrolyseOven::setCoilLevel, MTEPyrolyseOven::getCoilLevel)))
-        .addElement(
-            'b',
-            buildHatchAdder(MTEPyrolyseOven.class).atLeast(OutputBus, OutputHatch, Energy, Maintenance)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
-        .addElement(
-            't',
-            buildHatchAdder(MTEPyrolyseOven.class).atLeast(InputBus, InputHatch, Muffler)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
-        .build();
+            .<MTEPyrolyseOven>builder()
+            .addShape(
+                    "main",
+                    transpose(
+                            new String[][] { { "ccccc", "ctttc", "ctttc", "ctttc", "ccccc" },
+                                    { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
+                                    { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
+                                    { "bb~bb", "bCCCb", "bCCCb", "bCCCb", "bbbbb" }, }))
+            .addElement('c', onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2)))
+            .addElement('C', activeCoils(ofCoil(MTEPyrolyseOven::setCoilLevel, MTEPyrolyseOven::getCoilLevel)))
+            .addElement(
+                    'b',
+                    buildHatchAdder(MTEPyrolyseOven.class).atLeast(OutputBus, OutputHatch, Energy, Maintenance)
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
+                                    onElementPass(
+                                            MTEPyrolyseOven::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
+            .addElement(
+                    't',
+                    buildHatchAdder(MTEPyrolyseOven.class).atLeast(InputBus, InputHatch, Muffler)
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
+                                    onElementPass(
+                                            MTEPyrolyseOven::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
+            .build();
 
     private int mCasingAmount;
 
@@ -87,49 +90,31 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Coke Oven")
-            .addInfo("Industrial Charcoal producer")
-            .addInfo("Processing speed scales linearly with Coil tier:")
-            .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
-            .addInfo("EU/t is not affected by Coil tier")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 5, true)
-            .addController("Front center")
-            .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
-            .addOtherStructurePart("Heating Coils", "Center 3x1x3 of the bottom layer")
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
-            .addMufflerHatch("Center 3x1x3 area in top layer", 2)
-            .addInputBus("Center 3x1x3 area in top layer", 2)
-            .addInputHatch("Center 3x1x3 area in top layer", 2)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("Any bottom layer casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType("Coke Oven").addInfo("Industrial Charcoal producer")
+                .addInfo("Processing speed scales linearly with Coil tier:")
+                .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
+                .addInfo("EU/t is not affected by Coil tier").addPollutionAmount(getPollutionPerSecond(null))
+                .beginStructureBlock(5, 4, 5, true).addController("Front center")
+                .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
+                .addOtherStructurePart("Heating Coils", "Center 3x1x3 of the bottom layer")
+                .addEnergyHatch("Any bottom layer casing", 1).addMaintenanceHatch("Any bottom layer casing", 1)
+                .addMufflerHatch("Center 3x1x3 area in top layer", 2).addInputBus("Center 3x1x3 area in top layer", 2)
+                .addInputHatch("Center 3x1x3 area in top layer", 2).addOutputBus("Any bottom layer casing", 1)
+                .addOutputHatch("Any bottom layer casing", 1).toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
@@ -179,8 +164,8 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
         coilHeat = HeatingCoilLevel.None;
         mCasingAmount = 0;
         return checkPiece("main", 2, 3, 0) && mCasingAmount >= 60
-            && mMaintenanceHatches.size() == 1
-            && !mMufflerHatches.isEmpty();
+                && mMaintenanceHatches.size() == 1
+                && !mMufflerHatches.isEmpty();
     }
 
     @Override
@@ -221,7 +206,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

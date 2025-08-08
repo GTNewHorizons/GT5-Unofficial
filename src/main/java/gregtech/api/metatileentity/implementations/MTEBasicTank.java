@@ -34,20 +34,20 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     // Due to class initializing order, getCapacity might not work properly at this time.
     // So we pass supplier instead of current value here.
     protected final FluidStackTank fluidTank = new FluidStackTank(
-        () -> mFluid,
-        fluidStack -> mFluid = fluidStack,
-        this::getRealCapacity);
+            () -> mFluid,
+            fluidStack -> mFluid = fluidStack,
+            this::getRealCapacity);
 
     /**
      * @param aInvSlotCount should be 3
      */
     public MTEBasicTank(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
-        ITexture... aTextures) {
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEBasicTank(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String[] aDescription, ITexture... aTextures) {
+            String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -139,9 +139,9 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
                     if (getFillableStack() == null) {
                         if (isFluidInputAllowed(tFluid) && tFluid.amount <= getCapacity()) {
                             if (aBaseMetaTileEntity.addStackToSlot(
-                                getOutputSlot(),
-                                GTUtility.getContainerForFilledItem(mInventory[inputSlot], true),
-                                1)) {
+                                    getOutputSlot(),
+                                    GTUtility.getContainerForFilledItem(mInventory[inputSlot], true),
+                                    1)) {
                                 setFillableStack(tFluid.copy());
                                 this.onEmptyingContainerWhenEmpty();
                                 aBaseMetaTileEntity.decrStackSize(inputSlot, 1);
@@ -149,11 +149,11 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
                         }
                     } else {
                         if (tFluid.isFluidEqual(getFillableStack())
-                            && ((long) tFluid.amount + getFillableStack().amount) <= (long) getCapacity()) {
+                                && ((long) tFluid.amount + getFillableStack().amount) <= (long) getCapacity()) {
                             if (aBaseMetaTileEntity.addStackToSlot(
-                                getOutputSlot(),
-                                GTUtility.getContainerForFilledItem(mInventory[inputSlot], true),
-                                1)) {
+                                    getOutputSlot(),
+                                    GTUtility.getContainerForFilledItem(mInventory[inputSlot], true),
+                                    1)) {
                                 getFillableStack().amount += tFluid.amount;
                                 aBaseMetaTileEntity.decrStackSize(inputSlot, 1);
                             }
@@ -164,7 +164,7 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
             if (doesFillContainers()) {
                 ItemStack tOutput = GTUtility
-                    .fillFluidContainer(getDrainableStack(), mInventory[inputSlot], false, true);
+                        .fillFluidContainer(getDrainableStack(), mInventory[inputSlot], false, true);
                 if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
                     FluidStack tFluid = GTUtility.getFluidForFilledItem(tOutput, true);
                     aBaseMetaTileEntity.decrStackSize(inputSlot, 1);
@@ -187,11 +187,13 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid()
-            .getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid)) return 0;
+        if (aFluid == null || aFluid.getFluid().getID() <= 0
+                || aFluid.amount <= 0
+                || !canTankBeFilled()
+                || !isFluidInputAllowed(aFluid))
+            return 0;
 
-        if (getFillableStack() == null || getFillableStack().getFluid()
-            .getID() <= 0) {
+        if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
             if (aFluid.amount <= getCapacity()) {
                 if (doFill) {
                     setFillableStack(aFluid.copy());
@@ -254,7 +256,7 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
         if (getCapacity() <= 0 && !isSteampowered()) return GTValues.emptyFluidTankInfo;
         if (isDrainableStackSeparate()) {
             return new FluidTankInfo[] { new FluidTankInfo(getFillableStack(), getCapacity()),
-                new FluidTankInfo(getDrainableStack(), getCapacity()) };
+                    new FluidTankInfo(getDrainableStack(), getCapacity()) };
         } else {
             return new FluidTankInfo[] { new FluidTankInfo(this) };
         }
@@ -262,13 +264,13 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return aIndex == getOutputSlot();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return aIndex == getInputSlot();
     }
 
@@ -281,32 +283,24 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 16)
-                .setSize(71, 45))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_GAUGE)
-                    .setPos(79, 34)
-                    .setSize(18, 18))
-            .widget(
-                new SlotWidget(inventoryHandler, getInputSlot())
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
-                    .setPos(79, 16))
-            .widget(
-                new SlotWidget(inventoryHandler, getOutputSlot()).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
-                    .setPos(79, 52))
-            .widget(
-                createFluidSlot().setBackground(GTUITextures.TRANSPARENT)
-                    .setPos(58, 41))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.machines.basic_tank.liquid_amount"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 20))
-            .widget(
-                new TextWidget().setStringSupplier(() -> numberFormat.format(mFluid != null ? mFluid.amount : 0))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 30));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
+                .widget(new DrawableWidget().setDrawable(GTUITextures.PICTURE_GAUGE).setPos(79, 34).setSize(18, 18))
+                .widget(
+                        new SlotWidget(inventoryHandler, getInputSlot())
+                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
+                                .setPos(79, 16))
+                .widget(
+                        new SlotWidget(inventoryHandler, getOutputSlot()).setAccess(true, false)
+                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
+                                .setPos(79, 52))
+                .widget(createFluidSlot().setBackground(GTUITextures.TRANSPARENT).setPos(58, 41))
+                .widget(
+                        new TextWidget(StatCollector.translateToLocal("GT5U.machines.basic_tank.liquid_amount"))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(() -> numberFormat.format(mFluid != null ? mFluid.amount : 0))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
     }
 
     protected FluidSlotWidget createFluidSlot() {

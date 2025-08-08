@@ -23,22 +23,20 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+            ItemStack aStack) {
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
             if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L))
-                    .itemOutputs(GTUtility.copyAmount(1, aStack))
-                    .duration(((int) Math.max(aMaterial.getMass() / 8L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(latheRecipes);
+                GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L))
+                        .itemOutputs(GTUtility.copyAmount(1, aStack))
+                        .duration(((int) Math.max(aMaterial.getMass() / 8L, 1L)) * TICKS)
+                        .eut(calculateRecipeEU(aMaterial, 4)).addTo(latheRecipes);
             }
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial))
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "fX", "X ", 'X', OrePrefixes.bolt.get(aMaterial) });
+                            GTOreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
+                            GTModHandler.RecipeBits.BITS_STD,
+                            new Object[] { "fX", "X ", 'X', OrePrefixes.bolt.get(aMaterial) });
                 }
         }
     }

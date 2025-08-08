@@ -29,25 +29,23 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
         if (json.has("imageSize")) {
             if (json.has("wholeTexture")) {
                 IDrawable wholeTexture = JsonHelper
-                    .deserializeWithFallback(json, fallback, IDrawable.class, IDrawable.EMPTY, "wholeTexture");
+                        .deserializeWithFallback(json, fallback, IDrawable.class, IDrawable.EMPTY, "wholeTexture");
                 if (wholeTexture instanceof UITexture texture) {
                     this.emptyTexture = texture.getSubArea(0, 0, 1, 0.5f);
                     this.fullTexture = texture.getSubArea(0, 0.5f, 1, 1);
-                    this.imageSize = json.get("imageSize")
-                        .getAsInt();
+                    this.imageSize = json.get("imageSize").getAsInt();
                     return;
                 }
             } else if (json.has("emptyTexture") && json.has("fullTexture")) {
                 IDrawable deserializedEmptyTexture = JsonHelper
-                    .deserializeWithFallback(json, fallback, IDrawable.class, IDrawable.EMPTY, "emptyTexture");
+                        .deserializeWithFallback(json, fallback, IDrawable.class, IDrawable.EMPTY, "emptyTexture");
                 IDrawable deserializedFullTexture = JsonHelper
-                    .deserializeWithFallback(json, fallback, IDrawable.class, IDrawable.EMPTY, "fullTexture");
+                        .deserializeWithFallback(json, fallback, IDrawable.class, IDrawable.EMPTY, "fullTexture");
                 if (deserializedEmptyTexture instanceof UITexture emptyUITexture
-                    && deserializedFullTexture instanceof UITexture fullUITexture) {
+                        && deserializedFullTexture instanceof UITexture fullUITexture) {
                     this.emptyTexture = emptyUITexture;
                     this.fullTexture = fullUITexture;
-                    this.imageSize = json.get("imageSize")
-                        .getAsInt();
+                    this.imageSize = json.get("imageSize").getAsInt();
                     return;
                 }
             }

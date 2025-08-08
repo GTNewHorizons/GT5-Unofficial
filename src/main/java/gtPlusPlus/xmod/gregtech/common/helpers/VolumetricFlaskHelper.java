@@ -29,8 +29,8 @@ public class VolumetricFlaskHelper {
 
     public static boolean isVolumetricFlask(ItemStack aStack) {
         return isNormalVolumetricFlask(aStack) || isLargeVolumetricFlask(aStack)
-            || isGiganticVolumetricFlask(aStack)
-            || isKleinBottle(aStack);
+                || isGiganticVolumetricFlask(aStack)
+                || isKleinBottle(aStack);
     }
 
     public static boolean isNormalVolumetricFlask(ItemStack aStack) {

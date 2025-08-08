@@ -33,47 +33,35 @@ public class ForgeOfGodsStarColor {
     public static final int DEFAULT_CYCLE_SPEED = 1;
 
     public static final ForgeOfGodsStarColor DEFAULT = new ForgeOfGodsStarColor("Default")
-        .setNameKey("tt.godforge.star_color.preset.default")
-        .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA)
-        .registerPreset();
+            .setNameKey("tt.godforge.star_color.preset.default")
+            .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA).registerPreset();
 
     public static final ForgeOfGodsStarColor RAINBOW = new ForgeOfGodsStarColor("Rainbow")
-        .setNameKey("tt.godforge.star_color.preset.rainbow")
-        .addColor(255, 0, 0, 3.0f)
-        .addColor(255, 255, 0, 3.0f)
-        .addColor(0, 255, 0, 3.0f)
-        .addColor(0, 255, 255, 3.0f)
-        .addColor(255, 0, 255, 3.0f)
-        .setCycleSpeed(1)
-        .setCustomDrawable(TecTechUITextures.PICTURE_RAINBOW_SQUARE)
-        .registerPreset();
+            .setNameKey("tt.godforge.star_color.preset.rainbow").addColor(255, 0, 0, 3.0f).addColor(255, 255, 0, 3.0f)
+            .addColor(0, 255, 0, 3.0f).addColor(0, 255, 255, 3.0f).addColor(255, 0, 255, 3.0f).setCycleSpeed(1)
+            .setCustomDrawable(TecTechUITextures.PICTURE_RAINBOW_SQUARE).registerPreset();
 
     public static final ForgeOfGodsStarColor CLOUDS_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
-        .setNameKey("tt.godforge.star_color.preset.clouds_pick")
-        .addColor(255, 255, 0, 0.8f)
-        .addColor(0, 0, 0, 0)
-        .addColor(0, 255, 255, 0.4f)
-        .addColor(0, 0, 0, 0)
-        .setCycleSpeed(1)
-        .setCustomDrawable(
-            new Rectangle()
-                .setColor(Color.rgb(255, 255, 0), Color.rgb(0, 0, 0), Color.rgb(0, 0, 0), Color.rgb(0, 255, 255)))
-        .registerPreset();
+            .setNameKey("tt.godforge.star_color.preset.clouds_pick").addColor(255, 255, 0, 0.8f).addColor(0, 0, 0, 0)
+            .addColor(0, 255, 255, 0.4f).addColor(0, 0, 0, 0).setCycleSpeed(1)
+            .setCustomDrawable(
+                    new Rectangle().setColor(
+                            Color.rgb(255, 255, 0),
+                            Color.rgb(0, 0, 0),
+                            Color.rgb(0, 0, 0),
+                            Color.rgb(0, 255, 255)))
+            .registerPreset();
 
     public static final ForgeOfGodsStarColor MAYAS_PICK = new ForgeOfGodsStarColor("Maya's Pick")
-        .setNameKey("tt.godforge.star_color.preset.mayas_pick")
-        .addColor(0, 0, 0, 0.0f)
-        .addColor(109, 201, 225, 1.0f)
-        .addColor(255, 255, 255, 3.0f)
-        .addColor(255, 172, 210, 1.0f)
-        .setCycleSpeed(1)
-        .setCustomDrawable(
-            new Rectangle().setColor(
-                Color.rgb(255, 172, 210),
-                Color.rgb(255, 255, 255),
-                Color.rgb(0, 0, 0),
-                Color.rgb(109, 201, 225)))
-        .registerPreset();
+            .setNameKey("tt.godforge.star_color.preset.mayas_pick").addColor(0, 0, 0, 0.0f)
+            .addColor(109, 201, 225, 1.0f).addColor(255, 255, 255, 3.0f).addColor(255, 172, 210, 1.0f).setCycleSpeed(1)
+            .setCustomDrawable(
+                    new Rectangle().setColor(
+                            Color.rgb(255, 172, 210),
+                            Color.rgb(255, 255, 255),
+                            Color.rgb(0, 0, 0),
+                            Color.rgb(109, 201, 225)))
+            .registerPreset();
 
     public static List<ForgeOfGodsStarColor> getDefaultColors() {
         return new ArrayList<>(PRESETS.values());
@@ -183,7 +171,7 @@ public class ForgeOfGodsStarColor {
         if (drawable == null) {
             StarColorSetting setting = settings.get(0);
             drawable = new Rectangle()
-                .setColor(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()));
+                    .setColor(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()));
         }
         return drawable;
     }
@@ -291,8 +279,7 @@ public class ForgeOfGodsStarColor {
 
         // Wrap in try-catch for easy format "checking"
         try {
-            String[] data = raw.substring(13, raw.length() - 1)
-                .split("\\|");
+            String[] data = raw.substring(13, raw.length() - 1).split("\\|");
 
             // Parse the header (name and cycle rate)
             String header = data[0];
@@ -330,8 +317,7 @@ public class ForgeOfGodsStarColor {
             }
 
             if (name != null && cycleRate != null && !colorSettings.isEmpty()) {
-                return new ForgeOfGodsStarColor(name).setCycleSpeed(cycleRate)
-                    .addColors(colorSettings);
+                return new ForgeOfGodsStarColor(name).setCycleSpeed(cycleRate).addColors(colorSettings);
             }
             return null;
         } catch (Throwable ignored) {

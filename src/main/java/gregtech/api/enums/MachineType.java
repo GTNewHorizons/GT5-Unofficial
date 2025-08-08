@@ -128,9 +128,9 @@ public enum MachineType {
 
     public String[] tooltipDescription() {
         return new String[] { description(),
-            StatCollector.translateToLocal(TT_machineType) + ": "
-                + EnumChatFormatting.YELLOW
-                + type()
-                + EnumChatFormatting.RESET };
+                StatCollector.translateToLocal(TT_machineType) + ": "
+                        + EnumChatFormatting.YELLOW
+                        + type()
+                        + EnumChatFormatting.RESET };
     }
 }

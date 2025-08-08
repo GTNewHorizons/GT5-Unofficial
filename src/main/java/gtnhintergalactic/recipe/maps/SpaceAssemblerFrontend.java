@@ -28,10 +28,10 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 public class SpaceAssemblerFrontend extends RecipeMapFrontend {
 
     public SpaceAssemblerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-            uiPropertiesBuilder,
-            neiPropertiesBuilder.neiSpecialInfoFormatter(new SpaceAssemblerSpecialValueFormatter()));
+                uiPropertiesBuilder,
+                neiPropertiesBuilder.neiSpecialInfoFormatter(new SpaceAssemblerSpecialValueFormatter()));
     }
 
     @Override
@@ -55,19 +55,13 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
         int bar2Width = 18;
         List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width);
         builder.widget(
-            new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
-                .setDirection(ProgressBar.Direction.RIGHT)
-                .setProgress(splitProgress.get(0))
-                .setSynced(false, false)
-                .setPos(new Pos2d(88, 8).add(windowOffset))
-                .setSize(bar1Width, 72));
+                new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
+                        .setDirection(ProgressBar.Direction.RIGHT).setProgress(splitProgress.get(0))
+                        .setSynced(false, false).setPos(new Pos2d(88, 8).add(windowOffset)).setSize(bar1Width, 72));
         builder.widget(
-            new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
-                .setDirection(ProgressBar.Direction.RIGHT)
-                .setProgress(splitProgress.get(1))
-                .setSynced(false, false)
-                .setPos(new Pos2d(124, 8).add(windowOffset))
-                .setSize(bar2Width, 72));
+                new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
+                        .setDirection(ProgressBar.Direction.RIGHT).setProgress(splitProgress.get(1))
+                        .setSynced(false, false).setPos(new Pos2d(124, 8).add(windowOffset)).setSize(bar2Width, 72));
     }
 
     private static class SpaceAssemblerSpecialValueFormatter implements INEISpecialInfoFormatter {
@@ -82,18 +76,17 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
             String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
             if (neededProject != null && !neededProject.isEmpty()) {
                 specialInfo.add(
-                    String.format(
-                        GCCoreUtil.translate("ig.nei.spaceassembler.project"),
-                        SpaceProjectManager.getProject(neededProject)
-                            .getLocalizedName()));
+                        String.format(
+                                GCCoreUtil.translate("ig.nei.spaceassembler.project"),
+                                SpaceProjectManager.getProject(neededProject).getLocalizedName()));
                 specialInfo.add(
-                    String.format(
-                        GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
-                        neededProjectLocation == null || neededProjectLocation.isEmpty()
-                            ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
-                            : GCCoreUtil.translate(
-                                SpaceProjectManager.getLocation(neededProjectLocation)
-                                    .getUnlocalizedName())));
+                        String.format(
+                                GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
+                                neededProjectLocation == null || neededProjectLocation.isEmpty()
+                                        ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
+                                        : GCCoreUtil.translate(
+                                                SpaceProjectManager.getLocation(neededProjectLocation)
+                                                        .getUnlocalizedName())));
             }
             return specialInfo;
         }

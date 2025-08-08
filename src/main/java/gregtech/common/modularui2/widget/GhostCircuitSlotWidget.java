@@ -85,22 +85,18 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     }
 
     private void getCircuitSlotTooltip(RichTooltip tooltip) {
-        int config = getSyncHandler().getGhostCircuitHandler()
-            .getCircuitConfig();
+        int config = getSyncHandler().getGhostCircuitHandler().getCircuitConfig();
         String configString;
         if (config == NO_CONFIG) {
-            configString = IKey.lang("GT5U.machines.select_circuit.tooltip.configuration.none")
-                .get();
+            configString = IKey.lang("GT5U.machines.select_circuit.tooltip.configuration.none").get();
         } else {
             configString = String.valueOf(config);
         }
-        tooltip.clearText()
-            .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip"))
-            .spaceLine(2)
-            .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.configuration", configString))
-            .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.1"))
-            .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.2"))
-            .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.3"));
+        tooltip.clearText().addLine(IKey.lang("GT5U.machines.select_circuit.tooltip")).spaceLine(2)
+                .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.configuration", configString))
+                .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.1"))
+                .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.2"))
+                .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.3"));
     }
 
     @NotNull
@@ -110,8 +106,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     }
 
     private boolean isSelectorPanelOpen() {
-        return getPanel().getScreen()
-            .isPanelOpen(GUI_ID);
+        return getPanel().getScreen().isPanelOpen(GUI_ID);
     }
 
     private void openSelectorPanel() {
@@ -125,22 +120,18 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
         return IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
-                .setHeaderItem(mte.getStackForm(1))
-                .setTitle(IKey.lang("GT5U.machines.select_circuit"))
-                .setSelectedSyncHandler(selectedSyncHandler)
-                .setOnSelectedClientAction((selected, mouseData) -> {
-                    getSyncHandler().syncToServer(SYNC_CIRCUIT_CONFIG, buffer -> {
-                        // selected index 0 == config 1
-                        int circuitConfig = selected == DESELECTED ? -1 : selected + 1;
-                        buffer.writeShort(circuitConfig);
-                    });
-                    if (mouseData.shift) {
-                        panel.animateClose();
-                    }
-                })
-                .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)
-                .setAllowDeselected(true)
-                .build();
+                    .setHeaderItem(mte.getStackForm(1)).setTitle(IKey.lang("GT5U.machines.select_circuit"))
+                    .setSelectedSyncHandler(selectedSyncHandler).setOnSelectedClientAction((selected, mouseData) -> {
+                        getSyncHandler().syncToServer(SYNC_CIRCUIT_CONFIG, buffer -> {
+                            // selected index 0 == config 1
+                            int circuitConfig = selected == DESELECTED ? -1 : selected + 1;
+                            buffer.writeShort(circuitConfig);
+                        });
+                        if (mouseData.shift) {
+                            panel.animateClose();
+                        }
+                    }).setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT).setAllowDeselected(true)
+                    .build();
         }, true);
     }
 }

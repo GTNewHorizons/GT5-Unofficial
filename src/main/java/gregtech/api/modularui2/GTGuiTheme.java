@@ -40,14 +40,12 @@ public class GTGuiTheme {
     }
 
     public ITheme getMuiTheme() {
-        return IThemeApi.get()
-            .getTheme(themeId);
+        return IThemeApi.get().getTheme(themeId);
     }
 
     private void register() {
         buildJson();
-        IThemeApi.get()
-            .registerTheme(themeId, jsonBuilder);
+        IThemeApi.get().registerTheme(themeId, jsonBuilder);
     }
 
     private void buildJson() {
@@ -86,16 +84,16 @@ public class GTGuiTheme {
         }
 
         /**
-         * Set a parent theme for this theme, which unset values will inherit from.
-         * If not set, it will use the default theme as the parent (VANILLA).
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
          */
         public Builder parent(GTGuiTheme parent) {
             return parent(parent.themeId);
         }
 
         /**
-         * Set a parent theme for this theme, which unset values will inherit from.
-         * If not set, it will use the default theme as the parent (VANILLA).
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
          */
         public Builder parent(String parentId) {
             theme.elementBuilder.add(b -> b.add("parent", parentId));
@@ -173,12 +171,10 @@ public class GTGuiTheme {
          */
         public Builder panel(String panelId) {
             theme.elementBuilder.add(
-                b -> b.add(
-                    "panel",
-                    new JsonBuilder().add(
-                        "background",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", panelId))));
+                    b -> b.add(
+                            "panel",
+                            new JsonBuilder()
+                                    .add("background", new JsonBuilder().add("type", "texture").add("id", panelId))));
             return this;
         }
 
@@ -209,18 +205,12 @@ public class GTGuiTheme {
          */
         public Builder button(String buttonId, String hoverId, int textColor, boolean textShadow) {
             theme.elementBuilder.add(
-                b -> b.add(
-                    "button",
-                    new JsonBuilder().add(
-                        "background",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", buttonId))
-                        .add(
-                            "hoverBackground",
-                            new JsonBuilder().add("type", "texture")
-                                .add("id", hoverId))
-                        .add("textColor", textColor)
-                        .add("textShadow", textShadow)));
+                    b -> b.add(
+                            "button",
+                            new JsonBuilder()
+                                    .add("background", new JsonBuilder().add("type", "texture").add("id", buttonId))
+                                    .add("hoverBackground", new JsonBuilder().add("type", "texture").add("id", hoverId))
+                                    .add("textColor", textColor).add("textShadow", textShadow)));
             return this;
         }
 
@@ -241,13 +231,11 @@ public class GTGuiTheme {
             this.itemSlotId = itemSlotId;
             this.itemSlotHoverColor = hoverColor;
             theme.elementBuilder.add(
-                b -> b.add(
-                    "itemSlot",
-                    new JsonBuilder().add(
-                        "background",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", itemSlotId))
-                        .add("slotHoverColor", hoverColor)));
+                    b -> b.add(
+                            "itemSlot",
+                            new JsonBuilder()
+                                    .add("background", new JsonBuilder().add("type", "texture").add("id", itemSlotId))
+                                    .add("slotHoverColor", hoverColor)));
             return this;
         }
 
@@ -268,13 +256,11 @@ public class GTGuiTheme {
             this.fluidSlotId = fluidSlotId;
             this.fluidSlotHoverColor = hoverColor;
             theme.elementBuilder.add(
-                b -> b.add(
-                    "fluidSlot",
-                    new JsonBuilder().add(
-                        "background",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", fluidSlotId))
-                        .add("slotHoverColor", hoverColor)));
+                    b -> b.add(
+                            "fluidSlot",
+                            new JsonBuilder()
+                                    .add("background", new JsonBuilder().add("type", "texture").add("id", fluidSlotId))
+                                    .add("slotHoverColor", hoverColor)));
             return this;
         }
 
@@ -293,10 +279,9 @@ public class GTGuiTheme {
          */
         public Builder textField(int textColor, int markedColor) {
             theme.elementBuilder.add(
-                b -> b.add(
-                    "textField",
-                    new JsonBuilder().add("textColor", textColor)
-                        .add("markedColor", markedColor)));
+                    b -> b.add(
+                            "textField",
+                            new JsonBuilder().add("textColor", textColor).add("markedColor", markedColor)));
             return this;
         }
 
@@ -310,15 +295,15 @@ public class GTGuiTheme {
          * @param selectedColor             The color to apply to the pressed button
          */
         public Builder toggleButton(String backgroundId, String hoverBackgroundId, String selectedBackgroundId,
-            String selectedHoverBackgroundId, int selectedColor) {
+                String selectedHoverBackgroundId, int selectedColor) {
             return toggleButton(
-                backgroundId,
-                hoverBackgroundId,
-                selectedBackgroundId,
-                selectedHoverBackgroundId,
-                selectedColor,
-                0xFFBBBBBB,
-                false);
+                    backgroundId,
+                    hoverBackgroundId,
+                    selectedBackgroundId,
+                    selectedHoverBackgroundId,
+                    selectedColor,
+                    0xFFBBBBBB,
+                    false);
         }
 
         /**
@@ -333,29 +318,24 @@ public class GTGuiTheme {
          * @param textShadow                Whether to apply text shadow to text overlaid on this button
          */
         public Builder toggleButton(String backgroundId, String hoverBackgroundId, String selectedBackgroundId,
-            String selectedHoverBackgroundId, int selectedColor, int textColor, boolean textShadow) {
+                String selectedHoverBackgroundId, int selectedColor, int textColor, boolean textShadow) {
             theme.elementBuilder.add(
-                b -> b.add(
-                    "toggleButton",
-                    new JsonBuilder().add(
-                        "background",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", backgroundId))
-                        .add(
-                            "hoverBackground",
-                            new JsonBuilder().add("type", "texture")
-                                .add("id", hoverBackgroundId))
-                        .add(
-                            "selectedBackground",
-                            new JsonBuilder().add("type", "texture")
-                                .add("id", selectedBackgroundId))
-                        .add(
-                            "selectedHoverBackground",
-                            new JsonBuilder().add("type", "texture")
-                                .add("id", selectedHoverBackgroundId))
-                        .add("selectedColor", selectedColor)
-                        .add("textColor", textColor)
-                        .add("textShadow", textShadow)));
+                    b -> b.add(
+                            "toggleButton",
+                            new JsonBuilder()
+                                    .add("background", new JsonBuilder().add("type", "texture").add("id", backgroundId))
+                                    .add(
+                                            "hoverBackground",
+                                            new JsonBuilder().add("type", "texture").add("id", hoverBackgroundId))
+                                    .add(
+                                            "selectedBackground",
+                                            new JsonBuilder().add("type", "texture").add("id", selectedBackgroundId))
+                                    .add(
+                                            "selectedHoverBackground",
+                                            new JsonBuilder().add("type", "texture")
+                                                    .add("id", selectedHoverBackgroundId))
+                                    .add("selectedColor", selectedColor).add("textColor", textColor)
+                                    .add("textShadow", textShadow)));
             return this;
         }
 
@@ -380,15 +360,15 @@ public class GTGuiTheme {
          * @param textShadow           Whether to apply text shadow to text overlaid on this button
          */
         public Builder simpleToggleButton(String backgroundId, String selectedBackgroundId, int selectedColor,
-            int textColor, boolean textShadow) {
+                int textColor, boolean textShadow) {
             return toggleButton(
-                backgroundId,
-                backgroundId,
-                selectedBackgroundId,
-                selectedBackgroundId,
-                selectedColor,
-                textColor,
-                textShadow);
+                    backgroundId,
+                    backgroundId,
+                    selectedBackgroundId,
+                    selectedBackgroundId,
+                    selectedColor,
+                    textColor,
+                    textShadow);
         }
 
         /**
@@ -411,11 +391,9 @@ public class GTGuiTheme {
         public Builder themedTexture(String textureThemeId, String textureId) {
             theme.elementBuilder.add(b -> {
                 b.add(
-                    textureThemeId,
-                    new JsonBuilder().add(
-                        "background",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", textureId)));
+                        textureThemeId,
+                        new JsonBuilder()
+                                .add("background", new JsonBuilder().add("type", "texture").add("id", textureId)));
             });
             return this;
         }
@@ -441,23 +419,18 @@ public class GTGuiTheme {
         }
 
         private Builder themedOverlaySlot(String textureThemeId, String textureId, String slotId, Integer hoverColor,
-            String errorMessage) {
+                String errorMessage) {
             theme.elementBuilder.add(b -> {
                 if (slotId == null) {
                     throw new IllegalStateException(errorMessage + "must be specified for this method to work!");
                 }
                 b.add(
-                    textureThemeId,
-                    new JsonBuilder()
-                        .add(
-                            "background",
-                            new JsonArrayBuilder().add(
-                                new JsonBuilder().add("type", "texture")
-                                    .add("id", slotId))
-                                .add(
-                                    new JsonBuilder().add("type", "texture")
-                                        .add("id", textureId)))
-                        .add("slotHoverColor", hoverColor));
+                        textureThemeId,
+                        new JsonBuilder().add(
+                                "background",
+                                new JsonArrayBuilder().add(new JsonBuilder().add("type", "texture").add("id", slotId))
+                                        .add(new JsonBuilder().add("type", "texture").add("id", textureId)))
+                                .add("slotHoverColor", hoverColor));
             });
             return this;
         }
@@ -481,16 +454,13 @@ public class GTGuiTheme {
          */
         public Builder themedButton(String textureThemeId, String backgroundId, String hoverBackgroundId) {
             theme.elementBuilder.add(
-                b -> b.add(
-                    textureThemeId,
-                    new JsonBuilder().add(
-                        "background",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", backgroundId))
-                        .add(
-                            "hoverBackground",
-                            new JsonBuilder().add("type", "texture")
-                                .add("id", hoverBackgroundId))));
+                    b -> b.add(
+                            textureThemeId,
+                            new JsonBuilder()
+                                    .add("background", new JsonBuilder().add("type", "texture").add("id", backgroundId))
+                                    .add(
+                                            "hoverBackground",
+                                            new JsonBuilder().add("type", "texture").add("id", hoverBackgroundId))));
             return this;
         }
 
@@ -503,13 +473,13 @@ public class GTGuiTheme {
          */
         public Builder progressbar(String textureThemeId, String wholeTextureId, int imageSize) {
             theme.elementBuilder.add(
-                b -> b.add(
-                    textureThemeId,
-                    new JsonBuilder().add(
-                        "wholeTexture",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", wholeTextureId))
-                        .add("imageSize", imageSize)));
+                    b -> b.add(
+                            textureThemeId,
+                            new JsonBuilder()
+                                    .add(
+                                            "wholeTexture",
+                                            new JsonBuilder().add("type", "texture").add("id", wholeTextureId))
+                                    .add("imageSize", imageSize)));
             return this;
         }
 
@@ -523,17 +493,16 @@ public class GTGuiTheme {
          */
         public Builder progressbar(String textureThemeId, String emptyTextureId, String fullTextureId, int imageSize) {
             theme.elementBuilder.add(
-                b -> b.add(
-                    textureThemeId,
-                    new JsonBuilder().add(
-                        "emptyTexture",
-                        new JsonBuilder().add("type", "texture")
-                            .add("id", emptyTextureId))
-                        .add(
-                            "fullTexture",
-                            new JsonBuilder().add("type", "texture")
-                                .add("id", fullTextureId))
-                        .add("imageSize", imageSize)));
+                    b -> b.add(
+                            textureThemeId,
+                            new JsonBuilder()
+                                    .add(
+                                            "emptyTexture",
+                                            new JsonBuilder().add("type", "texture").add("id", emptyTextureId))
+                                    .add(
+                                            "fullTexture",
+                                            new JsonBuilder().add("type", "texture").add("id", fullTextureId))
+                                    .add("imageSize", imageSize)));
             return this;
         }
 

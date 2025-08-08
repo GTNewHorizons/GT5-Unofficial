@@ -23,7 +23,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+            ItemStack aStack) {
         if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
             return;
         }
@@ -36,19 +36,13 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
             return;
         }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
-            .duration(10 * TICKS)
-            .eut(16)
-            .addTo(hammerRecipes);
+        GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+                .duration(10 * TICKS).eut(16).addTo(hammerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
+        GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+                .duration(20 * SECONDS).eut(2).addTo(maceratorRecipes);
 
     }
 }

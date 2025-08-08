@@ -27,7 +27,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     }
 
     public MTEGeothermalGenerator(final String aName, final int aTier, final String[] aDescription,
-        final ITexture[][][] aTextures) {
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -35,10 +35,10 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     public String[] getDescription() {
         String aPollution = "Causes " + this.getPollution() + " Pollution per second";
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-            aPollution,
-            GTPPCore.GT_Tooltip.get());
+                this.mDescriptionArray,
+                "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+                aPollution,
+                GTPPCore.GT_Tooltip.get());
     }
 
     @Override
@@ -63,8 +63,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     @Override
     public boolean isOutputFacing(final ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -75,25 +74,25 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     @Override
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0], TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BACK),
-            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Vertical) };
+                TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Vertical) };
     }
 
     @Override
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM) };
+                TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM) };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0], TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER) };
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER) };
     }
 
     @Override
@@ -104,34 +103,34 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE),
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE),
-            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Vertical_Active) };
+                TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE),
+                TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Vertical_Active) };
     }
 
     @Override
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE) };
+                TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE) };
+                TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE) };
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE) };
+                TextureFactory.of(Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE) };
     }
 
     @Override
@@ -142,6 +141,6 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     @Override
     public int getPollution() {
         return (int) (PollutionConfig.basePollutionPerSecondGeothermalGenerator
-            * PollutionConfig.pollutionReleasedByTierGeothermalGenerator[mTier]);
+                * PollutionConfig.pollutionReleasedByTierGeothermalGenerator[mTier]);
     }
 }

@@ -163,10 +163,7 @@ public enum GTBranchDefinition {
     private final Consumer<IAllele[]> mBranchProperties;
 
     GTBranchDefinition(String scientific, Consumer<IAllele[]> aBranchProperties) {
-        this.branch = BeeManager.beeFactory.createBranch(
-            this.name()
-                .toLowerCase(),
-            scientific);
+        this.branch = BeeManager.beeFactory.createBranch(this.name().toLowerCase(), scientific);
         this.mBranchProperties = aBranchProperties;
     }
 

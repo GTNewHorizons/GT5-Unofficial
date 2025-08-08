@@ -62,31 +62,31 @@ public class ToolDrillLV extends GTTool {
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "pickaxe", "shovel")
-            || GTToolHarvestHelper.isAppropriateMaterial(
-                aBlock,
-                Material.rock,
-                Material.iron,
-                Material.anvil,
-                Material.sand,
-                Material.grass,
-                Material.ground,
-                Material.snow,
-                Material.clay,
-                Material.glass);
+                || GTToolHarvestHelper.isAppropriateMaterial(
+                        aBlock,
+                        Material.rock,
+                        Material.iron,
+                        Material.anvil,
+                        Material.sand,
+                        Material.grass,
+                        Material.ground,
+                        Material.snow,
+                        Material.clay,
+                        Material.glass);
     }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex]
-            : Textures.ItemIcons.POWER_UNIT_LV;
+                ? MetaGeneratedTool.getPrimaryMaterial(
+                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex]
+                : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -103,12 +103,12 @@ public class ToolDrillLV extends GTTool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-            EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                + EnumChatFormatting.WHITE
-                + " got the Drill! (by "
-                + EnumChatFormatting.GREEN
-                + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE
-                + ")");
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " got the Drill! (by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + ")");
     }
 }

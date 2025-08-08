@@ -345,19 +345,18 @@ public enum SoundResource {
     private static final Map<String, SoundResource> RESOURCE_STR_SOUND_MAP = new ConcurrentHashMap<>();
 
     static {
-        EnumSet.allOf(SoundResource.class)
-            .forEach(sound -> {
-                if (sound.id < 0) {
-                    return;
-                }
+        EnumSet.allOf(SoundResource.class).forEach(sound -> {
+            if (sound.id < 0) {
+                return;
+            }
 
-                if (ID_SOUND_MAP.containsKey(sound.id)) {
-                    throw new IllegalStateException(String.format("Sound ID %s is already occupied!", sound.id));
-                }
-                ID_SOUND_MAP.put(sound.id, sound);
-            });
+            if (ID_SOUND_MAP.containsKey(sound.id)) {
+                throw new IllegalStateException(String.format("Sound ID %s is already occupied!", sound.id));
+            }
+            ID_SOUND_MAP.put(sound.id, sound);
+        });
         EnumSet.allOf(SoundResource.class)
-            .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
+                .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
     }
 
     /**

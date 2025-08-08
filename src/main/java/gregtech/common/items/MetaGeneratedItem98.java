@@ -275,8 +275,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
             // These fluids are non-GT fluids, so the mod may not be present.
             if (isStackAlreadySet) {
                 throw new RuntimeException(
-                    "Cell item for fluid " + fluidName
-                        + " has already been created, but the fluid doesn't exist during postload");
+                        "Cell item for fluid " + fluidName
+                                + " has already been created, but the fluid doesn't exist during postload");
             } else {
                 // fluid doesn't exist and this item has not been referenced
                 return;
@@ -286,13 +286,13 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
 
         ItemStack emptyCell = ItemList.Cell_Empty.get(1L);
-        FluidContainerRegistry
-            .registerFluidContainer(new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
+        FluidContainerRegistry.registerFluidContainer(
+                new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
 
         GTLanguageManager.addStringLocalization(
-            getUnlocalizedName(aCell.mStack) + ".name",
-            cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
-                + cellType.prefix.mLocalizedMaterialPost);
+                getUnlocalizedName(aCell.mStack) + ".name",
+                cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
+                        + cellType.prefix.mLocalizedMaterialPost);
 
         int color = fluid.getColor();
         short[] rgba = GTUtil.getRGBaArray(color);
@@ -330,11 +330,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
-        Arrays.stream(FluidCell.values())
-            .filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
-            .map(FluidCell::get)
-            .filter(Objects::nonNull)
-            .forEach(aList::add);
+        Arrays.stream(FluidCell.values()).filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
+                .map(FluidCell::get).filter(Objects::nonNull).forEach(aList::add);
     }
 
     @Override

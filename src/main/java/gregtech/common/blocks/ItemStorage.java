@@ -14,8 +14,8 @@ import gregtech.api.enums.Mods;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
-    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-    modid = Mods.ModIDs.RAILCRAFT)
+        iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+        modid = Mods.ModIDs.RAILCRAFT)
 public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
 
     public ItemStorage(Block block) {

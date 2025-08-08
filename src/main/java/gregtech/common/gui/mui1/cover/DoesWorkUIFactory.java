@@ -26,58 +26,54 @@ public class DoesWorkUIFactory extends CoverLegacyDataUIFactory {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder
-            .widget(
+        builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::getCover,
-                    (id, coverData) -> isEnabled(id, coverData.getVariable()),
-                    (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
-                    getUIBuildContext())
-                        .addToggleButton(
-                            0,
-                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
-                                .setPos(spaceX * 0, spaceY * 0))
-                        .addToggleButton(
-                            1,
-                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                                .setPos(spaceX * 1, spaceY * 0))
-                        .addToggleButton(
-                            2,
-                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                                .setPos(spaceX * 2, spaceY * 0))
-                        .addToggleButton(
-                            3,
-                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                        .setPos(startX, startY))
-            .widget(TextWidget.dynamicString(getCoverString(c -> {
-                int coverVariable = c.getVariable();
+                        this::getCover,
+                        (id, coverData) -> isEnabled(id, coverData.getVariable()),
+                        (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
+                        getUIBuildContext())
+                                .addToggleButton(
+                                        0,
+                                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
+                                                .setPos(spaceX * 0, spaceY * 0))
+                                .addToggleButton(
+                                        1,
+                                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
+                                                .setPos(spaceX * 1, spaceY * 0))
+                                .addToggleButton(
+                                        2,
+                                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                                                .setPos(spaceX * 2, spaceY * 0))
+                                .addToggleButton(
+                                        3,
+                                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                                        widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                                .setPos(startX, startY))
+                .widget(TextWidget.dynamicString(getCoverString(c -> {
+                    int coverVariable = c.getVariable();
 
-                if (isFlagSet(coverVariable, FLAG_ENABLED)) {
-                    return GTUtility.trans("271", "Machine enabled");
-                } else if (isFlagSet(coverVariable, FLAG_PROGRESS)) {
-                    return GTUtility.trans("242", "Machine idle");
-                } else {
-                    return GTUtility.trans("241", "Recipe progress");
-                }
+                    if (isFlagSet(coverVariable, FLAG_ENABLED)) {
+                        return GTUtility.trans("271", "Machine enabled");
+                    } else if (isFlagSet(coverVariable, FLAG_PROGRESS)) {
+                        return GTUtility.trans("242", "Machine idle");
+                    } else {
+                        return GTUtility.trans("241", "Recipe progress");
+                    }
 
-            }))
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        getCoverString(
-                            c -> isFlagSet(c.getVariable(), FLAG_INVERTED)
-                                ? translateToLocal("gt.interact.desc.inverted")
-                                : translateToLocal("gt.interact.desc.normal")))
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));
+                })).setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        getCoverString(
+                                                c -> isFlagSet(c.getVariable(), FLAG_INVERTED)
+                                                        ? translateToLocal("gt.interact.desc.inverted")
+                                                        : translateToLocal("gt.interact.desc.normal")))
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));
     }
 
     private int getNewCoverVariable(int id, int coverVariable) {

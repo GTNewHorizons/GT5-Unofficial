@@ -42,9 +42,9 @@ public class MTEHatchMagnet extends MTEHatch {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(MTEIndustrialElectromagneticSeparator::isValidElectromagnet)
-                .setAccess(true, true)
-                .setPos(79, 34));
+                new SlotWidget(inventoryHandler, 0)
+                        .setFilter(MTEIndustrialElectromagneticSeparator::isValidElectromagnet).setAccess(true, true)
+                        .setPos(79, 34));
     }
 
     @Override
@@ -55,28 +55,14 @@ public class MTEHatchMagnet extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(OVERLAY_EMS_HOUSING)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_EMS_HOUSING_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder().addIcon(OVERLAY_EMS_HOUSING).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_EMS_HOUSING_GLOW).extFacing().glow().build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(OVERLAY_EMS_HOUSING)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_EMS_HOUSING_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder().addIcon(OVERLAY_EMS_HOUSING).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_EMS_HOUSING_GLOW).extFacing().glow().build() };
     }
 
     @Override
@@ -97,12 +83,10 @@ public class MTEHatchMagnet extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 1);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build().child(
                 gridTemplate1by1(
-                    index -> new ItemSlot().slot(
-                        new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
-                            .filter(MTEIndustrialElectromagneticSeparator::isValidElectromagnet))));
+                        index -> new ItemSlot().slot(
+                                new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
+                                        .filter(MTEIndustrialElectromagneticSeparator::isValidElectromagnet))));
     }
 }

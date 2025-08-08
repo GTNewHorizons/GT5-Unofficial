@@ -12,18 +12,11 @@ public class MatterAmplifierRecipes implements Runnable {
 
     @Override
     public void run() {
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Scrap.get(9L))
-            .fluidOutputs(Materials.UUAmplifier.getFluid(1))
-            .duration(9 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(amplifierRecipes);
+        GTValues.RA.stdBuilder().itemInputs(ItemList.IC2_Scrap.get(9L)).fluidOutputs(Materials.UUAmplifier.getFluid(1))
+                .duration(9 * SECONDS).eut(TierEU.RECIPE_LV).addTo(amplifierRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Scrapbox.get(1L))
-            .fluidOutputs(Materials.UUAmplifier.getFluid(1))
-            .duration(9 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(amplifierRecipes);
+        GTValues.RA.stdBuilder().itemInputs(ItemList.IC2_Scrapbox.get(1L))
+                .fluidOutputs(Materials.UUAmplifier.getFluid(1)).duration(9 * SECONDS).eut(TierEU.RECIPE_LV)
+                .addTo(amplifierRecipes);
     }
 }

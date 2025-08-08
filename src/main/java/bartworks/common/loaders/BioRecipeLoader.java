@@ -47,77 +47,39 @@ public class BioRecipeLoader {
         FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), new ItemStack(Items.rotten_flesh))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.rottenFleshBacteria))
-                .outputChances(33_00)
-                .fluidInputs(fluidStack)
-                .duration(25 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(bioLabRecipes);
+            GTValues.RA.stdBuilder().itemInputs(BioItemList.getPetriDish(null), new ItemStack(Items.rotten_flesh))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.rottenFleshBacteria)).outputChances(33_00)
+                    .fluidInputs(fluidStack).duration(25 * SECONDS).eut(TierEU.RECIPE_HV).addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), new ItemStack(Items.fermented_spider_eye))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.eColi))
-                .outputChances(45_00)
-                .fluidInputs(fluidStack)
-                .duration(25 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(bioLabRecipes);
+                    .itemInputs(BioItemList.getPetriDish(null), new ItemStack(Items.fermented_spider_eye))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.eColi)).outputChances(45_00)
+                    .fluidInputs(fluidStack).duration(25 * SECONDS).eut(TierEU.RECIPE_HV).addTo(bioLabRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), ItemList.Food_Dough.get(1L))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
-                .outputChances(75_00)
-                .fluidInputs(fluidStack)
-                .duration(25 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(bioLabRecipes);
+            GTValues.RA.stdBuilder().itemInputs(BioItemList.getPetriDish(null), ItemList.Food_Dough.get(1L))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.CommonYeast)).outputChances(75_00)
+                    .fluidInputs(fluidStack).duration(25 * SECONDS).eut(TierEU.RECIPE_HV).addTo(bioLabRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), ItemList.Food_Dough_Sugar.get(1L))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
-                .outputChances(25_00)
-                .fluidInputs(fluidStack)
-                .duration(25 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(bioLabRecipes);
+            GTValues.RA.stdBuilder().itemInputs(BioItemList.getPetriDish(null), ItemList.Food_Dough_Sugar.get(1L))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.WhineYeast)).outputChances(25_00)
+                    .fluidInputs(fluidStack).duration(25 * SECONDS).eut(TierEU.RECIPE_HV).addTo(bioLabRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), ItemList.Bottle_Wine.get(1L))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
-                .outputChances(33_00)
-                .fluidInputs(fluidStack)
-                .duration(25 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(bioLabRecipes);
+            GTValues.RA.stdBuilder().itemInputs(BioItemList.getPetriDish(null), ItemList.Bottle_Wine.get(1L))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.WhineYeast)).outputChances(33_00)
+                    .fluidInputs(fluidStack).duration(25 * SECONDS).eut(TierEU.RECIPE_HV).addTo(bioLabRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), ItemList.Bottle_Beer.get(1L))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
-                .outputChances(25_00)
-                .fluidInputs(fluidStack)
-                .duration(25 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(bioLabRecipes);
+            GTValues.RA.stdBuilder().itemInputs(BioItemList.getPetriDish(null), ItemList.Bottle_Beer.get(1L))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.BeerYeast)).outputChances(25_00)
+                    .fluidInputs(fluidStack).duration(25 * SECONDS).eut(TierEU.RECIPE_HV).addTo(bioLabRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), ItemList.Bottle_Dark_Beer.get(1L))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
-                .outputChances(33_00)
-                .fluidInputs(fluidStack)
-                .duration(25 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(bioLabRecipes);
+            GTValues.RA.stdBuilder().itemInputs(BioItemList.getPetriDish(null), ItemList.Bottle_Dark_Beer.get(1L))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.BeerYeast)).outputChances(33_00)
+                    .fluidInputs(fluidStack).duration(25 * SECONDS).eut(TierEU.RECIPE_HV).addTo(bioLabRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(BioItemList.getPetriDish(null), new ItemStack(Blocks.dirt))
-                .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.anaerobicOil))
-                .outputChances(100)
-                .fluidInputs(fluidStack)
-                .duration(1 * MINUTES + 15 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(bioLabRecipes);
+            GTValues.RA.stdBuilder().itemInputs(BioItemList.getPetriDish(null), new ItemStack(Blocks.dirt))
+                    .itemOutputs(BioItemList.getPetriDish(BioCultureLoader.anaerobicOil)).outputChances(100)
+                    .fluidInputs(fluidStack).duration(1 * MINUTES + 15 * SECONDS).eut(TierEU.RECIPE_EV)
+                    .addTo(bioLabRecipes);
         }
     }
 
@@ -125,72 +87,52 @@ public class BioRecipeLoader {
         FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
             if (CropsPlusPlus.isModLoaded()) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(2), new ItemStack(Items.sugar, 64))
-                    .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
-                    .fluidInputs(new FluidStack(fluidStack, 100))
-                    .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1))
-                    .metadata(GLASS, 3)
-                    .duration(17 * SECONDS + 10 * TICKS)
-                    .eut(TierEU.RECIPE_EV)
-                    .addTo(bacterialVatRecipes);
+                GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(2), new ItemStack(Items.sugar, 64))
+                        .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
+                        .fluidInputs(new FluidStack(fluidStack, 100))
+                        .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1)).metadata(GLASS, 3)
+                        .duration(17 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_EV).addTo(bacterialVatRecipes);
             }
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Grapes.get(16))
-                .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
-                .fluidInputs(new FluidStack(fluidStack, 100))
-                .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
-                .metadata(GLASS, 3)
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(bacterialVatRecipes);
+            GTValues.RA.stdBuilder().itemInputs(ItemList.Crop_Drop_Grapes.get(16))
+                    .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
+                    .fluidInputs(new FluidStack(fluidStack, 100))
+                    .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12)).metadata(GLASS, 3)
+                    .duration(10 * SECONDS).eut(TierEU.RECIPE_MV).addTo(bacterialVatRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(Items.sugar, 4),
-                    ItemList.IC2_Hops.get(16L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L))
-                .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
-                .fluidInputs(new FluidStack(fluidStack, 100))
-                .fluidOutputs(FluidRegistry.getFluidStack("potion.beer", 5))
-                .metadata(GLASS, 3)
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(bacterialVatRecipes);
+                    .itemInputs(
+                            new ItemStack(Items.sugar, 4),
+                            ItemList.IC2_Hops.get(16L),
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L))
+                    .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
+                    .fluidInputs(new FluidStack(fluidStack, 100))
+                    .fluidOutputs(FluidRegistry.getFluidStack("potion.beer", 5)).metadata(GLASS, 3)
+                    .duration(30 * SECONDS).eut(TierEU.RECIPE_LV).addTo(bacterialVatRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Hops.get(32L), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L))
-                .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
-                .fluidInputs(new FluidStack(fluidStack, 100))
-                .fluidOutputs(FluidRegistry.getFluidStack("potion.darkbeer", 10))
-                .metadata(GLASS, 3)
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(bacterialVatRecipes);
+                    .itemInputs(
+                            ItemList.IC2_Hops.get(32L),
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L))
+                    .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
+                    .fluidInputs(new FluidStack(fluidStack, 100))
+                    .fluidOutputs(FluidRegistry.getFluidStack("potion.darkbeer", 10)).metadata(GLASS, 3)
+                    .duration(30 * SECONDS).eut(TierEU.RECIPE_LV).addTo(bacterialVatRecipes);
         }
     }
 
     public static void registerBacterialVatRecipes() {
         registerWaterBasedBacterialVatRecipes();
 
-        GTValues.RA.stdBuilder()
-            .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
-            .fluidInputs(FluidRegistry.getFluidStack("potion.grapejuice", 100))
-            .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
-            .metadata(GLASS, 3)
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(bacterialVatRecipes);
+        GTValues.RA.stdBuilder().special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
+                .fluidInputs(FluidRegistry.getFluidStack("potion.grapejuice", 100))
+                .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12)).metadata(GLASS, 3).duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LV).addTo(bacterialVatRecipes);
 
-        GTValues.RA.stdBuilder()
-            .special(BioItemList.getPetriDish(BioCultureLoader.anaerobicOil))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(10_000))
-            .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1_000))
-            .metadata(GLASS, 3)
-            .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(bacterialVatRecipes);
+        GTValues.RA.stdBuilder().special(BioItemList.getPetriDish(BioCultureLoader.anaerobicOil))
+                .fluidInputs(Materials.FermentedBiomass.getFluid(10_000))
+                .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1_000)).metadata(GLASS, 3)
+                .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS).eut(TierEU.RECIPE_LV).addTo(bacterialVatRecipes);
     }
 
     public static void runOnServerStarted() {}

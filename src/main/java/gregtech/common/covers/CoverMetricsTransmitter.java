@@ -155,8 +155,8 @@ public class CoverMetricsTransmitter extends Cover {
     @Override
     public List<String> getAdditionalTooltip() {
         return ImmutableList.of(
-            StatCollector.translateToLocalFormatted(
-                "gt.item.adv_sensor_card.tooltip.frequency",
-                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + frequency.toString()));
+                StatCollector.translateToLocalFormatted(
+                        "gt.item.adv_sensor_card.tooltip.frequency",
+                        EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + frequency.toString()));
     }
 }

@@ -77,9 +77,7 @@ public class LoaderOfTheCrops {
         List<String> s = new ArrayList<>();
 
         for (int i = 0; i < mCropList.size(); ++i) {
-            s.add(
-                cropObjs().get(i)
-                    .name());
+            s.add(cropObjs().get(i).name());
         }
 
         return s;

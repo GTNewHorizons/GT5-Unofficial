@@ -163,46 +163,44 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
         @Override
         public PlaceResult survivalPlaceBlock(MTETankTFFT t, World world, int x, int y, int z, ItemStack trigger,
-            AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int fieldTier = getHint(trigger);
-            ItemStack result = env.getSource()
-                .takeOne(
+            ItemStack result = env.getSource().takeOne(
                     s -> s != null && s.stackSize >= 0
-                        && s.getItem() == TFFT_FIELD_ITEM
-                        && s.getItemDamage() != CASING_META
-                        && s.getItemDamage() <= fieldTier,
+                            && s.getItem() == TFFT_FIELD_ITEM
+                            && s.getItemDamage() != CASING_META
+                            && s.getItemDamage() <= fieldTier,
                     true);
             if (result == null) return PlaceResult.REJECT;
 
             return StructureUtility.survivalPlaceBlock(
-                result,
-                ItemStackPredicate.NBTMode.EXACT,
-                null,
-                true,
-                world,
-                x,
-                y,
-                z,
-                env.getSource(),
-                env.getActor(),
-                env.getChatter());
+                    result,
+                    ItemStackPredicate.NBTMode.EXACT,
+                    null,
+                    true,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
         }
     }
 
     private static final IIconContainer TEXTURE_TFFT = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE");
+            "iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE_GLOW");
+            "iconsets/TFFT_ACTIVE_GLOW");
     private static final int CASING_TEXTURE_ID_1 = (12 << 7) | 127;
     private static final int CASING_TEXTURE_ID_2 = 176;
 
     private static final Block TFFT_FIELD = Blocks.tfftStorageField;
     private static final Item TFFT_FIELD_ITEM = Item.getItemFromBlock(TFFT_FIELD);
     public static final int MAX_DISTINCT_FLUIDS = 25;
-    private static final BigInteger MAX_CAPACITY = BigInteger.valueOf(Long.MAX_VALUE)
-        .multiply(BigInteger.valueOf(25));
+    private static final BigInteger MAX_CAPACITY = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(25));
     private static final int CASING_META = 0;
     private static final int MIN_CASING_AMOUNT = 20;
     private static final int MAX_LAYER_AMOUNT = 13;
@@ -219,54 +217,51 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     private static final String[] description = new String[] {
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.1"), // Casing
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, T.F.F.T Multi
-                                                                         // I/O Hatch, Input/Output Hatch, Energy
-                                                                         // Hatch
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, T.F.F.T Multi I/O Hatch,
-                                                                         // Input/Output Hatch
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.1"), // Casing
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, T.F.F.T Multi
+                                                                             // I/O Hatch, Input/Output Hatch, Energy
+                                                                             // Hatch
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, T.F.F.T Multi I/O Hatch,
+                                                                             // Input/Output Hatch
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
     };
 
     // height channel for height
     // field channel for field
     private static final IStructureDefinition<MTETankTFFT> STRUCTURE_DEFINITION = IStructureDefinition
-        .<MTETankTFFT>builder()
-        .addShape(
-            STRUCTURE_PIECE_TOP,
-            transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cC~Cc" }, { "cCCCc" }, { "ccccc" } }))
-        .addShape(
-            STRUCTURE_PIECE_MID,
-            transpose(new String[][] { { "gGGGg" }, { "GfffG" }, { "GfffG" }, { "GfffG" }, { "gGGGg" } }))
-        .addShape(
-            STRUCTURE_PIECE_BOTTOM,
-            transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cCCCc" }, { "cCCCc" }, { "ccccc" } }))
-        .addElement(
-            'c',
-            buildHatchAdder(MTETankTFFT.class).atLeast(Energy, Maintenance)
-                .casingIndex(CASING_TEXTURE_ID_1)
-                .dot(1)
-                .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
-        .addElement(
-            'C',
-            buildHatchAdder(MTETankTFFT.class).casingIndex(CASING_TEXTURE_ID_1)
-                .atLeast(
-                    Energy,
-                    Maintenance,
-                    InputHatch.or(TFFTMultiHatch.INSTANCE),
-                    OutputHatch.or(TFFTMultiHatch.INSTANCE))
-                .dot(2)
-                .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
-        .addElement(
-            'G',
-            buildHatchAdder(MTETankTFFT.class)
-                .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
-                .casingIndex(CASING_TEXTURE_ID_2)
-                .dot(3)
-                .buildAndChain(chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier)))
-        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))
-        .build();
+            .<MTETankTFFT>builder()
+            .addShape(
+                    STRUCTURE_PIECE_TOP,
+                    transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cC~Cc" }, { "cCCCc" }, { "ccccc" } }))
+            .addShape(
+                    STRUCTURE_PIECE_MID,
+                    transpose(new String[][] { { "gGGGg" }, { "GfffG" }, { "GfffG" }, { "GfffG" }, { "gGGGg" } }))
+            .addShape(
+                    STRUCTURE_PIECE_BOTTOM,
+                    transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cCCCc" }, { "cCCCc" }, { "ccccc" } }))
+            .addElement(
+                    'c',
+                    buildHatchAdder(MTETankTFFT.class).atLeast(Energy, Maintenance).casingIndex(CASING_TEXTURE_ID_1)
+                            .dot(1)
+                            .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
+            .addElement(
+                    'C',
+                    buildHatchAdder(MTETankTFFT.class).casingIndex(CASING_TEXTURE_ID_1)
+                            .atLeast(
+                                    Energy,
+                                    Maintenance,
+                                    InputHatch.or(TFFTMultiHatch.INSTANCE),
+                                    OutputHatch.or(TFFTMultiHatch.INSTANCE))
+                            .dot(2)
+                            .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
+            .addElement(
+                    'G',
+                    buildHatchAdder(MTETankTFFT.class)
+                            .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
+                            .casingIndex(CASING_TEXTURE_ID_2).dot(3)
+                            .buildAndChain(chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+            .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+            .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE)).build();
 
     public final GTFluidTank[] STORE = new GTFluidTank[MAX_DISTINCT_FLUIDS];
 
@@ -314,23 +309,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1),
-                TextureFactory.builder()
-                    .addIcon(TEXTURE_TFFT_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TEXTURE_TFFT_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(TEXTURE_TFFT_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(TEXTURE_TFFT_ACTIVE_GLOW).extFacing().glow().build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1),
-                TextureFactory.builder()
-                    .addIcon(TEXTURE_TFFT)
-                    .extFacing()
-                    .build() };
+                    TextureFactory.builder().addIcon(TEXTURE_TFFT).extFacing().build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1) };
     }
@@ -338,39 +323,34 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
-            .addSeparator()
-            .addInfo("Note on hatch locking:")
-            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
-            .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
-            .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
-            .addController("Top Center")
-            .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-            .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
-            .addStructureInfo("Energy hatch is not required when running cost is 0")
-            .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom casing")
-            .addEnergyHatch("Any top or bottom casing")
-            .addInputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("You can have a bunch of hatches")
-            .addOtherStructurePart(
-                "Multi I/O Hatches",
-                "Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
+        tt.addMachineType("Fluid Tank").addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
+                .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
+                .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
+                .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+                .addSeparator().addInfo("Note on hatch locking:")
+                .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
+                .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
+                .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false).addController("Top Center")
+                .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
+                .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
+                .addStructureInfo("Energy hatch is not required when running cost is 0")
+                .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
+                .addMaintenanceHatch("Any top or bottom casing").addEnergyHatch("Any top or bottom casing")
+                .addInputHatch("Instead of any casing or glass, has to touch storage field block")
+                .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
+                .addStructureInfo("You can have a bunch of hatches")
+                .addOtherStructurePart(
+                        "Multi I/O Hatches",
+                        "Instead of any casing or glass, has to touch storage field block")
+                .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
+                .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher();
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
-            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
+                .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
         for (int i = -1; i >= 1 - layer; i--) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, i);
         buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer);
@@ -382,7 +362,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
-            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
+                .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
         for (int i = -1; i >= 1 - layer; i--) {
             build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
             if (build >= 0) return build;
@@ -416,13 +396,12 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         if (layer - 1 > MAX_LAYER_AMOUNT || layer - 1 < DEFAULT_LAYER_AMOUNT) return false;
         if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer)) return false;
         if (casingAmount >= MIN_CASING_AMOUNT
-            && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
-            && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2) {
+                && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
+                && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2) {
             BigInteger tempCap = BigInteger.ZERO;
             for (int i = 0; i < this.FIELDS.length; i++) {
                 tempCap = tempCap.add(
-                    BigInteger.valueOf(Field.VALUES[i].getCapacity())
-                        .multiply(BigInteger.valueOf(this.FIELDS[i])));
+                        BigInteger.valueOf(Field.VALUES[i].getCapacity()).multiply(BigInteger.valueOf(this.FIELDS[i])));
                 this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
             }
             this.setCapacity(tempCap);
@@ -447,8 +426,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
         ItemStack itemStack = getControllerSlot();
         this.fluidSelector = (itemStack != null && itemStack.getItem() instanceof ItemIntegratedCircuit)
-            ? (byte) itemStack.getItemDamage()
-            : -1;
+                ? (byte) itemStack.getItemDamage()
+                : -1;
 
         // Suck in fluids
         final ArrayList<FluidStack> inputFluids = getStoredFluids();
@@ -477,9 +456,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     final FluidStack tFluid = tHatch.getFluid();
 
                     String lockedFluidName = tHatch.getLockedFluidName() == null ? "" : tHatch.getLockedFluidName();
-                    String tFluidName = tFluid == null ? ""
-                        : tFluid.getFluid()
-                            .getName();
+                    String tFluidName = tFluid == null ? "" : tFluid.getFluid().getName();
 
                     boolean isFluidLocked = tHatch.isFluidLocked();
                     boolean isFluidEmpty = tFluid == null || tHatch.getFluidAmount() == 0;
@@ -494,10 +471,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
                         tHatch.fill(this.push(sFluid.get(remaining), true), true);
                     } else if (isFluidLocked) {
-                        if (!isFluidEmpty && !lockedFluidName.equals(
-                            tFluid.getFluid()
-                                .getName()))
-                            continue;
+                        if (!isFluidEmpty && !lockedFluidName.equals(tFluid.getFluid().getName())) continue;
 
                         FluidStack aFluid = FluidRegistry.getFluidStack(lockedFluidName, remaining);
                         tHatch.fill(this.push(aFluid, true), true);
@@ -527,53 +501,56 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         NumberFormat nf = NumberFormat.getNumberInstance();
 
         ll.add(
-            EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
-                + EnumChatFormatting.RESET);
+                EnumChatFormatting.YELLOW
+                        + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
+                        + EnumChatFormatting.RESET);
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
             if (tank.isEmpty()) {
                 ll.add(
-                    MessageFormat.format(
-                        "{0} - {1}: {2}L ({3}%)",
-                        i,
-                        StatCollector.translateToLocal("kekztech.infodata.tank.tfft.stored_fluids.null"),
-                        0,
-                        0));
+                        MessageFormat.format(
+                                "{0} - {1}: {2}L ({3}%)",
+                                i,
+                                StatCollector.translateToLocal("kekztech.infodata.tank.tfft.stored_fluids.null"),
+                                0,
+                                0));
             } else {
-                String localizedName = STORE[i].get()
-                    .getLocalizedName();
+                String localizedName = STORE[i].get().getLocalizedName();
                 String amount = nf.format(STORE[i].amount());
                 String percentage = capacityPerFluid > 0 ? String.valueOf(STORE[i].amount() * 100 / capacityPerFluid)
-                    : "";
+                        : "";
 
                 ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, localizedName, amount, percentage));
             }
         }
         ll.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
-                + EnumChatFormatting.RESET);
+                EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
+                        + EnumChatFormatting.RESET);
         ll.add(
-            StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
+                StatCollector
+                        .translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
         ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.tank.tfft.per_fluid_capacity",
-                nf.format(capacityPerFluid)));
+                StatCollector.translateToLocalFormatted(
+                        "kekztech.infodata.tank.tfft.per_fluid_capacity",
+                        nf.format(capacityPerFluid)));
         ll.add(
-            StatCollector
-                .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
+                StatCollector
+                        .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
         ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.multi.maintenance_status",
-                ((getRepairStatus() == getIdealStatus())
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
-                        + EnumChatFormatting.RESET)));
+                StatCollector
+                        .translateToLocalFormatted(
+                                "kekztech.infodata.multi.maintenance_status",
+                                ((getRepairStatus() == getIdealStatus())
+                                        ? EnumChatFormatting.GREEN
+                                                + StatCollector.translateToLocal(
+                                                        "kekztech.infodata.multi.maintenance_status.ok")
+                                                + EnumChatFormatting.RESET
+                                        : EnumChatFormatting.RED
+                                                + StatCollector.translateToLocal(
+                                                        "kekztech.infodata.multi.maintenance_status.bad")
+                                                + EnumChatFormatting.RESET)));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 
         return ll.toArray(new String[0]);
@@ -615,7 +592,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         this.setDoVoidExcess(!doVoidExcess);
         GTUtility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
@@ -640,8 +617,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         if (index >= 0) {
             return STORE[index].fill(aFluid, doPull);
         } else if (fluidCount() < MAX_DISTINCT_FLUIDS) {
-            return STORE[getNullSlot()].setCapacity(capacityPerFluid)
-                .fill(aFluid, doPull);
+            return STORE[getNullSlot()].setCapacity(capacityPerFluid).fill(aFluid, doPull);
         }
         return 0;
     }
@@ -653,7 +629,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             GTFluidTank tank = STORE[index];
             if (doPull) return tank.add(amount);
             return doVoidExcess ? amount
-                : tank.amount() + amount > tank.capacity() ? tank.capacity() - tank.amount() : amount;
+                    : tank.amount() + amount > tank.capacity() ? tank.capacity() - tank.amount() : amount;
         } else if (fluidCount() < MAX_DISTINCT_FLUIDS) {
             GTFluidTank tank = STORE[getNullSlot()];
             if (doPull) return tank.add(amount, aFluid);
@@ -694,14 +670,12 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             this.capacityPerFluid = Long.MAX_VALUE;
         } else {
             this.capacity = capacity;
-            this.capacityPerFluid = capacity.divide(BigInteger.valueOf(MAX_DISTINCT_FLUIDS))
-                .longValue();
+            this.capacityPerFluid = capacity.divide(BigInteger.valueOf(MAX_DISTINCT_FLUIDS)).longValue();
         }
 
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
-            if (tank.setCapacity(capacityPerFluid)
-                .amount() > capacityPerFluid) {
+            if (tank.setCapacity(capacityPerFluid).amount() > capacityPerFluid) {
                 STORE[i] = new GTFluidTank(tank.get(), capacityPerFluid, capacityPerFluid);
             }
         }
@@ -717,8 +691,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
     public int getFluidPosition(String fluidName) {
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
-            if (!STORE[i].isEmpty() && STORE[i].name()
-                .equals(fluidName)) return i;
+            if (!STORE[i].isEmpty() && STORE[i].name().equals(fluidName)) return i;
         }
         return -1;
     }

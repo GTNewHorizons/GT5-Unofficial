@@ -59,17 +59,18 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory
-            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture,
+                TextureFactory.of(
+                        EM_D_ACTIVE,
+                        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+                TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            TextureFactory
+        return new ITexture[] { aBaseTexture, TextureFactory
                 .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+                TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
@@ -95,8 +96,7 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            aTick = MinecraftServer.getServer()
-                .getTickCounter();
+            aTick = MinecraftServer.getServer().getTickCounter();
             if (CommonValues.MOVE_AT == aTick % 20) {
                 if (q == null) {
                     getBaseMetaTileEntity().setActive(false);
@@ -143,13 +143,13 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
@@ -167,21 +167,21 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     public String[] getInfoData() {
         if (id > 0) {
             return new String[] {
-                translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id,
-                translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
-                    + EnumChatFormatting.AQUA
-                    + (q != null ? q.getContentString() : 0),
-                translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
-                    + EnumChatFormatting.RED
-                    + (q != null ? q.getTraceSize() : 0), };
+                    translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id,
+                    translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
+                            + EnumChatFormatting.AQUA
+                            + (q != null ? q.getContentString() : 0),
+                    translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
+                            + EnumChatFormatting.RED
+                            + (q != null ? q.getTraceSize() : 0), };
         }
         return new String[] {
-            translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + (q != null ? q.getContentString() : 0),
-            translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + (q != null ? q.getTraceSize() : 0), };
+                translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
+                        + EnumChatFormatting.AQUA
+                        + (q != null ? q.getContentString() : 0),
+                translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
+                        + EnumChatFormatting.RED
+                        + (q != null ? q.getTraceSize() : 0), };
     }
 
     @Override

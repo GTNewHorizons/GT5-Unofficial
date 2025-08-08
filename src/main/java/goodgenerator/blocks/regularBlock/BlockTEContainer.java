@@ -157,7 +157,7 @@ public class BlockTEContainer extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
-        float par8, float par9) {
+            float par8, float par9) {
         if (world.isRemote) {
             return false;
         } else {
@@ -168,7 +168,7 @@ public class BlockTEContainer extends BlockContainer {
                     if (tItemStack == null) {
                         ((MTEEssentiaOutputHatch) tile).clear();
                         GTUtility
-                            .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                                .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
                     }
                     return true;
                 } else return false;
@@ -186,8 +186,7 @@ public class BlockTEContainer extends BlockContainer {
         super.onBlockPlacedBy(worldIn, x, y, z, placer, itemIn);
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof MTEEssentiaOutputHatchME hatchME) {
-            hatchME.getProxy()
-                .setOwner((EntityPlayer) placer);
+            hatchME.getProxy().setOwner((EntityPlayer) placer);
         }
 
     }

@@ -43,8 +43,9 @@ import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
  * <p/>
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
-public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, IGregTechDeviceInformation, CapabilityProvider, IGuiHolder<PosGuiData> {
+public interface IMetaTileEntity
+        extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdateable, IGregtechWailaProvider,
+        IGetGUITextureSet, IGregTechDeviceInformation, CapabilityProvider, IGuiHolder<PosGuiData> {
 
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -122,25 +123,25 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * When a Player right-clicks the Facing with a Screwdriver.
      */
     void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool);
+            ItemStack aTool);
 
     /**
      * When a Player right-clicks the Facing with a Wrench.
      */
     boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX,
-        float aY, float aZ, ItemStack aTool);
+            float aY, float aZ, ItemStack aTool);
 
     /**
      * When a Player right-clicks the Facing with a wire cutter.
      */
     boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ, ItemStack aTool);
+            float aX, float aY, float aZ, ItemStack aTool);
 
     /**
      * When a Player right-clicks the Facing with a soldering iron.
      */
     boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ, ItemStack aTool);
+            float aX, float aY, float aZ, ItemStack aTool);
 
     /**
      * Called right before this Machine explodes
@@ -245,7 +246,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return mostly {@code false}. Probably is left for compatibility.
      */
     boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX,
-        float aY, float aZ);
+            float aY, float aZ);
 
     /**
      * a Player leftclicks the Machine Sneaky leftclicks are getting passed to this unlike with the rightclicks.
@@ -315,7 +316,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * returns the DebugLog
      */
     ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
-        ArrayList<String> aList);
+            ArrayList<String> aList);
 
     /**
      * get a small Description
@@ -340,7 +341,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *                      {@code mBaseMetaTileEntity.mRedstone} !!!)
      */
     ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel);
+            int colorIndex, boolean active, boolean redstoneLevel);
 
     /**
      * Register Icons here. This gets called when the Icons get initialized by the Base Block Best is you put your Icons
@@ -402,7 +403,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean allowGeneralRedstoneOutput();
 
     void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider);
+            List<AxisAlignedBB> outputAABB, Entity collider);
 
     AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
 
@@ -490,8 +491,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Gets items to be displayed for HoloInventory mod.
      *
-     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
-     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}. Otherwise, a list
+     *         of items to be displayed. Null element may be contained.
      */
     @Nullable
     default List<ItemStack> getItemsForHoloGlasses() {

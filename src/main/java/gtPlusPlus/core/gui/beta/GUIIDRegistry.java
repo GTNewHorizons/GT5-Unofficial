@@ -13,7 +13,7 @@ public class GUIIDRegistry {
     private static int nextId = 0;
 
     private static void registerGuiHandlers(final GUITypes MU_GuiType,
-        final List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses) {
+            final List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses) {
         for (final Class<? extends IGuiManagerMiscUtils> tileGuiHandlerClass : guiHandlerClasses) {
             final MUGuild guiId = new MUGuild(nextId++, MU_GuiType, tileGuiHandlerClass);
             classMap.put(tileGuiHandlerClass, guiId);
@@ -26,9 +26,8 @@ public class GUIIDRegistry {
         MUGuild guiId = classMap.get(guiHandlerClass);
         if (guiId == null) {
             for (final Map.Entry<Class<? extends IGuiManagerMiscUtils>, MUGuild> classGuiIdEntry : classMap
-                .entrySet()) {
-                if (classGuiIdEntry.getKey()
-                    .isAssignableFrom(guiHandlerClass)) {
+                    .entrySet()) {
+                if (classGuiIdEntry.getKey().isAssignableFrom(guiHandlerClass)) {
                     guiId = classGuiIdEntry.getValue();
                     break;
                 }

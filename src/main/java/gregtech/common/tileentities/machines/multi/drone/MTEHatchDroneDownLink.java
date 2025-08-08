@@ -50,7 +50,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private final Set<MTEMultiBlockBase> machines = new HashSet<>();
 
     private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
+            "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
     public MTEHatchDroneDownLink(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -94,9 +94,9 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         downlinkCoord = new Vec3Impl(
-            getBaseMetaTileEntity().getXCoord(),
-            getBaseMetaTileEntity().getYCoord(),
-            getBaseMetaTileEntity().getZCoord());
+                getBaseMetaTileEntity().getXCoord(),
+                getBaseMetaTileEntity().getYCoord(),
+                getBaseMetaTileEntity().getZCoord());
 
         tryFindDroneCenter();
     }
@@ -114,18 +114,15 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 tryFindDroneCenter();
             }
 
-            if (center != null && center.getBaseMetaTileEntity()
-                .isActive()) {
+            if (center != null && center.getBaseMetaTileEntity().isActive()) {
                 doNormalMaintain();
             }
         }
     }
 
     private void validateConnections() {
-        if (center != null && (!center.isValid() || !center.getBaseMetaTileEntity()
-            .isActive())) {
-            center.getConnectionList()
-                .removeAll(connections);
+        if (center != null && (!center.isValid() || !center.getBaseMetaTileEntity().isActive())) {
+            center.getConnectionList().removeAll(connections);
             connections.clear();
             center = null;
         }
@@ -136,8 +133,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
                 DroneConnection connection = findConnection(machine);
                 connections.remove(connection);
-                center.getConnectionList()
-                    .remove(connection);
+                center.getConnectionList().remove(connection);
             }
         }
     }
@@ -148,7 +144,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+            float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aPlayer instanceof FakePlayer) return false;
@@ -164,21 +160,20 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public void onRemoval() {
         if (center == null) return;
-        center.getConnectionList()
-            .removeAll(connections);
+        center.getConnectionList().removeAll(connections);
     }
 
     private boolean hasConnection() {
@@ -190,17 +185,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
      * Find a drone center. This will search for all DC in the same dimension, then find one in range.
      */
     private void tryFindDroneCenter() {
-        if (MTEDroneCentre.getCentreMap()
-            .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
+        if (MTEDroneCentre.getCentreMap().containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
             List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
-                .get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                .stream()
-                .collect(Collectors.toList());
+                    .get(getBaseMetaTileEntity().getWorld().provider.dimensionId).stream().collect(Collectors.toList());
             for (MTEDroneCentre centre : target) {
-                if (centre.getCoords()
-                    .withinDistance(this.downlinkCoord, centre.getRange())
-                    && centre.getBaseMetaTileEntity()
-                        .isActive()) {
+                if (centre.getCoords().withinDistance(this.downlinkCoord, centre.getRange())
+                        && centre.getBaseMetaTileEntity().isActive()) {
 
                     connections.clear();
                     this.center = centre;
@@ -222,15 +212,11 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
         DroneConnection connection = new DroneConnection(machine, center);
         connections.add(connection);
-        center.getConnectionList()
-            .add(connection);
+        center.getConnectionList().add(connection);
     }
 
     private DroneConnection findConnection(MTEMultiBlockBase machine) {
-        return connections.stream()
-            .filter(c -> c.machine == machine)
-            .findFirst()
-            .orElse(null);
+        return connections.stream().filter(c -> c.machine == machine).findFirst().orElse(null);
     }
 
     @Override
@@ -252,46 +238,34 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
-        builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(135, 3))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(0, 5)
-                    .setSize(150, 8))
-            .widget(
-                new TextFieldWidget()
-                    .setGetter(() -> getFirstConnection() == null ? "" : getFirstConnection().getCustomName(false))
-                    .setSetter(var -> connections.forEach(c -> c.setCustomName(var)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 16)
-                    .setSize(130, 16))
-            .build();
+        builder.widget(ButtonWidget.closeWindowButton(true).setPos(135, 3))
+                .widget(
+                        new TextWidget(
+                                StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name")).setTextAlignment(
+                                        Alignment.Center).setPos(0, 5).setSize(
+                                                150,
+                                                8))
+                .widget(
+                        new TextFieldWidget().setGetter(
+                                () -> getFirstConnection() == null ? "" : getFirstConnection().getCustomName(false))
+                                .setSetter(var -> connections.forEach(c -> c.setCustomName(var)))
+                                .setTextAlignment(Alignment.CenterLeft).setTextColor(Color.WHITE.dark(1))
+                                .setFocusOnGuiOpen(true)
+                                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                                .setPos(10, 16).setSize(130, 16))
+                .build();
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         tag.setBoolean("connected", center != null);
         if (center != null) {
-            tag.setInteger(
-                "x",
-                center.getCoords()
-                    .get0());
-            tag.setInteger(
-                "y",
-                center.getCoords()
-                    .get1());
-            tag.setInteger(
-                "z",
-                center.getCoords()
-                    .get2());
+            tag.setInteger("x", center.getCoords().get0());
+            tag.setInteger("y", center.getCoords().get1());
+            tag.setInteger("z", center.getCoords().get2());
         }
 
         DroneConnection firstConnection = getFirstConnection();
@@ -301,29 +275,27 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private DroneConnection getFirstConnection() {
-        return connections.stream()
-            .findFirst()
-            .orElse(null);
+        return connections.stream().findFirst().orElse(null);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("connected")) {
             currenttip.add(
-                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.drone_downlink.connection",
-                    tag.getInteger("x"),
-                    tag.getInteger("y"),
-                    tag.getInteger("z")));
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.drone_downlink.connection",
+                            tag.getInteger("x"),
+                            tag.getInteger("y"),
+                            tag.getInteger("z")));
 
             if (tag.hasKey("name")) {
                 currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name"));
             }
         } else {
-            currenttip
-                .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
+            currenttip.add(
+                    EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

@@ -29,14 +29,14 @@ public class ProcessingAngleGrinder implements Runnable {
         for (Materials materials : i) {
             aMaterial = materials;
             if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)
-                && (aMaterial != Materials.Rubber)
-                && (aMaterial != Materials._NULL)) {
+                    && (aMaterial != Materials.Rubber)
+                    && (aMaterial != Materials._NULL)) {
                 if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
-                    && (!aMaterial.contains(SubTag.NO_SMASHING))
-                    && (!aMaterial.contains(SubTag.TRANSPARENT))
-                    && (!aMaterial.contains(SubTag.FLAMMABLE))
-                    && (!aMaterial.contains(SubTag.MAGICAL))
-                    && (!aMaterial.contains(SubTag.NO_SMELTING))) {
+                        && (!aMaterial.contains(SubTag.NO_SMASHING))
+                        && (!aMaterial.contains(SubTag.TRANSPARENT))
+                        && (!aMaterial.contains(SubTag.FLAMMABLE))
+                        && (!aMaterial.contains(SubTag.MAGICAL))
+                        && (!aMaterial.contains(SubTag.NO_SMELTING))) {
                     Logger.MATERIALS("Generating Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial));
                     // Input 1
 
@@ -50,12 +50,12 @@ public class ProcessingAngleGrinder implements Runnable {
                         used++;
                     } else {
                         Logger.MATERIALS(
-                            "Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial)
-                                + ", Plate or Long Rod may be invalid. Invalid | Plate? "
-                                + (plate == null)
-                                + " | Rod? "
-                                + (longrod == null)
-                                + " |");
+                                "Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial)
+                                        + ", Plate or Long Rod may be invalid. Invalid | Plate? "
+                                        + (plate == null)
+                                        + " | Rod? "
+                                        + (longrod == null)
+                                        + " |");
                     }
                     // GTModHandler.addCraftingRecipe(,
                     // GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
@@ -64,8 +64,8 @@ public class ProcessingAngleGrinder implements Runnable {
                     // Character.valueOf('P'), OrePrefixes.plate.get(aMaterial),
                     // Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
                 } else {
-                    Logger
-                        .MATERIALS("Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial));
+                    Logger.MATERIALS(
+                            "Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial));
                 }
             } else {
                 Logger.MATERIALS("Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial));
@@ -84,27 +84,27 @@ public class ProcessingAngleGrinder implements Runnable {
     public boolean addRecipe(Materials aMaterial, long aBatteryStorage, int aVoltageTier, ItemStack aBattery) {
 
         ItemStack aOutputStack = MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-            MetaGeneratedGregtechTools.ANGLE_GRINDER,
-            1,
-            aMaterial,
-            Materials.Titanium,
-            new long[] { aBatteryStorage, GTValues.V[aVoltageTier], 3L, -1L });
+                MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                1,
+                aMaterial,
+                Materials.Titanium,
+                new long[] { aBatteryStorage, GTValues.V[aVoltageTier], 3L, -1L });
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {
             Logger.MATERIALS(
-                "Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial)
-                    + ", Durability: "
-                    + aDura);
+                    "Unable to generate Angle Grinder from " + MaterialUtils.getMaterialName(aMaterial)
+                            + ", Durability: "
+                            + aDura);
             return false;
         }
 
         return GTModHandler.addCraftingRecipe(
-            aOutputStack,
-            RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
-            new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
-                CI.getElectricMotor(aVoltageTier, 1), 'S', OrePrefixes.screw.get(Materials.Titanium), 'L',
-                OrePrefixes.stickLong.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial), 'G',
-                MaterialsElements.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
+                aOutputStack,
+                RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
+                new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
+                        CI.getElectricMotor(aVoltageTier, 1), 'S', OrePrefixes.screw.get(Materials.Titanium), 'L',
+                        OrePrefixes.stickLong.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial), 'G',
+                        MaterialsElements.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
     }
 }

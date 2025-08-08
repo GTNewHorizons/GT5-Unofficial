@@ -26,7 +26,7 @@ public class FurnaceBackend extends NonGTBackend {
 
     @Override
     protected GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        @Nullable GTRecipe cachedRecipe) {
+            @Nullable GTRecipe cachedRecipe) {
         if (items.length == 0 || items[0] == null) {
             return null;
         }
@@ -35,13 +35,8 @@ public class FurnaceBackend extends NonGTBackend {
         }
         ItemStack output = GTModHandler.getSmeltingOutput(items[0], false, null);
         return output == null ? null
-            : GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, items[0]))
-                .itemOutputs(output)
-                .duration(128)
-                .eut(4)
-                .build()
-                .orElse(null);
+                : GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, items[0])).itemOutputs(output)
+                        .duration(128).eut(4).build().orElse(null);
     }
 
     @Override

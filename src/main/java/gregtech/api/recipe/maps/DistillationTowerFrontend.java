@@ -18,7 +18,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 public class DistillationTowerFrontend extends RecipeMapFrontend {
 
     public DistillationTowerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

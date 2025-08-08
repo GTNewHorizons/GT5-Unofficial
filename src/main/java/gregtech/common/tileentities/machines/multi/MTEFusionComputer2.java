@@ -15,15 +15,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 public class MTEFusionComputer2 extends MTEFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION2)
-            .extFacing()
-            .build(),
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION2_GLOW)
-            .extFacing()
-            .glow()
-            .build());
+            TextureFactory.builder().addIcon(OVERLAY_FUSION2).extFacing().build(),
+            TextureFactory.builder().addIcon(OVERLAY_FUSION2_GLOW).extFacing().glow().build());
 
     public MTEFusionComputer2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -76,21 +69,16 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("It's over 9000!!!")
-            .addInfo("§b8,192§7 EU/t and §b20M§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .beginStructureBlock(15, 3, 15, false)
-            .addController("See diagram when placed")
-            .addCasingInfoRange("Fusion Machine Casing", 79, 123, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Fusion Coil Block", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified casings", 2)
-            .addInputHatch("2-16, Specified casings", 1)
-            .addOutputHatch("1-16, Specified casings", 3)
-            .addStructureInfo("ALL Hatches must be ZPM or better")
-            .toolTipFinisher();
+        tt.addMachineType("Fusion Reactor").addInfo("It's over 9000!!!")
+                .addInfo("§b8,192§7 EU/t and §b20M§7 EU capacity per Energy Hatch")
+                .addInfo("If the recipe has a startup cost greater than the")
+                .addInfo("number of energy hatches * cap, you can't do it").beginStructureBlock(15, 3, 15, false)
+                .addController("See diagram when placed").addCasingInfoRange("Fusion Machine Casing", 79, 123, false)
+                .addStructureInfo("Cover the coils with casing")
+                .addOtherStructurePart("Fusion Coil Block", "Center part of the ring")
+                .addEnergyHatch("1-16, Specified casings", 2).addInputHatch("2-16, Specified casings", 1)
+                .addOutputHatch("1-16, Specified casings", 3).addStructureInfo("ALL Hatches must be ZPM or better")
+                .toolTipFinisher();
         return tt;
     }
 

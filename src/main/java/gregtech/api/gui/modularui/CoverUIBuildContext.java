@@ -26,7 +26,7 @@ public class CoverUIBuildContext extends UIBuildContext {
      * @param guiColorization The color used to render machine's GUI
      */
     public CoverUIBuildContext(EntityPlayer player, int coverID, ForgeDirection side, ICoverable tile,
-        boolean anotherWindow, int guiColorization) {
+            boolean anotherWindow, int guiColorization) {
         super(player);
         this.coverID = coverID;
         this.side = side;
@@ -43,7 +43,7 @@ public class CoverUIBuildContext extends UIBuildContext {
      * @param anotherWindow If cover GUI is shown in opened on top of another window
      */
     public CoverUIBuildContext(EntityPlayer player, int coverID, ForgeDirection side, ICoverable tile,
-        boolean anotherWindow) {
+            boolean anotherWindow) {
         this(player, coverID, side, tile, anotherWindow, tile.getGUIColorization());
     }
 

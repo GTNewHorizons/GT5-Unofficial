@@ -42,8 +42,7 @@ public class GTNBTDataBase {
     }
 
     static GTNBTDataBase getGTTagFromId(Long id) {
-        return GTNBTDataBase.GTNBTBIMAP.inverse()
-            .get(id);
+        return GTNBTDataBase.GTNBTBIMAP.inverse().get(id);
     }
 
     static Long getIdFromGTTag(GTNBTDataBase tagCompound) {
@@ -51,8 +50,7 @@ public class GTNBTDataBase {
     }
 
     static NBTTagCompound getTagFromId(Long id) {
-        return GTNBTDataBase.tagIdBiMap.inverse()
-            .get(id);
+        return GTNBTDataBase.tagIdBiMap.inverse().get(id);
     }
 
     static Long getIdFromTag(NBTTagCompound tagCompound) {
@@ -91,7 +89,7 @@ public class GTNBTDataBase {
     }
 
     public static GTNBTDataBase makeNewWithoutRegister(String mDataName, String mDataTitle,
-        NBTTagCompound tagCompound) {
+            NBTTagCompound tagCompound) {
         return new GTNBTDataBase(tagCompound, mDataName, mDataTitle, Long.MIN_VALUE);
     }
 }

@@ -42,13 +42,10 @@ public class CoverUIFactory<C> {
         addTitleToUI(builder);
         addUIWidgets(builder);
         if (getUIBuildContext().isAnotherWindow()) {
-            builder.widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(getGUIWidth() - 15, 3));
+            builder.widget(ButtonWidget.closeWindowButton(true).setPos(getGUIWidth() - 15, 3));
         }
 
-        final Cover cover = uiBuildContext.getTile()
-            .getCoverAtSide(uiBuildContext.getCoverSide());
+        final Cover cover = uiBuildContext.getTile().getCoverAtSide(uiBuildContext.getCoverSide());
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             builder.widget(new CoverTickRateButton(cover, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
         }
@@ -72,15 +69,12 @@ public class CoverUIFactory<C> {
     }
 
     /**
-     * Can return null when the cover is invalid e.g. tile is broken or cover
-     * is removed
+     * Can return null when the cover is invalid e.g. tile is broken or cover is removed
      */
 
     protected @Nullable C getCover() {
         if (isCoverValid()) {
-            return adaptCover(
-                getUIBuildContext().getTile()
-                    .getCoverAtSide(getUIBuildContext().getCoverSide()));
+            return adaptCover(getUIBuildContext().getTile().getCoverAtSide(getUIBuildContext().getCoverSide()));
         } else {
             return null;
         }
@@ -105,26 +99,19 @@ public class CoverUIFactory<C> {
     }
 
     protected void ifCoverValid(Consumer<C> coverConsumer) {
-        Optional.ofNullable(getCover())
-            .ifPresent(coverConsumer);
+        Optional.ofNullable(getCover()).ifPresent(coverConsumer);
     }
 
     private boolean isCoverValid() {
         ICoverable tile = getUIBuildContext().getTile();
-        return !tile.isDead() && tile.getCoverAtSide(getUIBuildContext().getCoverSide())
-            .isValid();
+        return !tile.isDead() && tile.getCoverAtSide(getUIBuildContext().getCoverSide()).isValid();
     }
 
     protected void addTitleToUI(ModularWindow.Builder builder) {
         ItemStack coverItem = GTUtility.intToStack(getUIBuildContext().getCoverID());
         if (coverItem != null) {
-            builder.widget(
-                new ItemDrawable(coverItem).asWidget()
-                    .setPos(5, 5)
-                    .setSize(16, 16))
-                .widget(
-                    new TextWidget(coverItem.getDisplayName()).setDefaultColor(COLOR_TITLE.get())
-                        .setPos(25, 9));
+            builder.widget(new ItemDrawable(coverItem).asWidget().setPos(5, 5).setSize(16, 16)).widget(
+                    new TextWidget(coverItem.getDisplayName()).setDefaultColor(COLOR_TITLE.get()).setPos(25, 9));
         }
     }
 
@@ -142,7 +129,7 @@ public class CoverUIFactory<C> {
 
     protected final Supplier<Integer> COLOR_TITLE = () -> CoverRegistry.getTextColorOrDefault("title", 0x222222);
     protected final Supplier<Integer> COLOR_TEXT_GRAY = () -> CoverRegistry
-        .getTextColorOrDefault("text_gray", 0x555555);
+            .getTextColorOrDefault("text_gray", 0x555555);
     protected final Supplier<Integer> COLOR_TEXT_WARN = () -> CoverRegistry
-        .getTextColorOrDefault("text_warn", 0xff0000);
+            .getTextColorOrDefault("text_warn", 0xff0000);
 }

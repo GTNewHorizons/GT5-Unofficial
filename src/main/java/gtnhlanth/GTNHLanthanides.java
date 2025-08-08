@@ -19,13 +19,13 @@ import gtnhlanth.loader.BotRecipes;
 import gtnhlanth.loader.RecipeLoader;
 
 @Mod(
-    modid = Tags.MODID,
-    version = Tags.VERSION,
-    name = Tags.MODNAME,
-    dependencies = "required-after:IC2; " + "required-after:gregtech; "
-        + "required-after:bartworks; "
-        + "required-after:GoodGenerator; "
-        + "before:miscutils; ")
+        modid = Tags.MODID,
+        version = Tags.VERSION,
+        name = Tags.MODNAME,
+        dependencies = "required-after:IC2; " + "required-after:gregtech; "
+                + "required-after:bartworks; "
+                + "required-after:GoodGenerator; "
+                + "before:miscutils; ")
 public class GTNHLanthanides {
 
     public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");

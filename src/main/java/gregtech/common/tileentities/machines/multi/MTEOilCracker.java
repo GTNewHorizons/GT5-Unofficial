@@ -56,46 +56,43 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     private static final byte CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEOilCracker> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEOilCracker>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { { "lcmcr", "lcmcr", "lcmcr" }, { "lc~cr", "l---r", "lcmcr" },
-                    { "lcmcr", "lcmcr", "lcmcr" }, }))
-        .addElement('c', activeCoils(ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel)))
-        .addElement(
-            'l',
-            buildHatchAdder(MTEOilCracker.class)
-                .atLeast(
-                    HatchElement.InputHatch.withAdder(MTEOilCracker::addLeftHatchToMachineList),
-                    HatchElement.Energy,
-                    HatchElement.Maintenance)
-                .dot(2)
-                .casingIndex(CASING_INDEX)
-                .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement(
-            'r',
-            buildHatchAdder(MTEOilCracker.class)
-                .atLeast(
-                    HatchElement.OutputHatch.withAdder(MTEOilCracker::addRightHatchToMachineList),
-                    HatchElement.Energy,
-                    HatchElement.Maintenance)
-                .dot(3)
-                .casingIndex(CASING_INDEX)
-                .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement(
-            'm',
-            buildHatchAdder(MTEOilCracker.class)
-                .atLeast(
-                    HatchElement.InputHatch.withAdder(MTEOilCracker::addMiddleInputToMachineList)
-                        .withCount(t -> t.mMiddleInputHatches.size()),
-                    HatchElement.InputBus,
-                    HatchElement.Energy,
-                    HatchElement.Maintenance)
-                .dot(1)
-                .casingIndex(CASING_INDEX)
-                .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .build();
+            .<MTEOilCracker>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { "lcmcr", "lcmcr", "lcmcr" }, { "lc~cr", "l---r", "lcmcr" },
+                                    { "lcmcr", "lcmcr", "lcmcr" }, }))
+            .addElement('c', activeCoils(ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel)))
+            .addElement(
+                    'l',
+                    buildHatchAdder(MTEOilCracker.class).atLeast(
+                            HatchElement.InputHatch.withAdder(MTEOilCracker::addLeftHatchToMachineList),
+                            HatchElement.Energy,
+                            HatchElement.Maintenance).dot(2).casingIndex(CASING_INDEX).buildAndChain(
+                                    onElementPass(
+                                            MTEOilCracker::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings4, 1))))
+            .addElement(
+                    'r',
+                    buildHatchAdder(MTEOilCracker.class).atLeast(
+                            HatchElement.OutputHatch.withAdder(MTEOilCracker::addRightHatchToMachineList),
+                            HatchElement.Energy,
+                            HatchElement.Maintenance).dot(3).casingIndex(CASING_INDEX).buildAndChain(
+                                    onElementPass(
+                                            MTEOilCracker::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings4, 1))))
+            .addElement(
+                    'm',
+                    buildHatchAdder(MTEOilCracker.class).atLeast(
+                            HatchElement.InputHatch.withAdder(MTEOilCracker::addMiddleInputToMachineList)
+                                    .withCount(t -> t.mMiddleInputHatches.size()),
+                            HatchElement.InputBus,
+                            HatchElement.Energy,
+                            HatchElement.Maintenance).dot(1).casingIndex(CASING_INDEX).buildAndChain(
+                                    onElementPass(
+                                            MTEOilCracker::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings4, 1))))
+            .build();
     private HeatingCoilLevel heatLevel;
     protected final List<MTEHatchInput> mMiddleInputHatches = new ArrayList<>();
     // 0 -> left, 1 -> right, any other -> not found
@@ -114,53 +111,37 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cracker")
-            .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
-            .addInfo("More efficient than the Chemical Reactor")
-            .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
-            .addInfo("Steam - Outputs 50% more cracked fluid")
-            .addInfo("(Values compared to cracking in the Chemical Reactor)")
-            .addInfo("Place the appropriate circuit in the controller or an input bus")
-            .beginStructureBlock(5, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
-            .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
-            .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
-            .addEnergyHatch("Any casing", 1, 2, 3)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, Any middle ring casing", 1)
-            .addInputHatch("Any left/right side casing", 2, 3)
-            .addOutputHatch("Any right/left side casing", 2, 3)
-            .addStructureInfo("Input/Output Hatches must be on opposite sides!")
-            .addInputBus("Any middle ring casing, optional for programmed circuit automation")
-            .addStructureHint("GT5U.cracker.io_side")
-            .toolTipFinisher();
+        tt.addMachineType("Cracker").addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
+                .addInfo("More efficient than the Chemical Reactor")
+                .addInfo("Gives different benefits whether it hydro or steam-cracks:")
+                .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
+                .addInfo("Steam - Outputs 50% more cracked fluid")
+                .addInfo("(Values compared to cracking in the Chemical Reactor)")
+                .addInfo("Place the appropriate circuit in the controller or an input bus")
+                .beginStructureBlock(5, 3, 3, true).addController("Front center")
+                .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
+                .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
+                .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
+                .addEnergyHatch("Any casing", 1, 2, 3).addMaintenanceHatch("Any casing", 1, 2, 3)
+                .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, Any middle ring casing", 1)
+                .addInputHatch("Any left/right side casing", 2, 3).addOutputHatch("Any right/left side casing", 2, 3)
+                .addStructureInfo("Input/Output Hatches must be on opposite sides!")
+                .addInputBus("Any middle ring casing, optional for programmed circuit automation")
+                .addStructureHint("GT5U.cracker.io_side").toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
@@ -264,10 +245,10 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
         mInputOnSide = -1;
         mOutputOnSide = -1;
         return checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0) && mInputOnSide != -1
-            && mOutputOnSide != -1
-            && mCasingAmount >= 18
-            && mMaintenanceHatches.size() == 1
-            && !mMiddleInputHatches.isEmpty();
+                && mOutputOnSide != -1
+                && mCasingAmount >= 18
+                && mMaintenanceHatches.size() == 1
+                && !mMiddleInputHatches.isEmpty();
     }
 
     @Override
@@ -280,55 +261,48 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
         final ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-            byte hatchColor = tHatch.getBaseMetaTileEntity()
-                .getColorization();
+            byte hatchColor = tHatch.getBaseMetaTileEntity().getColorization();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
-                    if (tFluid != null && !getRecipeMap().getBackend()
-                        .isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && !getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
                         inputsFromME.put(tFluid.getFluid(), tFluid);
                     }
                 }
             } else if (tHatch instanceof MTEHatchMultiInput) {
                 for (final FluidStack tFluid : ((MTEHatchMultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && !getRecipeMap().getBackend()
-                        .isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && !getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
-                    if (!getRecipeMap().getBackend()
-                        .isValidCatalystFluid(tHatch.getFillableStack())) rList.add(tHatch.getFillableStack());
+                    if (!getRecipeMap().getBackend().isValidCatalystFluid(tHatch.getFillableStack()))
+                        rList.add(tHatch.getFillableStack());
                 }
             }
         }
         for (final MTEHatchInput tHatch : validMTEList(mMiddleInputHatches)) {
-            byte hatchColor = tHatch.getBaseMetaTileEntity()
-                .getColorization();
+            byte hatchColor = tHatch.getBaseMetaTileEntity().getColorization();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
-                    if (tFluid != null && getRecipeMap().getBackend()
-                        .isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
                         inputsFromME.put(tFluid.getFluid(), tFluid);
                     }
                 }
             } else if (tHatch instanceof MTEHatchMultiInput) {
                 for (final FluidStack tFluid : ((MTEHatchMultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && getRecipeMap().getBackend()
-                        .isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
                     final FluidStack tStack = tHatch.getFillableStack();
-                    if (getRecipeMap().getBackend()
-                        .isValidCatalystFluid(tStack)) {
+                    if (getRecipeMap().getBackend().isValidCatalystFluid(tStack)) {
                         rList.add(tStack);
                     }
                 }

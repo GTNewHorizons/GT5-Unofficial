@@ -49,7 +49,7 @@ public class BlockCasings9 extends BlockCasingsAbstract {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_PIPE_POLYBENZIMIDAZOLE.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_VENT_T2.getIcon();
             case 2 -> ordinalSide >= 2 ? Textures.BlockIcons.TEXTURE_METAL_PANEL_E.getIcon()
-                : Textures.BlockIcons.TEXTURE_METAL_PANEL_E_A.getIcon();
+                    : Textures.BlockIcons.TEXTURE_METAL_PANEL_E_A.getIcon();
             case 3 -> Textures.BlockIcons.INDUSTRIAL_STRENGTH_CONCRETE.getIcon();
             case 4 -> Textures.BlockIcons.MACHINE_CASING_INDUSTRIAL_WATER_PLANT.getIcon();
             case 5 -> Textures.BlockIcons.WATER_PLANT_CONCRETE_CASING.getIcon();

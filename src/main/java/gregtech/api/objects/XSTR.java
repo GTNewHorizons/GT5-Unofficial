@@ -4,9 +4,8 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 /*
- * TODO: Check the validity of the algorithm.
- * There is a claim that this particular implementation is not faithful to the articles it links, skewing the
- * distribution.
+ * TODO: Check the validity of the algorithm. There is a claim that this particular implementation is not faithful to
+ * the articles it links, skewing the distribution.
  */
 /**
  * XSTR - Xorshift ThermiteRandom Modified by Bogdan-G 03.06.2016 version 0.0.4
@@ -43,9 +42,7 @@ public class XSTR extends Random {
 
         @Override
         public synchronized void setSeed(long seed) {
-            if (!Thread.currentThread()
-                .getStackTrace()[2].getClassName()
-                    .equals(Random.class.getName()))
+            if (!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName()))
                 throw new NoSuchMethodError("This is meant to be shared!, leave seed state alone!");
         }
     };
@@ -241,6 +238,7 @@ public class XSTR extends Random {
     public void nextBytes(byte[] bytes_arr) {
         for (int iba = 0, lenba = bytes_arr.length; iba < lenba;)
             for (int rndba = nextInt(), nba = Math.min(lenba - iba, Integer.SIZE / Byte.SIZE); nba--
-                > 0; rndba >>= Byte.SIZE) bytes_arr[iba++] = (byte) rndba;
+                    > 0; rndba >>= Byte.SIZE)
+                bytes_arr[iba++] = (byte) rndba;
     }
 }

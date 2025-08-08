@@ -19,7 +19,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
 
     private final int mCosts;
     private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.softmallet", "Activates and Deactivates Machines");
+            .addStringLocalization("gt.behaviour.softmallet", "Activates and Deactivates Machines");
 
     public BehaviourSoftMallet(int aCosts) {
         this.mCosts = aCosts;
@@ -27,7 +27,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -42,7 +42,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.setBlock(aX, aY, aZ, Blocks.redstone_lamp, 0, 0);
                 aWorld.isRemote = false;
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
@@ -52,7 +52,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.setBlock(aX, aY, aZ, Blocks.lit_redstone_lamp, 0, 0);
                 aWorld.isRemote = false;
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
@@ -62,7 +62,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.setBlock(aX, aY, aZ, aBlock, (aMeta + 8) % 16, 0);
                 aWorld.isRemote = false;
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
@@ -72,7 +72,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.setBlock(aX, aY, aZ, aBlock, (aMeta + 8) % 16, 0);
                 aWorld.isRemote = false;
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
@@ -83,24 +83,24 @@ public class BehaviourSoftMallet extends BehaviourNone {
             return true;
         }
         if ((aBlock == Blocks.piston) || (aBlock == Blocks.sticky_piston)
-            || (aBlock == Blocks.dispenser)
-            || (aBlock == Blocks.dropper)) {
+                || (aBlock == Blocks.dispenser)
+                || (aBlock == Blocks.dropper)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta + 1) % 6, 3);
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
         if ((aBlock == Blocks.pumpkin) || (aBlock == Blocks.lit_pumpkin)
-            || (aBlock == Blocks.furnace)
-            || (aBlock == Blocks.lit_furnace)
-            || (aBlock == Blocks.chest)
-            || (aBlock == Blocks.trapped_chest)) {
+                || (aBlock == Blocks.furnace)
+                || (aBlock == Blocks.lit_furnace)
+                || (aBlock == Blocks.chest)
+                || (aBlock == Blocks.trapped_chest)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta - 1) % 4 + 2, 3);
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
@@ -108,7 +108,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta + 1) % 6 != 1 ? (aMeta + 1) % 6 : 2, 3);
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                        .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }

@@ -17,8 +17,7 @@ public class Node {
         this.mConsumers = aConsumers;
         mHighestNodeValue = aNodeValue;
         // you don't want to generate map multiple times in the same tick
-        mCreationTime = MinecraftServer.getServer()
-            .getTickCounter();
+        mCreationTime = MinecraftServer.getServer().getTickCounter();
     }
 
     public final TileEntity mTileEntity;

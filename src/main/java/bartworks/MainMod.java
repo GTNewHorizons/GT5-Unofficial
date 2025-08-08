@@ -71,21 +71,21 @@ import gregtech.api.util.GlassTier;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
-    modid = MainMod.MOD_ID,
-    name = MainMod.NAME,
-    version = GT_Version.VERSION,
-    guiFactory = "bartworks.client.gui.BWGuiFactory",
-    dependencies = """
-        required-after:IC2;\
-        required-after:gregtech;\
-        after:berriespp;\
-        after:tectech;\
-        after:GalacticraftMars;\
-        after:GalacticraftCore;\
-        after:Forestry;\
-        after:ProjRed|Illumination;\
-        after:RandomThings;\
-        before:miscutils;""")
+        modid = MainMod.MOD_ID,
+        name = MainMod.NAME,
+        version = GT_Version.VERSION,
+        guiFactory = "bartworks.client.gui.BWGuiFactory",
+        dependencies = """
+                required-after:IC2;\
+                required-after:gregtech;\
+                after:berriespp;\
+                after:tectech;\
+                after:GalacticraftMars;\
+                after:GalacticraftCore;\
+                after:Forestry;\
+                after:ProjRed|Illumination;\
+                after:RandomThings;\
+                before:miscutils;""")
 public final class MainMod {
 
     public static final String NAME = "BartWorks";
@@ -125,26 +125,21 @@ public final class MainMod {
 
         Werkstoff.init();
         GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());
-        if (event.getSide()
-            .isClient()) {
+        if (event.getSide().isClient()) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        if (event.getSide()
-            .isClient() && Configuration.tooltip.addGlassTierInTooltips) {
+        if (event.getSide().isClient() && Configuration.tooltip.addGlassTierInTooltips) {
             MinecraftForge.EVENT_BUS.register(new GlassTier.GlassTooltipHandler());
         }
         ServerEventHandler serverEventHandler = new ServerEventHandler();
-        if (event.getSide()
-            .isServer()) {
+        if (event.getSide().isServer()) {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
         }
-        FMLCommonHandler.instance()
-            .bus()
-            .register(serverEventHandler);
+        FMLCommonHandler.instance().bus().register(serverEventHandler);
         BioLabLoader.run(event);
 
         WerkstoffLoader.runInit();
@@ -199,10 +194,7 @@ public final class MainMod {
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
 
         // Accept recipe map changes into Buffers
-        RecipeMap.ALL_RECIPE_MAPS.values()
-            .forEach(
-                map -> map.getBackend()
-                    .reInit());
+        RecipeMap.ALL_RECIPE_MAPS.values().forEach(map -> map.getBackend().reInit());
 
         // because the above code runs so late that I couldn't find anywhere else to call this
         if (!recipesAdded) Godforge.initMoltenModuleRecipes();

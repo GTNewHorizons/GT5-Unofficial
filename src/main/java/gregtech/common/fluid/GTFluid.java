@@ -57,13 +57,10 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
                 setGaseous(false).setViscosity(10000);
                 break;
             case GAS:
-                setGaseous(true).setDensity(-100)
-                    .setViscosity(200);
+                setGaseous(true).setDensity(-100).setViscosity(200);
                 break;
             case PLASMA:
-                setGaseous(true).setDensity(55536)
-                    .setViscosity(10)
-                    .setLuminosity(15);
+                setGaseous(true).setDensity(55536).setViscosity(10).setLuminosity(15);
                 break;
             case MOLTEN:
                 final int luminosity;
@@ -88,7 +85,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     @Override
     public int getColor() {
         return (Math.max(0, Math.min(255, colorRGBA[0])) << 16) | (Math.max(0, Math.min(255, colorRGBA[1])) << 8)
-            | Math.max(0, Math.min(255, colorRGBA[2]));
+                | Math.max(0, Math.min(255, colorRGBA[2]));
     }
 
     // ----- IGTFluid interface implementations -----
@@ -119,17 +116,13 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     @Override
     public IGTRegisteredFluid registerContainers(final ItemStack fullContainer, final ItemStack emptyContainer,
-        final int containerSize) {
+            final int containerSize) {
         if (fullContainer != null && emptyContainer != null) {
             final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
             if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(fullContainer)
-                    .itemOutputs(GTUtility.getContainerItem(fullContainer, false))
-                    .fluidOutputs(fluidStack)
-                    .duration(fluidStack.amount / 62)
-                    .eut(1)
-                    .addTo(fluidCannerRecipes);
+                GTValues.RA.stdBuilder().itemInputs(fullContainer)
+                        .itemOutputs(GTUtility.getContainerItem(fullContainer, false)).fluidOutputs(fluidStack)
+                        .duration(fluidStack.amount / 62).eut(1).addTo(fluidCannerRecipes);
             }
         }
         return this;

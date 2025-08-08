@@ -99,32 +99,17 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     // Valid fuels which the discount will get applied to.
     private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTCC.getFluid(1L),
-        MaterialsUEVplus.ExcitedDTPC.getFluid(1L), MaterialsUEVplus.ExcitedDTRC.getFluid(1L),
-        MaterialsUEVplus.ExcitedDTEC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
+            MaterialsUEVplus.ExcitedDTPC.getFluid(1L), MaterialsUEVplus.ExcitedDTRC.getFluid(1L),
+            MaterialsUEVplus.ExcitedDTEC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
 
     private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {
-            put(
-                MaterialsUEVplus.ExcitedDTCC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(14_514_983L, 1 / 8f));
-            put(
-                MaterialsUEVplus.ExcitedDTPC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(66_768_460L, 1 / 4f));
-            put(
-                MaterialsUEVplus.ExcitedDTRC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(269_326_451L, 1 / 2f));
-            put(
-                MaterialsUEVplus.ExcitedDTEC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(1_073_007_393L, 1f));
-            put(
-                MaterialsUEVplus.ExcitedDTSC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(4_276_767_521L, 2f));
+            put(MaterialsUEVplus.ExcitedDTCC.getFluid(1L).getFluid(), Pair.of(14_514_983L, 1 / 8f));
+            put(MaterialsUEVplus.ExcitedDTPC.getFluid(1L).getFluid(), Pair.of(66_768_460L, 1 / 4f));
+            put(MaterialsUEVplus.ExcitedDTRC.getFluid(1L).getFluid(), Pair.of(269_326_451L, 1 / 2f));
+            put(MaterialsUEVplus.ExcitedDTEC.getFluid(1L).getFluid(), Pair.of(1_073_007_393L, 1f));
+            put(MaterialsUEVplus.ExcitedDTSC.getFluid(1L).getFluid(), Pair.of(4_276_767_521L, 2f));
         }
     };
 
@@ -147,399 +132,403 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private boolean enoughCatalyst = false;
 
     @SuppressWarnings("SpellCheckingInspection")
-    private static final String[][] structure_string = new String[][] { { "                                 ",
-        "         N   N     N   N         ", "         N   N     N   N         ", "         N   N     N   N         ",
-        "                                 ", "                                 ", "                                 ",
-        "         N   N     N   N         ", "         N   N     N   N         ", " NNN   NNN   N     N   NNN   NNN ",
-        "                                 ", "                                 ", "                                 ",
-        " NNN   NNN             NNN   NNN ", "                                 ", "                                 ",
-        "                                 ", "                                 ", "                                 ",
-        " NNN   NNN             NNN   NNN ", "                                 ", "                                 ",
-        "                                 ", " NNN   NNN             NNN   NNN " },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "         bCCCb     bCCCb         ", "         N   N     N   N         ",
-            "                                 ", "         N   N     N   N         ",
-            "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "NbbbN NbbNCCCb     bCCCNbbN NbbbN", " CCC   CCC   N     N   CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN           NbbbN NbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CCC   CCC             CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN    N N    NbbbN NbbbN", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "      NNNbbbbbNNsNNbbbbbNNN      ",
-            "    ss   bCCCb     bCCCb   ss    ", "   s     N   N     N   N     s   ",
-            "   s                         s   ", "  N      N   N     N   N      N  ",
-            "  N      bCCCb     bCCCb      N  ", "  N     sbbbbbNNsNNbbbbbs     N  ",
-            "NbbbN NbbNCCCb     bCCCNbbN NbbbN", " CbC   CbC   N     N   CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbN           NbbbN NbbbN", " NNN   NNN             NNN   NNN ",
-            " NNN   NNN             NNN   NNN ", "  s     s               s     s  ",
-            " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CbC   CbC             CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "    ss   bCCCb     bCCCb   ss    ",
-            "         bCCCb     bCCCb         ", "  s      NCCCN     NCCCN      s  ",
-            "  s      NCCCN     NCCCN      s  ", "         NCCCN     NCCCN         ",
-            "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", " CCCCCCCCC   N     N   CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", " CCCCCCCCC             CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
-        { "                                 ", "         N   N     N   N         ", "   s     N   N     N   N     s   ",
-            "  s      NCCCN     NCCCN      s  ", "                                 ",
-            "                                 ", "                                 ",
-            "         NCCCN     NCCCN         ", "         N   N     N   N         ",
-            " NNN   NN    N     N    NN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN     NbN     NNN   NNN ", },
-        { "                                 ", "                                 ", "   s                         s   ",
-            "  s      NCCCN     NCCCN      s  ", "                                 ",
-            "                                 ", "                                 ",
-            "         NCCCN     NCCCN         ", "                                 ",
-            "   N   N                 N   N   ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            "   N   N                 N   N   ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "   N   N                 N   N   ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            "   N   N       NbN       N   N   ", },
-        { "                                 ", "         N   N     N   N         ", "  N      N   N     N   N      N  ",
-            "         NCCCN     NCCCN         ", "                                 ",
-            "                                 ", "                                 ",
-            "         NCCCN     NCCCN         ", "         N   N     N   N         ",
-            " NNN   NN    N     N    NN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN     NbN     NNN   NNN ", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "  N      bCCCb     bCCCb      N  ",
-            "         bCCCb     bCCCb         ", "         NCCCN     NCCCN         ",
-            "         NCCCN     NCCCN         ", "         NCCCN     NCCCN         ",
-            "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", " CCCCCCCCC   N     N   CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", " CCCCCCCCC             CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "  N     sbbbbbNNsNNbbbbbs     N  ",
-            "         bCCCb     bCCCb         ", "         N   N     N   N         ",
-            "                                 ", "         N   N     N   N         ",
-            "         bCCCb     bCCCb         ", "  s     sbbbbbNNsNNbbbbbs     s  ",
-            "NbbbN NbbNCCCb     bCCCNbbN NbbbN", " CbC   CbC   N     N   CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbN           NbbbN NbbbN", " NNN   NNN             NNN   NNN ",
-            " NNN   NNN             NNN   NNN ", "  s     s               s     s  ",
-            " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CbC   CbC             CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
-        { " NNN   NNN   N     N   NNN   NNN ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", " NNN   NNN   N     N   NNN   NNN ",
-            "   N   N                 N   N   ", " NNN   NNN   N     N   NNN   NNN ",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
-            "NNNN   NNNCCCb     bCCCNNN   NNNN", " CCC   CCC   N     N   CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN           NbbbN NbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CCC   CCC             CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN    NbN    NbbbN NbbbN", },
-        { "                                 ", " CCC   CCC   N     N   CCC   CCC ", " CbC   CbC   N     N   CbC   CbC ",
-            " CCCCCCCCC   N     N   CCCCCCCCC ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " CCCCCCCCC   N     N   CCCCCCCCC ", " CbC   CbC   N     N   CbC   CbC ",
-            " CCC   CCC   N     N   CCC   CCC ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN     NbN     NNN   NNN ", },
-        { "                                 ", " CCC   CCC             CCC   CCC ", " CbC   CbC             CbC   CbC ",
-            " CCCCCCCCC             CCCCCCCCC ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " CCCCCCCCC             CCCCCCCCC ", " CbC   CbC             CbC   CbC ",
-            " CCC   CCC             CCC   CCC ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N      NbN      N     N  ", },
-        { "                                 ", " CCC   CCC             CCC   CCC ", " CbC   CbC             CbC   CbC ",
-            " CCCCCCCCC             CCCCCCCCC ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " CCCCCCCCC             CCCCCCCCC ", " CbC   CbC             CbC   CbC ",
-            " CCC   CCC             CCC   CCC ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N      NbN      N     N  ", },
-        { " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN", "NbbbN NbbbN           NbbbN NbbbN",
-            "NbbbNNNbbbN           NbbbNNNbbbN", " NNN   NNN             NNN   NNN ",
-            "   N   N                 N   N   ", " NNN   NNN             NNN   NNN ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", "NbbbN NbbbN           NbbbN NbbbN",
-            "NbbbN NbbbN           NbbbN NbbbN", " NNN   NNN             NNN   NNN ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N     NsNsN     N     N  ", },
-        { "                                 ", "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N    NbbbbbN    N     N  ", },
-        { "                                 ", "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                N                ",
-            " NsNNNNNsNNNNsbbbbbsNNNNsNNNNNsN ", },
-        { "                                 ", "                                 ", "  s     s               s     s  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "  s     s               s     s  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                ~                ", "               NNN               ",
-            "  NbbbbbNbbbbNbbbbbNbbbbNbbbbbN  ", },
-        { "                                 ", "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                N                ",
-            " NsNNNNNsNNNNsbbbbbsNNNNsNNNNNsN ", },
-        { "                                 ", "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "  N     N               N     N  ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N    NbbbbbN    N     N  ", },
-        { " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN", "NbbbN NbbbN           NbbbN NbbbN",
-            "NbbbNNNbbbN           NbbbNNNbbbN", " NNN   NNN             NNN   NNN ",
-            "   N   N                 N   N   ", " NNN   NNN             NNN   NNN ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", "NbbbN NbbbN           NbbbN NbbbN",
-            "NbbbN NbbbN           NbbbN NbbbN", " NNN   NNN             NNN   NNN ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N     NsNsN     N     N  ", },
-        { "                                 ", " CCC   CCC             CCC   CCC ", " CbC   CbC             CbC   CbC ",
-            " CCCCCCCCC             CCCCCCCCC ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " CCCCCCCCC             CCCCCCCCC ", " CbC   CbC             CbC   CbC ",
-            " CCC   CCC             CCC   CCC ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N      NbN      N     N  ", },
-        { "                                 ", " CCC   CCC             CCC   CCC ", " CbC   CbC             CbC   CbC ",
-            " CCCCCCCCC             CCCCCCCCC ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " CCCCCCCCC             CCCCCCCCC ", " CbC   CbC             CbC   CbC ",
-            " CCC   CCC             CCC   CCC ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "  N     N      NbN      N     N  ", },
-        { "                                 ", " CCC   CCC   N     N   CCC   CCC ", " CbC   CbC   N     N   CbC   CbC ",
-            " CCCCCCCCC   N     N   CCCCCCCCC ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " CCCCCCCCC   N     N   CCCCCCCCC ", " CbC   CbC   N     N   CbC   CbC ",
-            " CCC   CCC   N     N   CCC   CCC ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN     NbN     NNN   NNN ", },
-        { " NNN   NNN   N     N   NNN   NNN ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", " NNN   NNN   N     N   NNN   NNN ",
-            "   N   N                 N   N   ", " NNN   NNN   N     N   NNN   NNN ",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
-            "NNNN   NNNCCCb     bCCCNNN   NNNN", " CCC   CCC   N     N   CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN           NbbbN NbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CCC   CCC             CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN    NbN    NbbbN NbbbN", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "  N     sbbbbbNNsNNbbbbbs     N  ",
-            "         bCCCb     bCCCb         ", "         N   N     N   N         ",
-            "                                 ", "         N   N     N   N         ",
-            "         bCCCb     bCCCb         ", "  s     sbbbbbNNsNNbbbbbs     s  ",
-            "NbbbN NbbNCCCb     bCCCNbbN NbbbN", " CbC   CbC   N     N   CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbN           NbbbN NbbbN", " NNN   NNN             NNN   NNN ",
-            " NNN   NNN             NNN   NNN ", "  s     s               s     s  ",
-            " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CbC   CbC             CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "  N      bCCCb     bCCCb      N  ",
-            "         bCCCb     bCCCb         ", "         NCCCN     NCCCN         ",
-            "         NCCCN     NCCCN         ", "         NCCCN     NCCCN         ",
-            "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", " CCCCCCCCC   N     N   CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", " CCCCCCCCC             CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
-        { "                                 ", "         N   N     N   N         ", "  N      N   N     N   N      N  ",
-            "         NCCCN     NCCCN         ", "                                 ",
-            "                                 ", "                                 ",
-            "         NCCCN     NCCCN         ", "         N   N     N   N         ",
-            " NNN   NN    N     N    NN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN     NbN     NNN   NNN ", },
-        { "                                 ", "                                 ", "   s                         s   ",
-            "  s      NCCCN     NCCCN      s  ", "                                 ",
-            "                                 ", "                                 ",
-            "         NCCCN     NCCCN         ", "                                 ",
-            "   N   N                 N   N   ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            "   N   N                 N   N   ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            "   N   N                 N   N   ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            "   N   N       NbN       N   N   ", },
-        { "                                 ", "         N   N     N   N         ", "   s     N   N     N   N     s   ",
-            "  s      NCCCN     NCCCN      s  ", "                                 ",
-            "                                 ", "                                 ",
-            "         NCCCN     NCCCN         ", "         N   N     N   N         ",
-            " NNN   NN    N     N    NN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "   C   C                 C   C   ",
-            "   C   C                 C   C   ", "   C   C                 C   C   ",
-            " NNN   NNN     NbN     NNN   NNN ", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "    ss   bCCCb     bCCCb   ss    ",
-            "         bCCCb     bCCCb         ", "  s      NCCCN     NCCCN      s  ",
-            "  s      NCCCN     NCCCN      s  ", "         NCCCN     NCCCN         ",
-            "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN", " CCCCCCCCC   N     N   CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbNNNbbbN           NbbbNNNbbbN", " CCCCCCCCC             CCCCCCCCC ",
-            " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
-            "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "      NNNbbbbbNNsNNbbbbbNNN      ",
-            "    ss   bCCCb     bCCCb   ss    ", "   s     N   N     N   N     s   ",
-            "   s                         s   ", "  N      N   N     N   N      N  ",
-            "  N      bCCCb     bCCCb      N  ", "  N     sbbbbbNNsNNbbbbbs     N  ",
-            "NbbbN NbbNCCCb     bCCCNbbN NbbbN", " CbC   CbC   N     N   CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbN           NbbbN NbbbN", " NNN   NNN             NNN   NNN ",
-            " NNN   NNN             NNN   NNN ", "  s     s               s     s  ",
-            " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CbC   CbC             CbC   CbC ",
-            " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
-            "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
-        { "         N   N     N   N         ", "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "         bCCCb     bCCCb         ", "         N   N     N   N         ",
-            "                                 ", "         N   N     N   N         ",
-            "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
-            "NbbbN NbbNCCCb     bCCCNbbN NbbbN", " CCC   CCC   N     N   CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN           NbbbN NbbbN", "  N     N               N     N  ",
-            "  N     N               N     N  ", "                                 ",
-            "  N     N               N     N  ", "  N     N               N     N  ",
-            "NbbbN NbbbN           NbbbN NbbbN", " CCC   CCC             CCC   CCC ",
-            " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
-            "NbbbN NbbbN    N N    NbbbN NbbbN", },
-        { "                                 ", "         N   N     N   N         ", "         N   N     N   N         ",
-            "         N   N     N   N         ", "                                 ",
-            "                                 ", "                                 ",
-            "         N   N     N   N         ", "         N   N     N   N         ",
-            " NNN   NNN   N     N   NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", "                                 ",
-            "                                 ", "                                 ",
-            " NNN   NNN             NNN   NNN ", } };
+    private static final String[][] structure_string = new String[][] {
+            { "                                 ", "         N   N     N   N         ",
+                    "         N   N     N   N         ", "         N   N     N   N         ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         N   N     N   N         ",
+                    "         N   N     N   N         ", " NNN   NNN   N     N   NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN " },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
+                    "         N   N     N   N         ", "                                 ",
+                    "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    " CCC   CCC   N     N   CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN    N N    NbbbN NbbbN", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "      NNNbbbbbNNsNNbbbbbNNN      ", "    ss   bCCCb     bCCCb   ss    ",
+                    "   s     N   N     N   N     s   ", "   s                         s   ",
+                    "  N      N   N     N   N      N  ", "  N      bCCCb     bCCCb      N  ",
+                    "  N     sbbbbbNNsNNbbbbbs     N  ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    " CbC   CbC   N     N   CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
+                    "  s     s               s     s  ", " NNN   NNN             NNN   NNN ",
+                    " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "    ss   bCCCb     bCCCb   ss    ", "         bCCCb     bCCCb         ",
+                    "  s      NCCCN     NCCCN      s  ", "  s      NCCCN     NCCCN      s  ",
+                    "         NCCCN     NCCCN         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    " CCCCCCCCC   N     N   CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
+            { "                                 ", "         N   N     N   N         ",
+                    "   s     N   N     N   N     s   ", "  s      NCCCN     NCCCN      s  ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         NCCCN     NCCCN         ",
+                    "         N   N     N   N         ", " NNN   NN    N     N    NN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN     NbN     NNN   NNN ", },
+            { "                                 ", "                                 ",
+                    "   s                         s   ", "  s      NCCCN     NCCCN      s  ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         NCCCN     NCCCN         ",
+                    "                                 ", "   N   N                 N   N   ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", "   N   N                 N   N   ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "   N   N                 N   N   ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", "   N   N       NbN       N   N   ", },
+            { "                                 ", "         N   N     N   N         ",
+                    "  N      N   N     N   N      N  ", "         NCCCN     NCCCN         ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         NCCCN     NCCCN         ",
+                    "         N   N     N   N         ", " NNN   NN    N     N    NN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN     NbN     NNN   NNN ", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "  N      bCCCb     bCCCb      N  ", "         bCCCb     bCCCb         ",
+                    "         NCCCN     NCCCN         ", "         NCCCN     NCCCN         ",
+                    "         NCCCN     NCCCN         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    " CCCCCCCCC   N     N   CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "  N     sbbbbbNNsNNbbbbbs     N  ", "         bCCCb     bCCCb         ",
+                    "         N   N     N   N         ", "                                 ",
+                    "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "  s     sbbbbbNNsNNbbbbbs     s  ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    " CbC   CbC   N     N   CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
+                    "  s     s               s     s  ", " NNN   NNN             NNN   NNN ",
+                    " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
+            { " NNN   NNN   N     N   NNN   NNN ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    "NbbbN NbbNCCCb     bCCCNbbN NbbbN", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    " NNN   NNN   N     N   NNN   NNN ", "   N   N                 N   N   ",
+                    " NNN   NNN   N     N   NNN   NNN ", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    "NbbbN NbbNCCCb     bCCCNbbN NbbbN", "NNNN   NNNCCCb     bCCCNNN   NNNN",
+                    " CCC   CCC   N     N   CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN    NbN    NbbbN NbbbN", },
+            { "                                 ", " CCC   CCC   N     N   CCC   CCC ",
+                    " CbC   CbC   N     N   CbC   CbC ", " CCCCCCCCC   N     N   CCCCCCCCC ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " CCCCCCCCC   N     N   CCCCCCCCC ",
+                    " CbC   CbC   N     N   CbC   CbC ", " CCC   CCC   N     N   CCC   CCC ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN     NbN     NNN   NNN ", },
+            { "                                 ", " CCC   CCC             CCC   CCC ",
+                    " CbC   CbC             CbC   CbC ", " CCCCCCCCC             CCCCCCCCC ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CbC   CbC             CbC   CbC ", " CCC   CCC             CCC   CCC ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N      NbN      N     N  ", },
+            { "                                 ", " CCC   CCC             CCC   CCC ",
+                    " CbC   CbC             CbC   CbC ", " CCCCCCCCC             CCCCCCCCC ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CbC   CbC             CbC   CbC ", " CCC   CCC             CCC   CCC ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N      NbN      N     N  ", },
+            { " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN",
+                    "NbbbN NbbbN           NbbbN NbbbN", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    " NNN   NNN             NNN   NNN ", "   N   N                 N   N   ",
+                    " NNN   NNN             NNN   NNN ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    "NbbbN NbbbN           NbbbN NbbbN", "NbbbN NbbbN           NbbbN NbbbN",
+                    " NNN   NNN             NNN   NNN ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N     NsNsN     N     N  ", },
+            { "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N    NbbbbbN    N     N  ", },
+            { "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                N                ", " NsNNNNNsNNNNsbbbbbsNNNNsNNNNNsN ", },
+            { "                                 ", "                                 ",
+                    "  s     s               s     s  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "  s     s               s     s  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                ~                ",
+                    "               NNN               ", "  NbbbbbNbbbbNbbbbbNbbbbNbbbbbN  ", },
+            { "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                N                ", " NsNNNNNsNNNNsbbbbbsNNNNsNNNNNsN ", },
+            { "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "  N     N               N     N  ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N    NbbbbbN    N     N  ", },
+            { " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN",
+                    "NbbbN NbbbN           NbbbN NbbbN", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    " NNN   NNN             NNN   NNN ", "   N   N                 N   N   ",
+                    " NNN   NNN             NNN   NNN ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    "NbbbN NbbbN           NbbbN NbbbN", "NbbbN NbbbN           NbbbN NbbbN",
+                    " NNN   NNN             NNN   NNN ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N     NsNsN     N     N  ", },
+            { "                                 ", " CCC   CCC             CCC   CCC ",
+                    " CbC   CbC             CbC   CbC ", " CCCCCCCCC             CCCCCCCCC ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CbC   CbC             CbC   CbC ", " CCC   CCC             CCC   CCC ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N      NbN      N     N  ", },
+            { "                                 ", " CCC   CCC             CCC   CCC ",
+                    " CbC   CbC             CbC   CbC ", " CCCCCCCCC             CCCCCCCCC ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CbC   CbC             CbC   CbC ", " CCC   CCC             CCC   CCC ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "  N     N      NbN      N     N  ", },
+            { "                                 ", " CCC   CCC   N     N   CCC   CCC ",
+                    " CbC   CbC   N     N   CbC   CbC ", " CCCCCCCCC   N     N   CCCCCCCCC ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " CCCCCCCCC   N     N   CCCCCCCCC ",
+                    " CbC   CbC   N     N   CbC   CbC ", " CCC   CCC   N     N   CCC   CCC ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN     NbN     NNN   NNN ", },
+            { " NNN   NNN   N     N   NNN   NNN ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    "NbbbN NbbNCCCb     bCCCNbbN NbbbN", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    " NNN   NNN   N     N   NNN   NNN ", "   N   N                 N   N   ",
+                    " NNN   NNN   N     N   NNN   NNN ", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    "NbbbN NbbNCCCb     bCCCNbbN NbbbN", "NNNN   NNNCCCb     bCCCNNN   NNNN",
+                    " CCC   CCC   N     N   CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN    NbN    NbbbN NbbbN", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "  N     sbbbbbNNsNNbbbbbs     N  ", "         bCCCb     bCCCb         ",
+                    "         N   N     N   N         ", "                                 ",
+                    "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "  s     sbbbbbNNsNNbbbbbs     s  ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    " CbC   CbC   N     N   CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
+                    "  s     s               s     s  ", " NNN   NNN             NNN   NNN ",
+                    " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "  N      bCCCb     bCCCb      N  ", "         bCCCb     bCCCb         ",
+                    "         NCCCN     NCCCN         ", "         NCCCN     NCCCN         ",
+                    "         NCCCN     NCCCN         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    " CCCCCCCCC   N     N   CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
+            { "                                 ", "         N   N     N   N         ",
+                    "  N      N   N     N   N      N  ", "         NCCCN     NCCCN         ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         NCCCN     NCCCN         ",
+                    "         N   N     N   N         ", " NNN   NN    N     N    NN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN     NbN     NNN   NNN ", },
+            { "                                 ", "                                 ",
+                    "   s                         s   ", "  s      NCCCN     NCCCN      s  ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         NCCCN     NCCCN         ",
+                    "                                 ", "   N   N                 N   N   ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", "   N   N                 N   N   ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", "   N   N                 N   N   ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", "   N   N       NbN       N   N   ", },
+            { "                                 ", "         N   N     N   N         ",
+                    "   s     N   N     N   N     s   ", "  s      NCCCN     NCCCN      s  ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         NCCCN     NCCCN         ",
+                    "         N   N     N   N         ", " NNN   NN    N     N    NN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "   C   C                 C   C   ", "   C   C                 C   C   ",
+                    "   C   C                 C   C   ", " NNN   NNN     NbN     NNN   NNN ", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "    ss   bCCCb     bCCCb   ss    ", "         bCCCb     bCCCb         ",
+                    "  s      NCCCN     NCCCN      s  ", "  s      NCCCN     NCCCN      s  ",
+                    "         NCCCN     NCCCN         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "NbbbNNNbbNCCCb     bCCCNbbNNNbbbN",
+                    " CCCCCCCCC   N     N   CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbNNNbbbN           NbbbNNNbbbN",
+                    " CCCCCCCCC             CCCCCCCCC ", " CCCCCCCCC             CCCCCCCCC ",
+                    " CCCCCCCCC             CCCCCCCCC ", "NbbbNNNbbbN    NbN    NbbbNNNbbbN", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "      NNNbbbbbNNsNNbbbbbNNN      ", "    ss   bCCCb     bCCCb   ss    ",
+                    "   s     N   N     N   N     s   ", "   s                         s   ",
+                    "  N      N   N     N   N      N  ", "  N      bCCCb     bCCCb      N  ",
+                    "  N     sbbbbbNNsNNbbbbbs     N  ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    " CbC   CbC   N     N   CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " NNN   NNN             NNN   NNN ", " NNN   NNN             NNN   NNN ",
+                    "  s     s               s     s  ", " NNN   NNN             NNN   NNN ",
+                    " NNN   NNN             NNN   NNN ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CbC   CbC             CbC   CbC ", " CbC   CbC             CbC   CbC ",
+                    " CbC   CbC             CbC   CbC ", "NbbbN NbbbNNNNNsNsNNNNNbbbN NbbbN", },
+            { "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "         bCCCb     bCCCb         ",
+                    "         N   N     N   N         ", "                                 ",
+                    "         N   N     N   N         ", "         bCCCb     bCCCb         ",
+                    "         bCCCb     bCCCb         ", "NbbbN NbbNCCCb     bCCCNbbN NbbbN",
+                    " CCC   CCC   N     N   CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN           NbbbN NbbbN",
+                    "  N     N               N     N  ", "  N     N               N     N  ",
+                    "                                 ", "  N     N               N     N  ",
+                    "  N     N               N     N  ", "NbbbN NbbbN           NbbbN NbbbN",
+                    " CCC   CCC             CCC   CCC ", " CCC   CCC             CCC   CCC ",
+                    " CCC   CCC             CCC   CCC ", "NbbbN NbbbN    N N    NbbbN NbbbN", },
+            { "                                 ", "         N   N     N   N         ",
+                    "         N   N     N   N         ", "         N   N     N   N         ",
+                    "                                 ", "                                 ",
+                    "                                 ", "         N   N     N   N         ",
+                    "         N   N     N   N         ", " NNN   NNN   N     N   NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ",
+                    "                                 ", "                                 ",
+                    "                                 ", " NNN   NNN             NNN   NNN ", } };
 
     protected static final int DIM_TRANS_CASING = 12;
     protected static final int DIM_INJECTION_CASING = 13;
@@ -547,19 +536,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEPlasmaForge> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEPlasmaForge>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure_string)
-        .addElement('C', activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel)))
-        .addElement(
-            'b',
-            buildHatchAdder(MTEPlasmaForge.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
-                .casingIndex(DIM_INJECTION_CASING)
-                .dot(3)
-                .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
-        .addElement('N', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
-        .addElement('s', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
-        .build();
+            .<MTEPlasmaForge>builder().addShape(STRUCTURE_PIECE_MAIN, structure_string)
+            .addElement('C', activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel)))
+            .addElement(
+                    'b',
+                    buildHatchAdder(MTEPlasmaForge.class)
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
+                            .casingIndex(DIM_INJECTION_CASING).dot(3)
+                            .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
+            .addElement('N', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
+            .addElement('s', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING)).build();
 
     public MTEPlasmaForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -577,112 +563,112 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Forge, DTPF")
-            .addInfo("Transcending Dimensional Boundaries.")
-            .addInfo(
-                "Takes " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(max_efficiency_time_in_ticks / (3600 * 20))
-                    + EnumChatFormatting.GRAY
-                    + " hours of continuous run time to fully breach dimensional")
-            .addInfo(
-                "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
-                    + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(100 * maximum_discount)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
-            .addInfo(
-                "allowing " + EnumChatFormatting.GOLD
-                    + "Dimensional Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "to occur. To reach the required stability threshold,")
-            .addInfo(
-                "a " + EnumChatFormatting.AQUA
-                    + "Transdimensional Alignment Matrix "
-                    + EnumChatFormatting.GRAY
-                    + "must be placed in the controller.")
-            .addInfo(
-                "When " + EnumChatFormatting.GOLD
-                    + "Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "is active, it allows the forge to perform "
-                    + EnumChatFormatting.RED
-                    + "Perfect Overclocks"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts.")
-            .addInfo(
-                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(efficiency_decay_rate)
-                    + EnumChatFormatting.GRAY
-                    + " as fast as it builds up, draining")
-            .addInfo("the total amount of stored runtime.")
-            .addUnlimitedTierSkips()
-            .beginStructureBlock(33, 24, 33, false)
-            .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "1,270"
-                    + EnumChatFormatting.GRAY
-                    + " Dimensional injection casings required.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "2,121"
-                    + EnumChatFormatting.GRAY
-                    + " Dimensionally transcendent casings required.")
-            .addStructureInfo("")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " energy hatches or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_input_hatch
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_input_hatch
-                    + EnumChatFormatting.GRAY
-                    + " input hatches.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_output_hatch
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_output_hatch
-                    + EnumChatFormatting.GRAY
-                    + " output hatches.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_input_bus
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_input_bus
-                    + EnumChatFormatting.GRAY
-                    + " input buses.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_output_bus
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_input_bus
-                    + EnumChatFormatting.GRAY
-                    + " output buses.")
-            .addStructureInfo("")
-            .toolTipFinisher(AuthorColen);
+        tt.addMachineType("Plasma Forge, DTPF").addInfo("Transcending Dimensional Boundaries.")
+                .addInfo(
+                        "Takes " + EnumChatFormatting.RED
+                                + GTUtility.formatNumbers(max_efficiency_time_in_ticks / (3600 * 20))
+                                + EnumChatFormatting.GRAY
+                                + " hours of continuous run time to fully breach dimensional")
+                .addInfo(
+                        "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
+                                + EnumChatFormatting.RED
+                                + GTUtility.formatNumbers(100 * maximum_discount)
+                                + "%"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
+                .addInfo(
+                        "allowing " + EnumChatFormatting.GOLD
+                                + "Dimensional Convergence "
+                                + EnumChatFormatting.GRAY
+                                + "to occur. To reach the required stability threshold,")
+                .addInfo(
+                        "a " + EnumChatFormatting.AQUA
+                                + "Transdimensional Alignment Matrix "
+                                + EnumChatFormatting.GRAY
+                                + "must be placed in the controller.")
+                .addInfo(
+                        "When " + EnumChatFormatting.GOLD
+                                + "Convergence "
+                                + EnumChatFormatting.GRAY
+                                + "is active, it allows the forge to perform "
+                                + EnumChatFormatting.RED
+                                + "Perfect Overclocks"
+                                + EnumChatFormatting.GRAY
+                                + ",")
+                .addInfo("but the extra power cost is instead added in form of increased catalyst amounts.")
+                .addInfo(
+                        "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
+                                + GTUtility.formatNumbers(efficiency_decay_rate)
+                                + EnumChatFormatting.GRAY
+                                + " as fast as it builds up, draining")
+                .addInfo("the total amount of stored runtime.").addUnlimitedTierSkips()
+                .beginStructureBlock(33, 24, 33, false)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "120"
+                                + EnumChatFormatting.GRAY
+                                + " Dimensional bridge blocks required.")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "1,270"
+                                + EnumChatFormatting.GRAY
+                                + " Dimensional injection casings required.")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "2,121"
+                                + EnumChatFormatting.GRAY
+                                + " Dimensionally transcendent casings required.")
+                .addStructureInfo("")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + "1"
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + EnumChatFormatting.GOLD
+                                + "2"
+                                + EnumChatFormatting.GRAY
+                                + " energy hatches or "
+                                + EnumChatFormatting.GOLD
+                                + "1"
+                                + EnumChatFormatting.GRAY
+                                + " TT energy hatch.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + min_input_hatch
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + EnumChatFormatting.GOLD
+                                + max_input_hatch
+                                + EnumChatFormatting.GRAY
+                                + " input hatches.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + min_output_hatch
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + EnumChatFormatting.GOLD
+                                + max_output_hatch
+                                + EnumChatFormatting.GRAY
+                                + " output hatches.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + min_input_bus
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + EnumChatFormatting.GOLD
+                                + max_input_bus
+                                + EnumChatFormatting.GRAY
+                                + " input buses.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + min_output_bus
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + EnumChatFormatting.GOLD
+                                + max_input_bus
+                                + EnumChatFormatting.GRAY
+                                + " output buses.")
+                .addStructureInfo("").toolTipFinisher(AuthorColen);
         return tt;
     }
 
@@ -694,25 +680,17 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         IIconContainer glow = OVERLAY_FUSION1_GLOW;
         if (convergence && discount == maximum_discount) {
             glow = OVERLAY_RAINBOWSCREEN_GLOW;
         }
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING], TextureFactory.builder()
-                .addIcon(OVERLAY_DTPF_ON)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING], TextureFactory.builder()
-                .addIcon(OVERLAY_DTPF_OFF)
-                .extFacing()
-                .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING],
+                    TextureFactory.builder().addIcon(OVERLAY_DTPF_ON).extFacing().build(),
+                    TextureFactory.builder().addIcon(glow).extFacing().glow().build() };
+            return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING],
+                    TextureFactory.builder().addIcon(OVERLAY_DTPF_OFF).extFacing().build() };
         }
         return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING] };
     }
@@ -755,26 +733,21 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     for (FluidStack fuel : valid_fuels) {
                         if (queryFluids[i].isFluidEqual(fuel)) {
                             queryFluids[i].amount = (int) Math
-                                .min(Math.round(queryFluids[i].amount / discount), Integer.MAX_VALUE);
+                                    .min(Math.round(queryFluids[i].amount / discount), Integer.MAX_VALUE);
                             break;
                         }
                     }
                 }
 
-                return map.findRecipeQuery()
-                    .items(inputItems)
-                    .fluids(queryFluids)
-                    .specialSlot(specialSlotItem)
-                    .cachedRecipe(lastRecipe)
-                    .findAll();
+                return map.findRecipeQuery().items(inputItems).fluids(queryFluids).specialSlot(specialSlotItem)
+                        .cachedRecipe(lastRecipe).findAll();
             }
 
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 overclockCalculator = super.createOverclockCalculator(recipeAfterAdjustments(recipe, inputFluids))
-                    .setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(mHeatingCapacity);
+                        .setRecipeHeat(recipe.mSpecialValue).setMachineHeat(mHeatingCapacity);
                 if (convergence && discount == maximum_discount && enoughCatalyst) {
                     overclockCalculator = overclockCalculator.enablePerfectOC();
                 }
@@ -790,7 +763,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+                        : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
         }.setUnlimitedTierSkips();
     }
@@ -806,7 +779,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     if (convergence && discount == maximum_discount) {
                         calculateCatalystIncrease(tRecipe, inputFluids, i);
                         getBaseMetaTileEntity()
-                            .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+                                .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                     }
                     tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
                     return tRecipe;
@@ -821,8 +794,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 fluidInputsWithCatalyst[i] = tRecipe.mFluidInputs[i].copy();
             }
             fluidInputsWithCatalyst[tRecipe.mFluidInputs.length] = new FluidStack(
-                valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1],
-                0);
+                    valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1],
+                    0);
             tRecipe.mFluidInputs = fluidInputsWithCatalyst;
 
             // Append 0 residue to output fluids for calculations.
@@ -831,7 +804,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 fluidOutputsWithResidue[i] = tRecipe.mFluidOutputs[i].copy();
             }
             fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = MaterialsUEVplus.DimensionallyTranscendentResidue
-                .getFluid(0);
+                    .getFluid(0);
             tRecipe.mFluidOutputs = fluidOutputsWithResidue;
             recalculateDiscount();
 
@@ -924,10 +897,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         long maxEnergy = 0;
 
         for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
         long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
@@ -936,75 +907,78 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         recalculateDiscount();
 
         return new String[] {
-            EnumChatFormatting.STRIKETHROUGH + "------------"
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
-                + " "
-                + EnumChatFormatting.STRIKETHROUGH
-                + "------------",
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(voltage)
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + EnumChatFormatting.YELLOW
-                + amps
-                + EnumChatFormatting.RESET
-                + "A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(voltage)]
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mHeatingCapacity)
-                + EnumChatFormatting.RESET
-                + " K",
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
-                extraCatalystNeeded),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.plasma_forge.convergence",
-                (convergence
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
+                EnumChatFormatting.STRIKETHROUGH + "------------"
                         + EnumChatFormatting.RESET
-                        + (discount == maximum_discount
-                            ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
-                            : StatCollector.translateToLocalFormatted(
-                                "GT5U.infodata.plasma_forge.convergence.progress",
-                                GTUtility.formatNumbers((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.infodata.critical_info")
+                        + " "
+                        + EnumChatFormatting.STRIKETHROUGH
+                        + "------------",
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(mProgresstime)
+                        + EnumChatFormatting.RESET
+                        + "t / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(mMaxProgresstime)
+                        + EnumChatFormatting.RESET
+                        + "t",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GTUtility.formatNumbers(getActualEnergyUsage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(voltage)
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*"
+                        + EnumChatFormatting.YELLOW
+                        + amps
+                        + EnumChatFormatting.RESET
+                        + "A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GTUtility.getTier(voltage)]
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(mHeatingCapacity)
+                        + EnumChatFormatting.RESET
+                        + " K",
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
+                        EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
+                        EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount))
+                                + EnumChatFormatting.RESET
+                                + "%",
+                        extraCatalystNeeded),
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.plasma_forge.convergence",
+                        (convergence ? EnumChatFormatting.GREEN
+                                + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
+                                + EnumChatFormatting.RESET
+                                + (discount == maximum_discount
+                                        ? StatCollector
+                                                .translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
+                                        : StatCollector.translateToLocalFormatted(
+                                                "GT5U.infodata.plasma_forge.convergence.progress",
+                                                GTUtility.formatNumbers(
+                                                        (max_efficiency_time_in_ticks - running_time) / (20 * 60))))
 
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
-            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
+                                : EnumChatFormatting.RED + StatCollector
+                                        .translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
+                EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
     private void recalculateDiscount() {
@@ -1028,8 +1002,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         double recipeDuration = recipe.mDuration / GTUtility.powInt(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) (((1L << numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
-        extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
-            .getLeft());
+        extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel).getLeft());
 
         // Check if we have enough catalyst,
         // if we don't leave the recipe unchanged.
@@ -1051,8 +1024,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         // Increase present catalyst and residue by calculated amount
         for (FluidStack outputFluid : recipe.mFluidOutputs) {
             if (outputFluid.isFluidEqual(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1))) {
-                outputFluid.amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
-                    .getRight());
+                outputFluid.amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel).getRight());
             }
         }
     }
@@ -1068,10 +1040,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             if (aTick % 100 == 0) {
                 ItemStack controllerStack = this.getControllerSlot();
                 if (convergence && (controllerStack == null
-                    || !controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1)))) {
+                        || !controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1)))) {
                     convergence = false;
                     getBaseMetaTileEntity()
-                        .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+                            .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                 }
             }
         }
@@ -1126,33 +1098,28 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             ItemStack controllerStack = this.getControllerSlot();
             if (clickData.mouseButton == 0) {
                 if (controllerStack != null
-                    && controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1))) {
+                        && controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1))) {
                     convergence = !convergence;
                 }
             } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(CATALYST_WINDOW_ID);
+                widget.getContext().openSyncedWindow(CATALYST_WINDOW_ID);
             }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (convergence) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
-                } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("GT5U.DTPF.convergencebutton"))
-            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))
-            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.1"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16)
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> convergence, (val) -> convergence = val), builder));
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            if (convergence) {
+                ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+            } else {
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).addTooltip(translateToLocal("GT5U.DTPF.convergencebutton"))
+                .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))
+                .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.1"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 112).setSize(16, 16).attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(() -> convergence, (val) -> convergence = val),
+                        builder));
         super.addUIWidgets(builder, buildContext);
     }
 
@@ -1166,32 +1133,20 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)
-                        .subtract(0, 10)));
-        builder.widget(
-            TextWidget.localised("GT5U.DTPF.catalysttier")
-                .setPos(3, 4)
-                .setSize(50, 20))
-            .widget(
+                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
+                        Alignment.BottomRight
+                                .getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                                .add(WIDTH - 3, 0).subtract(0, 10)));
+        builder.widget(TextWidget.localised("GT5U.DTPF.catalysttier").setPos(3, 4).setSize(50, 20)).widget(
                 new NumericWidget().setSetter(val -> catalystTypeForRecipesWithoutCatalyst = (int) val)
-                    .setGetter(() -> catalystTypeForRecipesWithoutCatalyst)
-                    .setBounds(1, 5)
-                    .setDefaultValue(1)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(50, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .addTooltip(translateToLocal("GT5U.DTPF.catalystinfotooltip"))
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(
-                            () -> catalystTypeForRecipesWithoutCatalyst,
-                            (val) -> catalystTypeForRecipesWithoutCatalyst = val),
-                        builder));
+                        .setGetter(() -> catalystTypeForRecipesWithoutCatalyst).setBounds(1, 5).setDefaultValue(1)
+                        .setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal)
+                        .setSize(50, 18).setPos(4, 25).setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                        .addTooltip(translateToLocal("GT5U.DTPF.catalystinfotooltip")).attachSyncer(
+                                new FakeSyncWidget.IntegerSyncer(
+                                        () -> catalystTypeForRecipesWithoutCatalyst,
+                                        (val) -> catalystTypeForRecipesWithoutCatalyst = val),
+                                builder));
         return builder.build();
     }
 
@@ -1238,7 +1193,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

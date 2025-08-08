@@ -28,16 +28,25 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { "Grants creative flight to those wearing a MagLev Harness.",
-                "Range is a cube centered on the pylon.",
-                String.format("Unpowered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, false)),
-                String.format("Powered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, true)),
-                String.format("Cost: %s%d EU/t if tethered", EnumChatFormatting.WHITE, getPylonPowerCost(aTier)), });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { "Grants creative flight to those wearing a MagLev Harness.",
+                        "Range is a cube centered on the pylon.",
+                        String.format(
+                                "Unpowered Range: %s%d blocks",
+                                EnumChatFormatting.WHITE,
+                                getPylonRange(aTier, false)),
+                        String.format(
+                                "Powered Range: %s%d blocks",
+                                EnumChatFormatting.WHITE,
+                                getPylonRange(aTier, true)),
+                        String.format(
+                                "Cost: %s%d EU/t if tethered",
+                                EnumChatFormatting.WHITE,
+                                getPylonPowerCost(aTier)), });
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -78,16 +87,14 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void onRemoval() {
-        if (this.getBaseMetaTileEntity()
-            .isServerSide()) {
+        if (this.getBaseMetaTileEntity().isServerSide()) {
             GTMod.proxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 
     @Override
     public void onUnload() {
-        if (this.getBaseMetaTileEntity()
-            .isServerSide()) {
+        if (this.getBaseMetaTileEntity().isServerSide()) {
             GTMod.proxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
@@ -95,11 +102,11 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEMagLevPylon(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
@@ -144,26 +151,24 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
+            int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == ForgeDirection.UP || side == ForgeDirection.DOWN)
             return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
-        if (active) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(OVERLAY_MAGLEV_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_MAGLEV_ACTIVE_GLOW)
-                .glow()
-                .build() };
+        if (active)
+            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_MAGLEV_ACTIVE),
+                    TextureFactory.builder().addIcon(OVERLAY_MAGLEV_ACTIVE_GLOW).glow().build() };
         return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_MAGLEV) };
     }
 
@@ -192,9 +197,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     }
 
     /**
-     * MV (2) = 16
-     * HV (3) = 32
-     * EV (4) = 48
+     * MV (2) = 16 HV (3) = 32 EV (4) = 48
      */
     private static int getPylonRange(int tier, boolean powered) {
         return (int) ((powered ? 1 : 0.5) * (tier - 1) * BASE_PYLON_RANGE);

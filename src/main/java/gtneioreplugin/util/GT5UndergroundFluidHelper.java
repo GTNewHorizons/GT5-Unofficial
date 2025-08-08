@@ -48,8 +48,7 @@ public class GT5UndergroundFluidHelper {
                 continue;
             }
 
-            BiMap<String, GTUOFluid> fluids = dimensionEntry.getValue()
-                .getFluids();
+            BiMap<String, GTUOFluid> fluids = dimensionEntry.getValue().getFluids();
 
             int maxChance = 0;
             for (Map.Entry<String, GTUOFluid> fluidEntry : fluids.entrySet()) {
@@ -60,13 +59,12 @@ public class GT5UndergroundFluidHelper {
                 Fluid fluid = FluidRegistry.getFluid(fluidEntry.getKey());
                 if (fluid != null) {
                     UndergroundFluidWrapper wrapper = new UndergroundFluidWrapper(
-                        dimension,
-                        fluidEntry.getValue().Chance * 10000 / maxChance,
-                        fluidEntry.getValue().MaxAmount,
-                        fluidEntry.getValue().MinAmount);
+                            dimension,
+                            fluidEntry.getValue().Chance * 10000 / maxChance,
+                            fluidEntry.getValue().MaxAmount,
+                            fluidEntry.getValue().MinAmount);
                     if (fluidMap.containsKey(fluid.getName())) {
-                        fluidMap.get(fluid.getName())
-                            .add(wrapper);
+                        fluidMap.get(fluid.getName()).add(wrapper);
                     } else {
                         fluidMap.put(fluid.getName(), new ArrayList<>(Collections.singletonList(wrapper)));
                     }
@@ -76,9 +74,7 @@ public class GT5UndergroundFluidHelper {
 
         for (List<UndergroundFluidWrapper> wrappers : fluidMap.values()) {
             wrappers.sort(
-                Comparator.comparingInt(
-                    w -> Arrays.asList(DimensionHelper.DimNameDisplayed)
-                        .indexOf(w.dimension)));
+                    Comparator.comparingInt(w -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(w.dimension)));
         }
     }
 

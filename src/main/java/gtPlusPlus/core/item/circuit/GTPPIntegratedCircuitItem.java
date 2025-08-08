@@ -66,16 +66,16 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         try {
             aList.add(
-                StatCollector.translateToLocalFormatted(
-                    "gtpp.tooltip.integrated_circuit.configuration",
-                    aStack.getItemDamage()));
+                    StatCollector.translateToLocalFormatted(
+                            "gtpp.tooltip.integrated_circuit.configuration",
+                            aStack.getItemDamage()));
             aList.add(
-                GTLanguageManager
-                    .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
+                    GTLanguageManager
+                            .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
             aList.add(
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + ".tooltip.1",
-                    "Needs a screwdriver or circuit programming tool"));
+                    GTLanguageManager.addStringLocalization(
+                            getUnlocalizedName() + ".tooltip.1",
+                            "Needs a screwdriver or circuit programming tool"));
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -145,18 +145,18 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
             if (configuratorStack == null) {
                 int count;
                 try {
-                    count = Integer
-                        .parseInt(StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
+                    count = Integer.parseInt(
+                            StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
                 } catch (NumberFormatException e) {
                     player.addChatComponentMessage(
-                        new ChatComponentText(
-                            "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
-                                + e.getMessage()));
+                            new ChatComponentText(
+                                    "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
+                                            + e.getMessage()));
                     count = 1;
                 }
                 player.addChatComponentMessage(
-                    new ChatComponentTranslation(
-                        "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
+                        new ChatComponentTranslation(
+                                "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return stack;
             }
         }
@@ -166,14 +166,14 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
 
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
         UIInfos.openClientUI(
-            player,
-            buildContext -> new SelectItemUIFactory(
-                StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
-                configurator,
-                GTPPIntegratedCircuitItem::onConfigured,
-                ALL_VARIANTS,
-                meta,
-                true).createWindow(buildContext));
+                player,
+                buildContext -> new SelectItemUIFactory(
+                        StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
+                        configurator,
+                        GTPPIntegratedCircuitItem::onConfigured,
+                        ALL_VARIANTS,
+                        meta,
+                        true).createWindow(buildContext));
     }
 
     private static void onConfigured(ItemStack stack) {

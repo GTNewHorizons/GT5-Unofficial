@@ -22,11 +22,11 @@ import gregtech.GT_Version;
 import gregtech.api.world.GTWorldgen;
 
 @Mod(
-    modid = GalacticGreg.MODID,
-    name = GalacticGreg.MODNAME,
-    version = GalacticGreg.VERSION,
-    dependencies = "after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
-    acceptableRemoteVersions = "*")
+        modid = GalacticGreg.MODID,
+        name = GalacticGreg.MODNAME,
+        version = GalacticGreg.VERSION,
+        dependencies = "after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
+        acceptableRemoteVersions = "*")
 public class GalacticGreg {
 
     public static final List<GTWorldgen> smallOreWorldgenList = new ArrayList<>();
@@ -55,7 +55,7 @@ public class GalacticGreg {
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         GalacticConfig = new GalacticGregConfig(aEvent.getModConfigurationDirectory(), NICE_MODID, NICE_MODID);
         if (!GalacticConfig.LoadConfig()) GalacticGreg.Logger
-            .warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
+                .warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
 
         GalacticRandom = new Random(System.currentTimeMillis());
 
@@ -79,7 +79,7 @@ public class GalacticGreg {
         Logger.trace("Entering POSTLOAD");
 
         if (!GalacticGregRegistry.InitRegistry()) throw new RuntimeException(
-            "GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
+                "GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
 
         for (Runnable r : ADDITIONALVEINREGISTER) {
             try {
@@ -106,7 +106,8 @@ public class GalacticGreg {
         if (GalacticConfig.ProfileOreGen) pEvent.registerServerCommand(new ProfilingCommand());
 
         if (AppliedEnergistics2.isModLoaded() && GalacticConfig.EnableAEExportCommand
-            && GalacticConfig.SchematicsEnabled) pEvent.registerServerCommand(new AEStorageCommand());
+                && GalacticConfig.SchematicsEnabled)
+            pEvent.registerServerCommand(new AEStorageCommand());
 
         Logger.trace("Leaving SERVERLOAD");
     }
