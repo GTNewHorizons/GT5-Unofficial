@@ -207,6 +207,7 @@ public class SBRContext {
         hasBrightnessOverride = false;
         hasColorOverride = false;
         hasLightnessOverride = false;
+        if (renderer.useInventoryTint) setLightnessOverride(1.0F);
         return this;
     }
 

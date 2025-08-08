@@ -57,10 +57,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             }
             ctx.renderer.enableAO = false;
             ctx.setLightnessOverride(1.0F);
-            if (enableAO) ctx.setBrightnessOverride(MAX_BRIGHTNESS);
-        } else {
-            ctx.clearLightnessOverride()
-                .clearBrightnessOverride();
+            ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         ctx.setupLightingXPos();
         final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
@@ -85,11 +82,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(ctx.renderer);
                 return;
-            } else {
-                ctx.clearLightnessOverride();
-                ctx.clearBrightnessOverride();
             }
-
             ctx.renderer.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -121,9 +114,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.renderer.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
-        } else {
-            ctx.clearLightnessOverride();
-            ctx.clearBrightnessOverride();
         }
         ctx.setupLightingYPos();
         final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
@@ -152,9 +142,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.renderer.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
-        } else {
-            ctx.clearLightnessOverride();
-            ctx.clearBrightnessOverride();
         }
         ctx.setupLightingYNeg();
         final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
@@ -183,9 +170,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.renderer.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
-        } else {
-            ctx.clearLightnessOverride();
-            ctx.clearBrightnessOverride();
         }
         ctx.setupLightingZPos();
         final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
@@ -214,9 +198,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.renderer.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
-        } else {
-            ctx.clearLightnessOverride();
-            ctx.clearBrightnessOverride();
         }
         ctx.setupLightingZNeg();
         final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
