@@ -208,9 +208,9 @@ public class MaterialsInit1 {
         Materials.Coral = loadCoral();
         Materials.CrudeOil = loadCrudeOil();
         Materials.Chrysocolla = loadChrysocolla();
+        Materials.CrystalFlux = loadCrystalFlux();
 
         // spotless:off;
-        Materials.CrystalFlux             = new Materials(  -1, TextureSet.SET_QUARTZ            ,   1.0F,      0,  3, 1  |4                     , 100,  50, 100,   0,   "CrystalFlux"             ,   "Flux Crystal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Cyanite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Cyanite"                 ,   "Cyanite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeCyan        );
         Materials.Dacite                  = new Materials( 859, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Dacite"                  ,   "Dacite"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeLightGray   );
         Materials.DarkIron                = new Materials( 342, TextureSet.SET_DULL              ,   7.0F,    384,  3, 1|2  |8      |64          ,  55,  40,  60,   0,   "DarkIron"                ,   "Deep Dark Iron"                ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyePurple      );
@@ -3635,6 +3635,16 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Chrysocolla")
             .addDustItems()
             .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadCrystalFlux() {
+        return new MaterialBuilder().setName("CrystalFlux")
+            .setDefaultLocalName("Flux Crystal")
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setRGB(0x643264)
+            .addDustItems()
+            .addGemItems()
             .constructMaterial();
     }
 
