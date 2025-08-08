@@ -236,9 +236,9 @@ public class MaterialsInit1 {
         Materials.Forcillium = loadForcillium();
         Materials.Gabbro = loadGabbro();
         Materials.Glowstone = loadGlowstone();
+        Materials.Gneiss = loadGneiss();
 
         // spotless:off
-        Materials.Gneiss                  = new Materials( 864, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Gneiss"                  ,   "Gneiss"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
         Materials.Graphite                = new Materials( 865, TextureSet.SET_DULL              ,   5.0F,     32,  2, 1    |8|16   |64          , 128, 128, 128,   0,   "Graphite"                ,   "Graphite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
         Materials.Graphene                = new Materials( 819, TextureSet.SET_DULL              ,   6.0F,     32,  1, 1            |64          , 128, 128, 128,   0,   "Graphene"                ,   "Graphene"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
         Materials.Greenschist             = new Materials( 866, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greenschist"             ,   "Green Schist"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
@@ -4041,6 +4041,16 @@ public class MaterialsInit1 {
             .addCell()
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUX, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadGneiss() {
+        return new MaterialBuilder().setName("Gneiss")
+            .setDefaultLocalName("Gneiss")
+            .setMetaItemSubID(864)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .setOreValue(0)
             .constructMaterial();
     }
 
