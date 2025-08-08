@@ -231,9 +231,9 @@ public class MaterialsInit1 {
         Materials.Firestone = loadFirestone();
         Materials.Fluorite = loadFluorite();
         Materials.FoolsRuby = loadFoolsRuby();
+        Materials.Force = loadForce();
 
         // spotless:off
-        Materials.Force                   = new Materials( 521, TextureSet.SET_DIAMOND           ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 255, 255,   0,   0,   "Force"                   ,   "Force"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 5)));
         Materials.Forcicium               = new Materials( 518, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                ,  50,  50,  70,   0,   "Forcicium"               ,   "Forcicium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
         Materials.Forcillium              = new Materials( 519, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                ,  50,  50,  70,   0,   "Forcillium"              ,   "Forcillium"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
         Materials.Gabbro                  = new Materials( 863, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Gabbro"                  ,   "Gabbro"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
@@ -3964,6 +3964,27 @@ public class MaterialsInit1 {
             .addMaterial(new MaterialStack(Oxygen, 4))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadForce() {
+        return new MaterialBuilder().setName("Force")
+            .setDefaultLocalName("Force")
+            .setMetaItemSubID(521)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .setToolSpeed(10.0f)
+            .setDurability(128)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 5))
             .constructMaterial();
     }
 
