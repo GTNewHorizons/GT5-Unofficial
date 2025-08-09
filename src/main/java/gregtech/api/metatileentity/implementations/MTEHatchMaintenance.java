@@ -382,7 +382,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         }
         if (!mSolderingTool && GTModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory)) {
             mSolderingTool = true;
-            setMaintenanceSound(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, 1.75F);
+            setMaintenanceSound(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
         }
         if (GTOreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
             applyDuctTape();
