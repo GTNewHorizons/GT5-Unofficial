@@ -26,7 +26,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -93,12 +92,12 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return Blocks.stone.getIcon(0, 0);
+        return stoneType.getIcon(side);
     }
 
     @Override
     public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
-        return Blocks.stone.getIcon(0, 0);
+        return stoneType.getIcon(side);
     }
 
     @Override
@@ -146,26 +145,42 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         return GTRendererBlock.mRenderID;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
         Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
 
-        ITexture[] layers;
+        OrePrefixes prefix = isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
+
+        ITexture oreTexture;
 
         if (material != null) {
-            ITexture aIconSet = TextureFactory.of(
-                material.getTexSet().mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex
-                    : OrePrefixes.ore.mTextureIndex],
-                material.getRGBA());
-            layers = new ITexture[] { stoneType.getTexture(0), aIconSet };
+            oreTexture = TextureFactory.of(material.getTexSet().mTextures[prefix.mTextureIndex], material.getRGBA());
         } else {
-            layers = new ITexture[] { stoneType.getTexture(0),
-                TextureFactory.of(
-                    gregtech.api.enums.TextureSet.SET_NONE.mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex
-                        : OrePrefixes.ore.mTextureIndex]) };
+            oreTexture = TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[prefix.mTextureIndex]);
         }
 
-        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        ITexture[][] out = new ITexture[6][];
+
+        for (int i = 0; i < 6; i++) {
+            out[i] = new ITexture[] { stoneType.getTexture(i), oreTexture };
+        }
+
+        return out;
     }
 }

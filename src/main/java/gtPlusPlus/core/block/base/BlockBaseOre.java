@@ -98,13 +98,16 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
-        ITexture[] layers;
-
-        ITexture aIconSet = TextureFactory
+        ITexture oreTexture = TextureFactory
             .of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], blockMaterial.getRGBA());
-        layers = new ITexture[] { StoneType.Stone.getTexture(0), aIconSet };
 
-        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        ITexture[][] out = new ITexture[6][];
+
+        for (int i = 0; i < 6; i++) {
+            out[i] = new ITexture[] { StoneType.Stone.getTexture(i), oreTexture };
+        }
+
+        return out;
     }
 
     @Override
