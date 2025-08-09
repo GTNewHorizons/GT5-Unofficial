@@ -2,6 +2,13 @@ package galacticgreg.command;
 
 import java.util.List;
 
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
+
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -13,12 +20,6 @@ import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
 import galacticgreg.dynconfig.DynamicDimensionConfig.AsteroidConfig;
 import gregtech.common.worldgen.HEEIslandScanner;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.World;
 
 public class WorldgenCommand implements ICommand {
 

@@ -16,7 +16,13 @@ import gregtech.common.GTWorldgenerator;
 @Mixin(GameRegistry.class)
 public class GameRegistryMixin {
 
-    @ModifyArg(method = "computeSortedGeneratorList", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/ImmutableList;copyOf(Ljava/util/Collection;)Lcom/google/common/collect/ImmutableList;", remap = false), remap = false)
+    @ModifyArg(
+        method = "computeSortedGeneratorList",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/google/common/collect/ImmutableList;copyOf(Ljava/util/Collection;)Lcom/google/common/collect/ImmutableList;",
+            remap = false),
+        remap = false)
     private static Collection<IWorldGenerator> gt5u$worldgenOrderFix(Collection<IWorldGenerator> elements) {
 
         // EFR has its deepslate worldgen's priority set to Integer.MAX_VALUE, which puts it at the end of the list.

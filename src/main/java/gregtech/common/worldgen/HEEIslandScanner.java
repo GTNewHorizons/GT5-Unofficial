@@ -2,27 +2,32 @@ package gregtech.common.worldgen;
 
 import java.util.BitSet;
 
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
+
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LRUCache;
 import gregtech.mixin.interfaces.accessors.HEEChunkProviderAccessor;
 import gregtech.mixin.interfaces.accessors.MapGenIslandAccessor;
 import it.unimi.dsi.fastutil.ints.IntIntMutablePair;
 import it.unimi.dsi.fastutil.ints.IntIntPair;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
 
 /**
  * Checks for HEE islands within a radius.
- * GalaxySpace asteroids tend to generate on top of them, so we don't want to generate asteroid seeds within the range of an island.
+ * GalaxySpace asteroids tend to generate on top of them, so we don't want to generate asteroid seeds within the range
+ * of an island.
  */
 public class HEEIslandScanner {
 
     private static final int REGION_WIDTH = 32;
     private static final int ISLAND_RADIUS = 7;
 
-    private static final LRUCache<IntIntPair, RegionInfo> PER_REGION_CACHE = new LRUCache<>(64, HEEIslandScanner::checkForIslands);
+    private static final LRUCache<IntIntPair, RegionInfo> PER_REGION_CACHE = new LRUCache<>(
+        64,
+        HEEIslandScanner::checkForIslands);
 
     private static class RegionInfo {
+
         public final int chunkX, chunkZ;
         public final BitSet presence = new BitSet();
 
@@ -33,7 +38,8 @@ public class HEEIslandScanner {
 
         public final boolean check(int minX, int maxX, int minZ, int maxZ) {
             if (presence.isEmpty()) return false;
-            if (minX < chunkX && minZ < chunkZ && maxX >= chunkX + REGION_WIDTH && maxZ >= chunkZ + REGION_WIDTH) return false;
+            if (minX < chunkX && minZ < chunkZ && maxX >= chunkX + REGION_WIDTH && maxZ >= chunkZ + REGION_WIDTH)
+                return false;
 
             minX = GTUtility.clamp(minX - chunkX, 0, REGION_WIDTH - 1);
             maxX = GTUtility.clamp(maxX - chunkX, 0, REGION_WIDTH - 1);
@@ -68,7 +74,8 @@ public class HEEIslandScanner {
         WorldServer theEnd = DimensionManager.getWorld(1);
 
         if (theEnd == null) return info;
-        if (!(theEnd.theChunkProviderServer.currentChunkProvider instanceof HEEChunkProviderAccessor heeProvider)) return info;
+        if (!(theEnd.theChunkProviderServer.currentChunkProvider instanceof HEEChunkProviderAccessor heeProvider))
+            return info;
 
         MapGenIslandAccessor islandGen = (MapGenIslandAccessor) heeProvider.gt5u$getIslandGen();
 
@@ -104,7 +111,8 @@ public class HEEIslandScanner {
 
         for (int z = regionMinZ; z <= regionMaxZ; z++) {
             for (int x = regionMinX; x <= regionMaxX; x++) {
-                POOLED_COORD.left(x).right(z);
+                POOLED_COORD.left(x)
+                    .right(z);
 
                 RegionInfo region = PER_REGION_CACHE.get(POOLED_COORD);
 
