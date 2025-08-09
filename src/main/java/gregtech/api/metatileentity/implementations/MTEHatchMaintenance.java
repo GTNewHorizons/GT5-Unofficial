@@ -234,7 +234,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (tMte == null || tMte.hasMufflerUpgrade()) return;
 
         if (mMaintenanceSound == null) {
-            // Use default maintenance sound
             setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
         }
 
@@ -256,9 +255,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     /**
      * Sets the sound resource to use in the next maintenance performed by this hatch.
-     * 
-     * @param aSound           The sound to play.
-     * @param aSoundStrength   The loudness of the sound. From 0 to 1.
+     *
+     * @param aSound           The {@code SoundResource} to play.
+     * @param aSoundStrength   The loudness of the sound.
      * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
      */
     public void setMaintenanceSound(@Nonnull SoundResource aSound, float aSoundStrength, float aSoundModulation) {
@@ -267,10 +266,10 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     /**
      * Sets the resource location of a sound to use in the next maintenance performed by this hatch.
-     * Useful for playing sounds not present in GT5U's API.
-     * 
-     * @param aSound           The sound to play.
-     * @param aSoundStrength   The loudness of the sound. From 0 to 1.
+     * Useful for playing sounds not present in {@code gregtech.api.enums.SoundResource}.
+     *
+     * @param aSound           The {@code ResourceLocation} of the sound to play.
+     * @param aSoundStrength   The loudness of the sound.
      * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
      */
     public void setMaintenanceSound(@Nonnull ResourceLocation aSound, float aSoundStrength, float aSoundModulation) {
@@ -280,11 +279,12 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     /**
      * Sets the name of the sound resource to use in the next maintenance performed by this hatch.
      * If possible, prefer using the other overloads of this method:
-     * {@link #setMaintenanceSound(SoundResource, float, float)}, if able to refer to GT5U's API, or
-     * {@link #setMaintenanceSound(ResourceLocation, float, float)} otherwise. (Such as calling a sound not from GT5U)
-     * 
-     * @param aSoundName       The resource name of the sound to play. Can be null.
-     * @param aSoundStrength   The loudness of the sound. From 0 to 1.
+     * {@link #setMaintenanceSound(SoundResource, float, float)}, if the sound has an entry in
+     * {@code gregtech.api.enums.SoundResource}, or {@link #setMaintenanceSound(ResourceLocation, float, float)}
+     * otherwise. (Such as calling a sound not from GT5U)
+     *
+     * @param aSoundName       The name of the sound to play. If null will default to the Toolbox sound.
+     * @param aSoundStrength   The loudness of the sound.
      * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
      */
     public void setMaintenanceSound(@Nullable String aSoundName, float aSoundStrength, float aSoundModulation) {
