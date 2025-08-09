@@ -500,6 +500,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
+        if (this.euProduction == 0) return 1;
         return 1500 * (this.euProduction / 10000);
     }
 
