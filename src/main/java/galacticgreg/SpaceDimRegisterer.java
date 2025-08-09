@@ -124,8 +124,7 @@ public class SpaceDimRegisterer {
         DimensionDef.KuiperBelt.modDimensionDef.setDimensionType(Enums.DimensionType.Asteroid);
         DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.RedGranite);
         DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
-        // added twice to double its weight
-        DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.PackedIce);
+        DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.BlueIce);
         DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.PackedIce);
 
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.KuiperBelt.modDimensionDef);
@@ -146,6 +145,7 @@ public class SpaceDimRegisterer {
         DimensionDef.MehenBelt.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
         DimensionDef.MehenBelt.modDimensionDef.addAsteroidMaterial(StoneType.Horus);
         DimensionDef.MehenBelt.modDimensionDef.addAsteroidMaterial(StoneType.Asteroid);
+        DimensionDef.MehenBelt.modDimensionDef.addAsteroidMaterial(StoneType.AnubisAndMaahes);
         ModContainers.AmunRa.modContainer.addDimensionDef(DimensionDef.MehenBelt.modDimensionDef);
 
         return ModContainers.AmunRa.modContainer;

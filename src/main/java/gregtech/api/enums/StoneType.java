@@ -150,6 +150,13 @@ public enum StoneType implements IStoneType {
         .setDust(NewHorizonsCoreMod, "item.TuffDust")
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.OW)),
+
+    BlueIce(new StoneBuilder()
+        .setStoneNoCobble(Mods.EtFuturumRequiem, "blue_ice", 0)
+        .setDust(Materials.Ice)
+        .setCategory(StoneCategory.Ice)
+        .addAllowedDimensions(DimNames.KUIPERBELT)),
+
     ;
     // spotless:on
 
