@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.ITexture;
 
 /**
  * Represents the rendering context for a single block during a render pass.
@@ -216,6 +217,48 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
         return predicate.test(worldRenderPass);
+    }
+
+    @Override
+    public void renderNegativeYFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y - 1, z, 0)) return;
+        setupAOYNeg();
+        super.renderNegativeYFacing(tex);
+    }
+
+    @Override
+    public void renderPositiveYFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y + 1, z, 1)) return;
+        setupAOYPos();
+        super.renderPositiveYFacing(tex);
+    }
+
+    @Override
+    public void renderNegativeZFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y, z - 1, 2)) return;
+        setupAOZNeg();
+        super.renderNegativeZFacing(tex);
+    }
+
+    @Override
+    public void renderPositiveZFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y, z + 1, 3)) return;
+        setupAOZPos();
+        super.renderPositiveZFacing(tex);
+    }
+
+    @Override
+    public void renderNegativeXFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x - 1, y, z, 4)) return;
+        setupAOXNeg();
+        super.renderNegativeXFacing(tex);
+    }
+
+    @Override
+    public void renderPositiveXFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x + 1, y, z, 5)) return;
+        setupAOXPos();
+        super.renderPositiveXFacing(tex);
     }
 
     /**

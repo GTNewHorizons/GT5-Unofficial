@@ -55,12 +55,12 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aBlock.setBlockBoundsForItemRender();
         aRenderer.setRenderBoundsFromBlock(aBlock);
         // spotless:off
-        renderNegativeYFacing(ctx, textureArray[SIDE_DOWN], true);
-        renderPositiveYFacing(ctx, textureArray[SIDE_UP], true);
-        renderNegativeZFacing(ctx, textureArray[SIDE_NORTH], true);
-        renderPositiveZFacing(ctx, textureArray[SIDE_SOUTH], true);
-        renderNegativeXFacing(ctx, textureArray[SIDE_WEST], true);
-        renderPositiveXFacing(ctx, textureArray[SIDE_EAST], true);
+        ctx.renderNegativeYFacing(textureArray[SIDE_DOWN]);
+        ctx.renderPositiveYFacing(textureArray[SIDE_UP]);
+        ctx.renderNegativeZFacing(textureArray[SIDE_NORTH]);
+        ctx.renderPositiveZFacing(textureArray[SIDE_SOUTH]);
+        ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
+        ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
         // spotless:on
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
@@ -114,12 +114,12 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
         // spotless:off
-        renderNegativeYFacing(ctx, textureArray[SIDE_DOWN], true);
-        renderPositiveYFacing(ctx, textureArray[SIDE_UP], true);
-        renderNegativeZFacing(ctx, textureArray[SIDE_NORTH], true);
-        renderPositiveZFacing(ctx, textureArray[SIDE_SOUTH], true);
-        renderNegativeXFacing(ctx, textureArray[SIDE_WEST], true);
-        renderPositiveXFacing(ctx, textureArray[SIDE_EAST], true);
+        ctx.renderNegativeYFacing(textureArray[SIDE_DOWN]);
+        ctx.renderPositiveYFacing(textureArray[SIDE_UP]);
+        ctx.renderNegativeZFacing(textureArray[SIDE_NORTH]);
+        ctx.renderPositiveZFacing(textureArray[SIDE_SOUTH]);
+        ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
+        ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
         // spotless:on
 
         return tessAccess.gt5u$hasVertices();

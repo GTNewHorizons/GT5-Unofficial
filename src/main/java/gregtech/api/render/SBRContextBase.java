@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.ITexture;
 
 /**
  * Base class to represent the rendering context for a single block during a render pass.
@@ -45,6 +46,11 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
     public final RenderBlocks renderer;
     public final Block block;
     public final int modelId;
+    /**
+     * Determines if block faces can be culled
+     */
+    public boolean fullBlock;
+
     /**
      * Rendering coordinates for {@link RenderBlocks}; present to sidestep API limitations
      * and keep logic out of rendering.
@@ -142,6 +148,44 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      */
     public T setupColor(ForgeDirection side, short[] rgba) {
         return setupColor(side, rgbaToInt(rgba));
+    }
+
+    /**
+     * Provides per-face rendering methods for this block rendering context.
+     * <p>
+     * Each method renders all non-null texture layers from the given array
+     * on the corresponding cuboid's face.
+     *
+     * @param tex the {@link ITexture} array containing the texture layers for the face
+     * @see #renderNegativeYFacing(ITexture[])
+     * @see #renderPositiveYFacing(ITexture[])
+     * @see #renderNegativeZFacing(ITexture[])
+     * @see #renderPositiveZFacing(ITexture[])
+     * @see #renderNegativeXFacing(ITexture[])
+     * @see #renderPositiveXFacing(ITexture[])
+     */
+    public void renderNegativeYFacing(ITexture[] tex) {
+        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderYNeg(this);
+    }
+
+    public void renderPositiveYFacing(ITexture[] tex) {
+        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderYPos(this);
+    }
+
+    public void renderNegativeZFacing(ITexture[] tex) {
+        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderZNeg(this);
+    }
+
+    public void renderPositiveZFacing(ITexture[] tex) {
+        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderZPos(this);
+    }
+
+    public void renderNegativeXFacing(ITexture[] tex) {
+        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderXNeg(this);
+    }
+
+    public void renderPositiveXFacing(ITexture[] tex) {
+        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderXPos(this);
     }
 
     /**

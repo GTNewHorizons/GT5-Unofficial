@@ -1,12 +1,5 @@
 package gtPlusPlus.core.client.renderer;
 
-import static gregtech.common.render.GTRendererBlock.renderNegativeXFacing;
-import static gregtech.common.render.GTRendererBlock.renderNegativeYFacing;
-import static gregtech.common.render.GTRendererBlock.renderNegativeZFacing;
-import static gregtech.common.render.GTRendererBlock.renderPositiveXFacing;
-import static gregtech.common.render.GTRendererBlock.renderPositiveYFacing;
-import static gregtech.common.render.GTRendererBlock.renderPositiveZFacing;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -53,12 +46,12 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
         ITexturedBlock textures = (ITexturedBlock) aBlock;
 
         // spotless:off
-        renderNegativeYFacing(ctx, textures.getTexture(ForgeDirection.DOWN), true);
-        renderPositiveYFacing(ctx, textures.getTexture(ForgeDirection.UP), true);
-        renderNegativeZFacing(ctx, textures.getTexture(ForgeDirection.NORTH), true);
-        renderPositiveZFacing(ctx, textures.getTexture(ForgeDirection.SOUTH), true);
-        renderNegativeXFacing(ctx, textures.getTexture(ForgeDirection.WEST), true);
-        renderPositiveXFacing(ctx, textures.getTexture(ForgeDirection.EAST), true);
+        ctx.renderNegativeYFacing(textures.getTexture(ForgeDirection.DOWN));
+        ctx.renderPositiveYFacing(textures.getTexture(ForgeDirection.UP));
+        ctx.renderNegativeZFacing(textures.getTexture(ForgeDirection.NORTH));
+        ctx.renderPositiveZFacing(textures.getTexture(ForgeDirection.SOUTH));
+        ctx.renderNegativeXFacing(textures.getTexture(ForgeDirection.WEST));
+        ctx.renderPositiveXFacing(textures.getTexture(ForgeDirection.EAST));
         // spotless:on
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -75,18 +68,19 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
         final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        ctx.fullBlock = true;
 
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
-        renderNegativeYFacing(ctx, textures.getTexture(ForgeDirection.DOWN), true);
-        renderPositiveYFacing(ctx, textures.getTexture(ForgeDirection.UP), true);
-        renderNegativeZFacing(ctx, textures.getTexture(ForgeDirection.NORTH), true);
-        renderPositiveZFacing(ctx, textures.getTexture(ForgeDirection.SOUTH), true);
-        renderNegativeXFacing(ctx, textures.getTexture(ForgeDirection.WEST), true);
-        renderPositiveXFacing(ctx, textures.getTexture(ForgeDirection.EAST), true);
+        ctx.renderNegativeYFacing(textures.getTexture(ForgeDirection.DOWN));
+        ctx.renderPositiveYFacing(textures.getTexture(ForgeDirection.UP));
+        ctx.renderNegativeZFacing(textures.getTexture(ForgeDirection.NORTH));
+        ctx.renderPositiveZFacing(textures.getTexture(ForgeDirection.SOUTH));
+        ctx.renderNegativeXFacing(textures.getTexture(ForgeDirection.WEST));
+        ctx.renderPositiveXFacing(textures.getTexture(ForgeDirection.EAST));
 
         aRenderer.enableAO = false;
         return tessAccess.gt5u$hasVertices();

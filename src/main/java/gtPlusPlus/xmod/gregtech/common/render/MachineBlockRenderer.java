@@ -80,52 +80,52 @@ public class MachineBlockRenderer extends GTRendererBlock {
                     ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, -1.0F, 0.0F);
-                    renderNegativeYFacing(ctx, getTexture(tMetaTileEntity, DOWN, 0b001001, -1, false, false), true);
+                    ctx.renderNegativeYFacing(getTexture(tMetaTileEntity, DOWN, 0b001001, -1, false, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, 1.0F, 0.0F);
-                    renderPositiveYFacing(ctx, getTexture(tMetaTileEntity, UP, 0b001001, -1, false, false), true);
+                    ctx.renderPositiveYFacing(getTexture(tMetaTileEntity, UP, 0b001001, -1, false, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, 0.0F, -1.0F);
-                    renderNegativeZFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.NORTH, 0b001001, -1, false, false), true);
+                    ctx.renderNegativeZFacing(getTexture(tMetaTileEntity, ForgeDirection.NORTH, 0b001001, -1, false, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, 0.0F, 1.0F);
-                    renderPositiveZFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.SOUTH, 0b001001, -1, false, false), true);
+                    ctx.renderPositiveZFacing(getTexture(tMetaTileEntity, ForgeDirection.SOUTH, 0b001001, -1, false, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(-1.0F, 0.0F, 0.0F);
-                    renderNegativeXFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.WEST, 0b001001, -1, true, false), true);
+                    ctx.renderNegativeXFacing(getTexture(tMetaTileEntity, ForgeDirection.WEST, 0b001001, -1, true, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(1.0F, 0.0F, 0.0F);
-                    renderPositiveXFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.EAST, 0b001001, -1, true, false), true);
+                    ctx.renderPositiveXFacing(getTexture(tMetaTileEntity, ForgeDirection.EAST, 0b001001, -1, true, false));
                     tess.draw();
                 } else {
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, -1.0F, 0.0F);
-                    renderNegativeYFacing(ctx, getTexture(tMetaTileEntity, DOWN, ForgeDirection.WEST, -1, true, false), true);
+                    ctx.renderNegativeYFacing(getTexture(tMetaTileEntity, DOWN, ForgeDirection.WEST, -1, true, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, 1.0F, 0.0F);
-                    renderPositiveYFacing(ctx, getTexture(tMetaTileEntity, UP, ForgeDirection.WEST, -1, true, false), true);
+                    ctx.renderPositiveYFacing(getTexture(tMetaTileEntity, UP, ForgeDirection.WEST, -1, true, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, 0.0F, -1.0F);
-                    renderNegativeZFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.NORTH, ForgeDirection.WEST, -1, true, false), true);
+                    ctx.renderNegativeZFacing(getTexture(tMetaTileEntity, ForgeDirection.NORTH, ForgeDirection.WEST, -1, true, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, 0.0F, 1.0F);
-                    renderPositiveZFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.SOUTH, ForgeDirection.WEST, -1, true, false), true);
+                    ctx.renderPositiveZFacing(getTexture(tMetaTileEntity, ForgeDirection.SOUTH, ForgeDirection.WEST, -1, true, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(-1.0F, 0.0F, 0.0F);
-                    renderNegativeXFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.WEST, ForgeDirection.WEST, -1, true, false), true);
+                    ctx.renderNegativeXFacing(getTexture(tMetaTileEntity, ForgeDirection.WEST, ForgeDirection.WEST, -1, true, false));
                     tess.draw();
                     tess.startDrawingQuads();
                     tess.setNormal(1.0F, 0.0F, 0.0F);
-                    renderPositiveXFacing(ctx, getTexture(tMetaTileEntity, ForgeDirection.EAST, ForgeDirection.WEST, -1, true, false), true);
+                    ctx.renderPositiveXFacing(getTexture(tMetaTileEntity, ForgeDirection.EAST, ForgeDirection.WEST, -1, true, false));
                     tess.draw();
                 }
 
@@ -152,12 +152,13 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public boolean renderStandardBlock(SBRWorldContext ctx, ITexture[][] aTextures) {
         ctx.block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-        renderNegativeYFacing(ctx, aTextures[DOWN.ordinal()], true);
-        renderPositiveYFacing(ctx, aTextures[UP.ordinal()], true);
-        renderNegativeZFacing(ctx, aTextures[ForgeDirection.NORTH.ordinal()], true);
-        renderPositiveZFacing(ctx, aTextures[ForgeDirection.SOUTH.ordinal()], true);
-        renderNegativeXFacing(ctx, aTextures[ForgeDirection.WEST.ordinal()], true);
-        renderPositiveXFacing(ctx, aTextures[ForgeDirection.EAST.ordinal()], true);
+        ctx.fullBlock = true;
+        ctx.renderNegativeYFacing(aTextures[DOWN.ordinal()]);
+        ctx.renderPositiveYFacing(aTextures[UP.ordinal()]);
+        ctx.renderNegativeZFacing(aTextures[ForgeDirection.NORTH.ordinal()]);
+        ctx.renderPositiveZFacing(aTextures[ForgeDirection.SOUTH.ordinal()]);
+        ctx.renderNegativeXFacing(aTextures[ForgeDirection.WEST.ordinal()]);
+        ctx.renderPositiveXFacing(aTextures[ForgeDirection.EAST.ordinal()]);
         return true;
     }
 
@@ -198,144 +199,144 @@ public class MachineBlockRenderer extends GTRendererBlock {
                     case NO_CONNECTION -> {
                         ctx.block.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                         ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                        renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
-                        renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
-                        renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
-                        renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
-                        renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
-                        renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                        ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
+                        ctx.renderPositiveYFacing(textureUncovered.get(UP));
+                        ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
+                        ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
+                        ctx.renderNegativeXFacing(textureUncovered.get(WEST));
+                        ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                     }
                     case (CONNECTED_DOWN | CONNECTED_UP) -> {
                         ctx.block.setBlockBounds(0.0F, sp, sp, 1.0F, sp + tThickness, sp + tThickness);
                         ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                        renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
-                        renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
-                        renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
-                        renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
+                        ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
+                        ctx.renderPositiveYFacing(textureUncovered.get(UP));
+                        ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
+                        ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
                         if (!coveredSides.contains(WEST)) {
-                            renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
+                            ctx.renderNegativeXFacing(textureUncovered.get(WEST));
                         }
                         if (!coveredSides.contains(EAST)) {
-                            renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                            ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                         }
                     }
                     case (CONNECTED_NORTH | CONNECTED_SOUTH) -> {
                         ctx.block.setBlockBounds(sp, 0.0F, sp, sp + tThickness, 1.0F, sp + tThickness);
                         ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                        renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
-                        renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
-                        renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
-                        renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                        ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
+                        ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
+                        ctx.renderNegativeXFacing(textureUncovered.get(WEST));
+                        ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                         if (!coveredSides.contains(DOWN)) {
-                            renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
+                            ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
                         }
                         if (!coveredSides.contains(UP)) {
-                            renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
+                            ctx.renderPositiveYFacing(textureUncovered.get(UP));
                         }
                     }
                     case (CONNECTED_WEST | CONNECTED_EAST) -> {
                         ctx.block.setBlockBounds(sp, sp, 0.0F, sp + tThickness, sp + tThickness, 1.0F);
                         ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                        renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
-                        renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
-                        renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
-                        renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                        ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
+                        ctx.renderPositiveYFacing(textureUncovered.get(UP));
+                        ctx.renderNegativeXFacing(textureUncovered.get(WEST));
+                        ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                         if (!coveredSides.contains(NORTH)) {
-                            renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
+                            ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
                         }
                         if (!coveredSides.contains(SOUTH)) {
-                            renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
+                            ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
                         }
                     }
                     default -> {
                         if ((connexionSidesBits & CONNECTED_DOWN) == 0) {
                             ctx.block.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
+                            ctx.renderNegativeXFacing(textureUncovered.get(WEST));
                         } else {
                             ctx.block.setBlockBounds(0.0F, sp, sp, sp, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
-                            renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
-                            renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
-                            renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
+                            ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
+                            ctx.renderPositiveYFacing(textureUncovered.get(UP));
+                            ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
+                            ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
                             if (!coveredSides.contains(WEST)) {
-                                renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
+                                ctx.renderNegativeXFacing(textureUncovered.get(WEST));
                             }
                         }
                         if ((connexionSidesBits & CONNECTED_UP) == 0) {
                             ctx.block.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                            ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                         } else {
                             ctx.block.setBlockBounds(sp + tThickness, sp, sp, 1.0F, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
-                            renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
-                            renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
-                            renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
+                            ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
+                            ctx.renderPositiveYFacing(textureUncovered.get(UP));
+                            ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
+                            ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
                             if (!coveredSides.contains(EAST)) {
-                                renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                                ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                             }
                         }
                         if ((connexionSidesBits & CONNECTED_NORTH) == 0) {
                             ctx.block.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
+                            ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
                         } else {
                             ctx.block.setBlockBounds(sp, 0.0F, sp, sp + tThickness, sp, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
-                            renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
-                            renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
-                            renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                            ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
+                            ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
+                            ctx.renderNegativeXFacing(textureUncovered.get(WEST));
+                            ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                             if (!coveredSides.contains(DOWN)) {
-                                renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
+                                ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
                             }
                         }
                         if ((connexionSidesBits & CONNECTED_SOUTH) == 0) {
                             ctx.block.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
+                            ctx.renderPositiveYFacing(textureUncovered.get(UP));
                         } else {
                             ctx.block.setBlockBounds(sp, sp + tThickness, sp, sp + tThickness, 1.0F, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
-                            renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
-                            renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
-                            renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                            ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
+                            ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
+                            ctx.renderNegativeXFacing(textureUncovered.get(WEST));
+                            ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                             if (!coveredSides.contains(UP)) {
-                                renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
+                                ctx.renderPositiveYFacing(textureUncovered.get(UP));
                             }
                         }
                         if ((connexionSidesBits & CONNECTED_WEST) == 0) {
                             ctx.block.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
+                            ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
                         } else {
                             ctx.block.setBlockBounds(sp, sp, 0.0F, sp + tThickness, sp + tThickness, sp);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
-                            renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
-                            renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
-                            renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                            ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
+                            ctx.renderPositiveYFacing(textureUncovered.get(UP));
+                            ctx.renderNegativeXFacing(textureUncovered.get(WEST));
+                            ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                             if (!coveredSides.contains(NORTH)) {
-                                renderNegativeZFacing(ctx, textureUncovered.get(NORTH), false);
+                                ctx.renderNegativeZFacing(textureUncovered.get(NORTH));
                             }
                         }
                         if ((connexionSidesBits & CONNECTED_EAST) == 0) {
                             ctx.block.setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
+                            ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
                         } else {
                             ctx.block.setBlockBounds(sp, sp, sp + tThickness, sp + tThickness, sp + tThickness, 1.0F);
                             ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                            renderNegativeYFacing(ctx, textureUncovered.get(DOWN), false);
-                            renderPositiveYFacing(ctx, textureUncovered.get(UP), false);
-                            renderNegativeXFacing(ctx, textureUncovered.get(WEST), false);
-                            renderPositiveXFacing(ctx, textureUncovered.get(EAST), false);
+                            ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
+                            ctx.renderPositiveYFacing(textureUncovered.get(UP));
+                            ctx.renderNegativeXFacing(textureUncovered.get(WEST));
+                            ctx.renderPositiveXFacing(textureUncovered.get(EAST));
                             if (!coveredSides.contains(SOUTH)) {
-                                renderPositiveZFacing(ctx, textureUncovered.get(SOUTH), false);
+                                ctx.renderPositiveZFacing(textureUncovered.get(SOUTH));
                             }
                         }
                     }
@@ -344,44 +345,44 @@ public class MachineBlockRenderer extends GTRendererBlock {
                 if (coveredSides.contains(DOWN)) {
                     ctx.block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
                     ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    renderNegativeYFacing(ctx, texture.get(DOWN), false);
-                    renderPositiveYFacing(ctx, texture.get(DOWN), false);
+                    ctx.renderNegativeYFacing(texture.get(DOWN));
+                    ctx.renderPositiveYFacing(texture.get(DOWN));
                     if (!coveredSides.contains(NORTH)) {
-                        renderNegativeZFacing(ctx, texture.get(DOWN), false);
+                        ctx.renderNegativeZFacing(texture.get(DOWN));
                     }
 
                     if (!coveredSides.contains(SOUTH)) {
-                        renderPositiveZFacing(ctx, texture.get(DOWN), false);
+                        ctx.renderPositiveZFacing(texture.get(DOWN));
                     }
 
                     if (!coveredSides.contains(WEST)) {
-                        renderNegativeXFacing(ctx, texture.get(DOWN), false);
+                        ctx.renderNegativeXFacing(texture.get(DOWN));
                     }
 
                     if (!coveredSides.contains(EAST)) {
-                        renderPositiveXFacing(ctx, texture.get(DOWN), false);
+                        ctx.renderPositiveXFacing(texture.get(DOWN));
                     }
                 }
 
                 if (coveredSides.contains(UP)) {
                     ctx.block.setBlockBounds(0.0F, 0.875F, 0.0F, 1.0F, 1.0F, 1.0F);
                     ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    renderNegativeYFacing(ctx, texture.get(UP), false);
-                    renderPositiveYFacing(ctx, texture.get(UP), false);
+                    ctx.renderNegativeYFacing(texture.get(UP));
+                    ctx.renderPositiveYFacing(texture.get(UP));
                     if (!coveredSides.contains(NORTH)) {
-                        renderNegativeZFacing(ctx, texture.get(UP), false);
+                        ctx.renderNegativeZFacing(texture.get(UP));
                     }
 
                     if (!coveredSides.contains(SOUTH)) {
-                        renderPositiveZFacing(ctx, texture.get(UP), false);
+                        ctx.renderPositiveZFacing(texture.get(UP));
                     }
 
                     if (!coveredSides.contains(WEST)) {
-                        renderNegativeXFacing(ctx, texture.get(UP), false);
+                        ctx.renderNegativeXFacing(texture.get(UP));
                     }
 
                     if (!coveredSides.contains(EAST)) {
-                        renderPositiveXFacing(ctx, texture.get(UP), false);
+                        ctx.renderPositiveXFacing(texture.get(UP));
                     }
                 }
 
@@ -389,21 +390,21 @@ public class MachineBlockRenderer extends GTRendererBlock {
                     ctx.block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.125F);
                     ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                     if (!coveredSides.contains(DOWN)) {
-                        renderNegativeYFacing(ctx, texture.get(NORTH), false);
+                        ctx.renderNegativeYFacing(texture.get(NORTH));
                     }
 
                     if (!coveredSides.contains(UP)) {
-                        renderPositiveYFacing(ctx, texture.get(NORTH), false);
+                        ctx.renderPositiveYFacing(texture.get(NORTH));
                     }
 
-                    renderNegativeZFacing(ctx, texture.get(NORTH), false);
-                    renderPositiveZFacing(ctx, texture.get(NORTH), false);
+                    ctx.renderNegativeZFacing(texture.get(NORTH));
+                    ctx.renderPositiveZFacing(texture.get(NORTH));
                     if (!coveredSides.contains(WEST)) {
-                        renderNegativeXFacing(ctx, texture.get(NORTH), false);
+                        ctx.renderNegativeXFacing(texture.get(NORTH));
                     }
 
                     if (!coveredSides.contains(EAST)) {
-                        renderPositiveXFacing(ctx, texture.get(NORTH), false);
+                        ctx.renderPositiveXFacing(texture.get(NORTH));
                     }
                 }
 
@@ -411,21 +412,21 @@ public class MachineBlockRenderer extends GTRendererBlock {
                     ctx.block.setBlockBounds(0.0F, 0.0F, 0.875F, 1.0F, 1.0F, 1.0F);
                     ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                     if (!coveredSides.contains(DOWN)) {
-                        renderNegativeYFacing(ctx, texture.get(SOUTH), false);
+                        ctx.renderNegativeYFacing(texture.get(SOUTH));
                     }
 
                     if (!coveredSides.contains(UP)) {
-                        renderPositiveYFacing(ctx, texture.get(SOUTH), false);
+                        ctx.renderPositiveYFacing(texture.get(SOUTH));
                     }
 
-                    renderNegativeZFacing(ctx, texture.get(SOUTH), false);
-                    renderPositiveZFacing(ctx, texture.get(SOUTH), false);
+                    ctx.renderNegativeZFacing(texture.get(SOUTH));
+                    ctx.renderPositiveZFacing(texture.get(SOUTH));
                     if (!coveredSides.contains(WEST)) {
-                        renderNegativeXFacing(ctx, texture.get(SOUTH), false);
+                        ctx.renderNegativeXFacing(texture.get(SOUTH));
                     }
 
                     if (!coveredSides.contains(EAST)) {
-                        renderPositiveXFacing(ctx, texture.get(SOUTH), false);
+                        ctx.renderPositiveXFacing(texture.get(SOUTH));
                     }
                 }
 
@@ -433,46 +434,46 @@ public class MachineBlockRenderer extends GTRendererBlock {
                     ctx.block.setBlockBounds(0.0F, 0.0F, 0.0F, 0.125F, 1.0F, 1.0F);
                     ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                     if (!coveredSides.contains(DOWN)) {
-                        renderNegativeYFacing(ctx, texture.get(WEST), false);
+                        ctx.renderNegativeYFacing(texture.get(WEST));
                     }
 
                     if (!coveredSides.contains(UP)) {
-                        renderPositiveYFacing(ctx, texture.get(WEST), false);
+                        ctx.renderPositiveYFacing(texture.get(WEST));
                     }
 
                     if (!coveredSides.contains(NORTH)) {
-                        renderNegativeZFacing(ctx, texture.get(WEST), false);
+                        ctx.renderNegativeZFacing(texture.get(WEST));
                     }
 
                     if (!coveredSides.contains(SOUTH)) {
-                        renderPositiveZFacing(ctx, texture.get(WEST), false);
+                        ctx.renderPositiveZFacing(texture.get(WEST));
                     }
 
-                    renderNegativeXFacing(ctx, texture.get(WEST), false);
-                    renderPositiveXFacing(ctx, texture.get(WEST), false);
+                    ctx.renderNegativeXFacing(texture.get(WEST));
+                    ctx.renderPositiveXFacing(texture.get(WEST));
                 }
 
                 if (coveredSides.contains(EAST)) {
                     ctx.block.setBlockBounds(0.875F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
                     ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                     if (!coveredSides.contains(DOWN)) {
-                        renderNegativeYFacing(ctx, texture.get(EAST), false);
+                        ctx.renderNegativeYFacing(texture.get(EAST));
                     }
 
                     if (!coveredSides.contains(UP)) {
-                        renderPositiveYFacing(ctx, texture.get(EAST), false);
+                        ctx.renderPositiveYFacing(texture.get(EAST));
                     }
 
                     if (!coveredSides.contains(NORTH)) {
-                        renderNegativeZFacing(ctx, texture.get(EAST), false);
+                        ctx.renderNegativeZFacing(texture.get(EAST));
                     }
 
                     if (!coveredSides.contains(SOUTH)) {
-                        renderPositiveZFacing(ctx, texture.get(EAST), false);
+                        ctx.renderPositiveZFacing(texture.get(EAST));
                     }
 
-                    renderNegativeXFacing(ctx, texture.get(EAST), false);
-                    renderPositiveXFacing(ctx, texture.get(EAST), false);
+                    ctx.renderNegativeXFacing(texture.get(EAST));
+                    ctx.renderPositiveXFacing(texture.get(EAST));
                 }
 
                 ctx.block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

@@ -104,12 +104,12 @@ public interface IRenderedBlock {
         public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
             final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, 0, aRenderer);
             aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F);
-            GTRendererBlock.renderNegativeYFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderPositiveYFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderNegativeZFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderPositiveZFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderNegativeXFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderPositiveXFacing(ctx, mErrorTexture, false);
+            ctx.renderNegativeYFacing(mErrorTexture);
+            ctx.renderPositiveYFacing(mErrorTexture);
+            ctx.renderNegativeZFacing(mErrorTexture);
+            ctx.renderPositiveZFacing(mErrorTexture);
+            ctx.renderNegativeXFacing(mErrorTexture);
+            ctx.renderPositiveXFacing(mErrorTexture);
             return true;
         }
     }
