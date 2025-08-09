@@ -31,6 +31,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import gregtech.common.blocks.GTBlockOre;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
 public final class GTOreAdapter implements IOreAdapter<Materials> {
 
@@ -249,6 +250,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
+        @SuppressWarnings("SuspiciousMethodCalls")
         GTBlockOre oreBlock = oreBlocksByStoneType.get(info.stoneType);
 
         if (oreBlock == null) return new ArrayList<>();
@@ -274,12 +276,12 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         OreInfo<Materials> info = (OreInfo<Materials>) info2;
 
         if (info.isSmall) {
-            ArrayList<ItemId> drops = new ArrayList<>();
+            ObjectLinkedOpenHashSet<ItemId> drops = new ObjectLinkedOpenHashSet<>();
 
             for (ItemStack stack : SmallOreDrops.getDropList(info.material)) {
                 ItemId id = ItemId.create(stack);
 
-                if (!drops.contains(id)) drops.add(id);
+                drops.add(id);
             }
 
             ArrayList<ItemStack> drops2 = new ArrayList<>();
