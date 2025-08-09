@@ -10,7 +10,6 @@ public enum TargetedMod implements ITargetMod {
     ADVANCED_SOLAR_PANELS(null, "AdvancedSolarPanel"),
     ANGELICA("com.gtnewhorizons.angelica.loading.AngelicaTweaker", "angelica"),
     BIOMESOPLENTY(null, "BiomesOPlenty"),
-    FORESTRY(null, "Forestry"),
     GALACTICRAFT_CORE("micdoodle8.mods.galacticraft.core.asm.GCLoadingPlugin", "GalacticraftCore"),
     GT6("gregtech.asm.GT_ASM", "gregapi"),
     HEE("chylex.hee.HEECore", "HardcoreEnderExpansion"),

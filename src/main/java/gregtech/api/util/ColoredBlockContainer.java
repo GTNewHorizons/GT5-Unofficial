@@ -30,8 +30,7 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
  * Used to provide a consistent interface for dealing with colors of blocks for the various spray can items.
  * <p>
  * Call {@link #getInstance(EntityPlayer, MovingObjectPosition)} or
- * {@link #getInstance(World, int, int, int, ForgeDirection, EntityPlayer)}
- * to acquire an instance of this class.
+ * {@link #getInstance(World, int, int, int, ForgeDirection, EntityPlayer)} to acquire an instance of this class.
  */
 public abstract class ColoredBlockContainer {
 
@@ -64,8 +63,8 @@ public abstract class ColoredBlockContainer {
     /**
      * Get the color of the block.
      *
-     * @return an Optional with the color of the block inside, or {@link Optional#empty()} if the block is uncolored
-     *         or invalid
+     * @return an Optional with the color of the block inside, or {@link Optional#empty()} if the block is uncolored or
+     *         invalid
      */
     public abstract Optional<Integer> getColor();
 

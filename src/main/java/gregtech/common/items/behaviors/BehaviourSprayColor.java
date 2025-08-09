@@ -132,8 +132,8 @@ public class BehaviourSprayColor extends BehaviourNone {
             if (aWorld.getBlockMetadata(aX, aY, aZ) != initialBlockMeta) break;
 
             /*
-             * Check if the initial block had a TE and if the next one does, check if it's the same kind.
-             * else one does and the other doesn't, thus stop checking.
+             * Check if the initial block had a TE and if the next one does, check if it's the same kind. else one does
+             * and the other doesn't, thus stop checking.
              */
             TileEntity targetTE = aWorld.getTileEntity(aX, aY, aZ);
             if (initialTE == null ^ targetTE == null) break;

@@ -2517,8 +2517,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     /**
-     * This method allows fast lookup of EntityPlayerMp from UUID.
-     * It should only ever be called from the ServerThread and while the Server is running.
+     * This method allows fast lookup of EntityPlayerMp from UUID. It should only ever be called from the ServerThread
+     * and while the Server is running.
      *
      * @param uuid - uuid of the EntityPlayerMP
      */
@@ -2537,8 +2537,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     /**
-     * This method allows fast lookup of player UUID from their name.
-     * It should only ever be called from the ServerThread and while the Server is running.
+     * This method allows fast lookup of player UUID from their name. It should only ever be called from the
+     * ServerThread and while the Server is running.
      *
      * @param playername - the name of the player as returned by getCommandSenderName()
      */
