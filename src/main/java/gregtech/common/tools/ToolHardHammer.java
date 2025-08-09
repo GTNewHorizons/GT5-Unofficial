@@ -71,7 +71,7 @@ public class ToolHardHammer extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.RANDOM_ANVIL_USE.toString();
+        return SoundResource.GTM_LOOP_FORGE_HAMMER.toString();
     }
 
     @Override

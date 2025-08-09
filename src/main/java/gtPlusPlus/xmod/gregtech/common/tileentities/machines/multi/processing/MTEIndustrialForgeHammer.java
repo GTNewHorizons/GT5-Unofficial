@@ -189,7 +189,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.RANDOM_ANVIL_USE;
+        return SoundResource.GTM_LOOP_FORGE_HAMMER;
     }
 
     @Override

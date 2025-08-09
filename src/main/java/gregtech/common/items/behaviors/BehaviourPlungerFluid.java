@@ -45,7 +45,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
                         ((IFluidHandler) aTileEntity).drain(tDirection, drainAmount, true);
                         GTUtility.sendSoundToPlayers(
                             aWorld,
-                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                            SoundResource.GTM_OP_PLUNGER,
                             1.0F,
                             -1.0F,
                             aX,
@@ -62,7 +62,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
                 if (machine.mFluid != null && machine.mFluid.amount > 0)
                     machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, drainAmount);
                 GTUtility
-                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+                    .sendSoundToPlayers(aWorld, SoundResource.GTM_OP_PLUNGER, 1.0F, -1.0F, aX, aY, aZ);
                 return true;
             }
         }

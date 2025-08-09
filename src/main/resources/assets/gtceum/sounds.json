@@ -1,0 +1,242 @@
+{
+  "gtm.ArcLoop": {
+    "sounds": [
+      {
+        "name": "arc",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.AssemblerLoop": {
+    "sounds": [
+      {
+        "name": "assembler",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.BathLoop": {
+    "sounds": [
+      {
+        "name": "bath",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.BoilerLoop": {
+    "sounds": [
+      {
+        "name": "boiler",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.CentrifugeLoop": {
+    "sounds": [
+      {
+        "name": "centrifuge",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.ChemicalLoop": {
+    "sounds": [
+      {
+        "name": "chemical",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.CombustionLoop": {
+    "sounds": [
+      {
+        "name": "combustion",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.CompressorLoop": {
+    "sounds": [
+      {
+        "name": "compressor",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.CoolingLoop": {
+    "sounds": [
+      {
+        "name": "cooling",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.CutLoop": {
+    "sounds": [
+      {
+        "name": "cut",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.ElectrolyzerLoop": {
+    "sounds": [
+      {
+        "name": "electrolyzer",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.FileOp": {
+    "sounds": [
+      {
+        "name": "file",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.FireLoop": {
+    "sounds": [
+      {
+        "name": "fire",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.ForgeHammerLoop": {
+    "sounds": [
+      {
+        "name": "forge_hammer",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.FurnaceLoop": {
+    "sounds": [
+      {
+        "name": "furnace",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.MaceratorLoop": {
+    "sounds": [
+      {
+        "name": "macerator",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.MinerLoop": {
+    "sounds": [
+      {
+        "name": "miner",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.MixerLoop": {
+    "sounds": [
+      {
+        "name": "mixer",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.MortarOp": {
+    "sounds": [
+      {
+        "name": "mortar",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.MotorLoop": {
+    "sounds": [
+      {
+        "name": "motor",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.PlungerOp": {
+    "sounds": [
+      {
+        "name": "plunger",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.PortableScannerOp": {
+    "sounds": [
+      {
+        "name": "portable_scanner",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.ReplicatorLoop": {
+    "sounds": [
+      {
+        "name": "replicator",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.SawOp": {
+    "sounds": [
+      {
+        "name": "saw",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.ScrewdriverOp": {
+    "sounds": [
+      {
+        "name": "screwdriver",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.SoftHammerOp": {
+    "sounds": [
+      {
+        "name": "soft_hammer",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.SprayCanOp": {
+    "sounds": [
+      {
+        "name": "spray_can",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.TurbineLoop": {
+    "sounds": [
+      {
+        "name": "turbine",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.WirecutterOp": {
+    "sounds": [
+      {
+        "name": "wirecutter",
+        "stream": false
+      }
+    ]
+  },
+  "gtm.WrenchOp": {
+    "sounds": [
+      {
+        "name": "wrench",
+        "stream": false
+      }
+    ]
+  }
+}
