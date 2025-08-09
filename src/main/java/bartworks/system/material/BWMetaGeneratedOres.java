@@ -128,6 +128,11 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     }
 
     @Override
+    protected boolean canSilkHarvest() {
+        return false;
+    }
+
+    @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         EntityPlayer harvester = this.harvesters.get();
 
