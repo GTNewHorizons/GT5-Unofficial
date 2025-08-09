@@ -20,7 +20,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -195,7 +194,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
             EntityPlayer harvester = this.harvesters.get();
 
-            boolean doFortune = !(harvester instanceof FakePlayer);
+            boolean doFortune = GTUtility.isRealPlayer(harvester);
             boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
             return GTOreAdapter.INSTANCE
