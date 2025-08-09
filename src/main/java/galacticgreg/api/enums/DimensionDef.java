@@ -29,7 +29,8 @@ public enum DimensionDef {
         DimNames.THE_END,
         ChunkProviderEnd.class,
         DimensionType.Planet)
-        .setGeneratesAsteroids()),
+        .setGeneratesAsteroids()
+        .disableOreVeinHeightChecks()),
     EndAsteroids(new ModDimensionDef(
         DimNames.ENDASTEROID,
         ChunkProviderEnd.class,

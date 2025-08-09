@@ -9,9 +9,15 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraftforge.common.util.ForgeDirection;
 
+import galacticgreg.api.ModDimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
@@ -157,6 +163,40 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         // Limit Orevein to only blocks present in current chunk
         int limitWestX = Math.max(veinWestX, chunkX + 2); // Bias placement by 2 blocks to prevent worldgen cascade.
         int limitEastX = Math.min(veinEastX, chunkX + 2 + 16);
+
+        ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world);
+
+        if (!dimensionDef.respectsOreVeinHeights()) {
+            // Offset the chunkX/Z by the magic numbers used below to get the 'centre' (I have no idea where they come
+            // from).
+            int x = chunkX + 7;
+            int z = chunkZ + 9;
+
+            Chunk chunk = world.getChunkFromBlockCoords(x, z);
+
+            int minY = world.getActualHeight();
+            int maxY = 0;
+
+            // Most EBS's will be empty in the end, so instead of doing a naive 0-256 scan we can check each one
+            // separately.
+            // This is also faster than World.getBlock since there are fewer lookups needed to get a block.
+            for (ExtendedBlockStorage ebs : chunk.getBlockStorageArray()) {
+                if (ebs == null) continue;
+
+                for (int y = 0; y < 16; y++) {
+                    Block block = ebs.getBlockByExtId(7, y, 9);
+
+                    int realY = y + ebs.getYLocation();
+
+                    if (block.isBlockSolid(world, x, realY, z, ForgeDirection.UP.ordinal())) {
+                        minY = Math.min(minY, realY);
+                        maxY = Math.max(maxY, realY);
+                    }
+                }
+            }
+
+            veinMinY = minY + rng.nextInt(maxY - minY + 1);
+        }
 
         if (limitWestX >= limitEastX) { // No overlap between orevein and this chunk exists in X
             // Check for stone at the center of the chunk and the bottom of the orevein.

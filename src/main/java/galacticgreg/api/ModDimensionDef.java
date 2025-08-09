@@ -45,8 +45,9 @@ public class ModDimensionDef {
 
     private boolean hasEoHRecipe = true;
     private boolean canBeVoidMined = true;
-    private boolean generatesOre = false;
-    private boolean generatesAsteroids = false;
+    private boolean generatesOre;
+    private boolean generatesAsteroids;
+    private boolean respectsOreVeinHeights = true;
 
     /**
      * @param pDimensionName The provider dimension name (see {@link World#provider} and
@@ -178,6 +179,10 @@ public class ModDimensionDef {
         return generatesAsteroids;
     }
 
+    public boolean respectsOreVeinHeights() {
+        return respectsOreVeinHeights;
+    }
+
     public ModDimensionDef setGeneratesOre() {
         generatesOre = true;
         return this;
@@ -185,6 +190,11 @@ public class ModDimensionDef {
 
     public ModDimensionDef setGeneratesAsteroids() {
         generatesAsteroids = true;
+        return this;
+    }
+
+    public ModDimensionDef disableOreVeinHeightChecks() {
+        respectsOreVeinHeights = false;
         return this;
     }
 
