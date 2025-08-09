@@ -10,6 +10,8 @@ import net.minecraft.world.gen.ChunkProviderHell;
 
 import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
+import gregtech.api.enums.Mods;
+import gregtech.common.worldgen.HEEIslandScanner;
 import toxiceverglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
@@ -26,7 +28,8 @@ public enum DimensionDef {
     TheEnd(new ModDimensionDef(
         DimNames.THE_END,
         ChunkProviderEnd.class,
-        DimensionType.Planet)),
+        DimensionType.Planet)
+        .setGeneratesAsteroids()),
     EndAsteroids(new ModDimensionDef(
         DimNames.ENDASTEROID,
         ChunkProviderEnd.class,
@@ -219,16 +222,27 @@ public enum DimensionDef {
         return DEF_BY_WORLD_NAME.get(worldName);
     }
 
-    public static ModDimensionDef getDefForWorld(World world, int chunkX, int chunkZ) {
+    public static ModDimensionDef getDefForWorld(World world) {
+        return DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
+    }
+
+    public static ModDimensionDef getEffectiveDefForChunk(World world, int chunkX, int chunkZ) {
         ModDimensionDef def = DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
 
         if (def == null) return null;
 
-        if (def.getDimensionName()
-            .equals(DimNames.THE_END)) {
-            if (chunkX * chunkX + chunkZ * chunkZ > 16 * 16) {
-                def = DimensionDef.EndAsteroids.modDimensionDef;
+        if (def == DimensionDef.TheEnd.modDimensionDef) {
+            if (chunkX * chunkX + chunkZ * chunkZ <= 16 * 16) {
+                return def;
             }
+
+            if (Mods.HardcoreEnderExpansion.isModLoaded()) {
+                if (HEEIslandScanner.isWithinRangeOfIsland(chunkX, chunkZ)) {
+                    return def;
+                }
+            }
+
+            return DimensionDef.EndAsteroids.modDimensionDef;
         }
 
         return def;

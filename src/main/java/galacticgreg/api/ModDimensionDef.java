@@ -45,6 +45,8 @@ public class ModDimensionDef {
 
     private boolean hasEoHRecipe = true;
     private boolean canBeVoidMined = true;
+    private boolean generatesOre = false;
+    private boolean generatesAsteroids = false;
 
     /**
      * @param pDimensionName The provider dimension name (see {@link World#provider} and
@@ -73,11 +75,14 @@ public class ModDimensionDef {
         specialBlocksForAsteroids = new ArrayList<>();
         spaceObjectGenerators = new ArrayList<>();
         spaceStructureGenerators = new ArrayList<>();
+
+        generatesOre = pDimType == DimensionType.Planet;
+        generatesAsteroids = pDimType == DimensionType.Asteroid;
     }
 
     /**
      * Sets the chance that an ore seed chunk will have a vein
-     * 
+     *
      * @param chance The chance out of 100.
      */
     public ModDimensionDef setOreVeinChance(int chance) {
@@ -163,6 +168,24 @@ public class ModDimensionDef {
      */
     public DimensionType getDimensionType() {
         return dimensionType;
+    }
+
+    public boolean generatesOre() {
+        return generatesOre;
+    }
+
+    public boolean generatesAsteroids() {
+        return generatesAsteroids;
+    }
+
+    public ModDimensionDef setGeneratesOre() {
+        generatesOre = true;
+        return this;
+    }
+
+    public ModDimensionDef setGeneratesAsteroids() {
+        generatesAsteroids = true;
+        return this;
     }
 
     /**

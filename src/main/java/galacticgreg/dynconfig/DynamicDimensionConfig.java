@@ -37,6 +37,8 @@ public class DynamicDimensionConfig {
     private static final Map<String, AsteroidConfig> _mDynamicAsteroidMap = new HashMap<>();
 
     public static AsteroidConfig getAsteroidConfig(ModDimensionDef pDimDef) {
+        if (pDimDef == null) return null;
+
         return _mDynamicAsteroidMap.getOrDefault(pDimDef.getDimIdentifier(), null);
     }
 

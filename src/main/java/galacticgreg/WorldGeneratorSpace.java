@@ -46,7 +46,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
         GalacticGreg.Logger.trace("Triggered generate: [Dimension %s]", world.provider.getDimensionName());
 
-        ModDimensionDef tDimDef = DimensionDef.getDefForWorld(world, chunkX, chunkZ);
+        // Don't use the effective dim def here because we want to generate asteroids that clip into end islands
+        ModDimensionDef tDimDef = DimensionDef.getDefForWorld(world);
 
         if (tDimDef == null) {
             GalacticGreg.Logger.trace(
@@ -57,41 +58,42 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             GalacticGreg.Logger.trace("Selected DimDef: [%s]", tDimDef.getDimIdentifier());
         }
 
-        if (tDimDef.getDimensionType() == Enums.DimensionType.Asteroid) {
-            long pre = profileWorldGen ? System.nanoTime() : 0;
+        if (!tDimDef.generatesAsteroids()) return;
 
-            int seeds = 0;
+        long pre = profileWorldGen ? System.nanoTime() : 0;
 
-            for (int offsetZ = -2; offsetZ <= 2; offsetZ++) {
-                for (int offsetX = -2; offsetX <= 2; offsetX++) {
-                    AsteroidGenerator gen = AsteroidGenerator.forChunk(world, chunkX + offsetX, chunkZ + offsetZ);
+        int seeds = 0;
 
-                    if (gen == null) continue;
+        for (int offsetZ = -2; offsetZ <= 2; offsetZ++) {
+            for (int offsetX = -2; offsetX <= 2; offsetX++) {
+                AsteroidGenerator gen = AsteroidGenerator.forChunk(world, chunkX + offsetX, chunkZ + offsetZ);
 
-                    if (!gen.affectsChunk(chunkX, chunkZ)) continue;
+                if (gen == null) continue;
 
-                    gen.generateChunk(world, chunkX, chunkZ);
+                if (!gen.affectsChunk(chunkX, chunkZ)) continue;
 
-                    seeds++;
-                }
+                gen.generateChunk(world, chunkX, chunkZ);
+
+                seeds++;
             }
+        }
 
-            long post = profileWorldGen ? System.nanoTime() : 0;
+        long post = profileWorldGen ? System.nanoTime() : 0;
 
-            if (profileWorldGen) {
-                GTMod.GT_FML_LOGGER.info(
-                    String.format(
-                        "Generated %d %d in %,d us (%d seeds)",
-                        chunkX,
-                        chunkZ,
-                        (int) ((post - pre) / 1e3),
-                        seeds));
-            }
+        if (profileWorldGen) {
+            GTMod.GT_FML_LOGGER.info(
+                String.format(
+                    "Generated %d %d in %,d us (%d seeds)",
+                    chunkX,
+                    chunkZ,
+                    (int) ((post - pre) / 1e3),
+                    seeds));
+        }
 
-            Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
-            if (tChunk != null) {
-                tChunk.isModified = seeds > 0;
-            }
+        Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
+
+        if (tChunk != null) {
+            tChunk.isModified = seeds > 0;
         }
     }
 
@@ -103,8 +105,11 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         private IStoneType stoneType;
         private transient IWorldgenLayer ore;
 
+        private ModDimensionDef dimensionDef;
+        private AsteroidConfig asteroidConfig;
+
         public static AsteroidGenerator forChunk(World world, int seedChunkX, int seedChunkZ) {
-            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world, seedChunkX, seedChunkZ);
+            ModDimensionDef dimensionDef = DimensionDef.getEffectiveDefForChunk(world, seedChunkX, seedChunkZ);
             AsteroidConfig asteroidConfig = DynamicDimensionConfig.getAsteroidConfig(dimensionDef);
 
             if (asteroidConfig == null || !asteroidConfig.Enabled) return null;
@@ -179,6 +184,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             AsteroidGenerator gen = new AsteroidGenerator();
 
+            gen.dimensionDef = dimensionDef;
+            gen.asteroidConfig = asteroidConfig;
+
             gen.positive = positive;
             gen.negative = negative;
 
@@ -216,9 +224,6 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             int minZ = Math.max(chunkZ * 16, cZ - size - 1);
             int maxZ = Math.min((chunkZ + 1) * 16, cZ + size + 1);
-
-            ModDimensionDef def = DimensionDef.getDefForWorld(world, seedChunkX, seedChunkZ);
-            AsteroidConfig dimAsteroidConfig = DynamicDimensionConfig.getAsteroidConfig(def);
 
             MurmurHash hasher = new MurmurHash();
 
@@ -260,7 +265,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         if (ore.generatesBigOre()) {
                             if (!placedAnything) {
                                 placedAnything = generateOreBlock(
-                                    dimAsteroidConfig,
+                                    this.asteroidConfig,
                                     rng2,
                                     world,
                                     x,
@@ -276,10 +281,10 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         // try to place any special blocks
                         if (!placedAnything) {
                             placedAnything = generateSpecialBlocks(
-                                def,
+                                dimensionDef,
                                 rng2,
                                 world,
-                                dimAsteroidConfig,
+                                this.asteroidConfig,
                                 x,
                                 y,
                                 z,
@@ -291,7 +296,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         // try to place small ores
                         if (!placedAnything) {
                             placedAnything = generateSmallOreBlock(
-                                dimAsteroidConfig,
+                                this.asteroidConfig,
                                 rng2,
                                 world,
                                 x,
@@ -319,7 +324,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             }
 
             if (chunkX == seedChunkX && chunkZ == seedChunkZ) {
-                generateLootChest(world, dimAsteroidConfig);
+                generateLootChest(world, this.asteroidConfig);
             }
 
             for (int z = minZ; z < maxZ; z++) {

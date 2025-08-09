@@ -26,7 +26,6 @@ import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.GTMod;
@@ -77,9 +76,9 @@ public class GTWorldgenerator implements IWorldGenerator {
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
         IChunkProvider aChunkProvider) {
 
-        ModDimensionDef def = DimensionDef.getDefForWorld(aWorld, aX >> 4, aZ >> 4);
+        ModDimensionDef def = DimensionDef.getEffectiveDefForChunk(aWorld, aX, aZ);
 
-        if (def == null || def.getDimensionType() != DimensionType.Planet) {
+        if (def == null || !def.generatesOre()) {
             return;
         }
 
@@ -335,7 +334,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 return;
             }
 
-            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(mWorld, oreseedX, oreseedZ);
+            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(mWorld);
 
             if (oreveinPercentageRoll < dimensionDef.getOreVeinChance()) {
                 int placementAttempts = 0;
@@ -363,10 +362,9 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     try {
                         // Adjust the seed so that this layer has a series of unique random numbers.
-                        // Otherwise multiple attempts at this same oreseed will get the same offset and X/Z
-                        // values. If an orevein failed, any orevein with the
-                        // same minimum heights would fail as well. This prevents that, giving each orevein
-                        // a unique height each pass through here.
+                        // Otherwise multiple attempts at this same oreseed will get the same offset and X/Z values.
+                        // If an orevein failed, any orevein with the same minimum heights would fail as well. This
+                        // prevents that, giving each orevein a unique height each pass through here.
                         placementResult = oreLayer.executeWorldgenChunkified(
                             this.mWorld,
                             new XSTR(oreveinSeed ^ (oreLayer.mPrimary.getId())),

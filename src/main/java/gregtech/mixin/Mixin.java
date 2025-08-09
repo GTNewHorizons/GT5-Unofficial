@@ -73,6 +73,11 @@ public enum Mixin implements IMixins {
         .addCommonMixins("forge.GameRegistryMixin")
         .setPhase(Phase.EARLY)),
 
+    HEEAccessors(new MixinBuilder("Various accessors for Hardcore Ender Expansion")
+        .addCommonMixins("hee.ChunkProviderHardcoreEndMixin", "hee.MapGenIslandMixin")
+        .addRequiredMod(TargetedMod.HEE)
+        .setPhase(Phase.LATE)),
+
     ForgeHooksMixin(new MixinBuilder("Adds missing hooks in ForgeHooks")
         .addCommonMixins("forge.ForgeHooksMixin")
         .setPhase(Phase.EARLY)),

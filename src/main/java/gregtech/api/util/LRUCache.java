@@ -28,4 +28,8 @@ public class LRUCache<K, V> {
 
         return v.orElse(null);
     }
+
+    public void clear() {
+        map.clear();
+    }
 }
