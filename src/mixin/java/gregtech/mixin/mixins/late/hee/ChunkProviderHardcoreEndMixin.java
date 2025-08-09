@@ -13,7 +13,7 @@ import gregtech.mixin.interfaces.accessors.HEEChunkProviderAccessor;
 @Mixin(ChunkProviderHardcoreEnd.class)
 public class ChunkProviderHardcoreEndMixin implements HEEChunkProviderAccessor {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
     private MapGenScatteredFeature islandGen;
 
