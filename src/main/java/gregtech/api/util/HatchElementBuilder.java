@@ -179,8 +179,7 @@ public class HatchElementBuilder<T> {
      * Currently, this will make the built IStructureElement to ignore gt_no_hatch directive from player
      * <p>
      * Do note that {@link #buildAndChain(IStructureElement[])} and its overloads will force the resulting structure
-     * element
-     * to be non-exclusive.
+     * element to be non-exclusive.
      */
     public HatchElementBuilder<T> exclusive() {
         mExclusive = true;

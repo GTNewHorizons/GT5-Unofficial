@@ -88,8 +88,8 @@ public class GlassTier {
     }
 
     /**
-     * Gets the tier of the glass represented by the block:meta passed.
-     * If passed non-glass or glass without a tier, returns null.
+     * Gets the tier of the glass represented by the block:meta passed. If passed non-glass or glass without a tier,
+     * returns null.
      *
      * @param block
      * @param meta
