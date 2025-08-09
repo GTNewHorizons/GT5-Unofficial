@@ -442,6 +442,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Honey;
     public static Materials Leather;
     public static Materials Lubricant;
+    public static Materials VO17_lubricant;
+    public static Materials VO43_lubricant;
+    public static Materials VO75_lubricant;
     public static Materials McGuffium239;
     public static Materials MeatRaw;
     public static Materials MeatCooked;
