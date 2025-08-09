@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi;
+package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -26,9 +26,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -99,20 +102,29 @@ import gregtech.common.blocks.BlockCasings8;
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
+    public static final int UPGRADE_RANGE = 32;
     private static final String xOffsetText = "GT5U.MBTT.PCB.XOffset";
     private static final String zOffsetText = "GT5U.MBTT.PCB.ZOffset";
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
-    private static final String bioUpgrade = "bioUpgrade";
     private static final String ocTier1Upgrade = "ocTier1Upgrade";
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
+    private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private float mRoughnessMultiplier = 1;
     private int mTier = 1;
     private int mSetTier = 1;
     private int mUpgradesInstalled = 0;
     private int mMaxParallel = 0;
-    private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
+    private MTEPCBBioChamber mBioChamber;
+    private int mBioChamberX;
+    private int mBioChamberY;
+    private int mBioChamberZ;
+    private MTEPCBCoolingTower mCoolingTower;
+    private int mCoolingTowerX;
+    private int mCoolingTowerY;
+    private int mCoolingTowerZ;
+    private boolean mOCTier1 = false, mOCTier2 = false;
     private final int[] mBioOffsets = new int[] { -5, -1 };
     private final int[] mOCTier1Offsets = new int[] { 2, -11 };
     private final int[] mOCTier2Offsets = new int[] { 2, -11 };
@@ -125,7 +137,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final int mTier3BitMap = 0b100;
     private static final int mTier2BitMap = 0b10;
     private static final int mTier1BitMap = 0b1;
-    private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private static final IStructureDefinition<MTEPCBFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPCBFactory>builder()
         .addShape(
@@ -182,20 +193,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {" II~II ","IIJJJII","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IIJJJII"," IIIII "}
-                        //spotless:on
-                }))
-        .addShape(
-            bioUpgrade,
-            transpose(
-                new String[][] {
-                    // spotless:off
-                        {"            ","            ","   LLLLLL   ","            ","            "},
-                        {"            ","            ","  L      L  ","            ","            "},
-                        {"E   E  E   E"," LLL    LLL "," LLL    LLL "," LLL    LLL ","E   E  E   E"},
-                        {"EAAAE  EAAAE","A   A  A   A","A   A  A   A","A   A  A   A","EAAAE  EAAAE"},
-                        {"EAAAE  EAAAE","A   A  A   A","A   A  A   A","A   A  A   A","EAAAE  EAAAE"},
-                        {"EAAAE  EAAAE","A   A  A   A","A   A  A   A","A   A  A   A","EAAAE  EAAAE"},
-                        {"ELLLE  ELLLE","LLLLL  LLLLL","LLLLL  LLLLL","LLLLL  LLLLL","ELLLE  ELLLE"}
                         //spotless:on
                 }))
         .addShape(
@@ -301,27 +298,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
         }
 
-        if (mBioUpgrade) {
-            if (mBioRotate) {
-                final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-                getStructureDefinition().buildOrHints(
-                    this,
-                    stackSize,
-                    bioUpgrade,
-                    tTile.getWorld(),
-                    transformFacing(getExtendedFacing()),
-                    tTile.getXCoord(),
-                    tTile.getYCoord(),
-                    tTile.getZCoord(),
-                    mBioOffsets[1],
-                    6,
-                    mBioOffsets[0],
-                    hintsOnly);
-            } else {
-                buildPiece(bioUpgrade, stackSize, hintsOnly, mBioOffsets[0], 6, mBioOffsets[1]);
-            }
-        }
-
         if (mOCTier1 && !mOCTier2) {
             buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 9, mOCTier1Offsets[1]);
         }
@@ -342,39 +318,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         } else {
             built += survivalBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
         }
-
-        if (mBioUpgrade) {
-            if (mBioRotate) {
-                final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-                getStructureDefinition().survivalBuild(
-                    this,
-                    stackSize,
-                    bioUpgrade,
-                    tTile.getWorld(),
-                    transformFacing(getExtendedFacing()),
-                    tTile.getXCoord(),
-                    tTile.getYCoord(),
-                    tTile.getZCoord(),
-                    mBioOffsets[1],
-                    6,
-                    mBioOffsets[0],
-                    elementBudget,
-                    env,
-                    false);
-            } else {
-                built += survivalBuildPiece(
-                    bioUpgrade,
-                    stackSize,
-                    mBioOffsets[0],
-                    6,
-                    mBioOffsets[1],
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            }
-        }
-
         if (mOCTier1 && !mOCTier2) {
             built += survivalBuildPiece(
                 ocTier1Upgrade,
@@ -482,31 +425,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             mTier = 3;
         }
 
-        if (mBioUpgrade) {
-            if (mBioRotate) {
-                final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-                if (!getStructureDefinition().check(
-                    this,
-                    bioUpgrade,
-                    tTile.getWorld(),
-                    transformFacing(getExtendedFacing()),
-                    tTile.getXCoord(),
-                    tTile.getYCoord(),
-                    tTile.getZCoord(),
-                    mBioOffsets[1],
-                    6,
-                    mBioOffsets[0],
-                    !mMachine)) {
-                    return false;
-                }
-            } else {
-                if (!checkPiece(bioUpgrade, mBioOffsets[0], 6, mBioOffsets[1])) {
-                    return false;
-                }
-            }
-            mUpgradesInstalled++;
-        }
-
         if (mOCTier1 && !mOCTier2) {
             if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 9, mOCTier1Offsets[1])) {
                 return false;
@@ -578,7 +496,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 mMaxParallel = maxParallel;
 
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
-                if (requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioUpgrade)
+                if (requiredUpgrade == PCBFactoryUpgrade.BIO && mBioChamber == null)
                     return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
                 int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
@@ -650,6 +568,29 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) return;
+
+        // Save link data to data stick, very similar to Crafting Input Buffer.
+
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", "PCBFactory");
+        tag.setInteger("x", aBaseMetaTileEntity.getXCoord());
+        tag.setInteger("y", aBaseMetaTileEntity.getYCoord());
+        tag.setInteger("z", aBaseMetaTileEntity.getZCoord());
+
+        dataStick.stackTagCompound = tag;
+        dataStick.setStackDisplayName(
+            "PCB Factory Link Data Stick (" + aBaseMetaTileEntity
+                .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
+        aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+    }
+
+
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return (int) (10000f * mRoughnessMultiplier);
     }
@@ -671,14 +612,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
             if ((aValue & mTier3BitMap) == mTier3BitMap) {
                 mSetTier = 3;
-            }
-
-            if ((aValue & mBioBitMap) == mBioBitMap) {
-                mBioUpgrade = true;
-            }
-
-            if ((aValue & mBioRotateBitMap) == mBioRotateBitMap) {
-                mBioRotate = true;
             }
 
             if ((aValue & mOCTier1BitMap) == mOCTier1BitMap) {
@@ -966,10 +899,20 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
-        aNBT.setBoolean("mBioRotate", mBioRotate);
-        aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
-        aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
+        if (mBioChamber != null) {
+            NBTTagCompound bioChamber = new NBTTagCompound();
+            bioChamber.setInteger("x", mBioChamberX);
+            bioChamber.setInteger("y", mBioChamberY);
+            bioChamber.setInteger("z", mBioChamberZ);
+            aNBT.setTag("mBioChamber", bioChamber);
+        }
+        if (mCoolingTower != null) {
+            NBTTagCompound coolingTower = new NBTTagCompound();
+            coolingTower.setInteger("x", mCoolingTowerX);
+            coolingTower.setInteger("y", mCoolingTowerY);
+            coolingTower.setInteger("z", mCoolingTowerZ);
+            aNBT.setTag("mCoolingTower", coolingTower);
+        }
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
         aNBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
         aNBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
@@ -987,8 +930,20 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             // backward compatibility
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
-        mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
-        mBioRotate = aNBT.getBoolean("mBioRotate");
+
+        if (aNBT.hasKey("mBioChamber")) {
+            NBTTagCompound bioChamber = aNBT.getCompoundTag("mBioChamber");
+            mBioChamberX = bioChamber.getInteger("x");
+            mBioChamberY = bioChamber.getInteger("y");
+            mBioChamberZ = bioChamber.getInteger("z");
+        }
+        if (aNBT.hasKey("mCoolingTower")) {
+            NBTTagCompound coolingTower = aNBT.getCompoundTag("mCoolingTower");
+            mCoolingTowerX = coolingTower.getInteger("x");
+            mCoolingTowerY = coolingTower.getInteger("y");
+            mCoolingTowerZ = coolingTower.getInteger("z");
+        }
+
         mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
         mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
         mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
@@ -1017,12 +972,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             data += mTier3BitMap;
         }
 
-        if (mBioUpgrade) {
+        if (mBioChamber != null) {
             data += mBioBitMap;
-        }
-
-        if (mBioRotate) {
-            data += mBioRotateBitMap;
         }
 
         if (mOCTier1) {
@@ -1091,43 +1042,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .setPos(185, 3))
             .widget(
                 new DynamicPositionedColumn().setSynced(false)
-                    .widget(
-                        new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioUpgrade, val -> {
-                            mBioUpgrade = val;
-                            if (!mBioUpgrade) {
-                                GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.BioOff"));
-                            } else {
-                                GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.BioOn"));
-                            }
-                        })
-                            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                            .setSize(90, 18)
-                            .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.1")))
-                            .addChild(
-                                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                                    .setSize(18, 18))
-                            .addChild(
-                                new TextWidget(translateToLocal("GT5U.MBTT.PCB.Bio")).setTextAlignment(Alignment.Center)
-                                    .setPos(23, 5))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioRotate, val -> {
-                        mBioRotate = val;
-                        if (!mBioRotate) {
-                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.RotBioOff"));
-                        } else {
-                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.RotBioOn"));
-                        }
-                    })
-                        .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                        .setSize(90, 18)
-                        .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.2")))
-                        .addChild(
-                            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                                .setSize(18, 18))
-                        .addChild(
-                            new TextWidget(translateToLocal("GT5U.MBTT.PCB.RotBio")).setTextAlignment(Alignment.Center)
-                                .setPos(23, 5))
-                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
                         mOCTier1 = val;
                         mOCTier2 = false;
@@ -1272,6 +1186,20 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             return true;
         }
         return false;
+    }
+
+    public void registerLinkedUnit(MTEPCBUpgradeBase<?> unit) {
+        if (unit instanceof MTEPCBBioChamber)
+            mBioChamber = (MTEPCBBioChamber) unit;
+        else if (unit instanceof MTEPCBCoolingTower)
+            mCoolingTower = (MTEPCBCoolingTower) unit;
+    }
+
+    public void unregisterLinkedUnit(MTEPCBUpgradeBase<?> unit) {
+        if (unit instanceof MTEPCBBioChamber)
+            mBioChamber = null;
+        else if (unit instanceof MTEPCBCoolingTower)
+            mCoolingTower = null;
     }
 
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {

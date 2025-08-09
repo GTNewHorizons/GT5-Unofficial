@@ -513,6 +513,7 @@ public enum MetaTileEntityIDs {
     QUADRUPLE_INPUT_HATCHES_UMV(717),
     QUADRUPLE_INPUT_HATCHES_UXV(718),
     QUADRUPLE_INPUT_HATCHES_MAX(719),
+    PCB_BIO_CHAMBER_CONTROLLER(730),
     Nuclear_Salt_Processing_Plant(749),
     ThoriumReactor(751),
     Boiler_Advanced_LV(753),
