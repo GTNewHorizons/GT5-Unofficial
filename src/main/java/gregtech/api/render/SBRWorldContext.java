@@ -1,6 +1,6 @@
 /*
- * SBRContext - Derived and adapted from @Mineshopper / carpentersblocks Copyright (c) 2013-2021. This library is free
- * software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as
+ * SBRContext - Derived and adapted from @Mineshopper / carpentersblocks Copyright (c) 2013-2021. This library is
+ * free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation version 2.1 of the License. This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have received a copy of
@@ -10,44 +10,54 @@
 
 package gregtech.api.render;
 
+import java.util.function.IntPredicate;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.Item;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.ITexture;
 
 /**
  * Represents the rendering context for a single block during a render pass.
  * <p>
- * This class holds the tightly-coupled mutable state required to coordinate lighting, shading, ambient occlusion, and
- * color calculation based on the block, its coordinates, the renderer, and the world in which it is rendered. It is
- * passed to various rendering methods throughout a block's render cycle.
- * <p>
- * {@code @SuppressWarnings} is used here intentionally:
- * <ul>
- * <li>{@code "ClassWithTooManyFields"} - all fields represent a unified mutable rendering context and are
- * interdependent by design.</li>
- * <li>{@code "ClassWithTooManyMethods"} - all methods serve specific and tightly-scoped roles to configure or query the
- * context.</li>
- * <li>{@code "unused"} - some methods are present to conform to expected APIs or reserved for future use.</li>
- * </ul>
+ * This class holds the tightly-coupled mutable state required to coordinate lighting,
+ * shading, ambient occlusion, and color calculation based on the block, its coordinates,
+ * the renderer, and the world in which it is rendered. It is passed
+ * to various rendering methods throughout a block's render cycle.
  */
-@SuppressWarnings({ "unused", "ClassWithTooManyFields", "ClassWithTooManyMethods" })
 @SideOnly(Side.CLIENT)
-public class SBRContext {
+public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
 
-    public static final int NORMAL_BRIGHTNESS = 0xff00ff;
-    public static final int MAX_BRIGHTNESS = 0xf000f0;
     public static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
-    protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    public final RenderBlocks renderer;
+    public final int worldRenderPass;
+    public final IBlockAccess world;
+
+    /**
+     * Mixed Brightness cache
+     * <p>
+     * Entries store the result of {@link Block#getMixedBrightnessForBlock(IBlockAccess, int, int, int)}<br>
+     * for the block at the current coordinates<br>
+     * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
+     */
+    private final int[][][] MBFB = new int[3][3][3];
+    /**
+     * Ambient Occlusion Light Value cache
+     * <p>
+     * Entries store the result of {@link Block#getAmbientOcclusionLightValue()}<br>
+     * for the block at the current coordinates<br>
+     * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
+     */
+    private final float[][][] AOLV = new float[3][3][3];
     /**
      * Brightness for side.
      */
@@ -57,63 +67,9 @@ public class SBRContext {
      */
     private float aoTopLeft, aoBottomLeft, aoBottomRight, aoTopRight;
 
-    private boolean hasLightnessOverride;
-    private float lightnessOverride;
-    private boolean hasBrightnessOverride;
-    private int brightnessOverride;
-    private boolean hasColorOverride;
-    private int colorOverride = 0xffffff;
     /**
-     * Mixed Brightness cache
-     * <p>
-     * Entries store the result of {@link Block#getMixedBrightnessForBlock(IBlockAccess, int, int, int)}<br>
-     * for the block at the current coordinates<br>
-     * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
-     */
-    private final int[][][] MBFB = new int[3][3][3];
-
-    /**
-     * Ambient Occlusion Light Value cache
-     * <p>
-     * Entries store the result of {@link Block#getAmbientOcclusionLightValue()}<br>
-     * for the block at the current coordinates<br>
-     * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
-     */
-    private final float[][][] AOLV = new float[3][3][3];
-    public final int x;
-    public final int y;
-    public final int z;
-    public final int worldRenderPass;
-    public final IBlockAccess world;
-    public final Block block;
-    public final int meta;
-    public final int modelId;
-
-    /**
-     * Constructs a new {@link SBRContext} used to render a single {@link Block} inside an inventory
-     *
-     * @param block    the {@link Block} to render
-     * @param meta     the meta value of the {@link Block}'s {@link Item} meta value
-     * @param modelId  the Model ID for the block
-     * @param renderer the {@link RenderBlocks} renderer to use
-     */
-    public SBRContext(Block block, int meta, int modelId, RenderBlocks renderer) {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-        this.block = block;
-        this.meta = meta;
-        this.modelId = modelId;
-        this.renderer = renderer;
-        this.world = renderer.blockAccess;
-        this.worldRenderPass = -1;
-        // Context is an inventory, so it needs its lightness maxed
-        setLightnessOverride(1.0F);
-    }
-
-    /**
-     * Constructs a new {@link SBRContext} used to render a single {@link Block} in world for the current render pass at
-     * the given coordinates
+     * Constructs a new {@link SBRWorldContext} used to render a single {@link Block} in world for the
+     * current render pass at the given coordinates
      *
      * @param x            the x coordinate
      * @param y            the y coordinate
@@ -123,274 +79,15 @@ public class SBRContext {
      * @param renderBlocks the {@link RenderBlocks} renderer to use
      */
     @SuppressWarnings("ConstructorWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
-    public SBRContext(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.block = block;
-        this.meta = -1;
-        this.modelId = modelId;
-        this.renderer = renderBlocks;
+    public SBRWorldContext(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
+        super(block, modelId, renderBlocks);
         this.world = renderBlocks.blockAccess;
         this.worldRenderPass = ForgeHooksClient.getWorldRenderPass();
-        // Context is a World, so it has its own lightness
-        clearLightnessOverride();
+        super.x = x;
+        super.y = y;
+        super.z = z;
+        reset();
         populatesBlockAOCaches();
-    }
-
-    /**
-     * Populates the caches for Mixed Brightness for Blocks (MBFB) and Ambient Occlusion Light Values (AOLV).
-     * <p>
-     * These caches store lighting values for the block at the current coordinates and its neighbors within a 3×3×3 cube
-     * centered on (x, y, z).
-     * <p>
-     * This method skips processing if Ambient Occlusion is disabled in the game settings.
-     */
-    private void populatesBlockAOCaches() {
-        if (Minecraft.getMinecraft().gameSettings.ambientOcclusion == 0) return;
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                for (int dz = -1; dz <= 1; dz++) {
-                    MBFB[dx + 1][dy + 1][dz + 1] = block.getMixedBrightnessForBlock(world, x + dx, y + dy, z + dz);
-                    AOLV[dx + 1][dy + 1][dz + 1] = world.getBlock(x + dx, y + dy, z + dz)
-                        .getAmbientOcclusionLightValue();
-                }
-            }
-        }
-    }
-
-    /**
-     * Gets average brightness from two brightness values.
-     *
-     * @param brightnessA the first brightness value
-     * @param brightnessB the second brightness value
-     * @return the mixed brightness
-     */
-    public static int getAverageBrightness(int brightnessA, int brightnessB) {
-        final int sectionA1 = brightnessA >> 16 & 0xff;
-        final int sectionA2 = brightnessA & 255;
-
-        final int sectionB1 = brightnessB >> 16 & 0xff;
-        final int sectionB2 = brightnessB & 255;
-
-        final int difference1 = (int) ((sectionA1 + sectionB1) / 2.0F);
-        final int difference2 = (int) ((sectionA2 + sectionB2) / 2.0F);
-
-        return difference1 << 16 | difference2;
-    }
-
-    /**
-     * Gets rgb color from RGBA array.
-     *
-     * @param color the integer color
-     * @return a float array with rgb values
-     */
-    public static float[] getRGB(short[] color) {
-        final float red = color[0] / 255.0F;
-        final float green = color[1] / 255.0F;
-        final float blue = color[2] / 255.0F;
-
-        return new float[] { red, green, blue };
-    }
-
-    /**
-     * Resets override flags to their default values.
-     * <p>
-     * This ensures deterministic rendering by clearing any leftover state from previous use of this context instance.
-     *
-     * @return this {@link SBRContext} instance for chaining
-     */
-    public SBRContext reset() {
-        hasBrightnessOverride = false;
-        hasColorOverride = false;
-        hasLightnessOverride = false;
-        if (renderer.useInventoryTint) setLightnessOverride(1.0F);
-        return this;
-    }
-
-    /**
-     * Clears brightness override.
-     * 
-     * @return the {@link SBRContext}
-     */
-    public SBRContext clearBrightnessOverride() {
-        hasBrightnessOverride = false;
-        return this;
-    }
-
-    /**
-     * Clears color override.
-     * 
-     * @return the {@link SBRContext}
-     */
-    public SBRContext clearColorOverride() {
-        hasColorOverride = false;
-        return this;
-    }
-
-    /**
-     * Clears lightness override.
-     * 
-     * @return the {@link SBRContext}
-     */
-    public SBRContext clearLightnessOverride() {
-        hasLightnessOverride = false;
-        return this;
-    }
-
-    /**
-     * @return the Ambient Occlusion for Bottom-Left corner
-     */
-    public float getAoBottomLeft() {
-        return aoBottomLeft;
-    }
-
-    /**
-     * @return the Ambient Occlusion for Bottom-Right corner
-     */
-    public float getAoBottomRight() {
-        return aoBottomRight;
-    }
-
-    /**
-     * @return the Ambient Occlusion for Top-Left corner
-     */
-    public float getAoTopLeft() {
-        return aoTopLeft;
-    }
-
-    /**
-     * @return the Ambient Occlusion for Top-Right corner
-     */
-    public float getAoTopRight() {
-        return aoTopRight;
-    }
-
-    /**
-     * Sets brightness override.
-     *
-     * @param brightness the brightness override
-     * @return the {@link SBRContext}
-     */
-    public SBRContext setBrightnessOverride(int brightness) {
-        hasBrightnessOverride = true;
-        brightnessOverride = brightness;
-        return this;
-    }
-
-    public SBRContext setColorOverride(short[] color) {
-        return setColorOverride(getColor(color));
-    }
-
-    /**
-     * Sets color override.
-     *
-     * @param color the color override
-     * @return the {@link SBRContext}
-     */
-    public SBRContext setColorOverride(int color) {
-        hasColorOverride = true;
-        colorOverride = color;
-        return this;
-    }
-
-    /**
-     * Gets int color from RGBA array.
-     *
-     * @param rgba the short RGBA color array
-     * @return int color
-     */
-    public static int getColor(short[] rgba) {
-        return (rgba[2] & 0xff) | (rgba[1] & 0xff) << 8 | (rgba[0] & 0xff) << 16;
-    }
-
-    /**
-     * Sets lightness override.
-     *
-     * @param lightness the lightness override
-     * @return the {@link SBRContext}
-     */
-    public SBRContext setLightnessOverride(float lightness) {
-        hasLightnessOverride = true;
-        lightnessOverride = lightness;
-        return this;
-    }
-
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
-     * @param side the side
-     * @param rgba the primary short[] RGBA color array
-     */
-    public void setupColor(ForgeDirection side, short[] rgba) {
-        setupColor(side, getColor(rgba));
-    }
-
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
-     * @param side     the side
-     * @param hexColor the primary color
-     */
-    public void setupColor(ForgeDirection side, int hexColor) {
-        final Tessellator tessellator = Tessellator.instance;
-        final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        final float[] rgb = hasColorOverride && !renderer.hasOverrideBlockTexture() ? getRGB(colorOverride)
-            : getRGB(hexColor);
-
-        applyAnaglyph(rgb);
-
-        if (renderer.enableAO) {
-            tessellator.setBrightness(hasBrightnessOverride ? brightnessOverride : brightness);
-
-            if (renderer.hasOverrideBlockTexture()) {
-
-                renderer.colorRedTopLeft = renderer.colorRedBottomLeft = renderer.colorRedBottomRight = renderer.colorRedTopRight = rgb[0];
-                renderer.colorGreenTopLeft = renderer.colorGreenBottomLeft = renderer.colorGreenBottomRight = renderer.colorGreenTopRight = rgb[1];
-                renderer.colorBlueTopLeft = renderer.colorBlueBottomLeft = renderer.colorBlueBottomRight = renderer.colorBlueTopRight = rgb[2];
-
-            } else {
-
-                renderer.colorRedTopLeft = renderer.colorRedBottomLeft = renderer.colorRedBottomRight = renderer.colorRedTopRight = rgb[0]
-                    * lightness;
-                renderer.colorGreenTopLeft = renderer.colorGreenBottomLeft = renderer.colorGreenBottomRight = renderer.colorGreenTopRight = rgb[1]
-                    * lightness;
-                renderer.colorBlueTopLeft = renderer.colorBlueBottomLeft = renderer.colorBlueBottomRight = renderer.colorBlueTopRight = rgb[2]
-                    * lightness;
-
-                renderer.colorRedTopLeft *= aoTopLeft;
-                renderer.colorGreenTopLeft *= aoTopLeft;
-                renderer.colorBlueTopLeft *= aoTopLeft;
-                renderer.colorRedBottomLeft *= aoBottomLeft;
-                renderer.colorGreenBottomLeft *= aoBottomLeft;
-                renderer.colorBlueBottomLeft *= aoBottomLeft;
-                renderer.colorRedBottomRight *= aoBottomRight;
-                renderer.colorGreenBottomRight *= aoBottomRight;
-                renderer.colorBlueBottomRight *= aoBottomRight;
-                renderer.colorRedTopRight *= aoTopRight;
-                renderer.colorGreenTopRight *= aoTopRight;
-                renderer.colorBlueTopRight *= aoTopRight;
-            }
-
-        } else {
-
-            if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
-            tessellator.setColorOpaque_F(rgb[0] * lightness, rgb[1] * lightness, rgb[2] * lightness);
-        }
-    }
-
-    /**
-     * Gets rgb color from integer.
-     *
-     * @param color the integer color
-     * @return a float array with rgb values
-     */
-    public static float[] getRGB(int color) {
-        final float red = (color >> 16 & 0xff) / 255.0F;
-        final float green = (color >> 8 & 0xff) / 255.0F;
-        final float blue = (color & 0xff) / 255.0F;
-
-        return new float[] { red, green, blue };
     }
 
     /**
@@ -423,27 +120,169 @@ public class SBRContext {
     }
 
     /**
-     * @see #setupLightingXNeg()
-     * @see #setupLightingYNeg()
-     * @see #setupLightingZNeg()
-     * @see #setupLightingXPos()
-     * @see #setupLightingYPos()
-     * @see #setupLightingZPos()
+     * Populates the caches for Mixed Brightness for Blocks (MBFB)
+     * and Ambient Occlusion Light Values (AOLV).
+     * <p>
+     * These caches store lighting values for the block at the current coordinates
+     * and its neighbors within a 3×3×3 cube centered on (x, y, z).
+     * <p>
+     * This method skips processing if Ambient Occlusion is disabled in the game settings.
      */
-    public SBRContext setupLighting(Block block, int x, int y, int z, ForgeDirection facing) {
+    private void populatesBlockAOCaches() {
+        if (Minecraft.getMinecraft().gameSettings.ambientOcclusion == 0) return;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    MBFB[dx + 1][dy + 1][dz + 1] = block.getMixedBrightnessForBlock(world, x + dx, y + dy, z + dz);
+                    AOLV[dx + 1][dy + 1][dz + 1] = world.getBlock(x + dx, y + dy, z + dz)
+                        .getAmbientOcclusionLightValue();
+                }
+            }
+        }
+    }
+
+    /**
+     * Resets override flags to their default values.
+     * <p>
+     * This ensures deterministic rendering by clearing any leftover state
+     * from previous use of this context instance.
+     *
+     * @return this {@link SBRContextBase} instance for chaining
+     */
+    @Override
+    public SBRWorldContext reset() {
+        super.hasBrightnessOverride = false;
+        super.hasColorOverride = false;
+        super.hasLightnessOverride = false;
+        return this;
+    }
+
+    /**
+     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
+     *
+     * @param side     the side
+     * @param hexColor the primary color
+     */
+    public SBRWorldContext setupColor(ForgeDirection side, int hexColor) {
+        final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
+        final float[] rgb = hasColorOverride && !renderer.hasOverrideBlockTexture() ? getRGB(colorOverride)
+            : getRGB(hexColor);
+
+        applyAnaglyph(rgb);
+
+        final Tessellator tessellator = Tessellator.instance;
+        if (renderer.enableAO) {
+            tessellator.setBrightness(hasBrightnessOverride ? brightnessOverride : brightness);
+
+            if (renderer.hasOverrideBlockTexture()) {
+
+                renderer.colorRedTopLeft = renderer.colorRedBottomLeft = renderer.colorRedBottomRight = renderer.colorRedTopRight = rgb[0];
+                renderer.colorGreenTopLeft = renderer.colorGreenBottomLeft = renderer.colorGreenBottomRight = renderer.colorGreenTopRight = rgb[1];
+                renderer.colorBlueTopLeft = renderer.colorBlueBottomLeft = renderer.colorBlueBottomRight = renderer.colorBlueTopRight = rgb[2];
+
+            } else {
+
+                renderer.colorRedTopLeft = renderer.colorRedBottomLeft = renderer.colorRedBottomRight = renderer.colorRedTopRight = rgb[0]
+                    * lightness;
+                renderer.colorGreenTopLeft = renderer.colorGreenBottomLeft = renderer.colorGreenBottomRight = renderer.colorGreenTopRight = rgb[1]
+                    * lightness;
+                renderer.colorBlueTopLeft = renderer.colorBlueBottomLeft = renderer.colorBlueBottomRight = renderer.colorBlueTopRight = rgb[2]
+                    * lightness;
+
+                renderer.colorRedTopLeft *= aoTopLeft;
+                renderer.colorGreenTopLeft *= aoTopLeft;
+                renderer.colorBlueTopLeft *= aoTopLeft;
+                renderer.colorRedBottomLeft *= aoBottomLeft;
+                renderer.colorGreenBottomLeft *= aoBottomLeft;
+                renderer.colorBlueBottomLeft *= aoBottomLeft;
+                renderer.colorRedBottomRight *= aoBottomRight;
+                renderer.colorGreenBottomRight *= aoBottomRight;
+                renderer.colorBlueBottomRight *= aoBottomRight;
+                renderer.colorRedTopRight *= aoTopRight;
+                renderer.colorGreenTopRight *= aoTopRight;
+                renderer.colorBlueTopRight *= aoTopRight;
+            }
+        } else {
+            if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
+            tessellator.setColorOpaque_F(rgb[0] * lightness, rgb[1] * lightness, rgb[2] * lightness);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @implNote Check against the world render pass
+     */
+    @Override
+    public boolean canRenderInPass(@NotNull IntPredicate predicate) {
+        return predicate.test(worldRenderPass);
+    }
+
+    @Override
+    public void renderNegativeYFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y - 1, z, 0)) return;
+        setupAOYNeg();
+        super.renderNegativeYFacing(tex);
+    }
+
+    @Override
+    public void renderPositiveYFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y + 1, z, 1)) return;
+        setupAOYPos();
+        super.renderPositiveYFacing(tex);
+    }
+
+    @Override
+    public void renderNegativeZFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y, z - 1, 2)) return;
+        setupAOZNeg();
+        super.renderNegativeZFacing(tex);
+    }
+
+    @Override
+    public void renderPositiveZFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y, z + 1, 3)) return;
+        setupAOZPos();
+        super.renderPositiveZFacing(tex);
+    }
+
+    @Override
+    public void renderNegativeXFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x - 1, y, z, 4)) return;
+        setupAOXNeg();
+        super.renderNegativeXFacing(tex);
+    }
+
+    @Override
+    public void renderPositiveXFacing(ITexture[] tex) {
+        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x + 1, y, z, 5)) return;
+        setupAOXPos();
+        super.renderPositiveXFacing(tex);
+    }
+
+    /**
+     * @see #setupAOXNeg()
+     * @see #setupAOYNeg()
+     * @see #setupAOZNeg()
+     * @see #setupAOXPos()
+     * @see #setupAOYPos()
+     * @see #setupAOZPos()
+     */
+    public SBRWorldContext setupAO(ForgeDirection facing) {
         return switch (facing) {
-            case DOWN -> setupLightingYNeg();
-            case UP -> setupLightingYPos();
-            case NORTH -> setupLightingZNeg();
-            case SOUTH -> setupLightingZPos();
-            case WEST -> setupLightingXNeg();
-            case EAST -> setupLightingXPos();
+            case DOWN -> setupAOYNeg();
+            case UP -> setupAOYPos();
+            case NORTH -> setupAOZNeg();
+            case SOUTH -> setupAOZPos();
+            case WEST -> setupAOXNeg();
+            case EAST -> setupAOXPos();
             default -> throw new IllegalArgumentException("Unknown side: " + facing);
         };
     }
 
     /**
-     * Sets up lighting for the West face and returns the {@link SBRContext}.
+     * Sets up lighting for the West face and returns the {@link SBRWorldContext}.
      * <p>
      * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
      * <p>
@@ -451,10 +290,10 @@ public class SBRContext {
      * <li>{@link RenderBlocks#enableAO}</li>
      * <li>{@link RenderBlocks#partialRenderBounds}</li>
      * </ul>
-     * 
-     * @return the {@link SBRContext}
+     *
+     * @return the {@link SBRWorldContext}
      */
-    public SBRContext setupLightingXNeg() {
+    public SBRWorldContext setupAOXNeg() {
 
         if (renderer.enableAO) {
 
@@ -576,7 +415,7 @@ public class SBRContext {
     }
 
     /**
-     * Sets up lighting for the East face and returns the {@link SBRContext}.
+     * Sets up lighting for the East face and returns the {@link SBRWorldContext}.
      * <p>
      * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
      * <p>
@@ -584,10 +423,10 @@ public class SBRContext {
      * <li>{@link RenderBlocks#enableAO}</li>
      * <li>{@link RenderBlocks#partialRenderBounds}</li>
      * </ul>
-     * 
-     * @return the {@link SBRContext}
+     *
+     * @return the {@link SBRWorldContext}
      */
-    public SBRContext setupLightingXPos() {
+    public SBRWorldContext setupAOXPos() {
 
         if (renderer.enableAO) {
 
@@ -709,7 +548,7 @@ public class SBRContext {
     }
 
     /**
-     * Sets up lighting for the bottom face and returns the {@link SBRContext}.
+     * Sets up lighting for the bottom face and returns the {@link SBRWorldContext}.
      * <p>
      * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
      * <p>
@@ -718,9 +557,9 @@ public class SBRContext {
      * <li>{@link RenderBlocks#partialRenderBounds}</li>
      * </ul>
      *
-     * @return the {@link SBRContext}
+     * @return the {@link SBRWorldContext}
      */
-    public SBRContext setupLightingYNeg() {
+    public SBRWorldContext setupAOYNeg() {
 
         if (renderer.enableAO) {
 
@@ -842,7 +681,7 @@ public class SBRContext {
     }
 
     /**
-     * Sets up lighting for the top face and returns the {@link SBRContext}.
+     * Sets up lighting for the top face and returns the {@link SBRWorldContext}.
      * <p>
      * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
      * <p>
@@ -850,10 +689,10 @@ public class SBRContext {
      * <li>{@link RenderBlocks#enableAO}</li>
      * <li>{@link RenderBlocks#partialRenderBounds}</li>
      * </ul>
-     * 
-     * @return the {@link SBRContext}
+     *
+     * @return the {@link SBRWorldContext}
      */
-    public SBRContext setupLightingYPos() {
+    public SBRWorldContext setupAOYPos() {
 
         if (renderer.enableAO) {
 
@@ -975,7 +814,7 @@ public class SBRContext {
     }
 
     /**
-     * Sets up lighting for the North face and returns the {@link SBRContext}.
+     * Sets up lighting for the North face and returns the {@link SBRWorldContext}.
      * <p>
      * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
      * <p>
@@ -983,10 +822,10 @@ public class SBRContext {
      * <li>{@link RenderBlocks#enableAO}</li>
      * <li>{@link RenderBlocks#partialRenderBounds}</li>
      * </ul>
-     * 
-     * @return the {@link SBRContext}
+     *
+     * @return the {@link SBRWorldContext}
      */
-    public SBRContext setupLightingZNeg() {
+    public SBRWorldContext setupAOZNeg() {
 
         if (renderer.enableAO) {
 
@@ -1108,7 +947,7 @@ public class SBRContext {
     }
 
     /**
-     * Sets up lighting for the South face and returns the {@link SBRContext}.
+     * Sets up lighting for the South face and returns the {@link SBRWorldContext}.
      * <p>
      * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
      * <p>
@@ -1117,9 +956,9 @@ public class SBRContext {
      * <li>{@link RenderBlocks#partialRenderBounds}</li>
      * </ul>
      *
-     * @return the {@link SBRContext}
+     * @return the {@link SBRWorldContext}
      */
-    public SBRContext setupLightingZPos() {
+    public SBRWorldContext setupAOZPos() {
 
         if (renderer.enableAO) {
 

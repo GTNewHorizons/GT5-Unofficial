@@ -19,7 +19,8 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.RenderOverlay;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.SBRInventoryContext;
+import gregtech.api.render.SBRWorldContext;
 import gregtech.api.render.TextureFactory;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
@@ -44,7 +45,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
-        final SBRContext ctx = new SBRContext(aBlock, aMeta, aModelID, aRenderer);
+        final SBRInventoryContext ctx = new SBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
 
         setupBlockTexturesOnly(aBlock, aMeta, true);
 
@@ -54,12 +55,12 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aBlock.setBlockBoundsForItemRender();
         aRenderer.setRenderBoundsFromBlock(aBlock);
         // spotless:off
-        renderNegativeYFacing(ctx, textureArray[SIDE_DOWN], true);
-        renderPositiveYFacing(ctx, textureArray[SIDE_UP], true);
-        renderNegativeZFacing(ctx, textureArray[SIDE_NORTH], true);
-        renderPositiveZFacing(ctx, textureArray[SIDE_SOUTH], true);
-        renderNegativeXFacing(ctx, textureArray[SIDE_WEST], true);
-        renderPositiveXFacing(ctx, textureArray[SIDE_EAST], true);
+        ctx.renderNegativeYFacing(textureArray[SIDE_DOWN]);
+        ctx.renderPositiveYFacing(textureArray[SIDE_UP]);
+        ctx.renderNegativeZFacing(textureArray[SIDE_NORTH]);
+        ctx.renderPositiveZFacing(textureArray[SIDE_SOUTH]);
+        ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
+        ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
         // spotless:on
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
@@ -93,7 +94,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         int tMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 
@@ -113,12 +114,12 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
         // spotless:off
-        renderNegativeYFacing(ctx, textureArray[SIDE_DOWN], true);
-        renderPositiveYFacing(ctx, textureArray[SIDE_UP], true);
-        renderNegativeZFacing(ctx, textureArray[SIDE_NORTH], true);
-        renderPositiveZFacing(ctx, textureArray[SIDE_SOUTH], true);
-        renderNegativeXFacing(ctx, textureArray[SIDE_WEST], true);
-        renderPositiveXFacing(ctx, textureArray[SIDE_EAST], true);
+        ctx.renderNegativeYFacing(textureArray[SIDE_DOWN]);
+        ctx.renderPositiveYFacing(textureArray[SIDE_UP]);
+        ctx.renderNegativeZFacing(textureArray[SIDE_NORTH]);
+        ctx.renderPositiveZFacing(textureArray[SIDE_SOUTH]);
+        ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
+        ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
         // spotless:on
 
         return tessAccess.gt5u$hasVertices();

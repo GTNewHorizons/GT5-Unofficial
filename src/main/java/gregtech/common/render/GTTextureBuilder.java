@@ -130,7 +130,7 @@ public class GTTextureBuilder implements ITextureBuilder {
         if (fromBlock != null) {
             if (worldCoord == Boolean.TRUE || worldCoord == null && isCTMBlock(fromBlock, fromMeta))
                 return new GTCopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
-            else return new GTCopiedBlockTextureRender(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+            else return new GTCopiedBlockTextureRender(fromBlock, fromSide.ordinal(), fromMeta, rgba);
         }
         if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
         if (textureLayers != null && !textureLayers.isEmpty()) {

@@ -3,7 +3,7 @@ package gregtech.common.render;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.SBRContextBase;
 import gregtech.api.render.TextureFactory;
 
 public class GTSidedTextureRender extends GTTextureBase implements ITexture, IColorModulationContainer {
@@ -27,37 +27,32 @@ public class GTSidedTextureRender extends GTTextureBase implements ITexture, ICo
     }
 
     @Override
-    public boolean isOldTexture() {
-        return false;
-    }
-
-    @Override
-    public void renderXPos(SBRContext ctx) {
+    public void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
         mTextures[5].renderXPos(ctx);
     }
 
     @Override
-    public void renderXNeg(SBRContext ctx) {
+    public void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
         mTextures[4].renderXNeg(ctx);
     }
 
     @Override
-    public void renderYPos(SBRContext ctx) {
+    public void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
         mTextures[1].renderYPos(ctx);
     }
 
     @Override
-    public void renderYNeg(SBRContext ctx) {
+    public void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
         mTextures[0].renderYNeg(ctx);
     }
 
     @Override
-    public void renderZPos(SBRContext ctx) {
+    public void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
         mTextures[3].renderZPos(ctx);
     }
 
     @Override
-    public void renderZNeg(SBRContext ctx) {
+    public void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
         mTextures[2].renderZNeg(ctx);
     }
 

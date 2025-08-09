@@ -17,7 +17,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.RenderOverlay;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.SBRWorldContext;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRenderUtil;
 
@@ -76,7 +76,7 @@ public class GTUtilityClient {
 
     }
 
-    public static void renderTurbineOverlay(SBRContext ctx, ExtendedFacing tExtendedFacing, Block tBlockOverride,
+    public static void renderTurbineOverlay(SBRWorldContext ctx, ExtendedFacing tExtendedFacing, Block tBlockOverride,
         IIconContainer[] tTextures) {
         int[] tABCCoord = new int[] { -1, -1, 0 };
         int[] tXYZOffset = new int[3];
@@ -107,7 +107,7 @@ public class GTUtilityClient {
                     ctx.x + tDirection.offsetX,
                     tY + tDirection.offsetY,
                     ctx.z + tDirection.offsetZ));
-            ctx.setupLighting(tBlock, tX, tY, tZ, tDirection)
+            ctx.setupAO(tDirection)
                 .setupColor(tDirection, Dyes._NULL.getRGBA());
             GTRenderUtil.renderBlockIcon(
                 ctx.renderer,
