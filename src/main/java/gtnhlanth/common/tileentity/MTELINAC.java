@@ -86,12 +86,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     private float outputFocus;
 
     /*
-     * g: Grate Machine Casing
-     * b: Borosilicate glass
-     * c: Shielded accelerator casing
-     * v: Vacuum k: Shielded glass
-     * d: Coolant Delivery casing
-     * y: Superconducting coil
+     * g: Grate Machine Casing b: Borosilicate glass c: Shielded accelerator casing v: Vacuum k: Shielded glass d:
+     * Coolant Delivery casing y: Superconducting coil
      */
 
     static {
@@ -539,7 +535,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron (e-)"
+                    .getLocalisedName() // e.g. "Electron
+                                        // (e-)"
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"

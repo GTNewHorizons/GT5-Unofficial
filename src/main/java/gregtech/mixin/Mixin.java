@@ -154,14 +154,7 @@ public enum Mixin implements IMixins {
             .addCommonMixins("galacticraftcore.MixinGalacticraftRocketPollution")
             .setPhase(Phase.LATE)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)),
-    FORESTRY_ACCESSOR(new MixinBuilder()
-        .addCommonMixins(
-            "forestry.TreeDefinitionMixin",
-            "forestry.MutationMixin",
-            "forestry.AlleleEffectThrottledMixin")
-        .setPhase(Phase.LATE)
-        .addRequiredMod(TargetedMod.FORESTRY));
+            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE));
     // spotless:on
 
     private final MixinBuilder builder;
