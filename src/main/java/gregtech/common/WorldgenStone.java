@@ -9,16 +9,16 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.ores.OreManager;
 
 public class WorldgenStone extends GTWorldgen {
 
@@ -78,8 +78,8 @@ public class WorldgenStone extends GTWorldgen {
     }
 
     @Override
-    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aChunkX, int aChunkZ,
+        IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         XSTR stoneRNG = new XSTR();
         ArrayList<ValidSeeds> stones = new ArrayList<>();
 
@@ -129,6 +129,8 @@ public class WorldgenStone extends GTWorldgen {
             }
         }
 
+        IStoneType stoneType = StoneType.findStoneType(mBlock, mBlockMeta);
+
         boolean result = !stones.isEmpty();
         // Now process each oreseed vs this requested chunk
         for (; !stones.isEmpty(); stones.remove(0)) {
@@ -164,7 +166,7 @@ public class WorldgenStone extends GTWorldgen {
                 // 1 = full size, 1.333 = 75%, 2 = 50%, 4 = 25%
                 // (x * Sx)^2 + (y * Sy)^2 + (z * sZ)^2 <= (mSize)^2
 
-                // So, we setup the intial boundaries to be the size of the boulder plus a block in each direction
+                // So, we setup the initial boundaries to be the size of the boulder plus a block in each direction
                 int tMinX = tX - (int) (realSize / xSize - 1.0);
                 int tMaxX = tX + (int) (realSize / xSize + 2.0);
                 int tMinY = tY - (int) (realSize / ySize - 1.0);
@@ -209,33 +211,35 @@ public class WorldgenStone extends GTWorldgen {
                 int sZ = Math.max(tMinZ, aChunkZ + 8);
                 int nZ = Math.min(tMaxZ, aChunkZ + 8 + 16);
 
-                if (debugStones) GTLog.out.println(
-                    mWorldGenName + " tX="
-                        + tX
-                        + " tY="
-                        + tY
-                        + " tZ="
-                        + tZ
-                        + " realSize="
-                        + realSize
-                        + " xSize="
-                        + realSize / xSize
-                        + " ySize="
-                        + realSize / ySize
-                        + " zSize="
-                        + realSize / zSize
-                        + " wX="
-                        + wX
-                        + " eX="
-                        + eX
-                        + " tMinY="
-                        + tMinY
-                        + " tMaxY="
-                        + tMaxY
-                        + " sZ="
-                        + sZ
-                        + " nZ="
-                        + nZ);
+                if (debugStones) {
+                    GTLog.out.println(
+                        mWorldGenName + " tX="
+                            + tX
+                            + " tY="
+                            + tY
+                            + " tZ="
+                            + tZ
+                            + " realSize="
+                            + realSize
+                            + " xSize="
+                            + realSize / xSize
+                            + " ySize="
+                            + realSize / ySize
+                            + " zSize="
+                            + realSize / zSize
+                            + " wX="
+                            + wX
+                            + " eX="
+                            + eX
+                            + " tMinY="
+                            + tMinY
+                            + " tMaxY="
+                            + tMaxY
+                            + " sZ="
+                            + sZ
+                            + " nZ="
+                            + nZ);
+                }
 
                 double rightHandSide = realSize * realSize + 1; // Precalc the right hand side
                 for (int iY = tMinY; iY < tMaxY; iY++) { // Do placement from the bottom up layer up. Maybe better on
@@ -260,31 +264,26 @@ public class WorldgenStone extends GTWorldgen {
                             leftHandSize = zCalc + xCalc + yCalc;
                             if (leftHandSize <= rightHandSide) {
                                 // Yay! We can actually place a block now. (this part copied from original code)
+                                if (!this.mAllowToGenerateinVoid && aWorld.isAirBlock(iX, iY, iZ)) continue;
+
                                 Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
-                                if (tTargetedBlock instanceof BlockOresAbstract) {
-                                    TileEntity tTileEntity = aWorld.getTileEntity(iX, iY, iZ);
-                                    if ((tTileEntity instanceof TileEntityOres)) {
-                                        if (tTargetedBlock != GregTechAPI.sBlockOres1) {
-                                            ((TileEntityOres) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
-                                        }
-                                        ((TileEntityOres) tTileEntity)
-                                            .overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
-                                    }
-                                } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(iX, iY, iZ)
-                                    .isAir(aWorld, iX, iY, iZ)))
-                                    || ((tTargetedBlock != null) && ((tTargetedBlock
-                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone))
-                                        || (tTargetedBlock
-                                            .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stained_hardened_clay))
-                                        || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.cobblestone))
-                                        || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.end_stone))
-                                        || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.netherrack))
-                                        || (tTargetedBlock
-                                            .isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockGranites))
-                                        || (tTargetedBlock
-                                            .isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockStones))))) {
-                                                aWorld.setBlock(iX, iY, iZ, this.mBlock, this.mBlockMeta, 0);
-                                            }
+
+                                // spotless:off
+                                if (    tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stained_hardened_clay) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.cobblestone) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.end_stone) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.netherrack) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockGranites) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockStones)) {
+                                    aWorld.setBlock(iX, iY, iZ, this.mBlock, this.mBlockMeta, 0);
+                                    continue;
+                                }
+                                // spotless:on
+
+                                if (OreManager.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType)) {
+                                    continue;
+                                }
                             }
                         }
                     }
