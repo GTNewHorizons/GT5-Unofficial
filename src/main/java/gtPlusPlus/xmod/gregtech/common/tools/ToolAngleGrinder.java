@@ -70,7 +70,7 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.RANDOM_ANVIL_USE.toString();
+        return SoundResource.GTM_OP_FILE.toString();
     }
 
     @Override

@@ -76,7 +76,7 @@ public class MTESteamFurnaceSteel extends MTEBasicMachineSteel {
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP, 10, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(SoundResource.GTM_LOOP_FURNACE, 10, 1.0F, aX, aY, aZ);
         }
     }
 
