@@ -527,8 +527,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                 ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
-                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
+                if (random.nextInt(10000) < tRecipe.getOutputChance(i)) {
                     multiplyStackSize(recipeOutput);
+                }
                 outputItems.add(recipeOutput);
             }
         }
