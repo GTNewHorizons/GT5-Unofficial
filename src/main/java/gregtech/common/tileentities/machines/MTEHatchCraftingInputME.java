@@ -8,6 +8,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -425,6 +426,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     public List<ProcessingLogic> processingLogics = new ArrayList<>();
+    private List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -511,6 +513,30 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public void onColorChangeServer(byte aColor) {
         updateAE2ProxyColor();
+    }
+
+    public void addProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        if (!proxyHatches.contains(proxy)) proxyHatches.add(proxy);
+    }
+
+    public void removeProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        proxyHatches.remove(proxy);
+    }
+
+    public List<MTEHatchCraftingInputSlave> getProxyHatches() {
+        validateProxyHatchList();
+        return Collections.unmodifiableList(proxyHatches);
+    }
+
+    private long lastProxyHatchValidationTime = -1;
+
+    private void validateProxyHatchList() {
+        long currentTime = getBaseMetaTileEntity().getTimer();
+        if (currentTime != lastProxyHatchValidationTime) {
+            proxyHatches
+                .removeIf(hatch -> hatch == null || hatch.getBaseMetaTileEntity() == null || hatch.getMaster() != this);
+            lastProxyHatchValidationTime = currentTime;
+        }
     }
 
     public void updateAE2ProxyColor() {
