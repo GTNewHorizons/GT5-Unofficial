@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTLanguageManager;
@@ -47,8 +48,8 @@ public class BaseItemTCShard extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         for (int i = 0;; i++) {
-            String tooltip = GTLanguageManager
-                .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
+            String tooltip = StatCollector
+                .translateToLocal("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
             if (!("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i).equals(tooltip)) {
                 list.add(tooltip);
             } else break;

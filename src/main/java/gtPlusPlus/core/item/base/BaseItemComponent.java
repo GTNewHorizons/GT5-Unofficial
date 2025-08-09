@@ -186,10 +186,10 @@ public class BaseItemComponent extends Item {
 
     public String getFluidName(String aKey) {
         String trans;
-        trans = GTLanguageManager.getTranslation(aKey);
+        trans = StatCollector.translateToLocal(aKey);
         if (!trans.equals(aKey)) return trans;
         aKey = "fluid." + aKey;
-        trans = GTLanguageManager.getTranslation(aKey);
+        trans = StatCollector.translateToLocal(aKey);
         if (!trans.equals(aKey)) return trans;
         return GTLanguageManager.addStringLocalization(
             "gtplusplus.fluid." + this.materialName.toLowerCase()
@@ -199,7 +199,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTLanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
+        return StatCollector.translateToLocal("gtplusplus.item." + unlocalName + ".name")
             .replace("%s", "%temp")
             .replace("%material", translatedMaterialName)
             .replace("%temp", "%s");

@@ -167,7 +167,7 @@ public class BWMetaItems {
             if (aStack.getTagCompound() != null) {
                 ItemStack tagStack = CircuitImprintLoader.getStackFromTag(aStack.getTagCompound());
                 String itemName = tagStack != null
-                    ? GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(tagStack))
+                    ? StatCollector.translateToLocal(GTLanguageManager.getTranslateableItemStackName(tagStack))
                     : StatCollector.translateToLocal("tooltip.bw.item.circuit.tagged");
 
                 if (aStack.getItemDamage() == 0) {
