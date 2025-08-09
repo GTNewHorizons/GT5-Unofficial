@@ -436,13 +436,4 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         return (d, r, f) -> f.isNotFlipped();
     }
 
-    @Override
-    public boolean isFlipChangeAllowed() {
-        return false;
-    }
-
-    @Override
-    public boolean isRotationChangeAllowed() {
-        return true;
-    }
 }
