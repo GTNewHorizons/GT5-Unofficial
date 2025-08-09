@@ -20,6 +20,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -121,7 +122,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         }
         return new ITexture[] { TextureFactory.builder()
             .addIcon(Textures.BlockIcons.STONES[0])
-            .setRGBA(new short[] { 240, 240, 240, 0 })
+            .setRGB(ColorUtil.toRGB(240, 240, 240))
             .stdOrient()
             .build() };
     }

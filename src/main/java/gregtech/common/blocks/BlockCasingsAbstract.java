@@ -163,7 +163,7 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return gregtech.api.enums.Dyes.MACHINE_METAL.toInt();
+        return gregtech.api.enums.Dyes.MACHINE_METAL.colorRGB;
     }
 
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {

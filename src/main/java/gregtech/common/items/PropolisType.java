@@ -1,30 +1,29 @@
 package gregtech.common.items;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.StringUtils;
 
 public enum PropolisType {
 
-    End("End", true),
-    Ectoplasma("Ectoplasma", true),
-    Arcaneshard("Arcaneshard", true),
-    Stardust("Stardust", true),
-    Dragonessence("Dragonessence", true),
-    Enderman("Enderman", true),
-    Silverfish("Silverfish", true),
-    Endium("Endium", true),
-    Fireessence("Fireessence", true);
+    // DO NOT RE-ORDER THIS ENUM, ORDER MATTERS
 
-    private static final int[] colours = new int[] { 0xCC00FA, 0xDCB0E5, 0x9010AD, 0xFFFF00, 0x911ECE, 0x161616,
-        0xEE053D, 0xa0ffff, 0xD41238 };
+    End(0xCC00FA, true),
+    Ectoplasma(0xDCB0E5, true),
+    Arcaneshard(0x9010AD, true),
+    Stardust(0xFFFF00, true),
+    Dragonessence(0x911ECE, true),
+    Enderman(0x161616, true),
+    Silverfish(0xEE053D, true),
+    Endium(0xA0FFFF, true),
+    Fireessence(0xD41238, true);
 
+    public static final PropolisType[] VALUES = PropolisType.values();
+
+    private final int colorRGB;
     public boolean showInList;
-    public Materials material;
-    public int chance;
-    private final String name;
 
-    PropolisType(String pName, boolean show) {
-        this.name = pName;
+    PropolisType(int colorRGB, boolean show) {
+        this.colorRGB = colorRGB;
         this.showInList = show;
     }
 
@@ -34,13 +33,11 @@ public enum PropolisType {
 
     public String getName() {
         // return "gt.comb."+this.name;
-        return GTLanguageManager.addStringLocalization(
-            "propolis." + this.name,
-            this.name.substring(0, 1)
-                .toUpperCase() + this.name.substring(1) + " Propolis");
+        final String name = this.name();
+        return GTLanguageManager.addStringLocalization("propolis." + name, StringUtils.capitalize(name) + " Propolis");
     }
 
     public int getColours() {
-        return colours[this.ordinal()];
+        return colorRGB;
     }
 }

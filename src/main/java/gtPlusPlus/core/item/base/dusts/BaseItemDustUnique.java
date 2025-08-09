@@ -44,7 +44,7 @@ public class BaseItemDustUnique extends Item {
         this.setMaxStackSize(64);
         this.setTextureName(this.getCorrectTexture(pileSize));
         this.setCreativeTab(tabMisc);
-        this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
+        this.colour = colour == 0 ? Dyes._NULL.colorRGB : colour;
         this.materialName = materialName;
         if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);

@@ -10,15 +10,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.SBRContext;
 import gregtech.api.util.GTRenderingWorld;
 
-class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockContainer {
+public class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockContainer {
 
     private final Block mBlock;
     private final byte mSide;
     private final int mMeta;
 
-    GTCopiedCTMBlockTexture(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
-        if (aRGBa.length != 4)
-            throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTCopiedCTMBlockTexture");
+    protected GTCopiedCTMBlockTexture(Block aBlock, int ordinalSide, int aMeta) {
         mBlock = aBlock;
         mSide = (byte) ordinalSide;
         mMeta = aMeta;

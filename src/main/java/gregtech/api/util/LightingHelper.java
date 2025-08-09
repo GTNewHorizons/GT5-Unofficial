@@ -27,16 +27,12 @@ public class LightingHelper {
     public static final int MAX_BRIGHTNESS = 0xf000f0;
     public static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
     protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    private final RenderBlocks renderBlocks;
-    /**
-     * Brightness for side.
-     */
-    private int brightness;
-    /**
-     * Ambient occlusion values for all four corners of side.
-     */
-    private float aoTopLeft, aoBottomLeft, aoBottomRight, aoTopRight;
 
+    private final RenderBlocks renderBlocks;
+    /** Brightness for side. */
+    private int brightness;
+    /** Ambient occlusion values for all four corners of side. */
+    private float aoTopLeft, aoBottomLeft, aoBottomRight, aoTopRight;
     private boolean hasLightnessOverride;
     private float lightnessOverride;
     private boolean hasBrightnessOverride;
@@ -67,28 +63,11 @@ public class LightingHelper {
     public static int getAverageBrightness(int brightnessA, int brightnessB) {
         int sectionA1 = brightnessA >> 16 & 0xff;
         int sectionA2 = brightnessA & 255;
-
         int sectionB1 = brightnessB >> 16 & 0xff;
         int sectionB2 = brightnessB & 255;
-
         int difference1 = (int) ((sectionA1 + sectionB1) / 2.0F);
         int difference2 = (int) ((sectionA2 + sectionB2) / 2.0F);
-
         return difference1 << 16 | difference2;
-    }
-
-    /**
-     * Gets rgb color from RGBA array.
-     *
-     * @param color the integer color
-     * @return a float array with rgb values
-     */
-    public static float[] getRGB(short[] color) {
-        float red = color[0] / 255.0F;
-        float green = color[1] / 255.0F;
-        float blue = color[2] / 255.0F;
-
-        return new float[] { red, green, blue };
     }
 
     /**
@@ -167,10 +146,6 @@ public class LightingHelper {
         return this;
     }
 
-    public LightingHelper setColorOverride(short[] color) {
-        return setColorOverride(getColor(color));
-    }
-
     /**
      * Sets color override.
      *
@@ -181,16 +156,6 @@ public class LightingHelper {
         hasColorOverride = true;
         colorOverride = color;
         return this;
-    }
-
-    /**
-     * Gets int color from RGBA array.
-     *
-     * @param rgba the short RGBA color array
-     * @return int color
-     */
-    public static int getColor(short[] rgba) {
-        return (rgba[2] & 0xff) | (rgba[1] & 0xff) << 8 | (rgba[0] & 0xff) << 16;
     }
 
     /**
@@ -208,46 +173,43 @@ public class LightingHelper {
     /**
      * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
      *
-     * @param side the side
-     * @param rgba the primary short[] RGBA color array
-     */
-    public void setupColor(ForgeDirection side, short[] rgba) {
-        setupColor(side, getColor(rgba));
-    }
-
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
      * @param side     the side
-     * @param hexColor the primary color
+     * @param colorRGB the primary color in RGB format, (alpha unused)
      */
-    public void setupColor(ForgeDirection side, int hexColor) {
+    public void setupColor(ForgeDirection side, int colorRGB) {
         Tessellator tessellator = Tessellator.instance;
         float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        float[] rgb = getRGB(hexColor);
-
+        float red = (colorRGB >> 16 & 0xFF) / 255.0F;
+        float green = (colorRGB >> 8 & 0xFF) / 255.0F;
+        float blue = (colorRGB & 0xFF) / 255.0F;
         if (hasColorOverride && !renderBlocks.hasOverrideBlockTexture()) {
-            rgb = getRGB(colorOverride);
+            red = (colorOverride >> 16 & 0xff) / 255.0F;
+            green = (colorOverride >> 8 & 0xff) / 255.0F;
+            blue = (colorOverride & 0xff) / 255.0F;
         }
 
-        applyAnaglyph(rgb);
+        if (EntityRenderer.anaglyphEnable) {
+            red = (red * 30.0F + green * 59.0F + blue * 11.0F) / 100.0F;
+            green = (red * 30.0F + green * 70.0F) / 100.0F;
+            blue = (red * 30.0F + blue * 70.0F) / 100.0F;
+        }
 
         if (renderBlocks.enableAO) {
             tessellator.setBrightness(hasBrightnessOverride ? brightnessOverride : brightness);
 
             if (renderBlocks.hasOverrideBlockTexture()) {
 
-                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = rgb[0];
-                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = rgb[1];
-                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = rgb[2];
+                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = red;
+                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = green;
+                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = blue;
 
             } else {
 
-                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = rgb[0]
+                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = red
                     * lightness;
-                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = rgb[1]
+                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = green
                     * lightness;
-                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = rgb[2]
+                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = blue
                     * lightness;
 
                 renderBlocks.colorRedTopLeft *= aoTopLeft;
@@ -267,36 +229,7 @@ public class LightingHelper {
         } else {
 
             if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
-            tessellator.setColorOpaque_F(rgb[0] * lightness, rgb[1] * lightness, rgb[2] * lightness);
-        }
-    }
-
-    /**
-     * Gets rgb color from integer.
-     *
-     * @param color the integer color
-     * @return a float array with rgb values
-     */
-    public static float[] getRGB(int color) {
-        float red = (color >> 16 & 0xff) / 255.0F;
-        float green = (color >> 8 & 0xff) / 255.0F;
-        float blue = (color & 0xff) / 255.0F;
-
-        return new float[] { red, green, blue };
-    }
-
-    /**
-     * Will apply anaglyph color multipliers to RGB float array.
-     * <p>
-     * If {@link EntityRenderer#anaglyphEnable} is false, will do nothing.
-     *
-     * @param rgb array containing red, green and blue float values
-     */
-    public void applyAnaglyph(float[] rgb) {
-        if (EntityRenderer.anaglyphEnable) {
-            rgb[0] = (rgb[0] * 30.0F + rgb[1] * 59.0F + rgb[2] * 11.0F) / 100.0F;
-            rgb[1] = (rgb[0] * 30.0F + rgb[1] * 70.0F) / 100.0F;
-            rgb[2] = (rgb[0] * 30.0F + rgb[2] * 70.0F) / 100.0F;
+            tessellator.setColorOpaque_F(red * lightness, green * lightness, blue * lightness);
         }
     }
 

@@ -24,16 +24,15 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.BeeDefinition;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.core.genetics.alleles.AlleleHelper;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.misc.GTBeeDefinition;
 import gregtech.loaders.misc.GTBranchDefinition;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
 
 public enum GTPPBeeDefinition implements IBeeDefinition {
 
-    SILICON(GTBranchDefinition.ORGANIC, "Silicon", true, Utils.rgbtoHexValue(75, 75, 75),
-        Utils.rgbtoHexValue(125, 125, 125)) {
+    SILICON(GTBranchDefinition.ORGANIC, "Silicon", true, ColorUtil.toRGB(75, 75, 75), ColorUtil.toRGB(125, 125, 125)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -57,8 +56,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         }
     },
 
-    RUBBER(GTBranchDefinition.ORGANIC, "Rubber", true, Utils.rgbtoHexValue(55, 55, 55),
-        Utils.rgbtoHexValue(75, 75, 75)) {
+    RUBBER(GTBranchDefinition.ORGANIC, "Rubber", true, ColorUtil.toRGB(55, 55, 55), ColorUtil.toRGB(75, 75, 75)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -82,8 +80,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         }
     },
 
-    PLASTIC(GTBranchDefinition.ORGANIC, "Plastic", true, Utils.rgbtoHexValue(245, 245, 245),
-        Utils.rgbtoHexValue(175, 175, 175)) {
+    PLASTIC(GTBranchDefinition.ORGANIC, "Plastic", true, ColorUtil.toRGB(245, 245, 245),
+        ColorUtil.toRGB(175, 175, 175)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -107,8 +105,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         }
     },
 
-    PTFE(GTBranchDefinition.ORGANIC, "Ptfe", true, Utils.rgbtoHexValue(150, 150, 150),
-        Utils.rgbtoHexValue(75, 75, 75)) {
+    PTFE(GTBranchDefinition.ORGANIC, "Ptfe", true, ColorUtil.toRGB(150, 150, 150), ColorUtil.toRGB(75, 75, 75)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -129,7 +126,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         }
     },
 
-    PBS(GTBranchDefinition.ORGANIC, "Pbs", true, Utils.rgbtoHexValue(33, 26, 24), Utils.rgbtoHexValue(23, 16, 14)) {
+    PBS(GTBranchDefinition.ORGANIC, "Pbs", true, ColorUtil.toRGB(33, 26, 24), ColorUtil.toRGB(23, 16, 14)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -153,8 +150,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     /**
      * Fuels
      */
-    BIOMASS(GTBranchDefinition.ORGANIC, "Biomass", true, Utils.rgbtoHexValue(33, 225, 24),
-        Utils.rgbtoHexValue(23, 175, 14)) {
+    BIOMASS(GTBranchDefinition.ORGANIC, "Biomass", true, ColorUtil.toRGB(33, 225, 24), ColorUtil.toRGB(23, 175, 14)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -176,8 +172,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         }
     },
 
-    ETHANOL(GTBranchDefinition.ORGANIC, "Ethanol", true, Utils.rgbtoHexValue(255, 128, 0),
-        Utils.rgbtoHexValue(220, 156, 32)) {
+    ETHANOL(GTBranchDefinition.ORGANIC, "Ethanol", true, ColorUtil.toRGB(255, 128, 0), ColorUtil.toRGB(220, 156, 32)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -202,8 +197,8 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     /**
      * Materials
      */
-    FLUORINE(GTBranchDefinition.ORGANIC, "Fluorine", true, Utils.rgbtoHexValue(30, 230, 230),
-        Utils.rgbtoHexValue(10, 150, 150)) {
+    FLUORINE(GTBranchDefinition.ORGANIC, "Fluorine", true, ColorUtil.toRGB(30, 230, 230),
+        ColorUtil.toRGB(10, 150, 150)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -231,8 +226,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     // Coke
 
     // Force
-    FORCE(GTBranchDefinition.METAL, "Force", true, Utils.rgbtoHexValue(250, 250, 20),
-        Utils.rgbtoHexValue(200, 200, 5)) {
+    FORCE(GTBranchDefinition.METAL, "Force", true, ColorUtil.toRGB(250, 250, 20), ColorUtil.toRGB(200, 200, 5)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -260,8 +254,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     },
 
     // Nikolite
-    NIKOLITE(GTBranchDefinition.METAL, "Nikolite", true, Utils.rgbtoHexValue(60, 180, 200),
-        Utils.rgbtoHexValue(40, 150, 170)) {
+    NIKOLITE(GTBranchDefinition.METAL, "Nikolite", true, ColorUtil.toRGB(60, 180, 200), ColorUtil.toRGB(40, 150, 170)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
