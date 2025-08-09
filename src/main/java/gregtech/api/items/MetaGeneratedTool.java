@@ -815,12 +815,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     @Override
-    public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
-        if (player == null) return;
-        if (player.getCurrentEquippedItem() == null) return;
-        IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
-        if (tStats != null) doDamage(player.getCurrentEquippedItem(), tStats.getToolDamagePerEntityAttack());
-    }
+    public void wrenchUsed(EntityPlayer player, int x, int y, int z) {}
 
     @Override
     public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z) {
@@ -845,9 +840,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     @Override
-    public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {
-        wrenchUsed(player, x, y, z);
-    }
+    public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {}
 
     @Override
     public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
