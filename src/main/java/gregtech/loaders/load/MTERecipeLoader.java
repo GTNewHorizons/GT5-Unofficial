@@ -2455,8 +2455,9 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HP_Solar.get(1L),
             GTModHandler.RecipeBits.BITSD,
-            new Object[] { "GGG", "SSS", aTextPlateMotor, 'M', ItemList.Hull_HP_Bricks, 'P',
-                OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver), 'G',
+            new Object[] { "GGG", "WSW", aTextPlateMotor, 'M', ItemList.Machine_Bronze_Boiler_Solar, 'P',
+                OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver), 'W',
+                OrePrefixes.plateDouble.get(Materials.WroughtIron), 'G',
                 GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L) });
 
         GTModHandler.addCraftingRecipe(
