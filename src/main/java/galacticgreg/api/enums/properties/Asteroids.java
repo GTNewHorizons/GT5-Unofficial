@@ -6,7 +6,7 @@ import galacticgreg.api.enums.ModContainers;
 public enum Asteroids {
 
     // spotless:off
-    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(10)
+    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(4)
         .sizeRange(5, 15)
         .specialBlockChance(5)
         .oreDensityMultiplier(0.5f)
