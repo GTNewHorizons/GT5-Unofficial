@@ -27,6 +27,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.util.shutdown.ShutDownReason;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -107,8 +109,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     public static final int UPGRADE_RANGE = 32;
-    private static final String xOffsetText = "GT5U.MBTT.PCB.XOffset";
-    private static final String zOffsetText = "GT5U.MBTT.PCB.ZOffset";
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
@@ -116,8 +116,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private float mRoughnessMultiplier = 1;
     private int mTier = 1;
-    private int mSetTier = 1;
-    private int mUpgradesInstalled = 0;
     private int mMaxParallel = 0;
     private MTEPCBBioChamber mBioChamber;
     private int mBioChamberX;
@@ -127,117 +125,76 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private int mCoolingTowerX;
     private int mCoolingTowerY;
     private int mCoolingTowerZ;
-    private boolean mOCTier1 = false, mOCTier2 = false;
-    private final int[] mBioOffsets = new int[] { -5, -1 };
-    private final int[] mOCTier1Offsets = new int[] { 2, -11 };
-    private final int[] mOCTier2Offsets = new int[] { 2, -11 };
     private MTEHatchInput mCoolantInputHatch;
     private final ArrayList<MTEHatchNanite> naniteBuses = new ArrayList<>();
-    private static final int mBioRotateBitMap = 0b1000000;
-    private static final int mOCTier2BitMap = 0b100000;
-    private static final int mOCTier1BitMap = 0b10000;
-    private static final int mBioBitMap = 0b1000;
-    private static final int mTier3BitMap = 0b100;
-    private static final int mTier2BitMap = 0b10;
-    private static final int mTier1BitMap = 0b1;
+    private static final byte mTextureBitmap = 0b1;
     private static final IStructureDefinition<MTEPCBFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPCBFactory>builder()
         .addShape(
             tier1,
             transpose(
-                new String[][] {
+                new String[][]{
                     // spotless:off
-                        {"       ","E     E","E     E","EEEEEEE","E     E","E     E","       "},
-                        {"EEEEEEE","CAAAAAC","CAAAAAC","CCCCCCC","CCCCCCC","CCCCCCC","E     E"},
-                        {"EAAAAAE","C-----C","C-----C","C-----C","C-----C","C-----C","ECCCCCE"},
-                        {"EAAAAAE","C-----C","B-----B","B-----B","B-----B","C-----C","ECCCCCE"},
-                        {"EAAAAAE","C-----C","B-FFF-B","B-FFF-B","B-FFF-B","C-----C","EPPPPPE"},
-                        {"ECC~CCE","CDDDDDC","CDDDDDC","CDDDDDC","CDDDDDC","CDDDDDC","EPPPPPE"}
-                        //spotless:on
+                    {"       ", "E     E", "E     E", "EEEEEEE", "E     E", "E     E", "       "},
+                    {"EEEEEEE", "CAAAAAC", "CAAAAAC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "E     E"},
+                    {"EAAAAAE", "C-----C", "C-----C", "C-----C", "C-----C", "C-----C", "ECCCCCE"},
+                    {"EAAAAAE", "C-----C", "B-----B", "B-----B", "B-----B", "C-----C", "ECCCCCE"},
+                    {"EAAAAAE", "C-----C", "B-FFF-B", "B-FFF-B", "B-FFF-B", "C-----C", "EPPPPPE"},
+                    {"ECC~CCE", "CDDDDDC", "CDDDDDC", "CDDDDDC", "CDDDDDC", "CDDDDDC", "EPPPPPE"}
+                    //spotless:on
                 }))
         .addShape(
             tier2,
             transpose(
-                new String[][] {
+                new String[][]{
                     // spotless:off
-                        {"    ","    ","    ","HGGH","HGGH","HGGH","HGGH","HGGH","    ","    ","    "},
-                        {"    ","    ","HGGH","GGGG","GGGG","GGGG","GGGG","GGGG","HGGH","    ","    "},
-                        {"    ","HGGH","GGGG","G  G","G  G","G  G","G  G","G  G","GGGG","HGGH","    "},
-                        {"    ","HGGH","G  G","G  G","G  G","G  G","G  G","G  G","G  G","HGGH","    "},
-                        {"HGGH","G  G","G  G","G  G","G  G","G  G","G  G","G  G","G  G","G  G","HGGH"},
-                        {"HGGH","G  G","G  G","G  G","G  G","G  G","G  G","G  G","G  G","G  G","HGGH"},
-                        {"HGGH","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","GGGG","HGGH"}
-                        //spotless:on
+                    {"    ", "    ", "    ", "HGGH", "HGGH", "HGGH", "HGGH", "HGGH", "    ", "    ", "    "},
+                    {"    ", "    ", "HGGH", "GGGG", "GGGG", "GGGG", "GGGG", "GGGG", "HGGH", "    ", "    "},
+                    {"    ", "HGGH", "GGGG", "G  G", "G  G", "G  G", "G  G", "G  G", "GGGG", "HGGH", "    "},
+                    {"    ", "HGGH", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "HGGH", "    "},
+                    {"HGGH", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "HGGH"},
+                    {"HGGH", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "G  G", "HGGH"},
+                    {"HGGH", "GGGG", "GGGG", "GGGG", "GGGG", "GGGG", "GGGG", "GGGG", "GGGG", "GGGG", "HGGH"}
+                    //spotless:on
                 }))
         .addShape(
             tier3,
             transpose(
-                new String[][] {
+                new String[][]{
                     // spotless:off
-                        {"       ","       ","       ","       ","   I   ","   I   ","       ","       ","       ","       "},
-                        {"       ","       ","       ","   I   ","   I   ","   I   ","   I   ","       ","       ","       "},
-                        {"       ","       ","  KKK  ","  KIK  ","  K K  ","  K K  ","   I   ","       ","       ","       "},
-                        {"       ","       ","  KKK  ","  K K  ","  K K  ","  K K  ","   I   ","       ","       ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I ","  K K  ","   I   ","       ","       ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I ","  K K  ","   I   ","       ","       ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I ","  K K  ","  KIK  ","       ","       ","       "},
-                        {"       ","  I I  "," I K I "," I   I "," I   I ","  K K  ","  KIK  ","       ","       ","       "},
-                        {"       ","  I I  "," I K I "," I   I "," I   I ","  K K  ","  K K  ","  KKK  ","       ","       "},
-                        {"       ","  I I  "," I K I "," I   I "," I   I ","  K K  ","  K K  ","  KKK  ","       ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  III  "," I   I ","  K K  ","  K K  ","  K K  ","  K K  "," I   I ","  III  ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","       ","  KKK  ","  K K  ","  K K  "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","       ","  KKK  ","  K K  ","  K K  "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","       ","  KKK  ","  K K  ","  K K  "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  I I  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  I I  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {" II~II ","IIJJJII","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IIJJJII"," IIIII "}
-                        //spotless:on
+                    {"       ", "       ", "       ", "       ", "   I   ", "   I   ", "       ", "       ", "       ", "       "},
+                    {"       ", "       ", "       ", "   I   ", "   I   ", "   I   ", "   I   ", "       ", "       ", "       "},
+                    {"       ", "       ", "  KKK  ", "  KIK  ", "  K K  ", "  K K  ", "   I   ", "       ", "       ", "       "},
+                    {"       ", "       ", "  KKK  ", "  K K  ", "  K K  ", "  K K  ", "   I   ", "       ", "       ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", "  K K  ", "   I   ", "       ", "       ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", "  K K  ", "   I   ", "       ", "       ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", "  K K  ", "  KIK  ", "       ", "       ", "       "},
+                    {"       ", "  I I  ", " I K I ", " I   I ", " I   I ", "  K K  ", "  KIK  ", "       ", "       ", "       "},
+                    {"       ", "  I I  ", " I K I ", " I   I ", " I   I ", "  K K  ", "  K K  ", "  KKK  ", "       ", "       "},
+                    {"       ", "  I I  ", " I K I ", " I   I ", " I   I ", "  K K  ", "  K K  ", "  KKK  ", "       ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "  III  ", " I   I ", "  K K  ", "  K K  ", "  K K  ", "  K K  ", " I   I ", "  III  ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "       ", "  KKK  ", "  K K  ", "  K K  ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "       ", "  KKK  ", "  K K  ", "  K K  ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "       ", "  KKK  ", "  K K  ", "  K K  ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "  I I  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {"       ", "  I I  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
+                    {" II~II ", "IIJJJII", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IIJJJII", " IIIII "}
+                    //spotless:on
                 }))
-        .addShape(
-            ocTier2Upgrade,
-            transpose(
-                new String[][] {
-                    // spotless:off
-                        {"RGGGR","G   G","G   G","G   G","RGGGR"},
-                        {"R   R"," GGG "," GTG "," GGG ","R   R"},
-                        {"R   R"," NNN "," NTN "," NNN ","R   R"},
-                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
-                        {"RNNNR","NQQQN","NQTQN","NQQQN","RNNNR"},
-                        {"RGGGR","GGGGG","GGSGG","GGGGG","RGGGR"}
-                        //spotless:on
-                }))
-        .addElement('E', ofFrame(Materials.DamascusSteel))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
-        .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
+        .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
+        .addElement('E', ofFrame(Materials.DamascusSteel))
         .addElement('F', ofFrame(Materials.VibrantAlloy))
-        .addElement(
-            'P',
-            buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(
-                    InputHatch,
-                    OutputBus,
-                    InputBus,
-                    Maintenance,
-                    Energy.or(ExoticEnergy),
-                    SpecialHatchElement.NaniteBus)
-                .dot(1)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
-                .buildAndChain(GregTechAPI.sBlockCasings8, 11))
-        .addElement('H', ofFrame(Materials.Duranium))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
+        .addElement('H', ofFrame(Materials.Duranium))
         .addElement('I', ofBlock(GregTechAPI.sBlockCasings8, 13))
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement(
             'J',
             buildHatchAdder(MTEPCBFactory.class)
@@ -251,68 +208,43 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
-        .addElement('L', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement(
-            'M',
-            buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEPCBFactory::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 12))
-        .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
-        .addElement(
-            'S',
-            buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEPCBFactory::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 12))
-        .addElement('R', ofFrame(Materials.Americium))
-        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        .addElement('T', ofBlock(GregTechAPI.sBlockCasings1, 15))
+            'P',
+            buildHatchAdder(MTEPCBFactory.class)
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
+                .dot(1)
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 11))
         .build();
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        if (mSetTier < 3) {
+        if (stackSize.stackSize == 1)
             buildPiece(tier1, stackSize, hintsOnly, 3, 5, 0);
-            if (mSetTier == 2) {
-                buildPiece(tier2, stackSize, hintsOnly, 7, 6, 2);
-            }
-        } else {
-            buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
+        if (stackSize.stackSize == 2) {
+            buildPiece(tier2, stackSize, hintsOnly, 7, 6, 2);
         }
-
-        if (!mOCTier1 && mOCTier2) {
-            buildPiece(ocTier2Upgrade, stackSize, hintsOnly, mOCTier2Offsets[0], 9, mOCTier2Offsets[1]);
-        }
+        buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
     }
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
         if (mMachine) return -1;
-        if (mSetTier < 3) {
+        if (stackSize.stackSize < 3) {
             built += survivalBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
-            if (mSetTier == 2) {
+            if (stackSize.stackSize == 2) {
                 built += survivalBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
             }
         } else {
             built += survivalBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
         }
-        if (!mOCTier1 && mOCTier2) {
-            built += survivalBuildPiece(
-                ocTier2Upgrade,
-                stackSize,
-                mOCTier2Offsets[0],
-                9,
-                mOCTier2Offsets[1],
-                elementBudget,
-                env,
-                false,
-                true);
-        }
-
         return built;
     }
 
@@ -330,10 +262,15 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
+    public byte getUpdateData() {
+        return (mTier < 3 ? mTextureBitmap : 0);
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+                                 ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] {
+            if (active) return new ITexture[]{
                 BlockIcons.getCasingTextureForId(
                     getTier() < 3 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 11)
                         : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 13)),
@@ -345,8 +282,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
-                    .build() };
-            return new ITexture[] {
+                    .build()};
+            return new ITexture[]{
                 BlockIcons.getCasingTextureForId(
                     getTier() < 3 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 11)
                         : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 13)),
@@ -358,11 +295,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
                     .extFacing()
                     .glow()
-                    .build() };
+                    .build()};
         }
-        return new ITexture[] { BlockIcons.getCasingTextureForId(
-            mSetTier < 3 ? ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11)
-                : ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13)) };
+        return new ITexture[]{BlockIcons.getCasingTextureForId(
+            mTier < 3 ? ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11)
+                : ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))};
     }
 
     @Override
@@ -371,55 +308,35 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mTier = 0;
-        mUpgradesInstalled = 0;
-        mCoolantInputHatch = null;
-        naniteBuses.clear();
-        if (mSetTier < 3) {
-            if (!checkPiece(tier1, 3, 5, 0)) {
-                return false;
+    public void receiveClientEvent(byte eventID, byte value) {
+        if (eventID == 1) {
+            if ((value & 1) == 1) {
+                mTier = 3;
             }
-            if (mSetTier == 2) {
-                if (!checkPiece(tier2, 7, 6, 2)) {
-                    return false;
-                }
-                mTier = 2;
-            } else {
-                mTier = 1;
-            }
-        } else {
-            if (!checkPiece(tier3, 3, 21, 0)) {
-                return false;
-            }
-            mTier = 3;
         }
-        // Do we want to invalidate the main factory if the cooling tower is invalid, but does exist?
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        //TODO optimise this with mTier
+
+        // check the tier of the main structure
+        boolean tier1_valid = checkPiece(tier1, 3, 5, 0);
+        if (tier1_valid) {
+            if (checkPiece(tier2, 7, 6, 2)) mTier = 2; else mTier = 1;
+        } else {
+            if (checkPiece(tier3, 3, 21, 0)) mTier = 3;
+            else return false;
+        }
+
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        //TODO Do we want to invalidate the main factory if the cooling tower is invalid, but does exist?
+        // machine can still function, but not overclock
 /*
         if (mCoolingTower != null && !mCoolingTower.isValid()) {
             return false;
         }
 */
-
-        if (mOCTier1 && !mOCTier2) {
-            if (mCoolantInputHatch == null) {
-                return false;
-            }
-            mUpgradesInstalled++;
-        }
-
-        if (mOCTier2 && !mOCTier1) {
-            if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 9, mOCTier2Offsets[1])) {
-                return false;
-            }
-            if (mCoolantInputHatch == null) {
-                return false;
-            }
-            mUpgradesInstalled++;
-        }
-
-        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-
         if (mMaintenanceHatches.size() != 1) {
             return false;
         }
@@ -428,7 +345,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             return false;
         }
 
-        return mTier > 0;
+        return true;
     }
 
     @Override
@@ -482,17 +399,31 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                int structures = 1;
+                if (mBioChamber != null) {
+                    structures++;
+                }
+                if (mCoolingTower != null) {
+                    structures++;
+                }
                 return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
-                    .setEUtDiscount(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setEUtDiscount(Math.sqrt(structures))
                     .setDurationModifier(getDurationMultiplierFromRoughness())
-                    .setDurationDecreasePerOC(mOCTier2 ? 4.0 : 2.0);
+                    .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
             }
 
             @Nonnull
             @Override
             protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+                int structures = 1;
+                if (mBioChamber != null) {
+                    structures++;
+                }
+                if (mCoolingTower != null) {
+                    structures++;
+                }
                 return super.createParallelHelper(recipe)
-                    .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setEUtModifier((float) Math.sqrt(structures == 0 ? 1 : structures))
                     .setChanceMultiplier(mRoughnessMultiplier);
             }
         };
@@ -516,7 +447,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
         if (ticker % 20 == 0) {
             if (!isNoOC()) {
-                FluidStack tFluid = mCoolingTower.mTier == 1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
+                FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                     : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
                 if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
                     stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
@@ -529,6 +460,17 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         ticker++;
 
         return true;
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        if (mCoolingTower != null) {
+            mCoolingTower.cancelRecipe(this);
+        }
+        if (mBioChamber != null) {
+            mBioChamber.cancelRecipe(this);
+        }
+        super.stopMachine(reason);
     }
 
     @Override
@@ -570,34 +512,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     private int getTier() {
-        return mSetTier;
+        return mTier;
     }
 
-    @Override
-    public void receiveClientEvent(byte aEventID, byte aValue) {
-        if (aEventID == 1) {
-            if ((aValue & mTier1BitMap) == mTier1BitMap) {
-                mSetTier = 1;
-            }
-
-            if ((aValue & mTier2BitMap) == mTier2BitMap) {
-                mSetTier = 2;
-            }
-
-            if ((aValue & mTier3BitMap) == mTier3BitMap) {
-                mSetTier = 3;
-            }
-
-            if ((aValue & mOCTier1BitMap) == mOCTier1BitMap) {
-                mOCTier1 = true;
-            }
-
-            if ((aValue & mOCTier2BitMap) == mOCTier2BitMap) {
-                mOCTier2 = true;
-            }
-        }
-    }
-
+    //TODO not used?
     private ExtendedFacing transformFacing(ExtendedFacing facing) {
         ForgeDirection curDirection = facing.getDirection();
         Rotation curRotation = facing.getRotation();
@@ -646,19 +564,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return ExtendedFacing.of(newDirection, newRotation, newFlip);
     }
 
-    public boolean addCoolantInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
-            mCoolantInputHatch = (MTEHatchInput) aMetaTileEntity;
-            return true;
-        }
-        return false;
-    }
-
     @Override
     protected long getActualEnergyUsage() {
         return (-this.lEUt * 10000) / Math.min(Math.max(1000, mEfficiency), 10000);
@@ -666,7 +571,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+                                        ItemStack aTool) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
@@ -685,62 +590,65 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         long amps = getMaxInputAmps();
 
         int mCurrentParallel = 0;
-        return new String[] {
+        return new String[]{
             /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(mProgresstime / 20)
+            + EnumChatFormatting.RESET
+            + " s / "
+            + EnumChatFormatting.YELLOW
+            + GTUtility.formatNumbers(mMaxProgresstime / 20)
+            + EnumChatFormatting.RESET
+            + " s",
             /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(storedEnergy)
+            + EnumChatFormatting.RESET
+            + " EU / "
+            + EnumChatFormatting.YELLOW
+            + GTUtility.formatNumbers(maxEnergy)
+            + EnumChatFormatting.RESET
+            + " EU",
             /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
+            + EnumChatFormatting.RED
+            + GTUtility.formatNumbers(getActualEnergyUsage())
+            + EnumChatFormatting.RESET
+            + " EU/t",
             /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(voltage)
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + amps
-                + " A)"
-                + translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(voltage)]
-                + EnumChatFormatting.RESET,
+            + EnumChatFormatting.YELLOW
+            + GTUtility.formatNumbers(voltage)
+            + EnumChatFormatting.RESET
+            + " EU/t(*"
+            + amps
+            + " A)"
+            + translateToLocal("GT5U.machines.tier")
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + VN[GTUtility.getTier(voltage)]
+            + EnumChatFormatting.RESET,
             /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 7 */ translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.GREEN + mMaxParallel,
-            /* 8 */ translateToLocal("GT5U.multiblock.curparallelism") + ": "
-                + EnumChatFormatting.GREEN
-                + mCurrentParallel };
+            + EnumChatFormatting.RED
+            + (getIdealStatus() - getRepairStatus())
+            + EnumChatFormatting.RESET
+            + " "
+            + translateToLocal("GT5U.multiblock.efficiency")
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + mEfficiency / 100.0F
+            + EnumChatFormatting.RESET
+            + " %",
+            /* 6 */ translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.GREEN + mMaxParallel + ", " +
+            translateToLocal("GT5U.multiblock.curparallelism") + ": "
+            + EnumChatFormatting.GREEN
+            + mCurrentParallel,
+            /* 7 */ translateToLocal("GT5U.multiblock.upgrades") + ": "
+            + EnumChatFormatting.GREEN + (mBioChamber == null ? "" : "Bio Chamber ")
+            + (mBioChamber != null && mCoolingTower != null ? ", " : "")
+            + EnumChatFormatting.GREEN + (mCoolingTower == null ? "" : " Cooling Tower Tier "
+            + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
+            + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : "")
+
+        };
     }
 
     @Override
@@ -907,14 +815,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             coolingTower.setInteger("z", mCoolingTowerZ);
             aNBT.setTag("mCoolingTower", coolingTower);
         }
-        aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
-        aNBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
-        aNBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
-        aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
-        aNBT.setInteger("mOCTier2OffsetX", mOCTier2Offsets[0]);
-        aNBT.setInteger("mOCTier2OffsetZ", mOCTier2Offsets[1]);
         aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
-        aNBT.setInteger("mSetTier", mSetTier);
     }
 
     @Override
@@ -938,16 +839,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             mCoolingTowerZ = coolingTower.getInteger("z");
         }
 
-        mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
-        mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
-        mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
-        mOCTier1Offsets[0] = aNBT.getInteger("mOCTier1OffsetX");
-        mOCTier1Offsets[1] = aNBT.getInteger("mOCTier1OffsetZ");
-        mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
-        mOCTier2Offsets[0] = aNBT.getInteger("mOCTier2OffsetX");
-        mOCTier2Offsets[1] = aNBT.getInteger("mOCTier2OffsetZ");
         mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
-        mSetTier = aNBT.getInteger("mSetTier");
     }
 
     @Override
@@ -956,54 +848,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public byte getUpdateData() {
-        byte data = 0;
-        if (mSetTier == 1) {
-            data += mTier1BitMap;
-        } else if (mSetTier == 2) {
-            data += mTier2BitMap;
-        } else if (mSetTier == 3) {
-            data += mTier3BitMap;
-        }
-
-        if (mBioChamber != null) {
-            data += mBioBitMap;
-        }
-
-        if (mOCTier1) {
-            data += mOCTier1BitMap;
-        }
-
-        if (mOCTier2) {
-            data += mOCTier2BitMap;
-        }
-
-        return data;
-    }
-
-    @Override
     public Pos2d getStructureUpdateButtonPos() {
         return new Pos2d(80, 91);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-            builder.widget(
-                new TextWidget(new Text(translateToLocal("GT5U.machines.tier"))).setTextAlignment(Alignment.Center)
-                    .setScale(0.91f)
-                    .setSize(20, 16)
-                    .setPos(173, 108))
-            .widget(
-                new NumericWidget().setGetter(() -> mSetTier)
-                    .setSetter(val -> mSetTier = (int) val)
-                    .setBounds(1, 3)
-                    .setTextColor(Color.WHITE.normal)
-                    .setTextAlignment(Alignment.Center)
-                    .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tier"))
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .setSize(18, 18)
-                    .setPos(173, 120));
     }
 
 
@@ -1019,16 +865,29 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     public void registerLinkedUnit(MTEPCBUpgradeBase<?> unit) {
-        if (unit instanceof MTEPCBBioChamber)
+        if (unit instanceof MTEPCBBioChamber) {
+            if (mBioChamber != null) {
+                mBioChamber.unlinkController();
+            }
             mBioChamber = (MTEPCBBioChamber) unit;
-        else if (unit instanceof MTEPCBCoolingTower)
+            mBioChamberX = unit.getBaseMetaTileEntity().getXCoord();
+            mBioChamberY = unit.getBaseMetaTileEntity().getYCoord();
+            mBioChamberZ = unit.getBaseMetaTileEntity().getZCoord();
+        } else if (unit instanceof MTEPCBCoolingTower) {
+            if (mCoolingTower != null) {
+                mCoolingTower.unlinkController();
+            }
             mCoolingTower = (MTEPCBCoolingTower) unit;
+            mCoolingTowerX = unit.getBaseMetaTileEntity().getXCoord();
+            mCoolingTowerY = unit.getBaseMetaTileEntity().getYCoord();
+            mCoolingTowerZ = unit.getBaseMetaTileEntity().getZCoord();
+        }
     }
 
     public void unregisterLinkedUnit(MTEPCBUpgradeBase<?> unit) {
-        if (unit instanceof MTEPCBBioChamber)
+        if (unit instanceof MTEPCBBioChamber) {
             mBioChamber = null;
-        else if (unit instanceof MTEPCBCoolingTower)
+        } else if (unit instanceof MTEPCBCoolingTower)
             mCoolingTower = null;
     }
 
@@ -1037,7 +896,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         CheckRecipeResult result = super.checkProcessing();
         if (result.wasSuccessful()) {
             if (mBioChamber != null && mBioChamber.isAllowedToWork()) {
-                mBioChamber.addRecipe(this.mProgresstime, this.mMaxProgresstime);
+                mBioChamber.addRecipe(this, this.mProgresstime, this.mMaxProgresstime);
+            }
+            if (mCoolingTower != null && mCoolingTower.isAllowedToWork()) {
+                mCoolingTower.addRecipe(this, this.mProgresstime, this.mMaxProgresstime);
             }
         }
         return result;
@@ -1046,7 +908,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
 
         NaniteBus(MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
-
             @Override
             public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
                 return gtMetaTileEntityPCBFactory.naniteBuses.size();
@@ -1090,10 +951,5 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public void onPreviewConstruct(@NotNull ItemStack trigger) {
-        mSetTier = trigger.stackSize;
     }
 }
