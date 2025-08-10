@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -13,15 +14,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * base class for the PCB Factory upgrades.
@@ -47,28 +53,11 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     }
 
 
-    /**
-     * //TODO allow multiple controllers to "wallshare" this unit
-     * Coordinates of the main purification plant controller. These can be used to find the controller again on world
+    /*
+     * Coordinates of the PCB Factories. These can be used to find the factories again on world
      * load.
      */
-    private int controllerX, controllerY, controllerZ;
-
-    /**
-     * Whether a controller was previously set.
-     */
-    private boolean controllerSet = false;
-
-    /**
-     * Pointers to the controllers
-     * //TODO allow multiple controllers to "wallshare" this unit
-     */
-    private MTEPCBFactory controller = null;
-
-    /**
-     * Coolant usage per second.
-     */
-    private final int COOLANT_CONSUMED_PER_SEC = 10;
+    private final Set<Vec3Impl> controllerCoords = new HashSet<>();
 
 
     protected MTEPCBUpgradeBase(int aID, String aName, String aNameRegional) {
@@ -104,8 +93,13 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         // Try to re-link to controller periodically, for example on game load.
-        if (aTimer % 100 == 5 && controllerSet && getController() == null) {
-            trySetControllerFromCoord(controllerX, controllerY, controllerZ);
+        if (aTimer % 100 == 5 && !controllerCoords.isEmpty()) {
+            for (Vec3Impl controllerCoord : controllerCoords) {
+                trySetControllerFromCoord(
+                    controllerCoord.get(0),
+                    controllerCoord.get(1),
+                    controllerCoord.get(2));
+            }
         }
     }
 
@@ -117,39 +111,40 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         // The unit will try to link to the real controller block periodically in onPostTick()
 
         // We cannot do this linking here yet because the controller block might not be loaded yet.
-        //TODO make this work with any number of controllers
-        if (aNBT.hasKey("controller")) {
-            NBTTagCompound controllerNBT = aNBT.getCompoundTag("controller");
-            controllerX = controllerNBT.getInteger("x");
-            controllerY = controllerNBT.getInteger("y");
-            controllerZ = controllerNBT.getInteger("z");
-            controllerSet = true;
-        }
-        if (aNBT.hasKey("numberOfControllers")) {
-            //TODO:
-            //numberOfControllers = aNBT.getInteger("numberOfControllers");
+        if (aNBT.hasKey("controllers")) {
+            int[] coordinates = aNBT.getIntArray("controllers");
+            controllerCoords.clear();
+            // If not all coordinates got saved, just clear the list.
+            if (coordinates.length % 3 != 0) return;
+
+            for (int i = 0; i < coordinates.length; i += 3) {
+                controllerCoords.add(new Vec3Impl(coordinates[i], coordinates[i + 1], coordinates[i + 2]));
+            }
         }
     }
 
 
-    public NBTTagCompound saveLinkDataToNBT() {
-        NBTTagCompound controllerNBT = new NBTTagCompound();
-        controllerNBT.setInteger("x", controllerX);
-        controllerNBT.setInteger("y", controllerY);
-        controllerNBT.setInteger("z", controllerZ);
-        return controllerNBT;
+    public NBTTagIntArray saveLinkDataToNBT() {
+        int[] array = new int[controllerCoords.size() * 3];
+        int i = 0;
+        for (Vec3Impl controllerCoord : controllerCoords) {
+            array[i++] = controllerCoord.get(0);
+            array[i++] = controllerCoord.get(1);
+            array[i++] = controllerCoord.get(2);
+        }
+        return new NBTTagIntArray(array);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (controllerSet) {
-            NBTTagCompound controllerNBT = saveLinkDataToNBT();
-            aNBT.setTag("controller", controllerNBT);
+        if (!controllerCoords.isEmpty()) {
+            NBTTagIntArray controllerNBT = saveLinkDataToNBT();
+            aNBT.setTag("controllers", controllerNBT);
         }
-        //TODO:
-        //aNBT.setInteger("numberOfControllers", numberOfControllers);
     }
+
+
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
         IGregTechTileEntity ourBaseMetaTileEntity = this.getBaseMetaTileEntity();
@@ -171,21 +166,9 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
         if (!(metaTileEntity instanceof MTEPCBFactory)) return LinkResult.NO_VALID_FACTORY;
 
-        // Before linking, unlink from current controller, so we don't end up with units linked to multiple
-        // controllers.
-        MTEPCBFactory oldController = getController();
-        if (oldController != null) {
-            oldController.unregisterLinkedUnit(this);
-            this.unlinkController();
-        }
-
         // Now link to new controller
-        controllerX = x;
-        controllerY = y;
-        controllerZ = z;
-        controllerSet = true;
-        controller = (MTEPCBFactory) metaTileEntity;
-        controller.registerLinkedUnit(this);
+        MTEPCBFactory factory = (MTEPCBFactory) metaTileEntity;
+        factory.registerLinkedUnit(this);
 
 
         return LinkResult.SUCCESS;
@@ -220,6 +203,9 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         } else if (result == LinkResult.NO_VALID_FACTORY) {
             aPlayer.addChatMessage(new ChatComponentText("Link failed: No PCB Factory found at link location"));
         }
+        if (result == LinkResult.SUCCESS) {
+            controllerCoords.add(new Vec3Impl(x, y, z));
+        }
 
         return true;
     }
@@ -231,35 +217,30 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         if (tryLinkDataStick(aPlayer)) {
             return true;
         }
-        //TODO open a special GUI, instead of the normal machine GUI
+        //TODO edit GUI to show list of active factories
         return super.onRightclick(aBaseMetaTileEntity, aPlayer);
-    }
-
-
-    public MTEPCBFactory getController() {
-        if (controller == null) return null;
-        // Controller disappeared
-        if (controller.getBaseMetaTileEntity() == null) return null;
-        return controller;
     }
 
     // If the controller is broken this can be called to explicitly unlink the controller, so we don't have any
     // references lingering around
-    public void unlinkController() {
-        this.controllerSet = false;
-        this.controller = null;
-        this.controllerX = 0;
-        this.controllerY = 0;
-        this.controllerZ = 0;
+    public void unlinkController(MTEPCBFactory oldController) {
+        //TODO make this work for the controllerCoords set
+        IGregTechTileEntity tileEntity = oldController.getBaseMetaTileEntity();
+        if (tileEntity != null)
+            controllerCoords.remove(new Vec3Impl(tileEntity.getXCoord(), tileEntity.getYCoord(), tileEntity.getZCoord()));
     }
 
     @Override
     public void onBlockDestroyed() {
         // When this block is destroyed, explicitly unlink it from the controller if there is any.
-        MTEPCBFactory controller = getController();
-        if (controller != null) {
-            //TODO make this method in the PCB Factory class
-            //controller.unregisterLinkedUnit(this);
+        for (Vec3Impl controllerCoord : controllerCoords) {
+            TileEntity TE = this.getBaseMetaTileEntity().getWorld().getTileEntity(controllerCoord.get(0), controllerCoord.get(1), controllerCoord.get(2));
+            if (TE instanceof IGregTechTileEntity GTTE) {
+                if (GTTE.getMetaTileEntity() instanceof MTEPCBFactory controller) {
+                    controller.unregisterLinkedUnit(this);
+                }
+            }
+
         }
         super.onBlockDestroyed();
     }
@@ -269,13 +250,15 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
         // if this unit has a controller, give the coordinates
-        if (getController() != null) {
-            ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.pcb_upgrade_base.linked_at",
-                    controllerX,
-                    controllerY,
-                    controllerZ));
+        if (!controllerCoords.isEmpty()) {
+            for (Vec3Impl controllerCoord : controllerCoords) {
+                ret.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.pcb_upgrade_base.linked_at",
+                        controllerCoord.get(0),
+                        controllerCoord.get(0),
+                        controllerCoord.get(0)));
+            }
         } else ret.add(StatCollector.translateToLocal("GT5U.infodata.pcb_upgrade_base.not_linked"));
         return ret.toArray(new String[0]);
     }
@@ -286,16 +269,21 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         NBTTagCompound tag = accessor.getNBTData();
 
         // Display linked controller in Waila.
-        if (tag.getBoolean("linked")) {
-            currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to PCB Factory at: "
-                    + EnumChatFormatting.WHITE
-                    + tag.getInteger("controllerX")
-                    + ", "
-                    + tag.getInteger("controllerY")
-                    + ", "
-                    + tag.getInteger("controllerZ")
-                    + EnumChatFormatting.RESET);
+        if (tag.hasKey("controllers")) {
+            int[] coordinates = tag.getIntArray("controllers");
+            // If not all coordinates got saved, just clear the list.
+            if (coordinates.length % 3 != 0) return;
+            for (int i = 0; i < coordinates.length; i += 3) {
+                currenttip.add(
+                    EnumChatFormatting.AQUA + "Linked to PCB Factory at: "
+                        + EnumChatFormatting.WHITE
+                        + coordinates[i]
+                        + ", "
+                        + coordinates[i + 1]
+                        + ", "
+                        + coordinates[i + 2]
+                        + EnumChatFormatting.RESET);
+            }
         } else {
             currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
         }
@@ -303,7 +291,8 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         List<String> supertip = new ArrayList<>();
         super.getWailaBody(itemStack, supertip, accessor, config);
 
-        for (String s : supertip)
+        for (
+            String s : supertip)
             if (!s.contains("Running Fine") && !s.contains("Idle")) {
                 currenttip.add(s);
             }
@@ -313,13 +302,17 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
                                 int z) {
 
-        tag.setBoolean("linked", getController() != null);
-        if (getController() != null) {
-            tag.setInteger("controllerX", controllerX);
-            tag.setInteger("controllerY", controllerY);
-            tag.setInteger("controllerZ", controllerZ);
-        }
-
+        if (!controllerCoords.isEmpty()) {
+            int[] array = new int[controllerCoords.size() * 3];
+            int i = 0;
+            for (Vec3Impl controllerCoord : controllerCoords) {
+                array[i++] = controllerCoord.get(0);
+                array[i++] = controllerCoord.get(1);
+                array[i++] = controllerCoord.get(2);
+            }
+            tag.setIntArray("controllers", array);
+        } else
+            tag.removeTag("controllers");
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
@@ -340,7 +333,4 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         mMaxProgresstime = 0;
         mProgresstime = 0;
     }
-
-
-
 }

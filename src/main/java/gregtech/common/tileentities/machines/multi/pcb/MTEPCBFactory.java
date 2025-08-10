@@ -25,15 +25,20 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.ItemList;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.util.shutdown.ShutDownReason;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -258,7 +263,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public byte getUpdateData() {
-        return (mTier < 3 ? mTextureBitmap : 0);
+        return (mTier < 3 ? 0 : mTextureBitmap);
     }
 
     @Override
@@ -325,13 +330,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
 
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        //TODO Do we want to invalidate the main factory if the cooling tower is invalid, but does exist?
-        // machine can still function, but not overclock
-/*
-        if (mCoolingTower != null && !mCoolingTower.isValid()) {
-            return false;
-        }
-*/
+
+
         if (mMaintenanceHatches.size() != 1) {
             return false;
         }
@@ -841,16 +841,16 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     public void registerLinkedUnit(MTEPCBUpgradeBase<?> unit) {
         if (unit instanceof MTEPCBBioChamber) {
-            if (mBioChamber != null) {
-                mBioChamber.unlinkController();
+            if (mBioChamber != null && mBioChamber != unit) {
+                mBioChamber.unlinkController(this);
             }
             mBioChamber = (MTEPCBBioChamber) unit;
             mBioChamberX = unit.getBaseMetaTileEntity().getXCoord();
             mBioChamberY = unit.getBaseMetaTileEntity().getYCoord();
             mBioChamberZ = unit.getBaseMetaTileEntity().getZCoord();
         } else if (unit instanceof MTEPCBCoolingTower) {
-            if (mCoolingTower != null) {
-                mCoolingTower.unlinkController();
+            if (mCoolingTower != null && mCoolingTower != unit) {
+                mCoolingTower.unlinkController(this);
             }
             mCoolingTower = (MTEPCBCoolingTower) unit;
             mCoolingTowerX = unit.getBaseMetaTileEntity().getXCoord();
@@ -906,6 +906,60 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         public IGTHatchAdder<? super MTEPCBFactory> adder() {
             return adder;
         }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        NBTTagCompound tag = accessor.getNBTData();
+
+        // Display linked controller in Waila.
+        if (tag.hasKey("mBioChamber")) {
+            NBTTagCompound bioChamber = tag.getCompoundTag("mBioChamber");
+            currenttip.add(
+                EnumChatFormatting.AQUA + "Linked to Bio Chamber at: "
+                    + EnumChatFormatting.WHITE
+                    + bioChamber.getInteger("x")
+                    + ", "
+                    + bioChamber.getInteger("y")
+                    + ", "
+                    + bioChamber.getInteger("z")
+                    + EnumChatFormatting.RESET);
+        }
+        if (tag.hasKey("mCoolingTower")) {
+            NBTTagCompound coolingTower = tag.getCompoundTag("mCoolingTower");
+            currenttip.add(
+                EnumChatFormatting.AQUA + "Linked to Cooling Tower at: "
+                    + EnumChatFormatting.WHITE
+                    + coolingTower.getInteger("x")
+                    + ", "
+                    + coolingTower.getInteger("y")
+                    + ", "
+                    + coolingTower.getInteger("z")
+                    + EnumChatFormatting.RESET);
+        }
+        List<String> supertip = new ArrayList<>();
+        super.getWailaBody(itemStack, supertip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        if (mBioChamber != null) {
+            NBTTagCompound bioChamber = new NBTTagCompound();
+            bioChamber.setInteger("x", mBioChamberX);
+            bioChamber.setInteger("y", mBioChamberY);
+            bioChamber.setInteger("z", mBioChamberZ);
+            tag.setTag("mBioChamber", bioChamber);
+        }
+        if (mCoolingTower != null) {
+            NBTTagCompound coolingTower = new NBTTagCompound();
+            coolingTower.setInteger("x", mCoolingTowerX);
+            coolingTower.setInteger("y", mCoolingTowerY);
+            coolingTower.setInteger("z", mCoolingTowerZ);
+            tag.setTag("mCoolingTower", coolingTower);
+        }
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override
