@@ -35,9 +35,11 @@ import gregtech.api.interfaces.ITexture;
  * <li>{@code "ClassWithTooManyFields"} - all fields represent a unified mutable rendering context and are
  * interdependent by design.</li>
  * <li>{@code "UnusedReturnValue"} - methods form a fluent interface where returned values might be ignored.</li>
+ * <li>{@code "ForLoopReplaceableByForEach"} — A traditional {@code for} loop is used
+ * for critical speed, as it avoids creating an iterator object.</li>
  * </ul>
  */
-@SuppressWarnings({ "UnusedReturnValue", "ClassWithTooManyFields" })
+@SuppressWarnings({ "UnusedReturnValue", "ClassWithTooManyFields", "ForLoopReplaceableByForEach" })
 @SideOnly(Side.CLIENT)
 public abstract class SBRContextBase<T extends SBRContextBase<T>> {
 
@@ -165,27 +167,57 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      * @see #renderPositiveXFacing(ITexture[])
      */
     public void renderNegativeYFacing(ITexture[] tex) {
-        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderYNeg(this);
+        final long length = tex.length;
+        for (int i = 0; i < length; i++) {
+            final ITexture layer = tex[i];
+            if (layer == null) continue;
+            layer.renderYNeg(this);
+        }
     }
 
     public void renderPositiveYFacing(ITexture[] tex) {
-        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderYPos(this);
+        final long length = tex.length;
+        for (int i = 0; i < length; i++) {
+            final ITexture layer = tex[i];
+            if (layer == null) continue;
+            layer.renderYPos(this);
+        }
     }
 
     public void renderNegativeZFacing(ITexture[] tex) {
-        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderZNeg(this);
+        final long length = tex.length;
+        for (int i = 0; i < length; i++) {
+            final ITexture layer = tex[i];
+            if (layer == null) continue;
+            layer.renderZNeg(this);
+        }
     }
 
     public void renderPositiveZFacing(ITexture[] tex) {
-        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderZPos(this);
+        final long length = tex.length;
+        for (int i = 0; i < length; i++) {
+            final ITexture layer = tex[i];
+            if (layer == null) continue;
+            layer.renderZPos(this);
+        }
     }
 
     public void renderNegativeXFacing(ITexture[] tex) {
-        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderXNeg(this);
+        final long length = tex.length;
+        for (int i = 0; i < length; i++) {
+            final ITexture layer = tex[i];
+            if (layer == null) continue;
+            layer.renderXNeg(this);
+        }
     }
 
     public void renderPositiveXFacing(ITexture[] tex) {
-        for (final ITexture iTexture : tex) if (iTexture != null) iTexture.renderXPos(this);
+        final long length = tex.length;
+        for (int i = 0; i < length; i++) {
+            final ITexture layer = tex[i];
+            if (layer == null) continue;
+            layer.renderXPos(this);
+        }
     }
 
     /**
