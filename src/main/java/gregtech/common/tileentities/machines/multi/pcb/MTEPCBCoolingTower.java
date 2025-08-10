@@ -4,6 +4,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import static gregtech.api.enums.GTValues.Authorguid118;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -125,7 +126,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower> im
             .addCasingInfoExactlyColored("Radiant Naquadah Alloy Casing", EnumChatFormatting.GRAY, 68, EnumChatFormatting.GOLD, false)
             .addCasingInfoExactlyColored("Extreme Engine Intake Casing", EnumChatFormatting.GRAY, 12, EnumChatFormatting.GOLD, false)
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
-            .toolTipFinisher();
+            .toolTipFinisher(Authorguid118);
         return tt;
     }
 

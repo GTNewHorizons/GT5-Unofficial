@@ -521,6 +521,16 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "Weabo";
 
+    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
+        + EnumChatFormatting.BOLD
+        + "gu"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "id"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "118";
+
     public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
