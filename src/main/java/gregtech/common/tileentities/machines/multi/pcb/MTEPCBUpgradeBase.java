@@ -3,21 +3,16 @@ package gregtech.common.tileentities.machines.multi.pcb;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
-import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -35,7 +30,6 @@ import java.util.List;
  */
 public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     extends MTEEnhancedMultiBlockBase<T> {
-
 
     private enum LinkResult {
         /**
@@ -334,13 +328,19 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         return CheckRecipeResultRegistry.NONE;
     }
 
-    public void addRecipe(int progressTime, int maxProgresstime) {
+    public void addRecipe(MTEPCBFactory factory, int progressTime, int maxProgresstime) {
         if (maxProgresstime - progressTime > this.mMaxProgresstime - this.mProgresstime) {
             this.mProgresstime = progressTime;
             this.mMaxProgresstime = maxProgresstime;
         }
-
     }
+
+    public void cancelRecipe(MTEPCBFactory factory) {
+        //TODO make this work for multiple factories
+        mMaxProgresstime = 0;
+        mProgresstime = 0;
+    }
+
 
 
 }
