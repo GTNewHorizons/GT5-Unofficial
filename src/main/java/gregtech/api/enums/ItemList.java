@@ -2149,6 +2149,7 @@ public enum ItemList implements IItemContainer {
     RadiantNaquadahAlloyCasing,
     PCBFactory,
     PCBBioChamber,
+    PCBCoolingTower,
     BasicPhotolithographicFrameworkCasing,
     ReinforcedPhotolithographicFrameworkCasing,
     RadiationProofPhotolithographicFrameworkCasing,
