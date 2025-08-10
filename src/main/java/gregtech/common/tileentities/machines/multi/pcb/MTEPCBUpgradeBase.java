@@ -33,6 +33,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 /**
  * base class for the PCB Factory upgrades.
  * <p>
@@ -268,7 +270,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
                              IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
 
@@ -278,7 +280,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
             // If not all coordinates got saved, just clear the list.
             if (coordinates.length % 3 != 0) return;
             for (int i = 0; i < coordinates.length; i += 3) {
-                currenttip.add(
+                currentTip.add(
                     EnumChatFormatting.AQUA + "Linked to PCB Factory at: "
                         + EnumChatFormatting.WHITE
                         + coordinates[i]
@@ -289,22 +291,41 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
                         + EnumChatFormatting.RESET);
             }
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
+            currentTip.add(EnumChatFormatting.AQUA + "Unlinked");
         }
 
-        List<String> supertip = new ArrayList<>();
-        super.getWailaBody(itemStack, supertip, accessor, config);
+        boolean isActive = tag.getBoolean("isActive");
+        if (isActive) {
+            int progresstime = tag.getInteger("mProgressTime");
+            int maxProgresstime = tag.getInteger("mMaxProgressTime");
+            currentTip.add(StatCollector.translateToLocalFormatted(
+                "GT5U.waila.machine.in_progress",
+                (double) progresstime / 20,
+                (double) maxProgresstime / 20,
+                (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)));
+        } else {
+            currentTip.add(StatCollector.translateToLocalFormatted("GT5U.waila.machine.idle"));
+        }
 
-        for (
-            String s : supertip)
-            if (!s.contains("Running Fine") && !s.contains("Idle")) {
-                currenttip.add(s);
-            }
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.facing",
+                getFacingNameLocalized(
+                    this.getBaseMetaTileEntity().getFrontFacing()
+                        .ordinal())));
+
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
                                 int z) {
+        boolean isActive = this.getBaseMetaTileEntity().isActive();
+        tag.setBoolean("isActive", isActive);
+
+        if (isActive) {
+            tag.setInteger("mProgressTime", mProgresstime);
+            tag.setInteger("mMaxProgressTime", mMaxProgresstime);
+        }
 
         if (!controllerCoords.isEmpty()) {
             int[] array = new int[controllerCoords.size() * 3];
