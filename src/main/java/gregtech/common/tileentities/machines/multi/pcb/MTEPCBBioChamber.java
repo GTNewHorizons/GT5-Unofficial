@@ -16,6 +16,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -171,12 +173,5 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
         // Check self
         return checkPiece(STRUCTURE_PIECE_BIO_CHAMBER, 2, 6, 0);
     }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        //TODO make custom GUI? at least have the thing not say "no valid recipes" at all times I guess
-        super.addUIWidgets(builder, buildContext);
-    }
-
 
 }

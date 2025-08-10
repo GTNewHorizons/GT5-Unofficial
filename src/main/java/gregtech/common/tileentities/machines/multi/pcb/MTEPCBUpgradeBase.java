@@ -6,6 +6,8 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase;
@@ -325,6 +327,19 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         }
 
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        return CheckRecipeResultRegistry.NONE;
+    }
+
+    public void addRecipe(int progressTime, int maxProgresstime) {
+        if (maxProgresstime - progressTime > this.mMaxProgresstime - this.mProgresstime) {
+            this.mProgresstime = progressTime;
+            this.mMaxProgresstime = maxProgresstime;
+        }
+
     }
 
 
