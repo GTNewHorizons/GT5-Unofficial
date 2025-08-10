@@ -45,6 +45,7 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -492,6 +493,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEPCBFactory(PCB_FACTORY_CONTROLLER.ID, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
         ItemList.PCBBioChamber.set(
             new MTEPCBBioChamber(PCB_BIO_CHAMBER_CONTROLLER.ID, "multimachine.pcbbiochamber", "Bio Chamber").getStackForm(1));
+        ItemList.PCBCoolingTower.set(
+            new MTEPCBCoolingTower(PCB_COOLING_TOWER_CONTROLLER.ID, "multimachine.pcbcoolingtower", "Cooling Tower").getStackForm(1));
         ItemList.NanoForge
             .set(new MTENanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
         ItemList.Machine_Multi_DroneCentre
