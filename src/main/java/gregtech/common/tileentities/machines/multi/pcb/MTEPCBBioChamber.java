@@ -27,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GTValues.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -125,7 +126,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
                 EnumChatFormatting.GOLD,
                 false)
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
-            .toolTipFinisher();
+            .toolTipFinisher(Authorguid118);
         return tt;
     }
 

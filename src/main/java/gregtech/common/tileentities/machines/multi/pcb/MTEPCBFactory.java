@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
+import static gregtech.api.enums.GTValues.Authorguid118;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -232,66 +233,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         {"RGGGR","GGGGG","GGSGG","GGGGG","RGGGR"}
                         //spotless:on
                 }))
+        .addElement('E', ofFrame(Materials.DamascusSteel))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
+        .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
-        .addElement(
-            'C',
-            withChannel(
-                "enableBioUpgrade",
-                ofBlocksTiered(
-                    (block, meta) -> block == GregTechAPI.sBlockCasings8 && meta == 11 ? 1 : null,
-                    ImmutableList.of(Pair.of(GregTechAPI.sBlockCasings8, 11)),
-                    -1,
-                    (t, m) -> {},
-                    t -> -1)))
-        .addElement(
-            'D',
-            withChannel(
-                "enableOCTier1",
-                ofBlocksTiered(
-                    (block, meta) -> block == GregTechAPI.sBlockReinforced && meta == 2 ? 1 : null,
-                    ImmutableList.of(Pair.of(GregTechAPI.sBlockReinforced, 2)),
-                    -1,
-                    (t, m) -> {},
-                    t -> -1)))
-        .addElement('E', ofFrame(Materials.DamascusSteel))
         .addElement('F', ofFrame(Materials.VibrantAlloy))
-        .addElement(
-            'G',
-            withChannel(
-                "enableOCTier2",
-                ofBlocksTiered(
-                    (block, meta) -> block == GregTechAPI.sBlockCasings8 && meta == 12 ? 1 : null,
-                    ImmutableList.of(Pair.of(GregTechAPI.sBlockCasings8, 12)),
-                    -1,
-                    (t, m) -> {},
-                    t -> -1)))
-        .addElement('H', ofFrame(Materials.Duranium))
-        .addElement('I', ofBlock(GregTechAPI.sBlockCasings8, 13))
-        .addElement(
-            'J',
-            buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(
-                    InputHatch,
-                    OutputBus,
-                    InputBus,
-                    Maintenance,
-                    Energy.or(ExoticEnergy),
-                    SpecialHatchElement.NaniteBus)
-                .dot(1)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
-                .buildAndChain(GregTechAPI.sBlockCasings8, 13))
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('L', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement(
-            'M',
-            buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEPCBFactory::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 12))
-        .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
         .addElement(
             'P',
             buildHatchAdder(MTEPCBFactory.class)
@@ -305,8 +252,33 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 11))
-        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        .addElement('R', ofFrame(Materials.Americium))
+        .addElement('H', ofFrame(Materials.Duranium))
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
+        .addElement('I', ofBlock(GregTechAPI.sBlockCasings8, 13))
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        .addElement(
+            'J',
+            buildHatchAdder(MTEPCBFactory.class)
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
+                .dot(1)
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 13))
+        .addElement('L', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        .addElement(
+            'M',
+            buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEPCBFactory::addCoolantInputToMachineList)
+                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
+                .dot(2)
+                .buildAndChain(GregTechAPI.sBlockCasings8, 12))
+        .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))
+        .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
         .addElement(
             'S',
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
@@ -314,6 +286,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 12))
+        .addElement('R', ofFrame(Materials.Americium))
+        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('T', ofBlock(GregTechAPI.sBlockCasings1, 15))
         .build();
 
@@ -943,7 +917,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
-            .toolTipFinisher(AuthorBlueWeabo);
+            .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;
     }
 
@@ -1316,13 +1290,5 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSetTier = trigger.stackSize;
-        if (ChannelDataAccessor.hasSubChannel(trigger, "enableBioUpgrade")) {
-            buildPiece(bioUpgrade, trigger, false, -5, 6, 0);
-        }
-        if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier2")) {
-            buildPiece(ocTier2Upgrade, trigger, false, 2, 9, -11);
-        } else if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier1")) {
-            buildPiece(ocTier1Upgrade, trigger, false, 2, 9, -11);
-        }
     }
 }
