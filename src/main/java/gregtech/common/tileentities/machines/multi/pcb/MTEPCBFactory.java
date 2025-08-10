@@ -963,8 +963,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + coolingTower.getInteger("z")
                     + EnumChatFormatting.RESET);
         }
-        List<String> supertip = new ArrayList<>();
-        super.getWailaBody(itemStack, supertip, accessor, config);
+        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
