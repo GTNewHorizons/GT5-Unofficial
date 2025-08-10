@@ -392,7 +392,7 @@
           "sound_url": "https://freesound.org/people/NinjaSharkStudios/sounds/566206/",
           "sound_name": "DeWalt Drill_1.wav",
           "author_url": "https://freesound.org/people/NinjaSharkStudios/",
-          "author_names": "NinjaSharkStudios",
+          "author_name": "NinjaSharkStudios",
           "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
           "license_name": "CC0 1.0 Universal"
         }
@@ -406,22 +406,10 @@
         "name": "MaintenanceCreativeHatch",
         "stream": false,
         "licensing": {
-          "sound_urls": [
-            "https://freesound.org/people/IENBA/sounds/697379/",
-            "https://opengameart.org/content/202-more-sound-effects"
-          ],
-          "sound_names": [
-            "697379__ienba__electric-scooter.wav",
-            "Stationery_31.wav"
-          ],
-          "author_urls": [
-            "https://freesound.org/people/IENBA/",
-            "https://opengameart.org/users/owlishmedia"
-          ],
-          "author_names": [
-            "IENBA",
-            "OwlishMedia"
-          ],
+          "sound_url": "https://freesound.org/people/IENBA/sounds/697379/",
+          "sound_name": "697379__ienba__electric-scooter.wav",
+          "author_url": "https://freesound.org/people/IENBA/",
+          "author_name": "IENBA",
           "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
           "license_name": "CC0 1.0 Universal"
         }
@@ -464,15 +452,7 @@
         "name": "MaintenanceDuctTape",
         "stream": false
       }
-    ],
-    "licensing": {
-      "sound_url": "https://opengameart.org/content/202-more-sound-effects",
-      "sound_name": "Stationery_31.wav",
-      "author_url": "https://opengameart.org/users/owlishmedia",
-      "author_name": "OwlishMedia",
-      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "license_name": "CC0 1.0 Universal"
-    }
+    ]
   },
   "maintenance.MaintenanceToolbox": {
     "category": "block",
