@@ -57,14 +57,12 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null
-            && stack.getTagCompound()
-                .getIntArray("Color") != null
-            && stack.getTagCompound()
-                .getIntArray("Color").length > 0) {
-            int[] rgb = stack.getTagCompound()
+        if (stack.getItemDamage() == 0 && stack.hasTagCompound()) {
+            final int[] rgb = stack.getTagCompound()
                 .getIntArray("Color");
-            return BWColorUtil.getColorFromRGBArray(rgb);
+            if (rgb != null && rgb.length > 0) {
+                return BWColorUtil.getColorFromRGBArray(rgb);
+            }
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }

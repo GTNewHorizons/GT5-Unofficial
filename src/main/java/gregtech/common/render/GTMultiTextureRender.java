@@ -1,6 +1,5 @@
 package gregtech.common.render;
 
-import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.SBRContext;
 
@@ -12,13 +11,9 @@ import gregtech.api.render.SBRContext;
  * I should have done this much earlier...
  * </p>
  */
-public class GTMultiTextureRender extends GTTextureBase implements ITexture {
+public class GTMultiTextureRender extends GTTextureBase {
 
     protected final ITexture[] mTextures;
-
-    public static GTMultiTextureRender get(ITexture... aTextures) {
-        return GTMod.GT.isClientSide() ? new GTMultiTextureRender(aTextures) : null;
-    }
 
     protected GTMultiTextureRender(ITexture... aTextures) {
         mTextures = aTextures;

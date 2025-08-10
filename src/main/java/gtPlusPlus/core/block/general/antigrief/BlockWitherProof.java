@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class BlockWitherProof extends Block {
 
@@ -76,7 +76,7 @@ public class BlockWitherProof extends Block {
     }
 
     // Colour Handling
-    private static final int mWitherColour = Utils.rgbtoHexValue(32, 32, 32);
+    private static final int mWitherColour = ColorUtil.toRGB(32, 32, 32);
 
     @Override
     public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4) {

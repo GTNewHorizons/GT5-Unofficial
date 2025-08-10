@@ -49,7 +49,7 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
         int colorIndex, boolean active, boolean redstoneLevel) {
         return new ITexture[] { TextureFactory.of(
             mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-            Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
+            Dyes.getModulation(colorIndex, mMaterial.getColor())) };
     }
 
     @Override

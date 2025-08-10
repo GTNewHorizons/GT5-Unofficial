@@ -15,6 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
+import gregtech.api.util.ColorUtil;
 
 @SuppressWarnings({ "unused", "ClassWithTooManyFields" })
 public class GTTextureBuilder implements ITextureBuilder {
@@ -24,16 +25,14 @@ public class GTTextureBuilder implements ITextureBuilder {
     private Block fromBlock;
     private int fromMeta;
     private ForgeDirection fromSide;
-    private short[] rgba;
-    private boolean allowAlpha;
+    private int colorRGB;
     private boolean stdOrient;
     private boolean extFacing;
     private boolean glow;
     private Boolean worldCoord = null;
 
     public GTTextureBuilder() {
-        rgba = Dyes._NULL.getRGBA();
-        allowAlpha = true;
+        colorRGB = Dyes._NULL.colorRGB;
         stdOrient = false;
         glow = false;
     }
@@ -68,7 +67,13 @@ public class GTTextureBuilder implements ITextureBuilder {
 
     @Override
     public ITextureBuilder setRGBA(final short[] rgba) {
-        this.rgba = rgba;
+        this.colorRGB = ColorUtil.fromRGBAToRGB(rgba);
+        return this;
+    }
+
+    @Override
+    public ITextureBuilder setRGB(final int colorRGB) {
+        this.colorRGB = colorRGB;
         return this;
     }
 
@@ -83,12 +88,6 @@ public class GTTextureBuilder implements ITextureBuilder {
     public ITextureBuilder addLayer(final ITexture... iTextures) {
         if (textureLayers == null) textureLayers = new ArrayList<>();
         Collections.addAll(textureLayers, iTextures);
-        return this;
-    }
-
-    @Override
-    public ITextureBuilder setAllowAlpha(final boolean allowAlpha) {
-        this.allowAlpha = allowAlpha;
         return this;
     }
 
@@ -129,8 +128,8 @@ public class GTTextureBuilder implements ITextureBuilder {
     public ITexture build() {
         if (fromBlock != null) {
             if (worldCoord == Boolean.TRUE || worldCoord == null && isCTMBlock(fromBlock, fromMeta))
-                return new GTCopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
-            else return new GTCopiedBlockTextureRender(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+                return new GTCopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta);
+            else return new GTCopiedBlockTextureRender(fromBlock, fromSide.ordinal(), fromMeta);
         }
         if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
         if (textureLayers != null && !textureLayers.isEmpty()) {
@@ -140,7 +139,7 @@ public class GTTextureBuilder implements ITextureBuilder {
             throw new IllegalStateException("Invalid sideIconContainer count");
         }
         return switch (iconContainerList.size()) {
-            case 1 -> new GTRenderedTexture(iconContainerList.get(0), rgba, glow, stdOrient, extFacing);
+            case 1 -> new GTRenderedTexture(iconContainerList.get(0), colorRGB, glow, stdOrient, extFacing);
             case 6 -> new GTSidedTextureRender(
                 iconContainerList.get(ForgeDirection.DOWN.ordinal()),
                 iconContainerList.get(ForgeDirection.UP.ordinal()),
@@ -148,8 +147,7 @@ public class GTTextureBuilder implements ITextureBuilder {
                 iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
                 iconContainerList.get(ForgeDirection.WEST.ordinal()),
                 iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                rgba,
-                allowAlpha);
+                colorRGB);
             default -> throw new IllegalStateException("Invalid sideIconContainer count");
         };
     }

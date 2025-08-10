@@ -111,7 +111,7 @@ public class BWTileEntityMetaGeneratedSmallOre extends BWTileEntityMetaGenerated
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if (aMaterial != null) {
             ITexture aIconSet = TextureFactory
-                .of(aMaterial.getTexSet().mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.getRGBA());
+                .of(aMaterial.getTexSet().mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.getColor());
             return new ITexture[] { TextureFactory.of(Blocks.stone), aIconSet };
         }
         return new ITexture[] { TextureFactory.of(Blocks.stone),

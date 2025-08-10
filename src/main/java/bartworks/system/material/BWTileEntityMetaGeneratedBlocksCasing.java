@@ -40,7 +40,7 @@ public class BWTileEntityMetaGeneratedBlocksCasing extends TileEntityMetaGenerat
                 ITexture aIconSet = TextureFactory.of(
                     PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasing)
                         .getOrDefault(set, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]),
-                    aMaterial.getRGBA());
+                    aMaterial.getColor());
                 return new ITexture[] { TextureFactory.of(Blocks.iron_block), aIconSet };
             }
         }

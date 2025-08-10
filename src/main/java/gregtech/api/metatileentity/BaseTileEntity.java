@@ -938,7 +938,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
 
     public int getGUIColorization() {
-        return Dyes.dyeWhite.toInt();
+        return Dyes.dyeWhite.colorRGB;
     }
 
     public ItemStack getStackForm(long aAmount) {

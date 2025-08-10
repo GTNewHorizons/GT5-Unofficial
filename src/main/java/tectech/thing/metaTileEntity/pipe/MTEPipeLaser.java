@@ -61,8 +61,8 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { TextureFactory.of(EMpipe), TextureFactory
-            .of(getActive() ? EMCandyActive : EMcandy, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+        return new ITexture[] { TextureFactory.of(EMpipe),
+            TextureFactory.of(getActive() ? EMCandyActive : EMcandy, Dyes.getModulation(colorIndex, MACHINE_METAL)) };
     }
 
     @Override

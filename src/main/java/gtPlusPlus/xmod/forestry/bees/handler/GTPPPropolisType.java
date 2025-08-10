@@ -2,15 +2,15 @@ package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public enum GTPPPropolisType {
 
-    DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20)),
-    FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20));
+    DRAGONBLOOD(0, "Dragonblood", true, ColorUtil.toRGB(220, 20, 20)),
+    FORCE(1, "Force", true, ColorUtil.toRGB(250, 250, 20));
 
     public boolean mShowInList;
     public final Material mMaterial;

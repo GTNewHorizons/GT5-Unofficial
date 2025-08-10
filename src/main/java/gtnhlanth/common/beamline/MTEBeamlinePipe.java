@@ -19,7 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.common.render.GTTextureBuilder;
+import gregtech.api.render.TextureFactory;
 
 public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
 
@@ -130,11 +130,8 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, int aConnections,
         int aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { new GTTextureBuilder().addIcon(pipe)
-            .build(),
-            new GTTextureBuilder().addIcon(pipe)
-                .setRGBA(Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))
-                .build() };
+        return new ITexture[] { TextureFactory.of(pipe),
+            TextureFactory.of(pipe, Dyes.getModulation(aColorIndex, MACHINE_METAL)) };
     }
 
     public void markUsed() {

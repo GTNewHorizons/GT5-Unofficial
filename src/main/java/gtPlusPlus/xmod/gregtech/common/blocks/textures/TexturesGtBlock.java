@@ -10,6 +10,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 
@@ -675,16 +676,16 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_TECH_PANEL_H = new CustomIcon("metro/TEXTURE_TECH_PANEL_H");
 
     public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[] {
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(220, 220, 220)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(220, 220, 220)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(255, 100, 0)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(255, 255, 30)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(128, 128, 128)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(240, 240, 245)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(240, 240, 245)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(240, 240, 245)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(240, 240, 245)),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, ColorUtil.toRGB(240, 240, 245)) };
 
     public static IIconContainer[] CONNECTED_FUSION_HULLS = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_II_1,
         TEXTURE_CASING_FUSION_COIL_II_2, TEXTURE_CASING_FUSION_COIL_II_3, TEXTURE_CASING_FUSION_COIL_II_4,

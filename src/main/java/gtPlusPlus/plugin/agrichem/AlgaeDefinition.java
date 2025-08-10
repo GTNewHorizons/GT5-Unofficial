@@ -1,5 +1,7 @@
 package gtPlusPlus.plugin.agrichem;
 
+import static gregtech.api.util.ColorUtil.toRGB;
+
 public enum AlgaeDefinition {
 
     /*
@@ -9,13 +11,13 @@ public enum AlgaeDefinition {
      * micronutrients, such as silica, in the case of diatoms.
      */
 
-    Euglenophyta("Euglenophyta", "Euglenoids", true, false, getRGB(147, 168, 50)),
-    Chrysophyta("Chrysophyta", "Golden-Brown Algae", true, true, getRGB(186, 146, 0)),
-    Pyrrophyta("Pyrrophyta", "Fire Algae", true, true, getRGB(250, 118, 2)),
-    Chlorophyta("Chlorophyta", "Green Algae", true, true, getRGB(99, 181, 62)),
-    Rhodophyta("Rhodophyta", "Red Algae", false, true, getRGB(153, 5, 22)),
-    Paeophyta("Paeophyta", "Brown Algae", false, true, getRGB(94, 78, 47)),
-    Xanthophyta("Xanthophyta", "Yellow-Green Algae", true, false, getRGB(118, 138, 16));
+    Euglenophyta("Euglenophyta", "Euglenoids", true, false, toRGB(147, 168, 50)),
+    Chrysophyta("Chrysophyta", "Golden-Brown Algae", true, true, toRGB(186, 146, 0)),
+    Pyrrophyta("Pyrrophyta", "Fire Algae", true, true, toRGB(250, 118, 2)),
+    Chlorophyta("Chlorophyta", "Green Algae", true, true, toRGB(99, 181, 62)),
+    Rhodophyta("Rhodophyta", "Red Algae", false, true, toRGB(153, 5, 22)),
+    Paeophyta("Paeophyta", "Brown Algae", false, true, toRGB(94, 78, 47)),
+    Xanthophyta("Xanthophyta", "Yellow-Green Algae", true, false, toRGB(118, 138, 16));
 
     public final String mScientificName;
     public final String mSimpleName;
@@ -41,9 +43,5 @@ public enum AlgaeDefinition {
             case 5 -> Paeophyta;
             case 6 -> Xanthophyta;
         };
-    }
-
-    private static int getRGB(int r, int g, int b) {
-        return AlgaeUtils.rgbtoHexValue(r, g, b);
     }
 }

@@ -20,9 +20,9 @@ import com.google.common.io.ByteArrayDataInput;
 import bartworks.API.SideReference;
 import bartworks.MainMod;
 import bartworks.common.tileentities.multis.MTEBioVat;
-import bartworks.util.BWColorUtil;
 import bartworks.util.Coords;
 import gregtech.api.net.GTPacket;
+import gregtech.api.util.ColorUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketBioVatRenderer extends GTPacket {
@@ -71,8 +71,7 @@ public class PacketBioVatRenderer extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput dataInput) {
         this.coords = new Coords(dataInput.readInt(), dataInput.readShort(), dataInput.readInt(), dataInput.readInt());
-        this.integer = BWColorUtil
-            .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });
+        this.integer = ColorUtil.toRGB(dataInput.readByte(), dataInput.readByte(), dataInput.readByte());
         this.removal = dataInput.readByte();
 
         byte checksum = (byte) (this.coords.x % 25 + this.coords.y % 25

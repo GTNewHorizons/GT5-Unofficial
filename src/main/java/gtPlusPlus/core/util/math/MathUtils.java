@@ -5,7 +5,6 @@ import java.util.Random;
 
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.Utils;
 
 public class MathUtils {
 
@@ -230,10 +229,6 @@ public class MathUtils {
             result = gcd(result, input[i]);
         }
         return result;
-    }
-
-    public static int getRgbAsHex(final short[] RGBA) {
-        return Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
     }
 
     public static byte safeByte(long number) {

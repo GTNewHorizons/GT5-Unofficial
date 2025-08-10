@@ -85,61 +85,72 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         if (mIsRestrictive) {
             if (aConnected) {
                 float tThickNess = getThickness();
-                if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                if (tThickNess < 0.124F)
+                    return new ITexture[] {
+                        TextureFactory.of(
+                            mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
+                            Dyes.getModulation(aColorIndex, mMaterial.getColor())),
+                        TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.374F) // 0.375
-                    return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                    return new ITexture[] {
+                        TextureFactory.of(
+                            mMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex],
+                            Dyes.getModulation(aColorIndex, mMaterial.getColor())),
+                        TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.499F) // 0.500
-                    return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                    return new ITexture[] {
+                        TextureFactory.of(
+                            mMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex],
+                            Dyes.getModulation(aColorIndex, mMaterial.getColor())),
+                        TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.749F) // 0.750
-                    return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                    return new ITexture[] {
+                        TextureFactory.of(
+                            mMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex],
+                            Dyes.getModulation(aColorIndex, mMaterial.getColor())),
+                        TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.874F) // 0.825
-                    return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                    return new ITexture[] {
+                        TextureFactory.of(
+                            mMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex],
+                            Dyes.getModulation(aColorIndex, mMaterial.getColor())),
+                        TextureFactory.of(PIPE_RESTRICTOR) };
                 return new ITexture[] { TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                    Dyes.getModulation(aColorIndex, mMaterial.getColor())), TextureFactory.of(PIPE_RESTRICTOR) };
             }
             return new ITexture[] { TextureFactory.of(
                 mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                Dyes.getModulation(aColorIndex, mMaterial.getColor())), TextureFactory.of(PIPE_RESTRICTOR) };
         }
         if (aConnected) {
             float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
                 mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                Dyes.getModulation(aColorIndex, mMaterial.getColor())) };
             if (tThickNess < 0.374F) // 0.375
                 return new ITexture[] { TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    Dyes.getModulation(aColorIndex, mMaterial.getColor())) };
             if (tThickNess < 0.499F) // 0.500
                 return new ITexture[] { TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    Dyes.getModulation(aColorIndex, mMaterial.getColor())) };
             if (tThickNess < 0.749F) // 0.750
                 return new ITexture[] { TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    Dyes.getModulation(aColorIndex, mMaterial.getColor())) };
             if (tThickNess < 0.874F) // 0.825
                 return new ITexture[] { TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    Dyes.getModulation(aColorIndex, mMaterial.getColor())) };
             return new ITexture[] { TextureFactory.of(
                 mMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                Dyes.getModulation(aColorIndex, mMaterial.getColor())) };
         }
         return new ITexture[] { TextureFactory.of(
             mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-            Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+            Dyes.getModulation(aColorIndex, mMaterial.getColor())) };
     }
 
     @Override

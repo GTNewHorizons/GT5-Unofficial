@@ -581,8 +581,8 @@ public class GTClient extends GTProxy {
         }
     }
 
-    public short getSafeRGBValue(short aRBG, int aDelta) {
-        int tmp = aRBG + aDelta;
+    public short getSafeRGBValue(short rgb, int aDelta) {
+        int tmp = rgb + aDelta;
         if (tmp > 255) tmp = 255;
         if (tmp < 0) tmp = 0;
         return (short) tmp;

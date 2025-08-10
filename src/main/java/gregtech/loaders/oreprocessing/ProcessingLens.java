@@ -94,7 +94,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(latheRecipes);
                 }
                 final ITexture lensCoverTexture = TextureFactory
-                    .of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false);
+                    .of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.getColor());
                 CoverRegistry.registerDecorativeCover(
                     aStack,
                     TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture));

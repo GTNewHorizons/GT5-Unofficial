@@ -34,7 +34,7 @@ public class BWTileEntityMetaGeneratedWerkstoffBlock extends TileEntityMetaGener
                 TextureSet set = aMaterial.getTexSet();
                 ITexture aIconSet = TextureFactory.of(
                     set.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(set, OrePrefixes.block.mTextureIndex)],
-                    aMaterial.getRGBA());
+                    aMaterial.getColor());
                 return new ITexture[] { TextureFactory.of(Blocks.iron_block), aIconSet };
             }
         }

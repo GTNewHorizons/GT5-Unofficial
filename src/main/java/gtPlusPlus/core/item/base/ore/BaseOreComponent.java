@@ -19,6 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -26,7 +27,6 @@ import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseOreComponent extends Item {
@@ -191,14 +191,14 @@ public class BaseOreComponent extends Item {
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (this.componentType == ComponentTypes.MILLED) {
             if (renderPass == 1) {
-                return Utils.rgbtoHexValue(230, 230, 230);
+                return ColorUtil.toRGB(230, 230, 230);
             }
         } else {
             if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
                 return this.componentColour;
             }
             if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
-                return Utils.rgbtoHexValue(230, 230, 230);
+                return ColorUtil.toRGB(230, 230, 230);
             }
         }
         return this.componentColour;

@@ -53,18 +53,10 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
         List<ITexture> textures = new ArrayList<>(2);
 
-        textures.add(
-            TextureFactory.builder()
-                .addIcon(EM_PIPE)
-                .setRGBA(Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA()))
-                .build());
+        textures.add(TextureFactory.of(EM_PIPE, Dyes.getModulation(colorIndex, MACHINE_METAL)));
 
         if (getActive()) {
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(EM_BAR)
-                    .setRGBA(Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA()))
-                    .build());
+            textures.add(TextureFactory.of(EM_BAR, Dyes.getModulation(colorIndex, MACHINE_METAL)));
         }
 
         return textures.toArray(new ITexture[0]);

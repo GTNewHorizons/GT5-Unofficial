@@ -44,7 +44,7 @@ public class SelectItemUIFactory {
     private int selected;
     private boolean anotherWindow = false;
     private AtomicBoolean dialogOpened;
-    private int guiTint = Dyes.MACHINE_METAL.toInt();
+    private int guiTint = Dyes.MACHINE_METAL.colorRGB;
     private Supplier<ItemStack> currentGetter;
 
     private final GUIColorOverride colorOverride = GUIColorOverride.get("SelectItemUIFactory");

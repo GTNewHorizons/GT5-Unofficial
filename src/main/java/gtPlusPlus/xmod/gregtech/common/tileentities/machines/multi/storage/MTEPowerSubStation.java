@@ -70,6 +70,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -77,7 +78,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.MovingAverageLong;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -933,7 +933,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             .widget(new TextWidget().setTextSupplier(() -> {
                 int colorScale = (int) (clientProgress * 100 * 2.55);
                 return new Text(numberFormat.format(clientEUStored) + " EU")
-                    .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
+                    .color(ColorUtil.toRGB((255 - colorScale), colorScale, 0));
             })
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(10, 142))

@@ -23,6 +23,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -30,7 +31,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -841,11 +841,11 @@ public class Material {
     }
 
     public final int getRgbAsHex() {
-        final int returnValue = Utils.rgbtoHexValue(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
+        final int returnValue = ColorUtil.toRGB(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
         if (returnValue == 0) {
-            return Dyes._NULL.toInt();
+            return Dyes._NULL.colorRGB;
         }
-        return Utils.rgbtoHexValue(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
+        return ColorUtil.toRGB(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
     }
 
     public final long getProtons() {

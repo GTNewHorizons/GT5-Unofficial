@@ -15,8 +15,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class ItemBasicScrubberTurbine extends Item {
 
@@ -63,18 +63,18 @@ public class ItemBasicScrubberTurbine extends Item {
     }
 
     @Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
+    public int getColorFromItemStack(final ItemStack stack, int colorRGB) {
         int meta = stack.getItemDamage();
         if (meta == 0) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 200, 200);
+            colorRGB = ColorUtil.toRGB(200, 200, 200);
         }
         if (meta == 1) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 128, 0);
+            colorRGB = ColorUtil.toRGB(255, 128, 0);
         }
         if (meta == 2) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(128, 128, 128);
+            colorRGB = ColorUtil.toRGB(128, 128, 128);
         }
-        return HEX_OxFFFFFF;
+        return colorRGB;
     }
 
     private static boolean createNBT(ItemStack rStack) {

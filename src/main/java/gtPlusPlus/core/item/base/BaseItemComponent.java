@@ -25,6 +25,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
@@ -33,8 +34,6 @@ import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 
@@ -98,7 +97,7 @@ public class BaseItemComponent extends Item {
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
         this.setMaxStackSize(64);
-        this.componentColour = MathUtils.getRgbAsHex(RGBA);
+        this.componentColour = ColorUtil.fromRGBAToRGB(RGBA);
         this.extraData = RGBA;
 
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);
@@ -140,13 +139,11 @@ public class BaseItemComponent extends Item {
             if (componentType == ComponentTypes.PLATE) {
                 CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlate(1),
-                    TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false));
+                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA()));
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
                 CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlateDouble(1),
-                    TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false));
+                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA()));
             }
             return true;
         } else {
@@ -282,17 +279,17 @@ public class BaseItemComponent extends Item {
 
         if (this.componentType == ComponentTypes.CELL || this.componentType == ComponentTypes.PLASMACELL) {
             if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
-                return Utils.rgbtoHexValue(255, 255, 255);
+                return ColorUtil.toRGB(255, 255, 255);
             }
             if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
-                return Utils.rgbtoHexValue(255, 255, 255);
+                return ColorUtil.toRGB(255, 255, 255);
             }
         }
 
         try {
             if (this.componentMaterial == null) {
                 if (extraData != null) {
-                    return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
+                    return ColorUtil.toRGB(extraData[0], extraData[1], extraData[2]);
                 }
                 return this.componentColour;
             }
@@ -306,7 +303,7 @@ public class BaseItemComponent extends Item {
                     int currentFrame = (int) ((System.nanoTime() % 4_000_000_000L) / 20_000_000L);
                     int value = currentFrame < 50 ? currentFrame + 1
                         : currentFrame < 100 ? 50 : currentFrame < 150 ? 149 - currentFrame : 0;
-                    return Utils.rgbtoHexValue(
+                    return ColorUtil.toRGB(
                         Math.min(255, Math.max(componentMaterial.getRGBA()[0] + value, 0)),
                         Math.min(255, Math.max(componentMaterial.getRGBA()[1] + value, 0)),
                         Math.min(255, Math.max(componentMaterial.getRGBA()[2] + value, 0)));

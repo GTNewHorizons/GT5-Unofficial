@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 
 public class BaseItemPlasmaCell extends BaseItemComponent {
 
@@ -22,11 +22,9 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     ComponentTypes PlasmaCell = ComponentTypes.PLASMACELL;
     private int tickCounter = 0;
     private final int tickCounterMax = 200;
-    private final short[] fluidColour;
 
     public BaseItemPlasmaCell(final Material material) {
         super(material, ComponentTypes.PLASMACELL);
-        this.fluidColour = material.getRGBA();
     }
 
     @Override
@@ -45,7 +43,7 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (renderPass == 0) {
-            return Utils.rgbtoHexValue(230, 230, 230);
+            return ColorUtil.toRGB(230, 230, 230);
         }
         return this.componentColour;
     }

@@ -13,7 +13,6 @@
 
 package bartworks.system.material;
 
-import static gregtech.api.enums.Mods.GalaxySpace;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
@@ -21,15 +20,12 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,7 +34,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
-import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
 import bartworks.util.MurmurHash3;
 import bartworks.util.NonNullWrappedHashMap;
@@ -55,6 +50,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import thaumcraft.api.aspects.Aspect;
@@ -64,15 +60,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
-
-    public static final Map<String, String> modNameOverrides = new HashMap<>() {
-
-        private static final long serialVersionUID = 6399917619058898648L;
-
-        {
-            this.put(GalaxySpace.ID, DARK_PURPLE + "GalaxySpace");
-        }
-    };
 
     private static final List<String> BWModNames = Arrays
         .asList(MainMod.NAME, BartWorksCrossmod.NAME, MaterialsInjector.NAME);
@@ -88,9 +75,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final List<ISubTagContainer> mOreByProducts = new ArrayList<>();
     private final LinkedHashSet<Pair<ISubTagContainer, Integer>> CONTENTS = new LinkedHashSet<>();
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
-    private byte[] rgb = new byte[3];
+    private final int colorRGB;
     private final String defaultName;
-    private String toolTip;
+    private final String toolTip;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -110,7 +97,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         Werkstoff.default_null_Werkstoff = new Werkstoff(
-            new short[3],
+            0,
             "_NULL",
             "Default null Werkstoff",
             Werkstoff.DEFAULT_NULL_STATS,
@@ -130,7 +117,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
      */
     public Werkstoff(Materials materials, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID) {
         this(
-            materials.mRGBa,
+            materials.getColor(),
             materials.mDefaultLocalName,
             materials.getToolTip(),
             type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
@@ -161,11 +148,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type, int meltingpoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type)
                 .setMeltingPoint(meltingpoint),
@@ -177,11 +164,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type),
             type,
@@ -192,11 +179,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type, int meltingpoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type)
                 .setMeltingPoint(meltingpoint),
@@ -209,11 +196,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type),
             type,
@@ -225,11 +212,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String toolTip, String defaultName, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String toolTip, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             toolTip,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type),
@@ -242,82 +229,96 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
-        this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
+        this(colorRGB, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
-        this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
+        this(colorRGB, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
-        this(rgba, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
+        this(colorRGB, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
 
-        if (Werkstoff.idHashSet.contains((short) mID))
+        if (Werkstoff.idHashSet.contains((short) mID)) {
             throw new UnsupportedOperationException("ID (" + mID + ") is already in use!");
+        }
         Werkstoff.idHashSet.add((short) mID);
         if (type == null) type = Werkstoff.Types.UNDEFINED;
 
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedName());
+        GregTechAPI.sAfterGTPreload.add(this::getLocalizedName);
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
-        this.setRgb(BWColorUtil.correctCorlorArray(rgba));
+        this.colorRGB = colorRGB;
         this.CONTENTS.addAll(Arrays.asList(contents));
-        this.toolTip = "";
         if (toolTip.isEmpty()) {
-            for (Pair<ISubTagContainer, Integer> p : contents) {
+            StringBuilder sb = new StringBuilder();
+            for (Pair<ISubTagContainer, Integer> pair : contents) {
+                final ISubTagContainer key = pair.getKey();
+                final int value = pair.getValue();
                 if (contents.length > 1) {
-                    if (p.getKey() instanceof Materials) {
-                        if (((Materials) p.getKey()).mMaterialList.size() > 1 && p.getValue() > 1)
-                            this.toolTip += "(" + getFormula((Materials) p.getKey())
-                                + ")"
-                                + BWUtil.subscriptNumber(p.getValue());
-                        else this.toolTip += getFormula((Materials) p.getKey())
-                            + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
+                    if (key instanceof Materials material) {
+                        if (material.mMaterialList.size() > 1 && value > 1) {
+                            sb.append("(")
+                                .append(getFormula(material))
+                                .append(")")
+                                .append(BWUtil.subscriptNumber(value));
+                        } else {
+                            sb.append(getFormula(material))
+                                .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                        }
                     }
-                    if (p.getKey() instanceof Werkstoff) {
-                        if (((Werkstoff) p.getKey()).CONTENTS.size() > 1 && p.getValue() > 1)
-                            this.toolTip += "(" + getFormula((Werkstoff) p.getKey())
-                                + ")"
-                                + BWUtil.subscriptNumber(p.getValue());
-                        else this.toolTip += getFormula((Werkstoff) p.getKey())
-                            + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
+                    if (key instanceof Werkstoff werkstoff) {
+                        if (werkstoff.CONTENTS.size() > 1 && value > 1) {
+                            sb.append("(")
+                                .append(getFormula(werkstoff))
+                                .append(")")
+                                .append(BWUtil.subscriptNumber(value));
+                        } else {
+                            sb.append(getFormula(werkstoff))
+                                .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                        }
                     }
-                } else if (p.getKey() instanceof Materials) {
-                    this.toolTip += getFormula((Materials) p.getKey())
-                        + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
-                } else if (p.getKey() instanceof Werkstoff) this.toolTip += getFormula((Werkstoff) p.getKey())
-                    + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
+                } else if (key instanceof Materials material) {
+                    sb.append(getFormula(material))
+                        .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                } else if (key instanceof Werkstoff werkstoff) {
+                    sb.append(getFormula(werkstoff))
+                        .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                }
             }
-        } else this.toolTip = toolTip;
+            this.toolTip = sb.toString();
+        } else {
+            this.toolTip = toolTip;
+        }
 
         // if (this.toolTip.length() > 25)
         // this.toolTip = "The formula is to long...";
 
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedToolTip());
+        GregTechAPI.sAfterGTPreload.add(this::getLocalizedToolTip);
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -366,14 +367,13 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 break;
         }
 
-        Optional<Pair<ISubTagContainer, Integer>> firstContent;
-        if (this.CONTENTS.size() == 1 && (firstContent = this.CONTENTS.stream()
-            .findFirst()).isPresent()) {
-            ISubTagContainer firstContentSubTagContainer = firstContent.get()
-                .getKey();
-            if (firstContent.get()
-                .getValue() == 1 && firstContentSubTagContainer instanceof Materials) this.getGenerationFeatures()
+        if (this.CONTENTS.size() == 1) {
+            Pair<ISubTagContainer, Integer> first = this.CONTENTS.iterator()
+                .next();
+            if (first.getValue() == 1 && first.getKey() instanceof Materials) {
+                this.getGenerationFeatures()
                     .setExtension();
+            }
         }
 
         Werkstoff.werkstoffHashSet.add(this);
@@ -542,13 +542,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.texSet;
     }
 
-    public void setRgb(short[] rgb) {
-        this.rgb = new byte[] { (byte) (rgb[0] - 128), (byte) (rgb[1] - 128), (byte) (rgb[2] - 128) };
-    }
-
     @Override
     public short[] getRGBA() {
-        return new short[] { (short) (this.rgb[0] + 128), (short) (this.rgb[1] + 128), (short) (this.rgb[2] + 128), 0 };
+        return new short[] { (short) ColorUtil.getRed(this.colorRGB), (short) ColorUtil.getGreen(this.colorRGB),
+            (short) ColorUtil.getBlue(this.colorRGB), 0 };
+    }
+
+    public int getColor() {
+        return colorRGB;
     }
 
     @Override
@@ -656,12 +657,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.owner;
     }
 
+    private static final String GALAXYSPACE_NAME_OVERRIDE = DARK_PURPLE + "GalaxySpace";
+
     private String getMaterialOwner() {
         String modName = Loader.instance()
             .activeModContainer()
             .getName();
-        if (modNameOverrides.get(modName) != null) {
-            return modNameOverrides.get(modName);
+        if (Mods.ModIDs.GALAXY_SPACE.equals(modName)) {
+            return GALAXYSPACE_NAME_OVERRIDE;
         }
         if (BWModNames.contains(modName)) {
             return null;

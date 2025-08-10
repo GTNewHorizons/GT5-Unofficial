@@ -2,43 +2,43 @@ package gregtech.api.enums;
 
 public enum UndergroundFluidNames {
 
-    carbonDioxide("carbondioxide", new short[] { 0x69, 0x69, 0x69 }),
-    carbonMonoxide("carbonmonoxide", new short[] { 0x10, 0x4E, 0x8B }),
-    chlorobenzene("chlorobenzene", new short[] { 0x40, 0x80, 0x40 }),
-    deuterium("deuterium", new short[] { 0xFF, 0xE3, 0x9F }),
-    distilledWater("ic2distilledwater", new short[] { 0x1E, 0x90, 0xFF }),
-    ethane("ethane", new short[] { 0x40, 0x80, 0x20 }),
-    ethylene("ethylene", new short[] { 0xd0, 0xd0, 0xd0 }),
-    fluorine("fluorine", new short[] { 0x99, 0xC1, 0xAD }),
-    heavyOil("liquid_heavy_oil", new short[] { 10, 10, 10 }),
-    helium3("helium-3", new short[] { 0x80, 0x20, 0xe0 }),
-    hydrofluoricAcid("hydrofluoricacid_gt5u", new short[] { 0x00, 0xCE, 0xD1 }),
-    hydrogen("hydrogen", new short[] { 0x32, 0x32, 0xD6 }),
-    hydrogenSulfide("liquid_hydricsulfur", null),
-    lava("lava", new short[] { 0xFF, 0x00, 0x00 }),
-    lightOil("liquid_light_oil", new short[] { 0xff, 0xff, 0x00 }),
-    liquidAir("liquidair", new short[] { 0x99, 0x99, 0xEA }),
-    mediumOil("liquid_medium_oil", new short[] { 0x00, 0xFF, 0x00 }),
-    methane("methane", new short[] { 0x80, 0x20, 0x20 }),
-    moltenCopper("molten.copper", new short[] { 0xFF, 0x7F, 0x24 }),
-    moltenIron("molten.iron", new short[] { 0x8B, 0x88, 0x78 }),
-    moltenLead("molten.lead", new short[] { 0xd0, 0xd0, 0xd0 }),
-    moltenTin("molten.tin", new short[] { 0xE7, 0xE7, 0xE4 }),
-    naturalGas("gas_natural_gas", new short[] { 0x00, 0xff, 0xff }),
-    nitrogen("nitrogen", new short[] { 0x00, 0x80, 0xd0 }),
-    oil("oil", new short[] { 0x00, 0x00, 0x00 }),
-    oxygen("oxygen", new short[] { 0x40, 0x40, 0xA0 }),
-    saltWater("saltwater", new short[] { 0x80, 0xff, 0x80 }),
-    sulfuricAcid("sulfuricacid", new short[] { 0xFF, 0xB9, 0x0F }),
-    unknownWater("unknowwater", new short[] { 0x8A, 0x2B, 0xE2 }),
-    veryHeavyOil("liquid_extra_heavy_oil", new short[] { 0x00, 0x00, 0x50 });
+    carbonDioxide("carbondioxide", 0x696969),
+    carbonMonoxide("carbonmonoxide", 0x104E8B),
+    chlorobenzene("chlorobenzene", 0x408040),
+    deuterium("deuterium", 0xFFE39F),
+    distilledWater("ic2distilledwater", 0x1E90FF),
+    ethane("ethane", 0x408020),
+    ethylene("ethylene", 0xd0d0d0),
+    fluorine("fluorine", 0x99C1AD),
+    heavyOil("liquid_heavy_oil", 0x0A0A0A),
+    helium3("helium-3", 0x8020e0),
+    hydrofluoricAcid("hydrofluoricacid_gt5u", 0x00CED1),
+    hydrogen("hydrogen", 0x3232D6),
+    hydrogenSulfide("liquid_hydricsulfur", -1),
+    lava("lava", 0xFF0000),
+    lightOil("liquid_light_oil", 0xFFFF00),
+    liquidAir("liquidair", 0x9999EA),
+    mediumOil("liquid_medium_oil", 0x00FF00),
+    methane("methane", 0x802020),
+    moltenCopper("molten.copper", 0xFF7F24),
+    moltenIron("molten.iron", 0x8B8878),
+    moltenLead("molten.lead", 0xd0d0d0),
+    moltenTin("molten.tin", 0xE7E7E4),
+    naturalGas("gas_natural_gas", 0x00FFFF),
+    nitrogen("nitrogen", 0x0080d0),
+    oil("oil", 0x000000),
+    oxygen("oxygen", 0x4040A0),
+    saltWater("saltwater", 0x80FF80),
+    sulfuricAcid("sulfuricacid", 0xFFB90F),
+    unknownWater("unknowwater", 0x8A2BE2),
+    veryHeavyOil("liquid_extra_heavy_oil", 0x000050);
 
     public final String name;
     // color override used for detrav ore scanner
-    public final short[] renderColor;
+    public final int colorRGB;
 
-    UndergroundFluidNames(String name, short[] renderColor) {
+    UndergroundFluidNames(String name, int colorRGB) {
         this.name = name;
-        this.renderColor = renderColor;
+        this.colorRGB = colorRGB;
     }
 }

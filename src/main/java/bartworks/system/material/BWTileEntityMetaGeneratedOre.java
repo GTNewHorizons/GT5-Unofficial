@@ -52,7 +52,7 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if (aMaterial != null) {
             ITexture aIconSet = TextureFactory
-                .of(aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getRGBA());
+                .of(aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getColor());
             return new ITexture[] { TextureFactory.of(Blocks.stone), aIconSet };
         }
         return new ITexture[] { TextureFactory.of(Blocks.stone),

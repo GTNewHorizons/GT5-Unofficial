@@ -769,7 +769,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
                 dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
-                return this.colorOverride.getGuiTintOrDefault(dye.mName, dye.toInt());
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, dye.colorRGB);
             }
         } else if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {
@@ -778,7 +778,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
             }
         }
-        return dye.toInt();
+        return dye.colorRGB;
     }
 
     @Override
