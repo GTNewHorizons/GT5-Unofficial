@@ -190,8 +190,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
-                        {"       ","  III  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
+                        {"       ","  I I  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
+                        {"       ","  I I  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {" II~II ","IIJJJII","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IIJJJII"," IIIII "}
                         //spotless:on
                 }))
@@ -495,8 +495,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
                 mMaxParallel = maxParallel;
 
+
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
-                if (requiredUpgrade == PCBFactoryUpgrade.BIO && mBioChamber == null)
+                if (requiredUpgrade == PCBFactoryUpgrade.BIO && mBioChamber == null || requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioChamber.isAllowedToWork())
                     return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
                 int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
@@ -1200,6 +1201,17 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             mBioChamber = null;
         else if (unit instanceof MTEPCBCoolingTower)
             mCoolingTower = null;
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        CheckRecipeResult result = super.checkProcessing();
+        if (result.wasSuccessful()) {
+            if (mBioChamber != null && mBioChamber.isAllowedToWork()) {
+                mBioChamber.addRecipe(this.mProgresstime, this.mMaxProgresstime);
+            }
+        }
+        return result;
     }
 
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
