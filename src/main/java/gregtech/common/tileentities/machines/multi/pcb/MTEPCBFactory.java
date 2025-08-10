@@ -871,10 +871,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         CheckRecipeResult result = super.checkProcessing();
         if (result.wasSuccessful()) {
             if (mBioChamber != null && mBioChamber.isAllowedToWork()) {
-                mBioChamber.addRecipe(this, this.mProgresstime, this.mMaxProgresstime);
+                mBioChamber.addRecipe(this);
             }
             if (mCoolingTower != null && mCoolingTower.isAllowedToWork()) {
-                mCoolingTower.addRecipe(this, this.mProgresstime, this.mMaxProgresstime);
+                mCoolingTower.addRecipe(this);
             }
         }
         return result;

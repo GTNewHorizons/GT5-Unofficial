@@ -24,9 +24,13 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -58,6 +62,18 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
      * load.
      */
     private final Set<Vec3Impl> controllerCoords = new HashSet<>();
+
+    /**
+     * Queue of all currently active factories, sorted by time left in their recipe.
+     */
+    private final Queue<MTEPCBFactory> activeFactories = new PriorityQueue<>(
+        (a, b) -> Integer.compare(
+            b.mMaxProgresstime - b.mProgresstime,
+            a.mMaxProgresstime - a.mProgresstime
+        )
+    );
+
+    private MTEPCBFactory currentFactory;
 
 
     protected MTEPCBUpgradeBase(int aID, String aName, String aNameRegional) {
@@ -210,21 +226,9 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         return true;
     }
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-
-        // Right-clicking could be a data stick linking action, otherwise we can ignore, as this multi does not have a GUI.
-        if (tryLinkDataStick(aPlayer)) {
-            return true;
-        }
-        //TODO edit GUI to show list of active factories
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
-    }
-
     // If the controller is broken this can be called to explicitly unlink the controller, so we don't have any
     // references lingering around
     public void unlinkController(MTEPCBFactory oldController) {
-        //TODO make this work for the controllerCoords set
         IGregTechTileEntity tileEntity = oldController.getBaseMetaTileEntity();
         if (tileEntity != null)
             controllerCoords.remove(new Vec3Impl(tileEntity.getXCoord(), tileEntity.getYCoord(), tileEntity.getZCoord()));
@@ -321,16 +325,26 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         return CheckRecipeResultRegistry.NONE;
     }
 
-    public void addRecipe(MTEPCBFactory factory, int progressTime, int maxProgresstime) {
-        if (maxProgresstime - progressTime > this.mMaxProgresstime - this.mProgresstime) {
-            this.mProgresstime = progressTime;
-            this.mMaxProgresstime = maxProgresstime;
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        MTEPCBFactory factory = activeFactories.peek();
+        if (factory != null && !factory.equals(currentFactory)) {
+            this.mProgresstime = factory.mProgresstime;
+            this.mMaxProgresstime = factory.mMaxProgresstime;
         }
+        if (factory != null && factory.mMaxProgresstime <= 0) {
+            activeFactories.remove();
+        }
+        super.runMachine(aBaseMetaTileEntity, aTick);
+    }
+
+    public void addRecipe(MTEPCBFactory factory) {
+        activeFactories.add(factory);
     }
 
     public void cancelRecipe(MTEPCBFactory factory) {
         //TODO make this work for multiple factories
-        mMaxProgresstime = 0;
-        mProgresstime = 0;
+        activeFactories.remove(factory);
     }
+
 }
