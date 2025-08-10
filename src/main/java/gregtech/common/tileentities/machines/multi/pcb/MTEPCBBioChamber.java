@@ -35,7 +35,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implements ISurvivalConstructable, INEIPreviewModifier {
 
 
-    private static final String STRUCTURE_PIECE_BIO_CHAMBER = "bioUpgrade1";
+    private static final String STRUCTURE_PIECE_BIO_CHAMBER = "bioUpgrade";
     private static final String[][] structure =
         new String[][] {
             // spotless:off
