@@ -107,7 +107,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
-    private static final String ocTier1Upgrade = "ocTier1Upgrade";
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private float mRoughnessMultiplier = 1;
@@ -192,23 +191,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         {"       ","  I I  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {"       ","  I I  "," I   I "," I   I "," I   I "," I   I "," I   I "," I   I ","  III  ","       "},
                         {" II~II ","IIJJJII","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IIJJJII"," IIIII "}
-                        //spotless:on
-                }))
-        .addShape(
-            ocTier1Upgrade,
-            transpose(
-                new String[][] {
-                    // spotless:off
-                        {"EKKKE","K   K","K   K","K   K","EKKKE"},
-                        {"E   E"," KKK "," K K "," KKK ","E   E"},
-                        {"E   E"," NNN "," N N "," NNN ","E   E"},
-                        {"E   E"," KKK "," K K "," KKK ","E   E"},
-                        {"E   E"," KKK "," K K "," KKK ","E   E"},
-                        {"EOOOE","OKKKO","OK KO","OKKKO","EOOOE"},
-                        {"E   E"," KKK "," K K "," KKK ","E   E"},
-                        {"E   E"," KKK "," K K "," KKK ","E   E"},
-                        {"ENNNE","NKKKN","NK KN","NKKKN","ENNNE"},
-                        {"EGGGE","GGGGG","GGMGG","GGGGG","EGGGE"}
                         //spotless:on
                 }))
         .addShape(
@@ -297,10 +279,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
         }
 
-        if (mOCTier1 && !mOCTier2) {
-            buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 9, mOCTier1Offsets[1]);
-        }
-
         if (!mOCTier1 && mOCTier2) {
             buildPiece(ocTier2Upgrade, stackSize, hintsOnly, mOCTier2Offsets[0], 9, mOCTier2Offsets[1]);
         }
@@ -316,18 +294,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             }
         } else {
             built += survivalBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
-        }
-        if (mOCTier1 && !mOCTier2) {
-            built += survivalBuildPiece(
-                ocTier1Upgrade,
-                stackSize,
-                mOCTier1Offsets[0],
-                9,
-                mOCTier1Offsets[1],
-                elementBudget,
-                env,
-                false,
-                true);
         }
         if (!mOCTier1 && mOCTier2) {
             built += survivalBuildPiece(
@@ -423,11 +389,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             }
             mTier = 3;
         }
+        // Do we want to invalidate the main factory if the cooling tower is invalid, but does exist?
+/*
+        if (mCoolingTower != null && !mCoolingTower.isValid()) {
+            return false;
+        }
+*/
 
         if (mOCTier1 && !mOCTier2) {
-            if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 9, mOCTier1Offsets[1])) {
-                return false;
-            }
             if (mCoolantInputHatch == null) {
                 return false;
             }
@@ -525,7 +494,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     private boolean isNoOC() {
-        return !mOCTier1 && !mOCTier2;
+        return mCoolingTower == null || !mCoolingTower.isAllowedToWork();
     }
 
     private double getDurationMultiplierFromRoughness() {
@@ -542,9 +511,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
         if (ticker % 20 == 0) {
             if (!isNoOC()) {
-                FluidStack tFluid = mOCTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
+                FluidStack tFluid = mCoolingTower.mTier == 1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                     : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
-                if (!drain(mCoolantInputHatch, tFluid, true)) {
+                if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
                     stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                     return false;
                 }
@@ -995,27 +964,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        buildContext.addSyncedWindow(10, this::createConfigurationWindow);
-        builder.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(10);
-                })
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CYCLIC);
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .addTooltip(translateToLocal("GT5U.MBTT.ConfigMenu"))
-                .setPos(174, 130))
-            .widget(
+            builder.widget(
                 new TextWidget(new Text(translateToLocal("GT5U.machines.tier"))).setTextAlignment(Alignment.Center)
                     .setScale(0.91f)
                     .setSize(20, 16)
-                    .setPos(173, 98))
+                    .setPos(173, 108))
             .widget(
                 new NumericWidget().setGetter(() -> mSetTier)
                     .setSetter(val -> mSetTier = (int) val)
@@ -1025,157 +978,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tier"))
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .setSize(18, 18)
-                    .setPos(173, 110));
+                    .setPos(173, 120));
     }
 
-    protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(200, 160);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .setPos(5, 5)
-                .setSize(16, 16))
-            .widget(new TextWidget(translateToLocal("GT5U.MBTT.ConfigMenu")).setPos(25, 9))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(185, 3))
-            .widget(
-                new DynamicPositionedColumn().setSynced(false)
-                    .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
-                        mOCTier1 = val;
-                        mOCTier2 = false;
-                        if (!mOCTier1) {
-                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T1CoolOff"));
-                        } else {
-                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T1CoolOn"));
-                        }
-                    })
-                        .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                        .setSize(90, 18)
-                        .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.3")))
-                        .addChild(
-                            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                                .setSize(18, 18))
-                        .addChild(
-                            new TextWidget(translateToLocal("GT5U.MBTT.PCB.LiqCool")).setTextAlignment(Alignment.Center)
-                                .setPos(20, 5))
-                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
-                        mOCTier2 = val;
-                        mOCTier1 = false;
-                        if (!mOCTier2) {
-                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T2CoolOff"));
-                        } else {
-                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T2CoolOn"));
-                        }
-                    })
-                        .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                        .setSize(90, 18)
-                        .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.4")))
-                        .addChild(
-                            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                                .setSize(18, 18))
-                        .addChild(
-                            new TextWidget(translateToLocal("GT5U.MBTT.PCB.Sink")).setTextAlignment(Alignment.Center)
-                                .setPos(20, 5))
-                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.Size"))).setSize(90, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                            .setPos(0, 4))
-                    .widget(
-                        new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                            .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
-                            .setBounds(50, 200)
-                            .setTextColor(Color.WHITE.normal)
-                            .setTextAlignment(Alignment.Center)
-                            .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
-                            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                            .setSize(90, 16))
-                    .widget(
-                        new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
-                            .setSize(18, 18)
-                            .addTooltip(new Text(translateToLocal("GT5U.MBTT.PCB.Tooltip.6")).color(Color.RED.dark(3)))
-                            .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
-                    .setPos(10, 25))
-            .widget(
-                new DynamicPositionedColumn().setSynced(false)
-                    .widget(
-                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.Offsets"))).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new DynamicPositionedRow().setSynced(false)
-                            .widget(
-                                new NumericWidget().setGetter(() -> mBioOffsets[0])
-                                    .setSetter(val -> mBioOffsets[0] = (int) val)
-                                    .setBounds(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip(translateToLocal(xOffsetText))
-                                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .widget(
-                                new NumericWidget().setGetter(() -> mBioOffsets[1])
-                                    .setSetter(val -> mBioOffsets[1] = (int) val)
-                                    .setBounds(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip(translateToLocal(zOffsetText))
-                                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.T1CoolOffset"))).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new DynamicPositionedRow().setSynced(false)
-                            .widget(
-                                new NumericWidget().setGetter(() -> mOCTier1Offsets[0])
-                                    .setSetter(val -> mOCTier1Offsets[0] = (int) val)
-                                    .setBounds(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip(translateToLocal(xOffsetText))
-                                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .widget(
-                                new NumericWidget().setGetter(() -> mOCTier1Offsets[1])
-                                    .setSetter(val -> mOCTier1Offsets[1] = (int) val)
-                                    .setBounds(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip(translateToLocal(zOffsetText))
-                                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.T2CoolOffset"))).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new DynamicPositionedRow().setSynced(false)
-                            .widget(
-                                new NumericWidget().setGetter(() -> mOCTier2Offsets[0])
-                                    .setSetter(val -> mOCTier2Offsets[0] = (int) val)
-                                    .setBounds(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip(translateToLocal(xOffsetText))
-                                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .widget(
-                                new NumericWidget().setGetter(() -> mOCTier2Offsets[1])
-                                    .setSetter(val -> mOCTier2Offsets[1] = (int) val)
-                                    .setBounds(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip(translateToLocal(zOffsetText))
-                                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .setPos(110, 25));
-        return builder.build();
-    }
 
     public boolean addNaniteBusToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
         if (tileEntity == null) return false;
