@@ -55,7 +55,10 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower> im
         .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
         .build();
 
-    private MTEHatchInput mCoolantInputHatch;
+
+    public int mTier = 1;
+
+    protected MTEHatchInput mCoolantInputHatch;
 
     private final int COOLANT_CONSUMPTION_PER_SEC = 10;
 
