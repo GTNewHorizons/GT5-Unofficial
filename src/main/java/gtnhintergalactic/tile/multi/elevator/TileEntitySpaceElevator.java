@@ -43,10 +43,11 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -789,41 +790,9 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 .addTooltip(StatCollector.translateToLocal("ig.button.extension"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
 
-        // Teleportation button
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.getContext()
-                .isClient()) {
-                if (getBaseMetaTileEntity().isAllowedToWork() && motorTier > 0) {
-                    EntityPlayer player = widget.getContext()
-                        .getPlayer();
-                    if (player instanceof EntityPlayerMP playerBase) {
-                        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
-                        stats.coordsTeleportedFromX = playerBase.posX;
-                        stats.coordsTeleportedFromZ = playerBase.posZ;
-                        try {
-                            WorldUtil.toCelestialSelection(
-                                playerBase,
-                                stats,
-                                ElevatorUtil.getPlanetaryTravelTier(motorTier),
-                                GuiCelestialSelection.MapMode.TELEPORTATION);
-                        } catch (final Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(IG_UITextures.OVERLAY_BUTTON_PLANET_TELEPORT);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-            .setSize(16, 16)
-            .addTooltip(GCCoreUtil.translate("ig.button.travel"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+        if (Mods.GalacticraftCore.isModLoaded()) {
+            addTeleportationMethod(builder);
+        }
 
         // Open contributor window button
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -874,6 +843,45 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 .widget(texts)
                 .build();
         });
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.GALACTICRAFT_CORE)
+    private void addTeleportationMethod(ModularWindow.Builder builder) {
+        // Teleportation button
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.getContext()
+                .isClient()) {
+                if (getBaseMetaTileEntity().isAllowedToWork() && motorTier > 0) {
+                    EntityPlayer player = widget.getContext()
+                        .getPlayer();
+                    if (player instanceof EntityPlayerMP playerBase) {
+                        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
+                        stats.coordsTeleportedFromX = playerBase.posX;
+                        stats.coordsTeleportedFromZ = playerBase.posZ;
+                        try {
+                            WorldUtil.toCelestialSelection(
+                                playerBase,
+                                stats,
+                                ElevatorUtil.getPlanetaryTravelTier(motorTier),
+                                GuiCelestialSelection.MapMode.TELEPORTATION);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                ret.add(IG_UITextures.OVERLAY_BUTTON_PLANET_TELEPORT);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+            .setSize(16, 16)
+            .addTooltip(GTUtility.translate("ig.button.travel"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     /**
