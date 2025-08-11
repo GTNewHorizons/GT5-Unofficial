@@ -453,11 +453,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             errors.add(StructureError.MISSING_MAINTENANCE);
         }
 
-        if (this.getPollutionPerSecond(null) > 0 && mMufflerHatches.isEmpty()) {
+        if (requiresMuffler() && mMufflerHatches.isEmpty()) {
             errors.add(StructureError.MISSING_MUFFLER);
         }
 
-        if (this.getPollutionPerSecond(null) == 0 && !mMufflerHatches.isEmpty()) {
+        if (!requiresMuffler() && !mMufflerHatches.isEmpty()) {
             errors.add(StructureError.UNNEEDED_MUFFLER);
         }
     }

@@ -758,14 +758,14 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     private static String generateInfoStringForBit(int i, ControlBitStatus status) {
-        String base = StatCollector.translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1));
-        if (status.satisfied) {
-            return base + EnumChatFormatting.GREEN
-                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok");
-        } else {
-            return base + EnumChatFormatting.RED
+        String statusText = status.satisfied
+            ? EnumChatFormatting.GREEN
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok")
+            : EnumChatFormatting.RED
                 + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
-        }
+
+        return StatCollector
+            .translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1), statusText);
     }
 
     @Override
