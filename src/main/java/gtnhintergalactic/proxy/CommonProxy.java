@@ -80,7 +80,8 @@ public class CommonProxy {
     }
 
     // This is only used when GC isn't present.
-    // GTNHIntergalactic effectively has a hard dep on GC, but it's easier to just no-op its integration than disable the mod in the dev env somehow.
+    // GTNHIntergalactic effectively has a hard dep on GC, but it's easier to just no-op its integration than disable
+    // the mod in the dev env somehow.
     private static class BlockFakeSECable extends Block {
 
         public BlockFakeSECable() {

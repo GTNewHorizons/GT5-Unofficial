@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -57,8 +58,7 @@ public class SpaceResearchFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> specialInfo = new ArrayList<>();
-            specialInfo.add(
-                GTUtility.translate("tt.nei.research.min_computation", recipeInfo.recipe.mSpecialValue));
+            specialInfo.add(GTUtility.translate("tt.nei.research.min_computation", recipeInfo.recipe.mSpecialValue));
 
             String neededProject = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
             String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);

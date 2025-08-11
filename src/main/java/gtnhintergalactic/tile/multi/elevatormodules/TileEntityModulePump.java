@@ -16,6 +16,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -58,22 +59,21 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
-        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
-            + (p.hatchId() / 2 + 1); // Planet Type
+        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " " + (p.hatchId() / 2 + 1); // Planet
+                                                                                                                         // Type
     /** Status of the planet type setting */
     private static final IStatusFunction<TileEntityModulePump> PLANET_TYPE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the gas type setting */
     private static final INameFunction<TileEntityModulePump> GAS_TYPE_SETTING_NAME = (base,
-        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " "
-            + (p.hatchId() / 2 + 1); // Gas Type
+        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " " + (p.hatchId() / 2 + 1); // Gas
+                                                                                                                         // Type
     /** Status of the gas type setting */
     private static final IStatusFunction<TileEntityModulePump> GAS_TYPE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModulePump> PARALLEL_SETTING_NAME = (base,
-        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " "
-            + (p.hatchId() / 2 + 1); // Parallels
+        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " " + (p.hatchId() / 2 + 1); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());

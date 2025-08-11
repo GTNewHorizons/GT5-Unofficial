@@ -25,7 +25,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.util.GTUtility;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Recipe handler for the gas siphon recipes

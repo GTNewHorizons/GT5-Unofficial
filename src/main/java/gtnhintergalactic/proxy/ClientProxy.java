@@ -32,7 +32,8 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
         if (Mods.GalacticraftCore.isModLoaded()) {
             BlockSpaceElevatorCable.setRenderID(RenderingRegistry.getNextAvailableRenderId());
-            RenderingRegistry.registerBlockHandler(BlockSpaceElevatorCable.getRenderID(), new RenderSpaceElevatorCable());
+            RenderingRegistry
+                .registerBlockHandler(BlockSpaceElevatorCable.getRenderID(), new RenderSpaceElevatorCable());
             ClientRegistry
                 .bindTileEntitySpecialRenderer(TileEntitySpaceElevatorCable.class, new RenderSpaceElevatorCable());
         }

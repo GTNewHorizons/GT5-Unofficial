@@ -1077,7 +1077,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                       // that
+                                                                                                      // that
                 // adds Space
                 // Mining
                 // Operations to the
@@ -1176,7 +1176,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                       // that
+                                                                                                      // that
                 // adds Space
                 // Mining
                 // Operations to the
@@ -1275,7 +1275,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                       // that
+                                                                                                      // that
                 // adds Space
                 // Mining
                 // Operations to the

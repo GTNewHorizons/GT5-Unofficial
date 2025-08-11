@@ -17,7 +17,6 @@ import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -66,9 +65,7 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
                         + data.maxDistance);
                 result.add(GTUtility.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
                 result.add(
-                    GTUtility.translate(
-                        "tt.nei.research.min_computation",
-                        GTUtility.formatNumbers(data.computation)));
+                    GTUtility.translate("tt.nei.research.min_computation", GTUtility.formatNumbers(data.computation)));
                 result.add(GTUtility.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
             }
             return result;

@@ -57,7 +57,6 @@ import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Gas Siphon, used to extract gas from gas planets, when placed on a space station in their orbit
