@@ -320,8 +320,8 @@ public class MTERockBreaker extends MTEBasicMachine {
             }
 
             /**
-             * @param desc A description to show in NEI if there are no recipe inputs.
-             *             For example: "IT'S FREE! Place Lava on Side"
+             * @param desc A description to show in NEI if there are no recipe inputs. For example: "IT'S FREE! Place
+             *             Lava on Side"
              */
             public Builder recipeDescription(String desc) {
                 this.recipeDescription = desc;
