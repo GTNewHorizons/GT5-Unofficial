@@ -1,31 +1,25 @@
 package gregtech.api.interfaces;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
+import gregtech.api.render.SBRContextBase;
+
 public interface ITexture {
 
-    void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
     boolean isValidTexture();
-
-    /**
-     * @return {@code true} if this texture is from the old package
-     */
-    default boolean isOldTexture() {
-        return true;
-    }
 
     /**
      * Will initialize the {@link Tessellator} if rendering off-world (Inventory)
@@ -36,7 +30,7 @@ public interface ITexture {
      * @param aNormalZ  The Z Normal for current Quad Face
      */
     default void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
-        if (aRenderer.useInventoryTint && !isOldTexture()) {
+        if (aRenderer.useInventoryTint) {
             final Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
             tess.setNormal(aNormalX, aNormalY, aNormalZ);
@@ -49,7 +43,7 @@ public interface ITexture {
      * @param aRenderer The {@link RenderBlocks} Renderer
      */
     default void draw(RenderBlocks aRenderer) {
-        if (aRenderer.useInventoryTint && !isOldTexture()) {
+        if (aRenderer.useInventoryTint) {
             Tessellator.instance.draw();
         }
     }

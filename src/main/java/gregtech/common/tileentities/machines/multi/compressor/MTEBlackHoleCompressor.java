@@ -156,10 +156,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private final ArrayList<MTEBlackHoleUtility> utilityHatches = new ArrayList<>();
 
     /**
-     * 1: Off
-     * 2: On, stable
-     * 3: On, unstable
-     * 4: On, superstable
+     * 1: Off 2: On, stable 3: On, unstable 4: On, superstable
      */
     private byte blackHoleStatus = 1;
 
