@@ -449,6 +449,10 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return injected > 0;
     }
 
+    protected boolean requiresMuffler() {
+        return true;
+    }
+
     public Block getCasingBlock() {
         return ModBlocks.blockCasings4Misc;
     }
@@ -500,7 +504,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        if (this.euProduction == 0) return 1;
         return 1500 * (this.euProduction / 10000);
     }
 
