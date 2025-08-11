@@ -932,9 +932,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // yes, unknowwater. It's not a typo, it's how it is spelled. Stupid game.
         addFluidExtractorProcess(CombType.UNKNOWNLIQUID, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
         /*
-         * TODO: update this comment
-         * The Centrifuge Recipes for Infused Shards and Nether/End-Shard from the Infused Shard Line are below the
-         * NobleGas Lines for Xenon and co. in GT_MachineRecipeLoader.java In Lines 1525
+         * TODO: update this comment The Centrifuge Recipes for Infused Shards and Nether/End-Shard from the Infused
+         * Shard Line are below the NobleGas Lines for Xenon and co. in GT_MachineRecipeLoader.java In Lines 1525
          */
     }
 
