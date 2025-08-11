@@ -3569,6 +3569,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    protected boolean requiresMuffler() {
+        return getPollutionPerSecond(null) > 0;
+    }
+
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
     }
