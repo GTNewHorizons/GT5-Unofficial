@@ -68,20 +68,21 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
                     onElementPass(MTEIndustrialExtractor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement(
             'B',
-            ofBlocksTiered(
-                MTEIndustrialExtractor::getItemPipeTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTechAPI.sBlockCasings11, 0),
-                    Pair.of(GregTechAPI.sBlockCasings11, 1),
-                    Pair.of(GregTechAPI.sBlockCasings11, 2),
-                    Pair.of(GregTechAPI.sBlockCasings11, 3),
-                    Pair.of(GregTechAPI.sBlockCasings11, 4),
-                    Pair.of(GregTechAPI.sBlockCasings11, 5),
-                    Pair.of(GregTechAPI.sBlockCasings11, 6),
-                    Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                -1,
-                MTEIndustrialExtractor::setItemPipeTier,
-                MTEIndustrialExtractor::getItemPipeTier))
+            GTStructureChannels.ITEM_PIPE_CASING.use(
+                ofBlocksTiered(
+                    MTEIndustrialExtractor::getItemPipeTierFromMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings11, 0),
+                        Pair.of(GregTechAPI.sBlockCasings11, 1),
+                        Pair.of(GregTechAPI.sBlockCasings11, 2),
+                        Pair.of(GregTechAPI.sBlockCasings11, 3),
+                        Pair.of(GregTechAPI.sBlockCasings11, 4),
+                        Pair.of(GregTechAPI.sBlockCasings11, 5),
+                        Pair.of(GregTechAPI.sBlockCasings11, 6),
+                        Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                    -1,
+                    MTEIndustrialExtractor::setItemPipeTier,
+                    MTEIndustrialExtractor::getItemPipeTier)))
         .addElement('A', chainAllGlasses())
         .build();
 
@@ -176,6 +177,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addEnergyHatch("Any Stainless Steel Casing", 1)
             .addMaintenanceHatch("Any Stainless Steel Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
         return tt;
     }
