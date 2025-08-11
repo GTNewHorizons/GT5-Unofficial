@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 import com.gtnewhorizon.gtnhmixins.builders.MixinBuilder;
 
-import bartworks.common.configs.Configuration;
 import gregtech.common.config.Gregtech;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -32,11 +31,6 @@ public enum Mixin implements IMixins {
     LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
         .addClientMixins("minecraft.LocaleMixin")
         .setPhase(Phase.EARLY)),
-    CacheCraftingManagerRecipes(
-        new MixinBuilder()
-            .addCommonMixins("minecraft.CraftingManagerMixin")
-            .setApplyIf(() -> Configuration.mixins.enableCraftingManagerRecipeCaching)
-            .setPhase(Phase.EARLY)),
     VANILLA_ACCESSORS(new MixinBuilder()
         .addCommonMixins(
             "minecraft.accessors.BlockStemMixin",
