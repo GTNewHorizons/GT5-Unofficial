@@ -792,7 +792,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
 
         if (Mods.GalacticraftCore.isModLoaded()) {
-            addTeleportationMethod(builder);
+            addTeleportationButton(builder);
         }
 
         // Open contributor window button
@@ -847,7 +847,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     @Optional.Method(modid = Mods.ModIDs.GALACTICRAFT_CORE)
-    private void addTeleportationMethod(ModularWindow.Builder builder) {
+    private void addTeleportationButton(ModularWindow.Builder builder) {
         // Teleportation button
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.getContext()
