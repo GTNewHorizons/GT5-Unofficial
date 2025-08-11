@@ -36,7 +36,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,13 +46,13 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gtnhintergalactic.gui.IG_UITextures;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.gui.TecTechUITextures;
 
 /**
@@ -120,19 +119,19 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.manager.desc0"))
+        tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.manager.desc0"))
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.manager.desc1"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
+                    + GTUtility.translate("gt.blockmachines.multimachine.project.ig.manager.desc1"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
             .beginStructureBlock(1, 5, 2, false)
-            .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-            .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+            .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -345,7 +344,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
             })
             .setPos(174, doesBindPlayerInventory() ? 132 : 156)
             .setSize(16, 16);
-        button.addTooltip(GCCoreUtil.translate("ig.button.projects"))
+        button.addTooltip(GTUtility.translate("ig.button.projects"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }

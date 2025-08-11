@@ -16,7 +16,6 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -27,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -58,21 +58,21 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
-        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
+        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
             + (p.hatchId() / 2 + 1); // Planet Type
     /** Status of the planet type setting */
     private static final IStatusFunction<TileEntityModulePump> PLANET_TYPE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the gas type setting */
     private static final INameFunction<TileEntityModulePump> GAS_TYPE_SETTING_NAME = (base,
-        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " "
+        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " "
             + (p.hatchId() / 2 + 1); // Gas Type
     /** Status of the gas type setting */
     private static final IStatusFunction<TileEntityModulePump> GAS_TYPE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModulePump> PARALLEL_SETTING_NAME = (base,
-        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " "
+        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " "
             + (p.hatchId() / 2 + 1); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
@@ -405,20 +405,20 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
+            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc1"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
 
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -494,21 +494,21 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
+            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc1"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
 
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -584,21 +584,21 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
+            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
 
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .toolTipFinisher();
             return tt;
         }

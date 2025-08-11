@@ -10,18 +10,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import gtnhintergalactic.recipe.IGRecipeMaps;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -76,22 +75,22 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> specialInfo = new ArrayList<>();
             int recipeTier = recipeInfo.recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
-            specialInfo.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeTier));
+            specialInfo.add(GTUtility.translate("ig.nei.module", recipeTier));
 
             String neededProject = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
             String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
             if (neededProject != null && !neededProject.isEmpty()) {
                 specialInfo.add(
                     String.format(
-                        GCCoreUtil.translate("ig.nei.spaceassembler.project"),
+                        GTUtility.translate("ig.nei.spaceassembler.project"),
                         SpaceProjectManager.getProject(neededProject)
                             .getLocalizedName()));
                 specialInfo.add(
                     String.format(
-                        GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
+                        GTUtility.translate("ig.nei.spaceassembler.projectAt"),
                         neededProjectLocation == null || neededProjectLocation.isEmpty()
-                            ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
-                            : GCCoreUtil.translate(
+                            ? GTUtility.translate("ig.nei.spaceassembler.projectAnyLocation")
+                            : GTUtility.translate(
                                 SpaceProjectManager.getLocation(neededProjectLocation)
                                     .getUnlocalizedName())));
             }
