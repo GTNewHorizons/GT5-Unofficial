@@ -449,6 +449,10 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return injected > 0;
     }
 
+    protected boolean requiresMuffler() {
+        return true;
+    }
+
     public Block getCasingBlock() {
         return ModBlocks.blockCasings4Misc;
     }

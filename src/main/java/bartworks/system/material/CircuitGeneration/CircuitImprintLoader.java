@@ -45,7 +45,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.mixin.hooks.BWCoreStaticReplacementMethodes;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
@@ -267,7 +266,6 @@ public class CircuitImprintLoader {
         recipeWorldCache.forEach(
             CraftingManager.getInstance()
                 .getRecipeList()::remove);
-        BWCoreStaticReplacementMethodes.clearRecentlyUsedRecipes();
         RecipeMaps.slicerRecipes.getBackend()
             .removeRecipes(gtrecipeWorldCache);
         GTModHandler.sBufferRecipeList.removeAll(recipeWorldCache);
