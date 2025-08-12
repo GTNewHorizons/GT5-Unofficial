@@ -26,12 +26,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import gregtech.api.enums.ItemList;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.util.shutdown.ShutDownReason;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -55,28 +49,13 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -86,7 +65,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -105,10 +83,12 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
-import org.jetbrains.annotations.Nullable;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
@@ -137,7 +117,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addShape(
             tier1,
             transpose(
-                new String[][]{
+                new String[][] {
                     // spotless:off
                     {"       ", "E     E", "E     E", "EEEEEEE", "E     E", "E     E", "       "},
                     {"EEEEEEE", "CAAAAAC", "CAAAAAC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "E     E"},
@@ -150,7 +130,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addShape(
             tier2,
             transpose(
-                new String[][]{
+                new String[][] {
                     // spotless:off
                     {"    ", "    ", "    ", "HGGH", "HGGH", "HGGH", "HGGH", "HGGH", "    ", "    ", "    "},
                     {"    ", "    ", "HGGH", "GGGG", "GGGG", "GGGG", "GGGG", "GGGG", "HGGH", "    ", "    "},
@@ -164,7 +144,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addShape(
             tier3,
             transpose(
-                new String[][]{
+                new String[][] {
                     // spotless:off
                     {"       ", "       ", "       ", "       ", "   I   ", "   I   ", "       ", "       ", "       ", "       "},
                     {"       ", "       ", "       ", "   I   ", "   I   ", "   I   ", "   I   ", "       ", "       ", "       "},
@@ -230,8 +210,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        if (stackSize.stackSize == 1)
-            buildPiece(tier1, stackSize, hintsOnly, 3, 5, 0);
+        if (stackSize.stackSize == 1) buildPiece(tier1, stackSize, hintsOnly, 3, 5, 0);
         if (stackSize.stackSize == 2) {
             buildPiece(tier2, stackSize, hintsOnly, 7, 6, 2);
         }
@@ -273,9 +252,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-                                 ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[]{
+            if (active) return new ITexture[] {
                 BlockIcons.getCasingTextureForId(
                     getTier() < 3 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 11)
                         : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 13)),
@@ -287,8 +266,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
-            return new ITexture[]{
+                    .build() };
+            return new ITexture[] {
                 BlockIcons.getCasingTextureForId(
                     getTier() < 3 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 11)
                         : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 13)),
@@ -300,11 +279,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
+                    .build() };
         }
-        return new ITexture[]{BlockIcons.getCasingTextureForId(
+        return new ITexture[] { BlockIcons.getCasingTextureForId(
             mTier < 3 ? ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11)
-                : ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))};
+                : ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13)) };
     }
 
     @Override
@@ -345,6 +324,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     /**
      * check wether the tier of the structure has changed.
      * Optimised by first looking at the previously known structure tier
+     * 
      * @return 0 = invalid, others = tier number
      */
     private int checkForNewTier() {
@@ -360,15 +340,15 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     /**
      * return wether the structure is tier 1, 2 or neither
+     * 
      * @return 0 = neither tier 1 or 2, 1 = tier 1, 2 = tier 2
      */
     private int getTier1Or2() {
-        if (checkPiece(tier1, 3,5,0)){
-            return checkPiece(tier2, 7,6,2) ? 2 : 1;
+        if (checkPiece(tier1, 3, 5, 0)) {
+            return checkPiece(tier2, 7, 6, 2) ? 2 : 1;
         }
         return 0;
     }
-
 
     @Override
     public RecipeMap<?> getRecipeMap() {
@@ -407,9 +387,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
                 mMaxParallel = maxParallel;
 
-
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
-                if (requiredUpgrade == PCBFactoryUpgrade.BIO && mBioChamber == null || requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioChamber.isAllowedToWork())
+                if (requiredUpgrade == PCBFactoryUpgrade.BIO && mBioChamber == null
+                    || requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioChamber.isAllowedToWork())
                     return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
                 int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
@@ -527,7 +507,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 
-
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return (int) (10000f * mRoughnessMultiplier);
@@ -537,7 +516,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return mTier;
     }
 
-    //TODO not used?
+    // TODO not used?
     private ExtendedFacing transformFacing(ExtendedFacing facing) {
         ForgeDirection curDirection = facing.getDirection();
         Rotation curRotation = facing.getRotation();
@@ -593,7 +572,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-                                        ItemStack aTool) {
+        ItemStack aTool) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
@@ -612,63 +591,69 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         long amps = getMaxInputAmps();
 
         int mCurrentParallel = 0;
-        return new String[]{
+        return new String[] {
             /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(mProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s / "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(mMaxProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s",
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
             /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(storedEnergy)
-            + EnumChatFormatting.RESET
-            + " EU / "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(maxEnergy)
-            + EnumChatFormatting.RESET
-            + " EU",
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
             /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(getActualEnergyUsage())
-            + EnumChatFormatting.RESET
-            + " EU/t",
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(getActualEnergyUsage())
+                + EnumChatFormatting.RESET
+                + " EU/t",
             /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(voltage)
-            + EnumChatFormatting.RESET
-            + " EU/t(*"
-            + amps
-            + " A)"
-            + translateToLocal("GT5U.machines.tier")
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + VN[GTUtility.getTier(voltage)]
-            + EnumChatFormatting.RESET,
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(voltage)
+                + EnumChatFormatting.RESET
+                + " EU/t(*"
+                + amps
+                + " A)"
+                + translateToLocal("GT5U.machines.tier")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[GTUtility.getTier(voltage)]
+                + EnumChatFormatting.RESET,
             /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
-            + EnumChatFormatting.RED
-            + (getIdealStatus() - getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + translateToLocal("GT5U.multiblock.efficiency")
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + mEfficiency / 100.0F
-            + EnumChatFormatting.RESET
-            + " %",
-            /* 6 */ translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.GREEN + mMaxParallel + ", " +
-            translateToLocal("GT5U.multiblock.curparallelism") + ": "
-            + EnumChatFormatting.GREEN
-            + mCurrentParallel,
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            /* 6 */ translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.GREEN
+                + mMaxParallel
+                + ", "
+                + translateToLocal("GT5U.multiblock.curparallelism")
+                + ": "
+                + EnumChatFormatting.GREEN
+                + mCurrentParallel,
             /* 7 */ translateToLocal("GT5U.multiblock.upgrades") + ": "
-            + EnumChatFormatting.GREEN + (mBioChamber == null ? "" : "Bio Chamber ")
-            + (mBioChamber != null && mCoolingTower != null ? ", " : "")
-            + EnumChatFormatting.GREEN + (mCoolingTower == null ? "" : " Cooling Tower Tier "
-            + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
-            + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : "")
+                + EnumChatFormatting.GREEN
+                + (mBioChamber == null ? "" : "Bio Chamber ")
+                + (mBioChamber != null && mCoolingTower != null ? ", " : "")
+                + EnumChatFormatting.GREEN
+                + (mCoolingTower == null ? ""
+                    : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
+                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : "")
 
         };
     }
@@ -874,7 +859,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return new Pos2d(80, 91);
     }
 
-
     public boolean addNaniteBusToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
@@ -892,25 +876,30 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 mBioChamber.unlinkController(this);
             }
             mBioChamber = (MTEPCBBioChamber) unit;
-            mBioChamberX = unit.getBaseMetaTileEntity().getXCoord();
-            mBioChamberY = unit.getBaseMetaTileEntity().getYCoord();
-            mBioChamberZ = unit.getBaseMetaTileEntity().getZCoord();
+            mBioChamberX = unit.getBaseMetaTileEntity()
+                .getXCoord();
+            mBioChamberY = unit.getBaseMetaTileEntity()
+                .getYCoord();
+            mBioChamberZ = unit.getBaseMetaTileEntity()
+                .getZCoord();
         } else if (unit instanceof MTEPCBCoolingTower) {
             if (mCoolingTower != null && mCoolingTower != unit) {
                 mCoolingTower.unlinkController(this);
             }
             mCoolingTower = (MTEPCBCoolingTower) unit;
-            mCoolingTowerX = unit.getBaseMetaTileEntity().getXCoord();
-            mCoolingTowerY = unit.getBaseMetaTileEntity().getYCoord();
-            mCoolingTowerZ = unit.getBaseMetaTileEntity().getZCoord();
+            mCoolingTowerX = unit.getBaseMetaTileEntity()
+                .getXCoord();
+            mCoolingTowerY = unit.getBaseMetaTileEntity()
+                .getYCoord();
+            mCoolingTowerZ = unit.getBaseMetaTileEntity()
+                .getZCoord();
         }
     }
 
     public void unregisterLinkedUnit(MTEPCBUpgradeBase<?> unit) {
         if (unit instanceof MTEPCBBioChamber) {
             mBioChamber = null;
-        } else if (unit instanceof MTEPCBCoolingTower)
-            mCoolingTower = null;
+        } else if (unit instanceof MTEPCBCoolingTower) mCoolingTower = null;
     }
 
     @Override
@@ -930,6 +919,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
 
         NaniteBus(MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
+
             @Override
             public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
                 return gtMetaTileEntityPCBFactory.naniteBuses.size();
@@ -957,7 +947,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
 
         // Display linked controller in Waila.
@@ -990,7 +980,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         if (mBioChamber != null) {
             NBTTagCompound bioChamber = new NBTTagCompound();
             bioChamber.setInteger("x", mBioChamberX);

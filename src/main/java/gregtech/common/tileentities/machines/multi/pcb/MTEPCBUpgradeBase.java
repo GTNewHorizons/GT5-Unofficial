@@ -1,16 +1,12 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import gregtech.api.enums.ItemList;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -20,29 +16,29 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
+import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * base class for the PCB Factory upgrades.
  * <p>
- * Made by guid118, with heavy inspiration from {@link gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase} by NotAPinguin
+ * Made by guid118, with heavy inspiration from
+ * {@link gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase} by NotAPinguin
  */
-public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
-    extends MTEEnhancedMultiBlockBase<T> {
+public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> extends MTEEnhancedMultiBlockBase<T> {
 
     private enum LinkResult {
         /**
@@ -59,7 +55,6 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         SUCCESS,
     }
 
-
     /*
      * Coordinates of the PCB Factories. These can be used to find the factories again on world
      * load.
@@ -70,14 +65,9 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
      * Queue of all currently active factories, sorted by time left in their recipe.
      */
     private final Queue<MTEPCBFactory> activeFactories = new PriorityQueue<>(
-        (a, b) -> Integer.compare(
-            b.mMaxProgresstime - b.mProgresstime,
-            a.mMaxProgresstime - a.mProgresstime
-        )
-    );
+        (a, b) -> Integer.compare(b.mMaxProgresstime - b.mProgresstime, a.mMaxProgresstime - a.mProgresstime));
 
     private MTEPCBFactory currentFactory;
-
 
     protected MTEPCBUpgradeBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -114,14 +104,10 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         // Try to re-link to controller periodically, for example on game load.
         if (aTimer % 100 == 5 && !controllerCoords.isEmpty()) {
             for (Vec3Impl controllerCoord : controllerCoords) {
-                trySetControllerFromCoord(
-                    controllerCoord.get(0),
-                    controllerCoord.get(1),
-                    controllerCoord.get(2));
+                trySetControllerFromCoord(controllerCoord.get(0), controllerCoord.get(1), controllerCoord.get(2));
             }
         }
     }
-
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
@@ -141,7 +127,6 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
             }
         }
     }
-
 
     public NBTTagIntArray saveLinkDataToNBT() {
         int[] array = new int[controllerCoords.size() * 3];
@@ -163,8 +148,6 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         }
     }
 
-
-
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
         IGregTechTileEntity ourBaseMetaTileEntity = this.getBaseMetaTileEntity();
         // First check whether the controller we try to link to is within range. The range is defined
@@ -180,8 +163,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         var tileEntity = getBaseMetaTileEntity().getWorld()
             .getTileEntity(x, y, z);
         if (tileEntity == null) return LinkResult.NO_VALID_FACTORY;
-        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity))
-            return LinkResult.NO_VALID_FACTORY;
+        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return LinkResult.NO_VALID_FACTORY;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
         if (!(metaTileEntity instanceof MTEPCBFactory)) return LinkResult.NO_VALID_FACTORY;
 
@@ -189,10 +171,8 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         MTEPCBFactory factory = (MTEPCBFactory) metaTileEntity;
         factory.registerLinkedUnit(this);
 
-
         return LinkResult.SUCCESS;
     }
-
 
     private boolean tryLinkDataStick(EntityPlayer aPlayer) {
         // Make sure the held item is a data stick
@@ -233,15 +213,17 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     // references lingering around
     public void unlinkController(MTEPCBFactory oldController) {
         IGregTechTileEntity tileEntity = oldController.getBaseMetaTileEntity();
-        if (tileEntity != null)
-            controllerCoords.remove(new Vec3Impl(tileEntity.getXCoord(), tileEntity.getYCoord(), tileEntity.getZCoord()));
+        if (tileEntity != null) controllerCoords
+            .remove(new Vec3Impl(tileEntity.getXCoord(), tileEntity.getYCoord(), tileEntity.getZCoord()));
     }
 
     @Override
     public void onBlockDestroyed() {
         // When this block is destroyed, explicitly unlink it from the controller if there is any.
         for (Vec3Impl controllerCoord : controllerCoords) {
-            TileEntity TE = this.getBaseMetaTileEntity().getWorld().getTileEntity(controllerCoord.get(0), controllerCoord.get(1), controllerCoord.get(2));
+            TileEntity TE = this.getBaseMetaTileEntity()
+                .getWorld()
+                .getTileEntity(controllerCoord.get(0), controllerCoord.get(1), controllerCoord.get(2));
             if (TE instanceof IGregTechTileEntity GTTE) {
                 if (GTTE.getMetaTileEntity() instanceof MTEPCBFactory controller) {
                     controller.unregisterLinkedUnit(this);
@@ -251,7 +233,6 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         }
         super.onBlockDestroyed();
     }
-
 
     @Override
     public String[] getInfoData() {
@@ -272,7 +253,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
 
         // Display linked controller in Waila.
@@ -299,11 +280,12 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         if (isActive) {
             int progresstime = tag.getInteger("mProgressTime");
             int maxProgresstime = tag.getInteger("mMaxProgressTime");
-            currentTip.add(StatCollector.translateToLocalFormatted(
-                "GT5U.waila.machine.in_progress",
-                (double) progresstime / 20,
-                (double) maxProgresstime / 20,
-                (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)));
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.machine.in_progress",
+                    (double) progresstime / 20,
+                    (double) maxProgresstime / 20,
+                    (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)));
         } else {
             currentTip.add(StatCollector.translateToLocalFormatted("GT5U.waila.machine.idle"));
         }
@@ -312,15 +294,17 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.facing",
                 getFacingNameLocalized(
-                    this.getBaseMetaTileEntity().getFrontFacing()
+                    this.getBaseMetaTileEntity()
+                        .getFrontFacing()
                         .ordinal())));
 
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
-        boolean isActive = this.getBaseMetaTileEntity().isActive();
+        int z) {
+        boolean isActive = this.getBaseMetaTileEntity()
+            .isActive();
         tag.setBoolean("isActive", isActive);
 
         if (isActive) {
@@ -329,8 +313,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         }
         if (!controllerCoords.isEmpty()) {
             tag.setTag("controllers", saveLinkDataToNBT());
-        } else
-            tag.removeTag("controllers");
+        } else tag.removeTag("controllers");
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
@@ -357,7 +340,9 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
         IGregTechTileEntity baseFactory = factory.getBaseMetaTileEntity();
         for (MTEPCBFactory listedFactory : activeFactories) {
             IGregTechTileEntity listedBaseFactory = listedFactory.getBaseMetaTileEntity();
-            if (baseFactory.getXCoord() == listedBaseFactory.getXCoord() && baseFactory.getYCoord() == listedBaseFactory.getYCoord() && baseFactory.getZCoord() == listedBaseFactory.getZCoord()) {
+            if (baseFactory.getXCoord() == listedBaseFactory.getXCoord()
+                && baseFactory.getYCoord() == listedBaseFactory.getYCoord()
+                && baseFactory.getZCoord() == listedBaseFactory.getZCoord()) {
                 return;
             }
         }
