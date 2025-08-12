@@ -184,7 +184,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 }
             }
         } else {
-            //This tells minecraft that the item was used.
+            // This tells minecraft that the item was used.
             return aStack.copy();
         }
         return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
