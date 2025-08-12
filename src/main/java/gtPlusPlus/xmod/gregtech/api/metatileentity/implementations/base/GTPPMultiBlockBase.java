@@ -18,6 +18,8 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,7 +74,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
-import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
@@ -566,66 +567,73 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     public boolean addToMachineList(final IMetaTileEntity aMetaTileEntity, final int aBaseCasingIndex) {
-        if (aMetaTileEntity == null) {
-            return false;
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
 
-        // Use this to determine the correct value, then update the hatch texture after.
-        boolean aDidAdd = false;
-
-        // Handle Custom Hatches
         if (aMetaTileEntity instanceof MTEHatchInputBattery) {
             log("Found MTEHatchInputBattery");
-            aDidAdd = addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
+            return addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
+        }
+        if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
             log("Found MTEHatchOutputBattery");
-            aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchAirIntake) {
-            aDidAdd = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex)
-                && addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
         }
-
-        // Handle TT Multi-A Energy Hatches
-        else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+        if (aMetaTileEntity instanceof MTEHatchAirIntake) {
+            boolean addedAir = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex);
+            boolean addedInput = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+            return addedAir && addedInput;
+        }
+        if (isThisHatchMultiEnergy(aMetaTileEntity)) {
             log("Found isThisHatchMultiEnergy");
-            aDidAdd = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+            boolean added = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
+            return added;
         }
-
-        // Handle TT Multi-A Dynamos
-        else if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+        if (isThisHatchMultiDynamo(aMetaTileEntity)) {
             log("Found isThisHatchMultiDynamo");
-            aDidAdd = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+            boolean added = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
+            return added;
         }
 
-        // Handle Fluid Hatches using seperate logic
-        else if (aMetaTileEntity instanceof MTEHatchInput)
-            aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof MTEHatchOutput)
-            aDidAdd = addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
+        // Handle Fluid Hatches using separate logic
+        if (aMetaTileEntity instanceof MTEHatchInput)
+            return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchOutput)
+            return addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
 
-        // Process Remaining hatches using Vanilla GT Logic
-        else if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+        // Process Remaining hatches using base GT Logic
+        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            aDidAdd = addToMachineListInternal(mDualInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchInputBus)
-            aDidAdd = addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof MTEHatchOutputBus)
-            aDidAdd = addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            aDidAdd = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mDualInputHatches, aMetaTileEntity, aBaseCasingIndex);
+        }
+        if (aMetaTileEntity instanceof MTEHatchInputBus)
+            return addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus)
+            return addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
+            boolean added = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            aDidAdd = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+            return added;
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            boolean added = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof MTEHatchMaintenance)
-            aDidAdd = addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
-        else if (aMetaTileEntity instanceof MTEHatchMuffler)
-            aDidAdd = addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
+            return added;
+        }
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+            return addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
+        }
+        if (aMetaTileEntity instanceof MTEHatchMuffler)
+            return addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
 
-        // return super.addToMachineList(aTileEntity, aBaseCasingIndex);
-        return aDidAdd;
+        return false;
     }
 
     @Override
