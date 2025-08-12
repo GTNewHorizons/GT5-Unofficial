@@ -1,31 +1,5 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.INEIPreviewModifier;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
-
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -33,13 +7,32 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implements ISurvivalConstructable, INEIPreviewModifier {
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+
+public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String STRUCTURE_PIECE_BIO_CHAMBER = "bioUpgrade";
-    private static final String[][] structure =
-        new String[][] {
-            // spotless:off
+    private static final String[][] structure = new String[][] {
+        // spotless:off
             {"     ","     ","F   F","FGGGF","FGGGF","FGGGF","FS~SF"},
             {"     ","     "," SSS ","G   G","G   G","G   G","SSSSS"},
             {"     ","  S  "," SSS ","G   G","G   G","G   G","SSSSS"},
@@ -53,21 +46,21 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
             {"     ","     "," SSS ","G   G","G   G","G   G","SSSSS"},
             {"     ","     ","F   F","FGGGF","FGGGF","FGGGF","FSSSF"}
             //spotless:on
-        };
+    };
     private static final IStructureDefinition<MTEPCBBioChamber> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEPCBBioChamber>builder().addShape(STRUCTURE_PIECE_BIO_CHAMBER, structure)
+        .<MTEPCBBioChamber>builder()
+        .addShape(STRUCTURE_PIECE_BIO_CHAMBER, structure)
         // Damascus steel frame box
         .addElement('F', ofFrame(Materials.DamascusSteel))
         // any glass
         .addElement('G', chainAllGlasses())
-        //Clean stainless steel casing
+        // Clean stainless steel casing
         .addElement('S', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .build();
 
     public MTEPCBBioChamber(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
-
 
     public MTEPCBBioChamber(String aName) {
         super(aName);
@@ -82,9 +75,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(STRUCTURE_PIECE_BIO_CHAMBER, stackSize, 2, 6, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done!");
+            GTUtility.sendChatToPlayer(env.getActor(), EnumChatFormatting.GREEN + "Auto placing done!");
             return 0;
         }
         return built;
@@ -101,27 +92,30 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
         tt.addMachineType("PCB Factory Upgrade")
             .addInfo(EnumChatFormatting.GRAY + "It enables nanites to construct organic circuitry.")
             .addInfo(EnumChatFormatting.GRAY + "Required for Bioware and Wetware boards.")
-            .addInfo(EnumChatFormatting.GRAY + "Place the controller block within "
-                + EnumChatFormatting.RED
-                + MTEPCBFactory.UPGRADE_RANGE
-                + EnumChatFormatting.GRAY
-                + " blocks of the PCB Factory"
-            )
+            .addInfo(
+                EnumChatFormatting.GRAY + "Place the controller block within "
+                    + EnumChatFormatting.RED
+                    + MTEPCBFactory.UPGRADE_RANGE
+                    + EnumChatFormatting.GRAY
+                    + " blocks of the PCB Factory")
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
             .addController("Front Center")
-            .addCasingInfoExactlyColored("Clean Stainless Steel Machine Casing",
+            .addCasingInfoExactlyColored(
+                "Clean Stainless Steel Machine Casing",
                 EnumChatFormatting.GRAY,
                 68,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored("Damascus Steel Frame Box",
+            .addCasingInfoExactlyColored(
+                "Damascus Steel Frame Box",
                 EnumChatFormatting.GRAY,
                 40,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored("Any Tiered Glass",
+            .addCasingInfoExactlyColored(
+                "Any Tiered Glass",
                 EnumChatFormatting.GRAY,
                 72,
                 EnumChatFormatting.GOLD,
@@ -136,12 +130,12 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
         return new MTEPCBBioChamber(this.mName);
     }
 
-    //TODO use a different texture, though idk how that works
+    // TODO use a different texture, though idk how that works
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-                                 int colorIndex, boolean active, boolean redstoneLevel) {
+        int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
-            if (active) return new ITexture[]{
+            if (active) return new ITexture[] {
                 Textures.BlockIcons
                     .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
                 TextureFactory.builder()
@@ -152,8 +146,8 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
                     .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
-            return new ITexture[]{
+                    .build() };
+            return new ITexture[] {
                 Textures.BlockIcons
                     .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
                 TextureFactory.builder()
@@ -164,10 +158,10 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber> implem
                     .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
+                    .build() };
         }
-        return new ITexture[]{
-            Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1))};
+        return new ITexture[] {
+            Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)) };
     }
 
     @Override
