@@ -298,8 +298,8 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder addMaterial(MaterialStack material) {
-        this.materialList.add(material);
+    public MaterialBuilder addMaterial(Materials material, int amount) {
+        this.materialList.add(new MaterialStack(material, amount));
         return this;
     }
 
