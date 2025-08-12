@@ -18,8 +18,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -74,6 +72,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
