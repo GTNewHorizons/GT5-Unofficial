@@ -303,7 +303,10 @@ public class SpaceProjectManager {
     public static String getPlayerNameFromUUID(UUID playerUUID) {
         GameProfile profile = MinecraftServer.getServer()
             .func_152358_ax()
-            .func_152652_a(playerUUID); // The profile can be null (offline mode issue?)
+            .func_152652_a(playerUUID); // The profile can
+                                        // be null
+                                        // (offline mode
+                                        // issue?)
         return profile == null ? "ERROR_NULL_PROFILE" : profile.getName();
     }
 

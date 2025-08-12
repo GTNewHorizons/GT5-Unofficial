@@ -14,15 +14,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtil;
 
 /**
- * Small wrapper around a MTEPurificationUnitBase, to be stored in the main purification plant
- * controller. May be useful for storing additional data in the controller that the individual units do not need
- * to know about.
+ * Small wrapper around a MTEPurificationUnitBase, to be stored in the main purification plant controller. May be useful
+ * for storing additional data in the controller that the individual units do not need to know about.
  */
 public class LinkedPurificationUnit {
 
     /**
-     * Whether this unit is active in the current cycle. We need to keep track of this so units cannot come online
-     * in the middle of a cycle and suddenly start processing.
+     * Whether this unit is active in the current cycle. We need to keep track of this so units cannot come online in
+     * the middle of a cycle and suddenly start processing.
      */
     private boolean mIsActive = false;
 

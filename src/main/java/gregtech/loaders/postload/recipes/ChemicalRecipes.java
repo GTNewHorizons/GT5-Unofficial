@@ -3793,7 +3793,8 @@ public class ChemicalRecipes implements Runnable {
         // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
         GTValues.RA.stdBuilder()
-            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar is prohibited now,
+            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar
+                         // is prohibited now,
                 // and i don't feel like reworking GT++ cell registration for now
                 GameRegistry.findItemStack(GTPlusPlus.ID, "Formaldehyde", 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))

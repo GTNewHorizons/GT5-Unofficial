@@ -14,8 +14,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 
 /**
- * The glass is split into separate files because they are registered as regular blocks, and a regular block can have
- * 16 subtypes at most.
+ * The glass is split into separate files because they are registered as regular blocks, and a regular block can have 16
+ * subtypes at most.
  * <p>
  * This class hosts various special types of tiered glass with not many tiers.
  */
