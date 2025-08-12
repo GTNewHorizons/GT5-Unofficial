@@ -963,8 +963,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1700)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VOLATUS, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VOLATUS, 1)
             .constructMaterial();
     }
 
@@ -981,8 +981,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(1449)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -999,8 +999,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(903)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial();
     }
 
@@ -1015,7 +1015,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(83)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
+            .addAspect(TCAspects.AER, 2)
             .constructMaterial();
     }
 
@@ -1032,7 +1032,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(1090)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 3))
+            .addAspect(TCAspects.VENENUM, 3)
             .constructMaterial();
     }
 
@@ -1047,7 +1047,7 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(1000)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 3))
+            .addAspect(TCAspects.VINCULUM, 3)
             .constructMaterial();
     }
 
@@ -1068,8 +1068,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1560)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.LUCRUM, 1)
             .constructMaterial();
     }
 
@@ -1091,8 +1091,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(544)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
             .constructMaterial();
     }
 
@@ -1107,7 +1107,7 @@ public class MaterialsInit1 {
             .addDustItems()
             .addPlasma()
             .setMeltingPoint(2349)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))
+            .addAspect(TCAspects.VITREUS, 3)
             .constructMaterial();
     }
 
@@ -1123,8 +1123,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(301)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1141,8 +1141,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1115)
             .setBlastFurnaceTemp(1115)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))
+            .addAspect(TCAspects.SANO, 1)
+            .addAspect(TCAspects.TUTAMEN, 1)
             .constructMaterial();
     }
 
@@ -1164,8 +1164,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(3800)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -1181,9 +1181,9 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(594)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
             .constructMaterial();
     }
 
@@ -1201,8 +1201,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1068)
             .setBlastFurnaceTemp(1068)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1216,8 +1216,8 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(171)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PANNUS, 1))
+            .addAspect(TCAspects.AQUA, 2)
+            .addAspect(TCAspects.PANNUS, 1)
             .constructMaterial();
     }
 
@@ -1241,8 +1241,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(2180)
             .setBlastFurnaceTemp(1700)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
             .constructMaterial();
     }
 
@@ -1267,8 +1267,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1700)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
             .constructMaterial();
     }
 
@@ -1286,8 +1286,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addGearItems()
             .setMeltingPoint(1357)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.PERMUTATIO, 1)
             .constructMaterial();
     }
 
@@ -1305,7 +1305,7 @@ public class MaterialsInit1 {
             .setMeltingPoint(1680)
             .setBlastFurnaceTemp(1680)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
+            .addAspect(TCAspects.METALLUM, 3)
             .constructMaterial();
     }
 
@@ -1316,7 +1316,7 @@ public class MaterialsInit1 {
             .setMetaItemSubID(0)
             .setARGB(0xffffffff)
             .setTypes(256) // Only when needed
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
+            .addAspect(TCAspects.VACUOS, 2)
             .constructMaterial();
     }
 
@@ -1334,8 +1334,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1802)
             .setBlastFurnaceTemp(1802)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1353,8 +1353,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1099)
             .setBlastFurnaceTemp(1099)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1369,7 +1369,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(53)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2))
+            .addAspect(TCAspects.PERDITIO, 2)
             .constructMaterial();
     }
 
@@ -1387,8 +1387,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1585)
             .setBlastFurnaceTemp(1585)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1408,8 +1408,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(302)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
             .constructMaterial();
     }
 
@@ -1431,8 +1431,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1337)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.LUCRUM, 2)
             .constructMaterial();
     }
 
@@ -1450,8 +1450,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1734)
             .setBlastFurnaceTemp(1734)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1468,7 +1468,7 @@ public class MaterialsInit1 {
             .setMeltingPoint(14)
             .setFuelType(1)
             .setFuelPower(20)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial();
     }
 
@@ -1483,7 +1483,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(1)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
+            .addAspect(TCAspects.AER, 2)
             .constructMaterial();
     }
 
@@ -1500,8 +1500,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(429)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1527,8 +1527,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
             .constructMaterial();
     }
 
@@ -1550,7 +1550,7 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1811)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
+            .addAspect(TCAspects.METALLUM, 3)
             .constructMaterial();
     }
 
@@ -1568,8 +1568,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1193)
             .setBlastFurnaceTemp(1193)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1591,8 +1591,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(600)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
@@ -1609,8 +1609,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(454)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.POTENTIA, 2)
             .constructMaterial();
     }
 
@@ -1628,8 +1628,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1925)
             .setBlastFurnaceTemp(1925)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -1655,7 +1655,7 @@ public class MaterialsInit1 {
             .setMeltingPoint(5000)
             .setFuelType(5)
             .setFuelPower(32)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 4))
+            .addAspect(TCAspects.PRAECANTATIO, 4)
             .constructMaterial();
     }
 
@@ -1672,8 +1672,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(923)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.SANO, 1)
             .constructMaterial();
     }
 
@@ -1694,7 +1694,7 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1519)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
+            .addAspect(TCAspects.METALLUM, 3)
             .constructMaterial();
     }
 
@@ -1711,9 +1711,9 @@ public class MaterialsInit1 {
             .setMeltingPoint(234)
             .setFuelType(5)
             .setFuelPower(32)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
             .constructMaterial();
     }
 
@@ -1734,8 +1734,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(2896)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
             .constructMaterial();
     }
 
@@ -1758,8 +1758,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1297)
             .setBlastFurnaceTemp(1297)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 2))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 2)
             .constructMaterial();
     }
 
@@ -1785,9 +1785,9 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 2))
+            .addAspect(TCAspects.METALLUM, 4)
+            .addAspect(TCAspects.VITREUS, 3)
+            .addAspect(TCAspects.ALIENIS, 2)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_LuV);
     }
@@ -1810,8 +1810,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1728)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -1829,8 +1829,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(2750)
             .setBlastFurnaceTemp(2750)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
             .constructMaterial();
     }
 
@@ -1845,7 +1845,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(63)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
+            .addAspect(TCAspects.AER, 2)
             .constructMaterial();
     }
 
@@ -1871,9 +1871,9 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
+            .addAspect(TCAspects.NEBRISUM, 1)
             .constructMaterial();
     }
 
@@ -1888,7 +1888,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(54)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 1))
+            .addAspect(TCAspects.AER, 1)
             .constructMaterial();
     }
 
@@ -1913,7 +1913,7 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1828)
             .setBlastFurnaceRequired(true)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
+            .addAspect(TCAspects.METALLUM, 3)
             .constructMaterial();
     }
 
@@ -1928,8 +1928,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .addPlasma()
             .setMeltingPoint(317)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
+            .addAspect(TCAspects.IGNIS, 2)
+            .addAspect(TCAspects.POTENTIA, 1)
             .constructMaterial();
     }
 
@@ -1951,8 +1951,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(2041)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.NEBRISUM, 1)
             .constructMaterial();
     }
 
@@ -1973,8 +1973,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(912)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 2)
             .constructMaterial();
     }
 
@@ -1990,8 +1990,8 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addPlasma()
             .setMeltingPoint(336)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.POTENTIA, 1)
             .constructMaterial();
     }
 
@@ -2009,8 +2009,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1208)
             .setBlastFurnaceTemp(1208)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2028,8 +2028,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1315)
             .setBlastFurnaceTemp(1315)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2044,8 +2044,8 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(202)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.AER, 1)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2062,8 +2062,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(312)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
@@ -2082,9 +2082,9 @@ public class MaterialsInit1 {
             .setMeltingPoint(1345)
             .setBlastFurnaceTemp(1345)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 10))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .addAspect(TCAspects.MAGNETO, 10)
             .constructMaterial();
     }
 
@@ -2103,8 +2103,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1814)
             .setBlastFurnaceTemp(1814)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2123,8 +2123,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(2273)
             .setBlastFurnaceTemp(2273)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.TENEBRAE, 1)
             .constructMaterial();
     }
 
@@ -2146,8 +2146,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1234)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.LUCRUM, 1)
             .constructMaterial();
     }
 
@@ -2163,8 +2163,8 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(370)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUX, 1))
+            .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.LUX, 1)
             .constructMaterial();
     }
 
@@ -2182,8 +2182,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addGearItems()
             .setMeltingPoint(1050)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.STRONTIO, 1)
             .constructMaterial();
     }
 
@@ -2199,7 +2199,7 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(388)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -2222,8 +2222,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VINCULUM, 1)
             .constructMaterial();
     }
 
@@ -2240,8 +2240,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(722)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2258,8 +2258,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1629)
             .setBlastFurnaceTemp(1629)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2280,8 +2280,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(2115)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2299,8 +2299,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1818)
             .setBlastFurnaceTemp(1818)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2319,8 +2319,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setMeltingPoint(505)
             .setBlastFurnaceTemp(505)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
@@ -2346,8 +2346,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.TUTAMEN, 1)
             .constructMaterial();
     }
 
@@ -2372,8 +2372,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 2))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ORDO, 2)
             .constructMaterial();
     }
 
@@ -2399,8 +2399,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.TUTAMEN, 1)
             .constructMaterial();
     }
 
@@ -2421,8 +2421,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1405)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2441,8 +2441,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(2183)
             .setBlastFurnaceTemp(2183)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2460,8 +2460,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1097)
             .setBlastFurnaceTemp(1097)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2479,8 +2479,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1799)
             .setBlastFurnaceTemp(1799)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
             .constructMaterial();
     }
 
@@ -2497,8 +2497,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(692)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.SANO, 1)
             .constructMaterial();
     }
 
@@ -2521,7 +2521,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(14)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 3))
+            .addAspect(TCAspects.AQUA, 3)
             .constructMaterial();
     }
 
@@ -2536,7 +2536,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(1)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 3))
+            .addAspect(TCAspects.AER, 3)
             .constructMaterial();
     }
 
@@ -2557,8 +2557,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(912)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 3)
             .constructMaterial();
     }
 
@@ -2573,7 +2573,7 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(14)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4))
+            .addAspect(TCAspects.AQUA, 4)
             .constructMaterial();
     }
 
@@ -2594,8 +2594,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1405)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 2)
             .constructMaterial();
     }
 
@@ -2620,7 +2620,7 @@ public class MaterialsInit1 {
             .setARGB(0x003f4cfd)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2634,7 +2634,7 @@ public class MaterialsInit1 {
             .setARGB(0x005d5dfe)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2648,7 +2648,7 @@ public class MaterialsInit1 {
             .setARGB(0x00736dfe)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2662,7 +2662,7 @@ public class MaterialsInit1 {
             .setARGB(0x00877eff)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2676,7 +2676,7 @@ public class MaterialsInit1 {
             .setARGB(0x009890ff)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2690,7 +2690,7 @@ public class MaterialsInit1 {
             .setARGB(0x00a8a1ff)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2704,7 +2704,7 @@ public class MaterialsInit1 {
             .setARGB(0x00b7b3ff)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2718,7 +2718,7 @@ public class MaterialsInit1 {
             .setARGB(0x00c5c5ff)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2732,7 +2732,7 @@ public class MaterialsInit1 {
             .setARGB(0x003d3a52)
             .addCell()
             .setMeltingPoint(273)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -2754,8 +2754,8 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .addGearItems()
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 3)
             .constructMaterial();
     }
 
@@ -3185,8 +3185,8 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 10)
             .addMaterial(Materials.Hydrogen, 10)
             .addMaterial(Materials.Oxygen, 16)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
+            .addAspect(TCAspects.VINCULUM, 2)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
@@ -3401,8 +3401,8 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
@@ -3417,9 +3417,9 @@ public class MaterialsInit1 {
             .setDurability(32)
             .setToolQuality(1)
             .addOreItems()
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.ELECTRUM, 1)
             .constructMaterial();
     }
 
@@ -3604,8 +3604,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ALIENIS, 1)
             .constructMaterial();
     }
 
@@ -3734,8 +3734,8 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Tin, 2)
             .addMaterial(Materials.Silver, 2)
             .addMaterial(Materials.Platinum, 2)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ALIENIS, 1)
             .constructMaterial();
     }
 
@@ -3790,9 +3790,9 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setFuelType(5)
             .setFuelPower(2048)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.CORPUS, 3))
+            .addAspect(TCAspects.PRAECANTATIO, 3)
+            .addAspect(TCAspects.IGNIS, 3)
+            .addAspect(TCAspects.CORPUS, 3)
             .constructMaterial();
     }
 
@@ -3836,8 +3836,8 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Magnesium, 1)
             .addMaterial(Materials.Aluminium, 2)
             .addMaterial(Materials.Oxygen, 4)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
+            .addAspect(TCAspects.LUCRUM, 2)
+            .addAspect(TCAspects.VITREUS, 2)
             .constructMaterial();
     }
 
@@ -3857,7 +3857,7 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 5))
+            .addAspect(TCAspects.POTENTIA, 5)
             .constructMaterial();
     }
 
@@ -3872,7 +3872,7 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addCell()
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
+            .addAspect(TCAspects.POTENTIA, 2)
             .constructMaterial();
     }
 
@@ -3887,7 +3887,7 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addCell()
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
+            .addAspect(TCAspects.POTENTIA, 2)
             .constructMaterial();
     }
 
@@ -3909,8 +3909,8 @@ public class MaterialsInit1 {
             .setRGB(0xffff00)
             .addDustItems()
             .addCell()
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUX, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1))
+            .addAspect(TCAspects.LUX, 2)
+            .addAspect(TCAspects.SENSUS, 1)
             .constructMaterial();
     }
 
@@ -3938,8 +3938,8 @@ public class MaterialsInit1 {
             .addCell()
             .addToolHeadItems()
             .addMaterial(Materials.Carbon, 1)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
+            .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -3956,8 +3956,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .addToolHeadItems()
             .addMaterial(Materials.Carbon, 1)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
+            .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
             .constructMaterial();
     }
 
@@ -4048,8 +4048,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(1811)
             .setBlastFurnaceTemp(1000)
             .setBlastFurnaceRequired(true)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1))
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
@@ -4125,8 +4125,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(-1)
             .setFuelType(5)
             .setFuelPower(160)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.AER, 2)
             .constructMaterial();
     }
 
@@ -4147,8 +4147,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setFuelType(5)
             .setFuelPower(320)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.IGNIS, 2)
             .constructMaterial();
     }
 
@@ -4169,8 +4169,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setFuelType(5)
             .setFuelPower(160)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.TERRA, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.TERRA, 2)
             .constructMaterial();
     }
 
@@ -4191,8 +4191,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setFuelType(5)
             .setFuelPower(160)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.AQUA, 2)
             .constructMaterial();
     }
 
@@ -4213,8 +4213,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setFuelType(5)
             .setFuelPower(320)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.PERDITIO, 2)
             .constructMaterial();
     }
 
@@ -4235,8 +4235,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setFuelType(5)
             .setFuelPower(240)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.ORDO, 2)
             .constructMaterial();
     }
 
@@ -4256,8 +4256,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setFuelType(5)
             .setFuelPower(240)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AURAM, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.AURAM, 2)
             .constructMaterial();
     }
 
@@ -4277,8 +4277,8 @@ public class MaterialsInit1 {
             .addGearItems()
             .setFuelType(5)
             .setFuelPower(160)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.VACUOS, 2)
             .constructMaterial();
     }
 

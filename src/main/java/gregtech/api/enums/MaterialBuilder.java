@@ -313,8 +313,8 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder addAspect(TCAspects.TC_AspectStack aspect) {
-        this.aspects.add(aspect);
+    public MaterialBuilder addAspect(TCAspects aspect, int amount) {
+        this.aspects.add(new TCAspects.TC_AspectStack(aspect, amount));
         return this;
     }
 
