@@ -103,6 +103,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
@@ -112,7 +113,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
-    private static final String ocTier2Upgrade = "ocTier2Upgrade";
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private float mRoughnessMultiplier = 1;
     private int mTier = 1;
@@ -125,7 +125,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private int mCoolingTowerX;
     private int mCoolingTowerY;
     private int mCoolingTowerZ;
-    private MTEHatchInput mCoolantInputHatch;
     private final ArrayList<MTEHatchNanite> naniteBuses = new ArrayList<>();
     private static final byte mTextureBitmap = 0b1;
     private static final IStructureDefinition<MTEPCBFactory> STRUCTURE_DEFINITION = StructureDefinition
@@ -234,6 +233,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
     }
 
+    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
         if (mMachine) return -1;
@@ -318,19 +318,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        //TODO optimise this with mTier
 
-        // check the tier of the main structure
-        boolean tier1_valid = checkPiece(tier1, 3, 5, 0);
-        if (tier1_valid) {
-            if (checkPiece(tier2, 7, 6, 2)) mTier = 2; else mTier = 1;
-        } else {
-            if (checkPiece(tier3, 3, 21, 0)) mTier = 3;
-            else return false;
+        int newTier = checkForNewTier();
+        if (newTier == 0) return false;
+        if (newTier != mTier) {
+            mTier = newTier;
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
-
-        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-
 
         if (mMaintenanceHatches.size() != 1) {
             return false;
@@ -342,6 +336,34 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
         return true;
     }
+
+    /**
+     * check wether the tier of the structure has changed.
+     * Optimised by first looking at the previously known structure tier
+     * @return 0 = invalid, others = tier number
+     */
+    private int checkForNewTier() {
+        if (mTier < 3) {
+            int tier1Or2 = getTier1Or2();
+            if (tier1Or2 > 0) return tier1Or2;
+            return checkPiece(tier3, 3, 21, 0) ? 3 : 0;
+        }
+
+        // mTier == 3
+        return checkPiece(tier3, 3, 21, 0) ? 3 : getTier1Or2();
+    }
+
+    /**
+     * return wether the structure is tier 1, 2 or neither
+     * @return 0 = neither tier 1 or 2, 1 = tier 1, 2 = tier 2
+     */
+    private int getTier1Or2() {
+        if (checkPiece(tier1, 3,5,0)){
+            return checkPiece(tier2, 7,6,2) ? 2 : 1;
+        }
+        return 0;
+    }
+
 
     @Override
     public RecipeMap<?> getRecipeMap() {

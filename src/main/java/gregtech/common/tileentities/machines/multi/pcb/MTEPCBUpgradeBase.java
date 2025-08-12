@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.pcb;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -326,16 +327,8 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
             tag.setInteger("mProgressTime", mProgresstime);
             tag.setInteger("mMaxProgressTime", mMaxProgresstime);
         }
-
         if (!controllerCoords.isEmpty()) {
-            int[] array = new int[controllerCoords.size() * 3];
-            int i = 0;
-            for (Vec3Impl controllerCoord : controllerCoords) {
-                array[i++] = controllerCoord.get(0);
-                array[i++] = controllerCoord.get(1);
-                array[i++] = controllerCoord.get(2);
-            }
-            tag.setIntArray("controllers", array);
+            tag.setTag("controllers", saveLinkDataToNBT());
         } else
             tag.removeTag("controllers");
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -350,6 +343,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         MTEPCBFactory factory = activeFactories.peek();
         if (factory != null && !factory.equals(currentFactory)) {
+            this.currentFactory = factory;
             this.mProgresstime = factory.mProgresstime;
             this.mMaxProgresstime = factory.mMaxProgresstime;
         }
@@ -360,11 +354,17 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>>
     }
 
     public void addRecipe(MTEPCBFactory factory) {
+        IGregTechTileEntity baseFactory = factory.getBaseMetaTileEntity();
+        for (MTEPCBFactory listedFactory : activeFactories) {
+            IGregTechTileEntity listedBaseFactory = listedFactory.getBaseMetaTileEntity();
+            if (baseFactory.getXCoord() == listedBaseFactory.getXCoord() && baseFactory.getYCoord() == listedBaseFactory.getYCoord() && baseFactory.getZCoord() == listedBaseFactory.getZCoord()) {
+                return;
+            }
+        }
         activeFactories.add(factory);
     }
 
     public void cancelRecipe(MTEPCBFactory factory) {
-        //TODO make this work for multiple factories
         activeFactories.remove(factory);
     }
 
