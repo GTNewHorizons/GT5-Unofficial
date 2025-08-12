@@ -9,8 +9,6 @@ import gregtech.api.enums.Mods;
 @Config.RequiresMcRestart
 public class Configuration {
 
-    public static final Mixins mixins = new Mixins();
-
     public static final CrossModInteractions crossModInteractions = new CrossModInteractions();
 
     public static final Multiblocks multiblocks = new Multiblocks();
@@ -20,14 +18,6 @@ public class Configuration {
     public static final SingleBlocks singleBlocks = new SingleBlocks();
 
     public static final RossRuinMetas rossRuinMetas = new RossRuinMetas();
-
-    @Config.Comment("Mixins section.")
-    public static class Mixins {
-
-        @Config.Comment("if true, patches the crafting manager to cache recipes in class: net.minecraft.item.crafting.CraftingManager")
-        @Config.DefaultBoolean(false)
-        public boolean enableCraftingManagerRecipeCaching = false;
-    }
 
     @Config.Comment("Crossmod interactions section.")
     public static class CrossModInteractions {

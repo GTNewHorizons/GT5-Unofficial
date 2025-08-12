@@ -27,9 +27,8 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
     private UUID owner_uuid;
 
     /***
-     * As opposed to the Energy Input equivalent, there is only one wireless dynamo multiamp.
-     * It has a maximum capacity of Long.MAX, meant to consolidate an LSC for power gen options.
-     * Takes in UMV amps 65k.
+     * As opposed to the Energy Input equivalent, there is only one wireless dynamo multiamp. It has a maximum capacity
+     * of Long.MAX, meant to consolidate an LSC for power gen options. Takes in UMV amps 65k.
      */
     public MTEHatchWirelessDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(

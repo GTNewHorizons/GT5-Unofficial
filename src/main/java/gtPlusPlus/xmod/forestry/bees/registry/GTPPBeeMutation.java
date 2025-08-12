@@ -15,7 +15,6 @@ import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IMutationCondition;
 import forestry.apiculture.genetics.BeeMutation;
-import gregtech.mixin.interfaces.accessors.MutationAccessor;
 
 public class GTPPBeeMutation extends BeeMutation {
 
@@ -60,7 +59,7 @@ public class GTPPBeeMutation extends BeeMutation {
     private float getBasicChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
         IGenome genome1, IClimateProvider climate) {
         float mutationChance = this.getBaseChance();
-        List<IMutationCondition> mutationConditions = ((MutationAccessor) this).gt5u$getMutationConditions();
+        List<IMutationCondition> mutationConditions = this.getMutationConditions();
         if (mutationConditions != null) {
             for (IMutationCondition mutationCondition : mutationConditions) {
                 mutationChance *= mutationCondition
