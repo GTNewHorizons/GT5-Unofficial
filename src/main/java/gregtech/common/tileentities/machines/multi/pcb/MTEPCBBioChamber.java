@@ -1,13 +1,16 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -121,7 +124,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
                 EnumChatFormatting.GOLD,
                 false)
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
-            .toolTipFinisher(Authorguid118);
+            .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;
     }
 
@@ -166,6 +169,8 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        checkFactories();
+
         // Check self
         return checkPiece(STRUCTURE_PIECE_BIO_CHAMBER, 2, 6, 0);
     }
