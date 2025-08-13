@@ -740,7 +740,7 @@ public class MaterialsInit1 {
         Materials.Chrome = loadChrome();
         Materials.Cobalt = loadCobalt();
         Materials.Copper = loadCopper();
-        Materials.Desh = loadDesh();
+        Materials.Desh = loadDesh(); // Not a real element
         Materials.Dysprosium = loadDysprosium();
         Materials.Empty = loadEmpty(); // Not a real element
         Materials.Erbium = loadErbium();
@@ -763,6 +763,7 @@ public class MaterialsInit1 {
         Materials.Magnesium = loadMagnesium();
         Materials.Manganese = loadManganese();
         Materials.Mercury = loadMercury();
+        Materials.MeteoricIron = loadMeteoricIron(); // Not a real element
         Materials.Molybdenum = loadMolybdenum();
         Materials.Neodymium = loadNeodymium();
         Materials.Neutronium = loadNeutronium();
@@ -1602,6 +1603,30 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMeteoricIron() {
+        return new MaterialBuilder().setName("MeteoricIron")
+            .setDefaultLocalName("Meteoric Iron")
+            .setElement(Element.SpFe)
+            .setMetaItemSubID(340)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x643250)
+            .setToolSpeed(6.0f)
+            .setDurability(384)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1811)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
             .constructMaterial();
     }
 
@@ -3075,7 +3100,6 @@ public class MaterialsInit1 {
         Materials.Magma = loadMagma();
         Materials.Mawsitsit = loadMawsitsit();
         Materials.Mercassium = loadMercassium();
-        Materials.MeteoricIron = loadMeteoricIron();
         Materials.MeteoricSteel = loadMeteoricSteel();
         Materials.Meteorite = loadMeteorite();
         Materials.Meutoite = loadMeutoite();
@@ -4407,30 +4431,6 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadMeteoricIron() {
-        return new MaterialBuilder().setName("MeteoricIron")
-            .setDefaultLocalName("Meteoric Iron")
-            .setElement(Element.SpFe)
-            .setMetaItemSubID(340)
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyeGray)
-            .setRGB(0x643250)
-            .setToolSpeed(6.0f)
-            .setDurability(384)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addPlasma()
-            .addToolHeadItems()
-            .setMeltingPoint(1811)
-            .setBlastFurnaceTemp(1000)
-            .setBlastFurnaceRequired(true)
-            .addAspect(TCAspects.METALLUM, 2)
-            .addAspect(TCAspects.MAGNETO, 1)
             .constructMaterial();
     }
 
