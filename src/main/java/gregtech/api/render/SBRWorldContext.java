@@ -250,7 +250,7 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      */
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
-        return predicate.test(worldRenderPass);
+        return worldRenderPass == -1 || predicate.test(worldRenderPass);
     }
 
     @Override
