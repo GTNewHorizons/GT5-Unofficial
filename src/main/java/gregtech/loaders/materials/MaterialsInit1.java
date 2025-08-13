@@ -270,9 +270,9 @@ public class MaterialsInit1 {
         Materials.Mawsitsit = loadMawsitsit();
         Materials.Mercassium = loadMercassium();
         Materials.MeteoricIron = loadMeteoricIron();
+        Materials.MeteoricSteel = loadMeteoricSteel();
 
         // spotless:off
-        Materials.MeteoricSteel           = new Materials( 341, TextureSet.SET_METALLIC          ,   6.0F,    768,  4, 1|2          |64          ,  50,  25,  40,   0,   "MeteoricSteel"           ,   "Meteoric Steel"                ,    0,       0,       1811, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Materials.MeteoricIron, 50), new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
         Materials.Meteorite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   ,  80,  35,  60,   0,   "Meteorite"               ,   "Meteorite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      );
         Materials.Meutoite                = new Materials( 487, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  95,  82, 105,   0,   "Meutoite"                ,   "Meutoite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Migmatite               = new Materials( 872, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Migmatite"               ,   "Migmatite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4429,6 +4429,33 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMeteoricSteel() {
+        return new MaterialBuilder().setName("MeteoricSteel")
+            .setDefaultLocalName("Meteoric Steel")
+            .setMetaItemSubID(341)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x321928)
+            .setToolSpeed(6.0f)
+            .setDurability(768)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .setMeltingPoint(1811)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.MeteoricIron, 50)
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
