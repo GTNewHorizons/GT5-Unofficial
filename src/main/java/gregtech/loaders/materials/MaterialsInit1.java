@@ -283,9 +283,9 @@ public class MaterialsInit1 {
         Materials.Nether = loadNether();
         Materials.NetherBrick = loadNetherBrick();
         Materials.NetherQuartz = loadNetherQuartz();
+        Materials.NetherStar = loadNetherStar();
 
         // spotless:off
-        Materials.NetherStar              = new Materials( 506, TextureSet.SET_NETHERSTAR        ,   6.0F,   5120,  4, 1|  4|8      |64          , 255, 255, 255,   0,   "NetherStar"              ,   "Nether Star"                   ,    5,   50000,         -1,    0, false, false,  15,   1,   1, Dyes.dyeWhite       );
         Materials.ObsidianFlux            = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       ,  80,  50, 100,   0,   "ObsidianFlux"            ,   "Fluxed Obsidian"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      );
         Materials.Oilsands                = new Materials( 878, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   ,  10,  10,  10,   0,   "Oilsands"                ,   "Oilsands"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Onyx                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Onyx"                    ,   "Onyx"                          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -4648,6 +4648,24 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addAspect(TCAspects.POTENTIA, 1)
             .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherStar() {
+        return new MaterialBuilder().setName("NetherStar")
+            .setDefaultLocalName("Nether Star")
+            .setMetaItemSubID(506)
+            .setIconSet(TextureSet.SET_NETHERSTAR)
+            .setColor(Dyes.dyeWhite)
+            .setToolSpeed(6.0f)
+            .setDurability(5120)
+            .setToolQuality(4)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setFuelType(5)
+            .setFuelPower(50000)
             .constructMaterial();
     }
 
