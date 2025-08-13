@@ -292,9 +292,9 @@ public class MaterialsInit1 {
         Materials.Oureclase = loadOureclase();
         Materials.Painite = loadPainite();
         Materials.Peanutwood = loadPeanutwood();
+        Materials.Petroleum = loadPetroleum();
 
         // spotless:off
-        Materials.Petroleum               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Petroleum"               ,   "Petroleum"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Pewter                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Pewter"                  ,   "Pewter"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Phoenixite              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Phoenixite"              ,   "Phoenixite"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Prometheum              = new Materials( 960, TextureSet.SET_METALLIC          ,   8.0F,    512,  1, 1|2  |8      |64          ,  90, 129,  86,   0,   "Prometheum"              ,   "Prometheum"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4758,6 +4758,14 @@ public class MaterialsInit1 {
     private static Materials loadPeanutwood() {
         return new MaterialBuilder().setName("Peanutwood")
             .setDefaultLocalName("Peanut Wood")
+            .constructMaterial();
+    }
+
+    private static Materials loadPetroleum() {
+        return new MaterialBuilder().setName("Petroleum")
+            .setDefaultLocalName("Petroleum")
+            .addDustItems()
+            .addOreItems()
             .constructMaterial();
     }
 
