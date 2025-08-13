@@ -1501,8 +1501,25 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         private int getHint(ItemStack stack) {
-            return Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
-                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length)].getMinimalGlassTier() + 1;
+            boolean hasChannelData = GTStructureChannels.LSC_CAPACITOR.hasValue(stack);
+
+            int capacitorChannelValue;
+            if (hasChannelData) {
+                // Use the actual channel value if it exists
+                capacitorChannelValue = GTStructureChannels.LSC_CAPACITOR
+                    .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length);
+            } else {
+                // Fall back to stack size if no channel data exists (for compatibility)
+                // Map supercapacitor tier (1-10) to capacitor tier (0-9)
+                capacitorChannelValue = Math.max(0, Math.min(stack.stackSize - 1, Capacitor.VALUES_BY_TIER.length - 1));
+            }
+
+            // Clamp the channel value to valid range to prevent array out of bounds
+            capacitorChannelValue = Math.max(0, Math.min(Capacitor.VALUES_BY_TIER.length - 1, capacitorChannelValue));
+
+            Capacitor capacitor = Capacitor.VALUES_BY_TIER[capacitorChannelValue];
+
+            return capacitor.ordinal() + 1;
         }
 
         @Override
@@ -1528,6 +1545,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (GTStructureChannels.LSC_CAPACITOR.hasValue(trigger)) {
                 int capacitorTier = GTStructureChannels.LSC_CAPACITOR
                     .getValueClamped(trigger, 0, Capacitor.VALUES_BY_TIER.length);
+                // Clamp to valid range to prevent array out of bounds
+                capacitorTier = Math.max(0, Math.min(Capacitor.VALUES_BY_TIER.length - 1, capacitorTier));
                 if (Capacitor.VALUES_BY_TIER[capacitorTier].getMinimalGlassTier() > glassTier) {
                     env.getChatter()
                         .accept(new ChatComponentTranslation("kekztech.structure.glass_incompatible"));
