@@ -266,9 +266,9 @@ public class MaterialsInit1 {
         Materials.Lava = loadLava();
         Materials.Lemurite = loadLemurite();
         Materials.Limestone = loadLimestone();
+        Materials.Magma = loadMagma();
 
         // spotless:off
-        Materials.Magma                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255,  64,   0,   0,   "Magma"                   ,   "Magma"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
         Materials.Mawsitsit               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Mawsitsit"               ,   "Mawsitsit"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Mercassium              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Mercassium"              ,   "Mercassium"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.MeteoricIron            = new Materials( 340, TextureSet.SET_METALLIC          ,   6.0F,    384,  3, 1|2  |8   |32|64          , 100,  50,  80,   0,   "MeteoricIron"            ,   "Meteoric Iron"                 ,    0,       0,       1811, 1000,  true, false,   1,   1,   1, Dyes.dyeGray        ,Element.SpFe, Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
@@ -4377,6 +4377,14 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Limestone")
             .setDefaultLocalName("Limestone")
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMagma() {
+        return new MaterialBuilder().setName("Magma")
+            .setDefaultLocalName("Magma")
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff4000)
             .constructMaterial();
     }
 
