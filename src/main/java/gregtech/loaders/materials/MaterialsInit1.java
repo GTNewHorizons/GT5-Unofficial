@@ -296,9 +296,9 @@ public class MaterialsInit1 {
         Materials.Pewter = loadPewter();
         Materials.Phoenixite = loadPhoenixite();
         Materials.Prometheum = loadPrometheum();
+        Materials.Quartzite = loadQuartzite();
 
         // spotless:off
-        Materials.Quartzite               = new Materials( 523, TextureSet.SET_QUARTZ            ,   1.0F,      0,  1, 1  |4|8                   , 210, 230, 210,   0,   "Quartzite"               ,   "Quartzite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
         Materials.Randomite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Randomite"               ,   "Randomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Rhyolite                = new Materials( 875, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Rhyolite"                ,   "Rhyolite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Rubracium               = new Materials( 488, TextureSet.SET_METALLIC          ,   1.0F,    128,  1, 1|2  |8      |64|128      , 151,  45,  45,   0,   "Rubracium"               ,   "Rubracium"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
@@ -4801,6 +4801,19 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadQuartzite() {
+        return new MaterialBuilder().setName("Quartzite")
+            .setDefaultLocalName("Quartzite")
+            .setMetaItemSubID(523)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xd2e6d2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
             .constructMaterial();
     }
 
