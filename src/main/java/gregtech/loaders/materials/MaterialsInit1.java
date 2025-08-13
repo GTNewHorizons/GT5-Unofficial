@@ -271,9 +271,9 @@ public class MaterialsInit1 {
         Materials.Mercassium = loadMercassium();
         Materials.MeteoricIron = loadMeteoricIron();
         Materials.MeteoricSteel = loadMeteoricSteel();
+        Materials.Meteorite = loadMeteorite();
 
         // spotless:off
-        Materials.Meteorite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   ,  80,  35,  60,   0,   "Meteorite"               ,   "Meteorite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      );
         Materials.Meutoite                = new Materials( 487, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  95,  82, 105,   0,   "Meutoite"                ,   "Meutoite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Migmatite               = new Materials( 872, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Migmatite"               ,   "Migmatite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Mimichite               = new Materials(  -1, TextureSet.SET_GEM_VERTICAL      ,   1.0F,      0,  1, 1  |4|8                   , 255, 255, 255,   0,   "Mimichite"               ,   "Mimichite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4456,6 +4456,16 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
             .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMeteorite() {
+        return new MaterialBuilder().setName("Meteorite")
+            .setDefaultLocalName("Meteorite")
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x50233c)
+            .addDustItems()
+            .addOreItems()
             .constructMaterial();
     }
 
