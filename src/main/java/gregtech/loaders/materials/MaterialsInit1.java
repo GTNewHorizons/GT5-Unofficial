@@ -272,9 +272,9 @@ public class MaterialsInit1 {
         Materials.MeteoricIron = loadMeteoricIron();
         Materials.MeteoricSteel = loadMeteoricSteel();
         Materials.Meteorite = loadMeteorite();
+        Materials.Meutoite = loadMeutoite();
 
         // spotless:off
-        Materials.Meutoite                = new Materials( 487, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  95,  82, 105,   0,   "Meutoite"                ,   "Meutoite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Migmatite               = new Materials( 872, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Migmatite"               ,   "Migmatite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Mimichite               = new Materials(  -1, TextureSet.SET_GEM_VERTICAL      ,   1.0F,      0,  1, 1  |4|8                   , 255, 255, 255,   0,   "Mimichite"               ,   "Mimichite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Moonstone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Moonstone"               ,   "Moonstone"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1)));
@@ -4464,6 +4464,17 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Meteorite")
             .setColor(Dyes.dyePurple)
             .setRGB(0x50233c)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMeutoite() {
+        return new MaterialBuilder().setName("Meutoite")
+            .setDefaultLocalName("Meutoite")
+            .setMetaItemSubID(487)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x5f5269)
             .addDustItems()
             .addOreItems()
             .constructMaterial();
