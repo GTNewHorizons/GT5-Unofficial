@@ -264,9 +264,9 @@ public class MaterialsInit1 {
         Materials.Kalendrite = loadKalendrite();
         Materials.Komatiite = loadKomatiite();
         Materials.Lava = loadLava();
+        Materials.Lemurite = loadLemurite();
 
         // spotless:off
-        Materials.Lemurite                = new Materials( 486, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1                         , 219, 219, 219,   0,   "Lemurite"                ,   "Lemurite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Limestone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Limestone"               ,   "Limestone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Magma                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255,  64,   0,   0,   "Magma"                   ,   "Magma"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
         Materials.Mawsitsit               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Mawsitsit"               ,   "Mawsitsit"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -4360,6 +4360,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeOrange)
             .setRGB(0xff4000)
             .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadLemurite() {
+        return new MaterialBuilder().setName("Lemurite")
+            .setDefaultLocalName("Lemurite")
+            .setMetaItemSubID(486)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xdbdbdb)
+            .addDustItems()
             .constructMaterial();
     }
 
