@@ -1,12 +1,10 @@
 package bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.STACKS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.*;
+import static gregtech.api.util.GTRecipeConstants.*;
 
+import gregtech.api.util.recipe.Scanning;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -19,6 +17,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Assembler implements Runnable {
 
@@ -169,6 +169,38 @@ public class Assembler implements Runnable {
             .fluidInputs(Materials.Lead.getMolten(6 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        // PCB Cooling Tower
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.PCBCoolingTower.get(1L))
+            .metadata(SCANNING, new Scanning(3 * MINUTES + 20 * SECONDS, TierEU.ZPM))
+            .itemInputs(
+                ItemList.ReinforcedPhotolithographicFrameworkCasing.get(4L),
+                ItemList.Casing_Coil_Superconductor.get(16L),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L },
+                ItemList.Electric_Pump_UHV.get(1L)
+            )
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.indalloy140"),4096))
+            .itemOutputs(ItemList.PCBCoolingTower.get(1L))
+            .eut(TierEU.UV)
+            .duration(300 * SECONDS)
+            .addTo(assemblerRecipes);
+
+        // PCB Bio Chamber
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.PCBBioChamber.get(1L))
+            .metadata(SCANNING, new Scanning(3 * MINUTES + 20 * SECONDS, TierEU.ZPM))
+            .itemInputs(
+                ItemList.Casing_CleanStainlessSteel.get(4L),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2L },
+                ItemList.FluidRegulator_ZPM.get(1L),
+                ItemList.Electric_Pump_ZPM.get(1L)
+            )
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.indalloy140"),4096))
+            .itemOutputs(ItemList.PCBBioChamber.get(1L))
+            .eut(TierEU.ZPM)
+            .duration(300 * SECONDS)
             .addTo(assemblerRecipes);
     }
 }
