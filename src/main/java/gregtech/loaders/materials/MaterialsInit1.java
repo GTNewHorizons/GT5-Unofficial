@@ -281,9 +281,9 @@ public class MaterialsInit1 {
         Materials.NaquadahEnriched = loadNaquadahEnriched();
         Materials.Naquadria = loadNaquadria();
         Materials.Nether = loadNether();
+        Materials.NetherBrick = loadNetherBrick();
 
         // spotless:off
-        Materials.NetherBrick             = new Materials( 814, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 100,   0,   0,   0,   "NetherBrick"             ,   "Nether Brick"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
         Materials.NetherQuartz            = new Materials( 522, TextureSet.SET_QUARTZ            ,   1.0F,     32,  1, 1  |4|8      |64          , 230, 210, 210,   0,   "NetherQuartz"            ,   "Nether Quartz"                 ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
         Materials.NetherStar              = new Materials( 506, TextureSet.SET_NETHERSTAR        ,   6.0F,   5120,  4, 1|  4|8      |64          , 255, 255, 255,   0,   "NetherStar"              ,   "Nether Star"                   ,    5,   50000,         -1,    0, false, false,  15,   1,   1, Dyes.dyeWhite       );
         Materials.ObsidianFlux            = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       ,  80,  50, 100,   0,   "ObsidianFlux"            ,   "Fluxed Obsidian"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      );
@@ -4617,6 +4617,18 @@ public class MaterialsInit1 {
     private static Materials loadNether() {
         return new MaterialBuilder().setName("Nether")
             .setDefaultLocalName("Nether")
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherBrick() {
+        return new MaterialBuilder().setName("NetherBrick")
+            .setDefaultLocalName("Nether Brick")
+            .setMetaItemSubID(814)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x640000)
+            .addDustItems()
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
