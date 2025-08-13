@@ -100,7 +100,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final String tier3 = "tier3";
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private float mRoughnessMultiplier = 1;
-    private int mTier = 1;
+    private byte mTier = 1;
     private int mMaxParallel = 0;
     private MTEPCBBioChamber mBioChamber;
     private int mBioChamberX;
@@ -303,7 +303,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
-        int newTier = checkForNewTier();
+        byte newTier = checkForNewTier();
         if (newTier == 0) return false;
         if (newTier != mTier) {
             mTier = newTier;
@@ -324,14 +324,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     /**
      * check wether the tier of the structure has changed.
      * Optimised by first looking at the previously known structure tier
-     * 
+     *
      * @return 0 = invalid, others = tier number
      */
-    private int checkForNewTier() {
+    private byte checkForNewTier() {
         if (mTier < 3) {
-            int tier1Or2 = getTier1Or2();
+            byte tier1Or2 = getTier1Or2();
             if (tier1Or2 > 0) return tier1Or2;
-            return checkPiece(tier3, 3, 21, 0) ? 3 : 0;
+            return (byte) (checkPiece(tier3, 3, 21, 0) ? 3 : 0);
         }
 
         // mTier == 3
@@ -340,12 +340,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     /**
      * return wether the structure is tier 1, 2 or neither
-     * 
+     *
      * @return 0 = neither tier 1 or 2, 1 = tier 1, 2 = tier 2
      */
-    private int getTier1Or2() {
+    private byte getTier1Or2() {
         if (checkPiece(tier1, 3, 5, 0)) {
-            return checkPiece(tier2, 7, 6, 2) ? 2 : 1;
+            return (byte) (checkPiece(tier2, 7, 6, 2) ? 2 : 1);
         }
         return 0;
     }
@@ -823,6 +823,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             aNBT.setTag("mCoolingTower", coolingTower);
         }
         aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
+        aNBT.setByte("mTier", mTier);
     }
 
     @Override
@@ -847,6 +848,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
 
         mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
+        mTier = aNBT.getByte("mTier");
     }
 
     @Override
