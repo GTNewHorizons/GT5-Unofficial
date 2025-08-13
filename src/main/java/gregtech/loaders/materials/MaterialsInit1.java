@@ -171,7 +171,6 @@ public class MaterialsInit1 {
         loadElements();
         loadIsotopes();
         loadWaterLine();
-        loadGTPP();
         loadRandom();
         loadDontCare();
         loadUnknownComponents();
@@ -745,6 +744,7 @@ public class MaterialsInit1 {
         Materials.Empty = loadEmpty(); // Not a real element
         Materials.Erbium = loadErbium();
         Materials.Europium = loadEuropium();
+        Materials.Flerovium = loadFlerovium();
         Materials.Fluorine = loadFluorine();
         Materials.Gadolinium = loadGadolinium();
         Materials.Gallium = loadGallium();
@@ -1245,6 +1245,24 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadFlerovium() {
+        return new MaterialBuilder().setName("Flerovium_GT5U")
+            .setDefaultLocalName("Flerovium")
+            .setElement(Element.Fl)
+            .setMetaItemSubID(984)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 3)
             .constructMaterial();
     }
 
@@ -2677,28 +2695,6 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.AQUA, 1)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
-    }
-
-    private static void loadGTPP() {
-        Materials.Flerovium = loadFlerovium();
-    }
-
-    private static Materials loadFlerovium() {
-        return new MaterialBuilder().setName("Flerovium_GT5U")
-            .setDefaultLocalName("Flerovium")
-            .setElement(Element.Fl)
-            .setMetaItemSubID(984)
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeWhite)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addPlasma()
-            .addToolHeadItems()
-            .addGearItems()
-            .addAspect(TCAspects.METALLUM, 2)
-            .addAspect(TCAspects.RADIO, 3)
-            .constructMaterial();
     }
 
     private static void loadRandom() {
