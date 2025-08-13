@@ -84,7 +84,8 @@ public class GTUtilityClient {
         tExtendedFacing = ExtendedFacing.of(tDirection);
 
         // for some reason +x and -z need this field set to true, but not any other sides
-        if (tDirection == ForgeDirection.NORTH || tDirection == ForgeDirection.EAST) ctx.renderer.field_152631_f = true;
+        if (tDirection == ForgeDirection.NORTH || tDirection == ForgeDirection.EAST)
+            ctx.renderBlocks.field_152631_f = true;
 
         for (int i = 0; i < 9; i++) {
             tExtendedFacing.getWorldOffset(tABCCoord, tXYZOffset);
@@ -94,7 +95,7 @@ public class GTUtilityClient {
             int tZ = tXYZOffset[2] + ctx.z;
             Block tBlock;
             if (tBlockOverride == null) {
-                tBlock = ctx.world
+                tBlock = ctx.blockAccess
                     .getBlock(ctx.x + tDirection.offsetX, tY + tDirection.offsetY, ctx.z + tDirection.offsetZ);
             } else {
                 tBlock = tBlockOverride;
@@ -103,14 +104,14 @@ public class GTUtilityClient {
             // so the front face cannot be occluded whatsoever in the most cases.
             Tessellator.instance.setBrightness(
                 tBlock.getMixedBrightnessForBlock(
-                    ctx.world,
+                    ctx.blockAccess,
                     ctx.x + tDirection.offsetX,
                     tY + tDirection.offsetY,
                     ctx.z + tDirection.offsetZ));
-            ctx.setupAO(tDirection)
+            ctx.setupLighting(tDirection)
                 .setupColor(tDirection, Dyes._NULL.getRGBA());
             GTRenderUtil.renderBlockIcon(
-                ctx.renderer,
+                ctx.renderBlocks,
                 tBlock,
                 tX + tDirection.offsetX * 0.001,
                 tY + tDirection.offsetY * 0.001,
@@ -123,6 +124,6 @@ public class GTUtilityClient {
             }
         }
 
-        ctx.renderer.field_152631_f = false;
+        ctx.renderBlocks.field_152631_f = false;
     }
 }

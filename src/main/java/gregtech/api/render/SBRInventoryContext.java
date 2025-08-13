@@ -35,20 +35,30 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
 
     protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    public final int meta;
+    public int meta;
 
     /**
-     * Constructs a new {@link SBRInventoryContext} used to render a single {@link Block} inside an inventory
-     *
-     * @param block    the {@link Block} to render
-     * @param meta     the meta value of the {@link Block}'s {@link Item} meta value
-     * @param modelId  the Model ID for the block
-     * @param renderer the {@link RenderBlocks} renderer to use
+     * Package-private constructor.
+     * <p>
+     * Instances should be obtained via {@link SBRContextHolder#getSBRInventoryContext}.
      */
-    public SBRInventoryContext(@NotNull Block block, int meta, int modelId, @NotNull RenderBlocks renderer) {
-        super(block, modelId, renderer);
+    SBRInventoryContext() {}
+
+    /**
+     * Configures this {@link SBRInventoryContext} to render a single {@link Block}
+     * inside an inventory, using the given parameters.
+     *
+     * @param block    the block to render
+     * @param meta     the block's metadata value (corresponds to the {@link Item} damage value)
+     * @param modelId  the model ID for the block
+     * @param renderer the {@link RenderBlocks} renderer to use
+     * @return this context instance, configured with the given parameters
+     */
+    SBRInventoryContext setup(@NotNull Block block, int meta, int modelId, @NotNull RenderBlocks renderer) {
+        super.setup(block, modelId, renderer);
         this.meta = meta;
         reset();
+        return this;
     }
 
     /**
@@ -109,7 +119,7 @@ public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
     public SBRInventoryContext setupColor(ForgeDirection side, int hexColor) {
         final Tessellator tessellator = Tessellator.instance;
         final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        final float[] rgb = hasColorOverride && !renderer.hasOverrideBlockTexture() ? getRGB(colorOverride)
+        final float[] rgb = hasColorOverride && !renderBlocks.hasOverrideBlockTexture() ? getRGB(colorOverride)
             : getRGB(hexColor);
 
         if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);

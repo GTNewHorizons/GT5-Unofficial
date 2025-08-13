@@ -25,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 
 /**
@@ -39,8 +41,11 @@ import gregtech.api.interfaces.ITexture;
 public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
 
     public static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
-    public final int worldRenderPass;
-    public final IBlockAccess world;
+    public int worldRenderPass;
+
+    /** Non-null dummy world, replaced in {@link #setup}. */
+    @NotNull
+    public IBlockAccess blockAccess = GTValues.DW;
 
     /**
      * Mixed Brightness cache
@@ -58,6 +63,12 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
      */
     private final float[][][] AOLV = new float[3][3][3];
+
+    /** Used to determine if face is flush with negative neighbour */
+    private static final double FLUSH_MIN = 0.001D;
+    /** Used to determine if face is flush with positive neighbour */
+    private static final double FLUSH_MAX = 0.999D;
+
     /**
      * Brightness for side.
      */
@@ -68,7 +79,14 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
     private float aoTopLeft, aoBottomLeft, aoBottomRight, aoTopRight;
 
     /**
-     * Constructs a new {@link SBRWorldContext} used to render a single {@link Block} in world for the
+     * Package-private constructor.
+     * <p>
+     * Instances should be obtained via {@link SBRContextHolder#getSBRWorldContext}.
+     */
+    SBRWorldContext() {}
+
+    /**
+     * Configures this {@link SBRWorldContext} used to render a single {@link Block} in world for the
      * current render pass at the given coordinates
      *
      * @param x            the x coordinate
@@ -77,17 +95,20 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      * @param block        the {@link Block} to render
      * @param modelId      the Model ID for the block
      * @param renderBlocks the {@link RenderBlocks} renderer to use
+     * @return this context instance, configured with the given parameters
      */
-    @SuppressWarnings("ConstructorWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
-    public SBRWorldContext(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
-        super(block, modelId, renderBlocks);
-        this.world = renderBlocks.blockAccess;
+    @SuppressWarnings("MethodWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
+    SBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
+        super.setup(block, modelId, renderBlocks);
+        this.blockAccess = renderBlocks.blockAccess;
         this.worldRenderPass = ForgeHooksClient.getWorldRenderPass();
-        super.x = x;
-        super.y = y;
-        super.z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.renderBlocks.useInventoryTint = false;
+        populatesLightingCaches();
         reset();
-        populatesBlockAOCaches();
+        return this;
     }
 
     /**
@@ -128,13 +149,15 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      * <p>
      * This method skips processing if Ambient Occlusion is disabled in the game settings.
      */
-    private void populatesBlockAOCaches() {
-        if (Minecraft.getMinecraft().gameSettings.ambientOcclusion == 0) return;
+    private void populatesLightingCaches() {
+        final boolean aoDisabled = Minecraft.getMinecraft().gameSettings.ambientOcclusion == 0;
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {
-                    MBFB[dx + 1][dy + 1][dz + 1] = block.getMixedBrightnessForBlock(world, x + dx, y + dy, z + dz);
-                    AOLV[dx + 1][dy + 1][dz + 1] = world.getBlock(x + dx, y + dy, z + dz)
+                    MBFB[dx + 1][dy + 1][dz + 1] = block
+                        .getMixedBrightnessForBlock(blockAccess, x + dx, y + dy, z + dz);
+                    if (aoDisabled) continue;
+                    AOLV[dx + 1][dy + 1][dz + 1] = blockAccess.getBlock(x + dx, y + dy, z + dz)
                         .getAmbientOcclusionLightValue();
                 }
             }
@@ -151,9 +174,10 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      */
     @Override
     public SBRWorldContext reset() {
-        super.hasBrightnessOverride = false;
-        super.hasColorOverride = false;
-        super.hasLightnessOverride = false;
+        this.hasBrightnessOverride = false;
+        this.hasColorOverride = false;
+        this.hasLightnessOverride = false;
+        this.renderBlocks.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         return this;
     }
 
@@ -165,42 +189,42 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      */
     public SBRWorldContext setupColor(ForgeDirection side, int hexColor) {
         final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        final float[] rgb = hasColorOverride && !renderer.hasOverrideBlockTexture() ? getRGB(colorOverride)
+        final float[] rgb = hasColorOverride && !renderBlocks.hasOverrideBlockTexture() ? getRGB(colorOverride)
             : getRGB(hexColor);
 
         applyAnaglyph(rgb);
 
         final Tessellator tessellator = Tessellator.instance;
-        if (renderer.enableAO) {
+        if (renderBlocks.enableAO) {
             tessellator.setBrightness(hasBrightnessOverride ? brightnessOverride : brightness);
 
-            if (renderer.hasOverrideBlockTexture()) {
+            if (renderBlocks.hasOverrideBlockTexture()) {
 
-                renderer.colorRedTopLeft = renderer.colorRedBottomLeft = renderer.colorRedBottomRight = renderer.colorRedTopRight = rgb[0];
-                renderer.colorGreenTopLeft = renderer.colorGreenBottomLeft = renderer.colorGreenBottomRight = renderer.colorGreenTopRight = rgb[1];
-                renderer.colorBlueTopLeft = renderer.colorBlueBottomLeft = renderer.colorBlueBottomRight = renderer.colorBlueTopRight = rgb[2];
+                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = rgb[0];
+                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = rgb[1];
+                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = rgb[2];
 
             } else {
 
-                renderer.colorRedTopLeft = renderer.colorRedBottomLeft = renderer.colorRedBottomRight = renderer.colorRedTopRight = rgb[0]
+                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = rgb[0]
                     * lightness;
-                renderer.colorGreenTopLeft = renderer.colorGreenBottomLeft = renderer.colorGreenBottomRight = renderer.colorGreenTopRight = rgb[1]
+                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = rgb[1]
                     * lightness;
-                renderer.colorBlueTopLeft = renderer.colorBlueBottomLeft = renderer.colorBlueBottomRight = renderer.colorBlueTopRight = rgb[2]
+                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = rgb[2]
                     * lightness;
 
-                renderer.colorRedTopLeft *= aoTopLeft;
-                renderer.colorGreenTopLeft *= aoTopLeft;
-                renderer.colorBlueTopLeft *= aoTopLeft;
-                renderer.colorRedBottomLeft *= aoBottomLeft;
-                renderer.colorGreenBottomLeft *= aoBottomLeft;
-                renderer.colorBlueBottomLeft *= aoBottomLeft;
-                renderer.colorRedBottomRight *= aoBottomRight;
-                renderer.colorGreenBottomRight *= aoBottomRight;
-                renderer.colorBlueBottomRight *= aoBottomRight;
-                renderer.colorRedTopRight *= aoTopRight;
-                renderer.colorGreenTopRight *= aoTopRight;
-                renderer.colorBlueTopRight *= aoTopRight;
+                renderBlocks.colorRedTopLeft *= aoTopLeft;
+                renderBlocks.colorGreenTopLeft *= aoTopLeft;
+                renderBlocks.colorBlueTopLeft *= aoTopLeft;
+                renderBlocks.colorRedBottomLeft *= aoBottomLeft;
+                renderBlocks.colorGreenBottomLeft *= aoBottomLeft;
+                renderBlocks.colorBlueBottomLeft *= aoBottomLeft;
+                renderBlocks.colorRedBottomRight *= aoBottomRight;
+                renderBlocks.colorGreenBottomRight *= aoBottomRight;
+                renderBlocks.colorBlueBottomRight *= aoBottomRight;
+                renderBlocks.colorRedTopRight *= aoTopRight;
+                renderBlocks.colorGreenTopRight *= aoTopRight;
+                renderBlocks.colorBlueTopRight *= aoTopRight;
             }
         } else {
             if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
@@ -221,330 +245,70 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
 
     @Override
     public void renderNegativeYFacing(ITexture[] tex) {
-        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y - 1, z, 0)) return;
-        setupAOYNeg();
+        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, 0))
+            return;
+        setupLightingYNeg();
         super.renderNegativeYFacing(tex);
     }
 
     @Override
     public void renderPositiveYFacing(ITexture[] tex) {
-        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y + 1, z, 1)) return;
-        setupAOYPos();
+        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, 1))
+            return;
+        setupLightingYPos();
         super.renderPositiveYFacing(tex);
     }
 
     @Override
     public void renderNegativeZFacing(ITexture[] tex) {
-        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y, z - 1, 2)) return;
-        setupAOZNeg();
+        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, 2))
+            return;
+        setupLightingZNeg();
         super.renderNegativeZFacing(tex);
     }
 
     @Override
     public void renderPositiveZFacing(ITexture[] tex) {
-        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x, y, z + 1, 3)) return;
-        setupAOZPos();
+        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, 3))
+            return;
+        setupLightingZPos();
         super.renderPositiveZFacing(tex);
     }
 
     @Override
     public void renderNegativeXFacing(ITexture[] tex) {
-        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x - 1, y, z, 4)) return;
-        setupAOXNeg();
+        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, 4))
+            return;
+        setupLightingXNeg();
         super.renderNegativeXFacing(tex);
     }
 
     @Override
     public void renderPositiveXFacing(ITexture[] tex) {
-        if (fullBlock && !renderer.renderAllFaces && !block.shouldSideBeRendered(world, x + 1, y, z, 5)) return;
-        setupAOXPos();
+        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, 5))
+            return;
+        setupLightingXPos();
         super.renderPositiveXFacing(tex);
     }
 
     /**
-     * @see #setupAOXNeg()
-     * @see #setupAOYNeg()
-     * @see #setupAOZNeg()
-     * @see #setupAOXPos()
-     * @see #setupAOYPos()
-     * @see #setupAOZPos()
+     * @see #setupLightingXNeg()
+     * @see #setupLightingYNeg()
+     * @see #setupLightingZNeg()
+     * @see #setupLightingXPos()
+     * @see #setupLightingYPos()
+     * @see #setupLightingZPos()
      */
-    public SBRWorldContext setupAO(ForgeDirection facing) {
+    public SBRWorldContext setupLighting(ForgeDirection facing) {
         return switch (facing) {
-            case DOWN -> setupAOYNeg();
-            case UP -> setupAOYPos();
-            case NORTH -> setupAOZNeg();
-            case SOUTH -> setupAOZPos();
-            case WEST -> setupAOXNeg();
-            case EAST -> setupAOXPos();
+            case DOWN -> setupLightingYNeg();
+            case UP -> setupLightingYPos();
+            case NORTH -> setupLightingZNeg();
+            case SOUTH -> setupLightingZPos();
+            case WEST -> setupLightingXNeg();
+            case EAST -> setupLightingXPos();
             default -> throw new IllegalArgumentException("Unknown side: " + facing);
         };
-    }
-
-    /**
-     * Sets up lighting for the West face and returns the {@link SBRWorldContext}.
-     * <p>
-     * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
-     * <p>
-     * <ul>
-     * <li>{@link RenderBlocks#enableAO}</li>
-     * <li>{@link RenderBlocks#partialRenderBounds}</li>
-     * </ul>
-     *
-     * @return the {@link SBRWorldContext}
-     */
-    public SBRWorldContext setupAOXNeg() {
-
-        if (renderer.enableAO) {
-
-            final int iX = renderer.renderMinX > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
-
-            final int mixedBrightness = MBFB[iX][1][1];
-            brightness = mixedBrightness;
-
-            final double ratio = 1.0D - renderer.renderMinX;
-            final float aoLightValue = AOLV[0][1][1];
-
-            renderer.aoBrightnessXYNN = MBFB[iX][0][1];
-            renderer.aoBrightnessXZNN = MBFB[iX][1][0];
-            renderer.aoBrightnessXZNP = MBFB[iX][1][2];
-            renderer.aoBrightnessXYNP = MBFB[iX][2][1];
-            renderer.aoBrightnessXYZNNN = MBFB[iX][0][0];
-            renderer.aoBrightnessXYZNNP = MBFB[iX][0][2];
-            renderer.aoBrightnessXYZNPN = MBFB[iX][2][0];
-            renderer.aoBrightnessXYZNPP = MBFB[iX][2][2];
-            renderer.aoLightValueScratchXYNN = getMixedAo(AOLV[0][0][1], AOLV[1][0][1], ratio);
-            renderer.aoLightValueScratchXZNN = getMixedAo(AOLV[0][1][0], AOLV[1][1][0], ratio);
-            renderer.aoLightValueScratchXZNP = getMixedAo(AOLV[0][1][2], AOLV[1][1][2], ratio);
-            renderer.aoLightValueScratchXYNP = getMixedAo(AOLV[0][2][1], AOLV[1][2][1], ratio);
-            renderer.aoLightValueScratchXYZNNN = getMixedAo(AOLV[0][0][0], AOLV[1][0][0], ratio);
-            renderer.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[1][0][2], ratio);
-            renderer.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[1][2][0], ratio);
-            renderer.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[1][2][2], ratio);
-
-            final int brightnessMixedXYZNPN = renderer.getAoBrightness(
-                renderer.aoBrightnessXZNN,
-                renderer.aoBrightnessXYZNPN,
-                renderer.aoBrightnessXYNP,
-                mixedBrightness);
-            final int brightnessMixedXYZNNN = renderer.getAoBrightness(
-                renderer.aoBrightnessXYZNNN,
-                renderer.aoBrightnessXYNN,
-                renderer.aoBrightnessXZNN,
-                mixedBrightness);
-            final int brightnessMixedXYZNNP = renderer.getAoBrightness(
-                renderer.aoBrightnessXYNN,
-                renderer.aoBrightnessXYZNNP,
-                renderer.aoBrightnessXZNP,
-                mixedBrightness);
-            final int brightnessMixedXYZNPP = renderer.getAoBrightness(
-                renderer.aoBrightnessXZNP,
-                renderer.aoBrightnessXYNP,
-                renderer.aoBrightnessXYZNPP,
-                mixedBrightness);
-
-            final float aoMixedXYZNPN = (renderer.aoLightValueScratchXZNN + aoLightValue
-                + renderer.aoLightValueScratchXYZNPN
-                + renderer.aoLightValueScratchXYNP) / 4.0F;
-            final float aoMixedXYZNNN = (renderer.aoLightValueScratchXYZNNN + renderer.aoLightValueScratchXYNN
-                + renderer.aoLightValueScratchXZNN
-                + aoLightValue) / 4.0F;
-            final float aoMixedXYZNNP = (renderer.aoLightValueScratchXYNN + renderer.aoLightValueScratchXYZNNP
-                + aoLightValue
-                + renderer.aoLightValueScratchXZNP) / 4.0F;
-            final float aoMixedXYZNPP = (aoLightValue + renderer.aoLightValueScratchXZNP
-                + renderer.aoLightValueScratchXYNP
-                + renderer.aoLightValueScratchXYZNPP) / 4.0F;
-
-            aoTopLeft = (float) (aoMixedXYZNPP * renderer.renderMaxY * renderer.renderMaxZ
-                + aoMixedXYZNPN * renderer.renderMaxY * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZNNN * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZNNP * (1.0D - renderer.renderMaxY) * renderer.renderMaxZ);
-            aoBottomLeft = (float) (aoMixedXYZNPP * renderer.renderMaxY * renderer.renderMinZ
-                + aoMixedXYZNPN * renderer.renderMaxY * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZNNN * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZNNP * (1.0D - renderer.renderMaxY) * renderer.renderMinZ);
-            aoBottomRight = (float) (aoMixedXYZNPP * renderer.renderMinY * renderer.renderMinZ
-                + aoMixedXYZNPN * renderer.renderMinY * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZNNN * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZNNP * (1.0D - renderer.renderMinY) * renderer.renderMinZ);
-            aoTopRight = (float) (aoMixedXYZNPP * renderer.renderMinY * renderer.renderMaxZ
-                + aoMixedXYZNPN * renderer.renderMinY * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZNNN * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZNNP * (1.0D - renderer.renderMinY) * renderer.renderMaxZ);
-
-            renderer.brightnessTopLeft = renderer.mixAoBrightness(
-                brightnessMixedXYZNPP,
-                brightnessMixedXYZNPN,
-                brightnessMixedXYZNNN,
-                brightnessMixedXYZNNP,
-                renderer.renderMaxY * renderer.renderMaxZ,
-                renderer.renderMaxY * (1.0D - renderer.renderMaxZ),
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxZ),
-                (1.0D - renderer.renderMaxY) * renderer.renderMaxZ);
-            renderer.brightnessBottomLeft = renderer.mixAoBrightness(
-                brightnessMixedXYZNPP,
-                brightnessMixedXYZNPN,
-                brightnessMixedXYZNNN,
-                brightnessMixedXYZNNP,
-                renderer.renderMaxY * renderer.renderMinZ,
-                renderer.renderMaxY * (1.0D - renderer.renderMinZ),
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinZ),
-                (1.0D - renderer.renderMaxY) * renderer.renderMinZ);
-            renderer.brightnessBottomRight = renderer.mixAoBrightness(
-                brightnessMixedXYZNPP,
-                brightnessMixedXYZNPN,
-                brightnessMixedXYZNNN,
-                brightnessMixedXYZNNP,
-                renderer.renderMinY * renderer.renderMinZ,
-                renderer.renderMinY * (1.0D - renderer.renderMinZ),
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinZ),
-                (1.0D - renderer.renderMinY) * renderer.renderMinZ);
-            renderer.brightnessTopRight = renderer.mixAoBrightness(
-                brightnessMixedXYZNPP,
-                brightnessMixedXYZNPN,
-                brightnessMixedXYZNNN,
-                brightnessMixedXYZNNP,
-                renderer.renderMinY * renderer.renderMaxZ,
-                renderer.renderMinY * (1.0D - renderer.renderMaxZ),
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxZ),
-                (1.0D - renderer.renderMinY) * renderer.renderMaxZ);
-        }
-
-        return this;
-    }
-
-    /**
-     * Sets up lighting for the East face and returns the {@link SBRWorldContext}.
-     * <p>
-     * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
-     * <p>
-     * <ul>
-     * <li>{@link RenderBlocks#enableAO}</li>
-     * <li>{@link RenderBlocks#partialRenderBounds}</li>
-     * </ul>
-     *
-     * @return the {@link SBRWorldContext}
-     */
-    public SBRWorldContext setupAOXPos() {
-
-        if (renderer.enableAO) {
-
-            final int iX = renderer.renderMaxX < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
-
-            final int mixedBrightness = MBFB[iX][1][1];
-            brightness = mixedBrightness;
-
-            final double ratio = renderer.renderMaxX;
-            final float aoLightValue = AOLV[2][1][1];
-
-            renderer.aoBrightnessXYPN = MBFB[iX][0][1];
-            renderer.aoBrightnessXZPN = MBFB[iX][1][0];
-            renderer.aoBrightnessXZPP = MBFB[iX][1][2];
-            renderer.aoBrightnessXYPP = MBFB[iX][2][1];
-            renderer.aoBrightnessXYZPNN = MBFB[iX][0][0];
-            renderer.aoBrightnessXYZPNP = MBFB[iX][0][2];
-            renderer.aoBrightnessXYZPPN = MBFB[iX][2][0];
-            renderer.aoBrightnessXYZPPP = MBFB[iX][2][2];
-            renderer.aoLightValueScratchXYPN = getMixedAo(AOLV[2][0][1], AOLV[1][0][1], ratio);
-            renderer.aoLightValueScratchXZPN = getMixedAo(AOLV[2][1][0], AOLV[1][1][0], ratio);
-            renderer.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[1][1][2], ratio);
-            renderer.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[1][2][1], ratio);
-            renderer.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[1][0][0], ratio);
-            renderer.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[1][0][2], ratio);
-            renderer.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[1][2][0], ratio);
-            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[1][2][2], ratio);
-
-            final int brightnessMixedXYZPPP = renderer.getAoBrightness(
-                renderer.aoBrightnessXZPP,
-                renderer.aoBrightnessXYPP,
-                renderer.aoBrightnessXYZPPP,
-                mixedBrightness);
-            final int brightnessMixedXYZPNP = renderer.getAoBrightness(
-                renderer.aoBrightnessXYPN,
-                renderer.aoBrightnessXYZPNP,
-                renderer.aoBrightnessXZPP,
-                mixedBrightness);
-            final int brightnessMixedXYZPNN = renderer.getAoBrightness(
-                renderer.aoBrightnessXYZPNN,
-                renderer.aoBrightnessXYPN,
-                renderer.aoBrightnessXZPN,
-                mixedBrightness);
-            final int brightnessMixedXYZPPN = renderer.getAoBrightness(
-                renderer.aoBrightnessXZPN,
-                renderer.aoBrightnessXYZPPN,
-                renderer.aoBrightnessXYPP,
-                mixedBrightness);
-
-            final float aoMixedXYZPPP = (aoLightValue + renderer.aoLightValueScratchXZPP
-                + renderer.aoLightValueScratchXYPP
-                + renderer.aoLightValueScratchXYZPPP) / 4.0F;
-            final float aoMixedXYZPNP = (renderer.aoLightValueScratchXYPN + renderer.aoLightValueScratchXYZPNP
-                + aoLightValue
-                + renderer.aoLightValueScratchXZPP) / 4.0F;
-            final float aoMixedXYZPNN = (renderer.aoLightValueScratchXYZPNN + renderer.aoLightValueScratchXYPN
-                + renderer.aoLightValueScratchXZPN
-                + aoLightValue) / 4.0F;
-            final float aoMixedXYZPPN = (renderer.aoLightValueScratchXZPN + aoLightValue
-                + renderer.aoLightValueScratchXYZPPN
-                + renderer.aoLightValueScratchXYPP) / 4.0F;
-
-            aoTopLeft = (float) (aoMixedXYZPNP * (1.0D - renderer.renderMinY) * renderer.renderMaxZ
-                + aoMixedXYZPNN * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZPPN * renderer.renderMinY * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZPPP * renderer.renderMinY * renderer.renderMaxZ);
-            aoBottomLeft = (float) (aoMixedXYZPNP * (1.0D - renderer.renderMinY) * renderer.renderMinZ
-                + aoMixedXYZPNN * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZPPN * renderer.renderMinY * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZPPP * renderer.renderMinY * renderer.renderMinZ);
-            aoBottomRight = (float) (aoMixedXYZPNP * (1.0D - renderer.renderMaxY) * renderer.renderMinZ
-                + aoMixedXYZPNN * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZPPN * renderer.renderMaxY * (1.0D - renderer.renderMinZ)
-                + aoMixedXYZPPP * renderer.renderMaxY * renderer.renderMinZ);
-            aoTopRight = (float) (aoMixedXYZPNP * (1.0D - renderer.renderMaxY) * renderer.renderMaxZ
-                + aoMixedXYZPNN * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZPPN * renderer.renderMaxY * (1.0D - renderer.renderMaxZ)
-                + aoMixedXYZPPP * renderer.renderMaxY * renderer.renderMaxZ);
-
-            renderer.brightnessTopLeft = renderer.mixAoBrightness(
-                brightnessMixedXYZPNP,
-                brightnessMixedXYZPNN,
-                brightnessMixedXYZPPN,
-                brightnessMixedXYZPPP,
-                (1.0D - renderer.renderMinY) * renderer.renderMaxZ,
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxZ),
-                renderer.renderMinY * (1.0D - renderer.renderMaxZ),
-                renderer.renderMinY * renderer.renderMaxZ);
-            renderer.brightnessBottomLeft = renderer.mixAoBrightness(
-                brightnessMixedXYZPNP,
-                brightnessMixedXYZPNN,
-                brightnessMixedXYZPPN,
-                brightnessMixedXYZPPP,
-                (1.0D - renderer.renderMinY) * renderer.renderMinZ,
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinZ),
-                renderer.renderMinY * (1.0D - renderer.renderMinZ),
-                renderer.renderMinY * renderer.renderMinZ);
-            renderer.brightnessBottomRight = renderer.mixAoBrightness(
-                brightnessMixedXYZPNP,
-                brightnessMixedXYZPNN,
-                brightnessMixedXYZPPN,
-                brightnessMixedXYZPPP,
-                (1.0D - renderer.renderMaxY) * renderer.renderMinZ,
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinZ),
-                renderer.renderMaxY * (1.0D - renderer.renderMinZ),
-                renderer.renderMaxY * renderer.renderMinZ);
-            renderer.brightnessTopRight = renderer.mixAoBrightness(
-                brightnessMixedXYZPNP,
-                brightnessMixedXYZPNN,
-                brightnessMixedXYZPPN,
-                brightnessMixedXYZPPP,
-                (1.0D - renderer.renderMaxY) * renderer.renderMaxZ,
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxZ),
-                renderer.renderMaxY * (1.0D - renderer.renderMaxZ),
-                renderer.renderMaxY * renderer.renderMaxZ);
-        }
-
-        return this;
     }
 
     /**
@@ -559,122 +323,126 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupAOYNeg() {
+    public SBRWorldContext setupLightingYNeg() {
 
-        if (renderer.enableAO) {
+        if (renderBlocks.enableAO) {
 
-            final int iY = renderer.renderMinY > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
+            final int iY = renderBlocks.renderMinY > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
 
             final int mixedBrightness = MBFB[1][iY][1];
             brightness = mixedBrightness;
 
-            final double ratio = 1.0D - renderer.renderMinY;
+            final double ratio = 1.0D - renderBlocks.renderMinY;
             final float aoLightValue = AOLV[1][0][1];
 
-            renderer.aoBrightnessXYNN = MBFB[0][iY][1];
-            renderer.aoBrightnessYZNN = MBFB[1][iY][0];
-            renderer.aoBrightnessYZNP = MBFB[1][iY][2];
-            renderer.aoBrightnessXYPN = MBFB[2][iY][1];
-            renderer.aoBrightnessXYZNNN = MBFB[0][iY][0];
-            renderer.aoBrightnessXYZNNP = MBFB[0][iY][2];
-            renderer.aoBrightnessXYZPNN = MBFB[2][iY][0];
-            renderer.aoBrightnessXYZPNP = MBFB[2][iY][2];
-            renderer.aoLightValueScratchXYNN = getMixedAo(AOLV[0][0][1], AOLV[0][1][1], ratio);
-            renderer.aoLightValueScratchYZNN = getMixedAo(AOLV[1][0][0], AOLV[1][1][0], ratio);
-            renderer.aoLightValueScratchYZNP = getMixedAo(AOLV[1][0][2], AOLV[1][1][2], ratio);
-            renderer.aoLightValueScratchXYPN = getMixedAo(AOLV[2][0][1], AOLV[2][1][1], ratio);
-            renderer.aoLightValueScratchXYZNNN = getMixedAo(AOLV[0][0][0], AOLV[0][1][0], ratio);
-            renderer.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[0][1][2], ratio);
-            renderer.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[2][1][0], ratio);
-            renderer.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[2][1][2], ratio);
+            renderBlocks.aoBrightnessXYNN = MBFB[0][iY][1];
+            renderBlocks.aoBrightnessYZNN = MBFB[1][iY][0];
+            renderBlocks.aoBrightnessYZNP = MBFB[1][iY][2];
+            renderBlocks.aoBrightnessXYPN = MBFB[2][iY][1];
+            renderBlocks.aoBrightnessXYZNNN = MBFB[0][iY][0];
+            renderBlocks.aoBrightnessXYZNNP = MBFB[0][iY][2];
+            renderBlocks.aoBrightnessXYZPNN = MBFB[2][iY][0];
+            renderBlocks.aoBrightnessXYZPNP = MBFB[2][iY][2];
+            renderBlocks.aoLightValueScratchXYNN = getMixedAo(AOLV[0][0][1], AOLV[0][1][1], ratio);
+            renderBlocks.aoLightValueScratchYZNN = getMixedAo(AOLV[1][0][0], AOLV[1][1][0], ratio);
+            renderBlocks.aoLightValueScratchYZNP = getMixedAo(AOLV[1][0][2], AOLV[1][1][2], ratio);
+            renderBlocks.aoLightValueScratchXYPN = getMixedAo(AOLV[2][0][1], AOLV[2][1][1], ratio);
+            renderBlocks.aoLightValueScratchXYZNNN = getMixedAo(AOLV[0][0][0], AOLV[0][1][0], ratio);
+            renderBlocks.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[0][1][2], ratio);
+            renderBlocks.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[2][1][0], ratio);
+            renderBlocks.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[2][1][2], ratio);
 
-            final int brightnessMixedXYZPNP = renderer.getAoBrightness(
-                renderer.aoBrightnessYZNP,
-                renderer.aoBrightnessXYZPNP,
-                renderer.aoBrightnessXYPN,
+            final int brightnessMixedXYZPNP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZNP,
+                renderBlocks.aoBrightnessXYZPNP,
+                renderBlocks.aoBrightnessXYPN,
                 mixedBrightness);
-            final int brightnessMixedXYZPNN = renderer.getAoBrightness(
-                renderer.aoBrightnessYZNN,
-                renderer.aoBrightnessXYPN,
-                renderer.aoBrightnessXYZPNN,
+            final int brightnessMixedXYZPNN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZNN,
+                renderBlocks.aoBrightnessXYPN,
+                renderBlocks.aoBrightnessXYZPNN,
                 mixedBrightness);
-            final int brightnessMixedXYZNNN = renderer.getAoBrightness(
-                renderer.aoBrightnessXYNN,
-                renderer.aoBrightnessXYZNNN,
-                renderer.aoBrightnessYZNN,
+            final int brightnessMixedXYZNNN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYNN,
+                renderBlocks.aoBrightnessXYZNNN,
+                renderBlocks.aoBrightnessYZNN,
                 mixedBrightness);
-            final int brightnessMixedXYZNNP = renderer.getAoBrightness(
-                renderer.aoBrightnessXYZNNP,
-                renderer.aoBrightnessXYNN,
-                renderer.aoBrightnessYZNP,
+            final int brightnessMixedXYZNNP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYZNNP,
+                renderBlocks.aoBrightnessXYNN,
+                renderBlocks.aoBrightnessYZNP,
                 mixedBrightness);
 
-            final float aoMixedXYZPNP = (renderer.aoLightValueScratchYZNP + aoLightValue
-                + renderer.aoLightValueScratchXYZPNP
-                + renderer.aoLightValueScratchXYPN) / 4.0F;
-            final float aoMixedXYZPNN = (aoLightValue + renderer.aoLightValueScratchYZNN
-                + renderer.aoLightValueScratchXYPN
-                + renderer.aoLightValueScratchXYZPNN) / 4.0F;
-            final float aoMixedXYZNNN = (renderer.aoLightValueScratchXYNN + renderer.aoLightValueScratchXYZNNN
+            final float aoMixedXYZPNP = (renderBlocks.aoLightValueScratchYZNP + aoLightValue
+                + renderBlocks.aoLightValueScratchXYZPNP
+                + renderBlocks.aoLightValueScratchXYPN) / 4.0F;
+            final float aoMixedXYZPNN = (aoLightValue + renderBlocks.aoLightValueScratchYZNN
+                + renderBlocks.aoLightValueScratchXYPN
+                + renderBlocks.aoLightValueScratchXYZPNN) / 4.0F;
+            final float aoMixedXYZNNN = (renderBlocks.aoLightValueScratchXYNN + renderBlocks.aoLightValueScratchXYZNNN
                 + aoLightValue
-                + renderer.aoLightValueScratchYZNN) / 4.0F;
-            final float aoMixedXYZNNP = (renderer.aoLightValueScratchXYZNNP + renderer.aoLightValueScratchXYNN
-                + renderer.aoLightValueScratchYZNP
+                + renderBlocks.aoLightValueScratchYZNN) / 4.0F;
+            final float aoMixedXYZNNP = (renderBlocks.aoLightValueScratchXYZNNP + renderBlocks.aoLightValueScratchXYNN
+                + renderBlocks.aoLightValueScratchYZNP
                 + aoLightValue) / 4.0F;
 
-            aoTopLeft = (float) (aoMixedXYZNNP * renderer.renderMaxZ * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPNP * renderer.renderMaxZ * renderer.renderMinX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMaxZ) * renderer.renderMinX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMinX));
-            aoBottomLeft = (float) (aoMixedXYZNNP * renderer.renderMinZ * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPNP * renderer.renderMinZ * renderer.renderMinX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMinZ) * renderer.renderMinX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMinX));
-            aoBottomRight = (float) (aoMixedXYZNNP * renderer.renderMinZ * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPNP * renderer.renderMinZ * renderer.renderMaxX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMinZ) * renderer.renderMaxX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMaxX));
-            aoTopRight = (float) (aoMixedXYZNNP * renderer.renderMaxZ * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPNP * renderer.renderMaxZ * renderer.renderMaxX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMaxZ) * renderer.renderMaxX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMaxX));
+            aoTopLeft = (float) (aoMixedXYZNNP * renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPNP * renderBlocks.renderMaxZ * renderBlocks.renderMinX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMinX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMinX));
+            aoBottomLeft = (float) (aoMixedXYZNNP * renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPNP * renderBlocks.renderMinZ * renderBlocks.renderMinX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMinX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMinX));
+            aoBottomRight = (float) (aoMixedXYZNNP * renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPNP * renderBlocks.renderMinZ * renderBlocks.renderMaxX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMaxX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMaxX));
+            aoTopRight = (float) (aoMixedXYZNNP * renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPNP * renderBlocks.renderMaxZ * renderBlocks.renderMaxX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMaxX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMaxX));
 
-            renderer.brightnessTopLeft = renderer.mixAoBrightness(
+            renderBlocks.brightnessTopLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMaxZ * (1.0D - renderer.renderMinX),
-                renderer.renderMaxZ * renderer.renderMinX,
-                (1.0D - renderer.renderMaxZ) * renderer.renderMinX,
-                (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMinX));
-            renderer.brightnessBottomLeft = renderer.mixAoBrightness(
+                renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMinX),
+                renderBlocks.renderMaxZ * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMinX));
+            renderBlocks.brightnessBottomLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMinZ * (1.0D - renderer.renderMinX),
-                renderer.renderMinZ * renderer.renderMinX,
-                (1.0D - renderer.renderMinZ) * renderer.renderMinX,
-                (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMinX));
-            renderer.brightnessBottomRight = renderer.mixAoBrightness(
+                renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMinX),
+                renderBlocks.renderMinZ * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMinX));
+            renderBlocks.brightnessBottomRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMinZ * (1.0D - renderer.renderMaxX),
-                renderer.renderMinZ * renderer.renderMaxX,
-                (1.0D - renderer.renderMinZ) * renderer.renderMaxX,
-                (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMaxX));
-            renderer.brightnessTopRight = renderer.mixAoBrightness(
+                renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMaxX),
+                renderBlocks.renderMinZ * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMaxX));
+            renderBlocks.brightnessTopRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMaxZ * (1.0D - renderer.renderMaxX),
-                renderer.renderMaxZ * renderer.renderMaxX,
-                (1.0D - renderer.renderMaxZ) * renderer.renderMaxX,
-                (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMaxX));
+                renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMaxX),
+                renderBlocks.renderMaxZ * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMaxX));
+        } else {
+            final int iY = block.getBlockBoundsMinY() < FLUSH_MIN ? 0 : 1;
+            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
+            Tessellator.instance.setBrightness(MBFB[1][iY][1]);
         }
 
         return this;
@@ -692,122 +460,126 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupAOYPos() {
+    public SBRWorldContext setupLightingYPos() {
 
-        if (renderer.enableAO) {
+        if (renderBlocks.enableAO) {
 
-            final int iY = renderer.renderMaxY < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
+            final int iY = renderBlocks.renderMaxY < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
 
             final int mixedBrightness = MBFB[1][iY][1];
             brightness = mixedBrightness;
 
-            final double ratio = renderer.renderMaxY;
+            final double ratio = renderBlocks.renderMaxY;
             final float aoLightValue = AOLV[1][2][1];
 
-            renderer.aoBrightnessXYNP = MBFB[0][iY][1];
-            renderer.aoBrightnessXYPP = MBFB[2][iY][1];
-            renderer.aoBrightnessYZPN = MBFB[1][iY][0];
-            renderer.aoBrightnessYZPP = MBFB[1][iY][2];
-            renderer.aoBrightnessXYZNPN = MBFB[0][iY][0];
-            renderer.aoBrightnessXYZPPN = MBFB[2][iY][0];
-            renderer.aoBrightnessXYZNPP = MBFB[0][iY][2];
-            renderer.aoBrightnessXYZPPP = MBFB[2][iY][2];
-            renderer.aoLightValueScratchXYNP = getMixedAo(AOLV[0][2][1], AOLV[0][1][1], ratio);
-            renderer.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[2][1][1], ratio);
-            renderer.aoLightValueScratchYZPN = getMixedAo(AOLV[1][2][0], AOLV[1][1][0], ratio);
-            renderer.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][1][2], ratio);
-            renderer.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[0][1][0], ratio);
-            renderer.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[2][1][0], ratio);
-            renderer.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][1][2], ratio);
-            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][1][2], ratio);
+            renderBlocks.aoBrightnessXYNP = MBFB[0][iY][1];
+            renderBlocks.aoBrightnessXYPP = MBFB[2][iY][1];
+            renderBlocks.aoBrightnessYZPN = MBFB[1][iY][0];
+            renderBlocks.aoBrightnessYZPP = MBFB[1][iY][2];
+            renderBlocks.aoBrightnessXYZNPN = MBFB[0][iY][0];
+            renderBlocks.aoBrightnessXYZPPN = MBFB[2][iY][0];
+            renderBlocks.aoBrightnessXYZNPP = MBFB[0][iY][2];
+            renderBlocks.aoBrightnessXYZPPP = MBFB[2][iY][2];
+            renderBlocks.aoLightValueScratchXYNP = getMixedAo(AOLV[0][2][1], AOLV[0][1][1], ratio);
+            renderBlocks.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[2][1][1], ratio);
+            renderBlocks.aoLightValueScratchYZPN = getMixedAo(AOLV[1][2][0], AOLV[1][1][0], ratio);
+            renderBlocks.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][1][2], ratio);
+            renderBlocks.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[0][1][0], ratio);
+            renderBlocks.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[2][1][0], ratio);
+            renderBlocks.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][1][2], ratio);
+            renderBlocks.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][1][2], ratio);
 
-            final int brightnessMixedXYZPPP = renderer.getAoBrightness(
-                renderer.aoBrightnessYZPP,
-                renderer.aoBrightnessXYZPPP,
-                renderer.aoBrightnessXYPP,
+            final int brightnessMixedXYZPPP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZPP,
+                renderBlocks.aoBrightnessXYZPPP,
+                renderBlocks.aoBrightnessXYPP,
                 mixedBrightness);
-            final int brightnessMixedXYZPPN = renderer.getAoBrightness(
-                renderer.aoBrightnessYZPN,
-                renderer.aoBrightnessXYPP,
-                renderer.aoBrightnessXYZPPN,
+            final int brightnessMixedXYZPPN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZPN,
+                renderBlocks.aoBrightnessXYPP,
+                renderBlocks.aoBrightnessXYZPPN,
                 mixedBrightness);
-            final int brightnessMixedXYZNPN = renderer.getAoBrightness(
-                renderer.aoBrightnessXYNP,
-                renderer.aoBrightnessXYZNPN,
-                renderer.aoBrightnessYZPN,
+            final int brightnessMixedXYZNPN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYNP,
+                renderBlocks.aoBrightnessXYZNPN,
+                renderBlocks.aoBrightnessYZPN,
                 mixedBrightness);
-            final int brightnessMixedXYZNPP = renderer.getAoBrightness(
-                renderer.aoBrightnessXYZNPP,
-                renderer.aoBrightnessXYNP,
-                renderer.aoBrightnessYZPP,
+            final int brightnessMixedXYZNPP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYZNPP,
+                renderBlocks.aoBrightnessXYNP,
+                renderBlocks.aoBrightnessYZPP,
                 mixedBrightness);
 
-            final float aoMixedXYZPPP = (renderer.aoLightValueScratchYZPP + aoLightValue
-                + renderer.aoLightValueScratchXYZPPP
-                + renderer.aoLightValueScratchXYPP) / 4.0F;
-            final float aoMixedXYZPPN = (aoLightValue + renderer.aoLightValueScratchYZPN
-                + renderer.aoLightValueScratchXYPP
-                + renderer.aoLightValueScratchXYZPPN) / 4.0F;
-            final float aoMixedXYZNPN = (renderer.aoLightValueScratchXYNP + renderer.aoLightValueScratchXYZNPN
+            final float aoMixedXYZPPP = (renderBlocks.aoLightValueScratchYZPP + aoLightValue
+                + renderBlocks.aoLightValueScratchXYZPPP
+                + renderBlocks.aoLightValueScratchXYPP) / 4.0F;
+            final float aoMixedXYZPPN = (aoLightValue + renderBlocks.aoLightValueScratchYZPN
+                + renderBlocks.aoLightValueScratchXYPP
+                + renderBlocks.aoLightValueScratchXYZPPN) / 4.0F;
+            final float aoMixedXYZNPN = (renderBlocks.aoLightValueScratchXYNP + renderBlocks.aoLightValueScratchXYZNPN
                 + aoLightValue
-                + renderer.aoLightValueScratchYZPN) / 4.0F;
-            final float aoMixedXYZNPP = (renderer.aoLightValueScratchXYZNPP + renderer.aoLightValueScratchXYNP
-                + renderer.aoLightValueScratchYZPP
+                + renderBlocks.aoLightValueScratchYZPN) / 4.0F;
+            final float aoMixedXYZNPP = (renderBlocks.aoLightValueScratchXYZNPP + renderBlocks.aoLightValueScratchXYNP
+                + renderBlocks.aoLightValueScratchYZPP
                 + aoLightValue) / 4.0F;
 
-            aoTopLeft /* SE */ = (float) (aoMixedXYZNPP * renderer.renderMaxZ * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPPP * renderer.renderMaxZ * renderer.renderMaxX
-                + aoMixedXYZPPN * (1.0D - renderer.renderMaxZ) * renderer.renderMaxX
-                + aoMixedXYZNPN * (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMaxX));
-            aoBottomLeft /* NE */ = (float) (aoMixedXYZNPP * renderer.renderMinZ * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPPP * renderer.renderMinZ * renderer.renderMaxX
-                + aoMixedXYZPPN * (1.0D - renderer.renderMinZ) * renderer.renderMaxX
-                + aoMixedXYZNPN * (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMaxX));
-            aoBottomRight /* NW */ = (float) (aoMixedXYZNPP * renderer.renderMinZ * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPPP * renderer.renderMinZ * renderer.renderMinX
-                + aoMixedXYZPPN * (1.0D - renderer.renderMinZ) * renderer.renderMinX
-                + aoMixedXYZNPN * (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMinX));
-            aoTopRight /* SW */ = (float) (aoMixedXYZNPP * renderer.renderMaxZ * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPPP * renderer.renderMaxZ * renderer.renderMinX
-                + aoMixedXYZPPN * (1.0D - renderer.renderMaxZ) * renderer.renderMinX
-                + aoMixedXYZNPN * (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMinX));
+            aoTopLeft /* SE */ = (float) (aoMixedXYZNPP * renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPPP * renderBlocks.renderMaxZ * renderBlocks.renderMaxX
+                + aoMixedXYZPPN * (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMaxX
+                + aoMixedXYZNPN * (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMaxX));
+            aoBottomLeft /* NE */ = (float) (aoMixedXYZNPP * renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPPP * renderBlocks.renderMinZ * renderBlocks.renderMaxX
+                + aoMixedXYZPPN * (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMaxX
+                + aoMixedXYZNPN * (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMaxX));
+            aoBottomRight /* NW */ = (float) (aoMixedXYZNPP * renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPPP * renderBlocks.renderMinZ * renderBlocks.renderMinX
+                + aoMixedXYZPPN * (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMinX
+                + aoMixedXYZNPN * (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMinX));
+            aoTopRight /* SW */ = (float) (aoMixedXYZNPP * renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPPP * renderBlocks.renderMaxZ * renderBlocks.renderMinX
+                + aoMixedXYZPPN * (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMinX
+                + aoMixedXYZNPN * (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMinX));
 
-            renderer.brightnessTopLeft = renderer.mixAoBrightness(
+            renderBlocks.brightnessTopLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZPPP,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZNPN,
-                renderer.renderMaxZ * (1.0D - renderer.renderMaxX),
-                renderer.renderMaxZ * renderer.renderMaxX,
-                (1.0D - renderer.renderMaxZ) * renderer.renderMaxX,
-                (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMaxX));
-            renderer.brightnessBottomLeft = renderer.mixAoBrightness(
+                renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMaxX),
+                renderBlocks.renderMaxZ * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMaxX));
+            renderBlocks.brightnessBottomLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZPPP,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZNPN,
-                renderer.renderMinZ * (1.0D - renderer.renderMaxX),
-                renderer.renderMinZ * renderer.renderMaxX,
-                (1.0D - renderer.renderMinZ) * renderer.renderMaxX,
-                (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMaxX));
-            renderer.brightnessBottomRight = renderer.mixAoBrightness(
+                renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMaxX),
+                renderBlocks.renderMinZ * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMaxX));
+            renderBlocks.brightnessBottomRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZPPP,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZNPN,
-                renderer.renderMinZ * (1.0D - renderer.renderMinX),
-                renderer.renderMinZ * renderer.renderMinX,
-                (1.0D - renderer.renderMinZ) * renderer.renderMinX,
-                (1.0D - renderer.renderMinZ) * (1.0D - renderer.renderMinX));
-            renderer.brightnessTopRight = renderer.mixAoBrightness(
+                renderBlocks.renderMinZ * (1.0D - renderBlocks.renderMinX),
+                renderBlocks.renderMinZ * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMinZ) * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMinZ) * (1.0D - renderBlocks.renderMinX));
+            renderBlocks.brightnessTopRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZPPP,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZNPN,
-                renderer.renderMaxZ * (1.0D - renderer.renderMinX),
-                renderer.renderMaxZ * renderer.renderMinX,
-                (1.0D - renderer.renderMaxZ) * renderer.renderMinX,
-                (1.0D - renderer.renderMaxZ) * (1.0D - renderer.renderMinX));
+                renderBlocks.renderMaxZ * (1.0D - renderBlocks.renderMinX),
+                renderBlocks.renderMaxZ * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMaxZ) * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMaxZ) * (1.0D - renderBlocks.renderMinX));
+        } else {
+            final int iY = block.getBlockBoundsMaxY() > FLUSH_MAX ? 2 : 1;
+            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
+            Tessellator.instance.setBrightness(MBFB[1][iY][1]);
         }
 
         return this;
@@ -825,122 +597,126 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupAOZNeg() {
+    public SBRWorldContext setupLightingZNeg() {
 
-        if (renderer.enableAO) {
+        if (renderBlocks.enableAO) {
 
-            final int iZ = renderer.renderMinZ > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
+            final int iZ = renderBlocks.renderMinZ > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
 
             final int mixedBrightness = MBFB[1][1][iZ];
             brightness = mixedBrightness;
 
-            final double ratio = 1.0D - renderer.renderMinZ;
+            final double ratio = 1.0D - renderBlocks.renderMinZ;
             final float aoLightValue = AOLV[1][1][0];
 
-            renderer.aoBrightnessXZNN = MBFB[0][1][iZ];
-            renderer.aoBrightnessYZNN = MBFB[1][0][iZ];
-            renderer.aoBrightnessYZPN = MBFB[1][2][iZ];
-            renderer.aoBrightnessXZPN = MBFB[2][1][iZ];
-            renderer.aoBrightnessXYZNNN = MBFB[0][0][iZ];
-            renderer.aoBrightnessXYZNPN = MBFB[0][2][iZ];
-            renderer.aoBrightnessXYZPNN = MBFB[2][0][iZ];
-            renderer.aoBrightnessXYZPPN = MBFB[2][2][iZ];
-            renderer.aoLightValueScratchXZNN = getMixedAo(AOLV[0][1][0], AOLV[0][1][1], ratio);
-            renderer.aoLightValueScratchYZNN = getMixedAo(AOLV[1][0][0], AOLV[1][0][1], ratio);
-            renderer.aoLightValueScratchYZPN = getMixedAo(AOLV[1][2][0], AOLV[1][2][1], ratio);
-            renderer.aoLightValueScratchXZPN = getMixedAo(AOLV[2][1][0], AOLV[2][1][1], ratio);
-            renderer.aoLightValueScratchXYZNNN = getMixedAo(AOLV[0][0][0], AOLV[0][0][1], ratio);
-            renderer.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[0][2][1], ratio);
-            renderer.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[2][0][1], ratio);
-            renderer.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[2][2][1], ratio);
+            renderBlocks.aoBrightnessXZNN = MBFB[0][1][iZ];
+            renderBlocks.aoBrightnessYZNN = MBFB[1][0][iZ];
+            renderBlocks.aoBrightnessYZPN = MBFB[1][2][iZ];
+            renderBlocks.aoBrightnessXZPN = MBFB[2][1][iZ];
+            renderBlocks.aoBrightnessXYZNNN = MBFB[0][0][iZ];
+            renderBlocks.aoBrightnessXYZNPN = MBFB[0][2][iZ];
+            renderBlocks.aoBrightnessXYZPNN = MBFB[2][0][iZ];
+            renderBlocks.aoBrightnessXYZPPN = MBFB[2][2][iZ];
+            renderBlocks.aoLightValueScratchXZNN = getMixedAo(AOLV[0][1][0], AOLV[0][1][1], ratio);
+            renderBlocks.aoLightValueScratchYZNN = getMixedAo(AOLV[1][0][0], AOLV[1][0][1], ratio);
+            renderBlocks.aoLightValueScratchYZPN = getMixedAo(AOLV[1][2][0], AOLV[1][2][1], ratio);
+            renderBlocks.aoLightValueScratchXZPN = getMixedAo(AOLV[2][1][0], AOLV[2][1][1], ratio);
+            renderBlocks.aoLightValueScratchXYZNNN = getMixedAo(AOLV[0][0][0], AOLV[0][0][1], ratio);
+            renderBlocks.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[0][2][1], ratio);
+            renderBlocks.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[2][0][1], ratio);
+            renderBlocks.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[2][2][1], ratio);
 
-            final int brightnessMixedXYZPPN = renderer.getAoBrightness(
-                renderer.aoBrightnessYZPN,
-                renderer.aoBrightnessXZPN,
-                renderer.aoBrightnessXYZPPN,
+            final int brightnessMixedXYZPPN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZPN,
+                renderBlocks.aoBrightnessXZPN,
+                renderBlocks.aoBrightnessXYZPPN,
                 mixedBrightness);
-            final int brightnessMixedXYZPNN = renderer.getAoBrightness(
-                renderer.aoBrightnessYZNN,
-                renderer.aoBrightnessXYZPNN,
-                renderer.aoBrightnessXZPN,
+            final int brightnessMixedXYZPNN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZNN,
+                renderBlocks.aoBrightnessXYZPNN,
+                renderBlocks.aoBrightnessXZPN,
                 mixedBrightness);
-            final int brightnessMixedXYZNNN = renderer.getAoBrightness(
-                renderer.aoBrightnessXYZNNN,
-                renderer.aoBrightnessXZNN,
-                renderer.aoBrightnessYZNN,
+            final int brightnessMixedXYZNNN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYZNNN,
+                renderBlocks.aoBrightnessXZNN,
+                renderBlocks.aoBrightnessYZNN,
                 mixedBrightness);
-            final int brightnessMixedXYZNPN = renderer.getAoBrightness(
-                renderer.aoBrightnessXZNN,
-                renderer.aoBrightnessXYZNPN,
-                renderer.aoBrightnessYZPN,
+            final int brightnessMixedXYZNPN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXZNN,
+                renderBlocks.aoBrightnessXYZNPN,
+                renderBlocks.aoBrightnessYZPN,
                 mixedBrightness);
 
-            final float aoMixedXYZPPN = (aoLightValue + renderer.aoLightValueScratchYZPN
-                + renderer.aoLightValueScratchXZPN
-                + renderer.aoLightValueScratchXYZPPN) / 4.0F;
-            final float aoMixedXYZPNN = (renderer.aoLightValueScratchYZNN + aoLightValue
-                + renderer.aoLightValueScratchXYZPNN
-                + renderer.aoLightValueScratchXZPN) / 4.0F;
-            final float aoMixedXYZNNN = (renderer.aoLightValueScratchXYZNNN + renderer.aoLightValueScratchXZNN
-                + renderer.aoLightValueScratchYZNN
+            final float aoMixedXYZPPN = (aoLightValue + renderBlocks.aoLightValueScratchYZPN
+                + renderBlocks.aoLightValueScratchXZPN
+                + renderBlocks.aoLightValueScratchXYZPPN) / 4.0F;
+            final float aoMixedXYZPNN = (renderBlocks.aoLightValueScratchYZNN + aoLightValue
+                + renderBlocks.aoLightValueScratchXYZPNN
+                + renderBlocks.aoLightValueScratchXZPN) / 4.0F;
+            final float aoMixedXYZNNN = (renderBlocks.aoLightValueScratchXYZNNN + renderBlocks.aoLightValueScratchXZNN
+                + renderBlocks.aoLightValueScratchYZNN
                 + aoLightValue) / 4.0F;
-            final float aoMixedXYZNPN = (renderer.aoLightValueScratchXZNN + renderer.aoLightValueScratchXYZNPN
+            final float aoMixedXYZNPN = (renderBlocks.aoLightValueScratchXZNN + renderBlocks.aoLightValueScratchXYZNPN
                 + aoLightValue
-                + renderer.aoLightValueScratchYZPN) / 4.0F;
+                + renderBlocks.aoLightValueScratchYZPN) / 4.0F;
 
-            aoTopLeft = (float) (aoMixedXYZNPN * renderer.renderMaxY * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPPN * renderer.renderMaxY * renderer.renderMinX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMaxY) * renderer.renderMinX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinX));
-            aoBottomLeft = (float) (aoMixedXYZNPN * renderer.renderMaxY * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPPN * renderer.renderMaxY * renderer.renderMaxX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMaxY) * renderer.renderMaxX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxX));
-            aoBottomRight = (float) (aoMixedXYZNPN * renderer.renderMinY * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPPN * renderer.renderMinY * renderer.renderMaxX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMinY) * renderer.renderMaxX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxX));
-            aoTopRight = (float) (aoMixedXYZNPN * renderer.renderMinY * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPPN * renderer.renderMinY * renderer.renderMinX
-                + aoMixedXYZPNN * (1.0D - renderer.renderMinY) * renderer.renderMinX
-                + aoMixedXYZNNN * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinX));
+            aoTopLeft = (float) (aoMixedXYZNPN * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPPN * renderBlocks.renderMaxY * renderBlocks.renderMinX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinX));
+            aoBottomLeft = (float) (aoMixedXYZNPN * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPPN * renderBlocks.renderMaxY * renderBlocks.renderMaxX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxX));
+            aoBottomRight = (float) (aoMixedXYZNPN * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPPN * renderBlocks.renderMinY * renderBlocks.renderMaxX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxX));
+            aoTopRight = (float) (aoMixedXYZNPN * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPPN * renderBlocks.renderMinY * renderBlocks.renderMinX
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinX
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinX));
 
-            renderer.brightnessTopLeft = renderer.mixAoBrightness(
+            renderBlocks.brightnessTopLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPN,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMaxY * (1.0D - renderer.renderMinX),
-                renderer.renderMaxY * renderer.renderMinX,
-                (1.0D - renderer.renderMaxY) * renderer.renderMinX,
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinX));
-            renderer.brightnessBottomLeft = renderer.mixAoBrightness(
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinX),
+                renderBlocks.renderMaxY * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinX));
+            renderBlocks.brightnessBottomLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPN,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMaxY * (1.0D - renderer.renderMaxX),
-                renderer.renderMaxY * renderer.renderMaxX,
-                (1.0D - renderer.renderMaxY) * renderer.renderMaxX,
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxX));
-            renderer.brightnessBottomRight = renderer.mixAoBrightness(
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxX),
+                renderBlocks.renderMaxY * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxX));
+            renderBlocks.brightnessBottomRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPN,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMinY * (1.0D - renderer.renderMaxX),
-                renderer.renderMinY * renderer.renderMaxX,
-                (1.0D - renderer.renderMinY) * renderer.renderMaxX,
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxX));
-            renderer.brightnessTopRight = renderer.mixAoBrightness(
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxX),
+                renderBlocks.renderMinY * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxX,
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxX));
+            renderBlocks.brightnessTopRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPN,
                 brightnessMixedXYZPPN,
                 brightnessMixedXYZPNN,
                 brightnessMixedXYZNNN,
-                renderer.renderMinY * (1.0D - renderer.renderMinX),
-                renderer.renderMinY * renderer.renderMinX,
-                (1.0D - renderer.renderMinY) * renderer.renderMinX,
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinX));
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinX),
+                renderBlocks.renderMinY * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinX,
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinX));
+        } else {
+            final int iZ = block.getBlockBoundsMinZ() < FLUSH_MIN ? 0 : 1;
+            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
+            Tessellator.instance.setBrightness(MBFB[1][1][iZ]);
         }
 
         return this;
@@ -958,122 +734,400 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupAOZPos() {
+    public SBRWorldContext setupLightingZPos() {
 
-        if (renderer.enableAO) {
+        if (renderBlocks.enableAO) {
 
-            final int iZ = renderer.renderMaxZ < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
+            final int iZ = renderBlocks.renderMaxZ < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
 
             final int mixedBrightness = MBFB[1][1][iZ];
             brightness = mixedBrightness;
 
-            final double ratio = renderer.renderMaxZ;
+            final double ratio = renderBlocks.renderMaxZ;
             final float aoLightValue = AOLV[1][1][2];
 
-            renderer.aoBrightnessXZNP = MBFB[0][1][iZ];
-            renderer.aoBrightnessXZPP = MBFB[2][1][iZ];
-            renderer.aoBrightnessYZNP = MBFB[1][0][iZ];
-            renderer.aoBrightnessYZPP = MBFB[1][2][iZ];
-            renderer.aoBrightnessXYZNNP = MBFB[0][0][iZ];
-            renderer.aoBrightnessXYZNPP = MBFB[0][2][iZ];
-            renderer.aoBrightnessXYZPNP = MBFB[2][0][iZ];
-            renderer.aoBrightnessXYZPPP = MBFB[2][2][iZ];
-            renderer.aoLightValueScratchXZNP = getMixedAo(AOLV[0][1][2], AOLV[0][1][1], ratio);
-            renderer.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[2][1][1], ratio);
-            renderer.aoLightValueScratchYZNP = getMixedAo(AOLV[1][0][2], AOLV[1][0][1], ratio);
-            renderer.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][2][1], ratio);
-            renderer.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[0][0][1], ratio);
-            renderer.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][2][1], ratio);
-            renderer.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[2][0][1], ratio);
-            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][2][1], ratio);
+            renderBlocks.aoBrightnessXZNP = MBFB[0][1][iZ];
+            renderBlocks.aoBrightnessXZPP = MBFB[2][1][iZ];
+            renderBlocks.aoBrightnessYZNP = MBFB[1][0][iZ];
+            renderBlocks.aoBrightnessYZPP = MBFB[1][2][iZ];
+            renderBlocks.aoBrightnessXYZNNP = MBFB[0][0][iZ];
+            renderBlocks.aoBrightnessXYZNPP = MBFB[0][2][iZ];
+            renderBlocks.aoBrightnessXYZPNP = MBFB[2][0][iZ];
+            renderBlocks.aoBrightnessXYZPPP = MBFB[2][2][iZ];
+            renderBlocks.aoLightValueScratchXZNP = getMixedAo(AOLV[0][1][2], AOLV[0][1][1], ratio);
+            renderBlocks.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[2][1][1], ratio);
+            renderBlocks.aoLightValueScratchYZNP = getMixedAo(AOLV[1][0][2], AOLV[1][0][1], ratio);
+            renderBlocks.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][2][1], ratio);
+            renderBlocks.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[0][0][1], ratio);
+            renderBlocks.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][2][1], ratio);
+            renderBlocks.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[2][0][1], ratio);
+            renderBlocks.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][2][1], ratio);
 
-            final int brightnessMixedXYZNPP = renderer.getAoBrightness(
-                renderer.aoBrightnessXZNP,
-                renderer.aoBrightnessXYZNPP,
-                renderer.aoBrightnessYZPP,
+            final int brightnessMixedXYZNPP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXZNP,
+                renderBlocks.aoBrightnessXYZNPP,
+                renderBlocks.aoBrightnessYZPP,
                 mixedBrightness);
-            final int brightnessMixedXYZNNP = renderer.getAoBrightness(
-                renderer.aoBrightnessXYZNNP,
-                renderer.aoBrightnessXZNP,
-                renderer.aoBrightnessYZNP,
+            final int brightnessMixedXYZNNP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYZNNP,
+                renderBlocks.aoBrightnessXZNP,
+                renderBlocks.aoBrightnessYZNP,
                 mixedBrightness);
-            final int brightnessMixedXYZPNP = renderer.getAoBrightness(
-                renderer.aoBrightnessYZNP,
-                renderer.aoBrightnessXYZPNP,
-                renderer.aoBrightnessXZPP,
+            final int brightnessMixedXYZPNP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZNP,
+                renderBlocks.aoBrightnessXYZPNP,
+                renderBlocks.aoBrightnessXZPP,
                 mixedBrightness);
-            final int brightnessMixedXYZPPP = renderer.getAoBrightness(
-                renderer.aoBrightnessYZPP,
-                renderer.aoBrightnessXZPP,
-                renderer.aoBrightnessXYZPPP,
+            final int brightnessMixedXYZPPP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessYZPP,
+                renderBlocks.aoBrightnessXZPP,
+                renderBlocks.aoBrightnessXYZPPP,
                 mixedBrightness);
 
-            final float aoMixedXYZNPP = (renderer.aoLightValueScratchXZNP + renderer.aoLightValueScratchXYZNPP
+            final float aoMixedXYZNPP = (renderBlocks.aoLightValueScratchXZNP + renderBlocks.aoLightValueScratchXYZNPP
                 + aoLightValue
-                + renderer.aoLightValueScratchYZPP) / 4.0F;
-            final float aoMixedXYZNNP = (renderer.aoLightValueScratchXYZNNP + renderer.aoLightValueScratchXZNP
-                + renderer.aoLightValueScratchYZNP
+                + renderBlocks.aoLightValueScratchYZPP) / 4.0F;
+            final float aoMixedXYZNNP = (renderBlocks.aoLightValueScratchXYZNNP + renderBlocks.aoLightValueScratchXZNP
+                + renderBlocks.aoLightValueScratchYZNP
                 + aoLightValue) / 4.0F;
-            final float aoMixedXYZPNP = (renderer.aoLightValueScratchYZNP + aoLightValue
-                + renderer.aoLightValueScratchXYZPNP
-                + renderer.aoLightValueScratchXZPP) / 4.0F;
-            final float aoMixedXYZPPP = (aoLightValue + renderer.aoLightValueScratchYZPP
-                + renderer.aoLightValueScratchXZPP
-                + renderer.aoLightValueScratchXYZPPP) / 4.0F;
+            final float aoMixedXYZPNP = (renderBlocks.aoLightValueScratchYZNP + aoLightValue
+                + renderBlocks.aoLightValueScratchXYZPNP
+                + renderBlocks.aoLightValueScratchXZPP) / 4.0F;
+            final float aoMixedXYZPPP = (aoLightValue + renderBlocks.aoLightValueScratchYZPP
+                + renderBlocks.aoLightValueScratchXZPP
+                + renderBlocks.aoLightValueScratchXYZPPP) / 4.0F;
 
-            aoTopLeft = (float) (aoMixedXYZNPP * renderer.renderMaxY * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPPP * renderer.renderMaxY * renderer.renderMinX
-                + aoMixedXYZPNP * (1.0D - renderer.renderMaxY) * renderer.renderMinX
-                + aoMixedXYZNNP * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinX));
-            aoBottomLeft = (float) (aoMixedXYZNPP * renderer.renderMinY * (1.0D - renderer.renderMinX)
-                + aoMixedXYZPPP * renderer.renderMinY * renderer.renderMinX
-                + aoMixedXYZPNP * (1.0D - renderer.renderMinY) * renderer.renderMinX
-                + aoMixedXYZNNP * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinX));
-            aoBottomRight = (float) (aoMixedXYZNPP * renderer.renderMinY * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPPP * renderer.renderMinY * renderer.renderMaxX
-                + aoMixedXYZPNP * (1.0D - renderer.renderMinY) * renderer.renderMaxX
-                + aoMixedXYZNNP * (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxX));
-            aoTopRight = (float) (aoMixedXYZNPP * renderer.renderMaxY * (1.0D - renderer.renderMaxX)
-                + aoMixedXYZPPP * renderer.renderMaxY * renderer.renderMaxX
-                + aoMixedXYZPNP * (1.0D - renderer.renderMaxY) * renderer.renderMaxX
-                + aoMixedXYZNNP * (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxX));
+            aoTopLeft = (float) (aoMixedXYZNPP * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPPP * renderBlocks.renderMaxY * renderBlocks.renderMinX
+                + aoMixedXYZPNP * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinX
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinX));
+            aoBottomLeft = (float) (aoMixedXYZNPP * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinX)
+                + aoMixedXYZPPP * renderBlocks.renderMinY * renderBlocks.renderMinX
+                + aoMixedXYZPNP * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinX
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinX));
+            aoBottomRight = (float) (aoMixedXYZNPP * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPPP * renderBlocks.renderMinY * renderBlocks.renderMaxX
+                + aoMixedXYZPNP * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxX
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxX));
+            aoTopRight = (float) (aoMixedXYZNPP * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxX)
+                + aoMixedXYZPPP * renderBlocks.renderMaxY * renderBlocks.renderMaxX
+                + aoMixedXYZPNP * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxX
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxX));
 
-            renderer.brightnessTopLeft = renderer.mixAoBrightness(
+            renderBlocks.brightnessTopLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPPP,
-                renderer.renderMaxY * (1.0D - renderer.renderMinX),
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMinX),
-                (1.0D - renderer.renderMaxY) * renderer.renderMinX,
-                renderer.renderMaxY * renderer.renderMinX);
-            renderer.brightnessBottomLeft = renderer.mixAoBrightness(
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinX),
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinX),
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinX,
+                renderBlocks.renderMaxY * renderBlocks.renderMinX);
+            renderBlocks.brightnessBottomLeft = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPPP,
-                renderer.renderMinY * (1.0D - renderer.renderMinX),
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMinX),
-                (1.0D - renderer.renderMinY) * renderer.renderMinX,
-                renderer.renderMinY * renderer.renderMinX);
-            renderer.brightnessBottomRight = renderer.mixAoBrightness(
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinX),
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinX),
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinX,
+                renderBlocks.renderMinY * renderBlocks.renderMinX);
+            renderBlocks.brightnessBottomRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPPP,
-                renderer.renderMinY * (1.0D - renderer.renderMaxX),
-                (1.0D - renderer.renderMinY) * (1.0D - renderer.renderMaxX),
-                (1.0D - renderer.renderMinY) * renderer.renderMaxX,
-                renderer.renderMinY * renderer.renderMaxX);
-            renderer.brightnessTopRight = renderer.mixAoBrightness(
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxX),
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxX),
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxX,
+                renderBlocks.renderMinY * renderBlocks.renderMaxX);
+            renderBlocks.brightnessTopRight = renderBlocks.mixAoBrightness(
                 brightnessMixedXYZNPP,
                 brightnessMixedXYZNNP,
                 brightnessMixedXYZPNP,
                 brightnessMixedXYZPPP,
-                renderer.renderMaxY * (1.0D - renderer.renderMaxX),
-                (1.0D - renderer.renderMaxY) * (1.0D - renderer.renderMaxX),
-                (1.0D - renderer.renderMaxY) * renderer.renderMaxX,
-                renderer.renderMaxY * renderer.renderMaxX);
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxX),
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxX),
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxX,
+                renderBlocks.renderMaxY * renderBlocks.renderMaxX);
+        } else {
+            final int iZ = block.getBlockBoundsMaxZ() > FLUSH_MAX ? 2 : 1;
+            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
+            Tessellator.instance.setBrightness(MBFB[1][1][iZ]);
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets up lighting for the West face and returns the {@link SBRWorldContext}.
+     * <p>
+     * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
+     * <p>
+     * <ul>
+     * <li>{@link RenderBlocks#enableAO}</li>
+     * <li>{@link RenderBlocks#partialRenderBounds}</li>
+     * </ul>
+     *
+     * @return the {@link SBRWorldContext}
+     */
+    public SBRWorldContext setupLightingXNeg() {
+
+        if (renderBlocks.enableAO) {
+
+            final int iX = renderBlocks.renderMinX > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
+
+            final int mixedBrightness = MBFB[iX][1][1];
+            brightness = mixedBrightness;
+
+            final double ratio = 1.0D - renderBlocks.renderMinX;
+            final float aoLightValue = AOLV[0][1][1];
+
+            renderBlocks.aoBrightnessXYNN = MBFB[iX][0][1];
+            renderBlocks.aoBrightnessXZNN = MBFB[iX][1][0];
+            renderBlocks.aoBrightnessXZNP = MBFB[iX][1][2];
+            renderBlocks.aoBrightnessXYNP = MBFB[iX][2][1];
+            renderBlocks.aoBrightnessXYZNNN = MBFB[iX][0][0];
+            renderBlocks.aoBrightnessXYZNNP = MBFB[iX][0][2];
+            renderBlocks.aoBrightnessXYZNPN = MBFB[iX][2][0];
+            renderBlocks.aoBrightnessXYZNPP = MBFB[iX][2][2];
+            renderBlocks.aoLightValueScratchXYNN = getMixedAo(AOLV[0][0][1], AOLV[1][0][1], ratio);
+            renderBlocks.aoLightValueScratchXZNN = getMixedAo(AOLV[0][1][0], AOLV[1][1][0], ratio);
+            renderBlocks.aoLightValueScratchXZNP = getMixedAo(AOLV[0][1][2], AOLV[1][1][2], ratio);
+            renderBlocks.aoLightValueScratchXYNP = getMixedAo(AOLV[0][2][1], AOLV[1][2][1], ratio);
+            renderBlocks.aoLightValueScratchXYZNNN = getMixedAo(AOLV[0][0][0], AOLV[1][0][0], ratio);
+            renderBlocks.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[1][0][2], ratio);
+            renderBlocks.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[1][2][0], ratio);
+            renderBlocks.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[1][2][2], ratio);
+
+            final int brightnessMixedXYZNPN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXZNN,
+                renderBlocks.aoBrightnessXYZNPN,
+                renderBlocks.aoBrightnessXYNP,
+                mixedBrightness);
+            final int brightnessMixedXYZNNN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYZNNN,
+                renderBlocks.aoBrightnessXYNN,
+                renderBlocks.aoBrightnessXZNN,
+                mixedBrightness);
+            final int brightnessMixedXYZNNP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYNN,
+                renderBlocks.aoBrightnessXYZNNP,
+                renderBlocks.aoBrightnessXZNP,
+                mixedBrightness);
+            final int brightnessMixedXYZNPP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXZNP,
+                renderBlocks.aoBrightnessXYNP,
+                renderBlocks.aoBrightnessXYZNPP,
+                mixedBrightness);
+
+            final float aoMixedXYZNPN = (renderBlocks.aoLightValueScratchXZNN + aoLightValue
+                + renderBlocks.aoLightValueScratchXYZNPN
+                + renderBlocks.aoLightValueScratchXYNP) / 4.0F;
+            final float aoMixedXYZNNN = (renderBlocks.aoLightValueScratchXYZNNN + renderBlocks.aoLightValueScratchXYNN
+                + renderBlocks.aoLightValueScratchXZNN
+                + aoLightValue) / 4.0F;
+            final float aoMixedXYZNNP = (renderBlocks.aoLightValueScratchXYNN + renderBlocks.aoLightValueScratchXYZNNP
+                + aoLightValue
+                + renderBlocks.aoLightValueScratchXZNP) / 4.0F;
+            final float aoMixedXYZNPP = (aoLightValue + renderBlocks.aoLightValueScratchXZNP
+                + renderBlocks.aoLightValueScratchXYNP
+                + renderBlocks.aoLightValueScratchXYZNPP) / 4.0F;
+
+            aoTopLeft = (float) (aoMixedXYZNPP * renderBlocks.renderMaxY * renderBlocks.renderMaxZ
+                + aoMixedXYZNPN * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxZ);
+            aoBottomLeft = (float) (aoMixedXYZNPP * renderBlocks.renderMaxY * renderBlocks.renderMinZ
+                + aoMixedXYZNPN * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinZ);
+            aoBottomRight = (float) (aoMixedXYZNPP * renderBlocks.renderMinY * renderBlocks.renderMinZ
+                + aoMixedXYZNPN * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinZ);
+            aoTopRight = (float) (aoMixedXYZNPP * renderBlocks.renderMinY * renderBlocks.renderMaxZ
+                + aoMixedXYZNPN * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZNNN * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZNNP * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxZ);
+
+            renderBlocks.brightnessTopLeft = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZNPP,
+                brightnessMixedXYZNPN,
+                brightnessMixedXYZNNN,
+                brightnessMixedXYZNNP,
+                renderBlocks.renderMaxY * renderBlocks.renderMaxZ,
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxZ),
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxZ),
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxZ);
+            renderBlocks.brightnessBottomLeft = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZNPP,
+                brightnessMixedXYZNPN,
+                brightnessMixedXYZNNN,
+                brightnessMixedXYZNNP,
+                renderBlocks.renderMaxY * renderBlocks.renderMinZ,
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinZ),
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinZ),
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinZ);
+            renderBlocks.brightnessBottomRight = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZNPP,
+                brightnessMixedXYZNPN,
+                brightnessMixedXYZNNN,
+                brightnessMixedXYZNNP,
+                renderBlocks.renderMinY * renderBlocks.renderMinZ,
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinZ),
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinZ),
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinZ);
+            renderBlocks.brightnessTopRight = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZNPP,
+                brightnessMixedXYZNPN,
+                brightnessMixedXYZNNN,
+                brightnessMixedXYZNNP,
+                renderBlocks.renderMinY * renderBlocks.renderMaxZ,
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxZ),
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxZ),
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxZ);
+        } else {
+            final int iX = block.getBlockBoundsMinX() < FLUSH_MIN ? 0 : 1;
+            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
+            Tessellator.instance.setBrightness(MBFB[iX][1][1]);
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets up lighting for the East face and returns the {@link SBRWorldContext}.
+     * <p>
+     * This is a consolidated <code>method</code> that sets side shading with respect to the following attributes:
+     * <p>
+     * <ul>
+     * <li>{@link RenderBlocks#enableAO}</li>
+     * <li>{@link RenderBlocks#partialRenderBounds}</li>
+     * </ul>
+     *
+     * @return the {@link SBRWorldContext}
+     */
+    public SBRWorldContext setupLightingXPos() {
+
+        if (renderBlocks.enableAO) {
+
+            final int iX = renderBlocks.renderMaxX < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
+
+            final int mixedBrightness = MBFB[iX][1][1];
+            brightness = mixedBrightness;
+
+            final double ratio = renderBlocks.renderMaxX;
+            final float aoLightValue = AOLV[2][1][1];
+
+            renderBlocks.aoBrightnessXYPN = MBFB[iX][0][1];
+            renderBlocks.aoBrightnessXZPN = MBFB[iX][1][0];
+            renderBlocks.aoBrightnessXZPP = MBFB[iX][1][2];
+            renderBlocks.aoBrightnessXYPP = MBFB[iX][2][1];
+            renderBlocks.aoBrightnessXYZPNN = MBFB[iX][0][0];
+            renderBlocks.aoBrightnessXYZPNP = MBFB[iX][0][2];
+            renderBlocks.aoBrightnessXYZPPN = MBFB[iX][2][0];
+            renderBlocks.aoBrightnessXYZPPP = MBFB[iX][2][2];
+            renderBlocks.aoLightValueScratchXYPN = getMixedAo(AOLV[2][0][1], AOLV[1][0][1], ratio);
+            renderBlocks.aoLightValueScratchXZPN = getMixedAo(AOLV[2][1][0], AOLV[1][1][0], ratio);
+            renderBlocks.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[1][1][2], ratio);
+            renderBlocks.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[1][2][1], ratio);
+            renderBlocks.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[1][0][0], ratio);
+            renderBlocks.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[1][0][2], ratio);
+            renderBlocks.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[1][2][0], ratio);
+            renderBlocks.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[1][2][2], ratio);
+
+            final int brightnessMixedXYZPPP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXZPP,
+                renderBlocks.aoBrightnessXYPP,
+                renderBlocks.aoBrightnessXYZPPP,
+                mixedBrightness);
+            final int brightnessMixedXYZPNP = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYPN,
+                renderBlocks.aoBrightnessXYZPNP,
+                renderBlocks.aoBrightnessXZPP,
+                mixedBrightness);
+            final int brightnessMixedXYZPNN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXYZPNN,
+                renderBlocks.aoBrightnessXYPN,
+                renderBlocks.aoBrightnessXZPN,
+                mixedBrightness);
+            final int brightnessMixedXYZPPN = renderBlocks.getAoBrightness(
+                renderBlocks.aoBrightnessXZPN,
+                renderBlocks.aoBrightnessXYZPPN,
+                renderBlocks.aoBrightnessXYPP,
+                mixedBrightness);
+
+            final float aoMixedXYZPPP = (aoLightValue + renderBlocks.aoLightValueScratchXZPP
+                + renderBlocks.aoLightValueScratchXYPP
+                + renderBlocks.aoLightValueScratchXYZPPP) / 4.0F;
+            final float aoMixedXYZPNP = (renderBlocks.aoLightValueScratchXYPN + renderBlocks.aoLightValueScratchXYZPNP
+                + aoLightValue
+                + renderBlocks.aoLightValueScratchXZPP) / 4.0F;
+            final float aoMixedXYZPNN = (renderBlocks.aoLightValueScratchXYZPNN + renderBlocks.aoLightValueScratchXYPN
+                + renderBlocks.aoLightValueScratchXZPN
+                + aoLightValue) / 4.0F;
+            final float aoMixedXYZPPN = (renderBlocks.aoLightValueScratchXZPN + aoLightValue
+                + renderBlocks.aoLightValueScratchXYZPPN
+                + renderBlocks.aoLightValueScratchXYPP) / 4.0F;
+
+            aoTopLeft = (float) (aoMixedXYZPNP * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxZ
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZPPN * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZPPP * renderBlocks.renderMinY * renderBlocks.renderMaxZ);
+            aoBottomLeft = (float) (aoMixedXYZPNP * (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinZ
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZPPN * renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZPPP * renderBlocks.renderMinY * renderBlocks.renderMinZ);
+            aoBottomRight = (float) (aoMixedXYZPNP * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinZ
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZPPN * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinZ)
+                + aoMixedXYZPPP * renderBlocks.renderMaxY * renderBlocks.renderMinZ);
+            aoTopRight = (float) (aoMixedXYZPNP * (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxZ
+                + aoMixedXYZPNN * (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZPPN * renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxZ)
+                + aoMixedXYZPPP * renderBlocks.renderMaxY * renderBlocks.renderMaxZ);
+
+            renderBlocks.brightnessTopLeft = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZPNP,
+                brightnessMixedXYZPNN,
+                brightnessMixedXYZPPN,
+                brightnessMixedXYZPPP,
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMaxZ,
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMaxZ),
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMaxZ),
+                renderBlocks.renderMinY * renderBlocks.renderMaxZ);
+            renderBlocks.brightnessBottomLeft = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZPNP,
+                brightnessMixedXYZPNN,
+                brightnessMixedXYZPPN,
+                brightnessMixedXYZPPP,
+                (1.0D - renderBlocks.renderMinY) * renderBlocks.renderMinZ,
+                (1.0D - renderBlocks.renderMinY) * (1.0D - renderBlocks.renderMinZ),
+                renderBlocks.renderMinY * (1.0D - renderBlocks.renderMinZ),
+                renderBlocks.renderMinY * renderBlocks.renderMinZ);
+            renderBlocks.brightnessBottomRight = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZPNP,
+                brightnessMixedXYZPNN,
+                brightnessMixedXYZPPN,
+                brightnessMixedXYZPPP,
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMinZ,
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMinZ),
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMinZ),
+                renderBlocks.renderMaxY * renderBlocks.renderMinZ);
+            renderBlocks.brightnessTopRight = renderBlocks.mixAoBrightness(
+                brightnessMixedXYZPNP,
+                brightnessMixedXYZPNN,
+                brightnessMixedXYZPPN,
+                brightnessMixedXYZPPP,
+                (1.0D - renderBlocks.renderMaxY) * renderBlocks.renderMaxZ,
+                (1.0D - renderBlocks.renderMaxY) * (1.0D - renderBlocks.renderMaxZ),
+                renderBlocks.renderMaxY * (1.0D - renderBlocks.renderMaxZ),
+                renderBlocks.renderMaxY * renderBlocks.renderMaxZ);
+        } else {
+            final int iX = block.getBlockBoundsMaxX() > FLUSH_MAX ? 2 : 1;
+            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
+            Tessellator.instance.setBrightness(MBFB[iX][1][1]);
         }
 
         return this;

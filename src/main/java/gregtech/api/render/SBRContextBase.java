@@ -14,6 +14,7 @@ import java.util.function.IntPredicate;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,9 +46,16 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
 
     public static final int MAX_BRIGHTNESS = 0xf000f0;
     protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    public final RenderBlocks renderer;
-    public final Block block;
-    public final int modelId;
+
+    /** Non-null placeholder RenderBlocks, replaced in {@link #setup}. */
+    @NotNull
+    public RenderBlocks renderBlocks = RenderBlocks.getInstance();
+
+    /** Non-null placeholder block, replaced in {@link #setup}. */
+    @NotNull
+    public Block block = Blocks.air;
+    public int modelId;
+
     /**
      * Determines if block faces can be culled
      */
@@ -68,16 +76,19 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
     protected int colorOverride;
 
     /**
-     * Constructs a new {@link SBRContextBase} used to render a single {@link Block} inside an inventory
+     * Set up the {@link SBRContextBase} used to render a single {@link Block}
      *
-     * @param block    the {@link Block} to render
-     * @param modelId  the Model ID for the block
-     * @param renderer the {@link RenderBlocks} renderer to use
+     * @param block        the {@link Block} to render
+     * @param modelId      the Model ID for the block
+     * @param renderBlocks the {@link RenderBlocks} renderer to use
      */
-    public SBRContextBase(@NotNull Block block, int modelId, @NotNull RenderBlocks renderer) {
+    public T setup(@NotNull Block block, int modelId, @NotNull RenderBlocks renderBlocks) {
         this.block = block;
         this.modelId = modelId;
-        this.renderer = renderer;
+        this.renderBlocks = renderBlocks;
+        @SuppressWarnings("unchecked")
+        final T self = (T) this;
+        return self;
     }
 
     /**
