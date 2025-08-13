@@ -223,8 +223,8 @@ public class OverclockCalculator {
     }
 
     /**
-     * Sets the maximum number of overclocks that can be performed, regardless of how much power is available.
-     * Negative values are rounded up to 0.
+     * Sets the maximum number of overclocks that can be performed, regardless of how much power is available. Negative
+     * values are rounded up to 0.
      */
     @Nonnull
     public OverclockCalculator setMaxOverclocks(int maxOverclocks) {

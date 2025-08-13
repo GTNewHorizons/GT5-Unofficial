@@ -309,8 +309,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     /**
      * Checks the block in the given world and block position, and remove the entries in the {@link #flowerCheckingMap}
-     * if it matches any.
-     * This function will be called during the structural check, see structure definition also.
+     * if it matches any. This function will be called during the structural check, see structure definition also.
      *
      * @see #flowerCheckingMap
      */
@@ -322,8 +321,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     /**
-     * This should be called when {@link #mStorage} is changed.
-     * And this will trigger the flower check update.
+     * This should be called when {@link #mStorage} is changed. And this will trigger the flower check update.
      * <p>
      * The flower check should be ignored when the storage is updated when loading world (or loadNBTData specifically),
      * which the world itself is not ready yet.

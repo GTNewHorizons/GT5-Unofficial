@@ -68,9 +68,9 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     public static final int MAX_HEIGHT = 15;
 
     /**
-     * List of other blocks allowed in the cleanroom.
-     * Format of entries is either just the block's unlocalized name, or <unlocalized name>:<meta>. The former matches
-     * all blocks of that name regardless of meta value. Read from config file.
+     * List of other blocks allowed in the cleanroom. Format of entries is either just the block's unlocalized name, or
+     * <unlocalized name>:<meta>. The former matches all blocks of that name regardless of meta value. Read from config
+     * file.
      */
     public static final HashSet<String> ALLOWED_BLOCKS = new HashSet<>();
 
@@ -739,20 +739,15 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     /**
      * Doors are funny. So the meta value of the bottom part of the door determines where in the block the door is, when
-     * in the "closed" (inactive) position.
-     * 0 = lower x coordinate (west).
-     * 1 = lower z coordinate (north).
-     * 2 = upper x coordinate (east).
-     * 3 = upper z coordinate (south).
-     * If the door is opened, a 4 is added to this value.
+     * in the "closed" (inactive) position. 0 = lower x coordinate (west). 1 = lower z coordinate (north). 2 = upper x
+     * coordinate (east). 3 = upper z coordinate (south). If the door is opened, a 4 is added to this value.
      * <p>
-     * The meta of the top part of the door determines which way the door opens.
-     * 8 = opens counterclockwise.
-     * 9 = opens clockwise.
+     * The meta of the top part of the door determines which way the door opens. 8 = opens counterclockwise. 9 = opens
+     * clockwise.
      * <p>
-     * Therefore, to find out where in the block the door currently is, we need to know both the top and the
-     * bottom part, as a door that is "closed" on the north side can "open" to either the west or east side.
-     * In both cases the meta of the bottom part will be the same (5).
+     * Therefore, to find out where in the block the door currently is, we need to know both the top and the bottom
+     * part, as a door that is "closed" on the north side can "open" to either the west or east side. In both cases the
+     * meta of the bottom part will be the same (5).
      * <p>
      * This method takes the coordinates of a door block (it is already assumed that this is a door), and returns the
      * direction where the door is. Return value is the same as a default closed door: 0 = west, 1 = north, 2 = east, 3

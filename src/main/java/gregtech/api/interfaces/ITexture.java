@@ -1,45 +1,25 @@
 package gregtech.api.interfaces;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
-import gregtech.api.util.LightingHelper;
+import gregtech.api.render.SBRContextBase;
 
 public interface ITexture {
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    void renderXPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int renderWorldPass);
+    void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    void renderXNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int renderWorldPass);
+    void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    void renderYPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int renderWorldPass);
+    void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    void renderYNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int renderWorldPass);
+    void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    void renderZPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int renderWorldPass);
+    void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    void renderZNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int renderWorldPass);
+    void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
 
     boolean isValidTexture();
-
-    /**
-     * @return {@code true} if this texture is from the old package
-     */
-    default boolean isOldTexture() {
-        return true;
-    }
 
     /**
      * Will initialize the {@link Tessellator} if rendering off-world (Inventory)
@@ -50,7 +30,7 @@ public interface ITexture {
      * @param aNormalZ  The Z Normal for current Quad Face
      */
     default void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
-        if (aRenderer.useInventoryTint && !isOldTexture()) {
+        if (aRenderer.useInventoryTint) {
             final Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
             tess.setNormal(aNormalX, aNormalY, aNormalZ);
@@ -63,7 +43,7 @@ public interface ITexture {
      * @param aRenderer The {@link RenderBlocks} Renderer
      */
     default void draw(RenderBlocks aRenderer) {
-        if (aRenderer.useInventoryTint && !isOldTexture()) {
+        if (aRenderer.useInventoryTint) {
             Tessellator.instance.draw();
         }
     }

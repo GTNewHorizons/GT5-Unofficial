@@ -572,7 +572,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             .getSlotIndex();
                         final Object input;
                         if (aRecipe instanceof GTRecipe.GTRecipe_WithAlt withAltRecipe) {
-                            input = withAltRecipe.getRepresentativeInput(i);
+                            input = withAltRecipe.getAltRepresentativeInput(i);
                         } else {
                             ItemStack[] inputs = GTNEIDefaultHandler.this.neiProperties.itemInputsGetter.apply(aRecipe);
                             if (i < inputs.length && inputs[i] != null) {
@@ -705,7 +705,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleTicksStatic / 10, this.mInputs);
+            return getCycledIngredients(cycleTicksStatic / 20, this.mInputs);
         }
 
         @Override

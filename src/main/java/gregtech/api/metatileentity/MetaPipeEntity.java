@@ -36,8 +36,8 @@ import gregtech.common.covers.Cover;
  * Extend this Class to add a new MetaPipe Call the Constructor with the desired ID at the load-phase (not preload and
  * also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
- * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * Call the Constructor like the following example inside the Load Phase, to register it. "new MTEFurnace(54,
+ * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
@@ -53,11 +53,10 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     private IGregTechTileEntity mBaseMetaTileEntity;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
-     * See also the list in the API package - it has a description that contains all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
+     * also the list in the API package - it has a description that contains all the reservations.
      * <p>
-     * The constructor can be overloaded as follows:
-     * <blockquote>
+     * The constructor can be overloaded as follows: <blockquote>
      *
      * <pre>
      *
@@ -110,9 +109,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     /**
-     * For Bounding Box collision checks
-     * The bounding box is unaffected in case a soldering iron is held and the render thickness of the pipe is
-     * minimized.
+     * For Bounding Box collision checks The bounding box is unaffected in case a soldering iron is held and the render
+     * thickness of the pipe is minimized.
      */
     public abstract float getCollisionThickness();
 
