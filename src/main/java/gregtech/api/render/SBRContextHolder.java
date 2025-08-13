@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * ThreadLocal management upstream). No internal synchronization is performed.
  * </p>
  */
-public class SBRContextHolder {
+public final class SBRContextHolder {
 
     private SBRInventoryContext inventoryContext;
     private SBRWorldContext worldContext;

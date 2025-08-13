@@ -41,14 +41,13 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
     public static int renderID;
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
+    private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     public static void register() {
         renderID = RenderingRegistry.getNextAvailableRenderId();
         INSTANCE = new BWBlockOreRenderer();
         RenderingRegistry.registerBlockHandler(INSTANCE);
     }
-
-    private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {
