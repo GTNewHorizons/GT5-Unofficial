@@ -265,9 +265,9 @@ public class MaterialsInit1 {
         Materials.Komatiite = loadKomatiite();
         Materials.Lava = loadLava();
         Materials.Lemurite = loadLemurite();
+        Materials.Limestone = loadLimestone();
 
         // spotless:off
-        Materials.Limestone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Limestone"               ,   "Limestone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Magma                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255,  64,   0,   0,   "Magma"                   ,   "Magma"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
         Materials.Mawsitsit               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Mawsitsit"               ,   "Mawsitsit"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Mercassium              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Mercassium"              ,   "Mercassium"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4369,6 +4369,13 @@ public class MaterialsInit1 {
             .setMetaItemSubID(486)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0xdbdbdb)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadLimestone() {
+        return new MaterialBuilder().setName("Limestone")
+            .setDefaultLocalName("Limestone")
             .addDustItems()
             .constructMaterial();
     }
