@@ -209,6 +209,15 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         return true;
     }
 
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Right-clicking could be a data stick linking action, otherwise we can ignore, as this multi does not have a GUI.
+        if (tryLinkDataStick(aPlayer)) {
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+    }
+
     // If the controller is broken this can be called to explicitly unlink the controller, so we don't have any
     // references lingering around
     public void unlinkController(MTEPCBFactory oldController) {
