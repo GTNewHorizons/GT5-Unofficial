@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -40,6 +41,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> extends MTEEnhancedMultiBlockBase<T> {
 
+
     private enum LinkResult {
         /**
          * Link target was out of range of the main controller
@@ -59,7 +61,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
      * Coordinates of the PCB Factories. These can be used to find the factories again on world
      * load.
      */
-    private final Set<Vec3Impl> controllerCoords = new HashSet<>();
+    protected final Set<Vec3Impl> controllerCoords = new HashSet<>();
 
     /**
      * Queue of all currently active factories, sorted by time left in their recipe.
@@ -146,6 +148,15 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
             NBTTagIntArray controllerNBT = saveLinkDataToNBT();
             aNBT.setTag("controllers", controllerNBT);
         }
+    }
+
+    /**
+     * Remove the given factory from the list of linked factories.
+     * @param factory factory to remove
+     */
+    public void removeController(MTEPCBFactory factory) {
+        IGregTechTileEntity BMTE = factory.getBaseMetaTileEntity();
+        controllerCoords.removeIf(controllerCoord -> controllerCoord.get(1) == BMTE.getXCoord() && controllerCoord.get(1) == BMTE.getYCoord() && controllerCoord.get(1) == BMTE.getZCoord());
     }
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
@@ -330,6 +341,23 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     public @NotNull CheckRecipeResult checkProcessing() {
         return CheckRecipeResultRegistry.NONE;
     }
+
+
+    /**
+     * removes any factories that are not there anymore, in case onBlockBreak didn't fire
+     */
+    protected void checkFactories() {
+        for (Vec3Impl coords : controllerCoords) {
+            TileEntity TE = this.getBaseMetaTileEntity().getWorld().getTileEntity(coords.get(0),coords.get(1), coords.get(2));
+            if (TE instanceof IGregTechTileEntity GTTE) {
+                IMetaTileEntity MTE = GTTE.getMetaTileEntity();
+                if (!(MTE instanceof MTEPCBFactory)) {
+                    controllerCoords.remove(coords);
+                }
+            } else controllerCoords.remove(coords);
+        }
+    }
+
 
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
