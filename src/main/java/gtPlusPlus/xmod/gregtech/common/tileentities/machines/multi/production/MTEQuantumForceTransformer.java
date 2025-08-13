@@ -830,7 +830,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean render(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public boolean render(SBRContextBase ctx) {
         Tessellator tes = Tessellator.instance;
         IIcon forceField = TexturesGtBlock.ForceField.getIcon();
         if (getBaseMetaTileEntity().isActive()) {

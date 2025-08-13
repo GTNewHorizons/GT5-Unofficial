@@ -27,7 +27,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         mMeta = aMeta;
     }
 
-    private IIcon getIcon(int ordinalSide, SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    private IIcon getIcon(int ordinalSide, SBRContextBase ctx) {
         final IIcon icon;
         if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
         else icon = mBlock.getIcon(mSide, mMeta);
@@ -39,7 +39,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     @Override
-    public void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXPos(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
         ctx.getRenderBlocks().field_152631_f = true;
@@ -53,7 +53,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     @Override
-    public void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXNeg(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         startDrawingQuads(ctx.getRenderBlocks(), -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
@@ -65,7 +65,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     @Override
-    public void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYPos(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
@@ -77,7 +77,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     @Override
-    public void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYNeg(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
@@ -89,7 +89,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     @Override
-    public void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZPos(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
@@ -101,7 +101,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     @Override
-    public void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZNeg(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);

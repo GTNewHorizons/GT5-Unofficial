@@ -32,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * to various rendering methods throughout a block's render cycle.
  */
 @SideOnly(Side.CLIENT)
-public final class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
+public final class SBRInventoryContext extends SBRContextBase {
 
     private static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
     private int meta;
@@ -77,40 +77,6 @@ public final class SBRInventoryContext extends SBRContextBase<SBRInventoryContex
     }
 
     /**
-     * Sets brightness override.
-     *
-     * @param brightness the brightness override
-     * @return the {@link SBRInventoryContext}
-     */
-    public SBRInventoryContext setBrightnessOverride(int brightness) {
-        hasBrightnessOverride = true;
-        brightnessOverride = brightness;
-        return this;
-    }
-
-    /**
-     * Sets lightness override.
-     *
-     * @param lightness the lightness override
-     * @return the {@link SBRInventoryContext}
-     */
-    public SBRInventoryContext setLightnessOverride(float lightness) {
-        hasLightnessOverride = true;
-        lightnessOverride = lightness;
-        return this;
-    }
-
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
-     * @param side the side
-     * @param rgba the primary short[] RGBA color array
-     */
-    public SBRInventoryContext setupColor(ForgeDirection side, short[] rgba) {
-        return setupColor(side, rgbaToInt(rgba));
-    }
-
-    /**
      * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
      *
      * @param side     the side
@@ -119,16 +85,16 @@ public final class SBRInventoryContext extends SBRContextBase<SBRInventoryContex
     public SBRInventoryContext setupColor(ForgeDirection side, int hexColor) {
         final Tessellator tessellator = Tessellator.instance;
         final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        final float[] rgb = hasColorOverride && !renderBlocks.hasOverrideBlockTexture() ? getRGB(colorOverride)
-            : getRGB(hexColor);
+
+        final int color = hasColorOverride ? colorOverride : hexColor;
+
+        final float red = (color >> 16 & 0xff) / 255.0F;
+        final float green = (color >> 8 & 0xff) / 255.0F;
+        final float blue = (color & 0xff) / 255.0F;
 
         if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
-        tessellator.setColorOpaque_F(rgb[0] * lightness, rgb[1] * lightness, rgb[2] * lightness);
+        tessellator.setColorOpaque_F(red * lightness, green * lightness, blue * lightness);
         return this;
-    }
-
-    public int getMeta() {
-        return meta;
     }
 
     /**
@@ -139,5 +105,9 @@ public final class SBRInventoryContext extends SBRContextBase<SBRInventoryContex
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
         return true;
+    }
+
+    public int getMeta() {
+        return meta;
     }
 }

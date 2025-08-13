@@ -353,7 +353,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    default boolean render(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    default boolean render(SBRContextBase ctx) {
         return false;
     }
 

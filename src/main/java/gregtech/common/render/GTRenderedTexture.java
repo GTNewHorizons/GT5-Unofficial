@@ -41,7 +41,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     }
 
     @Override
-    public void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXPos(SBRContextBase ctx) {
         startDrawingQuads(ctx.getRenderBlocks(), 1.0f, 0.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = ctx.getRenderBlocks().enableAO;
@@ -57,30 +57,19 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.EAST, mRGBa);
-            renderFaceXPos(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getIcon(),
-                rotation);
+            renderFaceXPos(ctx, mIconContainer.getIcon(), rotation);
         }
-        if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
-            renderFaceXPos(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getOverlayIcon(),
-                rotation);
+            renderFaceXPos(ctx, overlayIcon, rotation);
         }
         ctx.getRenderBlocks().enableAO = enableAO;
         draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXNeg(SBRContextBase ctx) {
         startDrawingQuads(ctx.getRenderBlocks(), -1.0f, 0.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = ctx.getRenderBlocks().enableAO;
@@ -96,30 +85,19 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.WEST, mRGBa);
-            renderFaceXNeg(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getIcon(),
-                rotation);
+            renderFaceXNeg(ctx, mIconContainer.getIcon(), rotation);
         }
-        if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
-            renderFaceXNeg(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getOverlayIcon(),
-                rotation);
+            renderFaceXNeg(ctx, overlayIcon, rotation);
         }
         ctx.getRenderBlocks().enableAO = enableAO;
         draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYPos(SBRContextBase ctx) {
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 1.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = ctx.getRenderBlocks().enableAO;
@@ -135,30 +113,19 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.UP, mRGBa);
-            renderFaceYPos(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getIcon(),
-                rotation);
+            renderFaceYPos(ctx, mIconContainer.getIcon(), rotation);
         }
-        if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
-            renderFaceYPos(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getOverlayIcon(),
-                rotation);
+            renderFaceYPos(ctx, overlayIcon, rotation);
         }
         ctx.getRenderBlocks().enableAO = enableAO;
         draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYNeg(SBRContextBase ctx) {
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, -1.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = ctx.getRenderBlocks().enableAO;
@@ -174,30 +141,19 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.DOWN, mRGBa);
-            renderFaceYNeg(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getIcon(),
-                rotation);
+            renderFaceYNeg(ctx, mIconContainer.getIcon(), rotation);
         }
-        if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
-            renderFaceYNeg(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getOverlayIcon(),
-                rotation);
+            renderFaceYNeg(ctx, overlayIcon, rotation);
         }
         ctx.getRenderBlocks().enableAO = enableAO;
         draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZPos(SBRContextBase ctx) {
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, 1.0f);
         ctx.reset();
         final boolean enableAO = ctx.getRenderBlocks().enableAO;
@@ -213,30 +169,19 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
-            renderFaceZPos(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getIcon(),
-                rotation);
+            renderFaceZPos(ctx, mIconContainer.getIcon(), rotation);
         }
-        if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
-            renderFaceZPos(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getOverlayIcon(),
-                rotation);
+            renderFaceZPos(ctx, overlayIcon, rotation);
         }
         ctx.getRenderBlocks().enableAO = enableAO;
         draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZNeg(SBRContextBase ctx) {
         startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, -1.0f);
         ctx.reset();
         final boolean enableAO = ctx.getRenderBlocks().enableAO;
@@ -252,23 +197,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.NORTH, mRGBa);
-            renderFaceZNeg(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getIcon(),
-                rotation);
+            renderFaceZNeg(ctx, mIconContainer.getIcon(), rotation);
         }
-        if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
-            renderFaceZNeg(
-                ctx.getRenderBlocks(),
-                ctx.getX(),
-                ctx.getY(),
-                ctx.getZ(),
-                mIconContainer.getOverlayIcon(),
-                rotation);
+            renderFaceZNeg(ctx, overlayIcon, rotation);
         }
         ctx.getRenderBlocks().enableAO = enableAO;
         draw(ctx.getRenderBlocks());
@@ -287,89 +221,88 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     /**
      * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
-
-        aRenderer.uvRotateBottom = getRotation(extendedFacing);
+    protected void renderFaceYNeg(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        renderBlocks.uvRotateBottom = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.DOWN, extendedFacing, icon);
 
-        aRenderer.renderFaceYNeg(Blocks.air, x, y, z, icon);
+        renderBlocks.renderFaceYNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
-        aRenderer.uvRotateBottom = 0;
+        renderBlocks.uvRotateBottom = 0;
     }
 
     /**
      * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+    protected void renderFaceYPos(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
-        aRenderer.uvRotateTop = getRotation(extendedFacing);
+        renderBlocks.uvRotateTop = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.UP, extendedFacing, icon);
 
-        aRenderer.renderFaceYPos(Blocks.air, x, y, z, icon);
+        renderBlocks.renderFaceYPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
-        aRenderer.uvRotateTop = 0;
+        renderBlocks.uvRotateTop = 0;
     }
 
     /**
      * Renders the given texture to the north (z-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+    protected void renderFaceZNeg(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
-        aRenderer.uvRotateEast = getRotation(extendedFacing);
-        aRenderer.field_152631_f = true;
+        renderBlocks.uvRotateEast = getRotation(extendedFacing);
+        renderBlocks.field_152631_f = true;
         icon = getFlipped(ForgeDirection.NORTH, extendedFacing, icon);
 
-        aRenderer.renderFaceZNeg(Blocks.air, x, y, z, icon);
+        renderBlocks.renderFaceZNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
-        aRenderer.uvRotateEast = 0;
-        aRenderer.field_152631_f = false;
+        renderBlocks.uvRotateEast = 0;
+        renderBlocks.field_152631_f = false;
     }
 
     /**
      * Renders the given texture to the south (z-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+    protected void renderFaceZPos(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
-        aRenderer.uvRotateWest = getRotation(extendedFacing);
+        renderBlocks.uvRotateWest = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.SOUTH, extendedFacing, icon);
 
-        aRenderer.renderFaceZPos(Blocks.air, x, y, z, icon);
+        renderBlocks.renderFaceZPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
-        aRenderer.uvRotateWest = 0;
+        renderBlocks.uvRotateWest = 0;
     }
 
     /**
      * Renders the given texture to the west (x-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+    protected void renderFaceXNeg(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
-        aRenderer.uvRotateNorth = getRotation(extendedFacing);
+        renderBlocks.uvRotateNorth = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.WEST, extendedFacing, icon);
 
-        aRenderer.renderFaceXNeg(Blocks.air, x, y, z, icon);
+        renderBlocks.renderFaceXNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
-        aRenderer.uvRotateNorth = 0;
+        renderBlocks.uvRotateNorth = 0;
     }
 
     /**
      * Renders the given texture to the east (x-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+    protected void renderFaceXPos(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
-        aRenderer.uvRotateSouth = getRotation(extendedFacing);
-        aRenderer.field_152631_f = true;
+        renderBlocks.uvRotateSouth = getRotation(extendedFacing);
+        renderBlocks.field_152631_f = true;
         icon = getFlipped(ForgeDirection.EAST, extendedFacing, icon);
 
-        aRenderer.renderFaceXPos(Blocks.air, x, y, z, icon);
+        renderBlocks.renderFaceXPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
-        aRenderer.uvRotateSouth = 0;
-        aRenderer.field_152631_f = false;
+        renderBlocks.uvRotateSouth = 0;
+        renderBlocks.field_152631_f = false;
     }
 
     private static final int NORMAL = 0;
@@ -405,8 +338,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
 
             return new GTIconFlipped(icon, flipU, flipV);
         }
-
-        ForgeDirection dir = extendedFacing.getDirection();
 
         // certain directions need to be flipped horizontally seemingly randomly
         // maybe there's a reason, maybe there isn't, I haven't bothered to dig into the code to figure out why

@@ -40,17 +40,20 @@ import gregtech.api.interfaces.ITexture;
  * for critical speed, as it avoids creating an iterator object.</li>
  * </ul>
  */
-@SuppressWarnings({ "UnusedReturnValue", "ClassWithTooManyFields", "ForLoopReplaceableByForEach" })
+@SuppressWarnings({ "UnusedReturnValue", "ClassWithTooManyFields" })
 @SideOnly(Side.CLIENT)
-public abstract class SBRContextBase<T extends SBRContextBase<T>> {
+public abstract class SBRContextBase {
 
     public static final int MAX_BRIGHTNESS = 0xf000f0;
-
-    /** Non-null placeholder RenderBlocks, replaced in {@link #setup}. */
+    protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
+    /**
+     * Non-null placeholder RenderBlocks, replaced in {@link #setup}.
+     */
     @NotNull
     protected RenderBlocks renderBlocks = RenderBlocks.getInstance();
-
-    /** Non-null placeholder block, replaced in {@link #setup}. */
+    /**
+     * Non-null placeholder block, replaced in {@link #setup}.
+     */
     @NotNull
     protected Block block = Blocks.air;
     /**
@@ -60,7 +63,6 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      */
     protected int x, y, z;
     protected int modelId;
-    protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
     /**
      * Determines if block faces can be culled
      */
@@ -75,71 +77,55 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
     protected int colorOverride;
 
     /**
+     * Gets int color from RGBA array.
+     *
+     * @param rgba the short RGBA color array
+     * @return int color
+     */
+    private static int rgbaToInt(short @NotNull [] rgba) {
+        return (rgba[2] & 0xff) | (rgba[1] & 0xff) << 8 | (rgba[0] & 0xff) << 16;
+    }
+
+    /**
      * Set up the {@link SBRContextBase} used to render a single {@link Block}
      *
      * @param block        the {@link Block} to render
      * @param modelId      the Model ID for the block
      * @param renderBlocks the {@link RenderBlocks} renderer to use
      */
-    public T setup(@NotNull Block block, int modelId, @NotNull RenderBlocks renderBlocks) {
+    public SBRContextBase setup(@NotNull Block block, int modelId, @NotNull RenderBlocks renderBlocks) {
         this.block = block;
         this.modelId = modelId;
         this.renderBlocks = renderBlocks;
-        @SuppressWarnings("unchecked")
-        final T self = (T) this;
-        return self;
+        return this;
     }
 
-    public void setFullBlock(boolean fullBlock) {
+    public final void setFullBlock(boolean fullBlock) {
         this.fullBlock = fullBlock;
     }
 
-    public @NotNull RenderBlocks getRenderBlocks() {
+    public final @NotNull RenderBlocks getRenderBlocks() {
         return renderBlocks;
     }
 
-    public @NotNull Block getBlock() {
+    public final @NotNull Block getBlock() {
         return block;
     }
 
-    public int getModelId() {
+    public final int getModelId() {
         return modelId;
     }
 
-    public int getX() {
+    public final int getX() {
         return x;
     }
 
-    public int getY() {
+    public final int getY() {
         return y;
     }
 
-    public int getZ() {
+    public final int getZ() {
         return z;
-    }
-
-    /**
-     * Gets rgb color from integer.
-     *
-     * @param color the integer color
-     * @return a float array with rgb values
-     */
-    public static float[] getRGB(int color) {
-        final float red = (color >> 16 & 0xff) / 255.0F;
-        final float green = (color >> 8 & 0xff) / 255.0F;
-        final float blue = (color & 0xff) / 255.0F;
-
-        return new float[] { red, green, blue };
-    }
-
-    /**
-     * Gets int color from RGBA array.
-     *
-     * @param rgba the short RGBA color array
-     * @return int color
-     */
-    public static int rgbaToInt(short[] rgba) {
-        return (rgba[2] & 0xff) | (rgba[1] & 0xff) << 8 | (rgba[0] & 0xff) << 16;
     }
 
     /**
@@ -150,7 +136,7 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      *
      * @return this {@link SBRContextBase} instance for chaining
      */
-    public abstract T reset();
+    public abstract SBRContextBase reset();
 
     /**
      * Sets brightness override.
@@ -158,12 +144,10 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      * @param brightness the brightness override
      * @return the {@link SBRContextBase}
      */
-    public T setBrightnessOverride(int brightness) {
+    public final SBRContextBase setBrightnessOverride(int brightness) {
         hasBrightnessOverride = true;
         brightnessOverride = brightness;
-        @SuppressWarnings("unchecked")
-        final T self = (T) this;
-        return self;
+        return this;
     }
 
     /**
@@ -172,12 +156,10 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      * @param lightness the lightness override
      * @return the {@link SBRContextBase}
      */
-    public T setLightnessOverride(float lightness) {
+    public final SBRContextBase setLightnessOverride(float lightness) {
         hasLightnessOverride = true;
         lightnessOverride = lightness;
-        @SuppressWarnings("unchecked")
-        final T self = (T) this;
-        return self;
+        return this;
     }
 
     /**
@@ -186,18 +168,16 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      * @param side the side
      * @param rgba the primary short[] RGBA color array
      */
-    public T setupColor(ForgeDirection side, short[] rgba) {
+    public final SBRContextBase setupColor(ForgeDirection side, short[] rgba) {
         return setupColor(side, rgbaToInt(rgba));
     }
 
     /**
      * Like setRenderBounds, but automatically pulling the bounds from the context's block.
      */
-    public T setRenderBoundsFromBlock() {
+    public final SBRContextBase setRenderBoundsFromBlock() {
         renderBlocks.setRenderBoundsFromBlock(block);
-        @SuppressWarnings("unchecked")
-        final T self = (T) this;
-        return self;
+        return this;
     }
 
     /**
@@ -215,56 +195,38 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      * @see #renderPositiveXFacing(ITexture[])
      */
     public void renderNegativeYFacing(ITexture[] tex) {
-        final long length = tex.length;
-        for (int i = 0; i < length; i++) {
-            final ITexture layer = tex[i];
-            if (layer == null) continue;
-            layer.renderYNeg(this);
+        for (final ITexture layer : tex) {
+            if (layer != null) layer.renderYNeg(this);
         }
     }
 
     public void renderPositiveYFacing(ITexture[] tex) {
-        final long length = tex.length;
-        for (int i = 0; i < length; i++) {
-            final ITexture layer = tex[i];
-            if (layer == null) continue;
-            layer.renderYPos(this);
+        for (final ITexture layer : tex) {
+            if (layer != null) layer.renderYPos(this);
         }
     }
 
     public void renderNegativeZFacing(ITexture[] tex) {
-        final long length = tex.length;
-        for (int i = 0; i < length; i++) {
-            final ITexture layer = tex[i];
-            if (layer == null) continue;
-            layer.renderZNeg(this);
+        for (final ITexture layer : tex) {
+            if (layer != null) layer.renderZNeg(this);
         }
     }
 
     public void renderPositiveZFacing(ITexture[] tex) {
-        final long length = tex.length;
-        for (int i = 0; i < length; i++) {
-            final ITexture layer = tex[i];
-            if (layer == null) continue;
-            layer.renderZPos(this);
+        for (final ITexture layer : tex) {
+            if (layer != null) layer.renderZPos(this);
         }
     }
 
     public void renderNegativeXFacing(ITexture[] tex) {
-        final long length = tex.length;
-        for (int i = 0; i < length; i++) {
-            final ITexture layer = tex[i];
-            if (layer == null) continue;
-            layer.renderXNeg(this);
+        for (final ITexture layer : tex) {
+            if (layer != null) layer.renderXNeg(this);
         }
     }
 
     public void renderPositiveXFacing(ITexture[] tex) {
-        final long length = tex.length;
-        for (int i = 0; i < length; i++) {
-            final ITexture layer = tex[i];
-            if (layer == null) continue;
-            layer.renderXPos(this);
+        for (final ITexture layer : tex) {
+            if (layer != null) layer.renderXPos(this);
         }
     }
 
@@ -274,7 +236,7 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      * @param side     the side
      * @param hexColor the primary color
      */
-    public abstract T setupColor(ForgeDirection side, int hexColor);
+    public abstract SBRContextBase setupColor(ForgeDirection side, int hexColor);
 
     /**
      * Checks if rendering is allowed for the current pass.

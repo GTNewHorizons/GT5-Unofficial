@@ -23,6 +23,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,14 +40,19 @@ import gregtech.api.interfaces.ITexture;
  * to various rendering methods throughout a block's render cycle.
  */
 @SideOnly(Side.CLIENT)
-public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
+public final class SBRWorldContext extends SBRContextBase {
 
     private static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
-    private int worldRenderPass;
 
-    /** Non-null dummy world, replaced in {@link #setup}. */
-    @NotNull
-    private IBlockAccess blockAccess = GTValues.DW;
+    /**
+     * Used to determine if face is flush with negative neighbour
+     */
+    private static final double FLUSH_MIN = 0.001D;
+
+    /**
+     * Used to determine if face is flush with positive neighbour
+     */
+    private static final double FLUSH_MAX = 0.999D;
 
     /**
      * Mixed Brightness cache
@@ -65,11 +71,13 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
      */
     private final float[][][] AOLV = new float[3][3][3];
-    /** Used to determine if face is flush with negative neighbour */
-    private static final double FLUSH_MIN = 0.001D;
 
-    /** Used to determine if face is flush with positive neighbour */
-    private static final double FLUSH_MAX = 0.999D;
+    private int worldRenderPass;
+    /**
+     * Non-null dummy world, replaced in {@link #setup}.
+     */
+    @NotNull
+    private IBlockAccess blockAccess = GTValues.DW;
     /**
      * Brightness for side.
      */
@@ -88,6 +96,20 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
     SBRWorldContext() {}
 
     /**
+     * Gets mixed ambient occlusion value from two inputs, with a ratio applied to the final result.
+     *
+     * @param ao1   the first ambient occlusion value
+     * @param ao2   the second ambient occlusion value
+     * @param ratio the ratio for mixing
+     * @return the mixed red, green, blue float values
+     */
+    private static float getMixedAo(float ao1, float ao2, double ratio) {
+        final float diff = (float) (Math.abs(ao1 - ao2) * (1.0F - ratio));
+
+        return ao1 > ao2 ? ao1 - diff : ao1 + diff;
+    }
+
+    /**
      * Configures this {@link SBRWorldContext} used to render a single {@link Block} in world for the
      * current render pass at the given coordinates
      *
@@ -99,7 +121,8 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      * @param renderBlocks the {@link RenderBlocks} renderer to use
      * @return this context instance, configured with the given parameters
      */
-    @SuppressWarnings("MethodWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
+    @SuppressWarnings("MethodWithTooManyParameters")
+    // Blame ISimpleBlockRenderingHandler.renderWorldBlock
     SBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
         super.setup(block, modelId, renderBlocks);
         this.blockAccess = renderBlocks.blockAccess;
@@ -117,37 +140,8 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
         return blockAccess;
     }
 
-    public TileEntity getTileEntity() {
+    public @Nullable TileEntity getTileEntity() {
         return blockAccess.getTileEntity(x, y, z);
-    }
-
-    /**
-     * Will apply anaglyph color multipliers to RGB float array.
-     * <p>
-     * If {@link EntityRenderer#anaglyphEnable} is false, will do nothing.
-     *
-     * @param rgb array containing red, green and blue float values
-     */
-    public static void applyAnaglyph(float[] rgb) {
-        if (EntityRenderer.anaglyphEnable) {
-            rgb[0] = (rgb[0] * 30.0F + rgb[1] * 59.0F + rgb[2] * 11.0F) / 100.0F;
-            rgb[1] = (rgb[0] * 30.0F + rgb[1] * 70.0F) / 100.0F;
-            rgb[2] = (rgb[0] * 30.0F + rgb[2] * 70.0F) / 100.0F;
-        }
-    }
-
-    /**
-     * Gets mixed ambient occlusion value from two inputs, with a ratio applied to the final result.
-     *
-     * @param ao1   the first ambient occlusion value
-     * @param ao2   the second ambient occlusion value
-     * @param ratio the ratio for mixing
-     * @return the mixed red, green, blue float values
-     */
-    public static float getMixedAo(float ao1, float ao2, double ratio) {
-        final float diff = (float) (Math.abs(ao1 - ao2) * (1.0F - ratio));
-
-        return ao1 > ao2 ? ao1 - diff : ao1 + diff;
     }
 
     /**
@@ -164,11 +158,11 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {
-                    MBFB[dx + 1][dy + 1][dz + 1] = block
-                        .getMixedBrightnessForBlock(blockAccess, x + dx, y + dy, z + dz);
+                    // spotless:off
+                    MBFB[dx + 1][dy + 1][dz + 1] = block.getMixedBrightnessForBlock(blockAccess, x + dx, y + dy, z + dz);
                     if (aoDisabled) continue;
-                    AOLV[dx + 1][dy + 1][dz + 1] = blockAccess.getBlock(x + dx, y + dy, z + dz)
-                        .getAmbientOcclusionLightValue();
+                    AOLV[dx + 1][dy + 1][dz + 1] = blockAccess.getBlock(x + dx, y + dy, z + dz).getAmbientOcclusionLightValue();
+                    //spotless:on
                 }
             }
         }
@@ -189,68 +183,6 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
         this.hasLightnessOverride = false;
         this.renderBlocks.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         return this;
-    }
-
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
-     * @param side     the side
-     * @param hexColor the primary color
-     */
-    public SBRWorldContext setupColor(ForgeDirection side, int hexColor) {
-        final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        final float[] rgb = hasColorOverride && !renderBlocks.hasOverrideBlockTexture() ? getRGB(colorOverride)
-            : getRGB(hexColor);
-
-        applyAnaglyph(rgb);
-
-        final Tessellator tessellator = Tessellator.instance;
-        if (renderBlocks.enableAO) {
-            tessellator.setBrightness(hasBrightnessOverride ? brightnessOverride : brightness);
-
-            if (renderBlocks.hasOverrideBlockTexture()) {
-
-                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = rgb[0];
-                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = rgb[1];
-                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = rgb[2];
-
-            } else {
-
-                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = rgb[0]
-                    * lightness;
-                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = rgb[1]
-                    * lightness;
-                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = rgb[2]
-                    * lightness;
-
-                renderBlocks.colorRedTopLeft *= aoTopLeft;
-                renderBlocks.colorGreenTopLeft *= aoTopLeft;
-                renderBlocks.colorBlueTopLeft *= aoTopLeft;
-                renderBlocks.colorRedBottomLeft *= aoBottomLeft;
-                renderBlocks.colorGreenBottomLeft *= aoBottomLeft;
-                renderBlocks.colorBlueBottomLeft *= aoBottomLeft;
-                renderBlocks.colorRedBottomRight *= aoBottomRight;
-                renderBlocks.colorGreenBottomRight *= aoBottomRight;
-                renderBlocks.colorBlueBottomRight *= aoBottomRight;
-                renderBlocks.colorRedTopRight *= aoTopRight;
-                renderBlocks.colorGreenTopRight *= aoTopRight;
-                renderBlocks.colorBlueTopRight *= aoTopRight;
-            }
-        } else {
-            if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
-            tessellator.setColorOpaque_F(rgb[0] * lightness, rgb[1] * lightness, rgb[2] * lightness);
-        }
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @implNote Check against the world render pass
-     */
-    @Override
-    public boolean canRenderInPass(@NotNull IntPredicate predicate) {
-        return worldRenderPass == -1 || predicate.test(worldRenderPass);
     }
 
     @Override
@@ -302,6 +234,81 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
     }
 
     /**
+     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
+     *
+     * @param side     the side
+     * @param hexColor the primary color
+     */
+    public SBRWorldContext setupColor(ForgeDirection side, int hexColor) {
+        final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
+        final int color = hasColorOverride ? colorOverride : hexColor;
+
+        final float baseRed = (color >> 16 & 0xff) / 255.0F;
+        final float baseGreen = (color >> 8 & 0xff) / 255.0F;
+        final float baseBlue = (color & 0xff) / 255.0F;
+
+        final float red, green, blue;
+
+        if (EntityRenderer.anaglyphEnable) {
+            red = (baseRed * 30.0F + baseGreen * 59.0F + baseBlue * 11.0F) / 100.0F;
+            green = (red * 30.0F + baseGreen * 70.0F) / 100.0F;
+            blue = (red * 30.0F + baseBlue * 70.0F) / 100.0F;
+        } else {
+            red = baseRed;
+            green = baseGreen;
+            blue = baseBlue;
+        }
+
+        final Tessellator tessellator = Tessellator.instance;
+        if (renderBlocks.enableAO) {
+            tessellator.setBrightness(hasBrightnessOverride ? brightnessOverride : brightness);
+
+            if (renderBlocks.hasOverrideBlockTexture()) {
+
+                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = red;
+                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = green;
+                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = blue;
+
+            } else {
+
+                renderBlocks.colorRedTopLeft = renderBlocks.colorRedBottomLeft = renderBlocks.colorRedBottomRight = renderBlocks.colorRedTopRight = red
+                    * lightness;
+                renderBlocks.colorGreenTopLeft = renderBlocks.colorGreenBottomLeft = renderBlocks.colorGreenBottomRight = renderBlocks.colorGreenTopRight = green
+                    * lightness;
+                renderBlocks.colorBlueTopLeft = renderBlocks.colorBlueBottomLeft = renderBlocks.colorBlueBottomRight = renderBlocks.colorBlueTopRight = blue
+                    * lightness;
+
+                renderBlocks.colorRedTopLeft *= aoTopLeft;
+                renderBlocks.colorGreenTopLeft *= aoTopLeft;
+                renderBlocks.colorBlueTopLeft *= aoTopLeft;
+                renderBlocks.colorRedBottomLeft *= aoBottomLeft;
+                renderBlocks.colorGreenBottomLeft *= aoBottomLeft;
+                renderBlocks.colorBlueBottomLeft *= aoBottomLeft;
+                renderBlocks.colorRedBottomRight *= aoBottomRight;
+                renderBlocks.colorGreenBottomRight *= aoBottomRight;
+                renderBlocks.colorBlueBottomRight *= aoBottomRight;
+                renderBlocks.colorRedTopRight *= aoTopRight;
+                renderBlocks.colorGreenTopRight *= aoTopRight;
+                renderBlocks.colorBlueTopRight *= aoTopRight;
+            }
+        } else {
+            if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
+            tessellator.setColorOpaque_F(red * lightness, green * lightness, blue * lightness);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Check against the world render pass
+     */
+    @Override
+    public boolean canRenderInPass(@NotNull IntPredicate predicate) {
+        return worldRenderPass == -1 || predicate.test(worldRenderPass);
+    }
+
+    /**
      * @see #setupLightingXNeg()
      * @see #setupLightingYNeg()
      * @see #setupLightingZNeg()
@@ -333,7 +340,7 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupLightingYNeg() {
+    private SBRWorldContext setupLightingYNeg() {
 
         if (renderBlocks.enableAO) {
 
@@ -470,7 +477,7 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupLightingYPos() {
+    private SBRWorldContext setupLightingYPos() {
 
         if (renderBlocks.enableAO) {
 
@@ -607,7 +614,7 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupLightingZNeg() {
+    private SBRWorldContext setupLightingZNeg() {
 
         if (renderBlocks.enableAO) {
 
@@ -744,7 +751,7 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupLightingZPos() {
+    private SBRWorldContext setupLightingZPos() {
 
         if (renderBlocks.enableAO) {
 
@@ -881,7 +888,7 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupLightingXNeg() {
+    private SBRWorldContext setupLightingXNeg() {
 
         if (renderBlocks.enableAO) {
 
@@ -1018,7 +1025,7 @@ public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      *
      * @return the {@link SBRWorldContext}
      */
-    public SBRWorldContext setupLightingXPos() {
+    private SBRWorldContext setupLightingXPos() {
 
         if (renderBlocks.enableAO) {
 
