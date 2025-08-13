@@ -295,9 +295,9 @@ public class MaterialsInit1 {
         Materials.Petroleum = loadPetroleum();
         Materials.Pewter = loadPewter();
         Materials.Phoenixite = loadPhoenixite();
+        Materials.Prometheum = loadPrometheum();
 
         // spotless:off
-        Materials.Prometheum              = new Materials( 960, TextureSet.SET_METALLIC          ,   8.0F,    512,  1, 1|2  |8      |64          ,  90, 129,  86,   0,   "Prometheum"              ,   "Prometheum"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Quartzite               = new Materials( 523, TextureSet.SET_QUARTZ            ,   1.0F,      0,  1, 1  |4|8                   , 210, 230, 210,   0,   "Quartzite"               ,   "Quartzite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
         Materials.Randomite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Randomite"               ,   "Randomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Rhyolite                = new Materials( 875, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Rhyolite"                ,   "Rhyolite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4780,6 +4780,22 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Phoenixite")
             .setToolSpeed(6.0f)
             .setDurability(64)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPrometheum() {
+        return new MaterialBuilder().setName("Prometheum")
+            .setDefaultLocalName("Prometheum")
+            .setMetaItemSubID(960)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x5a8156)
+            .setToolSpeed(8.0f)
+            .setDurability(512)
             .setToolQuality(1)
             .addDustItems()
             .addMetalItems()
