@@ -312,9 +312,9 @@ public class MaterialsInit1 {
         Materials.Voidstone = loadVoidstone();
         Materials.Vulcanite = loadVulcanite();
         Materials.Vyroxeres = loadVyroxeres();
+        Materials.Yellorium = loadYellorium();
 
         // spotless:off
-        Materials.Yellorium               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "Yellorium"               ,   "Yellorium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
         Materials.Zectium                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Zectium"                 ,   "Zectium"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
 
         Materials.Antimatter              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Antimatter"              ,   "Antimatter"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 9), new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 8)));
@@ -5015,6 +5015,15 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial()
             .setTurbineMultipliers(1, 3, 1);
+    }
+
+    private static Materials loadYellorium() {
+        return new MaterialBuilder().setName("Yellorium")
+            .setDefaultLocalName("Yellorium")
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
