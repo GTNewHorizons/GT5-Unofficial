@@ -806,6 +806,18 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
+    public void onBlockDestroyed() {
+        if (mBioChamber != null){
+            mBioChamber.removeController(this);
+        }
+        if (mCoolingTower != null){
+            mBioChamber.removeController(this);
+        }
+
+        super.onBlockDestroyed();
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         if (mBioChamber != null) {
