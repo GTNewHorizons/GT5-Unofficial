@@ -261,9 +261,9 @@ public class MaterialsInit1 {
         Materials.Inolashite = loadInolashite();
         Materials.Invisium = loadInvisium();
         Materials.Jade = loadJade();
+        Materials.Kalendrite = loadKalendrite();
 
         // spotless:off
-        Materials.Kalendrite              = new Materials( 953, TextureSet.SET_METALLIC          ,   5.0F,   2560,  3, 1|2                       , 170,  91, 189,   0,   "Kalendrite"              ,   "Kalendrite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Komatiite               = new Materials( 869, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Komatiite"               ,   "Komatiite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Lava                    = new Materials( 700, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255,  64,   0,   0,   "Lava"                    ,   "Lava"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
         Materials.Lemurite                = new Materials( 486, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1                         , 219, 219, 219,   0,   "Lemurite"                ,   "Lemurite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4325,6 +4325,20 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 6)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadKalendrite() {
+        return new MaterialBuilder().setName("Kalendrite")
+            .setDefaultLocalName("Kalendrite")
+            .setMetaItemSubID(953)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xaa5bbd)
+            .setToolSpeed(5.0f)
+            .setDurability(2560)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
             .constructMaterial();
     }
 
