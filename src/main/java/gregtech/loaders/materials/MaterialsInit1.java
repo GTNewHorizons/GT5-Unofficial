@@ -289,9 +289,9 @@ public class MaterialsInit1 {
         Materials.Onyx = loadOnyx();
         Materials.Orichalcum = loadOrichalcum();
         Materials.Osmonium = loadOsmonium();
+        Materials.Oureclase = loadOureclase();
 
         // spotless:off
-        Materials.Oureclase               = new Materials( 961, TextureSet.SET_METALLIC          ,   6.0F,   1920,  3, 1|2  |8      |64          , 183,  98,  21,   0,   "Oureclase"               ,   "Oureclase"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Painite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Painite"                 ,   "Painite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Peanutwood              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Peanutwood"              ,   "Peanut Wood"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Petroleum               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Petroleum"               ,   "Petroleum"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4726,6 +4726,22 @@ public class MaterialsInit1 {
             .setToolSpeed(6.0f)
             .setDurability(64)
             .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOureclase() {
+        return new MaterialBuilder().setName("Oureclase")
+            .setDefaultLocalName("Oureclase")
+            .setMetaItemSubID(961)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xb76215)
+            .setToolSpeed(6.0f)
+            .setDurability(1920)
+            .setToolQuality(3)
             .addDustItems()
             .addMetalItems()
             .addOreItems()
