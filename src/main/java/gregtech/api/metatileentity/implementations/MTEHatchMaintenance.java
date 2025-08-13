@@ -9,12 +9,16 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -39,6 +43,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -56,6 +61,11 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     private Rotation rotation = Rotation.NORMAL;
 
     private static ItemStack[] sAutoMaintenanceInputs;
+
+    protected String mMaintenanceSound = null;
+    protected float mMaintenanceSoundStrength = 1.0F;
+    protected float mMaintenanceSoundModulation = 1.0F;
+
     public boolean mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mAuto;
 
@@ -173,9 +183,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
                     applyToolbox(tStack, aPlayer);
-                } else if (ItemList.Duct_Tape.isStackEqual(tStack)) {
-                    mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
-                    getBaseMetaTileEntity().setActive(false);
+                } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
+                    applyDuctTape();
                     if (--tStack.stackSize == 0) {
                         aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
                     }
@@ -219,8 +228,69 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
+    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+        IGregTechTileEntity tMte = getBaseMetaTileEntity();
+
+        if (tMte == null || tMte.hasMufflerUpgrade()) return;
+
+        if (mMaintenanceSound == null) {
+            setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
+        }
+
+        GTUtility.sendSoundToPlayers(
+            tMte.getWorld(),
+            mMaintenanceSound,
+            mMaintenanceSoundStrength,
+            mMaintenanceSoundModulation,
+            tMte.getXCoord(),
+            tMte.getYCoord(),
+            tMte.getZCoord());
+
+        setMaintenanceSound((String) null, 1.0F, 1.0F);
+    }
+
     public boolean autoMaintainance() {
         return isRecipeInputEqual(true);
+    }
+
+    /**
+     * Sets the sound resource to use in the next maintenance performed by this hatch.
+     *
+     * @param aSound           The {@code SoundResource} to play.
+     * @param aSoundStrength   The loudness of the sound.
+     * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
+     */
+    public void setMaintenanceSound(@Nonnull SoundResource aSound, float aSoundStrength, float aSoundModulation) {
+        setMaintenanceSound(aSound.resourceLocation, aSoundStrength, aSoundModulation);
+    }
+
+    /**
+     * Sets the resource location of a sound to use in the next maintenance performed by this hatch.
+     * Useful for playing sounds not present in {@code gregtech.api.enums.SoundResource}.
+     *
+     * @param aSound           The {@code ResourceLocation} of the sound to play.
+     * @param aSoundStrength   The loudness of the sound.
+     * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
+     */
+    public void setMaintenanceSound(@Nonnull ResourceLocation aSound, float aSoundStrength, float aSoundModulation) {
+        setMaintenanceSound(aSound.toString(), aSoundStrength, aSoundModulation);
+    }
+
+    /**
+     * Sets the name of the sound resource to use in the next maintenance performed by this hatch.
+     * If possible, prefer using the other overloads of this method:
+     * {@link #setMaintenanceSound(SoundResource, float, float)}, if the sound has an entry in
+     * {@code gregtech.api.enums.SoundResource}, or {@link #setMaintenanceSound(ResourceLocation, float, float)}
+     * otherwise. (Such as calling a sound not from GT5U)
+     *
+     * @param aSoundName       The name of the sound to play. If null will default to the Toolbox sound.
+     * @param aSoundStrength   The loudness of the sound.
+     * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
+     */
+    public void setMaintenanceSound(@Nullable String aSoundName, float aSoundStrength, float aSoundModulation) {
+        mMaintenanceSound = aSoundName;
+        mMaintenanceSoundStrength = aSoundStrength;
+        mMaintenanceSoundModulation = aSoundModulation;
     }
 
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess) {
@@ -264,6 +334,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     }
                 }
             }
+            setMaintenanceSound(SoundResource.GT_MAINTENANCE_AUTO_HATCH, 1.0F, 1.0F);
             mCrowbar = true;
             mHardHammer = true;
             mScrewdriver = true;
@@ -285,19 +356,36 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         }
 
         if (GTUtility.isStackInList(aStack, GregTechAPI.sWrenchList) && !mWrench
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mWrench = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mWrench = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sScrewdriverList) && !mScrewdriver
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mScrewdriver = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mScrewdriver = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sSoftMalletList) && !mSoftMallet
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mSoftMallet = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mSoftMallet = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mHardHammer = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mHardHammer = true;
+            setMaintenanceSound(SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sCrowbarList) && !mCrowbar
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mCrowbar = true;
-        if (!mSolderingTool && GTModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory)) mSolderingTool = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mCrowbar = true;
+            setMaintenanceSound(SoundResource.RANDOM_BREAK, 1.0F, -1.0F);
+        }
+        if (!mSolderingTool && GTModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory)) {
+            mSolderingTool = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1.0F);
+        }
         if (GTOreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
-            mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
-            getBaseMetaTileEntity().setActive(false);
+            applyDuctTape();
             aStack.stackSize--;
         }
         if (mSolderingTool && aPlayer instanceof EntityPlayerMP tPlayer) {
@@ -321,6 +409,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     aToolboxGUI.setInventorySlotContents(i, null);
             }
         }
+        setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
+    }
+
+    private void applyDuctTape() {
+        mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
+        setMaintenanceSound(SoundResource.GT_MAINTENANCE_DUCT_TAPE, 1.0F, 1.0F);
+        getBaseMetaTileEntity().setActive(false);
     }
 
     @Override
