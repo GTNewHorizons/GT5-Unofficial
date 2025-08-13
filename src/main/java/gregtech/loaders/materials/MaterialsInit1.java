@@ -294,9 +294,9 @@ public class MaterialsInit1 {
         Materials.Peanutwood = loadPeanutwood();
         Materials.Petroleum = loadPetroleum();
         Materials.Pewter = loadPewter();
+        Materials.Phoenixite = loadPhoenixite();
 
         // spotless:off
-        Materials.Phoenixite              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Phoenixite"              ,   "Phoenixite"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Prometheum              = new Materials( 960, TextureSet.SET_METALLIC          ,   8.0F,    512,  1, 1|2  |8      |64          ,  90, 129,  86,   0,   "Prometheum"              ,   "Prometheum"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Quartzite               = new Materials( 523, TextureSet.SET_QUARTZ            ,   1.0F,      0,  1, 1  |4|8                   , 210, 230, 210,   0,   "Quartzite"               ,   "Quartzite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
         Materials.Randomite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Randomite"               ,   "Randomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4772,6 +4772,19 @@ public class MaterialsInit1 {
     private static Materials loadPewter() {
         return new MaterialBuilder().setName("Pewter")
             .setDefaultLocalName("Pewter")
+            .constructMaterial();
+    }
+
+    private static Materials loadPhoenixite() {
+        return new MaterialBuilder().setName("Phoenixite")
+            .setDefaultLocalName("Phoenixite")
+            .setToolSpeed(6.0f)
+            .setDurability(64)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
             .constructMaterial();
     }
 
