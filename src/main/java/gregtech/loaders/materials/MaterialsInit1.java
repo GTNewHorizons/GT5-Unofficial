@@ -282,9 +282,9 @@ public class MaterialsInit1 {
         Materials.Naquadria = loadNaquadria();
         Materials.Nether = loadNether();
         Materials.NetherBrick = loadNetherBrick();
+        Materials.NetherQuartz = loadNetherQuartz();
 
         // spotless:off
-        Materials.NetherQuartz            = new Materials( 522, TextureSet.SET_QUARTZ            ,   1.0F,     32,  1, 1  |4|8      |64          , 230, 210, 210,   0,   "NetherQuartz"            ,   "Nether Quartz"                 ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
         Materials.NetherStar              = new Materials( 506, TextureSet.SET_NETHERSTAR        ,   6.0F,   5120,  4, 1|  4|8      |64          , 255, 255, 255,   0,   "NetherStar"              ,   "Nether Star"                   ,    5,   50000,         -1,    0, false, false,  15,   1,   1, Dyes.dyeWhite       );
         Materials.ObsidianFlux            = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       ,  80,  50, 100,   0,   "ObsidianFlux"            ,   "Fluxed Obsidian"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      );
         Materials.Oilsands                = new Materials( 878, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   ,  10,  10,  10,   0,   "Oilsands"                ,   "Oilsands"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4629,6 +4629,25 @@ public class MaterialsInit1 {
             .setRGB(0x640000)
             .addDustItems()
             .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherQuartz() {
+        return new MaterialBuilder().setName("NetherQuartz")
+            .setDefaultLocalName("Nether Quartz")
+            .setMetaItemSubID(522)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6d2d2)
+            .setToolSpeed(1.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
