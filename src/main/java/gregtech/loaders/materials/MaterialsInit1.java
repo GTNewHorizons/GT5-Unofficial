@@ -313,10 +313,9 @@ public class MaterialsInit1 {
         Materials.Vulcanite = loadVulcanite();
         Materials.Vyroxeres = loadVyroxeres();
         Materials.Yellorium = loadYellorium();
+        Materials.Zectium = loadZectium();
 
         // spotless:off
-        Materials.Zectium                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Zectium"                 ,   "Zectium"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
-
         Materials.Antimatter              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Antimatter"              ,   "Antimatter"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 9), new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 8)));
         Materials.AdvancedGlue            = new MaterialBuilder(567, TextureSet.SET_FLUID         ,                                                                                                         "Advanced Glue").setName("AdvancedGlue").addCell().addFluid().setRGB(255, 255, 185).setColor(Dyes.dyeYellow).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 5))).constructMaterial();
         Materials.Biomass                 = new Materials( 704, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0, 255,   0,   0,   "Biomass"        	     ,   "Forestry Biomass"                ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
@@ -5023,6 +5022,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeYellow)
             .addDustItems()
             .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadZectium() {
+        return new MaterialBuilder().setName("Zectium")
+            .setDefaultLocalName("Zectium")
+            .setColor(Dyes.dyeBlack)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
             .constructMaterial();
     }
 
