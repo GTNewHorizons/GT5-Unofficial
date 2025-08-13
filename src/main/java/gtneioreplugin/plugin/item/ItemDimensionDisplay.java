@@ -1,6 +1,7 @@
 package gtneioreplugin.plugin.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -35,6 +36,7 @@ public class ItemDimensionDisplay extends ItemBlock {
         return null;
     }
 
+    /** Gets the abbreviated dimension name for this block. */
     public static String getDimension(ItemStack stack) {
         if (stack.getItem() instanceof ItemDimensionDisplay) {
             return ((BlockDimensionDisplay) Block.getBlockFromItem(stack.getItem())).getDimension();
@@ -43,12 +45,23 @@ public class ItemDimensionDisplay extends ItemBlock {
     }
 
     @Override
+    public String getUnlocalizedName() {
+        return DimensionHelper.getDimUnlocalizedName("unknown");
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        String dimName = DimensionHelper.getFullName(getDimension(stack));
+
+        return DimensionHelper.getDimUnlocalizedName(dimName);
+    }
+
+    @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        String dimension = getDimension(stack);
-        if (dimension != null) {
-            return DimensionHelper.convertCondensedStringToToolTip(dimension)
-                .get(0);
-        }
-        return super.getItemStackDisplayName(stack);
+        String dimName = DimensionHelper.getFullName(getDimension(stack));
+
+        String i18nName = DimensionHelper.getDimLocalizedName(dimName);
+
+        return I18n.format(DimensionHelper.getDimTier(dimName), i18nName);
     }
 }

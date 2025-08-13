@@ -19,8 +19,10 @@ public class MinecraftMixin_MouseOver {
             shift = At.Shift.BEFORE,
             target = "Lnet/minecraft/client/renderer/EntityRenderer;getMouseOver(F)V"))
     private void gt5u$before$getMouseOver(CallbackInfo ci) {
-        GTMod.clientProxy()
-            .setComputingPickBlock(true);
+        if (GTMod.proxy != null) {
+            GTMod.clientProxy()
+                .setComputingPickBlock(true);
+        }
     }
 
     @Inject(
@@ -30,7 +32,9 @@ public class MinecraftMixin_MouseOver {
             shift = At.Shift.AFTER,
             target = "Lnet/minecraft/client/renderer/EntityRenderer;getMouseOver(F)V"))
     private void gt5u$after$getMouseOver(CallbackInfo ci) {
-        GTMod.clientProxy()
-            .setComputingPickBlock(false);
+        if (GTMod.proxy != null) {
+            GTMod.clientProxy()
+                .setComputingPickBlock(false);
+        }
     }
 }
