@@ -291,9 +291,9 @@ public class MaterialsInit1 {
         Materials.Osmonium = loadOsmonium();
         Materials.Oureclase = loadOureclase();
         Materials.Painite = loadPainite();
+        Materials.Peanutwood = loadPeanutwood();
 
         // spotless:off
-        Materials.Peanutwood              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Peanutwood"              ,   "Peanut Wood"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Petroleum               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Petroleum"               ,   "Petroleum"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Pewter                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Pewter"                  ,   "Pewter"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Phoenixite              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Phoenixite"              ,   "Phoenixite"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -4752,6 +4752,12 @@ public class MaterialsInit1 {
     private static Materials loadPainite() {
         return new MaterialBuilder().setName("Painite")
             .setDefaultLocalName("Painite")
+            .constructMaterial();
+    }
+
+    private static Materials loadPeanutwood() {
+        return new MaterialBuilder().setName("Peanutwood")
+            .setDefaultLocalName("Peanut Wood")
             .constructMaterial();
     }
 
