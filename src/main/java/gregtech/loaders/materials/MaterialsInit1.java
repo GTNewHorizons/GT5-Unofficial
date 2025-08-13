@@ -298,9 +298,9 @@ public class MaterialsInit1 {
         Materials.Prometheum = loadPrometheum();
         Materials.Quartzite = loadQuartzite();
         Materials.Randomite = loadRandomite();
+        Materials.Rhyolite = loadRhyolite();
 
         // spotless:off
-        Materials.Rhyolite                = new Materials( 875, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Rhyolite"                ,   "Rhyolite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Rubracium               = new Materials( 488, TextureSet.SET_METALLIC          ,   1.0F,    128,  1, 1|2  |8      |64|128      , 151,  45,  45,   0,   "Rubracium"               ,   "Rubracium"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Sand                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Sand"                    ,   "Sand"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Sanguinite              = new Materials( 955, TextureSet.SET_METALLIC          ,   3.0F,   4480,  4, 1|2  |8                   , 185,   0,   0,   0,   "Sanguinite"              ,   "Sanguinite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4822,6 +4822,15 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Randomite")
             .addDustItems()
             .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRhyolite() {
+        return new MaterialBuilder().setName("Rhyolite")
+            .setDefaultLocalName("Rhyolite")
+            .setMetaItemSubID(875)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
             .constructMaterial();
     }
 
