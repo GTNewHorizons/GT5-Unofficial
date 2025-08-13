@@ -300,9 +300,9 @@ public class MaterialsInit1 {
         Materials.Randomite = loadRandomite();
         Materials.Rhyolite = loadRhyolite();
         Materials.Rubracium = loadRubracium();
+        Materials.Sand = loadSand();
 
         // spotless:off
-        Materials.Sand                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Sand"                    ,   "Sand"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Sanguinite              = new Materials( 955, TextureSet.SET_METALLIC          ,   3.0F,   4480,  4, 1|2  |8                   , 185,   0,   0,   0,   "Sanguinite"              ,   "Sanguinite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Siltstone               = new Materials( 876, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Siltstone"               ,   "Siltstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Sunstone                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Sunstone"                ,   "Sunstone"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1)));
@@ -4849,6 +4849,13 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSand() {
+        return new MaterialBuilder().setName("Sand")
+            .setDefaultLocalName("Sand")
+            .setColor(Dyes.dyeYellow)
             .constructMaterial();
     }
 
