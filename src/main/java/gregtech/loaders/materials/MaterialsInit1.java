@@ -299,9 +299,9 @@ public class MaterialsInit1 {
         Materials.Quartzite = loadQuartzite();
         Materials.Randomite = loadRandomite();
         Materials.Rhyolite = loadRhyolite();
+        Materials.Rubracium = loadRubracium();
 
         // spotless:off
-        Materials.Rubracium               = new Materials( 488, TextureSet.SET_METALLIC          ,   1.0F,    128,  1, 1|2  |8      |64|128      , 151,  45,  45,   0,   "Rubracium"               ,   "Rubracium"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Sand                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Sand"                    ,   "Sand"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Sanguinite              = new Materials( 955, TextureSet.SET_METALLIC          ,   3.0F,   4480,  4, 1|2  |8                   , 185,   0,   0,   0,   "Sanguinite"              ,   "Sanguinite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Siltstone               = new Materials( 876, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Siltstone"               ,   "Siltstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4831,6 +4831,24 @@ public class MaterialsInit1 {
             .setMetaItemSubID(875)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRubracium() {
+        return new MaterialBuilder().setName("Rubracium")
+            .setDefaultLocalName("Rubracium")
+            .setMetaItemSubID(488)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x972d2d)
+            .setToolSpeed(1.0f)
+            .setDurability(128)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
             .constructMaterial();
     }
 
