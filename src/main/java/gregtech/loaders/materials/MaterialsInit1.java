@@ -290,9 +290,9 @@ public class MaterialsInit1 {
         Materials.Orichalcum = loadOrichalcum();
         Materials.Osmonium = loadOsmonium();
         Materials.Oureclase = loadOureclase();
+        Materials.Painite = loadPainite();
 
         // spotless:off
-        Materials.Painite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Painite"                 ,   "Painite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Peanutwood              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Peanutwood"              ,   "Peanut Wood"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Petroleum               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Petroleum"               ,   "Petroleum"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Pewter                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Pewter"                  ,   "Pewter"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -4746,6 +4746,12 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPainite() {
+        return new MaterialBuilder().setName("Painite")
+            .setDefaultLocalName("Painite")
             .constructMaterial();
     }
 
