@@ -262,9 +262,9 @@ public class MaterialsInit1 {
         Materials.Invisium = loadInvisium();
         Materials.Jade = loadJade();
         Materials.Kalendrite = loadKalendrite();
+        Materials.Komatiite = loadKomatiite();
 
         // spotless:off
-        Materials.Komatiite               = new Materials( 869, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Komatiite"               ,   "Komatiite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Lava                    = new Materials( 700, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255,  64,   0,   0,   "Lava"                    ,   "Lava"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
         Materials.Lemurite                = new Materials( 486, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1                         , 219, 219, 219,   0,   "Lemurite"                ,   "Lemurite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Limestone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Limestone"               ,   "Limestone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4339,6 +4339,16 @@ public class MaterialsInit1 {
             .setToolQuality(3)
             .addDustItems()
             .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadKomatiite() {
+        return new MaterialBuilder().setName("Komatiite")
+            .setDefaultLocalName("Komatiite")
+            .setMetaItemSubID(869)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
             .constructMaterial();
     }
 
