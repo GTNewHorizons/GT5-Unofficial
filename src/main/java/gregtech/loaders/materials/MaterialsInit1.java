@@ -306,9 +306,9 @@ public class MaterialsInit1 {
         Materials.Sunstone = loadSunstone();
         Materials.Tar = loadTar();
         Materials.Tartarite = loadTartarite();
+        Materials.UUAmplifier = loadUUAmplifier();
 
         // spotless:off
-        Materials.UUAmplifier             = new Materials( 721, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                ,  96,   0, 128,   0,   "UUAmplifier"             ,   "UU-Amplifier"                  ,    0,       0,         -1,    0, false, false,  10,   1,   1, Dyes.dyePink        );
         Materials.UUMatter                = new Materials( 703, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 128,   0, 196,   0,   "UUMatter"                ,   "UU-Matter"                     ,    0,       0,         -1,    0, false, false,  10,   1,   1, Dyes.dyePink        );
         Materials.Void                    = new Materials( 970, TextureSet.SET_METALLIC          ,  32.0F,    512,  4, 1|2          |64|128      ,  28,   6,  57,   0,   "Void"                    ,   "Void"                          ,    5,    1500,         -1,    0, false,  true,   5,   2,   1, Dyes.dyeBlack       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1)));
         Materials.Voidstone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255, 200,   "Voidstone"               ,   "Voidstone"                     ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes._NULL          , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1)));
@@ -4920,6 +4920,17 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial()
             .setTurbineMultipliers(1120, 1120, 1);
+    }
+
+    private static Materials loadUUAmplifier() {
+        return new MaterialBuilder().setName("UUAmplifier")
+            .setDefaultLocalName("UU-Amplifier")
+            .setMetaItemSubID(721)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x600080)
+            .addCell()
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
