@@ -17,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,14 +39,14 @@ import gregtech.api.interfaces.ITexture;
  * to various rendering methods throughout a block's render cycle.
  */
 @SideOnly(Side.CLIENT)
-public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
+public final class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
 
-    public static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
-    public int worldRenderPass;
+    private static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
+    private int worldRenderPass;
 
     /** Non-null dummy world, replaced in {@link #setup}. */
     @NotNull
-    public IBlockAccess blockAccess = GTValues.DW;
+    private IBlockAccess blockAccess = GTValues.DW;
 
     /**
      * Mixed Brightness cache
@@ -55,6 +56,7 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
      */
     private final int[][][] MBFB = new int[3][3][3];
+
     /**
      * Ambient Occlusion Light Value cache
      * <p>
@@ -63,16 +65,16 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
      * and its 26 neighbors within a 3×3×3 cube centered on (x, y, z).
      */
     private final float[][][] AOLV = new float[3][3][3];
-
     /** Used to determine if face is flush with negative neighbour */
     private static final double FLUSH_MIN = 0.001D;
+
     /** Used to determine if face is flush with positive neighbour */
     private static final double FLUSH_MAX = 0.999D;
-
     /**
      * Brightness for side.
      */
     private int brightness;
+
     /**
      * Ambient occlusion values for all four corners of side.
      */
@@ -109,6 +111,14 @@ public class SBRWorldContext extends SBRContextBase<SBRWorldContext> {
         populatesLightingCaches();
         reset();
         return this;
+    }
+
+    public @NotNull IBlockAccess getBlockAccess() {
+        return blockAccess;
+    }
+
+    public TileEntity getTileEntity() {
+        return blockAccess.getTileEntity(x, y, z);
     }
 
     /**

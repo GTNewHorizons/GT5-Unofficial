@@ -45,30 +45,29 @@ import gregtech.api.interfaces.ITexture;
 public abstract class SBRContextBase<T extends SBRContextBase<T>> {
 
     public static final int MAX_BRIGHTNESS = 0xf000f0;
-    protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
 
     /** Non-null placeholder RenderBlocks, replaced in {@link #setup}. */
     @NotNull
-    public RenderBlocks renderBlocks = RenderBlocks.getInstance();
+    protected RenderBlocks renderBlocks = RenderBlocks.getInstance();
 
     /** Non-null placeholder block, replaced in {@link #setup}. */
     @NotNull
-    public Block block = Blocks.air;
-    public int modelId;
-
-    /**
-     * Determines if block faces can be culled
-     */
-    public boolean fullBlock;
-
+    protected Block block = Blocks.air;
     /**
      * Rendering coordinates for {@link RenderBlocks}; present to sidestep API limitations
      * and keep logic out of rendering.
      * (0, 0, 0) is used in inventory contexts due to Minecraft’s questionable design.
      */
-    public int x, y, z;
+    protected int x, y, z;
+    protected int modelId;
+    protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
+    /**
+     * Determines if block faces can be culled
+     */
+    protected boolean fullBlock;
 
     protected boolean hasLightnessOverride;
+
     protected float lightnessOverride;
     protected boolean hasBrightnessOverride;
     protected int brightnessOverride;
@@ -89,6 +88,34 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
         @SuppressWarnings("unchecked")
         final T self = (T) this;
         return self;
+    }
+
+    public void setFullBlock(boolean fullBlock) {
+        this.fullBlock = fullBlock;
+    }
+
+    public @NotNull RenderBlocks getRenderBlocks() {
+        return renderBlocks;
+    }
+
+    public @NotNull Block getBlock() {
+        return block;
+    }
+
+    public int getModelId() {
+        return modelId;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getZ() {
+        return z;
     }
 
     /**
@@ -161,6 +188,16 @@ public abstract class SBRContextBase<T extends SBRContextBase<T>> {
      */
     public T setupColor(ForgeDirection side, short[] rgba) {
         return setupColor(side, rgbaToInt(rgba));
+    }
+
+    /**
+     * Like setRenderBounds, but automatically pulling the bounds from the context's block.
+     */
+    public T setRenderBoundsFromBlock() {
+        renderBlocks.setRenderBoundsFromBlock(block);
+        @SuppressWarnings("unchecked")
+        final T self = (T) this;
+        return self;
     }
 
     /**

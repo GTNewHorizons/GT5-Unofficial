@@ -851,14 +851,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             //Corner 6: -2,  7     3 \             / 6
             //Corner 7:  3,  7        \           /
             //Corner 8:  7,  3         4 ------- 5
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 0, minU, maxU, minV, maxV);
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 1, minU, maxU, minV, maxV);
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 2, minU, maxU, minV, maxV);
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 3, minU, maxU, minV, maxV);
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 4, minU, maxU, minV, maxV);
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 5, minU, maxU, minV, maxV);
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 6, minU, maxU, minV, maxV);
-            renderForceField(ctx.x + xBaseOffset + 0.5, ctx.y, ctx.z + zBaseOffset + 0.5, 7, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 0, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 1, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 2, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 3, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 4, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 5, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 6, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 7, minU, maxU, minV, maxV);
         }
         // Needs to be false to render the controller
         return false;

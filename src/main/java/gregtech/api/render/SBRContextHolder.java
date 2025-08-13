@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class SBRContextHolder {
 
-    private SBRInventoryContext inventoryContext;
-    private SBRWorldContext worldContext;
+    private final SBRInventoryContext inventoryContext = new SBRInventoryContext();
+    private final SBRWorldContext worldContext = new SBRWorldContext();
 
     /**
      * Returns this holder's {@link SBRInventoryContext} instance configured to
@@ -31,7 +31,6 @@ public final class SBRContextHolder {
      */
     public SBRInventoryContext getSBRInventoryContext(@NotNull Block block, int meta, int modelId,
         @NotNull RenderBlocks renderBlocks) {
-        if (null == inventoryContext) inventoryContext = new SBRInventoryContext();
         return inventoryContext.setup(block, meta, modelId, renderBlocks);
     }
 
@@ -50,9 +49,6 @@ public final class SBRContextHolder {
     @SuppressWarnings("MethodWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
     public SBRWorldContext getSBRWorldContext(int x, int y, int z, @NotNull Block block, int modelId,
         @NotNull RenderBlocks renderer) {
-        if (worldContext == null) {
-            worldContext = new SBRWorldContext();
-        }
         return worldContext.setup(x, y, z, block, modelId, renderer);
     }
 }

@@ -85,18 +85,21 @@ public class GTUtilityClient {
 
         // for some reason +x and -z need this field set to true, but not any other sides
         if (tDirection == ForgeDirection.NORTH || tDirection == ForgeDirection.EAST)
-            ctx.renderBlocks.field_152631_f = true;
+            ctx.getRenderBlocks().field_152631_f = true;
 
         for (int i = 0; i < 9; i++) {
             tExtendedFacing.getWorldOffset(tABCCoord, tXYZOffset);
             // since structure check passed, we can assume it is turbine casing
-            int tX = tXYZOffset[0] + ctx.x;
-            int tY = tXYZOffset[1] + ctx.y;
-            int tZ = tXYZOffset[2] + ctx.z;
+            int tX = tXYZOffset[0] + ctx.getX();
+            int tY = tXYZOffset[1] + ctx.getY();
+            int tZ = tXYZOffset[2] + ctx.getZ();
             Block tBlock;
             if (tBlockOverride == null) {
-                tBlock = ctx.blockAccess
-                    .getBlock(ctx.x + tDirection.offsetX, tY + tDirection.offsetY, ctx.z + tDirection.offsetZ);
+                tBlock = ctx.getBlockAccess()
+                    .getBlock(
+                        ctx.getX() + tDirection.offsetX,
+                        tY + tDirection.offsetY,
+                        ctx.getZ() + tDirection.offsetZ);
             } else {
                 tBlock = tBlockOverride;
             }
@@ -104,14 +107,14 @@ public class GTUtilityClient {
             // so the front face cannot be occluded whatsoever in the most cases.
             Tessellator.instance.setBrightness(
                 tBlock.getMixedBrightnessForBlock(
-                    ctx.blockAccess,
-                    ctx.x + tDirection.offsetX,
+                    ctx.getBlockAccess(),
+                    ctx.getX() + tDirection.offsetX,
                     tY + tDirection.offsetY,
-                    ctx.z + tDirection.offsetZ));
+                    ctx.getZ() + tDirection.offsetZ));
             ctx.setupLighting(tDirection)
                 .setupColor(tDirection, Dyes._NULL.getRGBA());
             GTRenderUtil.renderBlockIcon(
-                ctx.renderBlocks,
+                ctx.getRenderBlocks(),
                 tBlock,
                 tX + tDirection.offsetX * 0.001,
                 tY + tDirection.offsetY * 0.001,
@@ -124,6 +127,6 @@ public class GTUtilityClient {
             }
         }
 
-        ctx.renderBlocks.field_152631_f = false;
+        ctx.getRenderBlocks().field_152631_f = false;
     }
 }

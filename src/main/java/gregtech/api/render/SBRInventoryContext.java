@@ -32,10 +32,10 @@ import cpw.mods.fml.relauncher.SideOnly;
  * to various rendering methods throughout a block's render cycle.
  */
 @SideOnly(Side.CLIENT)
-public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
+public final class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
 
-    protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    public int meta;
+    private static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
+    private int meta;
 
     /**
      * Package-private constructor.
@@ -127,27 +127,17 @@ public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
         return this;
     }
 
+    public int getMeta() {
+        return meta;
+    }
+
     /**
      * {@inheritDoc}
-     * 
+     *
      * @implNote Always true in Inventory Context
      */
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
         return true;
-    }
-
-    /**
-     * Gets rgb color from integer.
-     *
-     * @param color the integer color
-     * @return a float array with rgb values
-     */
-    public static float[] getRGB(int color) {
-        final float red = (color >> 16 & 0xff) / 255.0F;
-        final float green = (color >> 8 & 0xff) / 255.0F;
-        final float blue = (color & 0xff) / 255.0F;
-
-        return new float[] { red, green, blue };
     }
 }

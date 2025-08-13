@@ -42,164 +42,236 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
 
     @Override
     public void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
-        startDrawingQuads(ctx.renderBlocks, 1.0f, 0.0f, 0.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 1.0f, 0.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.renderBlocks.enableAO;
+        final boolean enableAO = ctx.getRenderBlocks().enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.renderBlocks);
+                draw(ctx.getRenderBlocks());
                 return;
             }
-            ctx.renderBlocks.enableAO = false;
+            ctx.getRenderBlocks().enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.EAST, mRGBa);
-            renderFaceXPos(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
+            renderFaceXPos(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getIcon(),
+                rotation);
         }
         if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
-            renderFaceXPos(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+            renderFaceXPos(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getOverlayIcon(),
+                rotation);
         }
-        ctx.renderBlocks.enableAO = enableAO;
-        draw(ctx.renderBlocks);
+        ctx.getRenderBlocks().enableAO = enableAO;
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
     public void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
-        startDrawingQuads(ctx.renderBlocks, -1.0f, 0.0f, 0.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), -1.0f, 0.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.renderBlocks.enableAO;
+        final boolean enableAO = ctx.getRenderBlocks().enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.renderBlocks);
+                draw(ctx.getRenderBlocks());
                 return;
             }
-            ctx.renderBlocks.enableAO = false;
+            ctx.getRenderBlocks().enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.WEST, mRGBa);
-            renderFaceXNeg(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
+            renderFaceXNeg(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getIcon(),
+                rotation);
         }
         if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
-            renderFaceXNeg(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+            renderFaceXNeg(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getOverlayIcon(),
+                rotation);
         }
-        ctx.renderBlocks.enableAO = enableAO;
-        draw(ctx.renderBlocks);
+        ctx.getRenderBlocks().enableAO = enableAO;
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
     public void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
-        startDrawingQuads(ctx.renderBlocks, 0.0f, 1.0f, 0.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 1.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.renderBlocks.enableAO;
+        final boolean enableAO = ctx.getRenderBlocks().enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.renderBlocks);
+                draw(ctx.getRenderBlocks());
                 return;
             }
-            ctx.renderBlocks.enableAO = false;
+            ctx.getRenderBlocks().enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.UP, mRGBa);
-            renderFaceYPos(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
+            renderFaceYPos(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getIcon(),
+                rotation);
         }
         if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
-            renderFaceYPos(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+            renderFaceYPos(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getOverlayIcon(),
+                rotation);
         }
-        ctx.renderBlocks.enableAO = enableAO;
-        draw(ctx.renderBlocks);
+        ctx.getRenderBlocks().enableAO = enableAO;
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
     public void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
-        startDrawingQuads(ctx.renderBlocks, 0.0f, -1.0f, 0.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, -1.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.renderBlocks.enableAO;
+        final boolean enableAO = ctx.getRenderBlocks().enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.renderBlocks);
+                draw(ctx.getRenderBlocks());
                 return;
             }
-            ctx.renderBlocks.enableAO = false;
+            ctx.getRenderBlocks().enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.DOWN, mRGBa);
-            renderFaceYNeg(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
+            renderFaceYNeg(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getIcon(),
+                rotation);
         }
         if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
-            renderFaceYNeg(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+            renderFaceYNeg(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getOverlayIcon(),
+                rotation);
         }
-        ctx.renderBlocks.enableAO = enableAO;
-        draw(ctx.renderBlocks);
+        ctx.getRenderBlocks().enableAO = enableAO;
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
     public void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
-        startDrawingQuads(ctx.renderBlocks, 0.0f, 0.0f, 1.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, 1.0f);
         ctx.reset();
-        final boolean enableAO = ctx.renderBlocks.enableAO;
+        final boolean enableAO = ctx.getRenderBlocks().enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.renderBlocks);
+                draw(ctx.getRenderBlocks());
                 return;
             }
-            ctx.renderBlocks.enableAO = false;
+            ctx.getRenderBlocks().enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
-            renderFaceZPos(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
+            renderFaceZPos(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getIcon(),
+                rotation);
         }
         if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
-            renderFaceZPos(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+            renderFaceZPos(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getOverlayIcon(),
+                rotation);
         }
-        ctx.renderBlocks.enableAO = enableAO;
-        draw(ctx.renderBlocks);
+        ctx.getRenderBlocks().enableAO = enableAO;
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
     public void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
-        startDrawingQuads(ctx.renderBlocks, 0.0f, 0.0f, -1.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, -1.0f);
         ctx.reset();
-        final boolean enableAO = ctx.renderBlocks.enableAO;
+        final boolean enableAO = ctx.getRenderBlocks().enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.renderBlocks);
+                draw(ctx.getRenderBlocks());
                 return;
             }
-            ctx.renderBlocks.enableAO = false;
+            ctx.getRenderBlocks().enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.NORTH, mRGBa);
-            renderFaceZNeg(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
+            renderFaceZNeg(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getIcon(),
+                rotation);
         }
         if (mIconContainer.getOverlayIcon() != null && ctx.canRenderInPass(pass -> pass == 1)) {
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
-            renderFaceZNeg(ctx.renderBlocks, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+            renderFaceZNeg(
+                ctx.getRenderBlocks(),
+                ctx.getX(),
+                ctx.getY(),
+                ctx.getZ(),
+                mIconContainer.getOverlayIcon(),
+                rotation);
         }
-        ctx.renderBlocks.enableAO = enableAO;
-        draw(ctx.renderBlocks);
+        ctx.getRenderBlocks().enableAO = enableAO;
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
