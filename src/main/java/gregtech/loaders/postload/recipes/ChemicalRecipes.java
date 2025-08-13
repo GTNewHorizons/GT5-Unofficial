@@ -5070,7 +5070,7 @@ public class ChemicalRecipes implements Runnable {
         // 2CH3COOH = CH3COCH3 + CO2 + H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, Materials.Calcium.getDust(1)), GTUtility.getIntegratedCircuit(24))
+            .itemInputs(GTUtility.copyAmount(0, Materials.Calcium.getDust(1)), GTUtility.getIntegratedCircuit(3))
             .fluidInputs(Materials.AceticAcid.getFluid(2_000))
             .fluidOutputs(
                 Materials.Acetone.getFluid(1_000),
