@@ -301,9 +301,9 @@ public class MaterialsInit1 {
         Materials.Rhyolite = loadRhyolite();
         Materials.Rubracium = loadRubracium();
         Materials.Sand = loadSand();
+        Materials.Sanguinite = loadSanguinite();
 
         // spotless:off
-        Materials.Sanguinite              = new Materials( 955, TextureSet.SET_METALLIC          ,   3.0F,   4480,  4, 1|2  |8                   , 185,   0,   0,   0,   "Sanguinite"              ,   "Sanguinite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Siltstone               = new Materials( 876, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Siltstone"               ,   "Siltstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Sunstone                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Sunstone"                ,   "Sunstone"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1)));
         Materials.Tar                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         ,  10,  10,  10,   0,   "Tar"                     ,   "Tar"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
@@ -4856,6 +4856,21 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Sand")
             .setDefaultLocalName("Sand")
             .setColor(Dyes.dyeYellow)
+            .constructMaterial();
+    }
+
+    private static Materials loadSanguinite() {
+        return new MaterialBuilder().setName("Sanguinite")
+            .setDefaultLocalName("Sanguinite")
+            .setMetaItemSubID(955)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xb90000)
+            .setToolSpeed(3.0f)
+            .setDurability(4480)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
             .constructMaterial();
     }
 
