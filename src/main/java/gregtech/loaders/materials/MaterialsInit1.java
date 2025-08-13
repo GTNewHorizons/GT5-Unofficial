@@ -263,9 +263,9 @@ public class MaterialsInit1 {
         Materials.Jade = loadJade();
         Materials.Kalendrite = loadKalendrite();
         Materials.Komatiite = loadKomatiite();
+        Materials.Lava = loadLava();
 
         // spotless:off
-        Materials.Lava                    = new Materials( 700, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255,  64,   0,   0,   "Lava"                    ,   "Lava"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
         Materials.Lemurite                = new Materials( 486, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1                         , 219, 219, 219,   0,   "Lemurite"                ,   "Lemurite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Limestone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Limestone"               ,   "Limestone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Magma                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255,  64,   0,   0,   "Magma"                   ,   "Magma"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
@@ -4349,6 +4349,17 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeYellow)
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadLava() {
+        return new MaterialBuilder().setName("Lava")
+            .setDefaultLocalName("Lava")
+            .setMetaItemSubID(700)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff4000)
+            .addCell()
             .constructMaterial();
     }
 
