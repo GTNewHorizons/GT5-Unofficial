@@ -260,9 +260,9 @@ public class MaterialsInit1 {
         Materials.InfusedDull = loadInfusedDull();
         Materials.Inolashite = loadInolashite();
         Materials.Invisium = loadInvisium();
+        Materials.Jade = loadJade();
 
         // spotless:off
-        Materials.Jade                    = new Materials( 537, TextureSet.SET_SHINY             ,   1.0F,     16,  2, 1  |4|8      |64          ,   0, 100,   0,   0,   "Jade"                    ,   "Jade"                          ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeGreen       ,0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Kalendrite              = new Materials( 953, TextureSet.SET_METALLIC          ,   5.0F,   2560,  3, 1|2                       , 170,  91, 189,   0,   "Kalendrite"              ,   "Kalendrite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Komatiite               = new Materials( 869, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Komatiite"               ,   "Komatiite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Lava                    = new Materials( 700, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255,  64,   0,   0,   "Lava"                    ,   "Lava"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
@@ -4302,6 +4302,29 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Invisium")
             .setDefaultLocalName("Invisium")
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadJade() {
+        return new MaterialBuilder().setName("Jade")
+            .setDefaultLocalName("Jade")
+            .setMetaItemSubID(537)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x006400)
+            .setToolSpeed(1.0f)
+            .setDurability(16)
+            .setToolQuality(2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 3)
             .constructMaterial();
     }
 
