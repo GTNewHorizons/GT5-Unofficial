@@ -293,9 +293,9 @@ public class MaterialsInit1 {
         Materials.Painite = loadPainite();
         Materials.Peanutwood = loadPeanutwood();
         Materials.Petroleum = loadPetroleum();
+        Materials.Pewter = loadPewter();
 
         // spotless:off
-        Materials.Pewter                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Pewter"                  ,   "Pewter"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Phoenixite              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Phoenixite"              ,   "Phoenixite"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Prometheum              = new Materials( 960, TextureSet.SET_METALLIC          ,   8.0F,    512,  1, 1|2  |8      |64          ,  90, 129,  86,   0,   "Prometheum"              ,   "Prometheum"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Quartzite               = new Materials( 523, TextureSet.SET_QUARTZ            ,   1.0F,      0,  1, 1  |4|8                   , 210, 230, 210,   0,   "Quartzite"               ,   "Quartzite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
@@ -4766,6 +4766,12 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Petroleum")
             .addDustItems()
             .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPewter() {
+        return new MaterialBuilder().setName("Pewter")
+            .setDefaultLocalName("Pewter")
             .constructMaterial();
     }
 
