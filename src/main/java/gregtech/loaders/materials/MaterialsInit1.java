@@ -288,9 +288,9 @@ public class MaterialsInit1 {
         Materials.Oilsands = loadOilsands();
         Materials.Onyx = loadOnyx();
         Materials.Orichalcum = loadOrichalcum();
+        Materials.Osmonium = loadOsmonium();
 
         // spotless:off
-        Materials.Osmonium                = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Osmonium"                ,   "Osmonium"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        );
         Materials.Oureclase               = new Materials( 961, TextureSet.SET_METALLIC          ,   6.0F,   1920,  3, 1|2  |8      |64          , 183,  98,  21,   0,   "Oureclase"               ,   "Oureclase"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Painite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Painite"                 ,   "Painite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Peanutwood              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Peanutwood"              ,   "Peanut Wood"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -4717,6 +4717,20 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial()
             .setTurbineMultipliers(1, 6, 1);
+    }
+
+    private static Materials loadOsmonium() {
+        return new MaterialBuilder().setName("Osmonium")
+            .setDefaultLocalName("Osmonium")
+            .setColor(Dyes.dyeBlue)
+            .setToolSpeed(6.0f)
+            .setDurability(64)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
