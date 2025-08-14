@@ -29,6 +29,19 @@ public enum SoundResource {
     RANDOM_EXPLODE(5, "random.explode"),
     FIRE_IGNITE(6, "fire.ignite"),
 
+    /*
+     * IC2 Sounds still in use
+     * Battery Use
+     * Drill
+     * Chainsaw
+     * Extractor
+     * Machine Overload
+     * Interrupt One
+     * Magnetizer Loop
+     * Induction Loop
+     * Recycler OP
+     * Compressor Loop (Printer only)
+     */
     IC2_TOOLS_WRENCH(100, IndustrialCraft2.ID, "tools.Wrench"),
     IC2_TOOLS_RUBBER_TRAMPOLINE(101, IndustrialCraft2.ID, "tools.RubberTrampoline"),
     IC2_TOOLS_PAINTER(102, IndustrialCraft2.ID, "tools.Painter"),
@@ -111,7 +124,7 @@ public enum SoundResource {
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 
     /*
-     * New GT CEu Modern Sounds
+     * New GT CEu / Modern Sounds
      * * Outside of MTEBasicMachineWithRecipe
      * ** Tool, not Machine
      * Arc - Arc Furnace, Plasma Arc Furnace
@@ -119,16 +132,18 @@ public enum SoundResource {
      * Bath - Canning Machine, Chemical Bath, Fluid Canner, Ore Washing Plant
      * Boiler - Fluid Heater, Large Boiler*
      * Centrifuge - Centrifuge, Thermal Centrifuge
-     * Chemical - Brewery*, Chemical Reactor, Fermenter
+     * Chemical - Brewery*, Chemical Reactor, Fermenter, Chemical Plant
+     * Click - Random_Click
      * Combustion - Combustion Generator*
-     * Compressor - Compressor, Forming Press
+     * Compressor - Compressor
      * Cooling - Autoclave, Fluid Solidifier
      * Cut - Cutting Machine, Lathe
      * Electrolyzer - Electrolyzer, Laser Engraver, Scanner*
      * File - File**
      * Fire - Rock Breaker*, Coke Oven*, BBF*, Pyrolyse Oven*, Cracker*
-     * Forge Hammer - Forge Hammer, Hard Hammer**
+     * Forge Hammer - Forge Hammer, Forming Press, Hard Hammer**
      * Furnace - Electric Furnace, Steam Boiler*
+     * Hum - Microwave, Electric Oven, Other Electrofurnace SFX usage
      * Macerator - Macerator
      * Miner - Miner*
      * Mixer - Mixer
@@ -136,6 +151,7 @@ public enum SoundResource {
      * Motor - Bending Machine, Wiremill
      * Plunger - Plunger**
      * Portable Scanner - Scanner, Tricorder**
+     * Pump - Pump*
      * Replicator - Replicator*
      * Saw - Saw**
      * Screwdriver - Screwdriver**
@@ -145,37 +161,40 @@ public enum SoundResource {
      * Wirecutter - Wirecutter**
      * Wrench - Wrench**
      */
-    GTM_LOOP_ARC(300, "gtceum", "gtm.ArcLoop"),
-    GTM_LOOP_ASSEMBLER(301, "gtceum", "gtm.AssemblerLoop"),
-    GTM_LOOP_BATH(302, "gtceum", "gtm.BathLoop"),
-    GTM_LOOP_BOILER(303, "gtceum", "gtm.BoilerLoop"),
-    GTM_LOOP_CENTRIFUGE(304, "gtceum", "gtm.CentrifugeLoop"),
-    GTM_LOOP_CHEMICAL(305, "gtceum", "gtm.ChemicalLoop"),
-    GTM_LOOP_COMBUSTION(306, "gtceum", "gtm.CombustionLoop"),
-    GTM_LOOP_COMPRESSOR(307, "gtceum", "gtm.CompressorLoop"),
-    GTM_LOOP_COOLING(308, "gtceum", "gtm.CoolingLoop"),
-    GTM_LOOP_CUT(309, "gtceum", "gtm.CutLoop"),
-    GTM_LOOP_ELECTROLYZER(310, "gtceum", "gtm.ElectrolyzerLoop"),
-    GTM_LOOP_FIRE(311, "gtceum", "gtm.FireLoop"),
-    GTM_LOOP_FORGE_HAMMER(312, "gtceum", "gtm.ForgeHammerLoop"),
-    GTM_LOOP_FURNACE(313, "gtceum", "gtm.FurnaceLoop"),
-    GTM_LOOP_MACERATOR(314, "gtceum", "gtm.MaceratorLoop"),
-    GTM_LOOP_MINER(315, "gtceum", "gtm.MinerLoop"),
-    GTM_LOOP_MIXER(316, "gtceum", "gtm.MixerLoop"),
-    GTM_LOOP_MOTOR(317, "gtceum", "gtm.MotorLoop"),
-    GTM_LOOP_REPLICATOR(318, "gtceum", "gtm.ReplicatorLoop"),
-    GTM_LOOP_TURBINE(319, "gtceum", "gtm.TurbineLoop"),
+    GTCEU_LOOP_ARC(300, "gtceu", "gtceu.ArcLoop"),
+    GTCEU_LOOP_ASSEMBLER(301, "gtceu", "gtceu.AssemblerLoop"),
+    GTCEU_LOOP_BATH(302, "gtceu", "gtceu.BathLoop"),
+    GTCEU_LOOP_BOILER(303, "gtceu", "gtceu.BoilerLoop"),
+    GTCEU_LOOP_CENTRIFUGE(304, "gtceu", "gtceu.CentrifugeLoop"),
+    GTCEU_LOOP_CHEMICAL(305, "gtceu", "gtceu.ChemicalLoop"),
+    GTCEU_LOOP_COMBUSTION(306, "gtceu", "gtceu.CombustionLoop"),
+    GTCEU_LOOP_COMPRESSOR(307, "gtceu", "gtceu.CompressorLoop"),
+    GTCEU_LOOP_COOLING(308, "gtceu", "gtceu.CoolingLoop"),
+    GTCEU_LOOP_CUT(309, "gtceu", "gtceu.CutLoop"),
+    GTCEU_LOOP_ELECTROLYZER(310, "gtceu", "gtceu.ElectrolyzerLoop"),
+    GTCEU_LOOP_FIRE(311, "gtceu", "gtceu.FireLoop"),
+    GTCEU_LOOP_FORGE_HAMMER(312, "gtceu", "gtceu.ForgeHammerLoop"),
+    GTCEU_LOOP_FURNACE(313, "gtceu", "gtceu.FurnaceLoop"),
+    GTCEU_LOOP_HUM(314, "gtceu", "gtceu.HumLoop"),
+    GTCEU_LOOP_MACERATOR(315, "gtceu", "gtceu.MaceratorLoop"),
+    GTCEU_LOOP_MINER(316, "gtceu", "gtceu.MinerLoop"),
+    GTCEU_LOOP_MIXER(317, "gtceu", "gtceu.MixerLoop"),
+    GTCEU_LOOP_MOTOR(318, "gtceu", "gtceu.MotorLoop"),
+    GTCEU_LOOP_PUMP(319, "gtceu", "gtceu.PumpLoop"),
+    GTCEU_LOOP_REPLICATOR(320, "gtceu", "gtceu.ReplicatorLoop"),
+    GTCEU_LOOP_TURBINE(321, "gtceu", "gtceu.TurbineLoop"),
 
-    GTM_OP_FILE(400, "gtceum", "gtm.FileOp"),
-    GTM_OP_MORTAR(401, "gtceum", "gtm.MortarOp"),
-    GTM_OP_PLUNGER(402, "gtceum", "gtm.PlungerOp"),
-    GTM_OP_PORTABLE_SCANNER(403, "gtceum", "gtm.PortableScannerOp"),
-    GTM_OP_SAW(404, "gtceum", "gtm.SawOp"),
-    GTM_OP_SCREWDRIVER(405, "gtceum", "gtm.ScrewdriverOp"),
-    GTM_OP_SOFT_HAMMER(406, "gtceum", "gtm.SoftHammerOp"),
-    GTM_OP_SPRAY_CAN(407, "gtceum", "gtm.SprayCanOp"),
-    GTM_OP_WIRECUTTER(408, "gtceum", "gtm.WirecutterOp"),
-    GTM_OP_WRENCH(409, "gtceum", "gtm.WrenchOp"),
+    GTCEU_OP_CLICK(400, "gtceu", "gtceu.ClickOp"),
+    GTCEU_OP_FILE(401, "gtceu", "gtceu.FileOp"),
+    GTCEU_OP_MORTAR(402, "gtceu", "gtceu.MortarOp"),
+    GTCEU_OP_PLUNGER(403, "gtceu", "gtceu.PlungerOp"),
+    GTCEU_OP_PORTABLE_SCANNER(404, "gtceu", "gtceu.PortableScannerOp"),
+    GTCEU_OP_SAW(405, "gtceu", "gtceu.SawOp"),
+    GTCEU_OP_SCREWDRIVER(406, "gtceu", "gtceu.ScrewdriverOp"),
+    GTCEU_OP_SOFT_HAMMER(407, "gtceu", "gtceu.SoftHammerOp"),
+    GTCEU_OP_SPRAY_CAN(408, "gtceu", "gtceu.SprayCanOp"),
+    GTCEU_OP_WIRECUTTER(409, "gtceu", "gtceu.WirecutterOp"),
+    GTCEU_OP_WRENCH(410, "gtceu", "gtceu.WrenchOp"),
     /*
      * Other Minecraft Sounds that were missing
      */

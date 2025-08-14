@@ -32,7 +32,7 @@ public class ToolFile extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.GTM_OP_FILE.toString();
+        return SoundResource.GTCEU_OP_FILE.toString();
     }
 
     @Override

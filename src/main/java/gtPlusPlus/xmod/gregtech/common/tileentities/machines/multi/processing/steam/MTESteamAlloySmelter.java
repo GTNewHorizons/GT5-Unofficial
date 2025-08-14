@@ -371,7 +371,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
 }

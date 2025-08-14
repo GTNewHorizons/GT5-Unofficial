@@ -42,7 +42,7 @@ public class BehaviourScanner extends BehaviourNone {
             }
             return true;
         }
-        GTUtility.doSoundAtClient(SoundResource.GTM_OP_PORTABLE_SCANNER, 1, 1.0F, aX, aY, aZ);
+        GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_PORTABLE_SCANNER, 1, 1.0F, aX, aY, aZ);
         // doGuiAtClient()
         return aPlayer instanceof EntityPlayerMP;
     }

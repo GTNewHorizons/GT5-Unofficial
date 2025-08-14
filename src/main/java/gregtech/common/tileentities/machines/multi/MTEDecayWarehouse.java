@@ -405,7 +405,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
                     GTUtility.sendSoundToPlayers(
                         player.worldObj,
-                        SoundResource.GTM_OP_PLUNGER,
+                        SoundResource.GTCEU_OP_PLUNGER,
                         1.0F,
                         -1.0F,
                         base.getXCoord(),

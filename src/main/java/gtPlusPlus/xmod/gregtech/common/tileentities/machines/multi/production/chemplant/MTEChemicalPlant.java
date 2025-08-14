@@ -443,7 +443,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
+        return SoundResource.GTCEU_LOOP_CHEMICAL;
     }
 
     @Override

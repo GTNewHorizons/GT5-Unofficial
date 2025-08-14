@@ -59,7 +59,7 @@ public class MTESteamForgeHammerSteel extends MTEBasicMachineSteel {
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.GTM_LOOP_FORGE_HAMMER, 10, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 10, 1.0F, aX, aY, aZ);
         }
     }
 

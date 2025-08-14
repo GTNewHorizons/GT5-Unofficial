@@ -142,7 +142,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
+        return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override

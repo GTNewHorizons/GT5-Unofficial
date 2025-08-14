@@ -120,7 +120,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_RECYCLER_OP;
+        return SoundResource.GTCEU_LOOP_MOTOR;
     }
 
     @Override

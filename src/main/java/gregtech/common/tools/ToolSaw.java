@@ -45,12 +45,12 @@ public class ToolSaw extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.GTM_OP_SAW.toString();
+        return SoundResource.GTCEU_OP_SAW.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.GTM_OP_SAW.toString();
+        return SoundResource.GTCEU_OP_SAW.toString();
     }
 
     @Override

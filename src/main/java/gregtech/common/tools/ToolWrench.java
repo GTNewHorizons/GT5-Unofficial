@@ -72,12 +72,12 @@ public class ToolWrench extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.GTM_OP_WRENCH.toString();
+        return SoundResource.GTCEU_OP_WRENCH.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.GTM_OP_WRENCH.toString();
+        return SoundResource.GTCEU_OP_WRENCH.toString();
     }
 
     @Override

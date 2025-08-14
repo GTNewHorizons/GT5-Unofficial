@@ -32,12 +32,12 @@ public class ToolMortar extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.GTM_OP_MORTAR.toString();
+        return SoundResource.GTCEU_OP_MORTAR.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.GTM_OP_MORTAR.toString();
+        return SoundResource.GTCEU_OP_MORTAR.toString();
     }
 
     @Override

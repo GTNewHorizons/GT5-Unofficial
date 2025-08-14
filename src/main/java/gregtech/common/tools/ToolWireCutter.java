@@ -27,12 +27,12 @@ public class ToolWireCutter extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.GTM_OP_WIRECUTTER.toString();
+        return SoundResource.GTCEU_OP_WIRECUTTER.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.GTM_OP_WIRECUTTER.toString();
+        return SoundResource.GTCEU_OP_WIRECUTTER.toString();
     }
 
     @Override

@@ -1,5 +1,5 @@
 {
-  "gtm.ArcLoop": {
+  "gtceu.ArcLoop": {
     "sounds": [
       {
         "name": "arc",
@@ -7,7 +7,7 @@
       }
     ]
   },
-  "gtm.AssemblerLoop": {
+  "gtceu.AssemblerLoop": {
     "sounds": [
       {
         "name": "assembler",
@@ -15,7 +15,7 @@
       }
     ]
   },
-  "gtm.BathLoop": {
+  "gtceu.BathLoop": {
     "sounds": [
       {
         "name": "bath",
@@ -23,7 +23,7 @@
       }
     ]
   },
-  "gtm.BoilerLoop": {
+  "gtceu.BoilerLoop": {
     "sounds": [
       {
         "name": "boiler",
@@ -31,7 +31,7 @@
       }
     ]
   },
-  "gtm.CentrifugeLoop": {
+  "gtceu.CentrifugeLoop": {
     "sounds": [
       {
         "name": "centrifuge",
@@ -39,7 +39,7 @@
       }
     ]
   },
-  "gtm.ChemicalLoop": {
+  "gtceu.ChemicalLoop": {
     "sounds": [
       {
         "name": "chemical",
@@ -47,7 +47,15 @@
       }
     ]
   },
-  "gtm.CombustionLoop": {
+  "gtceu.ClickOp": {
+    "sounds": [
+      {
+        "name": "click",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.CombustionLoop": {
     "sounds": [
       {
         "name": "combustion",
@@ -55,7 +63,7 @@
       }
     ]
   },
-  "gtm.CompressorLoop": {
+  "gtceu.CompressorLoop": {
     "sounds": [
       {
         "name": "compressor",
@@ -63,7 +71,7 @@
       }
     ]
   },
-  "gtm.CoolingLoop": {
+  "gtceu.CoolingLoop": {
     "sounds": [
       {
         "name": "cooling",
@@ -71,7 +79,7 @@
       }
     ]
   },
-  "gtm.CutLoop": {
+  "gtceu.CutLoop": {
     "sounds": [
       {
         "name": "cut",
@@ -79,7 +87,7 @@
       }
     ]
   },
-  "gtm.ElectrolyzerLoop": {
+  "gtceu.ElectrolyzerLoop": {
     "sounds": [
       {
         "name": "electrolyzer",
@@ -87,7 +95,7 @@
       }
     ]
   },
-  "gtm.FileOp": {
+  "gtceu.FileOp": {
     "sounds": [
       {
         "name": "file",
@@ -95,7 +103,7 @@
       }
     ]
   },
-  "gtm.FireLoop": {
+  "gtceu.FireLoop": {
     "sounds": [
       {
         "name": "fire",
@@ -103,7 +111,7 @@
       }
     ]
   },
-  "gtm.ForgeHammerLoop": {
+  "gtceu.ForgeHammerLoop": {
     "sounds": [
       {
         "name": "forge_hammer",
@@ -111,7 +119,7 @@
       }
     ]
   },
-  "gtm.FurnaceLoop": {
+  "gtceu.FurnaceLoop": {
     "sounds": [
       {
         "name": "furnace",
@@ -119,7 +127,15 @@
       }
     ]
   },
-  "gtm.MaceratorLoop": {
+  "gtceu.HumLoop": {
+    "sounds": [
+      {
+        "name": "hum",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.MaceratorLoop": {
     "sounds": [
       {
         "name": "macerator",
@@ -127,7 +143,7 @@
       }
     ]
   },
-  "gtm.MinerLoop": {
+  "gtceu.MinerLoop": {
     "sounds": [
       {
         "name": "miner",
@@ -135,7 +151,7 @@
       }
     ]
   },
-  "gtm.MixerLoop": {
+  "gtceu.MixerLoop": {
     "sounds": [
       {
         "name": "mixer",
@@ -143,7 +159,7 @@
       }
     ]
   },
-  "gtm.MortarOp": {
+  "gtceu.MortarOp": {
     "sounds": [
       {
         "name": "mortar",
@@ -151,7 +167,7 @@
       }
     ]
   },
-  "gtm.MotorLoop": {
+  "gtceu.MotorLoop": {
     "sounds": [
       {
         "name": "motor",
@@ -159,7 +175,7 @@
       }
     ]
   },
-  "gtm.PlungerOp": {
+  "gtceu.PlungerOp": {
     "sounds": [
       {
         "name": "plunger",
@@ -167,7 +183,7 @@
       }
     ]
   },
-  "gtm.PortableScannerOp": {
+  "gtceu.PortableScannerOp": {
     "sounds": [
       {
         "name": "portable_scanner",
@@ -175,7 +191,15 @@
       }
     ]
   },
-  "gtm.ReplicatorLoop": {
+  "gtceu.PumpLoop": {
+    "sounds": [
+      {
+        "name": "pump",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.ReplicatorLoop": {
     "sounds": [
       {
         "name": "replicator",
@@ -183,7 +207,7 @@
       }
     ]
   },
-  "gtm.SawOp": {
+  "gtceu.SawOp": {
     "sounds": [
       {
         "name": "saw",
@@ -191,7 +215,7 @@
       }
     ]
   },
-  "gtm.ScrewdriverOp": {
+  "gtceu.ScrewdriverOp": {
     "sounds": [
       {
         "name": "screwdriver",
@@ -199,7 +223,7 @@
       }
     ]
   },
-  "gtm.SoftHammerOp": {
+  "gtceu.SoftHammerOp": {
     "sounds": [
       {
         "name": "soft_hammer",
@@ -207,7 +231,7 @@
       }
     ]
   },
-  "gtm.SprayCanOp": {
+  "gtceu.SprayCanOp": {
     "sounds": [
       {
         "name": "spray_can",
@@ -215,7 +239,7 @@
       }
     ]
   },
-  "gtm.TurbineLoop": {
+  "gtceu.TurbineLoop": {
     "sounds": [
       {
         "name": "turbine",
@@ -223,7 +247,7 @@
       }
     ]
   },
-  "gtm.WirecutterOp": {
+  "gtceu.WirecutterOp": {
     "sounds": [
       {
         "name": "wirecutter",
@@ -231,7 +255,7 @@
       }
     ]
   },
-  "gtm.WrenchOp": {
+  "gtceu.WrenchOp": {
     "sounds": [
       {
         "name": "wrench",

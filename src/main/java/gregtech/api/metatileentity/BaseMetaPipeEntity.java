@@ -780,7 +780,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     if (mMetaTileEntity.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                        sendSoundToPlayers(SoundResource.GTM_OP_WRENCH, 1.0F, -1);
+                        sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, -1);
                     }
                     return true;
                 }
@@ -790,14 +790,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             getCoverAtSide(wrenchingSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F);
                             mMetaTileEntity.onScrewdriverRightClick(wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            sendSoundToPlayers(SoundResource.GTM_OP_SCREWDRIVER, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, -1);
                         }
                     } else {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ);
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            sendSoundToPlayers(SoundResource.GTM_OP_SCREWDRIVER, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, -1);
                         }
                     }
                     return true;
@@ -817,7 +817,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             GTUtility.trans("090", "Machine Processing: ")
                                 + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
                                     : GTUtility.trans("087", "Disabled")));
-                        sendSoundToPlayers(SoundResource.GTM_OP_SOFT_HAMMER, 1.0F, -1);
+                        sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, -1);
                     }
                     return true;
                 }
@@ -827,7 +827,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
-                        sendSoundToPlayers(SoundResource.GTM_OP_WIRECUTTER, 1.0F, -1);
+                        sendSoundToPlayers(SoundResource.GTCEU_OP_WIRECUTTER, 1.0F, -1);
                     }
                     doEnetUpdate();
                     return true;
@@ -866,7 +866,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                            sendSoundToPlayers(SoundResource.GTM_OP_WRENCH, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, -1);
                             sendClientData();
                         }
                         return true;

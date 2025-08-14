@@ -51,7 +51,7 @@ public class MTESteamCompressorBronze extends MTEBasicMachineBronze {
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.GTM_LOOP_COMPRESSOR, 10, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(SoundResource.GTCEU_LOOP_COMPRESSOR, 10, 1.0F, aX, aY, aZ);
         }
     }
 

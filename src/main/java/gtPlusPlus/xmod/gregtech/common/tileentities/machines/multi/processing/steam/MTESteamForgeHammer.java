@@ -294,7 +294,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GTM_LOOP_FORGE_HAMMER;
+        return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override
