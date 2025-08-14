@@ -19,6 +19,9 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -91,6 +94,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private final int depthOffset = 2;
     private int amountToDrain = 1; // drain amount.
     private int tier;
+    private int lastCheckedTierIndex = 0;
+    private List<StructureData> tierCheckOrderList = Arrays.asList(StructureData.values());
     private static FluidStack kerosene100;
     private static FluidStack kerosene10;
     public final LimitingItemStackHandler turbineHolder = new LimitingItemStackHandler(8, 1);
@@ -285,6 +290,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         RP = aNBT.getInteger("RP");
         mStaticAnimations = aNBT.getBoolean("turbineAnimationsStatic");
         tier2Fluid = aNBT.getBoolean("tier2FluidOn");
+        lastCheckedTierIndex = aNBT.getInteger("lastCheckedTierIndex");
         if (turbineHolder != null) {
             turbineHolder.deserializeNBT(aNBT.getCompoundTag("inventory"));
         }
@@ -298,7 +304,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
         aNBT.setInteger("RP", RP);
         aNBT.setBoolean("turbineAnimationsStatic", mStaticAnimations);
-
+        aNBT.setInteger("lastCheckedTierIndex", lastCheckedTierIndex);
         if (turbineHolder != null) {
             aNBT.setTag("inventory", turbineHolder.serializeNBT());
         }
@@ -529,26 +535,17 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tier = 0;
-        resetParameters();
-        if (checkPiece(STRUCTURE_TIER_1, horizontalOffset, verticalOffset, depthOffset)) {
-            tier = 1;
-            return casingAmount >= 550;
+        if (lastCheckedTierIndex != 0) Collections.swap(tierCheckOrderList, 0, lastCheckedTierIndex);
+        for (int i = 0; i < tierCheckOrderList.size(); i++) {
+            StructureData piece = tierCheckOrderList.get(i);
+            resetParameters();
+            if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset)) {
+                tier = piece.machineTier;
+                lastCheckedTierIndex = i;
+                return casingAmount >= 550;
+            }
         }
-        resetParameters();
-        if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset, depthOffset)) {
-            tier = 2;
-            return casingAmount >= 550;
-        }
-        resetParameters();
-        if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset, depthOffset)) {
-            tier = 3;
-            return casingAmount >= 550;
-        }
-        resetParameters();
-        if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset, depthOffset)) {
-            tier = 4;
-            return casingAmount >= 550;
-        }
+
         return false;
     }
 
@@ -823,4 +820,22 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public boolean supportsSingleRecipeLocking() {
         return true;
     }
+}
+
+// struct for packaging data for structure piece so i don't have to do String manipulation
+enum StructureData {
+
+    tier1(1, "t1"),
+    tier2(2, "t2"),
+    tier3(3, "t3"),
+    tier4(4, "t4");
+
+    public final int machineTier;
+    public final String structurePiece;
+
+    StructureData(int machineTier, String structurePiece) {
+        this.machineTier = machineTier;
+        this.structurePiece = structurePiece;
+    }
+
 }
