@@ -30,6 +30,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
@@ -160,6 +161,15 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+        if (mMaintenanceSound == null) {
+            setMaintenanceSound(SoundResource.GT_MAINTENANCE_DRONE_DOWNLINK_HATCH, 1.0F, 1.0F);
+        }
+
+        super.onMaintenancePerformed(aMaintenanceTarget);
     }
 
     @Override

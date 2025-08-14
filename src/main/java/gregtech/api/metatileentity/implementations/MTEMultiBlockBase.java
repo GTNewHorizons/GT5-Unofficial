@@ -643,13 +643,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (getRepairStatus() != getIdealStatus()) {
             for (MTEHatchMaintenance tHatch : validMTEList(mMaintenanceHatches)) {
-                if (tHatch.mAuto) tHatch.autoMaintainance();
-                if (tHatch.mWrench) mWrench = true;
-                if (tHatch.mScrewdriver) mScrewdriver = true;
-                if (tHatch.mSoftMallet) mSoftMallet = true;
-                if (tHatch.mHardHammer) mHardHammer = true;
-                if (tHatch.mSolderingTool) mSolderingTool = true;
-                if (tHatch.mCrowbar) mCrowbar = true;
+                boolean tDidRepair = false;
+
+                if (tHatch.mAuto) tDidRepair = tHatch.autoMaintainance();
+
+                // For each tool, only if needed, collect the tool flags
+                // that this Maintenance Hatch has provided
+                if (tHatch.mWrench && !mWrench) tDidRepair = mWrench = true;
+                if (tHatch.mScrewdriver && !mScrewdriver) tDidRepair = mScrewdriver = true;
+                if (tHatch.mSoftMallet && !mSoftMallet) tDidRepair = mSoftMallet = true;
+                if (tHatch.mHardHammer && !mHardHammer) tDidRepair = mHardHammer = true;
+                if (tHatch.mSolderingTool && !mSolderingTool) tDidRepair = mSolderingTool = true;
+                if (tHatch.mCrowbar && !mCrowbar) tDidRepair = mCrowbar = true;
 
                 tHatch.mWrench = false;
                 tHatch.mScrewdriver = false;
@@ -657,6 +662,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 tHatch.mHardHammer = false;
                 tHatch.mSolderingTool = false;
                 tHatch.mCrowbar = false;
+
+                if (tDidRepair) tHatch.onMaintenancePerformed(this);
             }
         }
     }
@@ -3560,6 +3567,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public boolean getDefaultHasMaintenanceChecks() {
         return true;
+    }
+
+    protected boolean requiresMuffler() {
+        return getPollutionPerSecond(null) > 0;
     }
 
     public boolean shouldCheckMaintenance() {
