@@ -466,11 +466,15 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(CERTUS, getSpecies(EXTRABEES, "ocean"), 10);
         tMutation.restrictHumidity(DAMP);
-        tMutation.requireResource(
-            Block.getBlockFromItem(
-                GTModHandler.getModItem(Botania.ID, "prismarine", 1)
-                    .getItem()),
-            0);
+        if (Botania.isModLoaded()) {
+            tMutation.requireResource(
+                Block.getBlockFromItem(
+                    GTModHandler.getModItem(Botania.ID, "prismarine", 1)
+                        .getItem()),
+                0);
+        } else {
+            tMutation.requireResource("blockPrismarine");
+        }
     }),
     // Metal Line
     COPPER(GTBranchDefinition.METAL, "Copper", true, new Color(0xFF6600), new Color(0xE65C00), beeSpecies -> {
