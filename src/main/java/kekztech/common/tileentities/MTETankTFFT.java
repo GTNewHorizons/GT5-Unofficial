@@ -146,14 +146,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
 
         private int getHint(ItemStack stack) {
-            int hint = GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 1, Field.VALUES.length);
-
-            // Add bounds checking to prevent invalid array access
-            if (hint < 1) {
-                return 1; // Default to tier 1 field block
-            }
-            return Math.min(hint, Field.VALUES.length);
-
+            return GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 0, Field.VALUES.length);
         }
 
         @Override
