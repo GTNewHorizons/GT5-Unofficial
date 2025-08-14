@@ -345,11 +345,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
-    }
-
-    @Override
     public long maxAmperesIn() {
         return ((long) mEUt * 2L) / V[mTier] + 1L;
     }

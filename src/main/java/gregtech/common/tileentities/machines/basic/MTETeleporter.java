@@ -428,11 +428,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
-    }
-
-    @Override
     public long maxAmperesIn() {
         return 2;
     }
