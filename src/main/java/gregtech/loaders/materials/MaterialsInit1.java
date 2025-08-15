@@ -216,9 +216,9 @@ public class MaterialsInit1 {
         Materials.Unstable = loadUnstable();
         Materials.Unstableingot = loadUnstableingot();
         Materials.Vinegar = loadVinegar();
+        Materials.Wheat = loadWheat();
 
         // spotless:off
-        Materials.Wheat                   = new Materials( 881, TextureSet.SET_POWDER            ,   1.0F,      0,  0, 1                         , 255, 255, 196,   0,   "Wheat"                   ,   "Wheat"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MESSIS, 2)));
         Materials.WoodGas                 = new MaterialBuilder(660, TextureSet.SET_FLUID             ,                                                                                                     "Wood Gas").addCell().addGas().setRGB(222, 205, 135).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).constructMaterial();
         Materials.WoodTar                 = new MaterialBuilder(662, TextureSet.SET_FLUID             ,                                                                                                     "Wood Tar").addCell().addFluid().setRGB(40, 23, 11).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.WoodVinegar             = new MaterialBuilder(661, TextureSet.SET_FLUID             ,                                                                                                     "Wood Vinegar").addCell().addFluid().setRGB(212, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
@@ -5517,6 +5517,18 @@ public class MaterialsInit1 {
 
     private static Materials loadVinegar() {
         return new MaterialBuilder(690, TextureSet.SET_FLUID, "Vinegar").setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
+    private static Materials loadWheat() {
+        return new MaterialBuilder().setName("Wheat")
+            .setDefaultLocalName("Wheat")
+            .setMetaItemSubID(881)
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffffc4)
+            .addDustItems()
+            .addAspect(TCAspects.MESSIS, 2)
             .constructMaterial();
     }
 
