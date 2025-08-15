@@ -209,9 +209,9 @@ public class MaterialsInit1 {
         Materials.Red = loadRed();
         Materials.Reinforced = loadReinforced();
         Materials.SeedOil = loadSeedOil();
+        Materials.SeedOilHemp = loadSeedOilHemp();
 
         // spotless:off
-        Materials.SeedOilHemp             = new Materials( 722, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOilHemp"             ,   "Hemp Seed Oil"                 ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
         Materials.SeedOilLin              = new Materials( 723, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOilLin"              ,   "Lin Seed Oil"                  ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
         Materials.Stone                   = new Materials( 299, TextureSet.SET_ROUGH             ,   4.0F,     32,  1, 1            |64|128      , 205, 205, 205,   0,   "Stone"                   ,   "Stone"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
         Materials.TNT                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "TNT"                     ,   "TNT"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 7), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
@@ -5430,6 +5430,20 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("SeedOil")
             .setDefaultLocalName("Seed Oil")
             .setMetaItemSubID(713)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xc4ff00)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(2)
+            .addAspect(TCAspects.GRANUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSeedOilHemp() {
+        return new MaterialBuilder().setName("SeedOilHemp")
+            .setDefaultLocalName("Hemp Seed Oil")
+            .setMetaItemSubID(722)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setRGB(0xc4ff00)
