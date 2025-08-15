@@ -234,9 +234,9 @@ public class MaterialsInit1 {
         Materials.Nichrome = loadNichrome();
         Materials.NiobiumNitride = loadNiobiumNitride();
         Materials.NiobiumTitanium = loadNiobiumTitanium();
+        Materials.NitroCarbon = loadNitroCarbon();
 
         // spotless:off
-        Materials.NitroCarbon             = new Materials( 716, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                ,   0,  75, 100,   0,   "NitroCarbon"             ,   "Nitro-Carbon"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Nitrogen, 1), new MaterialStack(Carbon, 1)));
         Materials.NitrogenDioxide         = new Materials( 717, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 100, 175, 255,   0,   "NitrogenDioxide"         ,   "Nitrogen Dioxide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2)));
         Materials.Obsidian                = new Materials( 804, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1|2                       ,  80,  50, 100,   0,   "Obsidian"                ,   "Obsidian"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Iron, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 8)));
         Materials.Phosphate               = new Materials( 833, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8|16                , 255, 255,   0,   0,   "Phosphate"               ,   "Phosphate"                     ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Phosphorus, 1), new MaterialStack(Oxygen, 4)));
@@ -6740,6 +6740,20 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Niobium, 1)
             .addMaterial(Materials.Titanium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitroCarbon() {
+        return new MaterialBuilder().setName("NitroCarbon")
+            .setDefaultLocalName("Nitro-Carbon")
+            .setMetaItemSubID(716)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x004b64)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Carbon, 1)
             .constructMaterial();
     }
 
