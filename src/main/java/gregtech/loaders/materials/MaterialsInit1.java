@@ -176,9 +176,9 @@ public class MaterialsInit1 {
         loadUnknownComponents();
 
         Materials.Antimatter = loadAntimatter();
+        Materials.AdvancedGlue = loadAdvancedGlue();
 
         // spotless:off
-        Materials.AdvancedGlue            = new MaterialBuilder(567, TextureSet.SET_FLUID         ,                                                                                                         "Advanced Glue").setName("AdvancedGlue").addCell().addFluid().setRGB(255, 255, 185).setColor(Dyes.dyeYellow).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 5))).constructMaterial();
         Materials.Biomass                 = new Materials( 704, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0, 255,   0,   0,   "Biomass"        	     ,   "Forestry Biomass"                ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.CharcoalByproducts      = new MaterialBuilder(675, TextureSet.SET_FLUID             ,                                                                                                     "Charcoal Byproducts").addCell().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Cheese                  = new Materials( 894, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1    |8                   , 255, 255,   0,   0,   "Cheese"                  ,   "Cheese"                        ,    0,       0,        320,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
@@ -5041,6 +5041,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyePink)
             .addAspect(TCAspects.POTENTIA, 9)
             .addAspect(TCAspects.PERFODIO, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadAdvancedGlue() {
+        return new MaterialBuilder(567, TextureSet.SET_FLUID, "Advanced Glue").setName("AdvancedGlue")
+            .addCell()
+            .addFluid()
+            .setRGB(255, 255, 185)
+            .setColor(Dyes.dyeYellow)
+            .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 5)))
             .constructMaterial();
     }
 
