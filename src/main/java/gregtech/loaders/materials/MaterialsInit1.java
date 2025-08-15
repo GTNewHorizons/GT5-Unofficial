@@ -179,9 +179,9 @@ public class MaterialsInit1 {
         Materials.LiquidNitrogen = loadLiquidNitrogen();
         Materials.LiquidOxygen = loadLiquidOxygen();
         Materials.SiliconDioxide = loadSiliconDioxide();
+        Materials.Jasper = loadJasper();
 
         // spotless:off
-        Materials.Jasper                  = new Materials( 511, TextureSet.SET_EMERALD           ,   1.0F,      0,  2, 1  |4|8      |64          , 200,  80,  80, 100,   "Jasper"                  ,   "Jasper"                        ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.Almandine               = new Materials( 820, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 255,   0,   0,   0,   "Almandine"               ,   "Almandine"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.Andradite               = new Materials( 821, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,   0,   0,   "Andradite"               ,   "Andradite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.AnnealedCopper          = new Materials( 345, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2             |128      , 255, 120,  20,   0,   "AnnealedCopper"          ,   "Annealed Copper"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Collections.singletonList(new MaterialStack(Copper, 1)));
@@ -5775,6 +5775,24 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeLightGray)
             .setExtraData(0)
             .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadJasper() {
+        return new MaterialBuilder().setName("Jasper")
+            .setDefaultLocalName("Jasper")
+            .setMetaItemSubID(511)
+            .setIconSet(TextureSet.SET_EMERALD)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x64c85050)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.LUCRUM, 4)
+            .addAspect(TCAspects.VITREUS, 2)
             .constructMaterial();
     }
 
