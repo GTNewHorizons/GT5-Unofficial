@@ -182,9 +182,9 @@ public class MaterialsInit1 {
         Materials.SulfuricNaphtha = loadSulfuricNaphtha();
         Materials.SulfuricLightFuel = loadSulfuricLightFuel();
         Materials.SulfuricHeavyFuel = loadSulfuricHeavyFuel();
+        Materials.Naphtha = loadNaphtha();
 
         // spotless:off
-        Materials.Naphtha                 = new Materials( 739, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Naphtha"                 ,   "Naphtha"                       ,    1,     220,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
         Materials.LightFuel               = new Materials( 740, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "LightFuel"               ,   "Light Fuel"                    ,    0,     305,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
         Materials.HeavyFuel               = new Materials( 741, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "HeavyFuel"               ,   "Heavy Fuel"                    ,    3,     240,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack).setCanBeCracked(true);
         Materials.LPG                     = new Materials( 742, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "LPG"                     ,   "LPG"                           ,    1,     320,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
@@ -7366,6 +7366,20 @@ public class MaterialsInit1 {
             .setFuelType(3)
             .setFuelPower(40)
             .constructMaterial();
+    }
+
+    private static Materials loadNaphtha() {
+        return new MaterialBuilder().setName("Naphtha")
+            .setDefaultLocalName("Naphtha")
+            .setMetaItemSubID(739)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuelType(1)
+            .setFuelPower(220)
+            .constructMaterial()
+            .setCanBeCracked(true);
     }
 
     private static Materials loadPotassiumNitrade() {
