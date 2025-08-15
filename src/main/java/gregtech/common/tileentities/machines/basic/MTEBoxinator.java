@@ -6,6 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -226,5 +227,10 @@ public class MTEBoxinator extends MTEBasicMachine {
         } else {
             return RecipeMaps.packagerRecipes.containsInput(aStack);
         }
+    }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 }

@@ -134,7 +134,6 @@ public enum SoundResource {
      * Centrifuge - Centrifuge, Thermal Centrifuge
      * Chemical - Brewery*, Chemical Reactor, Fermenter, Chemical Plant
      * Click - Random_Click
-     * Combustion - Combustion Generator*
      * Compressor - Compressor
      * Cooling - Autoclave, Fluid Solidifier
      * Cut - Cutting Machine, Lathe
@@ -152,12 +151,11 @@ public enum SoundResource {
      * Plunger - Plunger**
      * Portable Scanner - Scanner, Tricorder**
      * Pump - Pump*
-     * Replicator - Replicator*
+     * Replicator - Replicator*, Mass Fabricator*
      * Saw - Saw**
      * Screwdriver - Screwdriver**
      * Soft Hammer - Soft Hammer**
      * Spray Can - Spray Can**
-     * Turbine - Gas Turbine*, Steam Turbine*
      * Wirecutter - Wirecutter**
      * Wrench - Wrench**
      */
@@ -167,22 +165,20 @@ public enum SoundResource {
     GTCEU_LOOP_BOILER(303, "gtceu", "gtceu.BoilerLoop"),
     GTCEU_LOOP_CENTRIFUGE(304, "gtceu", "gtceu.CentrifugeLoop"),
     GTCEU_LOOP_CHEMICAL(305, "gtceu", "gtceu.ChemicalLoop"),
-    GTCEU_LOOP_COMBUSTION(306, "gtceu", "gtceu.CombustionLoop"),
-    GTCEU_LOOP_COMPRESSOR(307, "gtceu", "gtceu.CompressorLoop"),
-    GTCEU_LOOP_COOLING(308, "gtceu", "gtceu.CoolingLoop"),
-    GTCEU_LOOP_CUT(309, "gtceu", "gtceu.CutLoop"),
-    GTCEU_LOOP_ELECTROLYZER(310, "gtceu", "gtceu.ElectrolyzerLoop"),
-    GTCEU_LOOP_FIRE(311, "gtceu", "gtceu.FireLoop"),
-    GTCEU_LOOP_FORGE_HAMMER(312, "gtceu", "gtceu.ForgeHammerLoop"),
-    GTCEU_LOOP_FURNACE(313, "gtceu", "gtceu.FurnaceLoop"),
-    GTCEU_LOOP_HUM(314, "gtceu", "gtceu.HumLoop"),
-    GTCEU_LOOP_MACERATOR(315, "gtceu", "gtceu.MaceratorLoop"),
-    GTCEU_LOOP_MINER(316, "gtceu", "gtceu.MinerLoop"),
-    GTCEU_LOOP_MIXER(317, "gtceu", "gtceu.MixerLoop"),
-    GTCEU_LOOP_MOTOR(318, "gtceu", "gtceu.MotorLoop"),
-    GTCEU_LOOP_PUMP(319, "gtceu", "gtceu.PumpLoop"),
-    GTCEU_LOOP_REPLICATOR(320, "gtceu", "gtceu.ReplicatorLoop"),
-    GTCEU_LOOP_TURBINE(321, "gtceu", "gtceu.TurbineLoop"),
+    GTCEU_LOOP_COMPRESSOR(306, "gtceu", "gtceu.CompressorLoop"),
+    GTCEU_LOOP_COOLING(307, "gtceu", "gtceu.CoolingLoop"),
+    GTCEU_LOOP_CUT(308, "gtceu", "gtceu.CutLoop"),
+    GTCEU_LOOP_ELECTROLYZER(309, "gtceu", "gtceu.ElectrolyzerLoop"),
+    GTCEU_LOOP_FIRE(310, "gtceu", "gtceu.FireLoop"),
+    GTCEU_LOOP_FORGE_HAMMER(311, "gtceu", "gtceu.ForgeHammerLoop"),
+    GTCEU_LOOP_FURNACE(312, "gtceu", "gtceu.FurnaceLoop"),
+    GTCEU_LOOP_HUM(313, "gtceu", "gtceu.HumLoop"),
+    GTCEU_LOOP_MACERATOR(314, "gtceu", "gtceu.MaceratorLoop"),
+    GTCEU_LOOP_MINER(315, "gtceu", "gtceu.MinerLoop"),
+    GTCEU_LOOP_MIXER(316, "gtceu", "gtceu.MixerLoop"),
+    GTCEU_LOOP_MOTOR(317, "gtceu", "gtceu.MotorLoop"),
+    GTCEU_LOOP_PUMP(318, "gtceu", "gtceu.PumpLoop"),
+    GTCEU_LOOP_REPLICATOR(319, "gtceu", "gtceu.ReplicatorLoop"),
 
     GTCEU_OP_CLICK(400, "gtceu", "gtceu.ClickOp"),
     GTCEU_OP_FILE(401, "gtceu", "gtceu.FileOp"),

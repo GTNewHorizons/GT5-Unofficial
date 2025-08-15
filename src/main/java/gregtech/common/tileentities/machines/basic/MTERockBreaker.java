@@ -34,6 +34,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -380,4 +381,10 @@ public class MTERockBreaker extends MTEBasicMachine {
             }
         }
     }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FIRE;
+    }
+
 }

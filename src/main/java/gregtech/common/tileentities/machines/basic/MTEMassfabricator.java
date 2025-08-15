@@ -30,6 +30,7 @@ import com.google.common.primitives.Ints;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -248,4 +249,10 @@ public class MTEMassfabricator extends MTEBasicMachine {
             return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", amperageValue);
         }
     }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_REPLICATOR;
+    }
+
 }

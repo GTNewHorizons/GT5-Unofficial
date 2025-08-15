@@ -73,16 +73,8 @@ public class MTESteamFurnaceBronze extends MTEBasicMachineBronze {
     }
 
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.GTCEU_LOOP_FURNACE, 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FURNACE;
     }
 
     @Override

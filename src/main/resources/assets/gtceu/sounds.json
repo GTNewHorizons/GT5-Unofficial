@@ -55,14 +55,6 @@
       }
     ]
   },
-  "gtceu.CombustionLoop": {
-    "sounds": [
-      {
-        "name": "combustion",
-        "stream": false
-      }
-    ]
-  },
   "gtceu.CompressorLoop": {
     "sounds": [
       {
@@ -235,14 +227,6 @@
     "sounds": [
       {
         "name": "spray_can",
-        "stream": false
-      }
-    ]
-  },
-  "gtceu.TurbineLoop": {
-    "sounds": [
-      {
-        "name": "turbine",
         "stream": false
       }
     ]

@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -127,4 +128,10 @@ public class MTEReplicator extends MTEBasicMachine {
     public int getCapacity() {
         return 3000;
     }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_REPLICATOR;
+    }
+
 }

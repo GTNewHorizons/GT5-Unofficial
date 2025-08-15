@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -844,4 +845,10 @@ public class MTEPump extends MTEBasicMachine {
                 + " "
                 + StatCollector.translateToLocal("GT5U.machines.blocks") };
     }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_PUMP;
+    }
+
 }

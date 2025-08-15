@@ -150,7 +150,12 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.GTCEU_LOOP_HUM;
+        return SoundResource.GTCEU_OP_CLICK;
+    }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FIRE;
     }
 
     @Override

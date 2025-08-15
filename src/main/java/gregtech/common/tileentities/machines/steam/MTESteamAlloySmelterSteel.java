@@ -25,7 +25,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineSteel;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 
 public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
 
@@ -53,16 +52,8 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     }
 
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.IC2_MACHINES_INDUCTION_LOOP, 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
     @Override

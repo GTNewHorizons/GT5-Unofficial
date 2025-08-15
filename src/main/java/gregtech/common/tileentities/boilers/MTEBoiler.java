@@ -2,6 +2,7 @@ package gregtech.common.tileentities.boilers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -56,6 +57,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.pollution.Pollution;
 
@@ -72,6 +74,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         this::getSteamCapacity);
     public boolean mHadNoWater = false;
     private int mExcessWater = 0;
+    protected GTSoundLoop mSoundLoop;
 
     public MTEBoiler(int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
@@ -261,13 +264,37 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         }
     }
 
+    private void updateHeatingSound(boolean shouldPlay) {
+        if (shouldPlay) {
+            if (mSoundLoop == null) {
+                mSoundLoop = new GTSoundLoop(
+                    SoundResource.GTCEU_LOOP_FURNACE.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(mSoundLoop);
+            }
+        } else {
+            if (mSoundLoop != null) {
+                mSoundLoop = null;
+            }
+        }
+    }
+
     private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0)
-            && (aTick % getHeatUpRate() == 0L)) {
+        boolean wasHeating = (this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0)
+            && (aTick % getHeatUpRate() == 0L);
+        if (wasHeating) {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
         }
         aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
+
+        if (aBaseMetaTileEntity.isClientSide()) {
+            updateHeatingSound(this.mProcessingEnergy > 0 && this.mTemperature > 20);
+        }
     }
 
     private void updateFuelTimed(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -343,6 +370,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             // only loss temperature if hot
             this.mTemperature -= 1;
             this.mLossTimer = 0;
+        }
+        if (getBaseMetaTileEntity().isClientSide()) {
+            updateHeatingSound(false);
         }
     }
 
