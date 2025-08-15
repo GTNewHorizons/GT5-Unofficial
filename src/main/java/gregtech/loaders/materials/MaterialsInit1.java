@@ -184,9 +184,9 @@ public class MaterialsInit1 {
         Materials.Chocolate = loadChocolate();
         Materials.Cluster = loadCluster();
         Materials.CoalFuel = loadCoalFuel();
+        Materials.Cocoa = loadCocoa();
 
         // spotless:off
-        Materials.Cocoa                   = new Materials( 887, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Cocoa"                   ,   "Cocoa"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Coffee                  = new Materials( 888, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 150,  75,   0,   0,   "Coffee"                  ,   "Coffee"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Creosote                = new Materials( 712, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 128,  64,   0,   0,   "Creosote"                ,   "Creosote"                      ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Ethanol                 = new Materials( 706, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 128,   0,   0,   "Ethanol"                 ,   "Ethanol"                       ,    0,     192,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
@@ -5126,6 +5126,17 @@ public class MaterialsInit1 {
             .setRGB(0x323246)
             .addCell()
             .setFuelPower(16)
+            .constructMaterial();
+    }
+
+    private static Materials loadCocoa() {
+        return new MaterialBuilder().setName("Cocoa")
+            .setDefaultLocalName("Cocoa")
+            .setMetaItemSubID(887)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xbe5f00)
+            .addDustItems()
             .constructMaterial();
     }
 
