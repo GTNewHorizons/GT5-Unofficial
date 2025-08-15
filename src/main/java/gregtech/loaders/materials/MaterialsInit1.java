@@ -197,9 +197,9 @@ public class MaterialsInit1 {
         Materials.CassiteriteSand = loadCassiteriteSand();
         Materials.Chalcopyrite = loadChalcopyrite();
         Materials.Charcoal = loadCharcoal();
+        Materials.Chromite = loadChromite();
 
         // spotless:off
-        Materials.Chromite                = new Materials( 825, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  35,  20,  15,   0,   "Chromite"                ,   "Chromite"                      ,    0,       0,       1700, 1700,  true, false,   6,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 4)));
         Materials.ChromiumDioxide         = new Materials( 361, TextureSet.SET_DULL              ,  11.0F,    256,  3, 1|2                       , 230, 200, 200,   0,   "ChromiumDioxide"         ,   "Chromium Dioxide"              ,    0,       0,        650,  650, false, false,   5,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
         Materials.Cinnabar                = new Materials( 826, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150,   0,   0,   0,   "Cinnabar"                ,   "Cinnabar"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Mercury, 1), new MaterialStack(Sulfur, 1)));
         Materials.Water                   = new Materials( 701, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "Water"                   ,   "Water"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
@@ -6079,6 +6079,25 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.POTENTIA, 2)
             .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadChromite() {
+        return new MaterialBuilder().setName("Chromite")
+            .setDefaultLocalName("Chromite")
+            .setMetaItemSubID(825)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x23140f)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1700)
+            .setBlastFurnaceTemp(1700)
+            .setBlastFurnaceRequired(true)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Chrome, 2)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
