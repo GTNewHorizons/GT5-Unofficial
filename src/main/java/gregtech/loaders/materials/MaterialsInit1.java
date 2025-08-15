@@ -198,9 +198,9 @@ public class MaterialsInit1 {
         Materials.Chalcopyrite = loadChalcopyrite();
         Materials.Charcoal = loadCharcoal();
         Materials.Chromite = loadChromite();
+        Materials.ChromiumDioxide = loadChromiumDioxide();
 
         // spotless:off
-        Materials.ChromiumDioxide         = new Materials( 361, TextureSet.SET_DULL              ,  11.0F,    256,  3, 1|2                       , 230, 200, 200,   0,   "ChromiumDioxide"         ,   "Chromium Dioxide"              ,    0,       0,        650,  650, false, false,   5,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
         Materials.Cinnabar                = new Materials( 826, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150,   0,   0,   0,   "Cinnabar"                ,   "Cinnabar"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Mercury, 1), new MaterialStack(Sulfur, 1)));
         Materials.Water                   = new Materials( 701, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "Water"                   ,   "Water"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
         Materials.Steam = Materials.Water;
@@ -6098,6 +6098,28 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Chrome, 2)
             .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadChromiumDioxide() {
+        return new MaterialBuilder().setName("ChromiumDioxide")
+            .setDefaultLocalName("Chromium Dioxide")
+            .setMetaItemSubID(361)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xe6c8c8)
+            .setToolSpeed(11.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(650)
+            .setBlastFurnaceTemp(650)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
             .constructMaterial();
     }
 
