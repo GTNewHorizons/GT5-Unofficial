@@ -170,13 +170,7 @@ public class MaterialsInit1 {
         loadNotExact();
         loadTODOThis();
         loadFirstDegreeCompounds();
-
-        Materials.Scheelite = loadScheelite();
-        Materials.Snow = loadSnow();
-        Materials.Sodalite = loadSodalite();
-        Materials.SodiumPersulfate = loadSodiumPersulfate();
-        Materials.SodiumSulfide = loadSodiumSulfide();
-        Materials.HydricSulfide = loadHydricSulfide();
+        loadUnclassified1();
 
         // spotless:off
         Materials.OilExtraHeavy           = new Materials( 570, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilExtraHeavy"           ,   "Very Heavy Oil"                ,    3,      45,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
@@ -7145,6 +7139,15 @@ public class MaterialsInit1 {
                     new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5),
                     new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)))
             .constructMaterial();
+    }
+
+    private static void loadUnclassified1() {
+        Materials.Scheelite = loadScheelite();
+        Materials.Snow = loadSnow();
+        Materials.Sodalite = loadSodalite();
+        Materials.SodiumPersulfate = loadSodiumPersulfate();
+        Materials.SodiumSulfide = loadSodiumSulfide();
+        Materials.HydricSulfide = loadHydricSulfide();
     }
 
     private static Materials loadScheelite() {
