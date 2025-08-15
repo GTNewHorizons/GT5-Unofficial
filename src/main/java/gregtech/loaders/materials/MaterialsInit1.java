@@ -198,9 +198,9 @@ public class MaterialsInit1 {
         Materials.Leather = loadLeather();
         Materials.Lubricant = loadLubricant();
         Materials.McGuffium239 = loadMcGuffium239();
+        Materials.MeatRaw = loadMeatRaw();
 
         // spotless:off
-        Materials.MeatRaw                 = new Materials( 892, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 255, 100, 100,   0,   "MeatRaw"                 ,   "Raw Meat"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        );
         Materials.MeatCooked              = new Materials( 893, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 150,  60,  20,   0,   "MeatCooked"              ,   "Cooked Meat"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        );
         Materials.Milk                    = new Materials( 885, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1      |16                , 254, 254, 254,   0,   "Milk"                    ,   "Milk"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SANO, 2)));
         Materials.Mud                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Mud"                     ,   "Mud"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
@@ -5306,6 +5306,17 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.ELECTRUM, 8)
             .addAspect(TCAspects.NEBRISUM, 8)
             .addAspect(TCAspects.STRONTIO, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadMeatRaw() {
+        return new MaterialBuilder().setName("MeatRaw")
+            .setDefaultLocalName("Raw Meat")
+            .setMetaItemSubID(892)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xff6464)
+            .addDustItems()
             .constructMaterial();
     }
 
