@@ -112,7 +112,6 @@ import static gregtech.api.enums.Materials.Redstone;
 import static gregtech.api.enums.Materials.RedstoneAlloy;
 import static gregtech.api.enums.Materials.RoseGold;
 import static gregtech.api.enums.Materials.Ruby;
-import static gregtech.api.enums.Materials.Rutile;
 import static gregtech.api.enums.Materials.Saltpeter;
 import static gregtech.api.enums.Materials.Samarium;
 import static gregtech.api.enums.Materials.Sapphire;
@@ -222,9 +221,9 @@ public class MaterialsInit1 {
         Materials.Ice = loadIce();
         Materials.Ilmenite = loadIlmenite();
         Materials.Rutile = loadRutile();
+        Materials.Bauxite = loadBauxite();
 
         // spotless:off
-        Materials.Bauxite                 = new Materials( 822, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "Bauxite"                 ,   "Bauxite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Rutile, 2), new MaterialStack(Aluminium, 16), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 11)));
         Materials.Titaniumtetrachloride   = new Materials( 376, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 212,  13,  92,   0,   "Titaniumtetrachloride"   ,   "Titaniumtetrachloride"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Chlorine, 4)));
         Materials.Magnesiumchloride       = new Materials( 377, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|16                      , 212,  13,  92,   0,   "Magnesiumchloride"       ,   "Magnesiumchloride"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Chlorine, 2)));
         Materials.Invar                   = new Materials( 302, TextureSet.SET_METALLIC          ,   6.0F,    256,  2, 1|2          |64|128      , 180, 180, 120,   0,   "Invar"                   ,   "Invar"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 2), new MaterialStack(Nickel, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.GELUM, 1)));
@@ -6501,6 +6500,23 @@ public class MaterialsInit1 {
             .setDensityMultiplier(2)
             .addMaterial(Materials.Titanium, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadBauxite() {
+        return new MaterialBuilder().setName("Bauxite")
+            .setDefaultLocalName("Bauxite")
+            .setMetaItemSubID(822)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Rutile, 2)
+            .addMaterial(Materials.Aluminium, 16)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Oxygen, 11)
             .constructMaterial();
     }
 
