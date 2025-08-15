@@ -190,9 +190,9 @@ public class MaterialsInit1 {
         Materials.BioMediumRaw = loadBioMediumRaw();
         Materials.BioMediumSterilized = loadBioMediumSterilized();
         Materials.Chlorobenzene = loadChlorobenzene();
+        Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
 
         // spotless:off
-        Materials.DilutedHydrochloricAcid   = new MaterialBuilder(606, TextureSet.SET_FLUID      ,                                                                                                     "Diluted Hydrochloric Acid").setName("DilutedHydrochloricAcid_GT5U").addCell().addFluid().setRGB(153, 167, 163).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1)).constructMaterial();
         Materials.Pyrochlore                = new MaterialBuilder(607, TextureSet.SET_METALLIC   ,                                                                                                     "Pyrochlore").addDustItems().addOreItems().setRGB(43, 17, 0).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7)).addElectrolyzerRecipe().constructMaterial();
         Materials.GrowthMediumRaw           = new MaterialBuilder(608, TextureSet.SET_FLUID      ,                                                                                                     "Raw Growth Catalyst Medium").setName("GrowthMediumRaw").addCell().addFluid().setRGB(211, 141, 95).setColor(Dyes.dyeOrange).constructMaterial();
         Materials.GrowthMediumSterilized    = new MaterialBuilder(609, TextureSet.SET_FLUID      ,                                                                                                     "Growth Catalyst Medium").setName("GrowthMediumSterilized").addCell().addFluid().setRGB(222, 170, 135).setColor(Dyes.dyeOrange).constructMaterial();
@@ -7460,6 +7460,17 @@ public class MaterialsInit1 {
                 new MaterialStack(Hydrogen, 5),
                 new MaterialStack(Chlorine, 1))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDilutedHydrochloricAcid() {
+        return new MaterialBuilder(606, TextureSet.SET_FLUID, "Diluted Hydrochloric Acid")
+            .setName("DilutedHydrochloricAcid_GT5U")
+            .addCell()
+            .addFluid()
+            .setRGB(153, 167, 163)
+            .setColor(Dyes.dyeLightGray)
+            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
             .constructMaterial();
     }
 
