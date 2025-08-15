@@ -171,8 +171,9 @@ public class MaterialsInit1 {
         loadTODOThis();
         loadFirstDegreeCompounds();
 
+        Materials.Scheelite = loadScheelite();
+
         // spotless:off
-        Materials.Scheelite               = new Materials( 910, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 200, 140,  20,   0,   "Scheelite"               ,   "Scheelite"                     ,    0,       0,       2500, 2500, false, false,   4,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 4)));
         Materials.Snow                    = new Materials( 728, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1|      16                , 250, 250, 250,   0,   "Snow"                    ,   "Snow"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 1)));
         Materials.Sodalite                = new Materials( 525, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  20,  20, 255,   0,   "Sodalite"                ,   "Sodalite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Sodium, 4), new MaterialStack(Chlorine, 1)));
         Materials.SodiumPersulfate        = new Materials( 718, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "SodiumPersulfate"        ,   "Sodium Persulfate"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 2), new MaterialStack(Oxygen, 8)));
@@ -7144,6 +7145,23 @@ public class MaterialsInit1 {
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5),
                     new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)))
+            .constructMaterial();
+    }
+
+    private static Materials loadScheelite() {
+        return new MaterialBuilder().setName("Scheelite")
+            .setDefaultLocalName("Scheelite")
+            .setMetaItemSubID(910)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0xc88c14)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(2500)
+            .setBlastFurnaceTemp(2500)
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
