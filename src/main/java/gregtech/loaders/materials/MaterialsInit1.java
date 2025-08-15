@@ -183,9 +183,9 @@ public class MaterialsInit1 {
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
         Materials.AnnealedCopper = loadAnnealedCopper();
+        Materials.Asbestos = loadAsbestos();
 
         // spotless:off
-        Materials.Asbestos                = new Materials( 946, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 230,   0,   "Asbestos"                ,   "Asbestos"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Mg3Si2O5(OH)4
         Materials.Ash                     = new Materials( 815, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 150, 150, 150,   0,   "Ash"                     ,   "Ashes"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1)));
         Materials.BandedIron              = new Materials( 917, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 145,  90,  90,   0,   "BandedIron"              ,   "Banded Iron"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Iron, 2), new MaterialStack(Oxygen, 3)));
         Materials.BatteryAlloy            = new Materials( 315, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 156, 124, 160,   0,   "BatteryAlloy"            ,   "Battery Alloy"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Lead, 4), new MaterialStack(Antimony, 1)));
@@ -5841,6 +5841,24 @@ public class MaterialsInit1 {
             .addGearItems()
             .addCentrifugeRecipe()
             .addMaterial(Materials.Copper, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAsbestos() {
+        return new MaterialBuilder().setName("Asbestos")
+            .setDefaultLocalName("Asbestos")
+            .setMetaItemSubID(946)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6e6e6)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Mg3Si2O5(OH)4
+            .addMaterial(Materials.Magnesium, 3)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 9)
             .constructMaterial();
     }
 
