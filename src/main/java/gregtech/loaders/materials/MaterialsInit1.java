@@ -214,9 +214,9 @@ public class MaterialsInit1 {
         Materials.Stone = loadStone();
         Materials.TNT = loadTNT();
         Materials.Unstable = loadUnstable();
+        Materials.Unstableingot = loadUnstableingot();
 
         // spotless:off
-        Materials.Unstableingot           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  4, 0                         , 255, 255, 255, 127,   "Unstableingot"           ,   "Unstable"                      ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4)));
         Materials.Vinegar                 = new MaterialBuilder(690, TextureSet.SET_FLUID             ,                                                                                                     "Vinegar").setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Wheat                   = new Materials( 881, TextureSet.SET_POWDER            ,   1.0F,      0,  0, 1                         , 255, 255, 196,   0,   "Wheat"                   ,   "Wheat"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MESSIS, 2)));
         Materials.WoodGas                 = new MaterialBuilder(660, TextureSet.SET_FLUID             ,                                                                                                     "Wood Gas").addCell().addGas().setRGB(222, 205, 135).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).constructMaterial();
@@ -5502,6 +5502,15 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fdcdcdc)
             .addDustItems()
+            .addAspect(TCAspects.PERDITIO, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadUnstableingot() {
+        return new MaterialBuilder().setName("Unstableingot")
+            .setDefaultLocalName("Unstable")
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7fffffff)
             .addAspect(TCAspects.PERDITIO, 4)
             .constructMaterial();
     }
