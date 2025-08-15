@@ -1439,7 +1439,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         else mAspects.addAll(aAspects);
     }
 
-    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+    protected Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
         boolean aAutoGenerateBlastFurnaceRecipes, boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent,
