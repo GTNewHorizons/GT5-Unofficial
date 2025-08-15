@@ -211,9 +211,9 @@ public class MaterialsInit1 {
         Materials.DeepIron = loadDeepIron();
         Materials.Diamond = loadDiamond();
         Materials.Electrum = loadElectrum();
+        Materials.Emerald = loadEmerald();
 
         // spotless:off
-        Materials.Emerald                 = new Materials( 501, TextureSet.SET_EMERALD           ,   7.0F,    256,  4, 1  |4|8      |64          ,  80, 255,  80, 127,   "Emerald"                 ,   "Emerald"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeGreen       , 0, Arrays.asList(new MaterialStack(Beryllium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 6), new MaterialStack(Oxygen, 18)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5)));
         Materials.FreshWater              = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "FreshWater"              ,   "Fresh Water"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
         Materials.Galena                  = new Materials( 830, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1 |8                      , 100,  60, 100,   0,   "Galena"                  ,   "Galena"                        ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyePurple      , 1, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Sulfur, 1)));
         Materials.Garnierite              = new Materials( 906, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  50, 200,  70,   0,   "Garnierite"              ,   "Garnierite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Nickel, 1), new MaterialStack(Oxygen, 1)));
@@ -6321,6 +6321,29 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Silver, 1)
             .addMaterial(Materials.Gold, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEmerald() {
+        return new MaterialBuilder().setName("Emerald")
+            .setDefaultLocalName("Emerald")
+            .setMetaItemSubID(501)
+            .setIconSet(TextureSet.SET_EMERALD)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x7f50ff50)
+            .setToolSpeed(7.0f)
+            .setDurability(256)
+            .setToolQuality(4)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Beryllium, 3)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 6)
+            .addMaterial(Materials.Oxygen, 18)
+            .addAspect(TCAspects.VITREUS, 3)
+            .addAspect(TCAspects.LUCRUM, 5)
             .constructMaterial();
     }
 
