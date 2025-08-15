@@ -211,9 +211,9 @@ public class MaterialsInit1 {
         Materials.SeedOil = loadSeedOil();
         Materials.SeedOilHemp = loadSeedOilHemp();
         Materials.SeedOilLin = loadSeedOilLin();
+        Materials.Stone = loadStone();
 
         // spotless:off
-        Materials.Stone                   = new Materials( 299, TextureSet.SET_ROUGH             ,   4.0F,     32,  1, 1            |64|128      , 205, 205, 205,   0,   "Stone"                   ,   "Stone"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
         Materials.TNT                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "TNT"                     ,   "TNT"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 7), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
         Materials.Unstable                = new Materials( 396, TextureSet.SET_SHINY             ,   1.0F,      0,  4, 1                         , 220, 220, 220, 127,   "Unstable"                ,   "Unstable"                      ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4)));
         Materials.Unstableingot           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  4, 0                         , 255, 255, 255, 127,   "Unstableingot"           ,   "Unstable"                      ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4)));
@@ -5465,6 +5465,23 @@ public class MaterialsInit1 {
             .setFuelType(3)
             .setFuelPower(2)
             .addAspect(TCAspects.GRANUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadStone() {
+        return new MaterialBuilder().setName("Stone")
+            .setDefaultLocalName("Stone")
+            .setMetaItemSubID(299)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xcdcdcd)
+            .setToolSpeed(4.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.TERRA, 1)
             .constructMaterial();
     }
 
