@@ -6,7 +6,6 @@ import static gregtech.api.enums.Materials.Americium;
 import static gregtech.api.enums.Materials.Andradite;
 import static gregtech.api.enums.Materials.Antimony;
 import static gregtech.api.enums.Materials.Ardite;
-import static gregtech.api.enums.Materials.Argon;
 import static gregtech.api.enums.Materials.Arsenic;
 import static gregtech.api.enums.Materials.Asbestos;
 import static gregtech.api.enums.Materials.Ash;
@@ -91,7 +90,6 @@ import static gregtech.api.enums.Materials.NetherStar;
 import static gregtech.api.enums.Materials.Nickel;
 import static gregtech.api.enums.Materials.Niobium;
 import static gregtech.api.enums.Materials.Nitrogen;
-import static gregtech.api.enums.Materials.NobleGases;
 import static gregtech.api.enums.Materials.Obsidian;
 import static gregtech.api.enums.Materials.Olivine;
 import static gregtech.api.enums.Materials.Oriharukon;
@@ -177,9 +175,9 @@ public class MaterialsInit1 {
         Materials.CarbonDioxide = loadCarbonDioxide();
         Materials.NobleGases = loadNobleGases();
         Materials.Air = loadAir();
+        Materials.LiquidAir = loadLiquidAir();
 
         // spotless:off
-        Materials.LiquidAir               = new Materials( 495, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidAir"               ,   "Liquid Air"                    ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
         Materials.LiquidNitrogen          = new Materials( 494, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidNitrogen"          ,   "Liquid Nitrogen"               ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Collections.singletonList(new MaterialStack(Nitrogen, 1)));
         Materials.LiquidOxygen            = new Materials( 493, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidOxygen"            ,   "Liquid Oxygen"                 ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Collections.singletonList(new MaterialStack(Oxygen, 1)));
         Materials.SiliconDioxide          = new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F).setDurability(0).setToolQuality(1).addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeLightGray).setExtraData(0).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
@@ -5713,6 +5711,24 @@ public class MaterialsInit1 {
             .setARGB(0xf0a9d0f5)
             .addCell()
             .addPlasma()
+            .addMaterial(Materials.Nitrogen, 40)
+            .addMaterial(Materials.Oxygen, 11)
+            .addMaterial(Materials.Argon, 1)
+            .addMaterial(Materials.NobleGases, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidAir() {
+        return new MaterialBuilder().setName("LiquidAir")
+            .setDefaultLocalName("Liquid Air")
+            .setMetaItemSubID(495)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
             .addMaterial(Materials.Nitrogen, 40)
             .addMaterial(Materials.Oxygen, 11)
             .addMaterial(Materials.Argon, 1)
