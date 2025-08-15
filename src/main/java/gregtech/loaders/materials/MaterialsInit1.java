@@ -178,9 +178,9 @@ public class MaterialsInit1 {
         loadTODOThis();
 
         Materials.Methane = loadMethane();
+        Materials.CarbonDioxide = loadCarbonDioxide();
 
         // spotless:off
-        Materials.CarbonDioxide           = new Materials( 497, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "CarbonDioxide"           ,   "Carbon Dioxide"                ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 2))).setHasCorrespondingGas(true);
         Materials.NobleGases              = new Materials( 496, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "NobleGases"              ,   "Noble Gases"                   ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(CarbonDioxide,21),new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1))).setHasCorrespondingGas(true);
         Materials.Air                     = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "Air"                     ,   "Air"                           ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
         Materials.LiquidAir               = new Materials( 495, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidAir"               ,   "Liquid Air"                    ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
@@ -5671,6 +5671,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 4)
             .constructMaterial();
+    }
+
+    private static Materials loadCarbonDioxide() {
+        return new MaterialBuilder().setName("CarbonDioxide")
+            .setDefaultLocalName("Carbon Dioxide")
+            .setMetaItemSubID(497)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(25)
+            .setBlastFurnaceTemp(1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial()
+            .setHasCorrespondingGas(true);
     }
 
     private static Materials loadPotassiumNitrade() {
