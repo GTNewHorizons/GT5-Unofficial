@@ -191,9 +191,9 @@ public class MaterialsInit1 {
         Materials.BioMediumSterilized = loadBioMediumSterilized();
         Materials.Chlorobenzene = loadChlorobenzene();
         Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
+        Materials.Pyrochlore = loadPyrochlore();
 
         // spotless:off
-        Materials.Pyrochlore                = new MaterialBuilder(607, TextureSet.SET_METALLIC   ,                                                                                                     "Pyrochlore").addDustItems().addOreItems().setRGB(43, 17, 0).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7)).addElectrolyzerRecipe().constructMaterial();
         Materials.GrowthMediumRaw           = new MaterialBuilder(608, TextureSet.SET_FLUID      ,                                                                                                     "Raw Growth Catalyst Medium").setName("GrowthMediumRaw").addCell().addFluid().setRGB(211, 141, 95).setColor(Dyes.dyeOrange).constructMaterial();
         Materials.GrowthMediumSterilized    = new MaterialBuilder(609, TextureSet.SET_FLUID      ,                                                                                                     "Growth Catalyst Medium").setName("GrowthMediumSterilized").addCell().addFluid().setRGB(222, 170, 135).setColor(Dyes.dyeOrange).constructMaterial();
         Materials.FerriteMixture            = new MaterialBuilder(612, TextureSet.SET_METALLIC   ,                                                                                                     "Ferrite Mixture").addDustItems().setRGB(180, 180, 180).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4)).constructMaterial();
@@ -7471,6 +7471,16 @@ public class MaterialsInit1 {
             .setRGB(153, 167, 163)
             .setColor(Dyes.dyeLightGray)
             .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrochlore() {
+        return new MaterialBuilder(607, TextureSet.SET_METALLIC, "Pyrochlore").addDustItems()
+            .addOreItems()
+            .setRGB(43, 17, 0)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
