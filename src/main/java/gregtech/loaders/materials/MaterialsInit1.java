@@ -182,9 +182,9 @@ public class MaterialsInit1 {
         Materials.Jasper = loadJasper();
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
+        Materials.AnnealedCopper = loadAnnealedCopper();
 
         // spotless:off
-        Materials.AnnealedCopper          = new Materials( 345, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2             |128      , 255, 120,  20,   0,   "AnnealedCopper"          ,   "Annealed Copper"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Collections.singletonList(new MaterialStack(Copper, 1)));
         Materials.Asbestos                = new Materials( 946, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 230,   0,   "Asbestos"                ,   "Asbestos"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Mg3Si2O5(OH)4
         Materials.Ash                     = new Materials( 815, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 150, 150, 150,   0,   "Ash"                     ,   "Ashes"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1)));
         Materials.BandedIron              = new Materials( 917, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 145,  90,  90,   0,   "BandedIron"              ,   "Banded Iron"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Iron, 2), new MaterialStack(Oxygen, 3)));
@@ -5826,6 +5826,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 2)
             .addMaterial(Materials.Silicon, 3)
             .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnnealedCopper() {
+        return new MaterialBuilder().setName("AnnealedCopper")
+            .setDefaultLocalName("Annealed Copper")
+            .setMetaItemSubID(345)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff7814)
+            .addDustItems()
+            .addMetalItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
             .constructMaterial();
     }
 
