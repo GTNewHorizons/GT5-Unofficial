@@ -240,9 +240,9 @@ public class MaterialsInit1 {
         Materials.Phosphate = loadPhosphate();
         Materials.PigIron = loadPigIron();
         Materials.Plastic = loadPlastic();
+        Materials.Epoxid = loadEpoxid();
 
         // spotless:off
-        Materials.Epoxid                  = new Materials( 470, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 200, 140,  20,   0,   "Epoxid"                  ,   "Epoxid"                        ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 21), new MaterialStack(Hydrogen, 24), new MaterialStack(Oxygen, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         Materials.Polydimethylsiloxane    = new MaterialBuilder(633, TextureSet.SET_FLUID         ,                                                                                                     "Polydimethylsiloxane").addDustItems().setRGB(245, 245, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Silicone                = new Materials( 471, TextureSet.SET_DULL              ,   3.0F,    128,  1, 1|2          |64|128      , 220, 220, 220,   0,   "Silicone"                ,   "Silicone Rubber"               ,    0,       0,        900,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1), new MaterialStack(Silicon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         Materials.Polycaprolactam         = new Materials( 472, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      ,  50,  50,  50,   0,   "Polycaprolactam"         ,   "Polycaprolactam"               ,    0,       0,        500,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 11), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
@@ -6840,6 +6840,28 @@ public class MaterialsInit1 {
             .setMeltingPoint(400)
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 2)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadEpoxid() {
+        return new MaterialBuilder().setName("Epoxid")
+            .setDefaultLocalName("Epoxid")
+            .setMetaItemSubID(470)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc88c14)
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 21)
+            .addMaterial(Materials.Hydrogen, 24)
+            .addMaterial(Materials.Oxygen, 4)
             .addAspect(TCAspects.MOTUS, 2)
             .constructMaterial();
     }
