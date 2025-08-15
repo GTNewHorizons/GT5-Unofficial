@@ -196,9 +196,9 @@ public class MaterialsInit1 {
         Materials.GrowthMediumSterilized = loadGrowthMediumSterilized();
         Materials.FerriteMixture = loadFerriteMixture();
         Materials.NickelZincFerrite = loadNickelZincFerrite();
+        Materials.Massicot = loadMassicot();
 
         // spotless:off
-        Materials.Massicot                  = new MaterialBuilder(614, TextureSet.SET_DULL       ,                                                                                                     "Massicot").addDustItems().setRGB(255, 221, 85).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.ArsenicTrioxide           = new MaterialBuilder(615, TextureSet.SET_SHINY      ,                                                                                                     "Arsenic Trioxide").addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeGreen).setMaterialList(new MaterialStack(Arsenic, 2), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.CobaltOxide               = new MaterialBuilder(616, TextureSet.SET_DULL       ,                                                                                                     "Cobalt Oxide").addDustItems().setRGB(102, 128, 0).setColor(Dyes.dyeGreen).setMaterialList(new MaterialStack(Cobalt, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Zincite                   = new MaterialBuilder(617, TextureSet.SET_DULL       ,                                                                                                     "Zincite").addDustItems().setRGB(255, 255, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -7527,6 +7527,15 @@ public class MaterialsInit1 {
                 new MaterialStack(Zinc, 1),
                 new MaterialStack(Iron, 4),
                 new MaterialStack(Oxygen, 8))
+            .constructMaterial();
+    }
+
+    private static Materials loadMassicot() {
+        return new MaterialBuilder(614, TextureSet.SET_DULL, "Massicot").addDustItems()
+            .setRGB(255, 221, 85)
+            .setColor(Dyes.dyeYellow)
+            .setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
