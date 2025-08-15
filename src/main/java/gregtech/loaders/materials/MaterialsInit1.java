@@ -175,13 +175,7 @@ public class MaterialsInit1 {
         loadDontCare();
         loadUnknownComponents();
         loadNotExact();
-
-        Materials.AluminiumBrass = loadAluminiumBrass();
-        Materials.Osmiridium = loadOsmiridium();
-        Materials.Sunnarium = loadSunnarium();
-        Materials.Endstone = loadEndstone();
-        Materials.Netherrack = loadNetherrack();
-        Materials.SoulSand = loadSoulSand();
+        loadTODOThis();
 
         // spotless:off
         Materials.Methane                 = new Materials( 715, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "Methane"                 ,   "Methane"                       ,    1,     104,         -1,    0, false, false,   3,   1,   1, Dyes.dyeMagenta     , 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4)));
@@ -5565,6 +5559,15 @@ public class MaterialsInit1 {
             .setRGB(64, 224, 86)
             .setColor(Dyes.dyeGreen)
             .constructMaterial();
+    }
+
+    private static void loadTODOThis() {
+        Materials.AluminiumBrass = loadAluminiumBrass();
+        Materials.Osmiridium = loadOsmiridium();
+        Materials.Sunnarium = loadSunnarium();
+        Materials.Endstone = loadEndstone();
+        Materials.Netherrack = loadNetherrack();
+        Materials.SoulSand = loadSoulSand();
     }
 
     private static Materials loadAluminiumBrass() {
