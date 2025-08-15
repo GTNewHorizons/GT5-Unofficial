@@ -179,9 +179,9 @@ public class MaterialsInit1 {
         Materials.AdvancedGlue = loadAdvancedGlue();
         Materials.Biomass = loadBiomass();
         Materials.CharcoalByproducts = loadCharcoalByproducts();
+        Materials.Cheese = loadCheese();
 
         // spotless:off
-        Materials.Cheese                  = new Materials( 894, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1    |8                   , 255, 255,   0,   0,   "Cheese"                  ,   "Cheese"                        ,    0,       0,        320,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Chili                   = new Materials( 895, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Chili"                   ,   "Chili"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Chocolate               = new Materials( 886, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Chocolate"               ,   "Chocolate"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Cluster                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255, 127,   "Cluster"                 ,   "Cluster"                       ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       );
@@ -5071,6 +5071,19 @@ public class MaterialsInit1 {
         return new MaterialBuilder(675, TextureSet.SET_FLUID, "Charcoal Byproducts").addCell()
             .setRGB(120, 68, 33)
             .setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
+    private static Materials loadCheese() {
+        return new MaterialBuilder().setName("Cheese")
+            .setDefaultLocalName("Cheese")
+            .setMetaItemSubID(894)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(320)
             .constructMaterial();
     }
 
