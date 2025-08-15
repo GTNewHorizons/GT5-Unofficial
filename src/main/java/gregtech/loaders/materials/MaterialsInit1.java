@@ -188,9 +188,9 @@ public class MaterialsInit1 {
         Materials.LPG = loadLPG();
         Materials.ReinforceGlass = loadReinforceGlass();
         Materials.BioMediumRaw = loadBioMediumRaw();
+        Materials.BioMediumSterilized = loadBioMediumSterilized();
 
         // spotless:off
-        Materials.BioMediumSterilized     = new MaterialBuilder(604, TextureSet.SET_FLUID      ,                                                                                                     "Sterilized Bio Catalyst Medium").setName("BiohMediumSterilized").addCell().addFluid().setRGB(162, 253, 53).setColor(Dyes.dyeLime).constructMaterial();
         Materials.Chlorobenzene             = new MaterialBuilder(605, TextureSet.SET_FLUID      ,                                                                                                     "Chlorobenzene").addCell().addFluid().setRGB(0, 50, 65).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.DilutedHydrochloricAcid   = new MaterialBuilder(606, TextureSet.SET_FLUID      ,                                                                                                     "Diluted Hydrochloric Acid").setName("DilutedHydrochloricAcid_GT5U").addCell().addFluid().setRGB(153, 167, 163).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1)).constructMaterial();
         Materials.Pyrochlore                = new MaterialBuilder(607, TextureSet.SET_METALLIC   ,                                                                                                     "Pyrochlore").addDustItems().addOreItems().setRGB(43, 17, 0).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7)).addElectrolyzerRecipe().constructMaterial();
@@ -7436,6 +7436,16 @@ public class MaterialsInit1 {
             .addCell()
             .addFluid()
             .setRGB(97, 147, 46)
+            .setColor(Dyes.dyeLime)
+            .constructMaterial();
+    }
+
+    private static Materials loadBioMediumSterilized() {
+        return new MaterialBuilder(604, TextureSet.SET_FLUID, "Sterilized Bio Catalyst Medium")
+            .setName("BiohMediumSterilized")
+            .addCell()
+            .addFluid()
+            .setRGB(162, 253, 53)
             .setColor(Dyes.dyeLime)
             .constructMaterial();
     }
