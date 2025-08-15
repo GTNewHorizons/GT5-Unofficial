@@ -80,7 +80,8 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
             aTier,
             0,
             new String[] { "Special I/O port for AE2FC.", "Directly connected YOTTank with AE fluid storage system.",
-                "Use screwdriver to set storage priority", "Use soldering iron to set read/write mode", "Use wire cutter to enable/disable sticky mode" });
+                "Use screwdriver to set storage priority", "Use soldering iron to set read/write mode",
+                "Use wire cutter to enable/disable sticky mode" });
     }
 
     public MTEYOTTAHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
