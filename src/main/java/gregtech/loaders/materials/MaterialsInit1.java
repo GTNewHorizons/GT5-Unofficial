@@ -208,9 +208,9 @@ public class MaterialsInit1 {
         Materials.RareEarth = loadRareEarth();
         Materials.Red = loadRed();
         Materials.Reinforced = loadReinforced();
+        Materials.SeedOil = loadSeedOil();
 
         // spotless:off
-        Materials.SeedOil                 = new Materials( 713, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOil"                 ,   "Seed Oil"                      ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
         Materials.SeedOilHemp             = new Materials( 722, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOilHemp"             ,   "Hemp Seed Oil"                 ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
         Materials.SeedOilLin              = new Materials( 723, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOilLin"              ,   "Lin Seed Oil"                  ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
         Materials.Stone                   = new Materials( 299, TextureSet.SET_ROUGH             ,   4.0F,     32,  1, 1            |64|128      , 205, 205, 205,   0,   "Stone"                   ,   "Stone"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
@@ -5423,6 +5423,20 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1700)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadSeedOil() {
+        return new MaterialBuilder().setName("SeedOil")
+            .setDefaultLocalName("Seed Oil")
+            .setMetaItemSubID(713)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xc4ff00)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(2)
+            .addAspect(TCAspects.GRANUM, 2)
             .constructMaterial();
     }
 
