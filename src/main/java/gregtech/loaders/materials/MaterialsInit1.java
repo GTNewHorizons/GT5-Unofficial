@@ -178,9 +178,9 @@ public class MaterialsInit1 {
         Materials.Antimatter = loadAntimatter();
         Materials.AdvancedGlue = loadAdvancedGlue();
         Materials.Biomass = loadBiomass();
+        Materials.CharcoalByproducts = loadCharcoalByproducts();
 
         // spotless:off
-        Materials.CharcoalByproducts      = new MaterialBuilder(675, TextureSet.SET_FLUID             ,                                                                                                     "Charcoal Byproducts").addCell().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Cheese                  = new Materials( 894, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1    |8                   , 255, 255,   0,   0,   "Cheese"                  ,   "Cheese"                        ,    0,       0,        320,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Chili                   = new Materials( 895, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Chili"                   ,   "Chili"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Chocolate               = new Materials( 886, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Chocolate"               ,   "Chocolate"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
@@ -5064,6 +5064,13 @@ public class MaterialsInit1 {
             .addCell()
             .setFuelType(3)
             .setFuelPower(8)
+            .constructMaterial();
+    }
+
+    private static Materials loadCharcoalByproducts() {
+        return new MaterialBuilder(675, TextureSet.SET_FLUID, "Charcoal Byproducts").addCell()
+            .setRGB(120, 68, 33)
+            .setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
 
