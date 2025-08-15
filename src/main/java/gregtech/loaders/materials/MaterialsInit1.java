@@ -238,9 +238,9 @@ public class MaterialsInit1 {
         Materials.NitrogenDioxide = loadNitrogenDioxide();
         Materials.Obsidian = loadObsidian();
         Materials.Phosphate = loadPhosphate();
+        Materials.PigIron = loadPigIron();
 
         // spotless:off
-        Materials.PigIron                 = new Materials( 307, TextureSet.SET_METALLIC          ,   6.0F,    384,  2, 1|2  |8      |64          , 200, 180, 180,   0,   "PigIron"                 ,   "Pig Iron"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyePink        , 2, Collections.singletonList(new MaterialStack(Iron, 1)));
         Materials.Plastic                 = new Materials( 874, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 200, 200, 200,   0,   "Plastic"                 ,   "Polyethylene"                  ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         Materials.Epoxid                  = new Materials( 470, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 200, 140,  20,   0,   "Epoxid"                  ,   "Epoxid"                        ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 21), new MaterialStack(Hydrogen, 24), new MaterialStack(Oxygen, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         Materials.Polydimethylsiloxane    = new MaterialBuilder(633, TextureSet.SET_FLUID         ,                                                                                                     "Polydimethylsiloxane").addDustItems().setRGB(245, 245, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -6801,6 +6801,25 @@ public class MaterialsInit1 {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Phosphorus, 1)
             .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadPigIron() {
+        return new MaterialBuilder().setName("PigIron")
+            .setDefaultLocalName("Pig Iron")
+            .setMetaItemSubID(307)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xc8b4b4)
+            .setToolSpeed(6.0f)
+            .setDurability(384)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 1)
             .constructMaterial();
     }
 
