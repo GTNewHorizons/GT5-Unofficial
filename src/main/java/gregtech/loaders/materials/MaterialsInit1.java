@@ -180,9 +180,9 @@ public class MaterialsInit1 {
         Materials.SulfuricGas = loadSulfuricGas();
         Materials.Gas = loadGas();
         Materials.SulfuricNaphtha = loadSulfuricNaphtha();
+        Materials.SulfuricLightFuel = loadSulfuricLightFuel();
 
         // spotless:off
-        Materials.SulfuricLightFuel       = new Materials( 737, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricLightFuel"       ,   "Sulfuric Light Fuel"           ,    0,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.SulfuricHeavyFuel       = new Materials( 738, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricHeavyFuel"       ,   "Sulfuric Heavy Fuel"           ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Naphtha                 = new Materials( 739, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Naphtha"                 ,   "Naphtha"                       ,    1,     220,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
         Materials.LightFuel               = new Materials( 740, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "LightFuel"               ,   "Light Fuel"                    ,    0,     305,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
@@ -7339,6 +7339,18 @@ public class MaterialsInit1 {
             .setRGB(0xffff00)
             .addCell()
             .setFuelType(1)
+            .setFuelPower(40)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricLightFuel() {
+        return new MaterialBuilder().setName("SulfuricLightFuel")
+            .setDefaultLocalName("Sulfuric Light Fuel")
+            .setMetaItemSubID(737)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
             .setFuelPower(40)
             .constructMaterial();
     }
