@@ -173,9 +173,9 @@ public class MaterialsInit1 {
 
         Materials.Scheelite = loadScheelite();
         Materials.Snow = loadSnow();
+        Materials.Sodalite = loadSodalite();
 
         // spotless:off
-        Materials.Sodalite                = new Materials( 525, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  20,  20, 255,   0,   "Sodalite"                ,   "Sodalite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Sodium, 4), new MaterialStack(Chlorine, 1)));
         Materials.SodiumPersulfate        = new Materials( 718, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "SodiumPersulfate"        ,   "Sodium Persulfate"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 2), new MaterialStack(Oxygen, 8)));
         Materials.SodiumSulfide           = new Materials( 719, TextureSet.SET_FLUID             ,   1.0F,      0,  2, 1                         , 255, 230, 128,   0,   "SodiumSulfide"           ,   "Sodium Sulfide"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)));
         Materials.HydricSulfide           = new Materials( 460, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "HydricSulfide"           ,   "Hydrogen Sulfide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)));
@@ -7177,6 +7177,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.GELUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodalite() {
+        return new MaterialBuilder().setName("Sodalite")
+            .setDefaultLocalName("Sodalite")
+            .setMetaItemSubID(525)
+            .setIconSet(TextureSet.SET_LAPIS)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x1414ff)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Sodium, 4)
+            .addMaterial(Materials.Chlorine, 1)
             .constructMaterial();
     }
 
