@@ -197,9 +197,9 @@ public class MaterialsInit1 {
         Materials.FerriteMixture = loadFerriteMixture();
         Materials.NickelZincFerrite = loadNickelZincFerrite();
         Materials.Massicot = loadMassicot();
+        Materials.ArsenicTrioxide = loadArsenicTrioxide();
 
         // spotless:off
-        Materials.ArsenicTrioxide           = new MaterialBuilder(615, TextureSet.SET_SHINY      ,                                                                                                     "Arsenic Trioxide").addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeGreen).setMaterialList(new MaterialStack(Arsenic, 2), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.CobaltOxide               = new MaterialBuilder(616, TextureSet.SET_DULL       ,                                                                                                     "Cobalt Oxide").addDustItems().setRGB(102, 128, 0).setColor(Dyes.dyeGreen).setMaterialList(new MaterialStack(Cobalt, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Zincite                   = new MaterialBuilder(617, TextureSet.SET_DULL       ,                                                                                                     "Zincite").addDustItems().setRGB(255, 255, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.AntimonyTrioxide          = new MaterialBuilder(618, TextureSet.SET_DULL       ,                                                                                                     "Antimony Trioxide").addDustItems().setRGB(230, 230, 240).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
@@ -7535,6 +7535,15 @@ public class MaterialsInit1 {
             .setRGB(255, 221, 85)
             .setColor(Dyes.dyeYellow)
             .setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadArsenicTrioxide() {
+        return new MaterialBuilder(615, TextureSet.SET_SHINY, "Arsenic Trioxide").addDustItems()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeGreen)
+            .setMaterialList(new MaterialStack(Arsenic, 2), new MaterialStack(Oxygen, 3))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
