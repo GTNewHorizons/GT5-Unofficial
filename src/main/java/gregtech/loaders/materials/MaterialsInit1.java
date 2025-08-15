@@ -220,9 +220,9 @@ public class MaterialsInit1 {
         Materials.Grossular = loadGrossular();
         Materials.HolyWater = loadHolyWater();
         Materials.Ice = loadIce();
+        Materials.Ilmenite = loadIlmenite();
 
         // spotless:off
-        Materials.Ilmenite                = new Materials( 918, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  70,  55,  50,   0,   "Ilmenite"                ,   "Ilmenite"                      ,    0,       0,         -1,    0, false, false,   1,   2,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 3)));
         Materials.Rutile                  = new Materials( 375, TextureSet.SET_GEM_HORIZONTAL    ,   1.0F,      0,  2, 1    |8                   , 212,  13,  92,   0,   "Rutile"                  ,   "Rutile"                        ,    0,       0,         -1,    0, false, false,   1,   2,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 2)));
         Materials.Bauxite                 = new Materials( 822, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "Bauxite"                 ,   "Bauxite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Rutile, 2), new MaterialStack(Aluminium, 16), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 11)));
         Materials.Titaniumtetrachloride   = new Materials( 376, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 212,  13,  92,   0,   "Titaniumtetrachloride"   ,   "Titaniumtetrachloride"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Chlorine, 4)));
@@ -6470,6 +6470,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.GELUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadIlmenite() {
+        return new MaterialBuilder().setName("Ilmenite")
+            .setDefaultLocalName("Ilmenite")
+            .setMetaItemSubID(918)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x463732)
+            .addDustItems()
+            .addOreItems()
+            .setDensityMultiplier(2)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
