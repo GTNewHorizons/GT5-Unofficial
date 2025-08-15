@@ -199,9 +199,9 @@ public class MaterialsInit1 {
         Materials.Charcoal = loadCharcoal();
         Materials.Chromite = loadChromite();
         Materials.ChromiumDioxide = loadChromiumDioxide();
+        Materials.Cinnabar = loadCinnabar();
 
         // spotless:off
-        Materials.Cinnabar                = new Materials( 826, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150,   0,   0,   0,   "Cinnabar"                ,   "Cinnabar"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Mercury, 1), new MaterialStack(Sulfur, 1)));
         Materials.Water                   = new Materials( 701, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "Water"                   ,   "Water"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
         Materials.Steam = Materials.Water;
         Materials.Clay                    = new Materials( 805, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 200, 200, 220,   0,   "Clay"                    ,   "Clay"                          ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2),new MaterialStack(Oxygen,7),new MaterialStack(Water,2)));
@@ -6120,6 +6120,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 2)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCinnabar() {
+        return new MaterialBuilder().setName("Cinnabar")
+            .setDefaultLocalName("Cinnabar")
+            .setMetaItemSubID(826)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x960000)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Mercury, 1)
+            .addMaterial(Materials.Sulfur, 1)
             .constructMaterial();
     }
 
