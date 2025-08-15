@@ -89,7 +89,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
-    public static final int UPGRADE_RANGE = 32;
+    //TODO add trace size back
+    public static final int UPGRADE_RANGE = 16;
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
@@ -420,7 +421,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     structures++;
                 }
                 return super.createParallelHelper(recipe)
-                    .setEUtModifier((float) Math.sqrt(structures == 0 ? 1 : structures))
+                    .setEUtModifier((float) Math.sqrt(structures))
                     .setChanceMultiplier(mRoughnessMultiplier);
             }
         };
