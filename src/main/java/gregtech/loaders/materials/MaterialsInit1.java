@@ -212,9 +212,9 @@ public class MaterialsInit1 {
         Materials.Diamond = loadDiamond();
         Materials.Electrum = loadElectrum();
         Materials.Emerald = loadEmerald();
+        Materials.FreshWater = loadFreshWater();
 
         // spotless:off
-        Materials.FreshWater              = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "FreshWater"              ,   "Fresh Water"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
         Materials.Galena                  = new Materials( 830, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1 |8                      , 100,  60, 100,   0,   "Galena"                  ,   "Galena"                        ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyePurple      , 1, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Sulfur, 1)));
         Materials.Garnierite              = new Materials( 906, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  50, 200,  70,   0,   "Garnierite"              ,   "Garnierite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Nickel, 1), new MaterialStack(Oxygen, 1)));
         Materials.Glyceryl                = new Materials( 714, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                ,   0, 150, 150,   0,   "Glyceryl"                ,   "Glyceryl Trinitrate"           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Nitrogen, 3), new MaterialStack(Oxygen, 9)));
@@ -6344,6 +6344,19 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 18)
             .addAspect(TCAspects.VITREUS, 3)
             .addAspect(TCAspects.LUCRUM, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadFreshWater() {
+        return new MaterialBuilder().setName("FreshWater")
+            .setDefaultLocalName("Fresh Water")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 2)
             .constructMaterial();
     }
 
