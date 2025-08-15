@@ -178,9 +178,9 @@ public class MaterialsInit1 {
         Materials.LiquidAir = loadLiquidAir();
         Materials.LiquidNitrogen = loadLiquidNitrogen();
         Materials.LiquidOxygen = loadLiquidOxygen();
+        Materials.SiliconDioxide = loadSiliconDioxide();
 
         // spotless:off
-        Materials.SiliconDioxide          = new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F).setDurability(0).setToolQuality(1).addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeLightGray).setExtraData(0).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
         Materials.Jasper                  = new Materials( 511, TextureSet.SET_EMERALD           ,   1.0F,      0,  2, 1  |4|8      |64          , 200,  80,  80, 100,   "Jasper"                  ,   "Jasper"                        ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.Almandine               = new Materials( 820, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 255,   0,   0,   0,   "Almandine"               ,   "Almandine"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.Andradite               = new Materials( 821, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,   0,   0,   "Andradite"               ,   "Andradite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
@@ -5763,6 +5763,18 @@ public class MaterialsInit1 {
             .setMeltingPoint(4)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconDioxide() {
+        return new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F)
+            .setDurability(0)
+            .setToolQuality(1)
+            .addDustItems()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeLightGray)
+            .setExtraData(0)
+            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2))
             .constructMaterial();
     }
 
