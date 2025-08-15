@@ -181,9 +181,9 @@ public class MaterialsInit1 {
         Materials.Gas = loadGas();
         Materials.SulfuricNaphtha = loadSulfuricNaphtha();
         Materials.SulfuricLightFuel = loadSulfuricLightFuel();
+        Materials.SulfuricHeavyFuel = loadSulfuricHeavyFuel();
 
         // spotless:off
-        Materials.SulfuricHeavyFuel       = new Materials( 738, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricHeavyFuel"       ,   "Sulfuric Heavy Fuel"           ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Naphtha                 = new Materials( 739, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Naphtha"                 ,   "Naphtha"                       ,    1,     220,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
         Materials.LightFuel               = new Materials( 740, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "LightFuel"               ,   "Light Fuel"                    ,    0,     305,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
         Materials.HeavyFuel               = new Materials( 741, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "HeavyFuel"               ,   "Heavy Fuel"                    ,    3,     240,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack).setCanBeCracked(true);
@@ -7351,6 +7351,19 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
             .addCell()
+            .setFuelPower(40)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricHeavyFuel() {
+        return new MaterialBuilder().setName("SulfuricHeavyFuel")
+            .setDefaultLocalName("Sulfuric Heavy Fuel")
+            .setMetaItemSubID(738)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuelType(3)
             .setFuelPower(40)
             .constructMaterial();
     }
