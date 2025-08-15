@@ -181,9 +181,9 @@ public class MaterialsInit1 {
         Materials.CharcoalByproducts = loadCharcoalByproducts();
         Materials.Cheese = loadCheese();
         Materials.Chili = loadChili();
+        Materials.Chocolate = loadChocolate();
 
         // spotless:off
-        Materials.Chocolate               = new Materials( 886, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Chocolate"               ,   "Chocolate"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Cluster                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255, 127,   "Cluster"                 ,   "Cluster"                       ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       );
         Materials.CoalFuel                = new Materials( 710, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  50,  50,  70,   0,   "CoalFuel"                ,   "Coalfuel"                      ,    0,      16,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Cocoa                   = new Materials( 887, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Cocoa"                   ,   "Cocoa"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
@@ -5094,6 +5094,17 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FINE)
             .setColor(Dyes.dyeRed)
             .setRGB(0xc80000)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadChocolate() {
+        return new MaterialBuilder().setName("Chocolate")
+            .setDefaultLocalName("Chocolate")
+            .setMetaItemSubID(886)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xbe5f00)
             .addDustItems()
             .constructMaterial();
     }
