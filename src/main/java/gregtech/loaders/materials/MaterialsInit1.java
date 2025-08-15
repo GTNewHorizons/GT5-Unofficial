@@ -201,9 +201,9 @@ public class MaterialsInit1 {
         Materials.CobaltOxide = loadCobaltOxide();
         Materials.Zincite = loadZincite();
         Materials.AntimonyTrioxide = loadAntimonyTrioxide();
+        Materials.CupricOxide = loadCupricOxide();
 
         // spotless:off
-        Materials.CupricOxide               = new MaterialBuilder(619, TextureSet.SET_DULL       ,                                                                                                     "Cupric Oxide").addDustItems().setRGB(15, 15, 15).setColor(Dyes.dyeBlack).setMeltingPoint(1599).setMaterialList(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Ferrosilite               = new MaterialBuilder(620, TextureSet.SET_DULL       ,                                                                                                     "Ferrosilite").addDustItems().setRGB(151, 99, 42).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.Magnesia                  = new MaterialBuilder(621, TextureSet.SET_DULL       ,                                                                                                     "Magnesia").addDustItems().setRGB(255, 225, 225).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 1)).constructMaterial();
         Materials.Quicklime                 = new MaterialBuilder(622, TextureSet.SET_DULL       ,                                                                                                     "Quicklime").addDustItems().setRGB(240, 240, 240).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -7571,6 +7571,16 @@ public class MaterialsInit1 {
             .setRGB(230, 230, 240)
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCupricOxide() {
+        return new MaterialBuilder(619, TextureSet.SET_DULL, "Cupric Oxide").addDustItems()
+            .setRGB(15, 15, 15)
+            .setColor(Dyes.dyeBlack)
+            .setMeltingPoint(1599)
+            .setMaterialList(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
