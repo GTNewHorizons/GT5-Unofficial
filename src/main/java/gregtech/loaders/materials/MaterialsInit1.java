@@ -190,9 +190,9 @@ public class MaterialsInit1 {
         Materials.BlueTopaz = loadBlueTopaz();
         Materials.Bone = loadBone();
         Materials.Brass = loadBrass();
+        Materials.Bronze = loadBronze();
 
         // spotless:off
-        Materials.Bronze                  = new Materials( 300, TextureSet.SET_METALLIC          ,   6.0F,    192,  2, 1|2          |64|128      , 255, 128,   0,   0,   "Bronze"                  ,   "Bronze"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Copper, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.BrownLimonite           = new Materials( 930, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "BrownLimonite"           ,   "Brown Limonite"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2))); // FeO(OH)
         Materials.Calcite                 = new Materials( 823, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 250, 230, 220,   0,   "Calcite"                 ,   "Calcite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)));
         Materials.Cassiterite             = new Materials( 824, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 220, 220, 220,   0,   "Cassiterite"             ,   "Cassiterite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
@@ -5959,6 +5959,28 @@ public class MaterialsInit1 {
             .addGearItems()
             .addCentrifugeRecipe()
             .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Copper, 3)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBronze() {
+        return new MaterialBuilder().setName("Bronze")
+            .setDefaultLocalName("Bronze")
+            .setMetaItemSubID(300)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .setToolSpeed(6.0f)
+            .setDurability(192)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Tin, 1)
             .addMaterial(Materials.Copper, 3)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
