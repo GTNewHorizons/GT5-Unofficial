@@ -203,9 +203,9 @@ public class MaterialsInit1 {
         Materials.Water = loadWater();
         Materials.Steam = Materials.Water;
         Materials.Clay = loadClay();
+        Materials.Coal = loadCoal();
 
         // spotless:off
-        Materials.Coal                    = new Materials( 535, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1  |4|8                   ,  70,  70,  70,   0,   "Coal"                    ,   "Coal"                          ,    0,       0,         -1,    0, false, false,   2,   2,   1, Dyes.dyeBlack       , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.Cobaltite               = new Materials( 827, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  80,  80, 250,   0,   "Cobaltite"               ,   "Cobaltite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(Cobalt, 1), new MaterialStack(Arsenic, 1), new MaterialStack(Sulfur, 1)));
         Materials.Cooperite               = new Materials( 828, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 255, 255, 200,   0,   "Cooperite"               ,   "Sheldonite"                    ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Platinum, 3), new MaterialStack(Nickel, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Palladium, 1)));
         Materials.Cupronickel             = new Materials( 310, TextureSet.SET_METALLIC          ,   6.0F,     64,  1, 1|2          |64          , 227, 150, 128,   0,   "Cupronickel"             ,   "Cupronickel"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Nickel, 1)));
@@ -6166,6 +6166,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silicon, 2)
             .addMaterial(Materials.Oxygen, 7)
             .addMaterial(Materials.Water, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCoal() {
+        return new MaterialBuilder().setName("Coal")
+            .setDefaultLocalName("Coal")
+            .setMetaItemSubID(535)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x464646)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .setDensityMultiplier(2)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.POTENTIA, 2)
+            .addAspect(TCAspects.IGNIS, 2)
             .constructMaterial();
     }
 
