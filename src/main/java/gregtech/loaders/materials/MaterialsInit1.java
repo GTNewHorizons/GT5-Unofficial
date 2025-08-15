@@ -189,9 +189,9 @@ public class MaterialsInit1 {
         Materials.BatteryAlloy = loadBatteryAlloy();
         Materials.BlueTopaz = loadBlueTopaz();
         Materials.Bone = loadBone();
+        Materials.Brass = loadBrass();
 
         // spotless:off
-        Materials.Brass                   = new Materials( 301, TextureSet.SET_METALLIC          ,   7.0F,     96,  1, 1|2          |64|128      , 255, 180,   0,   0,   "Brass"                   ,   "Brass"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Bronze                  = new Materials( 300, TextureSet.SET_METALLIC          ,   6.0F,    192,  2, 1|2          |64|128      , 255, 128,   0,   0,   "Bronze"                  ,   "Bronze"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Copper, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.BrownLimonite           = new Materials( 930, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "BrownLimonite"           ,   "Brown Limonite"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2))); // FeO(OH)
         Materials.Calcite                 = new Materials( 823, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 250, 230, 220,   0,   "Calcite"                 ,   "Calcite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)));
@@ -5940,6 +5940,28 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Calcium, 1)
             .addAspect(TCAspects.MORTUUS, 2)
             .addAspect(TCAspects.CORPUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrass() {
+        return new MaterialBuilder().setName("Brass")
+            .setDefaultLocalName("Brass")
+            .setMetaItemSubID(301)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffb400)
+            .setToolSpeed(7.0f)
+            .setDurability(96)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Copper, 3)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
             .constructMaterial();
     }
 
