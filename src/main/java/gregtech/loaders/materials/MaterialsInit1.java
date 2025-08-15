@@ -183,9 +183,9 @@ public class MaterialsInit1 {
         Materials.Chili = loadChili();
         Materials.Chocolate = loadChocolate();
         Materials.Cluster = loadCluster();
+        Materials.CoalFuel = loadCoalFuel();
 
         // spotless:off
-        Materials.CoalFuel                = new Materials( 710, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  50,  50,  70,   0,   "CoalFuel"                ,   "Coalfuel"                      ,    0,      16,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Cocoa                   = new Materials( 887, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Cocoa"                   ,   "Cocoa"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Coffee                  = new Materials( 888, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 150,  75,   0,   0,   "Coffee"                  ,   "Coffee"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Creosote                = new Materials( 712, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 128,  64,   0,   0,   "Creosote"                ,   "Creosote"                      ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
@@ -5114,6 +5114,18 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Cluster")
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fffffff)
+            .constructMaterial();
+    }
+
+    private static Materials loadCoalFuel() {
+        return new MaterialBuilder().setName("CoalFuel")
+            .setDefaultLocalName("Coalfuel")
+            .setMetaItemSubID(710)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323246)
+            .addCell()
+            .setFuelPower(16)
             .constructMaterial();
     }
 
