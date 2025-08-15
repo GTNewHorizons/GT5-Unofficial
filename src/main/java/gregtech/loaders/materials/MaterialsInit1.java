@@ -191,9 +191,9 @@ public class MaterialsInit1 {
         Materials.Bone = loadBone();
         Materials.Brass = loadBrass();
         Materials.Bronze = loadBronze();
+        Materials.BrownLimonite = loadBrownLimonite();
 
         // spotless:off
-        Materials.BrownLimonite           = new Materials( 930, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "BrownLimonite"           ,   "Brown Limonite"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2))); // FeO(OH)
         Materials.Calcite                 = new Materials( 823, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 250, 230, 220,   0,   "Calcite"                 ,   "Calcite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)));
         Materials.Cassiterite             = new Materials( 824, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 220, 220, 220,   0,   "Cassiterite"             ,   "Cassiterite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
         Materials.CassiteriteSand         = new Materials( 937, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 220, 220, 220,   0,   "CassiteriteSand"         ,   "Cassiterite Sand"              ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
@@ -5984,6 +5984,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Copper, 3)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrownLimonite() {
+        return new MaterialBuilder().setName("BrownLimonite")
+            .setDefaultLocalName("Brown Limonite")
+            .setMetaItemSubID(930)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            // FeO(OH)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
