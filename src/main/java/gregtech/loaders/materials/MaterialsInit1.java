@@ -194,9 +194,9 @@ public class MaterialsInit1 {
         Materials.BrownLimonite = loadBrownLimonite();
         Materials.Calcite = loadCalcite();
         Materials.Cassiterite = loadCassiterite();
+        Materials.CassiteriteSand = loadCassiteriteSand();
 
         // spotless:off
-        Materials.CassiteriteSand         = new Materials( 937, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 220, 220, 220,   0,   "CassiteriteSand"         ,   "Cassiterite Sand"              ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
         Materials.Chalcopyrite            = new Materials( 855, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 160, 120,  40,   0,   "Chalcopyrite"            ,   "Chalcopyrite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)));
         Materials.Charcoal                = new Materials( 536, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1  |4                     , 100,  70,  70,   0,   "Charcoal"                ,   "Charcoal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.Chromite                = new Materials( 825, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  35,  20,  15,   0,   "Chromite"                ,   "Chromite"                      ,    0,       0,       1700, 1700,  true, false,   6,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 4)));
@@ -6025,6 +6025,21 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Cassiterite")
             .setMetaItemSubID(824)
             .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcdc)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Tin, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCassiteriteSand() {
+        return new MaterialBuilder().setName("CassiteriteSand")
+            .setDefaultLocalName("Cassiterite Sand")
+            .setMetaItemSubID(937)
+            .setIconSet(TextureSet.SET_SAND)
             .setColor(Dyes.dyeWhite)
             .setRGB(0xdcdcdc)
             .addDustItems()
