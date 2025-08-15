@@ -192,9 +192,9 @@ public class MaterialsInit1 {
         Materials.FermentedBiomass = loadFermentedBiomass();
         Materials.Fuel = loadFuel();
         Materials.Glue = loadGlue();
+        Materials.Gunpowder = loadGunpowder();
 
         // spotless:off
-        Materials.Gunpowder               = new Materials( 800, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 128, 128, 128,   0,   "Gunpowder"               ,   "Gunpowder"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
         Materials.FryingOilHot            = new Materials( 727, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "FryingOilHot"            ,   "Hot Frying Oil"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
         Materials.Honey                   = new Materials( 725, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 210, 200,   0,   0,   "Honey"                   ,   "Honey"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Leather                 = new Materials(  -1, TextureSet.SET_ROUGH             ,   1.0F,      0,  0, 1                         , 150, 150,  80, 127,   "Leather"                 ,   "Leather"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
@@ -5225,6 +5225,19 @@ public class MaterialsInit1 {
             .setRGB(0xc8c400)
             .addCell()
             .addAspect(TCAspects.LIMUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGunpowder() {
+        return new MaterialBuilder().setName("Gunpowder")
+            .setDefaultLocalName("Gunpowder")
+            .setMetaItemSubID(800)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .addDustItems()
+            .addAspect(TCAspects.PERDITIO, 3)
+            .addAspect(TCAspects.IGNIS, 4)
             .constructMaterial();
     }
 
