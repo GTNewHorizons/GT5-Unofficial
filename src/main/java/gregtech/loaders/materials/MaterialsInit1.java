@@ -241,9 +241,9 @@ public class MaterialsInit1 {
         Materials.PigIron = loadPigIron();
         Materials.Plastic = loadPlastic();
         Materials.Epoxid = loadEpoxid();
+        Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
 
         // spotless:off
-        Materials.Polydimethylsiloxane    = new MaterialBuilder(633, TextureSet.SET_FLUID         ,                                                                                                     "Polydimethylsiloxane").addDustItems().setRGB(245, 245, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Silicone                = new Materials( 471, TextureSet.SET_DULL              ,   3.0F,    128,  1, 1|2          |64|128      , 220, 220, 220,   0,   "Silicone"                ,   "Silicone Rubber"               ,    0,       0,        900,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1), new MaterialStack(Silicon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         Materials.Polycaprolactam         = new Materials( 472, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      ,  50,  50,  50,   0,   "Polycaprolactam"         ,   "Polycaprolactam"               ,    0,       0,        500,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 11), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         Materials.Polytetrafluoroethylene = new Materials( 473, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 100, 100, 100,   0,   "Polytetrafluoroethylene" ,   "Polytetrafluoroethylene"       ,    0,       0,        600,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
@@ -6863,6 +6863,19 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 24)
             .addMaterial(Materials.Oxygen, 4)
             .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolydimethylsiloxane() {
+        return new MaterialBuilder(633, TextureSet.SET_FLUID, "Polydimethylsiloxane").addDustItems()
+            .setRGB(245, 245, 245)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 6),
+                new MaterialStack(Oxygen, 1),
+                new MaterialStack(Silicon, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
