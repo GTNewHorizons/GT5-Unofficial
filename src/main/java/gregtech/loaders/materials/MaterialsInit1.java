@@ -196,9 +196,9 @@ public class MaterialsInit1 {
         Materials.Cassiterite = loadCassiterite();
         Materials.CassiteriteSand = loadCassiteriteSand();
         Materials.Chalcopyrite = loadChalcopyrite();
+        Materials.Charcoal = loadCharcoal();
 
         // spotless:off
-        Materials.Charcoal                = new Materials( 536, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1  |4                     , 100,  70,  70,   0,   "Charcoal"                ,   "Charcoal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.Chromite                = new Materials( 825, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  35,  20,  15,   0,   "Chromite"                ,   "Chromite"                      ,    0,       0,       1700, 1700,  true, false,   6,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 4)));
         Materials.ChromiumDioxide         = new Materials( 361, TextureSet.SET_DULL              ,  11.0F,    256,  3, 1|2                       , 230, 200, 200,   0,   "ChromiumDioxide"         ,   "Chromium Dioxide"              ,    0,       0,        650,  650, false, false,   5,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
         Materials.Cinnabar                = new Materials( 826, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150,   0,   0,   0,   "Cinnabar"                ,   "Cinnabar"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Mercury, 1), new MaterialStack(Sulfur, 1)));
@@ -6063,6 +6063,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Copper, 1)
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Sulfur, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCharcoal() {
+        return new MaterialBuilder().setName("Charcoal")
+            .setDefaultLocalName("Charcoal")
+            .setMetaItemSubID(536)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x644646)
+            .addDustItems()
+            .addGemItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.POTENTIA, 2)
+            .addAspect(TCAspects.IGNIS, 2)
             .constructMaterial();
     }
 
