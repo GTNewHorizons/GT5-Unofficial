@@ -212,9 +212,9 @@ public class MaterialsInit1 {
         Materials.SeedOilHemp = loadSeedOilHemp();
         Materials.SeedOilLin = loadSeedOilLin();
         Materials.Stone = loadStone();
+        Materials.TNT = loadTNT();
 
         // spotless:off
-        Materials.TNT                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "TNT"                     ,   "TNT"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 7), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
         Materials.Unstable                = new Materials( 396, TextureSet.SET_SHINY             ,   1.0F,      0,  4, 1                         , 220, 220, 220, 127,   "Unstable"                ,   "Unstable"                      ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4)));
         Materials.Unstableingot           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  4, 0                         , 255, 255, 255, 127,   "Unstableingot"           ,   "Unstable"                      ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4)));
         Materials.Vinegar                 = new MaterialBuilder(690, TextureSet.SET_FLUID             ,                                                                                                     "Vinegar").setColor(Dyes.dyeBrown).constructMaterial();
@@ -5482,6 +5482,15 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .addAspect(TCAspects.TERRA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTNT() {
+        return new MaterialBuilder().setName("TNT")
+            .setDefaultLocalName("TNT")
+            .setColor(Dyes.dyeRed)
+            .addAspect(TCAspects.PERDITIO, 7)
+            .addAspect(TCAspects.IGNIS, 4)
             .constructMaterial();
     }
 
