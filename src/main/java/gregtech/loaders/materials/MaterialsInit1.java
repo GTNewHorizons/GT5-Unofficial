@@ -189,9 +189,9 @@ public class MaterialsInit1 {
         Materials.Creosote = loadCreosote();
         Materials.Ethanol = loadEthanol();
         Materials.FishOil = loadFishOil();
+        Materials.FermentedBiomass = loadFermentedBiomass();
 
         // spotless:off
-        Materials.FermentedBiomass        = new MaterialBuilder(691, TextureSet.SET_FLUID             ,                                                                                                     "Fermented Biomass").addCell().addFluid().setRGB(68, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Fuel                    = new Materials( 708, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Fuel"                    ,   "Diesel"                        ,    0,     480,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Glue                    = new Materials( 726, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "Glue"                    ,   "Refined Glue"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 2)));
         Materials.Gunpowder               = new Materials( 800, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 128, 128, 128,   0,   "Gunpowder"               ,   "Gunpowder"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
@@ -5193,6 +5193,14 @@ public class MaterialsInit1 {
             .setFuelType(3)
             .setFuelPower(2)
             .addAspect(TCAspects.CORPUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadFermentedBiomass() {
+        return new MaterialBuilder(691, TextureSet.SET_FLUID, "Fermented Biomass").addCell()
+            .addFluid()
+            .setRGB(68, 85, 0)
+            .setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
 
