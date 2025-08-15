@@ -180,9 +180,9 @@ public class MaterialsInit1 {
         Materials.Osmiridium = loadOsmiridium();
         Materials.Sunnarium = loadSunnarium();
         Materials.Endstone = loadEndstone();
+        Materials.Netherrack = loadNetherrack();
 
         // spotless:off
-        Materials.Netherrack              = new Materials( 807, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Netherrack"              ,   "Netherrack"                    ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeRed         );
         Materials.SoulSand                = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 255, 255, 255,   0,   "SoulSand"                ,   "Soulsand"                      ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeBrown       );
 
         Materials.Methane                 = new Materials( 715, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "Methane"                 ,   "Methane"                       ,    1,     104,         -1,    0, false, false,   3,   1,   1, Dyes.dyeMagenta     , 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4)));
@@ -5631,6 +5631,17 @@ public class MaterialsInit1 {
             .setMetaItemSubID(808)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherrack() {
+        return new MaterialBuilder().setName("Netherrack")
+            .setDefaultLocalName("Netherrack")
+            .setMetaItemSubID(807)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
             .addDustItems()
             .constructMaterial();
     }
