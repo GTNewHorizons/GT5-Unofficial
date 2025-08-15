@@ -172,8 +172,9 @@ public class MaterialsInit1 {
         loadFirstDegreeCompounds();
         loadUnclassified1();
 
+        Materials.OilExtraHeavy = loadOilExtraHeavy();
+
         // spotless:off
-        Materials.OilExtraHeavy           = new Materials( 570, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilExtraHeavy"           ,   "Very Heavy Oil"                ,    3,      45,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.OilHeavy                = new Materials( 730, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilHeavy"                ,   "Heavy Oil"                     ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.OilMedium               = new Materials( 731, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilMedium"               ,   "Raw Oil"                       ,    3,      30,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.OilLight                = new Materials( 732, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilLight"                ,   "Light Oil"                     ,    3,      20,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
@@ -7237,6 +7238,19 @@ public class MaterialsInit1 {
             .addCell()
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadOilExtraHeavy() {
+        return new MaterialBuilder().setName("OilExtraHeavy")
+            .setDefaultLocalName("Very Heavy Oil")
+            .setMetaItemSubID(570)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(45)
             .constructMaterial();
     }
 
