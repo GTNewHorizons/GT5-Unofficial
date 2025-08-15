@@ -245,9 +245,9 @@ public class MaterialsInit1 {
         Materials.Silicone = loadSilicone();
         Materials.Polycaprolactam = loadPolycaprolactam();
         Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
+        Materials.Powellite = loadPowellite();
 
         // spotless:off
-        Materials.Powellite               = new Materials( 883, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 255, 255,   0,   0,   "Powellite"               ,   "Powellite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4)));
         Materials.Pumice                  = new Materials( 926, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 230, 185, 185,   0,   "Pumice"                  ,   "Pumice"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(Stone, 1)));
         Materials.Pyrite                  = new Materials( 834, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,  40,   0,   "Pyrite"                  ,   "Pyrite"                        ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)));
         Materials.Pyrolusite              = new Materials( 943, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 150, 150, 170,   0,   "Pyrolusite"              ,   "Pyrolusite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Oxygen, 2)));
@@ -6943,6 +6943,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Fluorine, 4)
             .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPowellite() {
+        return new MaterialBuilder().setName("Powellite")
+            .setDefaultLocalName("Powellite")
+            .setMetaItemSubID(883)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Molybdenum, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
