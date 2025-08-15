@@ -189,9 +189,9 @@ public class MaterialsInit1 {
         Materials.ReinforceGlass = loadReinforceGlass();
         Materials.BioMediumRaw = loadBioMediumRaw();
         Materials.BioMediumSterilized = loadBioMediumSterilized();
+        Materials.Chlorobenzene = loadChlorobenzene();
 
         // spotless:off
-        Materials.Chlorobenzene             = new MaterialBuilder(605, TextureSet.SET_FLUID      ,                                                                                                     "Chlorobenzene").addCell().addFluid().setRGB(0, 50, 65).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.DilutedHydrochloricAcid   = new MaterialBuilder(606, TextureSet.SET_FLUID      ,                                                                                                     "Diluted Hydrochloric Acid").setName("DilutedHydrochloricAcid_GT5U").addCell().addFluid().setRGB(153, 167, 163).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1)).constructMaterial();
         Materials.Pyrochlore                = new MaterialBuilder(607, TextureSet.SET_METALLIC   ,                                                                                                     "Pyrochlore").addDustItems().addOreItems().setRGB(43, 17, 0).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7)).addElectrolyzerRecipe().constructMaterial();
         Materials.GrowthMediumRaw           = new MaterialBuilder(608, TextureSet.SET_FLUID      ,                                                                                                     "Raw Growth Catalyst Medium").setName("GrowthMediumRaw").addCell().addFluid().setRGB(211, 141, 95).setColor(Dyes.dyeOrange).constructMaterial();
@@ -7447,6 +7447,19 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(162, 253, 53)
             .setColor(Dyes.dyeLime)
+            .constructMaterial();
+    }
+
+    private static Materials loadChlorobenzene() {
+        return new MaterialBuilder(605, TextureSet.SET_FLUID, "Chlorobenzene").addCell()
+            .addFluid()
+            .setRGB(0, 50, 65)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(
+                new MaterialStack(Carbon, 6),
+                new MaterialStack(Hydrogen, 5),
+                new MaterialStack(Chlorine, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
