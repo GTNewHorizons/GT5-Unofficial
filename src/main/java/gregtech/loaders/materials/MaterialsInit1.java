@@ -194,9 +194,9 @@ public class MaterialsInit1 {
         Materials.Pyrochlore = loadPyrochlore();
         Materials.GrowthMediumRaw = loadGrowthMediumRaw();
         Materials.GrowthMediumSterilized = loadGrowthMediumSterilized();
+        Materials.FerriteMixture = loadFerriteMixture();
 
         // spotless:off
-        Materials.FerriteMixture            = new MaterialBuilder(612, TextureSet.SET_METALLIC   ,                                                                                                     "Ferrite Mixture").addDustItems().setRGB(180, 180, 180).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4)).constructMaterial();
         Materials.NickelZincFerrite         = new MaterialBuilder(613, TextureSet.SET_ROUGH      ,                                                                                                     "Nickel-Zinc Ferrite").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setRGB(60, 60, 60).setColor(Dyes.dyeBlack).setBlastFurnaceRequired(true).setBlastFurnaceTemp(1500).setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4), new MaterialStack(Oxygen, 8)).constructMaterial();
         Materials.Massicot                  = new MaterialBuilder(614, TextureSet.SET_DULL       ,                                                                                                     "Massicot").addDustItems().setRGB(255, 221, 85).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.ArsenicTrioxide           = new MaterialBuilder(615, TextureSet.SET_SHINY      ,                                                                                                     "Arsenic Trioxide").addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeGreen).setMaterialList(new MaterialStack(Arsenic, 2), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
@@ -7500,6 +7500,14 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(222, 170, 135)
             .setColor(Dyes.dyeOrange)
+            .constructMaterial();
+    }
+
+    private static Materials loadFerriteMixture() {
+        return new MaterialBuilder(612, TextureSet.SET_METALLIC, "Ferrite Mixture").addDustItems()
+            .setRGB(180, 180, 180)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4))
             .constructMaterial();
     }
 
