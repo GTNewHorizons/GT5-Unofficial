@@ -235,9 +235,9 @@ public class MaterialsInit1 {
         Materials.NiobiumNitride = loadNiobiumNitride();
         Materials.NiobiumTitanium = loadNiobiumTitanium();
         Materials.NitroCarbon = loadNitroCarbon();
+        Materials.NitrogenDioxide = loadNitrogenDioxide();
 
         // spotless:off
-        Materials.NitrogenDioxide         = new Materials( 717, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 100, 175, 255,   0,   "NitrogenDioxide"         ,   "Nitrogen Dioxide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2)));
         Materials.Obsidian                = new Materials( 804, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1|2                       ,  80,  50, 100,   0,   "Obsidian"                ,   "Obsidian"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Iron, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 8)));
         Materials.Phosphate               = new Materials( 833, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8|16                , 255, 255,   0,   0,   "Phosphate"               ,   "Phosphate"                     ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Phosphorus, 1), new MaterialStack(Oxygen, 4)));
         Materials.PigIron                 = new Materials( 307, TextureSet.SET_METALLIC          ,   6.0F,    384,  2, 1|2  |8      |64          , 200, 180, 180,   0,   "PigIron"                 ,   "Pig Iron"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyePink        , 2, Collections.singletonList(new MaterialStack(Iron, 1)));
@@ -6754,6 +6754,20 @@ public class MaterialsInit1 {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Carbon, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitrogenDioxide() {
+        return new MaterialBuilder().setName("NitrogenDioxide")
+            .setDefaultLocalName("Nitrogen Dioxide")
+            .setMetaItemSubID(717)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x64afff)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
