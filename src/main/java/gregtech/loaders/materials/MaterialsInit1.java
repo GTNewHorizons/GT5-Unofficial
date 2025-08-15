@@ -247,9 +247,9 @@ public class MaterialsInit1 {
         Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
         Materials.Powellite = loadPowellite();
         Materials.Pumice = loadPumice();
+        Materials.Pyrite = loadPyrite();
 
         // spotless:off
-        Materials.Pyrite                  = new Materials( 834, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,  40,   0,   "Pyrite"                  ,   "Pyrite"                        ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)));
         Materials.Pyrolusite              = new Materials( 943, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 150, 150, 170,   0,   "Pyrolusite"              ,   "Pyrolusite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Oxygen, 2)));
         Materials.Pyrope                  = new Materials( 835, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 120,  50, 100,   0,   "Pyrope"                  ,   "Pyrope"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.RockSalt                = new Materials( 944, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 240, 200, 200,   0,   "RockSalt"                ,   "Rock Salt"                     ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Chlorine, 1)));
@@ -6973,6 +6973,21 @@ public class MaterialsInit1 {
             .addOreItems()
             .addCentrifugeRecipe()
             .addMaterial(Materials.Stone, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrite() {
+        return new MaterialBuilder().setName("Pyrite")
+            .setDefaultLocalName("Pyrite")
+            .setMetaItemSubID(834)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0x967828)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Sulfur, 2)
             .constructMaterial();
     }
 
