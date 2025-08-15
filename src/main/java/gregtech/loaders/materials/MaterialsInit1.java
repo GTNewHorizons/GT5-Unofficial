@@ -197,9 +197,9 @@ public class MaterialsInit1 {
         Materials.Honey = loadHoney();
         Materials.Leather = loadLeather();
         Materials.Lubricant = loadLubricant();
+        Materials.McGuffium239 = loadMcGuffium239();
 
         // spotless:off
-        Materials.McGuffium239            = new Materials( 999, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200,  50, 150,   0,   "McGuffium239"            ,   "Mc Guffium 239"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 8), new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 8), new TCAspects.TC_AspectStack(TCAspects.SPIRITUS, 8), new TCAspects.TC_AspectStack(TCAspects.AURAM, 8), new TCAspects.TC_AspectStack(TCAspects.VITIUM, 8), new TCAspects.TC_AspectStack(TCAspects.RADIO, 8), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 8), new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8)));
         Materials.MeatRaw                 = new Materials( 892, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 255, 100, 100,   0,   "MeatRaw"                 ,   "Raw Meat"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        );
         Materials.MeatCooked              = new Materials( 893, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 150,  60,  20,   0,   "MeatCooked"              ,   "Cooked Meat"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        );
         Materials.Milk                    = new Materials( 885, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1      |16                , 254, 254, 254,   0,   "Milk"                    ,   "Milk"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SANO, 2)));
@@ -5285,6 +5285,27 @@ public class MaterialsInit1 {
             .addCell()
             .addAspect(TCAspects.AQUA, 2)
             .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMcGuffium239() {
+        return new MaterialBuilder().setName("McGuffium239")
+            .setDefaultLocalName("Mc Guffium 239")
+            .setMetaItemSubID(999)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xc83296)
+            .addCell()
+            .addAspect(TCAspects.ALIENIS, 8)
+            .addAspect(TCAspects.PERMUTATIO, 8)
+            .addAspect(TCAspects.SPIRITUS, 8)
+            .addAspect(TCAspects.AURAM, 8)
+            .addAspect(TCAspects.VITIUM, 8)
+            .addAspect(TCAspects.RADIO, 8)
+            .addAspect(TCAspects.MAGNETO, 8)
+            .addAspect(TCAspects.ELECTRUM, 8)
+            .addAspect(TCAspects.NEBRISUM, 8)
+            .addAspect(TCAspects.STRONTIO, 8)
             .constructMaterial();
     }
 
