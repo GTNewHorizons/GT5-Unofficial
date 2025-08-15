@@ -19,6 +19,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_FURNACE_G
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -72,6 +74,7 @@ public class MTESteamFurnaceSteel extends MTEBasicMachineSteel {
             && GTModHandler.getSmeltingOutput(GTUtility.copyAmount(64, aStack), false, null) != null;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_FURNACE;

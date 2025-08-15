@@ -17,6 +17,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_EXTRACTOR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_EXTRACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_EXTRACTOR_GLOW;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,6 +48,7 @@ public class MTESteamExtractorSteel extends MTEBasicMachineSteel {
         return RecipeMaps.extractorRecipes;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_EXTRACTOR_OP;

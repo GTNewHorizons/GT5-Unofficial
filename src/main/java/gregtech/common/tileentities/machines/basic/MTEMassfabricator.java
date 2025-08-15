@@ -27,6 +27,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
@@ -250,6 +252,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_REPLICATOR;

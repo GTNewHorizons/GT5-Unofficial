@@ -22,6 +22,8 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -846,6 +848,7 @@ public class MTEPump extends MTEBasicMachine {
                 + StatCollector.translateToLocal("GT5U.machines.blocks") };
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_PUMP;

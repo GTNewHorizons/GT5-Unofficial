@@ -149,6 +149,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             && this.mProcessingEnergy > 0
             && (aTick % 20L == 0L)) {
             Pollution.addPollution(getBaseMetaTileEntity(), getPollution());
+            updateHeatingSound(true);
         }
     }
 

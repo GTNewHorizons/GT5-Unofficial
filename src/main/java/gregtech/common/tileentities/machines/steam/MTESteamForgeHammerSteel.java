@@ -54,6 +54,7 @@ public class MTESteamForgeHammerSteel extends MTEBasicMachineSteel {
         return RecipeMaps.hammerRecipes;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_FORGE_HAMMER;

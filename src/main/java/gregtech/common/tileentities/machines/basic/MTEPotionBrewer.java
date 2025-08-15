@@ -6,6 +6,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -223,6 +225,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
         return getCapacityForTier(mTier);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_CHEMICAL;

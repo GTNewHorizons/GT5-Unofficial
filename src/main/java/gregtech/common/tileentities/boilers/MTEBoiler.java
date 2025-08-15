@@ -264,7 +264,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         }
     }
 
-    private void updateHeatingSound(boolean shouldPlay) {
+    protected void updateHeatingSound(boolean shouldPlay) {
         if (shouldPlay) {
             if (mSoundLoop == null) {
                 mSoundLoop = new GTSoundLoop(
@@ -289,12 +289,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         if (wasHeating) {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
+            updateHeatingSound(true);
         }
         aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
-
-        if (aBaseMetaTileEntity.isClientSide()) {
-            updateHeatingSound(this.mProcessingEnergy > 0 && this.mTemperature > 20);
-        }
     }
 
     private void updateFuelTimed(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -324,6 +321,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     return true;
                 }
                 produceSteam(getProductionPerSecond() / 2);
+                updateHeatingSound(true);
             }
         } else {
             this.mHadNoWater = false;
@@ -370,9 +368,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             // only loss temperature if hot
             this.mTemperature -= 1;
             this.mLossTimer = 0;
-        }
-        if (getBaseMetaTileEntity().isClientSide()) {
-            updateHeatingSound(false);
+            if (this.mProcessingEnergy == 0) {
+                updateHeatingSound(false);
+            }
         }
     }
 

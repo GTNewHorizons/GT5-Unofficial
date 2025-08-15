@@ -22,6 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
@@ -106,6 +108,7 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
             && RecipeMaps.maceratorRecipes.containsInput(GTUtility.copyAmount(64, aStack));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MACERATOR;

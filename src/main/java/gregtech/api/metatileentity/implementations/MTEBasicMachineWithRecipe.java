@@ -483,6 +483,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
         return this.mTankCapacity;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return mSoundResource;
