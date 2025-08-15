@@ -25,6 +25,15 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
+import gregtech.api.gui.modularui.GTUITextures;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -89,7 +98,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
-    //TODO add trace size back
     public static final int UPGRADE_RANGE = 16;
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
@@ -571,6 +579,23 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         ItemStack aTool) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+
+        builder
+            .widget(
+                new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
+                    .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
+                    .setBounds(50, 200)
+                    .setTextColor(Color.WHITE.normal)
+                    .setTextAlignment(Alignment.Center)
+                    .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .setSize(74, 16)
+                    .setPos(98,91));
+        super.addUIWidgets(builder, buildContext);
     }
 
     @Override
