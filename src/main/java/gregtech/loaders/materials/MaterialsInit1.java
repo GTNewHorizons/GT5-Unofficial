@@ -200,9 +200,9 @@ public class MaterialsInit1 {
         Materials.McGuffium239 = loadMcGuffium239();
         Materials.MeatRaw = loadMeatRaw();
         Materials.MeatCooked = loadMeatCooked();
+        Materials.Milk = loadMilk();
 
         // spotless:off
-        Materials.Milk                    = new Materials( 885, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1      |16                , 254, 254, 254,   0,   "Milk"                    ,   "Milk"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SANO, 2)));
         Materials.Mud                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Mud"                     ,   "Mud"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Oil                     = new Materials( 707, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "Oil"                     ,   "Oil"                           ,    3,      20,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Paper                   = new Materials( 879, TextureSet.SET_PAPER             ,   1.0F,      0,  0, 1                         , 250, 250, 250,   0,   "Paper"                   ,   "Paper"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1)));
@@ -5328,6 +5328,19 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyePink)
             .setRGB(0x963c14)
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMilk() {
+        return new MaterialBuilder().setName("Milk")
+            .setDefaultLocalName("Milk")
+            .setMetaItemSubID(885)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfefefe)
+            .addDustItems()
+            .addCell()
+            .addAspect(TCAspects.SANO, 2)
             .constructMaterial();
     }
 
