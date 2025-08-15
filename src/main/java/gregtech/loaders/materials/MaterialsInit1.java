@@ -180,9 +180,9 @@ public class MaterialsInit1 {
         Materials.LiquidOxygen = loadLiquidOxygen();
         Materials.SiliconDioxide = loadSiliconDioxide();
         Materials.Jasper = loadJasper();
+        Materials.Almandine = loadAlmandine();
 
         // spotless:off
-        Materials.Almandine               = new Materials( 820, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 255,   0,   0,   0,   "Almandine"               ,   "Almandine"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.Andradite               = new Materials( 821, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,   0,   0,   "Andradite"               ,   "Andradite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.AnnealedCopper          = new Materials( 345, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2             |128      , 255, 120,  20,   0,   "AnnealedCopper"          ,   "Annealed Copper"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Collections.singletonList(new MaterialStack(Copper, 1)));
         Materials.Asbestos                = new Materials( 946, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 230,   0,   "Asbestos"                ,   "Asbestos"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Mg3Si2O5(OH)4
@@ -5793,6 +5793,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.LUCRUM, 4)
             .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadAlmandine() {
+        return new MaterialBuilder().setName("Almandine")
+            .setDefaultLocalName("Almandine")
+            .setMetaItemSubID(820)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff0000)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Iron, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
             .constructMaterial();
     }
 
