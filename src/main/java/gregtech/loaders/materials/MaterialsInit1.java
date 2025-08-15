@@ -192,9 +192,9 @@ public class MaterialsInit1 {
         Materials.Chlorobenzene = loadChlorobenzene();
         Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
         Materials.Pyrochlore = loadPyrochlore();
+        Materials.GrowthMediumRaw = loadGrowthMediumRaw();
 
         // spotless:off
-        Materials.GrowthMediumRaw           = new MaterialBuilder(608, TextureSet.SET_FLUID      ,                                                                                                     "Raw Growth Catalyst Medium").setName("GrowthMediumRaw").addCell().addFluid().setRGB(211, 141, 95).setColor(Dyes.dyeOrange).constructMaterial();
         Materials.GrowthMediumSterilized    = new MaterialBuilder(609, TextureSet.SET_FLUID      ,                                                                                                     "Growth Catalyst Medium").setName("GrowthMediumSterilized").addCell().addFluid().setRGB(222, 170, 135).setColor(Dyes.dyeOrange).constructMaterial();
         Materials.FerriteMixture            = new MaterialBuilder(612, TextureSet.SET_METALLIC   ,                                                                                                     "Ferrite Mixture").addDustItems().setRGB(180, 180, 180).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4)).constructMaterial();
         Materials.NickelZincFerrite         = new MaterialBuilder(613, TextureSet.SET_ROUGH      ,                                                                                                     "Nickel-Zinc Ferrite").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setRGB(60, 60, 60).setColor(Dyes.dyeBlack).setBlastFurnaceRequired(true).setBlastFurnaceTemp(1500).setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4), new MaterialStack(Oxygen, 8)).constructMaterial();
@@ -7481,6 +7481,15 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBlack)
             .setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadGrowthMediumRaw() {
+        return new MaterialBuilder(608, TextureSet.SET_FLUID, "Raw Growth Catalyst Medium").setName("GrowthMediumRaw")
+            .addCell()
+            .addFluid()
+            .setRGB(211, 141, 95)
+            .setColor(Dyes.dyeOrange)
             .constructMaterial();
     }
 
