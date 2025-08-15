@@ -244,9 +244,9 @@ public class MaterialsInit1 {
         Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
         Materials.Silicone = loadSilicone();
         Materials.Polycaprolactam = loadPolycaprolactam();
+        Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
 
         // spotless:off
-        Materials.Polytetrafluoroethylene = new Materials( 473, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 100, 100, 100,   0,   "Polytetrafluoroethylene" ,   "Polytetrafluoroethylene"       ,    0,       0,        600,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         Materials.Powellite               = new Materials( 883, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 255, 255,   0,   0,   "Powellite"               ,   "Powellite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4)));
         Materials.Pumice                  = new Materials( 926, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 230, 185, 185,   0,   "Pumice"                  ,   "Pumice"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(Stone, 1)));
         Materials.Pyrite                  = new Materials( 834, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,  40,   0,   "Pyrite"                  ,   "Pyrite"                        ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)));
@@ -6921,6 +6921,27 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 11)
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolytetrafluoroethylene() {
+        return new MaterialBuilder().setName("Polytetrafluoroethylene")
+            .setDefaultLocalName("Polytetrafluoroethylene")
+            .setMetaItemSubID(473)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x646464)
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(600)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Fluorine, 4)
             .addAspect(TCAspects.MOTUS, 2)
             .constructMaterial();
     }
