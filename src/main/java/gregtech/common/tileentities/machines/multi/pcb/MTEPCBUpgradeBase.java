@@ -33,6 +33,8 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationP
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import static gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory.UPGRADE_RANGE;
+
 /**
  * base class for the PCB Factory upgrades.
  * <p>
@@ -40,6 +42,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * {@link gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase} by NotAPinguin
  */
 public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> extends MTEEnhancedMultiBlockBase<T> {
+
 
 
     private enum LinkResult {
@@ -163,11 +166,11 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         IGregTechTileEntity ourBaseMetaTileEntity = this.getBaseMetaTileEntity();
         // First check whether the controller we try to link to is within range. The range is defined
         // as a max distance in each axis.
-        if (Math.abs(ourBaseMetaTileEntity.getXCoord() - x) > MTEPurificationPlant.MAX_UNIT_DISTANCE)
+        if (Math.abs(ourBaseMetaTileEntity.getXCoord() - x) > UPGRADE_RANGE)
             return LinkResult.TOO_FAR;
-        if (Math.abs(ourBaseMetaTileEntity.getYCoord() - y) > MTEPurificationPlant.MAX_UNIT_DISTANCE)
+        if (Math.abs(ourBaseMetaTileEntity.getYCoord() - y) > UPGRADE_RANGE)
             return LinkResult.TOO_FAR;
-        if (Math.abs(ourBaseMetaTileEntity.getZCoord() - z) > MTEPurificationPlant.MAX_UNIT_DISTANCE)
+        if (Math.abs(ourBaseMetaTileEntity.getZCoord() - z) > UPGRADE_RANGE)
             return LinkResult.TOO_FAR;
 
         // Find the block at the requested coordinated and check if it is a purification plant controller.
