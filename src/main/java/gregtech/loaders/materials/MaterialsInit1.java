@@ -210,9 +210,9 @@ public class MaterialsInit1 {
         Materials.DarkAsh = loadDarkAsh();
         Materials.DeepIron = loadDeepIron();
         Materials.Diamond = loadDiamond();
+        Materials.Electrum = loadElectrum();
 
         // spotless:off
-        Materials.Electrum                = new Materials( 303, TextureSet.SET_SHINY             ,  12.0F,     64,  2, 1|2  |8      |64|128      , 255, 255, 100,   0,   "Electrum"                ,   "Electrum"                      ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Silver, 1), new MaterialStack(Gold, 1)));
         Materials.Emerald                 = new Materials( 501, TextureSet.SET_EMERALD           ,   7.0F,    256,  4, 1  |4|8      |64          ,  80, 255,  80, 127,   "Emerald"                 ,   "Emerald"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeGreen       , 0, Arrays.asList(new MaterialStack(Beryllium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 6), new MaterialStack(Oxygen, 18)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5)));
         Materials.FreshWater              = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "FreshWater"              ,   "Fresh Water"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
         Materials.Galena                  = new Materials( 830, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1 |8                      , 100,  60, 100,   0,   "Galena"                  ,   "Galena"                        ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyePurple      , 1, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Sulfur, 1)));
@@ -6300,6 +6300,27 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.VITREUS, 3)
             .addAspect(TCAspects.LUCRUM, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadElectrum() {
+        return new MaterialBuilder().setName("Electrum")
+            .setDefaultLocalName("Electrum")
+            .setMetaItemSubID(303)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff64)
+            .setToolSpeed(12.0f)
+            .setDurability(64)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.Gold, 1)
             .constructMaterial();
     }
 
