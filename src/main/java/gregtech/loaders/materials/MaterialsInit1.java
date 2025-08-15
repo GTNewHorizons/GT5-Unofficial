@@ -175,8 +175,9 @@ public class MaterialsInit1 {
         loadDontCare();
         loadUnknownComponents();
 
+        Materials.Antimatter = loadAntimatter();
+
         // spotless:off
-        Materials.Antimatter              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Antimatter"              ,   "Antimatter"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 9), new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 8)));
         Materials.AdvancedGlue            = new MaterialBuilder(567, TextureSet.SET_FLUID         ,                                                                                                         "Advanced Glue").setName("AdvancedGlue").addCell().addFluid().setRGB(255, 255, 185).setColor(Dyes.dyeYellow).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 5))).constructMaterial();
         Materials.Biomass                 = new Materials( 704, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0, 255,   0,   0,   "Biomass"        	     ,   "Forestry Biomass"                ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.CharcoalByproducts      = new MaterialBuilder(675, TextureSet.SET_FLUID             ,                                                                                                     "Charcoal Byproducts").addCell().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).constructMaterial();
@@ -5031,6 +5032,15 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAntimatter() {
+        return new MaterialBuilder().setName("Antimatter")
+            .setDefaultLocalName("Antimatter")
+            .setColor(Dyes.dyePink)
+            .addAspect(TCAspects.POTENTIA, 9)
+            .addAspect(TCAspects.PERFODIO, 8)
             .constructMaterial();
     }
 
