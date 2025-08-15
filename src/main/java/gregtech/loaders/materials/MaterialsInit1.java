@@ -173,9 +173,9 @@ public class MaterialsInit1 {
         loadUnclassified1();
 
         Materials.OilExtraHeavy = loadOilExtraHeavy();
+        Materials.OilHeavy = loadOilHeavy();
 
         // spotless:off
-        Materials.OilHeavy                = new Materials( 730, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilHeavy"                ,   "Heavy Oil"                     ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.OilMedium               = new Materials( 731, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilMedium"               ,   "Raw Oil"                       ,    3,      30,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.OilLight                = new Materials( 732, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilLight"                ,   "Light Oil"                     ,    3,      20,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.NatruralGas             = new Materials( 733, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "NatruralGas"             ,   "Natural Gas"                   ,    1,      20,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
@@ -7251,6 +7251,19 @@ public class MaterialsInit1 {
             .addCell()
             .setFuelType(3)
             .setFuelPower(45)
+            .constructMaterial();
+    }
+
+    private static Materials loadOilHeavy() {
+        return new MaterialBuilder().setName("OilHeavy")
+            .setDefaultLocalName("Heavy Oil")
+            .setMetaItemSubID(730)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(40)
             .constructMaterial();
     }
 
