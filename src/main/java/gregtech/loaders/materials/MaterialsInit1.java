@@ -30,7 +30,6 @@ import static gregtech.api.enums.Materials.Caesium;
 import static gregtech.api.enums.Materials.Calcite;
 import static gregtech.api.enums.Materials.Calcium;
 import static gregtech.api.enums.Materials.Carbon;
-import static gregtech.api.enums.Materials.CarbonDioxide;
 import static gregtech.api.enums.Materials.Cerium;
 import static gregtech.api.enums.Materials.CertusQuartz;
 import static gregtech.api.enums.Materials.Chlorine;
@@ -45,7 +44,6 @@ import static gregtech.api.enums.Materials.CosmicNeutronium;
 import static gregtech.api.enums.Materials.CrystallineAlloy;
 import static gregtech.api.enums.Materials.DarkAsh;
 import static gregtech.api.enums.Materials.DarkSteel;
-import static gregtech.api.enums.Materials.Deuterium;
 import static gregtech.api.enums.Materials.Diamond;
 import static gregtech.api.enums.Materials.Draconium;
 import static gregtech.api.enums.Materials.ElectricalSteel;
@@ -71,7 +69,6 @@ import static gregtech.api.enums.Materials.Gold;
 import static gregtech.api.enums.Materials.GraniteBlack;
 import static gregtech.api.enums.Materials.Grossular;
 import static gregtech.api.enums.Materials.HSSG;
-import static gregtech.api.enums.Materials.Helium;
 import static gregtech.api.enums.Materials.Hydrogen;
 import static gregtech.api.enums.Materials.Indium;
 import static gregtech.api.enums.Materials.Iridium;
@@ -86,7 +83,6 @@ import static gregtech.api.enums.Materials.Magnetite;
 import static gregtech.api.enums.Materials.Manganese;
 import static gregtech.api.enums.Materials.MelodicAlloy;
 import static gregtech.api.enums.Materials.Mercury;
-import static gregtech.api.enums.Materials.Methane;
 import static gregtech.api.enums.Materials.Molybdenum;
 import static gregtech.api.enums.Materials.Naquadah;
 import static gregtech.api.enums.Materials.Naquadria;
@@ -179,9 +175,9 @@ public class MaterialsInit1 {
 
         Materials.Methane = loadMethane();
         Materials.CarbonDioxide = loadCarbonDioxide();
+        Materials.NobleGases = loadNobleGases();
 
         // spotless:off
-        Materials.NobleGases              = new Materials( 496, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "NobleGases"              ,   "Noble Gases"                   ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(CarbonDioxide,21),new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1))).setHasCorrespondingGas(true);
         Materials.Air                     = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "Air"                     ,   "Air"                           ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
         Materials.LiquidAir               = new Materials( 495, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidAir"               ,   "Liquid Air"                    ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
         Materials.LiquidNitrogen          = new Materials( 494, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidNitrogen"          ,   "Liquid Nitrogen"               ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Collections.singletonList(new MaterialStack(Nitrogen, 1)));
@@ -5686,6 +5682,25 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1)
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial()
+            .setHasCorrespondingGas(true);
+    }
+
+    private static Materials loadNobleGases() {
+        return new MaterialBuilder().setName("NobleGases")
+            .setDefaultLocalName("Noble Gases")
+            .setMetaItemSubID(496)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.CarbonDioxide, 21)
+            .addMaterial(Materials.Helium, 9)
+            .addMaterial(Materials.Methane, 3)
+            .addMaterial(Materials.Deuterium, 1)
             .constructMaterial()
             .setHasCorrespondingGas(true);
     }
