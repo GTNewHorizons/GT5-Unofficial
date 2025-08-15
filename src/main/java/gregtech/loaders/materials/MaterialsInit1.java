@@ -174,53 +174,7 @@ public class MaterialsInit1 {
         loadRandom();
         loadDontCare();
         loadUnknownComponents();
-
-        Materials.Antimatter = loadAntimatter();
-        Materials.AdvancedGlue = loadAdvancedGlue();
-        Materials.Biomass = loadBiomass();
-        Materials.CharcoalByproducts = loadCharcoalByproducts();
-        Materials.Cheese = loadCheese();
-        Materials.Chili = loadChili();
-        Materials.Chocolate = loadChocolate();
-        Materials.Cluster = loadCluster();
-        Materials.CoalFuel = loadCoalFuel();
-        Materials.Cocoa = loadCocoa();
-        Materials.Coffee = loadCoffee();
-        Materials.Creosote = loadCreosote();
-        Materials.Ethanol = loadEthanol();
-        Materials.FishOil = loadFishOil();
-        Materials.FermentedBiomass = loadFermentedBiomass();
-        Materials.Fuel = loadFuel();
-        Materials.Glue = loadGlue();
-        Materials.Gunpowder = loadGunpowder();
-        Materials.FryingOilHot = loadFryingOilHot();
-        Materials.Honey = loadHoney();
-        Materials.Leather = loadLeather();
-        Materials.Lubricant = loadLubricant();
-        Materials.McGuffium239 = loadMcGuffium239();
-        Materials.MeatRaw = loadMeatRaw();
-        Materials.MeatCooked = loadMeatCooked();
-        Materials.Milk = loadMilk();
-        Materials.Mud = loadMud();
-        Materials.Oil = loadOil();
-        Materials.Paper = loadPaper();
-        Materials.Peat = loadPeat();
-        Materials.RareEarth = loadRareEarth();
-        Materials.Red = loadRed();
-        Materials.Reinforced = loadReinforced();
-        Materials.SeedOil = loadSeedOil();
-        Materials.SeedOilHemp = loadSeedOilHemp();
-        Materials.SeedOilLin = loadSeedOilLin();
-        Materials.Stone = loadStone();
-        Materials.TNT = loadTNT();
-        Materials.Unstable = loadUnstable();
-        Materials.Unstableingot = loadUnstableingot();
-        Materials.Vinegar = loadVinegar();
-        Materials.Wheat = loadWheat();
-        Materials.WoodGas = loadWoodGas();
-        Materials.WoodTar = loadWoodTar();
-        Materials.WoodVinegar = loadWoodVinegar();
-        Materials.WeedEX9000 = loadWeedEX9000();
+        loadNotExact();
 
         // spotless:off
         Materials.AluminiumBrass          = new Materials(  -1, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2          |64          , 255, 255, 255,   0,   "AluminiumBrass"          ,   "Aluminium Brass"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
@@ -5032,6 +4986,55 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .constructMaterial();
+    }
+
+    private static void loadNotExact() {
+        Materials.Antimatter = loadAntimatter();
+        Materials.AdvancedGlue = loadAdvancedGlue();
+        Materials.Biomass = loadBiomass();
+        Materials.CharcoalByproducts = loadCharcoalByproducts();
+        Materials.Cheese = loadCheese();
+        Materials.Chili = loadChili();
+        Materials.Chocolate = loadChocolate();
+        Materials.Cluster = loadCluster();
+        Materials.CoalFuel = loadCoalFuel();
+        Materials.Cocoa = loadCocoa();
+        Materials.Coffee = loadCoffee();
+        Materials.Creosote = loadCreosote();
+        Materials.Ethanol = loadEthanol();
+        Materials.FishOil = loadFishOil();
+        Materials.FermentedBiomass = loadFermentedBiomass();
+        Materials.Fuel = loadFuel();
+        Materials.Glue = loadGlue();
+        Materials.Gunpowder = loadGunpowder();
+        Materials.FryingOilHot = loadFryingOilHot();
+        Materials.Honey = loadHoney();
+        Materials.Leather = loadLeather();
+        Materials.Lubricant = loadLubricant();
+        Materials.McGuffium239 = loadMcGuffium239();
+        Materials.MeatRaw = loadMeatRaw();
+        Materials.MeatCooked = loadMeatCooked();
+        Materials.Milk = loadMilk();
+        Materials.Mud = loadMud();
+        Materials.Oil = loadOil();
+        Materials.Paper = loadPaper();
+        Materials.Peat = loadPeat();
+        Materials.RareEarth = loadRareEarth();
+        Materials.Red = loadRed();
+        Materials.Reinforced = loadReinforced();
+        Materials.SeedOil = loadSeedOil();
+        Materials.SeedOilHemp = loadSeedOilHemp();
+        Materials.SeedOilLin = loadSeedOilLin();
+        Materials.Stone = loadStone();
+        Materials.TNT = loadTNT();
+        Materials.Unstable = loadUnstable();
+        Materials.Unstableingot = loadUnstableingot();
+        Materials.Vinegar = loadVinegar();
+        Materials.Wheat = loadWheat();
+        Materials.WoodGas = loadWoodGas();
+        Materials.WoodTar = loadWoodTar();
+        Materials.WoodVinegar = loadWoodVinegar();
+        Materials.WeedEX9000 = loadWeedEX9000();
     }
 
     private static Materials loadAntimatter() {
