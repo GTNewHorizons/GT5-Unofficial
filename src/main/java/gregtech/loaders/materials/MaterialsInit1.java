@@ -191,9 +191,9 @@ public class MaterialsInit1 {
         Materials.FishOil = loadFishOil();
         Materials.FermentedBiomass = loadFermentedBiomass();
         Materials.Fuel = loadFuel();
+        Materials.Glue = loadGlue();
 
         // spotless:off
-        Materials.Glue                    = new Materials( 726, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "Glue"                    ,   "Refined Glue"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 2)));
         Materials.Gunpowder               = new Materials( 800, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 128, 128, 128,   0,   "Gunpowder"               ,   "Gunpowder"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
         Materials.FryingOilHot            = new Materials( 727, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "FryingOilHot"            ,   "Hot Frying Oil"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
         Materials.Honey                   = new Materials( 725, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 210, 200,   0,   0,   "Honey"                   ,   "Honey"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
@@ -5213,6 +5213,18 @@ public class MaterialsInit1 {
             .setRGB(0xffff00)
             .addCell()
             .setFuelPower(480)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlue() {
+        return new MaterialBuilder().setName("Glue")
+            .setDefaultLocalName("Refined Glue")
+            .setMetaItemSubID(726)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc8c400)
+            .addCell()
+            .addAspect(TCAspects.LIMUS, 2)
             .constructMaterial();
     }
 
