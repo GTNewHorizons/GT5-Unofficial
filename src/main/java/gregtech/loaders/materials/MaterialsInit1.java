@@ -194,9 +194,9 @@ public class MaterialsInit1 {
         Materials.Glue = loadGlue();
         Materials.Gunpowder = loadGunpowder();
         Materials.FryingOilHot = loadFryingOilHot();
+        Materials.Honey = loadHoney();
 
         // spotless:off
-        Materials.Honey                   = new Materials( 725, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 210, 200,   0,   0,   "Honey"                   ,   "Honey"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Leather                 = new Materials(  -1, TextureSet.SET_ROUGH             ,   1.0F,      0,  0, 1                         , 150, 150,  80, 127,   "Leather"                 ,   "Leather"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
         Materials.Lubricant               = new Materials( 724, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 196,   0,   0,   "Lubricant"               ,   "Lubricant"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
         Materials.McGuffium239            = new Materials( 999, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200,  50, 150,   0,   "McGuffium239"            ,   "Mc Guffium 239"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 8), new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 8), new TCAspects.TC_AspectStack(TCAspects.SPIRITUS, 8), new TCAspects.TC_AspectStack(TCAspects.AURAM, 8), new TCAspects.TC_AspectStack(TCAspects.VITIUM, 8), new TCAspects.TC_AspectStack(TCAspects.RADIO, 8), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 8), new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8)));
@@ -5251,6 +5251,17 @@ public class MaterialsInit1 {
             .addCell()
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHoney() {
+        return new MaterialBuilder().setName("Honey")
+            .setDefaultLocalName("Honey")
+            .setMetaItemSubID(725)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xd2c800)
+            .addCell()
             .constructMaterial();
     }
 
