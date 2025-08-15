@@ -187,9 +187,9 @@ public class MaterialsInit1 {
         Materials.Ash = loadAsh();
         Materials.BandedIron = loadBandedIron();
         Materials.BatteryAlloy = loadBatteryAlloy();
+        Materials.BlueTopaz = loadBlueTopaz();
 
         // spotless:off
-        Materials.BlueTopaz               = new Materials( 513, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          ,   0,   0, 255, 127,   "BlueTopaz"               ,   "Blue Topaz"                    ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
         Materials.Bone                    = new Materials( 806, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 250, 250, 250,   0,   "Bone"                    ,   "Bone"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Collections.singletonList(new MaterialStack(Calcium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MORTUUS, 2), new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1)));
         Materials.Brass                   = new Materials( 301, TextureSet.SET_METALLIC          ,   7.0F,     96,  1, 1|2          |64|128      , 255, 180,   0,   0,   "Brass"                   ,   "Brass"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Bronze                  = new Materials( 300, TextureSet.SET_METALLIC          ,   6.0F,    192,  2, 1|2          |64|128      , 255, 128,   0,   0,   "Bronze"                  ,   "Bronze"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Copper, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
@@ -5902,6 +5902,30 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Lead, 4)
             .addMaterial(Materials.Antimony, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlueTopaz() {
+        return new MaterialBuilder().setName("BlueTopaz")
+            .setDefaultLocalName("Blue Topaz")
+            .setMetaItemSubID(513)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x7f0000ff)
+            .setToolSpeed(7.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 4)
             .constructMaterial();
     }
 
