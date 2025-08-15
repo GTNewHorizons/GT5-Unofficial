@@ -181,9 +181,9 @@ public class MaterialsInit1 {
         Materials.SiliconDioxide = loadSiliconDioxide();
         Materials.Jasper = loadJasper();
         Materials.Almandine = loadAlmandine();
+        Materials.Andradite = loadAndradite();
 
         // spotless:off
-        Materials.Andradite               = new Materials( 821, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,   0,   0,   "Andradite"               ,   "Andradite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.AnnealedCopper          = new Materials( 345, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2             |128      , 255, 120,  20,   0,   "AnnealedCopper"          ,   "Annealed Copper"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Collections.singletonList(new MaterialStack(Copper, 1)));
         Materials.Asbestos                = new Materials( 946, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 230,   0,   "Asbestos"                ,   "Asbestos"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Mg3Si2O5(OH)4
         Materials.Ash                     = new Materials( 815, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 150, 150, 150,   0,   "Ash"                     ,   "Ashes"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1)));
@@ -5807,6 +5807,23 @@ public class MaterialsInit1 {
             .addOreItems()
             .addMaterial(Materials.Aluminium, 2)
             .addMaterial(Materials.Iron, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadAndradite() {
+        return new MaterialBuilder().setName("Andradite")
+            .setDefaultLocalName("Andradite")
+            .setMetaItemSubID(821)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0x967800)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Calcium, 3)
+            .addMaterial(Materials.Iron, 2)
             .addMaterial(Materials.Silicon, 3)
             .addMaterial(Materials.Oxygen, 12)
             .constructMaterial();
