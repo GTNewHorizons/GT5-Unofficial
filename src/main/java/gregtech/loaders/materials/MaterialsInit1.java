@@ -180,9 +180,9 @@ public class MaterialsInit1 {
         Materials.Biomass = loadBiomass();
         Materials.CharcoalByproducts = loadCharcoalByproducts();
         Materials.Cheese = loadCheese();
+        Materials.Chili = loadChili();
 
         // spotless:off
-        Materials.Chili                   = new Materials( 895, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Chili"                   ,   "Chili"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Chocolate               = new Materials( 886, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Chocolate"               ,   "Chocolate"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Cluster                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255, 127,   "Cluster"                 ,   "Cluster"                       ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       );
         Materials.CoalFuel                = new Materials( 710, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  50,  50,  70,   0,   "CoalFuel"                ,   "Coalfuel"                      ,    0,      16,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
@@ -5084,6 +5084,17 @@ public class MaterialsInit1 {
             .addDustItems()
             .addOreItems()
             .setMeltingPoint(320)
+            .constructMaterial();
+    }
+
+    private static Materials loadChili() {
+        return new MaterialBuilder().setName("Chili")
+            .setDefaultLocalName("Chili")
+            .setMetaItemSubID(895)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
+            .addDustItems()
             .constructMaterial();
     }
 
