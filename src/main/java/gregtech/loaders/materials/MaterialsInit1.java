@@ -192,9 +192,9 @@ public class MaterialsInit1 {
         Materials.Brass = loadBrass();
         Materials.Bronze = loadBronze();
         Materials.BrownLimonite = loadBrownLimonite();
+        Materials.Calcite = loadCalcite();
 
         // spotless:off
-        Materials.Calcite                 = new Materials( 823, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 250, 230, 220,   0,   "Calcite"                 ,   "Calcite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)));
         Materials.Cassiterite             = new Materials( 824, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 220, 220, 220,   0,   "Cassiterite"             ,   "Cassiterite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
         Materials.CassiteriteSand         = new Materials( 937, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 220, 220, 220,   0,   "CassiteriteSand"         ,   "Cassiterite Sand"              ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
         Materials.Chalcopyrite            = new Materials( 855, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 160, 120,  40,   0,   "Chalcopyrite"            ,   "Chalcopyrite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)));
@@ -6001,6 +6001,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalcite() {
+        return new MaterialBuilder().setName("Calcite")
+            .setDefaultLocalName("Calcite")
+            .setMetaItemSubID(823)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xfae6dc)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
