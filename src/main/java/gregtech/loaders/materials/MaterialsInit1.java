@@ -226,9 +226,9 @@ public class MaterialsInit1 {
         Materials.Magnesiumchloride = loadMagnesiumchloride();
         Materials.Invar = loadInvar();
         Materials.Kanthal = loadKanthal();
+        Materials.Lazurite = loadLazurite();
 
         // spotless:off
-        Materials.Lazurite                = new Materials( 524, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   , 100, 120, 255,   0,   "Lazurite"                ,   "Lazurite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Aluminium, 6), new MaterialStack(Silicon, 6), new MaterialStack(Calcium, 8), new MaterialStack(Sodium, 8)));
         Materials.Magnalium               = new Materials( 313, TextureSet.SET_DULL              ,   6.0F,    256,  2, 1|2          |64|128      , 200, 190, 255,   0,   "Magnalium"               ,   "Magnalium"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Aluminium, 2)));
         Materials.Magnesite               = new Materials( 908, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 250, 250, 180,   0,   "Magnesite"               ,   "Magnesite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)));
         Materials.Magnetite               = new Materials( 870, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   ,  30,  30,  30,   0,   "Magnetite"               ,   "Magnetite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Iron, 3), new MaterialStack(Oxygen, 4)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
@@ -6590,6 +6590,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Aluminium, 1)
             .addMaterial(Materials.Chrome, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLazurite() {
+        return new MaterialBuilder().setName("Lazurite")
+            .setDefaultLocalName("Lazurite")
+            .setMetaItemSubID(524)
+            .setIconSet(TextureSet.SET_LAPIS)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x6478ff)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Aluminium, 6)
+            .addMaterial(Materials.Silicon, 6)
+            .addMaterial(Materials.Calcium, 8)
+            .addMaterial(Materials.Sodium, 8)
             .constructMaterial();
     }
 
