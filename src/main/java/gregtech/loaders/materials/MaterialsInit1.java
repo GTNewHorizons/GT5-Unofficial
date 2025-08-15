@@ -177,9 +177,9 @@ public class MaterialsInit1 {
 
         Materials.Antimatter = loadAntimatter();
         Materials.AdvancedGlue = loadAdvancedGlue();
+        Materials.Biomass = loadBiomass();
 
         // spotless:off
-        Materials.Biomass                 = new Materials( 704, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0, 255,   0,   0,   "Biomass"        	     ,   "Forestry Biomass"                ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.CharcoalByproducts      = new MaterialBuilder(675, TextureSet.SET_FLUID             ,                                                                                                     "Charcoal Byproducts").addCell().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Cheese                  = new Materials( 894, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1    |8                   , 255, 255,   0,   0,   "Cheese"                  ,   "Cheese"                        ,    0,       0,        320,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Chili                   = new Materials( 895, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Chili"                   ,   "Chili"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
@@ -5051,6 +5051,19 @@ public class MaterialsInit1 {
             .setRGB(255, 255, 185)
             .setColor(Dyes.dyeYellow)
             .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 5)))
+            .constructMaterial();
+    }
+
+    private static Materials loadBiomass() {
+        return new MaterialBuilder().setName("Biomass")
+            .setDefaultLocalName("Forestry Biomass")
+            .setMetaItemSubID(704)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x00ff00)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(8)
             .constructMaterial();
     }
 
