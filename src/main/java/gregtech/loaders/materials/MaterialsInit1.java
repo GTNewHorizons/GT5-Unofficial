@@ -221,9 +221,9 @@ public class MaterialsInit1 {
         Materials.HolyWater = loadHolyWater();
         Materials.Ice = loadIce();
         Materials.Ilmenite = loadIlmenite();
+        Materials.Rutile = loadRutile();
 
         // spotless:off
-        Materials.Rutile                  = new Materials( 375, TextureSet.SET_GEM_HORIZONTAL    ,   1.0F,      0,  2, 1    |8                   , 212,  13,  92,   0,   "Rutile"                  ,   "Rutile"                        ,    0,       0,         -1,    0, false, false,   1,   2,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 2)));
         Materials.Bauxite                 = new Materials( 822, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "Bauxite"                 ,   "Bauxite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Rutile, 2), new MaterialStack(Aluminium, 16), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 11)));
         Materials.Titaniumtetrachloride   = new Materials( 376, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 212,  13,  92,   0,   "Titaniumtetrachloride"   ,   "Titaniumtetrachloride"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Chlorine, 4)));
         Materials.Magnesiumchloride       = new Materials( 377, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|16                      , 212,  13,  92,   0,   "Magnesiumchloride"       ,   "Magnesiumchloride"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Chlorine, 2)));
@@ -6486,6 +6486,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Titanium, 1)
             .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadRutile() {
+        return new MaterialBuilder().setName("Rutile")
+            .setDefaultLocalName("Rutile")
+            .setMetaItemSubID(375)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xd40d5c)
+            .addDustItems()
+            .addOreItems()
+            .setDensityMultiplier(2)
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
