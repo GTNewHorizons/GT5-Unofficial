@@ -215,9 +215,9 @@ public class MaterialsInit1 {
         Materials.TNT = loadTNT();
         Materials.Unstable = loadUnstable();
         Materials.Unstableingot = loadUnstableingot();
+        Materials.Vinegar = loadVinegar();
 
         // spotless:off
-        Materials.Vinegar                 = new MaterialBuilder(690, TextureSet.SET_FLUID             ,                                                                                                     "Vinegar").setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Wheat                   = new Materials( 881, TextureSet.SET_POWDER            ,   1.0F,      0,  0, 1                         , 255, 255, 196,   0,   "Wheat"                   ,   "Wheat"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MESSIS, 2)));
         Materials.WoodGas                 = new MaterialBuilder(660, TextureSet.SET_FLUID             ,                                                                                                     "Wood Gas").addCell().addGas().setRGB(222, 205, 135).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).constructMaterial();
         Materials.WoodTar                 = new MaterialBuilder(662, TextureSet.SET_FLUID             ,                                                                                                     "Wood Tar").addCell().addFluid().setRGB(40, 23, 11).setColor(Dyes.dyeBrown).constructMaterial();
@@ -5512,6 +5512,11 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fffffff)
             .addAspect(TCAspects.PERDITIO, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadVinegar() {
+        return new MaterialBuilder(690, TextureSet.SET_FLUID, "Vinegar").setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
 
