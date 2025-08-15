@@ -185,9 +185,9 @@ public class MaterialsInit1 {
         Materials.AnnealedCopper = loadAnnealedCopper();
         Materials.Asbestos = loadAsbestos();
         Materials.Ash = loadAsh();
+        Materials.BandedIron = loadBandedIron();
 
         // spotless:off
-        Materials.BandedIron              = new Materials( 917, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 145,  90,  90,   0,   "BandedIron"              ,   "Banded Iron"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Iron, 2), new MaterialStack(Oxygen, 3)));
         Materials.BatteryAlloy            = new Materials( 315, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 156, 124, 160,   0,   "BatteryAlloy"            ,   "Battery Alloy"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Lead, 4), new MaterialStack(Antimony, 1)));
         Materials.BlueTopaz               = new Materials( 513, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          ,   0,   0, 255, 127,   "BlueTopaz"               ,   "Blue Topaz"                    ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
         Materials.Bone                    = new Materials( 806, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 250, 250, 250,   0,   "Bone"                    ,   "Bone"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Collections.singletonList(new MaterialStack(Calcium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MORTUUS, 2), new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1)));
@@ -5872,6 +5872,21 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.PERDITIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBandedIron() {
+        return new MaterialBuilder().setName("BandedIron")
+            .setDefaultLocalName("Banded Iron")
+            .setMetaItemSubID(917)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x915a5a)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 2)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
