@@ -179,9 +179,9 @@ public class MaterialsInit1 {
         Materials.AluminiumBrass = loadAluminiumBrass();
         Materials.Osmiridium = loadOsmiridium();
         Materials.Sunnarium = loadSunnarium();
+        Materials.Endstone = loadEndstone();
 
         // spotless:off
-        Materials.Endstone                = new Materials( 808, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Endstone"                ,   "Endstone"                      ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeYellow      );
         Materials.Netherrack              = new Materials( 807, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Netherrack"              ,   "Netherrack"                    ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeRed         );
         Materials.SoulSand                = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 255, 255, 255,   0,   "SoulSand"                ,   "Soulsand"                      ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeBrown       );
 
@@ -5622,6 +5622,16 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(4200)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadEndstone() {
+        return new MaterialBuilder().setName("Endstone")
+            .setDefaultLocalName("Endstone")
+            .setMetaItemSubID(808)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
             .constructMaterial();
     }
 
