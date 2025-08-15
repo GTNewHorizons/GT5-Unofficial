@@ -203,9 +203,9 @@ public class MaterialsInit1 {
         Materials.Milk = loadMilk();
         Materials.Mud = loadMud();
         Materials.Oil = loadOil();
+        Materials.Paper = loadPaper();
 
         // spotless:off
-        Materials.Paper                   = new Materials( 879, TextureSet.SET_PAPER             ,   1.0F,      0,  0, 1                         , 250, 250, 250,   0,   "Paper"                   ,   "Paper"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1)));
         Materials.Peat                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Peat"                    ,   "Peat"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.RareEarth               = new Materials( 891, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 128, 128, 100,   0,   "RareEarth"               ,   "Rare Earth"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
         Materials.Red                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255,   0,   0,   0,   "Red"                     ,   "Red"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
@@ -5361,6 +5361,18 @@ public class MaterialsInit1 {
             .addCell()
             .setFuelType(3)
             .setFuelPower(20)
+            .constructMaterial();
+    }
+
+    private static Materials loadPaper() {
+        return new MaterialBuilder().setName("Paper")
+            .setDefaultLocalName("Paper")
+            .setMetaItemSubID(879)
+            .setIconSet(TextureSet.SET_PAPER)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addAspect(TCAspects.COGNITIO, 1)
             .constructMaterial();
     }
 
