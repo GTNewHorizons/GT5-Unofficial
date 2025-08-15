@@ -184,9 +184,9 @@ public class MaterialsInit1 {
         Materials.Andradite = loadAndradite();
         Materials.AnnealedCopper = loadAnnealedCopper();
         Materials.Asbestos = loadAsbestos();
+        Materials.Ash = loadAsh();
 
         // spotless:off
-        Materials.Ash                     = new Materials( 815, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 150, 150, 150,   0,   "Ash"                     ,   "Ashes"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1)));
         Materials.BandedIron              = new Materials( 917, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 145,  90,  90,   0,   "BandedIron"              ,   "Banded Iron"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Iron, 2), new MaterialStack(Oxygen, 3)));
         Materials.BatteryAlloy            = new Materials( 315, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 156, 124, 160,   0,   "BatteryAlloy"            ,   "Battery Alloy"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Lead, 4), new MaterialStack(Antimony, 1)));
         Materials.BlueTopaz               = new Materials( 513, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          ,   0,   0, 255, 127,   "BlueTopaz"               ,   "Blue Topaz"                    ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
@@ -5859,6 +5859,19 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silicon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Oxygen, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadAsh() {
+        return new MaterialBuilder().setName("Ash")
+            .setDefaultLocalName("Ashes")
+            .setMetaItemSubID(815)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0x969696)
+            .addDustItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.PERDITIO, 1)
             .constructMaterial();
     }
 
