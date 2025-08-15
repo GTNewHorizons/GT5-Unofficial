@@ -212,9 +212,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PurpleAlloy;
     public static Materials InfusedTeslatite;
 
-    /**
-     * Unknown Material Components. Dead End Section.
-     */
+    // Unknown Material Components. Dead End Section.
     public static Materials Adamantium;
     public static Materials Adamite;
     public static Materials Adluorite;
@@ -357,9 +355,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 8)));
     public static Materials Advanced                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 4)));
 
-    /**
-     * Tiered materials, primarily Circuitry, Batteries and other Technical things
-     */
+    // Tiered materials, primarily Circuitry, Batteries and other Technical things
     public static Materials ULV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Primitive"               ,   "Primitive"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 1)));
     public static Materials LV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Basic"                   ,   "Basic"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 2)));
     public static Materials MV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Good"                    ,   "Good"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 3)));
@@ -413,12 +409,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Deprecated
     public static Materials Transcendent = Materials.MAX;
 
-
-
-
-    /**
-     * Not possible to determine exact Components
-     */
+    // Not possible to determine exact Components
     public static Materials Antimatter;
     public static Materials Protomatter;
     public static Materials AdvancedGlue;
@@ -467,18 +458,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials WoodVinegar;
     public static Materials WeedEX9000;
 
-    /**
-     * TODO: This
-     */
+    // TODO: this
     public static Materials AluminiumBrass;
     public static Materials Osmiridium;
     public static Materials Sunnarium;
     public static Materials Endstone;
     public static Materials Netherrack;
     public static Materials SoulSand;
-    /**
-     * First Degree Compounds
-     */
+
+    // First Degree Compounds
     public static Materials Methane;
     public static Materials CarbonDioxide;
     public static Materials NobleGases;
@@ -677,7 +665,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials IronIIIChloride;
     public static Materials LifeEssence;
 
-    //Roasted Ore Dust
+    // Roasted Ore Dust
     public static Materials RoastedCopper;
     public static Materials RoastedAntimony;
     public static Materials RoastedIron;
@@ -687,7 +675,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RoastedArsenic;
     public static Materials RoastedLead;
 
-    //Silicon Line
+    // Silicon Line
     public static Materials SiliconSG;
     public static Materials CalciumDisilicide;
     public static Materials SiliconTetrafluoride;
@@ -723,9 +711,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials YellowLimonite;
     public static Materials YttriumBariumCuprate;
 
-    /**
-     * Second Degree Compounds
-     */
+    // Second Degree Compounds
     public static Materials WoodSealed;
     public static Materials LiveRoot;
     public static Materials IronWood;
