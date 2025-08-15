@@ -209,9 +209,9 @@ public class MaterialsInit1 {
         Materials.Cupronickel = loadCupronickel();
         Materials.DarkAsh = loadDarkAsh();
         Materials.DeepIron = loadDeepIron();
+        Materials.Diamond = loadDiamond();
 
         // spotless:off
-        Materials.Diamond                 = new Materials( 500, TextureSet.SET_DIAMOND           ,   8.0F,   1280,  4, 1  |4|8      |64|128      , 200, 255, 255, 127,   "Diamond"                 ,   "Diamond"                       ,    0,       0,         -1,    0, false,  true,   5,  64,   1, Dyes.dyeWhite       , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4)));
         Materials.Electrum                = new Materials( 303, TextureSet.SET_SHINY             ,  12.0F,     64,  2, 1|2  |8      |64|128      , 255, 255, 100,   0,   "Electrum"                ,   "Electrum"                      ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Silver, 1), new MaterialStack(Gold, 1)));
         Materials.Emerald                 = new Materials( 501, TextureSet.SET_EMERALD           ,   7.0F,    256,  4, 1  |4|8      |64          ,  80, 255,  80, 127,   "Emerald"                 ,   "Emerald"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeGreen       , 0, Arrays.asList(new MaterialStack(Beryllium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 6), new MaterialStack(Oxygen, 18)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5)));
         Materials.FreshWater              = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "FreshWater"              ,   "Fresh Water"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
@@ -6277,6 +6277,29 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiamond() {
+        return new MaterialBuilder().setName("Diamond")
+            .setDefaultLocalName("Diamond")
+            .setMetaItemSubID(500)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7fc8ffff)
+            .setToolSpeed(8.0f)
+            .setDurability(1280)
+            .setToolQuality(4)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setDensityMultiplier(64)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.VITREUS, 3)
+            .addAspect(TCAspects.LUCRUM, 4)
             .constructMaterial();
     }
 
