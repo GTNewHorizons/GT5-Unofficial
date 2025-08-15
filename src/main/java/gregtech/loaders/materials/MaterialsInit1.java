@@ -179,9 +179,9 @@ public class MaterialsInit1 {
         Materials.NatruralGas = loadNatruralGas(); // Nat"r"uralGas lol
         Materials.SulfuricGas = loadSulfuricGas();
         Materials.Gas = loadGas();
+        Materials.SulfuricNaphtha = loadSulfuricNaphtha();
 
         // spotless:off
-        Materials.SulfuricNaphtha         = new Materials( 736, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricNaphtha"         ,   "Sulfuric Naphtha"              ,    1,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.SulfuricLightFuel       = new Materials( 737, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricLightFuel"       ,   "Sulfuric Light Fuel"           ,    0,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.SulfuricHeavyFuel       = new Materials( 738, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricHeavyFuel"       ,   "Sulfuric Heavy Fuel"           ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Naphtha                 = new Materials( 739, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Naphtha"                 ,   "Naphtha"                       ,    1,     220,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
@@ -7328,6 +7328,19 @@ public class MaterialsInit1 {
             .setFuelPower(160)
             .constructMaterial()
             .setCanBeCracked(true);
+    }
+
+    private static Materials loadSulfuricNaphtha() {
+        return new MaterialBuilder().setName("SulfuricNaphtha")
+            .setDefaultLocalName("Sulfuric Naphtha")
+            .setMetaItemSubID(736)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuelType(1)
+            .setFuelPower(40)
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
