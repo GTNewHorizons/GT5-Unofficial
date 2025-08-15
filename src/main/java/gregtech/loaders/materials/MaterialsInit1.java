@@ -248,9 +248,9 @@ public class MaterialsInit1 {
         Materials.Powellite = loadPowellite();
         Materials.Pumice = loadPumice();
         Materials.Pyrite = loadPyrite();
+        Materials.Pyrolusite = loadPyrolusite();
 
         // spotless:off
-        Materials.Pyrolusite              = new Materials( 943, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 150, 150, 170,   0,   "Pyrolusite"              ,   "Pyrolusite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Oxygen, 2)));
         Materials.Pyrope                  = new Materials( 835, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 120,  50, 100,   0,   "Pyrope"                  ,   "Pyrope"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.RockSalt                = new Materials( 944, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 240, 200, 200,   0,   "RockSalt"                ,   "Rock Salt"                     ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Chlorine, 1)));
         Materials.Rubber                  = new Materials( 880, TextureSet.SET_SHINY             ,   1.5F,     32,  0, 1|2          |64|128      ,   0,   0,   0,   0,   "Rubber"                  ,   "Rubber"                        ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
@@ -6988,6 +6988,21 @@ public class MaterialsInit1 {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Sulfur, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrolusite() {
+        return new MaterialBuilder().setName("Pyrolusite")
+            .setDefaultLocalName("Pyrolusite")
+            .setMetaItemSubID(943)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0x9696aa)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Manganese, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
