@@ -176,10 +176,9 @@ public class MaterialsInit1 {
         Materials.Sodalite = loadSodalite();
         Materials.SodiumPersulfate = loadSodiumPersulfate();
         Materials.SodiumSulfide = loadSodiumSulfide();
+        Materials.HydricSulfide = loadHydricSulfide();
 
         // spotless:off
-        Materials.HydricSulfide           = new Materials( 460, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "HydricSulfide"           ,   "Hydrogen Sulfide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)));
-
         Materials.OilExtraHeavy           = new Materials( 570, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilExtraHeavy"           ,   "Very Heavy Oil"                ,    3,      45,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.OilHeavy                = new Materials( 730, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilHeavy"                ,   "Heavy Oil"                     ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.OilMedium               = new Materials( 731, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilMedium"               ,   "Raw Oil"                       ,    3,      30,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
@@ -7222,6 +7221,18 @@ public class MaterialsInit1 {
             .addDustItems()
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHydricSulfide() {
+        return new MaterialBuilder().setName("HydricSulfide")
+            .setDefaultLocalName("Hydrogen Sulfide")
+            .setMetaItemSubID(460)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Sulfur, 1)
             .constructMaterial();
     }
