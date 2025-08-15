@@ -199,9 +199,9 @@ public class MaterialsInit1 {
         Materials.Massicot = loadMassicot();
         Materials.ArsenicTrioxide = loadArsenicTrioxide();
         Materials.CobaltOxide = loadCobaltOxide();
+        Materials.Zincite = loadZincite();
 
         // spotless:off
-        Materials.Zincite                   = new MaterialBuilder(617, TextureSet.SET_DULL       ,                                                                                                     "Zincite").addDustItems().setRGB(255, 255, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.AntimonyTrioxide          = new MaterialBuilder(618, TextureSet.SET_DULL       ,                                                                                                     "Antimony Trioxide").addDustItems().setRGB(230, 230, 240).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.CupricOxide               = new MaterialBuilder(619, TextureSet.SET_DULL       ,                                                                                                     "Cupric Oxide").addDustItems().setRGB(15, 15, 15).setColor(Dyes.dyeBlack).setMeltingPoint(1599).setMaterialList(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Ferrosilite               = new MaterialBuilder(620, TextureSet.SET_DULL       ,                                                                                                     "Ferrosilite").addDustItems().setRGB(151, 99, 42).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
@@ -7553,6 +7553,15 @@ public class MaterialsInit1 {
             .setRGB(102, 128, 0)
             .setColor(Dyes.dyeGreen)
             .setMaterialList(new MaterialStack(Cobalt, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadZincite() {
+        return new MaterialBuilder(617, TextureSet.SET_DULL, "Zincite").addDustItems()
+            .setRGB(255, 255, 245)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
