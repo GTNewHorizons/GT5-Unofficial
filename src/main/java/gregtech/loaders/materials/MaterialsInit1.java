@@ -218,9 +218,9 @@ public class MaterialsInit1 {
         Materials.Vinegar = loadVinegar();
         Materials.Wheat = loadWheat();
         Materials.WoodGas = loadWoodGas();
+        Materials.WoodTar = loadWoodTar();
 
         // spotless:off
-        Materials.WoodTar                 = new MaterialBuilder(662, TextureSet.SET_FLUID             ,                                                                                                     "Wood Tar").addCell().addFluid().setRGB(40, 23, 11).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.WoodVinegar             = new MaterialBuilder(661, TextureSet.SET_FLUID             ,                                                                                                     "Wood Vinegar").addCell().addFluid().setRGB(212, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.WeedEX9000              = new MaterialBuilder(242, TextureSet.SET_FLUID             ,                                                                                                     "Weed-EX 9000").addFluid().setRGB(64, 224, 86).setColor(Dyes.dyeGreen).constructMaterial();
 
@@ -5539,6 +5539,14 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBrown)
             .setFuelType(MaterialBuilder.GAS)
             .setFuelPower(24)
+            .constructMaterial();
+    }
+
+    private static Materials loadWoodTar() {
+        return new MaterialBuilder(662, TextureSet.SET_FLUID, "Wood Tar").addCell()
+            .addFluid()
+            .setRGB(40, 23, 11)
+            .setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
 
