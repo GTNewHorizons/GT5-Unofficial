@@ -181,10 +181,9 @@ public class MaterialsInit1 {
         Materials.Sunnarium = loadSunnarium();
         Materials.Endstone = loadEndstone();
         Materials.Netherrack = loadNetherrack();
+        Materials.SoulSand = loadSoulSand();
 
         // spotless:off
-        Materials.SoulSand                = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 255, 255, 255,   0,   "SoulSand"                ,   "Soulsand"                      ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeBrown       );
-
         Materials.Methane                 = new Materials( 715, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "Methane"                 ,   "Methane"                       ,    1,     104,         -1,    0, false, false,   3,   1,   1, Dyes.dyeMagenta     , 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4)));
         Materials.CarbonDioxide           = new Materials( 497, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "CarbonDioxide"           ,   "Carbon Dioxide"                ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 2))).setHasCorrespondingGas(true);
         Materials.NobleGases              = new Materials( 496, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "NobleGases"              ,   "Noble Gases"                   ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(CarbonDioxide,21),new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1))).setHasCorrespondingGas(true);
@@ -5642,6 +5641,15 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeRed)
             .setRGB(0xc80000)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSoulSand() {
+        return new MaterialBuilder().setName("SoulSand")
+            .setDefaultLocalName("Soulsand")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
             .addDustItems()
             .constructMaterial();
     }
