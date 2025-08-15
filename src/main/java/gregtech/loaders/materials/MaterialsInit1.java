@@ -187,9 +187,9 @@ public class MaterialsInit1 {
         Materials.Cocoa = loadCocoa();
         Materials.Coffee = loadCoffee();
         Materials.Creosote = loadCreosote();
+        Materials.Ethanol = loadEthanol();
 
         // spotless:off
-        Materials.Ethanol                 = new Materials( 706, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 128,   0,   0,   "Ethanol"                 ,   "Ethanol"                       ,    0,     192,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
         Materials.FishOil                 = new Materials( 711, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 196,   0,   0,   "FishOil"                 ,   "Fish Oil"                      ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2)));
         Materials.FermentedBiomass        = new MaterialBuilder(691, TextureSet.SET_FLUID             ,                                                                                                     "Fermented Biomass").addCell().addFluid().setRGB(68, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Fuel                    = new Materials( 708, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Fuel"                    ,   "Diesel"                        ,    0,     480,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
@@ -5161,6 +5161,24 @@ public class MaterialsInit1 {
             .addCell()
             .setFuelType(3)
             .setFuelPower(8)
+            .constructMaterial();
+    }
+
+    private static Materials loadEthanol() {
+        return new MaterialBuilder().setName("Ethanol")
+            .setDefaultLocalName("Ethanol")
+            .setMetaItemSubID(706)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .addCell()
+            .setFuelPower(192)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .addAspect(TCAspects.AQUA, 1)
             .constructMaterial();
     }
 
