@@ -186,9 +186,9 @@ public class MaterialsInit1 {
         Materials.CoalFuel = loadCoalFuel();
         Materials.Cocoa = loadCocoa();
         Materials.Coffee = loadCoffee();
+        Materials.Creosote = loadCreosote();
 
         // spotless:off
-        Materials.Creosote                = new Materials( 712, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 128,  64,   0,   0,   "Creosote"                ,   "Creosote"                      ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Ethanol                 = new Materials( 706, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 128,   0,   0,   "Ethanol"                 ,   "Ethanol"                       ,    0,     192,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
         Materials.FishOil                 = new Materials( 711, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 196,   0,   0,   "FishOil"                 ,   "Fish Oil"                      ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2)));
         Materials.FermentedBiomass        = new MaterialBuilder(691, TextureSet.SET_FLUID             ,                                                                                                     "Fermented Biomass").addCell().addFluid().setRGB(68, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
@@ -5148,6 +5148,19 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBrown)
             .setRGB(0x964b00)
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCreosote() {
+        return new MaterialBuilder().setName("Creosote")
+            .setDefaultLocalName("Creosote")
+            .setMetaItemSubID(712)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x804000)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(8)
             .constructMaterial();
     }
 
