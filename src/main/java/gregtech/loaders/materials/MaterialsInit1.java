@@ -201,9 +201,9 @@ public class MaterialsInit1 {
         Materials.MeatRaw = loadMeatRaw();
         Materials.MeatCooked = loadMeatCooked();
         Materials.Milk = loadMilk();
+        Materials.Mud = loadMud();
 
         // spotless:off
-        Materials.Mud                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Mud"                     ,   "Mud"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
         Materials.Oil                     = new Materials( 707, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "Oil"                     ,   "Oil"                           ,    3,      20,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Paper                   = new Materials( 879, TextureSet.SET_PAPER             ,   1.0F,      0,  0, 1                         , 250, 250, 250,   0,   "Paper"                   ,   "Paper"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1)));
         Materials.Peat                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Peat"                    ,   "Peat"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
@@ -5341,6 +5341,13 @@ public class MaterialsInit1 {
             .addDustItems()
             .addCell()
             .addAspect(TCAspects.SANO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMud() {
+        return new MaterialBuilder().setName("Mud")
+            .setDefaultLocalName("Mud")
+            .setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
 
