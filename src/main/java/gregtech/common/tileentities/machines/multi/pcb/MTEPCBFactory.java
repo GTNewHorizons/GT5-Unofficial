@@ -812,7 +812,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             mBioChamber.removeController(this);
         }
         if (mCoolingTower != null){
-            mBioChamber.removeController(this);
+            mCoolingTower.removeController(this);
         }
 
         super.onBlockDestroyed();
