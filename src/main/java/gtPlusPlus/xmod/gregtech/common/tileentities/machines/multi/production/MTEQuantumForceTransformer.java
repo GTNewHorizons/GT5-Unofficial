@@ -25,7 +25,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,7 +32,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -67,6 +65,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.SBRContextBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -831,7 +830,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int x, int y, int z, Block block, RenderBlocks renderer) {
+    public boolean render(SBRContextBase ctx) {
         Tessellator tes = Tessellator.instance;
         IIcon forceField = TexturesGtBlock.ForceField.getIcon();
         if (getBaseMetaTileEntity().isActive()) {
@@ -852,14 +851,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             //Corner 6: -2,  7     3 \             / 6
             //Corner 7:  3,  7        \           /
             //Corner 8:  7,  3         4 ------- 5
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 0, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 1, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 2, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 3, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 4, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 5, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 6, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 7, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 0, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 1, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 2, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 3, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 4, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 5, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 6, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY(), ctx.getZ() + zBaseOffset + 0.5, 7, minU, maxU, minV, maxV);
         }
         // Needs to be false to render the controller
         return false;
