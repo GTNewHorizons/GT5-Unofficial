@@ -4,8 +4,15 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.util.IGTHatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +53,11 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger> {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = TAE.getIndexFromPage(1, 12);
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -67,19 +78,29 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         .addElement(
             'C',
             ofChain(
-                ofHatchAdder(MTEAdvHeatExchanger::addColdFluidOutputToMachineList, CASING_INDEX, 2),
+                buildHatchAdder(MTEAdvHeatExchanger.class)
+                    .atLeast(AdvHEHatches.ColdOutputHatch)
+                        .dot(2)
+                            .casingIndex(CASING_INDEX)
+                                .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
         .addElement(
             'H',
             ofChain(
-                ofHatchAdder(MTEAdvHeatExchanger::addHotFluidInputToMachineList, CASING_INDEX, 3),
+                buildHatchAdder(MTEAdvHeatExchanger.class)
+                    .atLeast(AdvHEHatches.HotInputHatch)
+                        .dot(3)
+                            .casingIndex(CASING_INDEX)
+                                .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
         .addElement(
             'h',
             ofChain(
-                ofHatchAdder(MTEAdvHeatExchanger::addInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEAdvHeatExchanger::addOutputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEAdvHeatExchanger::addMaintenanceToMachineList, CASING_INDEX, 1),
+                buildHatchAdder(MTEAdvHeatExchanger.class)
+                    .atLeast(InputHatch, OutputHatch, Maintenance)
+                        .dot(1)
+                            .casingIndex(CASING_INDEX)
+                                .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
         .addElement(
             'c',
@@ -382,6 +403,11 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 5, 0, elementBudget, env, false, true);
+    }
+
+    @Override
     public String getMachineType() {
         return "Heat Exchanger";
     }
@@ -413,6 +439,44 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         super.endRecipeProcessing();
         if (mInputHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mInputHotFluidHatch.isValid()) {
             aware.endRecipeProcessing(this);
+        }
+    }
+
+    private enum AdvHEHatches implements IHatchElement<MTEAdvHeatExchanger> {
+
+        HotInputHatch(MTEAdvHeatExchanger::addHotFluidInputToMachineList, MTEHatchInput.class) {
+
+            @Override
+            public long count(MTEAdvHeatExchanger t) {
+                if (t.mInputHotFluidHatch == null) return 0;
+                return 1;
+            }
+        },
+        ColdOutputHatch(MTEAdvHeatExchanger::addColdFluidOutputToMachineList, MTEHatchOutput.class) {
+
+            @Override
+            public long count(MTEAdvHeatExchanger t) {
+                if (t.mOutputColdFluidHatch == null) return 0;
+                return 1;
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEAdvHeatExchanger> adder;
+
+        @SafeVarargs
+        AdvHEHatches(IGTHatchAdder<MTEAdvHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTEAdvHeatExchanger> adder() {
+            return adder;
         }
     }
 }
