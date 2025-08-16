@@ -34,7 +34,7 @@ public class BehaviourPlungerEssentia extends BehaviourNone {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (((aTileEntity instanceof IEssentiaTransport))
             && ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts)))) {
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, aX, aY, aZ);
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
                 ((IEssentiaTransport) aTileEntity).takeEssentia(
                     ((IEssentiaTransport) aTileEntity).getEssentiaType(tDirection),

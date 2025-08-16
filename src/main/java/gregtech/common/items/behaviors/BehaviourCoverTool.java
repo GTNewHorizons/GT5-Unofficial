@@ -92,7 +92,7 @@ public class BehaviourCoverTool extends BehaviourNone {
             }
             sendChatsToPlayer(chats, aPlayer);
             aItem.discharge(aStack, useCost, Integer.MAX_VALUE, true, false, false);
-            GTUtility.doSoundAtClient(SoundResource.IC2_TOOLS_OD_SCANNER, 1, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_PORTABLE_SCANNER, 1, 1.0F, aX, aY, aZ);
         }
         return aPlayer instanceof EntityPlayerMP;
     }

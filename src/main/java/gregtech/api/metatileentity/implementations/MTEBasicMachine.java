@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,8 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -88,6 +91,7 @@ import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -120,6 +124,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
     protected final OverclockDescriber overclockDescriber;
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop activitySoundLoop;
 
     /**
      * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have
@@ -535,8 +541,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             doDisplayThings();
 
             boolean tSucceeded = false;
+            boolean isActive = mMaxProgresstime > 0;
 
-            if (mMaxProgresstime > 0 && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
+            if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
                 aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
@@ -650,6 +657,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mStuttering = true;
                 }
             }
+        } else {
+            doActivitySound(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -799,21 +808,27 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      * Called whenever the Machine successfully started a Process, useful for Sound Effects
      */
     public void startProcess() {
-        //
+        if (getBaseMetaTileEntity().getWorld().isRemote) {
+            doActivitySound(getActivitySoundLoop());
+        }
     }
 
     /**
      * Called whenever the Machine successfully finished a Process, useful for Sound Effects
      */
     public void endProcess() {
-        //
+        if (getBaseMetaTileEntity().getWorld().isRemote) {
+            stopActivitySound();
+        }
     }
 
     /**
      * Called whenever the Machine aborted a Process, useful for Sound Effects
      */
     public void abortProcess() {
-        //
+        if (getBaseMetaTileEntity().getWorld().isRemote) {
+            stopActivitySound();
+        }
     }
 
     /**
@@ -821,6 +836,46 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      */
     public void stutterProcess() {
         if (useStandardStutterSound()) sendSound((byte) 8);
+    }
+
+    /**
+     * Returns the sound resource to use for the activity loop.
+     * Subclasses can override to provide their own.
+     */
+    @SideOnly(Side.CLIENT)
+    protected SoundResource getActivitySoundLoop() {
+        return null;
+    }
+
+    /**
+     * Starts the activity sound loop if it isn't already playing.
+     */
+    @SideOnly(Side.CLIENT)
+    protected void doActivitySound(SoundResource activitySound) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new GTSoundLoop(
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
+            }
+        } else {
+            stopActivitySound();
+        }
+    }
+
+    /**
+     * Stops the activity sound loop if playing.
+     */
+    @SideOnly(Side.CLIENT)
+    protected void stopActivitySound() {
+        if (activitySoundLoop != null) {
+            activitySoundLoop = null;
+        }
     }
 
     /**
