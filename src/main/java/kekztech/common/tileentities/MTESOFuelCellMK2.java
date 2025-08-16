@@ -5,17 +5,23 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -40,7 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kekztech.common.Blocks;
 
-public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2> {
+public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2> implements ISurvivalConstructable {
 
     private final int OXYGEN_PER_SEC = 2000;
     private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
@@ -78,11 +84,13 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         .addElement(
             'c',
             ofChain(
-                onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 0)),
-                ofHatchAdder(MTESOFuelCellMK2::addInputToMachineList, CASING_TEXTURE_ID, 1),
-                ofHatchAdder(MTESOFuelCellMK2::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
-                ofHatchAdder(MTESOFuelCellMK2::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
-        .addElement('d', ofHatchAdder(MTESOFuelCellMK2::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
+                buildHatchAdder(MTESOFuelCellMK2.class)
+                    .atLeast(InputHatch, InputHatch, OutputHatch, Maintenance)
+                    .dot(1)
+                    .casingIndex(CASING_TEXTURE_ID)
+                    .build(),
+                onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
+        .addElement('d', Dynamo.newAny(CASING_TEXTURE_ID, 2))
         .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
         .addElement('e', ofBlockAnyMeta(Blocks.gdcUnit))
         .build();
@@ -109,11 +117,11 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
             .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
             .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any casing")
-            .addInputHatch("Fuel, any casing")
-            .addInputHatch("Oxygen, any casing")
-            .addOutputHatch("Superheated Steam, any casing")
+            .addDynamoHatch("Back center", 2)
+            .addMaintenanceHatch("Any casing", 1)
+            .addInputHatch("Fuel, any casing", 1)
+            .addInputHatch("Oxygen, any casing", 1)
+            .addOutputHatch("Superheated Steam, any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -198,6 +206,11 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 1, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
