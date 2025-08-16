@@ -1502,7 +1502,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         private int getHint(ItemStack stack) {
             return Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
-                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length)].getMinimalGlassTier() + 1;
+                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length -1)].getMinimalGlassTier() + 1;
         }
 
         @Override
@@ -1527,7 +1527,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             // otherwise scan for any capacitor that can be used
             if (GTStructureChannels.LSC_CAPACITOR.hasValue(trigger)) {
                 int capacitorTier = GTStructureChannels.LSC_CAPACITOR
-                    .getValueClamped(trigger, 0, Capacitor.VALUES_BY_TIER.length);
+                    .getValueClamped(trigger, 0, Capacitor.VALUES_BY_TIER.length -1);
                 if (Capacitor.VALUES_BY_TIER[capacitorTier].getMinimalGlassTier() > glassTier) {
                     env.getChatter()
                         .accept(new ChatComponentTranslation("kekztech.structure.glass_incompatible"));
