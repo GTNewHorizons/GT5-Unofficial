@@ -67,6 +67,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -2718,7 +2719,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String name = "for.bees.species." + lowercaseName;
         GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
 
-        String authority = GTLanguageManager.getTranslation("for.bees.authority." + lowercaseName);
+        String authority = StatCollector.translateToLocal("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {
             authority = "GTNH";
         }

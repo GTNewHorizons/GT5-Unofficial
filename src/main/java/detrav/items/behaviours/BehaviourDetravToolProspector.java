@@ -318,7 +318,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                             (short) ((BartWorksHelper.getMetaFromBlock(aChunk, x, y, z, tBlock)) * -1),
                             null);
                         String type = BartWorksHelper.isSmallOre(tBlock) ? "oreSmall" : "ore";
-                        String translated = GTLanguageManager.getTranslation("bw.blocktype." + type);
+                        String translated = StatCollector.translateToLocal("bw.blocktype." + type);
                         addOreToHashMap(translated.replace("%material", werkstoff.getLocalizedName()), aPlayer);
                     } else if (data == 1) {
                         tAssotiation = GTOreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
