@@ -215,9 +215,9 @@ public class MaterialsInit1 {
         Materials.Dichlorobenzene = loadDichlorobenzene();
         Materials.Polystyrene = loadPolystyrene();
         Materials.Styrene = loadStyrene();
+        Materials.Isoprene = loadIsoprene();
 
         // spotless:off
-        Materials.Isoprene                  = new MaterialBuilder(638, TextureSet.SET_FLUID      ,                                                                                                     "Isoprene").addCell().addFluid().setRGB(20, 20, 20).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
         Materials.Tetranitromethane         = new MaterialBuilder(639, TextureSet.SET_FLUID      ,                                                                                                     "Tetranitromethane").addCell().addFluid().setRGB(15, 40, 40).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Nitrogen, 4), new MaterialStack(Oxygen, 8)).addElectrolyzerRecipe().constructMaterial();
         Materials.Ethenone                  = new MaterialBuilder(641, TextureSet.SET_FLUID      ,                                                                                                     "Ethenone").addCell().addGas().setRGB(20, 20, 70).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Ethane                    = new MaterialBuilder(642, TextureSet.SET_FLUID      ,                                                                                                     "Ethane").addCell().addGas().setRGB(200, 200, 255).setColor(Dyes.dyeLightBlue).setFuelType(MaterialBuilder.GAS).setFuelPower(168).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
@@ -7717,6 +7717,16 @@ public class MaterialsInit1 {
             .setRGB(210, 200, 190)
             .setColor(Dyes.dyeBlack)
             .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadIsoprene() {
+        return new MaterialBuilder(638, TextureSet.SET_FLUID, "Isoprene").addCell()
+            .addFluid()
+            .setRGB(20, 20, 20)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
