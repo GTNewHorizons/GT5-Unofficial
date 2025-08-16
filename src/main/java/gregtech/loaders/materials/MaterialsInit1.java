@@ -211,9 +211,9 @@ public class MaterialsInit1 {
         Materials.NitrationMixture = loadNitrationMixture();
         Materials.Glycerol = loadGlycerol();
         Materials.SodiumBisulfate = loadSodiumBisulfate();
+        Materials.PolyphenyleneSulfide = loadPolyphenyleneSulfide();
 
         // spotless:off
-        Materials.PolyphenyleneSulfide      = new MaterialBuilder(631, TextureSet.SET_DULL       ,                                                                                                     "Polyphenylene Sulfide").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(170, 136, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Sulfur, 1)).constructMaterial();
         Materials.Dichlorobenzene           = new MaterialBuilder(632, TextureSet.SET_FLUID      ,                                                                                                     "Dichlorobenzene").addCell().addFluid().setRGB(0, 68, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Chlorine, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.Polystyrene               = new MaterialBuilder(636, TextureSet.SET_DULL       ,                                                                                                     "Polystyrene").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(190, 180, 170).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8)).constructMaterial();
         Materials.Styrene                   = new MaterialBuilder(637, TextureSet.SET_FLUID      ,                                                                                                     "Styrene").addCell().addFluid().setRGB(210, 200, 190).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
@@ -7667,6 +7667,20 @@ public class MaterialsInit1 {
                 new MaterialStack(Hydrogen, 1),
                 new MaterialStack(Sulfur, 1),
                 new MaterialStack(Oxygen, 4))
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyphenyleneSulfide() {
+        return new MaterialBuilder(631, TextureSet.SET_DULL, "Polyphenylene Sulfide").addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .setRGB(170, 136, 0)
+            .setColor(Dyes.dyeBrown)
+            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Sulfur, 1))
             .constructMaterial();
     }
 
