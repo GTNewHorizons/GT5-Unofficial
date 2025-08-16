@@ -209,9 +209,9 @@ public class MaterialsInit1 {
         Materials.SodaAsh = loadSodaAsh();
         Materials.BioDiesel = loadBioDiesel();
         Materials.NitrationMixture = loadNitrationMixture();
+        Materials.Glycerol = loadGlycerol();
 
         // spotless:off
-        Materials.Glycerol                  = new MaterialBuilder(629, TextureSet.SET_FLUID      ,                                                                                                     "Glycerol").addCell().addFluid().setRGB(135, 222, 135).setColor(Dyes.dyeLime).setFuelType(MaterialBuilder.SEMIFLUID).setFuelPower(164).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.SodiumBisulfate           = new MaterialBuilder(630, TextureSet.SET_FLUID      ,                                                                                                     "Sodium Bisulfate").addDustItems().setRGB(0, 68, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)).constructMaterial();
         Materials.PolyphenyleneSulfide      = new MaterialBuilder(631, TextureSet.SET_DULL       ,                                                                                                     "Polyphenylene Sulfide").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(170, 136, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Sulfur, 1)).constructMaterial();
         Materials.Dichlorobenzene           = new MaterialBuilder(632, TextureSet.SET_FLUID      ,                                                                                                     "Dichlorobenzene").addCell().addFluid().setRGB(0, 68, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Chlorine, 2)).addElectrolyzerRecipe().constructMaterial();
@@ -7643,6 +7643,18 @@ public class MaterialsInit1 {
         return new MaterialBuilder(628, TextureSet.SET_FLUID, "Nitration Mixture").addCell()
             .setRGB(230, 226, 171)
             .setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlycerol() {
+        return new MaterialBuilder(629, TextureSet.SET_FLUID, "Glycerol").addCell()
+            .addFluid()
+            .setRGB(135, 222, 135)
+            .setColor(Dyes.dyeLime)
+            .setFuelType(MaterialBuilder.SEMIFLUID)
+            .setFuelPower(164)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
