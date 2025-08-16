@@ -232,8 +232,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // Do not allow rotation when water would flow out
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {

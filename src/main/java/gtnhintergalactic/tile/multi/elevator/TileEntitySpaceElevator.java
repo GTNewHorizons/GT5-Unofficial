@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -358,15 +357,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      * @return List of alignments that are possible or denied
      */
     @Override
-    public IAlignmentLimits getAlignmentLimits() {
-        // The elevator should only be buildable upright
-        return IAlignmentLimits.Builder.allowAll()
-            .deny(ForgeDirection.DOWN)
-            .deny(ForgeDirection.UP)
-            .deny(Rotation.UPSIDE_DOWN)
-            .deny(Rotation.CLOCKWISE)
-            .deny(Rotation.COUNTER_CLOCKWISE)
-            .build();
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return IAlignmentLimits.UPRIGHT;
     }
 
     /**
