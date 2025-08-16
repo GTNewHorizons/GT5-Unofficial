@@ -67,6 +67,7 @@ import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.recipe.RecipeCategory;
@@ -91,6 +92,7 @@ import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.GTRendererCasing;
+import gregtech.common.render.GTRendererTileEntity;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
@@ -280,6 +282,7 @@ public class GTClient extends GTProxy {
         GTRendererBlock.register();
         GTRendererCasing.register();
 
+        ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new GTRendererTileEntity());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, new DroneRender());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, new WormholeRenderer());
