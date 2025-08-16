@@ -218,9 +218,9 @@ public class MaterialsInit1 {
         Materials.Isoprene = loadIsoprene();
         Materials.Tetranitromethane = loadTetranitromethane();
         Materials.Ethenone = loadEthenone();
+        Materials.Ethane = loadEthane();
 
         // spotless:off
-        Materials.Ethane                    = new MaterialBuilder(642, TextureSet.SET_FLUID      ,                                                                                                     "Ethane").addCell().addGas().setRGB(200, 200, 255).setColor(Dyes.dyeLightBlue).setFuelType(MaterialBuilder.GAS).setFuelPower(168).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.Propane                   = new MaterialBuilder(643, TextureSet.SET_FLUID      ,                                                                                                     "Propane").addCell().addGas().setRGB(250, 226, 80).setColor(Dyes.dyeYellow).setFuelType(MaterialBuilder.GAS).setFuelPower(232).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.Butane                    = new MaterialBuilder(644, TextureSet.SET_FLUID      ,                                                                                                     "Butane").addCell().addGas().setRGB(182, 55, 30).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.GAS).setFuelPower(296).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 10)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.Butene                    = new MaterialBuilder(645, TextureSet.SET_FLUID      ,                                                                                                     "Butene").addCell().addGas().setRGB(207, 80, 5).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.GAS).setFuelPower(256).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
@@ -7748,6 +7748,19 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBlack)
             .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadEthane() {
+        return new MaterialBuilder(642, TextureSet.SET_FLUID, "Ethane").addCell()
+            .addGas()
+            .setRGB(200, 200, 255)
+            .setColor(Dyes.dyeLightBlue)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(168)
+            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6))
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
             .constructMaterial();
     }
 
