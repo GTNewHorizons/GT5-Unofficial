@@ -205,9 +205,9 @@ public class MaterialsInit1 {
         Materials.Ferrosilite = loadFerrosilite();
         Materials.Magnesia = loadMagnesia();
         Materials.Quicklime = loadQuicklime();
+        Materials.Potash = loadPotash();
 
         // spotless:off
-        Materials.Potash                    = new MaterialBuilder(623, TextureSet.SET_DULL       ,                                                                                                     "Potash").addDustItems().setRGB(120, 66, 55).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.SodaAsh                   = new MaterialBuilder(624, TextureSet.SET_DULL       ,                                                                                                     "Soda Ash").addDustItems().setRGB(220, 220, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.BioDiesel                 = new MaterialBuilder(627, TextureSet.SET_FLUID      ,                                                                                                     "Bio Diesel").addCell().addFluid().setRGB(255, 128, 0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(320).constructMaterial();
         Materials.NitrationMixture          = new MaterialBuilder(628, TextureSet.SET_FLUID      ,                                                                                                     "Nitration Mixture").addCell().setRGB(230, 226, 171).setColor(Dyes.dyeBrown).constructMaterial();
@@ -7607,6 +7607,15 @@ public class MaterialsInit1 {
             .setRGB(240, 240, 240)
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPotash() {
+        return new MaterialBuilder(623, TextureSet.SET_DULL, "Potash").addDustItems()
+            .setRGB(120, 66, 55)
+            .setColor(Dyes.dyeBrown)
+            .setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
