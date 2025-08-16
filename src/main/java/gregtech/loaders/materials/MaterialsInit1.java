@@ -203,9 +203,9 @@ public class MaterialsInit1 {
         Materials.AntimonyTrioxide = loadAntimonyTrioxide();
         Materials.CupricOxide = loadCupricOxide();
         Materials.Ferrosilite = loadFerrosilite();
+        Materials.Magnesia = loadMagnesia();
 
         // spotless:off
-        Materials.Magnesia                  = new MaterialBuilder(621, TextureSet.SET_DULL       ,                                                                                                     "Magnesia").addDustItems().setRGB(255, 225, 225).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 1)).constructMaterial();
         Materials.Quicklime                 = new MaterialBuilder(622, TextureSet.SET_DULL       ,                                                                                                     "Quicklime").addDustItems().setRGB(240, 240, 240).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Potash                    = new MaterialBuilder(623, TextureSet.SET_DULL       ,                                                                                                     "Potash").addDustItems().setRGB(120, 66, 55).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.SodaAsh                   = new MaterialBuilder(624, TextureSet.SET_DULL       ,                                                                                                     "Soda Ash").addDustItems().setRGB(220, 220, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
@@ -7591,6 +7591,14 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBrown)
             .setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnesia() {
+        return new MaterialBuilder(621, TextureSet.SET_DULL, "Magnesia").addDustItems()
+            .setRGB(255, 225, 225)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 1))
             .constructMaterial();
     }
 
