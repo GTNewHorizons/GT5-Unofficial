@@ -62,22 +62,12 @@ import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
+    public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
     private static final float coverThickness = blockMax / 8.0F;
     private static final float coverInnerMin = blockMin + coverThickness;
     private static final float coverInnerMax = blockMax - coverThickness;
-
-    @Deprecated
-    public static GTRendererBlock INSTANCE;
-    public static int mRenderID;
-
-    public static void register() {
-        mRenderID = RenderingRegistry.getNextAvailableRenderId();
-        INSTANCE = new GTRendererBlock();
-        RenderingRegistry.registerBlockHandler(INSTANCE);
-    }
-
     private final ITexture[][] textureArray = new ITexture[6][];
     private final ITexture[] overlayHolder = new ITexture[1];
 

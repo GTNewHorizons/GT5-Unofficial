@@ -37,17 +37,10 @@ import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 @ThreadSafeISBRH(perThread = true)
 public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
 
-    public static BWBlockOreRenderer INSTANCE;
-    public static int renderID;
+    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
     private final SBRContextHolder contextHolder = new SBRContextHolder();
-
-    public static void register() {
-        renderID = RenderingRegistry.getNextAvailableRenderId();
-        INSTANCE = new BWBlockOreRenderer();
-        RenderingRegistry.registerBlockHandler(INSTANCE);
-    }
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {

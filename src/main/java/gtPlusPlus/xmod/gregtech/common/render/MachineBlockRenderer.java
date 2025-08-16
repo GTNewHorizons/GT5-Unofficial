@@ -43,13 +43,7 @@ import gtPlusPlus.xmod.gregtech.common.helpers.GTMethodHelper;
 
 public class MachineBlockRenderer extends GTRendererBlock {
 
-    public static MachineBlockRenderer INSTANCE;
-    public final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
-
-    public MachineBlockRenderer() {
-        INSTANCE = this;
-        RenderingRegistry.registerBlockHandler(this);
-    }
+    private static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
 
     private static ITexture[] getTexture(IMetaTileEntity tile, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean arg5) {
@@ -665,6 +659,6 @@ public class MachineBlockRenderer extends GTRendererBlock {
 
     @Override
     public int getRenderId() {
-        return this.mRenderID;
+        return mRenderID;
     }
 }
