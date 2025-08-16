@@ -279,6 +279,23 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     @SideOnly(Side.CLIENT)
     protected void updateSoundLoops(IGregTechTileEntity aBaseMetaTileEntity, boolean playBoiling) {
+        if (playBoiling) {
+            if (mBoilingSound == null) {
+                mBoilingSound = new GTSoundLoop(
+                    SoundResource.GTCEU_LOOP_BOILER.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    false);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(mBoilingSound);
+            }
+        } else {
+            if (mBoilingSound != null) {
+                mBoilingSound.setFadeMe(true);
+                mBoilingSound = null;
+            }
+        }
         if (aBaseMetaTileEntity.isActive()) {
             if (mHeatingSound == null) {
                 mHeatingSound = new GTSoundLoop(
@@ -292,23 +309,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             }
         } else {
             if (mHeatingSound != null) {
+                mHeatingSound.setFadeMe(true);
                 mHeatingSound = null;
-            }
-        }
-        if (playBoiling) {
-            if (mBoilingSound == null) {
-                mBoilingSound = new GTSoundLoop(
-                    SoundResource.GTCEU_LOOP_BOILER.resourceLocation,
-                    getBaseMetaTileEntity(),
-                    false,
-                    true);
-                Minecraft.getMinecraft()
-                    .getSoundHandler()
-                    .playSound(mBoilingSound);
-            }
-        } else {
-            if (mBoilingSound != null) {
-                mBoilingSound = null;
             }
         }
     }
@@ -364,6 +366,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             }
         } else {
             this.mHadNoWater = false;
+            playBoiling = false;
         }
         return false;
     }
