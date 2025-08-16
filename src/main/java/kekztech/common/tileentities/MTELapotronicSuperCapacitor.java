@@ -1502,7 +1502,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         private int getHint(ItemStack stack) {
             return Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
-                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length -1)].getMinimalGlassTier() + 1;
+                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length - 1)].getMinimalGlassTier() + 1;
         }
 
         @Override
@@ -1522,8 +1522,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             ItemStack trigger, AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + 2;
-            // 0 is None in the Capacitors; So we start at 1
-            int capacitorTier = Math.max(1, Math.min(Capacitor.VALUES_BY_TIER.length - 1, glassTier -3));
+            // 0 is None in the Capacitors; So we start at 1; Glasstier -3 since the LSC allows capacitor to be at most
+            // 3 levels underneath the glass level
+            int capacitorTier = Math.max(1, Math.min(Capacitor.VALUES_BY_TIER.length - 1, glassTier - 3));
             ItemStack targetStack;
 
             if (Capacitor.VALUES_BY_TIER[capacitorTier].getMinimalGlassTier() > glassTier) {
