@@ -2145,6 +2145,8 @@ public enum ItemList implements IItemContainer {
     Superconducting_Magnet_Solenoid_UMV,
     RadiantNaquadahAlloyCasing,
     PCBFactory,
+    PCBBioChamber,
+    PCBCoolingTower,
     BasicPhotolithographicFrameworkCasing,
     ReinforcedPhotolithographicFrameworkCasing,
     RadiationProofPhotolithographicFrameworkCasing,
