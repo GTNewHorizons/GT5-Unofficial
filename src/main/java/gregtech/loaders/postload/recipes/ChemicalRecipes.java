@@ -719,6 +719,14 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1))
+            .fluidInputs(Materials.Chlorine.getGas(4_000))
+            .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
+
         // 4Na + 2MgCl2 = 2Mg + 4NaCl
 
         GTValues.RA.stdBuilder()
