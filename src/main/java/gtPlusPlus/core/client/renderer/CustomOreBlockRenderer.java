@@ -18,20 +18,11 @@ import gregtech.api.render.SBRInventoryContext;
 import gregtech.api.render.SBRWorldContext;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
-import gtPlusPlus.api.objects.Logger;
 
 @ThreadSafeISBRH(perThread = true)
 public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
-    public static CustomOreBlockRenderer INSTANCE;
-    public final int mRenderID;
-
-    public CustomOreBlockRenderer() {
-        INSTANCE = this;
-        this.mRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(this);
-        Logger.INFO("Registered Custom Ore Block Renderer.");
-    }
+    public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
@@ -93,6 +84,6 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return this.mRenderID;
+        return mRenderID;
     }
 }

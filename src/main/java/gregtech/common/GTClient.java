@@ -43,6 +43,7 @@ import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -277,8 +278,8 @@ public class GTClient extends GTProxy {
     public void onInitialization(FMLInitializationEvent event) {
         // spotless:off
         super.onInitialization(event);
-        GTRendererBlock.register();
-        GTRendererCasing.register();
+        RenderingRegistry.registerBlockHandler(new GTRendererBlock());
+        RenderingRegistry.registerBlockHandler(new GTRendererCasing());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, new DroneRender());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
