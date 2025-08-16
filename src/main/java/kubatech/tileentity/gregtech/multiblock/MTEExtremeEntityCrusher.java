@@ -24,6 +24,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -52,6 +53,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,6 +78,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.base.Stopwatch;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -117,6 +120,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -577,47 +581,48 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             this.lEUt /= 4L;
             this.mMaxProgresstime = 400;
         } else {
-            if (getMaxInputEu() < recipe.mEUt) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-            if (recipe.recipe.alwaysinfernal && getMaxInputEu() < recipe.mEUt * 8)
-                return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt * 8);
+            long tRecipeEUt = recipe.mEUt;
+            if (recipe.recipe.alwaysinfernal) tRecipeEUt *= 8;
 
-            double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
+            if (getMaxInputEu() < tRecipeEUt) return CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
 
-            if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
+            double tAttackDamage = DIAMOND_SPIKES_DAMAGE;
+            int tLootingLevel = 0;
+
+            int tBatchMultiplier = batchMode ? 16 : 1;
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
-            EECPlayer.currentWeapon = weaponCache.getStackInSlot(0);
+
+            int tMaxTries = 16; // 2 => Weapon already in the slot + one extra
+            boolean tShouldUseCachedWeapon = cycleWeaponsUntilNoBreakage(recipe, tBatchMultiplier, tMaxTries);
+
+            ItemStack tWeapon = null;
+            if (tShouldUseCachedWeapon) {
+                tWeapon = weaponCache.getStackInSlot(0);
+                tAttackDamage += weaponCache.attackDamage;
+                tLootingLevel += weaponCache.looting;
+            }
+
+            EECPlayer.currentWeapon = tWeapon;
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
-                attackDamage,
-                weaponCache.isValid ? weaponCache.looting : 0,
+                tAttackDamage,
+                tLootingLevel,
                 mIsProducingInfernalDrops,
                 voidAllDamagedAndEnchantedItems);
-
             EECPlayer.currentWeapon = null;
+
             if (batchMode) {
                 for (ItemStack item : mOutputItems) {
-                    item.stackSize *= 16;
+                    item.stackSize *= tBatchMultiplier;
                 }
-                this.mMaxProgresstime *= 16;
             }
-            this.mOutputFluids = new FluidStack[] {
-                FluidRegistry.getFluidStack("xpjuice", 120 * (batchMode ? 16 : 1)) };
-            ItemStack weapon = weaponCache.getStackInSlot(0);
-            int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
-            if (weaponCache.isValid && weapon.isItemStackDamageable()) {
-                EECPlayer.currentWeapon = weapon;
-                Item lootingHolderItem = weapon.getItem();
-                for (int i = 0; i < times + 1; i++) {
-                    if (!lootingHolderItem.hitEntity(weapon, recipe.recipe.entity, EECPlayer)) break;
-                    if (weapon.stackSize == 0) {
-                        weaponCache.setStackInSlot(0, null);
-                        break;
-                    }
-                }
-                EECPlayer.currentWeapon = null;
-            }
+
+            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120 * tBatchMultiplier) };
+            this.mMaxProgresstime *= tBatchMultiplier;
+
+            this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
         }
         if (this.lEUt > 0) this.lEUt = -this.lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -631,6 +636,197 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private boolean cycleWeaponsUntilNoBreakage(MobHandlerLoader.MobEECRecipe aRecipe, final int aBatchModeMultiplier,
+        int aMaxTries) {
+        int tCurrentInputBus = 0;
+        int tCurrentInputBusSlot = 0;
+        int tBusCount = mInputBusses.size();
+
+        // spotless:off
+        GT_FML_LOGGER.warn("[Kynake] ########## BEGIN EEC SWORD CYCLE ##########");
+        GT_FML_LOGGER.warn("[Kynake] EET has {} input busses", tBusCount);
+        GT_FML_LOGGER.warn("[Kynake] Will try to use at most {} swords", aMaxTries);
+        Stopwatch dStopwatch = Stopwatch.createStarted();
+        // spotless:on
+
+        ItemStack tWeapon = this.weaponCache.getStackInSlot(0);
+        // If we have to replace the cache right from the start
+        // that already counts as one of the tries
+        if (!this.weaponCache.isValid) aMaxTries--;
+
+        for (int i = 0; i < aMaxTries; i++) {
+            if (!this.weaponCache.isValid) { // pull weapon to cache
+
+                // spotless:off
+                GT_FML_LOGGER.warn("[Kynake] Weapon Slot is empty, will try to find a weapon from input busses");
+                // spotless:on
+
+                if (tBusCount == 0) {
+
+                    // spotless:off
+                    GT_FML_LOGGER.warn("[Kynake] No Busses found");
+                    GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
+                    GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
+                    // spotless:on
+
+                    return false;
+                }
+
+                // spotless:off
+                GT_FML_LOGGER.warn("[Kynake] {}tarting search from Bus #{}, Slot #{}", (i == 0 ? "S" : "Res"), tCurrentInputBus, tCurrentInputBusSlot);
+                // spotless:on
+
+                for (int tBusIndex = tCurrentInputBus; tBusIndex < tBusCount; tBusIndex++) {
+                    MTEHatchInputBus tBus = mInputBusses.get(tBusIndex);
+                    for (int tSlotIndex = tCurrentInputBusSlot; tSlotIndex < tBus.mInventory.length; tSlotIndex++) {
+                        tCurrentInputBusSlot++;
+
+                        if (!tBus.isValidSlot(tSlotIndex)) continue;
+
+                        ItemStack tItem = tBus.mInventory[tSlotIndex];
+                        if (tItem == null || tItem.stackSize == 0 || !weaponCache.isItemValid(0, tItem)) continue;
+
+                        // spotless:off
+                        GT_FML_LOGGER.warn("[Kynake] Found item: {}", tItem.getDisplayName());
+                        // spotless:on
+
+                        // Move item from input bus to weapon slot
+                        tWeapon = tItem;
+                        weaponCache.setStackInSlot(0, tItem);
+                        tBus.mInventory[tSlotIndex] = null;
+                        break;
+                    }
+                    if (weaponCache.isValid) break;
+
+                    tCurrentInputBusSlot = 0;
+                    tCurrentInputBus++;
+                }
+
+                // Looped through all busses and found no usable items
+                if (!weaponCache.isValid) {
+                    weaponCache.setStackInSlot(0, null);
+
+                    // spotless:off
+                    GT_FML_LOGGER.warn("[Kynake] No valid items found");
+                    GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
+                    GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
+                    // spotless:on
+
+                    return false;
+                }
+            }
+
+            // At this point it should be that: weaponCache == tWeapon
+
+            // spotless:off
+            dStopwatch.stop();
+            // spotless:on
+
+            ItemStack tWeaponResult = runWeaponHitSimulation(tWeapon, aRecipe.recipe.entity, aBatchModeMultiplier);
+
+            // spotless:off
+            dStopwatch.start();
+            // spotless:on
+
+            if (tWeaponResult != null) {
+                // spotless:off
+                GT_FML_LOGGER.warn("[Kynake] Sword cycle ended on: {}", tWeaponResult.getDisplayName());
+                GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
+                GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
+                // spotless:on
+
+                // Didn't break. Replace weapon with simulation result and return it
+                weaponCache.setStackInSlot(0, tWeaponResult);
+                return true;
+            }
+
+            // spotless:off
+            GT_FML_LOGGER.warn("[Kynake] {} broke, sword cycle continues...", tWeapon.getDisplayName());
+            // spotless:on
+
+            // weapon copy broke during simulation
+            // try move original to output
+            if (!addOutputPartial(tWeapon, false)) {
+
+                // spotless:off
+                GT_FML_LOGGER.warn("[Kynake] Unable to move {} out of the weapon slot. Ending sword cycle", tWeapon.getDisplayName());
+                GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
+                GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
+                // spotless:on
+
+                // Can't move weapon don't use it as part of the next run,
+                // keep it on controller slot
+                return false;
+            }
+
+            // try again with the next weapon on the list
+            tWeapon = null;
+            weaponCache.setStackInSlot(0, null);
+
+            // spotless:off
+            GT_FML_LOGGER.warn("[Kynake] Sword cycle finished pass #{}", i);
+            // spotless:on
+        }
+
+        // spotless:off
+        GT_FML_LOGGER.warn("[Kynake] Sword cycle exceeded maximum number of tries: {}. No weapon strong enough found", aMaxTries);
+        GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
+        GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
+        // spotless:on
+
+        // Exceeded max number of tries. When this happens the weapon slot should
+        // already be empty. We stop the simulations here, so simply return unable to use
+        return false;
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private ItemStack runWeaponHitSimulation(ItemStack aWeapon, final EntityLiving aTarget,
+        final int aBatchModeMultiplier) {
+        if (aWeapon == null || !aWeapon.isItemStackDamageable()) return aWeapon;
+        if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
+
+        // spotless:off
+        GT_FML_LOGGER.warn("[Kynake] ========== BEGIN EEC DAMAGE SIMULATION ==========");
+        GT_FML_LOGGER.warn("[Kynake] Weapon: {}", aWeapon.getDisplayName());
+        GT_FML_LOGGER.warn("[Kynake] Test Runs: {}", aBatchModeMultiplier);
+        Stopwatch dStopwatch = Stopwatch.createStarted();
+        int dStartingDamage = aWeapon.getItemDamage();
+        // spotless:on
+
+        ItemStack tWeaponCopy = aWeapon.copy();
+        Item tItem = tWeaponCopy.getItem();
+
+        // Accurate but potentially expensive simulation: Actually perform every single
+        // weapon attack. If a weapon's damage logic doesn't follow a uniform linear progression,
+        // this may be the only way to get an accurate damage reading
+        EECPlayer.currentWeapon = tWeaponCopy;
+        for (int i = 0; i < aBatchModeMultiplier; i++) {
+            if (!tItem.hitEntity(tWeaponCopy, aTarget, EECPlayer)) break;
+            if (tWeaponCopy.stackSize == 0) {
+
+                // spotless:off
+                GT_FML_LOGGER.warn("[Kynake] Weapon broke after {} hits", i);
+                GT_FML_LOGGER.warn("[Kynake] Simulation took {}", dStopwatch.stop());
+                GT_FML_LOGGER.warn("[Kynake] ========== END EEC DAMAGE SIMULATION ==========");
+                // spotless:on
+
+                EECPlayer.currentWeapon = null;
+                return null;
+            }
+        }
+        EECPlayer.currentWeapon = null;
+
+        // spotless:off
+        GT_FML_LOGGER.warn("[Kynake] Weapon survived with {}/{} hitpoints. Received {} points of damage",
+            tWeaponCopy.getMaxDamage() - tWeaponCopy.getItemDamage(), tWeaponCopy.getMaxDamage(), tWeaponCopy.getItemDamage() - dStartingDamage);
+        GT_FML_LOGGER.warn("[Kynake] Simulation took {}", dStopwatch.stop());
+        GT_FML_LOGGER.warn("[Kynake] ========== END EEC DAMAGE SIMULATION ==========");
+        // spotless:on
+
+        return tWeaponCopy;
     }
 
     private boolean isRitualValid() {
