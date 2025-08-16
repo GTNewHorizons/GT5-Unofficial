@@ -32,23 +32,33 @@ import cpw.mods.fml.relauncher.SideOnly;
  * to various rendering methods throughout a block's render cycle.
  */
 @SideOnly(Side.CLIENT)
-public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
+public final class SBRInventoryContext extends SBRContextBase {
 
-    protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    public final int meta;
+    private static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
+    private int meta;
 
     /**
-     * Constructs a new {@link SBRInventoryContext} used to render a single {@link Block} inside an inventory
-     *
-     * @param block    the {@link Block} to render
-     * @param meta     the meta value of the {@link Block}'s {@link Item} meta value
-     * @param modelId  the Model ID for the block
-     * @param renderer the {@link RenderBlocks} renderer to use
+     * Package-private constructor.
+     * <p>
+     * Instances should be obtained via {@link SBRContextHolder#getSBRInventoryContext}.
      */
-    public SBRInventoryContext(@NotNull Block block, int meta, int modelId, @NotNull RenderBlocks renderer) {
-        super(block, modelId, renderer);
+    SBRInventoryContext() {}
+
+    /**
+     * Configures this {@link SBRInventoryContext} to render a single {@link Block}
+     * inside an inventory, using the given parameters.
+     *
+     * @param block    the block to render
+     * @param meta     the block's metadata value (corresponds to the {@link Item} damage value)
+     * @param modelId  the model ID for the block
+     * @param renderer the {@link RenderBlocks} renderer to use
+     * @return this context instance, configured with the given parameters
+     */
+    SBRInventoryContext setup(@NotNull Block block, int meta, int modelId, @NotNull RenderBlocks renderer) {
+        super.setup(block, modelId, renderer);
         this.meta = meta;
         reset();
+        return this;
     }
 
     /**
@@ -67,40 +77,6 @@ public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
     }
 
     /**
-     * Sets brightness override.
-     *
-     * @param brightness the brightness override
-     * @return the {@link SBRInventoryContext}
-     */
-    public SBRInventoryContext setBrightnessOverride(int brightness) {
-        hasBrightnessOverride = true;
-        brightnessOverride = brightness;
-        return this;
-    }
-
-    /**
-     * Sets lightness override.
-     *
-     * @param lightness the lightness override
-     * @return the {@link SBRInventoryContext}
-     */
-    public SBRInventoryContext setLightnessOverride(float lightness) {
-        hasLightnessOverride = true;
-        lightnessOverride = lightness;
-        return this;
-    }
-
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
-     * @param side the side
-     * @param rgba the primary short[] RGBA color array
-     */
-    public SBRInventoryContext setupColor(ForgeDirection side, short[] rgba) {
-        return setupColor(side, rgbaToInt(rgba));
-    }
-
-    /**
      * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
      *
      * @param side     the side
@@ -109,17 +85,21 @@ public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
     public SBRInventoryContext setupColor(ForgeDirection side, int hexColor) {
         final Tessellator tessellator = Tessellator.instance;
         final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        final float[] rgb = hasColorOverride && !renderer.hasOverrideBlockTexture() ? getRGB(colorOverride)
-            : getRGB(hexColor);
+
+        final int color = hasColorOverride ? colorOverride : hexColor;
+
+        final float red = (color >> 16 & 0xff) / 255.0F;
+        final float green = (color >> 8 & 0xff) / 255.0F;
+        final float blue = (color & 0xff) / 255.0F;
 
         if (hasBrightnessOverride) tessellator.setBrightness(brightnessOverride);
-        tessellator.setColorOpaque_F(rgb[0] * lightness, rgb[1] * lightness, rgb[2] * lightness);
+        tessellator.setColorOpaque_F(red * lightness, green * lightness, blue * lightness);
         return this;
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @implNote Always true in Inventory Context
      */
     @Override
@@ -127,17 +107,7 @@ public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
         return true;
     }
 
-    /**
-     * Gets rgb color from integer.
-     *
-     * @param color the integer color
-     * @return a float array with rgb values
-     */
-    public static float[] getRGB(int color) {
-        final float red = (color >> 16 & 0xff) / 255.0F;
-        final float green = (color >> 8 & 0xff) / 255.0F;
-        final float blue = (color & 0xff) / 255.0F;
-
-        return new float[] { red, green, blue };
+    public int getMeta() {
+        return meta;
     }
 }

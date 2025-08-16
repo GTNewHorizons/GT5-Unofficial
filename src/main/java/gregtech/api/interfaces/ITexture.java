@@ -7,17 +7,17 @@ import gregtech.api.render.SBRContextBase;
 
 public interface ITexture {
 
-    void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
+    void renderXPos(SBRContextBase ctx);
 
-    void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
+    void renderXNeg(SBRContextBase ctx);
 
-    void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
+    void renderYPos(SBRContextBase ctx);
 
-    void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
+    void renderYNeg(SBRContextBase ctx);
 
-    void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx);
+    void renderZPos(SBRContextBase ctx);
 
-    void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx);
+    void renderZNeg(SBRContextBase ctx);
 
     boolean isValidTexture();
 
