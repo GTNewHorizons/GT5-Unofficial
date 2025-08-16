@@ -213,9 +213,9 @@ public class MaterialsInit1 {
         Materials.SodiumBisulfate = loadSodiumBisulfate();
         Materials.PolyphenyleneSulfide = loadPolyphenyleneSulfide();
         Materials.Dichlorobenzene = loadDichlorobenzene();
+        Materials.Polystyrene = loadPolystyrene();
 
         // spotless:off
-        Materials.Polystyrene               = new MaterialBuilder(636, TextureSet.SET_DULL       ,                                                                                                     "Polystyrene").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(190, 180, 170).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8)).constructMaterial();
         Materials.Styrene                   = new MaterialBuilder(637, TextureSet.SET_FLUID      ,                                                                                                     "Styrene").addCell().addFluid().setRGB(210, 200, 190).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
         Materials.Isoprene                  = new MaterialBuilder(638, TextureSet.SET_FLUID      ,                                                                                                     "Isoprene").addCell().addFluid().setRGB(20, 20, 20).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
         Materials.Tetranitromethane         = new MaterialBuilder(639, TextureSet.SET_FLUID      ,                                                                                                     "Tetranitromethane").addCell().addFluid().setRGB(15, 40, 40).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Nitrogen, 4), new MaterialStack(Oxygen, 8)).addElectrolyzerRecipe().constructMaterial();
@@ -7694,6 +7694,20 @@ public class MaterialsInit1 {
                 new MaterialStack(Hydrogen, 4),
                 new MaterialStack(Chlorine, 2))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPolystyrene() {
+        return new MaterialBuilder(636, TextureSet.SET_DULL, "Polystyrene").addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .setRGB(190, 180, 170)
+            .setColor(Dyes.dyeLightGray)
+            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
             .constructMaterial();
     }
 
