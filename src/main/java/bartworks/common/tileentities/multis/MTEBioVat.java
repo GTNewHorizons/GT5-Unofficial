@@ -19,20 +19,31 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.util.IGTHatchAdder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -131,12 +142,11 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                     { "cc~cc", "ccccc", "ccccc", "ccccc", "ccccc" }, }))
         .addElement(
             'c',
-            ofChain(
-                ofHatchAdder(MTEBioVat::addMaintenanceToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addOutputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addRadiationInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
+            ofChain(buildHatchAdder(MTEBioVat.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy, RadioHatchElement.RadioHatch)
+                    .dot(1)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
@@ -762,4 +772,31 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         return false;
     }
 
+    private enum RadioHatchElement implements IHatchElement<MTEBioVat> {
+        RadioHatch(MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
+            @Override
+            public long count(MTEBioVat mteBioVat) {
+                return mteBioVat.mRadHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEBioVat> adder;
+
+        @SafeVarargs
+        RadioHatchElement(IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEBioVat> adder() {
+            return adder;
+        }
+    }
 }
