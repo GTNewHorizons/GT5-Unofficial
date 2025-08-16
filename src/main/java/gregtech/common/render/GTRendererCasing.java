@@ -31,14 +31,7 @@ import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererCasing implements ISimpleBlockRenderingHandler {
 
-    private static final GTRendererCasing INSTANCE = new GTRendererCasing();
-    public static int mRenderID;
-
-    public static void register() {
-        mRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(INSTANCE);
-    }
-
+    public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
     private final ITexture[][] textureArray = new ITexture[6][2];
 
     @Override
