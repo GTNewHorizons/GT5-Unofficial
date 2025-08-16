@@ -142,9 +142,11 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable {
 
-    public static final double DIAMOND_SPIKES_DAMAGE = 9d;
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
+    public static final int MAX_LOOTING_LEVEL = 4;
+    public static final double DIAMOND_SPIKES_DAMAGE = 9d;
+
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
@@ -282,7 +284,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
             .addInfo("Recipe time is based on mob health.")
             .addInfo("You can additionally put a weapon inside the GUI.")
-            .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels).")
+            .addInfo(
+                "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
+                    + " levels).")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
             .addInfo("Also produces 120 Liquid XP per operation.")
             .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
@@ -518,7 +522,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         }
 
         @Override
-        protected void onContentsChanged(int slot) {
+        protected final void onContentsChanged(final int slot) {
             if (slot != 0) return;
             if (ModUtils.isClientThreaded()) return;
             ItemStack stack = getStackInSlot(0);
@@ -533,13 +537,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     attr -> attr.getAmount()
                         + (double) EnchantmentHelper.func_152377_a(stack, EnumCreatureAttribute.UNDEFINED))
                 .sum();
-            looting = Math.min(4, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack));
+            looting = Math
+                .min(MAX_LOOTING_LEVEL, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack));
             isValid = true;
         }
 
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-            return Enchantment.looting.canApply(stack);
+        public final boolean isItemValid(final int aSlot, final ItemStack aStack) {
+            return aSlot == 0 && MTEExtremeEntityCrusher.isUsableWeapon(aStack);
         }
     }
 
@@ -687,7 +692,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                         if (!tBus.isValidSlot(tSlotIndex)) continue;
 
                         ItemStack tItem = tBus.mInventory[tSlotIndex];
-                        if (tItem == null || tItem.stackSize == 0 || !weaponCache.isItemValid(0, tItem)) continue;
+                        if (tItem == null || tItem.stackSize == 0 || !isUsableWeapon(tItem)) continue;
 
                         // spotless:off
                         GT_FML_LOGGER.warn("[Kynake] Found item: {}", tItem.getDisplayName());
@@ -827,6 +832,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         // spotless:on
 
         return tWeaponCopy;
+    }
+
+    private static boolean isUsableWeapon(final ItemStack aWeapon) {
+        return Enchantment.looting.canApply(aWeapon);
     }
 
     private boolean isRitualValid() {
@@ -1058,7 +1067,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public boolean supportsBatchMode() {
+    public final boolean supportsBatchMode() {
         return true;
     }
 
