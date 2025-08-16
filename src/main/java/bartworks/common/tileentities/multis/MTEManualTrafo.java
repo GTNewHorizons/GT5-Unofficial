@@ -17,13 +17,17 @@ import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -53,7 +57,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
-public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
+public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> implements ISurvivalConstructable {
 
     private byte mode;
     private int mTiers;
@@ -83,17 +87,21 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         .addElement(
             'b',
             ofChain(
-                ofHatchAdder(MTEManualTrafo::addEnergyInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEManualTrafo::addMaintenanceToMachineList, CASING_INDEX, 1),
+                buildHatchAdder(MTEManualTrafo.class)
+                    .atLeast(Energy, Maintenance)
+                        .dot(1)
+                            .casingIndex(CASING_INDEX)
+                                .build(),
                 ofBlock(GregTechAPI.sBlockCasings1, 2)))
         .addElement(
             'o',
-            ofHatchAdderOptional(
-                MTEManualTrafo::addDynamoToMachineList,
-                CASING_INDEX,
-                2,
-                GregTechAPI.sBlockCasings1,
-                2))
+            ofChain(
+                buildHatchAdder(MTEManualTrafo.class)
+                    .atLeast(Dynamo)
+                    .dot(2)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
+                ofBlock(GregTechAPI.sBlockCasings1, 2)))
         .addElement('t', ofBlock(BW_BLOCKS[2], 1))
         .addElement('f', ofBlock(BW_BLOCKS[2], 0))
         .addElement('T', new IStructureElementNoPlacement<>() {
@@ -343,5 +351,29 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
             else this.buildPiece(STRUCTURE_PIECE_LAYER, itemStack, b, 1, i + 1, 0);
         }
         this.buildPiece(STRUCTURE_PIECE_TOP, itemStack, b, 1, mHeight + 1, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        if (this.mInventory[1] == null || !this.mInventory[1].getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) this.mode = 0;
+        else this.mode = (byte) Math.min(3, this.mInventory[1].getItemDamage());
+
+        int mHeight = Math.min(stackSize.stackSize, 8);
+        mTiers = 0;
+        boolean tapmode = this.mode > 1;
+        int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize
+            , 1, 0, 0, elementBudget, env, false, true);
+        if (built >= 0) return built;
+
+        for (int i = 0; i < mHeight; i++) {
+            mTiers = i;
+            if (tapmode) built = survivalBuildPiece(STRUCTURE_PIECE_TAP_LAYER, stackSize, 2, i + 1, 0, elementBudget, env, false, true);
+            else built = survivalBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 1, i + 1, 0, elementBudget, env, false, true);
+            if (built >= 0) return built;
+        }
+        mTiers = mHeight - 1;
+        return survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 1, mHeight + 1, 0, elementBudget, env, false, true);
     }
 }
