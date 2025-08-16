@@ -207,9 +207,9 @@ public class MaterialsInit1 {
         Materials.Quicklime = loadQuicklime();
         Materials.Potash = loadPotash();
         Materials.SodaAsh = loadSodaAsh();
+        Materials.BioDiesel = loadBioDiesel();
 
         // spotless:off
-        Materials.BioDiesel                 = new MaterialBuilder(627, TextureSet.SET_FLUID      ,                                                                                                     "Bio Diesel").addCell().addFluid().setRGB(255, 128, 0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(320).constructMaterial();
         Materials.NitrationMixture          = new MaterialBuilder(628, TextureSet.SET_FLUID      ,                                                                                                     "Nitration Mixture").addCell().setRGB(230, 226, 171).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Glycerol                  = new MaterialBuilder(629, TextureSet.SET_FLUID      ,                                                                                                     "Glycerol").addCell().addFluid().setRGB(135, 222, 135).setColor(Dyes.dyeLime).setFuelType(MaterialBuilder.SEMIFLUID).setFuelPower(164).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.SodiumBisulfate           = new MaterialBuilder(630, TextureSet.SET_FLUID      ,                                                                                                     "Sodium Bisulfate").addDustItems().setRGB(0, 68, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)).constructMaterial();
@@ -7626,6 +7626,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadBioDiesel() {
+        return new MaterialBuilder(627, TextureSet.SET_FLUID, "Bio Diesel").addCell()
+            .addFluid()
+            .setRGB(255, 128, 0)
+            .setColor(Dyes.dyeOrange)
+            .setFuelType(MaterialBuilder.DIESEL)
+            .setFuelPower(320)
             .constructMaterial();
     }
 
