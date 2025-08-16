@@ -279,12 +279,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     @SideOnly(Side.CLIENT)
     protected void updateSoundLoops(IGregTechTileEntity aBaseMetaTileEntity, boolean playBoiling) {
-        System.out.println(
-            "updateSoundLoops called with isActive: " + aBaseMetaTileEntity.isActive()
-                + " playBoiling: "
-                + playBoiling);
         if (aBaseMetaTileEntity.isActive()) {
-            System.out.println("Recognizes burntime");
             if (mHeatingSound == null) {
                 mHeatingSound = new GTSoundLoop(
                     SoundResource.GTCEU_LOOP_FURNACE.resourceLocation,
@@ -301,7 +296,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             }
         }
         if (playBoiling) {
-            System.out.println("Recognizes temperature");
             if (mBoilingSound == null) {
                 mBoilingSound = new GTSoundLoop(
                     SoundResource.GTCEU_LOOP_BOILER.resourceLocation,
