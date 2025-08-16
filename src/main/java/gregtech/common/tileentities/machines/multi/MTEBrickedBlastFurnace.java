@@ -288,21 +288,10 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
         final int lavaX = aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1);
         final int lavaZ = aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1);
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (aBaseMetaTileEntity.isActive()) {
-                if (activitySoundLoop == null) {
-                    activitySoundLoop = new GTSoundLoop(
-                        SoundResource.GTCEU_LOOP_FIRE.resourceLocation,
-                        aBaseMetaTileEntity,
-                        false,
-                        true);
-                    Minecraft.getMinecraft()
-                        .getSoundHandler()
-                        .playSound(activitySoundLoop);
-                }
-            } else {
-                if (activitySoundLoop != null) {
-                    activitySoundLoop = null;
-                }
+            if (aBaseMetaTileEntity.isActive() && activitySoundLoop == null) {
+                updateSound(aBaseMetaTileEntity);
+            } else if (!aBaseMetaTileEntity.isActive() && activitySoundLoop != null) {
+                activitySoundLoop = null;
             }
 
             if (aBaseMetaTileEntity.isActive()) {
@@ -374,6 +363,18 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateSound(IGregTechTileEntity aBaseMetaTileEntity) {
+        activitySoundLoop = new GTSoundLoop(
+            SoundResource.GTCEU_LOOP_FIRE.resourceLocation,
+            aBaseMetaTileEntity,
+            false,
+            true);
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(activitySoundLoop);
     }
 
     @Override
