@@ -94,16 +94,17 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
     // spotless:off
+    // y-axis offset by +0.5 to counter the coordinate adjustment when rendering
     private static final double[][] FORCE_FIELD_BASE_COORDINATES = {
-        { 3, -4, 7 }, { 3, 0, 7 },
-        { -3, -4, 7 }, { -3, 0, 7 },
-        { -7, -4, 3 }, { -7, 0, 3 },
-        { -7, -4, -3 }, { -7, 0, -3 },
-        { -3, -4, -7 }, { -3, 0, -7 },
-        { 3, -4, -7 }, { 3, 0, -7 },
-        { 7, -4, -3 }, { 7, 0, -3 },
-        { 7, -4, 3 }, { 7, 0, 3 },
-        { 3, -4, 7 }, { 3, 0, 7 }
+        { 3, -3.5, 7 }, { 3, 0.5, 7 },
+        { -3, -3.5, 7 }, { -3, 0.5, 7 },
+        { -7, -3.5, 3 }, { -7, 0.5, 3 },
+        { -7, -3.5, -3 }, { -7, 0.5, -3 },
+        { -3, -3.5, -7 }, { -3, 0.5, -7 },
+        { 3, -3.5, -7 }, { 3, 0.5, -7 },
+        { 7, -3.5, -3 }, { 7, 0.5, -3 },
+        { 7, -3.5, 3 }, { 7, 0.5, 3 },
+        { 3, -3.5, 7 }, { 3, 0.5, 7 }
     };
     // spotless:on
     private static final IStructureDefinition<MTEQuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
