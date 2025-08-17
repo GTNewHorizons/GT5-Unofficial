@@ -4,6 +4,8 @@ import static gregtech.api.enums.GTValues.*;
 import static gregtech.common.render.GTRendererBlock.*;
 import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -34,6 +36,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
 
     public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
     private final ITexture[][] textureArray = new ITexture[6][2];
+    @SideOnly(Side.CLIENT)
     private final SBRContextHolder sbrContextHolder = new SBRContextHolder();
 
     @Override

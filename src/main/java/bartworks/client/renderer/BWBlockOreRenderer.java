@@ -13,6 +13,8 @@
 
 package bartworks.client.renderer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -40,6 +42,7 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
     public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
+    @SideOnly(Side.CLIENT)
     private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     @Override

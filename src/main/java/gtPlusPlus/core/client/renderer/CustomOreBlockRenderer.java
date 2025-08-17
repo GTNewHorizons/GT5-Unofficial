@@ -1,5 +1,7 @@
 package gtPlusPlus.core.client.renderer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -24,6 +26,7 @@ import gtPlusPlus.api.interfaces.ITexturedBlock;
 public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
+    @SideOnly(Side.CLIENT)
     private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     @Override

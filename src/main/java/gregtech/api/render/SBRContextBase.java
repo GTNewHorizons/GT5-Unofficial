@@ -19,6 +19,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.ITexture;
 
 /**
@@ -39,6 +41,7 @@ import gregtech.api.interfaces.ITexture;
  * </ul>
  */
 @SuppressWarnings({ "UnusedReturnValue", "ClassWithTooManyFields" })
+@SideOnly(Side.CLIENT)
 public abstract class SBRContextBase {
 
     public static final int MAX_BRIGHTNESS = 0xf000f0;
