@@ -533,15 +533,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 isValid = false;
                 return;
             }
-            attackDamage = stack.getAttributeModifiers()
-                .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
-                .stream()
-                .mapToDouble(
-                    attr -> attr.getAmount()
-                        + (double) EnchantmentHelper.func_152377_a(stack, EnumCreatureAttribute.UNDEFINED))
-                .sum();
-            looting = Math
-                .min(MAX_LOOTING_LEVEL, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack));
+            attackDamage = MTEExtremeEntityCrusher.extractWeaponAttackDamage(stack);
+            looting = MTEExtremeEntityCrusher.extractWeaponLooting(stack);
             isValid = true;
         }
 
@@ -616,7 +609,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 rand,
                 this,
                 tAttackDamage,
-                tLootingLevel,
+                Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
                 mIsProducingInfernalDrops,
                 voidAllDamagedAndEnchantedItems);
             EECPlayer.currentWeapon = null;
@@ -839,6 +832,20 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     private static boolean isUsableWeapon(final ItemStack aWeapon) {
         return Enchantment.looting.canApply(aWeapon);
+    }
+
+    private static double extractWeaponAttackDamage(final ItemStack aWeapon) {
+        return aWeapon.getAttributeModifiers()
+            .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
+            .stream()
+            .mapToDouble(
+                attr -> attr.getAmount()
+                    + (double) EnchantmentHelper.func_152377_a(aWeapon, EnumCreatureAttribute.UNDEFINED))
+            .sum();
+    }
+
+    private static int extractWeaponLooting(final ItemStack aWeapon) {
+        return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, aWeapon);
     }
 
     private boolean isRitualValid() {
