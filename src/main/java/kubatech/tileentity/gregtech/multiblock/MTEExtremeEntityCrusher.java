@@ -239,6 +239,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
         aNBT.setBoolean("mIsProducingInfernalDrops", mIsProducingInfernalDrops);
         aNBT.setBoolean("voidAllDamagedAndEnchantedItems", voidAllDamagedAndEnchantedItems);
+        aNBT.setBoolean("mPreserveWeapon", mPreserveWeapon);
+        aNBT.setBoolean("mCycleWeapons", mCycleWeapons);
         if (weaponCache.getStackInSlot(0) != null) aNBT.setTag(
             "weaponCache",
             weaponCache.getStackInSlot(0)
@@ -253,6 +255,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
             || aNBT.getBoolean("mIsProducingInfernalDrops");
         voidAllDamagedAndEnchantedItems = aNBT.getBoolean("voidAllDamagedAndEnchantedItems");
+        mPreserveWeapon = aNBT.getBoolean("mPreserveWeapon");
+        mCycleWeapons = !aNBT.hasKey("mCycleWeapons") || aNBT.getBoolean("mCycleWeapons");
         if (aNBT.hasKey("weaponCache"))
             weaponCache.setStackInSlot(0, ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("weaponCache")));
     }
@@ -871,10 +875,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private static int extractWeaponLooting(final ItemStack aWeapon) {
         return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, aWeapon);
     }
+
     private void playSwordBreakSound() {
         final IGregTechTileEntity tMTE = this.getBaseMetaTileEntity();
 
-        if(tMTE == null || tMTE.hasMufflerUpgrade()) return;
+        if (tMTE == null || tMTE.hasMufflerUpgrade()) return;
 
         GTUtility.sendSoundToPlayers(
             tMTE.getWorld(),
