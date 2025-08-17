@@ -185,12 +185,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     //spotless:on
                 }))
         .addShape(OCUpgradeCompat,
-            new String[][] {
+            transpose(new String[][] {
                 // spotless:off
                 {"     ", "     ","  L  ","     ","     "}
                 //spotless:on
             }
-
+            )
             )
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
@@ -437,7 +437,18 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 if (mCoolingTower != null) {
                     structures++;
                 }
-                return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
+                if (compatMode.isSet) {
+                    structures = 1;
+                    if (compatMode.OCTier != 0 || mCoolingTower != null) {
+                        structures++;
+                    }
+                    if (compatMode.bioUpgrade) structures++;
+                    return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
+                            .setEUtDiscount(Math.sqrt(structures))
+                            .setDurationModifier(getDurationMultiplierFromRoughness())
+                            .setDurationDecreasePerOC(compatMode.OCTier == 2 ? 4.0 : 2.0);
+                }
+                return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
                     .setEUtDiscount(Math.sqrt(structures))
                     .setDurationModifier(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
@@ -460,8 +471,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         };
     }
 
-    private boolean isNoOC() {
-        return mCoolingTower == null || !mCoolingTower.isAllowedToWork();
+    private boolean isOC() {
+        if (compatMode.isSet && compatMode.OCTier != 0) {
+            return true;
+        }
+        if (mCoolingTower == null)
+            return false;
+
+        return mCoolingTower.isAllowedToWork();
     }
 
     private double getDurationMultiplierFromRoughness() {
@@ -477,12 +494,24 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
 
         if (ticker % 20 == 0) {
-            if (!isNoOC()) {
-                FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
-                    : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
-                if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
-                    stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
-                    return false;
+            if (isOC()) {
+                if (compatMode.isSet && compatMode.OCTier != 0) {
+                    if (compatMode.coolantHatch != null) {
+                        FluidStack tFluid = compatMode.OCTier == 1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
+                                : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                        if (!drain(compatMode.coolantHatch, tFluid, true)) {
+                            stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
+                        }
+                    } else {
+                        stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
+                    }
+                } else {
+                    FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
+                            : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                    if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
+                        stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
+                        return false;
+                    }
                 }
             }
             ticker = 0;
@@ -904,15 +933,17 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             if (mOCTier1) {
                 compatMode.OCX = aNBT.getInteger("mOCTier1OffsetX");
                 compatMode.OCZ = aNBT.getInteger("mOCTier1OffsetZ");
+                compatMode.OCTier = 1;
             }
             if (mOCTier2) {
                 compatMode.OCX = aNBT.getInteger("mOCTier2OffsetX");
                 compatMode.OCZ = aNBT.getInteger("mOCTier2OffsetZ");
+                compatMode.OCTier = 2;
             }
         }
         //more backwards compatibility, but the NBT already contains the required data.
         if (aNBT.hasKey("compatMode")) {
-            compatMode = new CompatMode(aNBT.getCompoundTag("compatMode"));
+            compatMode = new CompatMode(aNBT);
         }
 
         if (aNBT.hasKey("mBioChamber")) {
