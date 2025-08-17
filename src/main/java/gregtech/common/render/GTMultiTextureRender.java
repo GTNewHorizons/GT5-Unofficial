@@ -25,32 +25,32 @@ public class GTMultiTextureRender extends GTTextureBase implements ITexture {
     }
 
     @Override
-    public void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXPos(SBRContextBase ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXPos(ctx);
     }
 
     @Override
-    public void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXNeg(SBRContextBase ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXNeg(ctx);
     }
 
     @Override
-    public void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYPos(SBRContextBase ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYPos(ctx);
     }
 
     @Override
-    public void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYNeg(SBRContextBase ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYNeg(ctx);
     }
 
     @Override
-    public void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZPos(SBRContextBase ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZPos(ctx);
     }
 
     @Override
-    public void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZNeg(SBRContextBase ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZNeg(ctx);
     }
 
