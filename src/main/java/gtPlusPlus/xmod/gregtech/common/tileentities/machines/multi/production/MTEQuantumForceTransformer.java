@@ -741,91 +741,36 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @SideOnly(Side.CLIENT)
-    private void renderForceField(double x, double y, double z, int side, double minU, double maxU, double minV,
-        double maxV) {
+    private void renderForceField(double x, double y, double z, double minU, double maxU, double minV, double maxV) {
         // spotless:off
         Tessellator tes = Tessellator.instance;
-        switch (side) {
-            case 0 -> {
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
-                tes.addVertexWithUV(x - 3, y, z + 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y, z + 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-            }
-            case 1 -> {
-                tes.addVertexWithUV(x + 7, y, z + 4, maxU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x + 7, y, z + 4, maxU, maxV);
-            }
-            case 2 -> {
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
-                tes.addVertexWithUV(x - 3, y, z - 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y, z - 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-            }
-            case 3 -> {
-                tes.addVertexWithUV(x - 7, y, z + 4, maxU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x - 7, y, z + 4, maxU, maxV);
-            }
-            case 4 -> {
-                tes.addVertexWithUV(x - 3, y, z + 7, maxU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y, z + 7, maxU, maxV);
-            }
-            case 5 -> {
-                tes.addVertexWithUV(x - 3, y, z - 7, maxU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y, z - 7, maxU, maxV);
-            }
-            case 6 -> {
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-            }
-            case 7 -> {
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-            }
+        // ForgeDirection direction = getExtendedFacing().getDirection();
+        // double rotation_offset = (double) (getRotation().getIndex() * Math.PI / 2);
+        // Clockwise direction from first point, returning at first point
+        double [][] forceFieldBaseCoordinates = {
+            {x + 3, y, z + 7}, {x + 3, y + 4, z + 7},
+            {x - 3, y, z + 7}, {x - 3, y + 4, z + 7},
+            {x - 7, y, z + 3}, {x - 7, y + 4, z + 3},
+            {x - 7, y, z - 3}, {x - 7, y + 4, z - 3},
+            {x - 3, y, z - 7}, {x - 3, y + 4, z - 7},
+            {x + 3, y, z - 7}, {x + 3, y + 4, z - 7},
+            {x + 7, y, z - 3}, {x + 7, y + 4, z - 3},
+            {x + 7, y, z + 3}, {x + 7, y + 4, z + 3},
+            {x + 3, y, z + 7}, {x + 3, y + 4, z + 7},
+        };
+        for (int cur = 0; cur < forceFieldBaseCoordinates.length - 3; cur += 2) {
+            double [] cur_bot = forceFieldBaseCoordinates[cur];
+            double [] cur_top = forceFieldBaseCoordinates[cur+1];
+            double [] nex_bot = forceFieldBaseCoordinates[cur+2];
+            double [] nex_top = forceFieldBaseCoordinates[cur+3];
+            tes.addVertexWithUV(cur_bot[0], cur_bot[1], cur_bot[2], maxU, maxV);
+            tes.addVertexWithUV(cur_top[0], cur_top[1], cur_top[2], maxU, minV);
+            tes.addVertexWithUV(nex_top[0], nex_top[1], nex_top[2], minU, minV);
+            tes.addVertexWithUV(nex_bot[0], nex_bot[1], nex_bot[2], minU, maxV);
+            tes.addVertexWithUV(nex_bot[0], nex_bot[1], nex_bot[2], minU, maxV);
+            tes.addVertexWithUV(nex_top[0], nex_top[1], nex_top[2], minU, minV);
+            tes.addVertexWithUV(cur_top[0], cur_top[1], cur_top[2], maxU, minV);
+            tes.addVertexWithUV(cur_bot[0], cur_bot[1], cur_bot[2], maxU, maxV);
         }
     }
 
@@ -840,7 +785,9 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             double minV = forceField.getMinV();
             double maxV = forceField.getMaxV();
             double xBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+            double yBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetY;
             double zBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+            // System.out.println("x:"+x+" y:"+y+" z:"+z+" xBaseOffset:" + xBaseOffset + " zBaseOffset:" + zBaseOffset);
             tes.setColorOpaque_F(1f, 1f, 1f);
             tes.setBrightness(15728880);
             //Center O:  0,  0         1 ------- 8
@@ -852,14 +799,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             //Corner 6: -2,  7     3 \             / 6
             //Corner 7:  3,  7        \           /
             //Corner 8:  7,  3         4 ------- 5
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 0, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 1, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 2, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 3, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 4, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 5, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 6, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 7, minU, maxU, minV, maxV);
+            renderForceField(x + xBaseOffset + 0.5, y + yBaseOffset + 0.5, z + zBaseOffset + 0.5, minU, maxU, minV, maxV);
         }
         // Needs to be false to render the controller
         return false;
