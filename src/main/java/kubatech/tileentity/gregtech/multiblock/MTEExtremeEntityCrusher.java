@@ -985,76 +985,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
         configurationElements.setSynced(true);
 
-        // Ritual mode button
-        configurationElements.widget(new CycleButtonWidget().setToggle(() -> isInRitualMode, v -> {
-            if (this.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
-                return;
-            }
-
-            isInRitualMode = v;
-
-            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!isInRitualMode) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode disabled");
-            } else {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode enabled");
-                if (connectToRitual())
-                    GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Successfully connected to the ritual");
-                else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
-            }
-        })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.eec.ritual_mode"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
-
-        // Allow infernals button
-        configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
-            if (this.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
-                return;
-            }
-
-            mIsProducingInfernalDrops = v;
-
-            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!mIsProducingInfernalDrops) GTUtility
-                .sendChatToPlayer(buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
-            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
-        })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop"))
-            .addTooltip(
-                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always"))
-                    .color(Color.GRAY.normal))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
-
-        // Void damaged and enchanted button
-        configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
-            if (this.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
-                return;
-            }
-
-            voidAllDamagedAndEnchantedItems = v;
-
-            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!voidAllDamagedAndEnchantedItems) GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void nothing");
-            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void all damaged and enchanted items");
-        })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged"))
-            .addTooltip(
-                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))
-                    .color(Color.GRAY.normal))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
-
         // Preserve weapon button
         CycleButtonWidget tPreserveWeapon = new CycleButtonWidget();
         configurationElements.widget(tPreserveWeapon.setToggle(() -> mPreserveWeapon, v -> {
@@ -1086,6 +1016,76 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addTooltip(
                 new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.cycle_weapons"))
                     .color(Color.GRAY.normal))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        // Void damaged and enchanted button
+        configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
+            if (this.mMaxProgresstime > 0) {
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running!");
+                return;
+            }
+
+            voidAllDamagedAndEnchantedItems = v;
+
+            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+            if (!voidAllDamagedAndEnchantedItems) GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void nothing");
+            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void all damaged and enchanted items");
+        })
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged"))
+            .addTooltip(
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))
+                    .color(Color.GRAY.normal))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        // Allow infernals button
+        configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
+            if (this.mMaxProgresstime > 0) {
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running!");
+                return;
+            }
+
+            mIsProducingInfernalDrops = v;
+
+            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+            if (!mIsProducingInfernalDrops) GTUtility
+                .sendChatToPlayer(buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
+            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
+        })
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop"))
+            .addTooltip(
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always"))
+                    .color(Color.GRAY.normal))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        // Ritual mode button
+        configurationElements.widget(new CycleButtonWidget().setToggle(() -> isInRitualMode, v -> {
+            if (this.mMaxProgresstime > 0) {
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running!");
+                return;
+            }
+
+            isInRitualMode = v;
+
+            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+            if (!isInRitualMode) {
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode disabled");
+            } else {
+                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode enabled");
+                if (connectToRitual())
+                    GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Successfully connected to the ritual");
+                else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
+            }
+        })
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.eec.ritual_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
