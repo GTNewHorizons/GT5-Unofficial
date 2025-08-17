@@ -765,14 +765,9 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         for (int i = 0; i < forceFieldCoordinates.length; i++) {
             double [] transformed = new double[3];
             getExtendedFacing().getWorldOffset(forceFieldCoordinates[i], transformed);
-            forceFieldCoordinates[i][0] = transformed[0];
-            forceFieldCoordinates[i][1] = transformed[1];
-            forceFieldCoordinates[i][2] = transformed[2];
-        }
-        for (int i = 0; i < forceFieldCoordinates.length; i++) {
-            forceFieldCoordinates[i][0] += x;
-            forceFieldCoordinates[i][1] += y;
-            forceFieldCoordinates[i][2] += z;
+            forceFieldCoordinates[i][0] = transformed[0] + x;
+            forceFieldCoordinates[i][1] = transformed[1] + y;
+            forceFieldCoordinates[i][2] = transformed[2] + z;
         }
         for (int cur = 0; cur < forceFieldCoordinates.length - 3; cur += 2) {
             double [] cur_bot = forceFieldCoordinates[cur];
