@@ -93,6 +93,19 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
+    // spotless:off
+    private static final double[][] FORCE_FIELD_BASE_COORDINATES = {
+        { 3, 0, 7 }, { 3, 4, 7 },
+        { -3, 0, 7 }, { -3, 4, 7 },
+        { -7, 0, 3 }, { -7, 4, 3 },
+        { -7, 0, -3 }, { -7, 4, -3 },
+        { -3, 0, -7 }, { -3, 4, -7 },
+        { 3, 0, -7 }, { 3, 4, -7 },
+        { 7, 0, -3 }, { 7, 4, -3 },
+        { 7, 0, 3 }, { 7, 4, 3 },
+        { 3, 0, 7 }, { 3, 4, 7 }
+    };
+    // spotless:on
     private static final IStructureDefinition<MTEQuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEQuantumForceTransformer>builder()
         .addShape(
@@ -746,23 +759,21 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         Tessellator tes = Tessellator.instance;
         // ForgeDirection direction = getExtendedFacing().getDirection();
         // double rotation_offset = (double) (getRotation().getIndex() * Math.PI / 2);
-        // Clockwise direction from first point, returning at first point
-        double [][] forceFieldBaseCoordinates = {
-            {x + 3, y, z + 7}, {x + 3, y + 4, z + 7},
-            {x - 3, y, z + 7}, {x - 3, y + 4, z + 7},
-            {x - 7, y, z + 3}, {x - 7, y + 4, z + 3},
-            {x - 7, y, z - 3}, {x - 7, y + 4, z - 3},
-            {x - 3, y, z - 7}, {x - 3, y + 4, z - 7},
-            {x + 3, y, z - 7}, {x + 3, y + 4, z - 7},
-            {x + 7, y, z - 3}, {x + 7, y + 4, z - 3},
-            {x + 7, y, z + 3}, {x + 7, y + 4, z + 3},
-            {x + 3, y, z + 7}, {x + 3, y + 4, z + 7},
-        };
-        for (int cur = 0; cur < forceFieldBaseCoordinates.length - 3; cur += 2) {
-            double [] cur_bot = forceFieldBaseCoordinates[cur];
-            double [] cur_top = forceFieldBaseCoordinates[cur+1];
-            double [] nex_bot = forceFieldBaseCoordinates[cur+2];
-            double [] nex_top = forceFieldBaseCoordinates[cur+3];
+        // Deep copy -> rotation transform -> position transform -> push to tessellator
+        double [][] forceFieldCoordinates = new double [FORCE_FIELD_BASE_COORDINATES.length][];
+        for (int i = 0; i < forceFieldCoordinates.length; i++) {
+            forceFieldCoordinates[i] = FORCE_FIELD_BASE_COORDINATES[i].clone();
+        }
+        for (int i = 0; i < forceFieldCoordinates.length; i++) {
+            forceFieldCoordinates[i][0] += x;
+            forceFieldCoordinates[i][1] += y;
+            forceFieldCoordinates[i][2] += z;
+        }
+        for (int cur = 0; cur < forceFieldCoordinates.length - 3; cur += 2) {
+            double [] cur_bot = forceFieldCoordinates[cur];
+            double [] cur_top = forceFieldCoordinates[cur+1];
+            double [] nex_bot = forceFieldCoordinates[cur+2];
+            double [] nex_top = forceFieldCoordinates[cur+3];
             tes.addVertexWithUV(cur_bot[0], cur_bot[1], cur_bot[2], maxU, maxV);
             tes.addVertexWithUV(cur_top[0], cur_top[1], cur_top[2], maxU, minV);
             tes.addVertexWithUV(nex_top[0], nex_top[1], nex_top[2], minU, minV);
