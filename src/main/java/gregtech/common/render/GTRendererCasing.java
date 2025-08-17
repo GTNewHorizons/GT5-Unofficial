@@ -17,6 +17,8 @@ import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.SBRContextHolder;
@@ -34,6 +36,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
 
     public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
     private final ITexture[][] textureArray = new ITexture[6][2];
+    @SideOnly(Side.CLIENT)
     private final SBRContextHolder sbrContextHolder = new SBRContextHolder();
 
     @Override

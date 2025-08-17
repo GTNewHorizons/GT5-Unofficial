@@ -1,5 +1,7 @@
 package gregtech.api.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.Item;
@@ -14,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * ThreadLocal management upstream). No internal synchronization is performed.
  * </p>
  */
+@SideOnly(Side.CLIENT)
 public final class SBRContextHolder {
 
     private final SBRInventoryContext inventoryContext = new SBRInventoryContext();

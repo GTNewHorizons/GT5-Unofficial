@@ -71,6 +71,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     private final ITexture[][] textureArray = new ITexture[6][];
     private final ITexture[] overlayHolder = new ITexture[1];
 
+    @SideOnly(Side.CLIENT)
     protected final SBRContextHolder sbrContextHolder = new SBRContextHolder();
 
     public boolean renderStandardBlock(SBRWorldContext ctx) {
