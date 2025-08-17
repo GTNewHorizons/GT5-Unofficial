@@ -1,12 +1,13 @@
 package gregtech.api.render;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.Item;
 
 import org.jetbrains.annotations.NotNull;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Holds and manages single instances of {@link SBRInventoryContext} and {@link SBRWorldContext},
