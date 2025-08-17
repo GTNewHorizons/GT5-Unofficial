@@ -4,8 +4,6 @@ import static gregtech.api.enums.GTValues.*;
 import static gregtech.common.render.GTRendererBlock.*;
 import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -19,6 +17,8 @@ import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.SBRContextHolder;
