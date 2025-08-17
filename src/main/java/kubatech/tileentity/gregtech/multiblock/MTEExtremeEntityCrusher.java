@@ -79,6 +79,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -224,6 +225,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private boolean mAnimationEnabled = true;
     private boolean mIsProducingInfernalDrops = true;
     private boolean voidAllDamagedAndEnchantedItems = false;
+    private boolean mPreserveWeapon;
+    private boolean mCycleWeapons;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
@@ -931,6 +934,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
         configurationElements.setSynced(true);
+
+        // Ritual mode button
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> isInRitualMode, v -> {
             if (this.mMaxProgresstime > 0) {
                 GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
@@ -954,6 +959,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setSize(16, 16)
             .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.eec.ritual_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        // Allow infernals button
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) {
                 GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
@@ -975,6 +982,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always"))
                     .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        // Void damaged and enchanted button
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
             if (this.mMaxProgresstime > 0) {
                 GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
@@ -993,6 +1002,39 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged"))
             .addTooltip(
                 new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))
+                    .color(Color.GRAY.normal))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        // Preserve weapon button
+        CycleButtonWidget tPreserveWeapon = new CycleButtonWidget();
+        configurationElements.widget(tPreserveWeapon.setToggle(() -> mPreserveWeapon, v -> {
+            mPreserveWeapon = v;
+            tPreserveWeapon.notifyTooltipChange();
+        })
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .dynamicTooltip(
+                () -> ImmutableList.of(
+                    StatCollector.translateToLocal(
+                        "kubatech.gui.text.eec.preserve_weapon" + (mPreserveWeapon ? "_on" : "_off"))))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        // Cycle weapons button
+        CycleButtonWidget tCycleWeapons = new CycleButtonWidget();
+        configurationElements.widget(tCycleWeapons.setToggle(() -> mCycleWeapons, v -> {
+            mCycleWeapons = v;
+            tCycleWeapons.notifyTooltipChange();
+        })
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .dynamicTooltip(
+                () -> ImmutableList.of(
+                    StatCollector
+                        .translateToLocal("kubatech.gui.text.eec.cycle_weapons" + (mCycleWeapons ? "_on" : "_off"))))
+            .addTooltip(
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.cycle_weapons"))
                     .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }

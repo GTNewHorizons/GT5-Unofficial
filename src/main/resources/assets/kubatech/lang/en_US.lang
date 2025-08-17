@@ -54,9 +54,14 @@ kubatech.gui.text.tea_acceptor.in=IN: %s/t
 kubatech.gui.text.tea_acceptor.in.tooltip=Average input from the last 5 seconds
 
 kubatech.gui.text.eec.infernal_drop=Is allowed to spawn infernal mobs
-kubatech.gui.text.eec.infernal_drop.always=Does not affect mobs that are always infernal!
+kubatech.gui.text.eec.infernal_drop.always=§7Does not affect mobs that are always infernal!
 kubatech.gui.text.eec.void_all_damaged=Void all damaged and enchanted items
-kubatech.gui.text.eec.void_all_damaged.warning=Does not affect infernal drops and some special drops like Sticky Sword!
+kubatech.gui.text.eec.void_all_damaged.warning=§7Does not affect infernal drops and some special drops like Sticky Sword! Will never void the weapon in the GUI slot, even if §fWeapon Cycling§7 is enabled
+kubatech.gui.text.eec.preserve_weapon_on=Weapon Preservation: ON
+kubatech.gui.text.eec.preserve_weapon_off=Weapon Preservation: OFF
+kubatech.gui.text.eec.cycle_weapons_on=Weapon Cycling: ON
+kubatech.gui.text.eec.cycle_weapons_off=Weapon Cycling: OFF
+kubatech.gui.text.eec.cycle_weapons=§7Moves weapons from Inputs to the GUI slot. If §fWeapon Preservation§7 is enabled this will also move almost broken weapons from the GUI to Output Buses. If no space is available the weapon will remain in the GUI slot, but won't be used for future runs.
 kubatech.gui.tooltip.eec.ritual_mode=Ritual mode
 
 kubatech.gui.text.inventory=Inventory
