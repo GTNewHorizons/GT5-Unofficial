@@ -757,17 +757,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private void renderForceField(double x, double y, double z, double minU, double maxU, double minV, double maxV) {
         // spotless:off
         Tessellator tes = Tessellator.instance;
-        // Deep copy -> convert to world offset -> position transform -> push to tessellator
+        // Convert base coords to world offset -> position transform -> push to tessellator
         double [][] forceFieldCoordinates = new double [FORCE_FIELD_BASE_COORDINATES.length][];
-        for (int i = 0; i < forceFieldCoordinates.length; i++) {
-            forceFieldCoordinates[i] = FORCE_FIELD_BASE_COORDINATES[i].clone();
-        }
-        for (int i = 0; i < forceFieldCoordinates.length; i++) {
+        for (int i = 0; i < FORCE_FIELD_BASE_COORDINATES.length; i++) {
             double [] transformed = new double[3];
-            getExtendedFacing().getWorldOffset(forceFieldCoordinates[i], transformed);
-            forceFieldCoordinates[i][0] = transformed[0] + x;
-            forceFieldCoordinates[i][1] = transformed[1] + y;
-            forceFieldCoordinates[i][2] = transformed[2] + z;
+            getExtendedFacing().getWorldOffset(FORCE_FIELD_BASE_COORDINATES[i], transformed);
+            transformed[0] += x;
+            transformed[1] += y;
+            transformed[2] += z;
+            forceFieldCoordinates[i] = transformed;
         }
         for (int cur = 0; cur < forceFieldCoordinates.length - 3; cur += 2) {
             double [] cur_bot = forceFieldCoordinates[cur];
