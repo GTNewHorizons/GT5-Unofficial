@@ -150,6 +150,7 @@ public class BlockFrameBox extends BlockContainer {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderType() {
         return GTRendererBlock.mRenderID;
     }

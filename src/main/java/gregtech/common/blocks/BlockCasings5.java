@@ -27,6 +27,8 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -176,6 +178,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderType() {
         return GTRendererBlock.mRenderID;
     }

@@ -145,6 +145,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderType() {
         return GTRendererBlock.mRenderID;
     }
