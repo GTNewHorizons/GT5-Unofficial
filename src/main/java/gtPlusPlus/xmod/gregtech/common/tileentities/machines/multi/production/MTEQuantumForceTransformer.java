@@ -95,15 +95,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
     // spotless:off
     private static final double[][] FORCE_FIELD_BASE_COORDINATES = {
-        { 3, 0, 7 }, { 3, 4, 7 },
-        { -3, 0, 7 }, { -3, 4, 7 },
-        { -7, 0, 3 }, { -7, 4, 3 },
-        { -7, 0, -3 }, { -7, 4, -3 },
-        { -3, 0, -7 }, { -3, 4, -7 },
-        { 3, 0, -7 }, { 3, 4, -7 },
-        { 7, 0, -3 }, { 7, 4, -3 },
-        { 7, 0, 3 }, { 7, 4, 3 },
-        { 3, 0, 7 }, { 3, 4, 7 }
+        { 3, -4, 7 }, { 3, 0, 7 },
+        { -3, -4, 7 }, { -3, 0, 7 },
+        { -7, -4, 3 }, { -7, 0, 3 },
+        { -7, -4, -3 }, { -7, 0, -3 },
+        { -3, -4, -7 }, { -3, 0, -7 },
+        { 3, -4, -7 }, { 3, 0, -7 },
+        { 7, -4, -3 }, { 7, 0, -3 },
+        { 7, -4, 3 }, { 7, 0, 3 },
+        { 3, -4, 7 }, { 3, 0, 7 }
     };
     // spotless:on
     private static final IStructureDefinition<MTEQuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
@@ -757,12 +757,17 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private void renderForceField(double x, double y, double z, double minU, double maxU, double minV, double maxV) {
         // spotless:off
         Tessellator tes = Tessellator.instance;
-        // ForgeDirection direction = getExtendedFacing().getDirection();
-        // double rotation_offset = (double) (getRotation().getIndex() * Math.PI / 2);
-        // Deep copy -> rotation transform -> position transform -> push to tessellator
+        // Deep copy -> convert to world offset -> position transform -> push to tessellator
         double [][] forceFieldCoordinates = new double [FORCE_FIELD_BASE_COORDINATES.length][];
         for (int i = 0; i < forceFieldCoordinates.length; i++) {
             forceFieldCoordinates[i] = FORCE_FIELD_BASE_COORDINATES[i].clone();
+        }
+        for (int i = 0; i < forceFieldCoordinates.length; i++) {
+            double [] transformed = new double[3];
+            getExtendedFacing().getWorldOffset(forceFieldCoordinates[i], transformed);
+            forceFieldCoordinates[i][0] = transformed[0];
+            forceFieldCoordinates[i][1] = transformed[1];
+            forceFieldCoordinates[i][2] = transformed[2];
         }
         for (int i = 0; i < forceFieldCoordinates.length; i++) {
             forceFieldCoordinates[i][0] += x;
