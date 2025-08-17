@@ -592,19 +592,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             int tBatchMultiplier = batchMode ? 16 : 1;
 
-            if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
+            int tMaxTries = 2; // 2 => Weapon already in the slot + one extra
+            ItemStack tWeaponToUse = cycleWeaponsUntilNoBreakage(recipe, tBatchMultiplier, tMaxTries);
 
-            int tMaxTries = 16; // 2 => Weapon already in the slot + one extra
-            boolean tShouldUseCachedWeapon = cycleWeaponsUntilNoBreakage(recipe, tBatchMultiplier, tMaxTries);
-
-            ItemStack tWeapon = null;
-            if (tShouldUseCachedWeapon) {
-                tWeapon = weaponCache.getStackInSlot(0);
-                tAttackDamage += weaponCache.attackDamage;
-                tLootingLevel += weaponCache.looting;
+            if (tWeaponToUse != null) {
+                if (tWeaponToUse == weaponCache.getStackInSlot(0)) {
+                    tAttackDamage += weaponCache.attackDamage;
+                    tLootingLevel += weaponCache.looting;
+                } else {
+                    tAttackDamage += extractWeaponAttackDamage(tWeaponToUse);
+                    tLootingLevel += extractWeaponLooting(tWeaponToUse);
+                }
             }
 
-            EECPlayer.currentWeapon = tWeapon;
+            if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
+
+            EECPlayer.currentWeapon = tWeaponToUse;
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
@@ -640,7 +643,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    private boolean cycleWeaponsUntilNoBreakage(MobHandlerLoader.MobEECRecipe aRecipe, final int aBatchModeMultiplier,
+    private ItemStack cycleWeaponsUntilNoBreakage(MobHandlerLoader.MobEECRecipe aRecipe, final int aBatchModeMultiplier,
         int aMaxTries) {
         int tCurrentInputBus = 0;
         int tCurrentInputBusSlot = 0;
@@ -654,9 +657,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         // spotless:on
 
         ItemStack tWeapon = this.weaponCache.getStackInSlot(0);
-        // If we have to replace the cache right from the start
-        // that already counts as one of the tries
-        if (!this.weaponCache.isValid) aMaxTries--;
+        if (!this.weaponCache.isValid) {
+            if (!mCycleWeapons) {
+
+                // spotless:off
+                GT_FML_LOGGER.warn("[Kynake] Weapon cache has no valid weapon, and Sword Cycle is disabled");
+                GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
+                GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
+                // spotless:on
+
+                return null;
+            }
+
+            // If we have to replace the cache right from the start
+            // that already counts as one of the tries
+            aMaxTries--;
+        }
 
         for (int i = 0; i < aMaxTries; i++) {
             if (!this.weaponCache.isValid) { // pull weapon to cache
@@ -673,7 +689,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
                     // spotless:on
 
-                    return false;
+                    return null;
                 }
 
                 // spotless:off
@@ -716,7 +732,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
                     // spotless:on
 
-                    return false;
+                    return null;
                 }
             }
 
@@ -741,16 +757,24 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
                 // Didn't break. Replace weapon with simulation result and return it
                 weaponCache.setStackInSlot(0, tWeaponResult);
-                return true;
+                return tWeaponResult;
             }
 
             // spotless:off
             GT_FML_LOGGER.warn("[Kynake] {} broke, sword cycle continues...", tWeapon.getDisplayName());
             // spotless:on
 
-            // weapon copy broke during simulation
-            // try move original to output
-            if (!addOutputPartial(tWeapon, false)) {
+            // weapon copy broke during simulation, do we care?
+
+            // we don't care, use original for the next run but destroy it in the weapon cache
+            if (!mPreserveWeapon) {
+                weaponCache.setStackInSlot(0, null);
+                playSwordBreakSound();
+                return tWeapon;
+            }
+
+            // we DO care! try to move original to output
+            if (!mCycleWeapons || !addOutputPartial(tWeapon, false)) {
 
                 // spotless:off
                 GT_FML_LOGGER.warn("[Kynake] Unable to move {} out of the weapon slot. Ending sword cycle", tWeapon.getDisplayName());
@@ -760,7 +784,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
                 // Can't move weapon don't use it as part of the next run,
                 // keep it on controller slot
-                return false;
+                return null;
             }
 
             // try again with the next weapon on the list
@@ -780,7 +804,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         // Exceeded max number of tries. When this happens the weapon slot should
         // already be empty. We stop the simulations here, so simply return unable to use
-        return false;
+        return null;
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -846,6 +870,20 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     private static int extractWeaponLooting(final ItemStack aWeapon) {
         return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, aWeapon);
+    }
+    private void playSwordBreakSound() {
+        final IGregTechTileEntity tMTE = this.getBaseMetaTileEntity();
+
+        if(tMTE == null || tMTE.hasMufflerUpgrade()) return;
+
+        GTUtility.sendSoundToPlayers(
+            tMTE.getWorld(),
+            SoundResource.RANDOM_BREAK,
+            0.5F, // A little muffled because the sword is inside the MTE
+            0.9F, // Helps simulate a Low-Pass filter
+            tMTE.getXCoord(),
+            tMTE.getYCoord(),
+            tMTE.getZCoord());
     }
 
     private boolean isRitualValid() {
