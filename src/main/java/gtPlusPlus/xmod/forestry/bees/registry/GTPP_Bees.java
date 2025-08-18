@@ -36,7 +36,7 @@ public class GTPP_Bees {
     public static HashMap<Integer, GTPPCombType> sCombMappings = new HashMap<>();
 
     public GTPP_Bees() {
-        if (Forestry.isModLoaded() && GTMod.gregtechproxy.mGTBees) {
+        if (Forestry.isModLoaded() && GTMod.proxy.mGTBees) {
             Logger.BEES("Creating required items.");
             propolis = new GTPPPropolis();
             pollen = new GTPPPollen();

@@ -39,7 +39,7 @@ public class GTPacketClientPreference extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        if (mPlayer != null) GTMod.gregtechproxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
+        if (mPlayer != null) GTMod.proxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
     }
 
     @Override

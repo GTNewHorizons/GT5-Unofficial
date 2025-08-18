@@ -89,7 +89,7 @@ import tectech.loader.recipe.Godforge;
 public final class MainMod {
 
     public static final String NAME = "BartWorks";
-    public static final String MOD_ID = Mods.Names.BART_WORKS;
+    public static final String MOD_ID = Mods.ModIDs.BART_WORKS;
     public static final String APIVERSION = "11";
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");

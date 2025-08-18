@@ -3678,7 +3678,7 @@ public class MTERecipeLoader implements Runnable {
                 'F', ItemList.Casing_RobustTungstenSteel, 'P', OrePrefixes.rotor.get(Materials.TungstenSteel) });
 
         // If Cleanroom is enabled, add a recipe, else hide from NEI.
-        if (GTMod.gregtechproxy.mEnableCleanroom) {
+        if (GTMod.proxy.mEnableCleanroom) {
             GTModHandler.addCraftingRecipe(
                 ItemList.Machine_Multi_Cleanroom.get(1L),
                 bitsd,

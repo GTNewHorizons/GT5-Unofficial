@@ -729,6 +729,7 @@ gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (a
 gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
+gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
 gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
@@ -1080,7 +1081,7 @@ fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does
 fog.text.tooltip.processingvoltage=Base processing voltage for recipes
 fog.text.tooltip.factorpreview=Enter fuel factor to simulate calculations with
 fog.text.tooltip.applysimulationchanges=Simulate new values
-fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual processing voltage follows this formula:
+fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual voltage follows this formula:
 fog.text.tooltip.voltageadjustment.1=Voltage = Min(Selected Voltage, 2^63 / Max Parallel)
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1132,7 +1133,7 @@ gt.blockmachines.multimachine.FOG.availableshards=Available Graviton Shards:
 gt.blockmachines.multimachine.FOG.modulestatus=Status:
 gt.blockmachines.multimachine.FOG.modulestatus.true=Connected
 gt.blockmachines.multimachine.FOG.modulestatus.false=Disconnected
-gt.blockmachines.multimachine.FOG.voltageinfo=Set processing voltage
+gt.blockmachines.multimachine.FOG.voltageinfo=Voltage Per Parallel
 gt.blockmachines.multimachine.FOG.totalprogress=Total Progress
 gt.blockmachines.multimachine.FOG.milestoneprogress=Current Milestone Level
 gt.blockmachines.multimachine.FOG.progress=Next Milestone at

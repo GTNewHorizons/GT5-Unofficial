@@ -347,7 +347,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     protected boolean isAutomatable() {
-        return GTMod.gregtechproxy.mAllowSmallBoilerAutomation;
+        return GTMod.proxy.mAllowSmallBoilerAutomation;
     }
 
     @Override

@@ -1983,7 +1983,7 @@ public class RecipesMachines {
 
         }
 
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             RecipeUtils.addShapedGregtechRecipe(
                 "plateCarbon",
                 "plateCarbon",

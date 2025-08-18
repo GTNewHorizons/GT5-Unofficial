@@ -47,7 +47,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -285,7 +284,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         if (this.mSize > 5) {
             this.mPlasmaMode = !mPlasmaMode;
             if (mPlasmaMode) {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     "[" + EnumChatFormatting.RED
                         + "MODE"
@@ -295,7 +294,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                         + "Plasma"
                         + EnumChatFormatting.RESET);
             } else {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     "[" + EnumChatFormatting.RED
                         + "MODE"
@@ -306,7 +305,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                         + EnumChatFormatting.RESET);
             }
         } else {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 "[" + EnumChatFormatting.RED
                     + "MODE"

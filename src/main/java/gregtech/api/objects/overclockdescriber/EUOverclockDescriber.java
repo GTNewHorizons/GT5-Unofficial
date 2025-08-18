@@ -39,7 +39,7 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
         if (shouldShowAmperage(recipeInfo.calculator)) {
             recipeInfo.drawText(getVoltageString(recipeInfo.calculator));
         }
-        if (GTMod.gregtechproxy.mNEIOriginalVoltage) {
+        if (GTMod.proxy.mNEIOriginalVoltage) {
             recipeInfo.drawText(getOriginalEUtDisplay(recipeInfo));
         }
         if (shouldShowAmperage(recipeInfo.calculator)) {

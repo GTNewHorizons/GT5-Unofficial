@@ -483,6 +483,6 @@ public class OverclockCalculator {
             correctionMultiplier = 1 / criticalDuration;
         }
 
-        return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
+        return Math.ceil(heatMultiplier * correctionMultiplier * regularMultiplier);
     }
 }

@@ -258,7 +258,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         boolean chk2;
         boolean chk3;
         int aPollutionAmount = Pollution.getPollution(getBaseMetaTileEntity());
-        if (aPollutionAmount >= GTMod.gregtechproxy.mPollutionSmogLimit) {
+        if (aPollutionAmount >= GTMod.proxy.mPollutionSmogLimit) {
             ran2 = GTPPCore.RANDOM.nextFloat();
             ran3 = GTPPCore.RANDOM.nextFloat();
             chk2 = ran2 * 100.0F < (float) this.calculatePollutionReduction(100);

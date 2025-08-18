@@ -65,12 +65,12 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
                 range = unpoweredRange;
             }
             if (prevRange != range) {
-                GTMod.gregtechproxy.tetherManager.registerPylon(mte, this, range);
+                GTMod.proxy.tetherManager.registerPylon(mte, this, range);
             }
         } else {
             if (range != -1) {
                 mte.setActive(false);
-                GTMod.gregtechproxy.tetherManager.unregisterPylon(mte);
+                GTMod.proxy.tetherManager.unregisterPylon(mte);
                 range = -1;
             }
         }
@@ -80,7 +80,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onRemoval() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.gregtechproxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
+            GTMod.proxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 
@@ -88,7 +88,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onUnload() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.gregtechproxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
+            GTMod.proxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 

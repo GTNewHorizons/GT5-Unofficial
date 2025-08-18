@@ -5,7 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 import gregtech.common.GTProxy;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
 @Config.LangKey("GT5U.gui.config.gregtech")
 public class Gregtech {
 

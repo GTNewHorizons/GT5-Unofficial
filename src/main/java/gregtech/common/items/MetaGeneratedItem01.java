@@ -545,10 +545,13 @@ import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.TranscendentalMetaItemRenderer;
+import gregtech.common.render.items.WireFrameTesseractRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
@@ -1703,28 +1706,32 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
-        ItemList.Tesseract.set(
-            addItem(
-                Tesseract.ID,
-                "Raw Tesseract",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.Tesseract
+            .set(
+                addItem(
+                    Tesseract.ID,
+                    "Raw Tesseract",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(0, 0, 0));
         ItemList.GigaChad.set(
             addItem(
                 GigaChad.ID,
                 "Giga Chad Token",
                 "You are worthy",
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1000L)));
-        ItemList.EnergisedTesseract.set(
-            addItem(
-                EnergisedTesseract.ID,
-                "Energised Tesseract",
-                "Higher dimensional engineering",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.EnergisedTesseract
+            .set(
+                addItem(
+                    EnergisedTesseract.ID,
+                    "Energised Tesseract",
+                    "Higher dimensional engineering",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(23, 129, 166));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
@@ -4772,7 +4779,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null

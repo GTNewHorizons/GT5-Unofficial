@@ -28,7 +28,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -96,7 +95,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     && (aMaterial.getProcessingMaterialTierEU() < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "Xx", 'X', OrePrefixes.plate.get(aMaterial) });
 
                 }

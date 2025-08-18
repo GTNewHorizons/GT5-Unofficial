@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.BuildCraftTransport;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
@@ -193,6 +194,15 @@ public class CuttingRecipes implements Runnable {
                     8,
                     false);
             }
+        }
+
+        if (EtFuturumRequiem.isModLoaded()) {
+            recipeWithClassicFluids(
+                new ItemStack[] { getModItem(EtFuturumRequiem.ID, "wood_slab", 1L, 3) },
+                new ItemStack[] { ItemList.Plank_Cherry_EFR.get(2) },
+                2 * SECONDS + 10 * TICKS,
+                8,
+                false);
         }
 
         if (Forestry.isModLoaded()) {

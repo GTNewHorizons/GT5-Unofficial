@@ -317,7 +317,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
 
                 if (mNeedsUpdate) {
-                    if (GTMod.gregtechproxy.mUseBlockUpdateHandler) {
+                    if (GTMod.proxy.mUseBlockUpdateHandler) {
                         BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
                     } else {
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -1287,7 +1287,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mReleaseEnergy = false;
             // Normal Explosion Code
             mMetaTileEntity.onExplosion();
-            if (GTMod.gregtechproxy.mExplosionItemDrop) {
+            if (GTMod.proxy.mExplosionItemDrop) {
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     final ItemStack tItem = this.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (this.isValidSlot(i))) {
@@ -1296,7 +1296,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                 }
             }
-            Pollution.addPollution((TileEntity) this, GTMod.gregtechproxy.mPollutionOnExplosion);
+            Pollution.addPollution((TileEntity) this, GTMod.proxy.mPollutionOnExplosion);
             mMetaTileEntity.doExplosion(aAmount);
         }
     }

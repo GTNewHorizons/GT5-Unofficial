@@ -69,7 +69,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     public String getMachineType() {
-        return "Flotation Cell";
+        return "Flotation Cell, FCR";
     }
 
     @Override

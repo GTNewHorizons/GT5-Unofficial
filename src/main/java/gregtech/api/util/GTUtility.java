@@ -4,7 +4,6 @@ import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
-import static gregtech.api.enums.GTValues.GT;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
@@ -84,12 +83,14 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -412,24 +413,15 @@ public class GTUtility {
                     .lastIndexOf(".") + 1);
     }
 
-    public static boolean getFullInvisibility(EntityPlayer aPlayer) {
-        try {
-            if (aPlayer.isInvisible()) {
-                for (int i = 0; i < 4; i++) {
-                    if (aPlayer.inventory.armorInventory[i] != null) {
-                        if (aPlayer.inventory.armorInventory[i].getItem() instanceof ItemEnergyArmor) {
-                            if ((((ItemEnergyArmor) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512)
-                                != 0) {
-                                if (GTModHandler.canUseElectricItem(aPlayer.inventory.armorInventory[i], 10000)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
+    public static boolean getFullInvisibility(EntityPlayer player) {
+        if (!player.isInvisible()) return false;
+        for (ItemStack stack : player.inventory.armorInventory) {
+            if (stack == null || !(stack.getItem() instanceof ItemEnergyArmor)) continue;
+            if ((((ItemEnergyArmor) stack.getItem()).mSpecials & 512) != 0) {
+                if (GTModHandler.canUseElectricItem(stack, 10000)) {
+                    return true;
                 }
             }
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
         }
         return false;
     }
@@ -517,6 +509,22 @@ public class GTUtility {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
         }
+    }
+
+    /**
+     * Send a message to all players on the server
+     */
+    public static void sendServerMessage(String message) {
+        sendServerMessage(new ChatComponentText(message));
+    }
+
+    /**
+     * Send a message to all players on the server
+     */
+    public static void sendServerMessage(IChatComponent chatComponent) {
+        MinecraftServer.getServer()
+            .getConfigurationManager()
+            .sendChatMsg(chatComponent);
     }
 
     public static void checkAvailabilities() {
@@ -2176,16 +2184,16 @@ public class GTUtility {
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength) {
         if (aSoundName == null) return false;
-        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(SoundResource sound, int aTimeUntilNextSound, float aSoundStrength) {
-        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound,
         float aSoundStrength) {
-        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength,
@@ -2256,10 +2264,10 @@ public class GTUtility {
         float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
         if (!FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote) return false;
+            .isClient() || GTMod.GT.getThePlayer() == null || !GTMod.GT.getThePlayer().worldObj.isRemote) return false;
         if (GregTechAPI.sMultiThreadedSounds) new Thread(
             new RunnableSound(
-                GT.getThePlayer().worldObj,
+                GTMod.GT.getThePlayer().worldObj,
                 aX,
                 aY,
                 aZ,
@@ -2269,7 +2277,7 @@ public class GTUtility {
                 aSoundModulation),
             "Sound Effect").start();
         else new RunnableSound(
-            GT.getThePlayer().worldObj,
+            GTMod.GT.getThePlayer().worldObj,
             aX,
             aY,
             aZ,
@@ -2782,6 +2790,7 @@ public class GTUtility {
         return copyAmount((int) aAmount, aStack);
     }
 
+    @Contract("_, null -> null")
     public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -2792,6 +2801,7 @@ public class GTUtility {
         return rStack;
     }
 
+    @Contract("_, null -> null")
     public static ItemStack multiplyStack(int aMultiplier, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -5137,5 +5147,11 @@ public class GTUtility {
         } else {
             return text.substring(0, limit) + "...";
         }
+    }
+
+    public static boolean isRealPlayer(EntityLivingBase entity) {
+        return entity instanceof EntityPlayer p && !p.getClass()
+            .getName()
+            .contains("Fake");
     }
 }

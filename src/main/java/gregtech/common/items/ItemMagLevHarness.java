@@ -59,19 +59,19 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         // remove fly + send funny message if connected to none and was connected before
         // send animation packet when connecting to any and previous was different or null
 
-        final MTEMagLevPylon prevPylon = GTMod.gregtechproxy.tetherManager.getConnectedPylon(player);
-        final MTEMagLevPylon closestPylon = GTMod.gregtechproxy.tetherManager.getClosestActivePylon(player);
+        final MTEMagLevPylon prevPylon = GTMod.proxy.tetherManager.getConnectedPylon(player);
+        final MTEMagLevPylon closestPylon = GTMod.proxy.tetherManager.getClosestActivePylon(player);
 
         boolean sendAnimPacket = false;
         if (prevPylon == null && closestPylon != null) {
-            GTMod.gregtechproxy.tetherManager.connectPlayer(player, closestPylon);
+            GTMod.proxy.tetherManager.connectPlayer(player, closestPylon);
             setFly(player, true);
             sendAnimPacket = true;
         }
 
         if (prevPylon != null) {
             if (closestPylon == null) {
-                GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
+                GTMod.proxy.tetherManager.disconnectPlayer(player);
                 setFly(player, player.capabilities.isCreativeMode);
                 if (Math.random() <= 0.03) {
                     GTNHLib.proxy.sendMessageAboveHotbar(
@@ -82,8 +82,8 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
                         false);
                 }
             } else if (closestPylon != prevPylon) {
-                GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
-                GTMod.gregtechproxy.tetherManager.connectPlayer(player, closestPylon);
+                GTMod.proxy.tetherManager.disconnectPlayer(player);
+                GTMod.proxy.tetherManager.connectPlayer(player, closestPylon);
                 sendAnimPacket = true;
             }
         }
@@ -115,11 +115,11 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase entityLivingBase) {
-        if (entityLivingBase.worldObj != null && entityLivingBase.worldObj.isRemote) return;
+        if (entityLivingBase.worldObj == null || entityLivingBase.worldObj.isRemote) return;
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
 
-        GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
+        GTMod.proxy.tetherManager.disconnectPlayer(player);
         setFly(player, false);
     }
 

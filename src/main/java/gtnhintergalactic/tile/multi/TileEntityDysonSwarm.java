@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
@@ -146,7 +145,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                         "yyyyyyy    zzzzz", "yyyyyyy    zzzzz", "yyyyyyy    zzzzz", "yyyyyyy    zzzzz" },
                     { "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb",
                         "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb",
-                        "bbbbbbbnbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb",
+                        "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb",
                         "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb" } }))
         .addElement('b', ofBlock(GregTechAPI.sBlockCasingsDyson, 9)) // Ultra High Strength Concrete Floor
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings5, 8)) // Awakened Draconium Coil Block
@@ -170,13 +169,6 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         .addElement('j', ofBlock(GregTechAPI.sBlockCasingsDyson, 3)) // Deployment Unit Core
         .addElement('k', ofFrame(Materials.Longasssuperconductornameforuhvwire))
         .addElement('m', ofBlock(GregTechAPI.sBlockCasingsDyson, 4)) // Deployment Unit Superconducting Magnet
-        .addElement(
-            'n',
-            buildHatchAdder(TileEntityDysonSwarm.class)
-                .anyOf(Maintenance)
-                .casingIndex(IGTextures.CASING_INDEX_FLOOR)
-                .dot(3)
-                .build()) // Ultra High Strength Concrete Floor
         .addElement(
             'o',
             buildHatchAdder(TileEntityDysonSwarm.class)
@@ -237,8 +229,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mMaintenanceHatches.size() <= 1
-            && mInputBusses.size() > 0
+        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mInputBusses.size() > 0
             && mInputHatches.size() > 0
             && eInputData.size() > 0
             && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
@@ -396,11 +387,6 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         return true;
     }
 
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
-    }
-
     /****************
      * CLIENT STUFF *
      ****************/
@@ -490,8 +476,6 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 + " EU/t",
             "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
             "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                : RED + "Has problems" + RESET),
             "---------------------------------------------" };
     }
 

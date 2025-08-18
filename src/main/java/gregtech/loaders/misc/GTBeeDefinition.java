@@ -1599,7 +1599,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
             IBeeMutationCustom tMutation = dis.registerMutation(ECTOPLASMA, ARCANESHARDS, 4);
             tMutation.restrictHumidity(ARID);
             if (HardcoreEnderExpansion.isModLoaded())
-                tMutation.requireResource(GameRegistry.findBlock(HardcoreEnderExpansion.ID, "essence_altar"), 1);
+                tMutation.requireResource(GameRegistry.findBlock(HardcoreEnderExpansion.ID, "essence_altar"), 0);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
         }),
     FIREESSENCE(GTBranchDefinition.HEE, "Fireessence", true, new Color(0xD41238), new Color(0xFFA157), beeSpecies -> {

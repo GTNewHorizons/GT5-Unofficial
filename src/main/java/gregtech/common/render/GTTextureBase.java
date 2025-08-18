@@ -12,11 +12,12 @@ public abstract class GTTextureBase implements ITexture {
 
     @Override
     public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
-        if (aRenderer.useInventoryTint && (!isOldTexture() || !GTUtilityClient.isDrawing(Tessellator.instance))) {
+        final Tessellator tess = Tessellator.instance;
+        if (aRenderer.useInventoryTint && (!isOldTexture() || !GTUtilityClient.isDrawing(tess))) {
             // Draw if we're not an old texture OR we are an old texture AND we're not already drawing
             isDrawing = true;
-            Tessellator.instance.startDrawingQuads();
-            Tessellator.instance.setNormal(aNormalX, aNormalY, aNormalZ);
+            tess.startDrawingQuads();
+            tess.setNormal(aNormalX, aNormalY, aNormalZ);
         }
     }
 

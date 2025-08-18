@@ -106,20 +106,4 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder glow();
-
-    /**
-     * Uses the given block/meta as the shader material. No effect shaders are off or not supported.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder material(Block block, int meta);
-
-    /**
-     * Uses the given block as the shader material. No effect shaders are off or not supported.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    default ITextureBuilder material(Block block) {
-        return material(block, 0);
-    }
 }
