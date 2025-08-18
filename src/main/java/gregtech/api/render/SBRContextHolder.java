@@ -6,9 +6,6 @@ import net.minecraft.item.Item;
 
 import org.jetbrains.annotations.NotNull;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 /**
  * Holds and manages single instances of {@link SBRInventoryContext} and {@link SBRWorldContext},
  * intended to be reused and reconfigured for each rendering operation.
@@ -17,7 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  * ThreadLocal management upstream). No internal synchronization is performed.
  * </p>
  */
-@SideOnly(Side.CLIENT)
 public final class SBRContextHolder {
 
     private final SBRInventoryContext inventoryContext = new SBRInventoryContext();

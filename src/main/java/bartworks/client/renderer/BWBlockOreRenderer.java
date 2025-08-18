@@ -28,8 +28,6 @@ import bartworks.system.material.BWMetaGeneratedBlocks;
 import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.render.SBRContextHolder;
 import gregtech.api.render.SBRInventoryContext;
@@ -42,7 +40,6 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
     public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
-    @SideOnly(Side.CLIENT)
     private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     @Override

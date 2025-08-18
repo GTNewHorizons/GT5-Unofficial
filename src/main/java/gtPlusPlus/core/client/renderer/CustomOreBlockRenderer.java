@@ -13,8 +13,6 @@ import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.render.SBRContextHolder;
 import gregtech.api.render.SBRInventoryContext;
@@ -26,7 +24,6 @@ import gtPlusPlus.api.interfaces.ITexturedBlock;
 public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
-    @SideOnly(Side.CLIENT)
     private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     @Override

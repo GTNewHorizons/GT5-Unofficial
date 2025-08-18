@@ -25,8 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
@@ -39,7 +37,6 @@ import gregtech.api.interfaces.ITexture;
  * the renderer, and the world in which it is rendered. It is passed
  * to various rendering methods throughout a block's render cycle.
  */
-@SideOnly(Side.CLIENT)
 public final class SBRWorldContext extends SBRContextBase {
 
     private static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;

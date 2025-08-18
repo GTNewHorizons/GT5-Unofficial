@@ -58,7 +58,6 @@ public interface IRenderedBlock {
 
         public static final ErrorRenderer INSTANCE = new ErrorRenderer();
         public ITexture[] mErrorTexture = Textures.BlockIcons.ERROR_RENDERING;
-        @SideOnly(Side.CLIENT)
         private final SBRContextHolder contextHolder = new SBRContextHolder();
 
         @Override
