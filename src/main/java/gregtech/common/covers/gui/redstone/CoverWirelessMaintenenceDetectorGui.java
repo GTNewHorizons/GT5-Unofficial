@@ -1,6 +1,5 @@
 package gregtech.common.covers.gui.redstone;
 
-import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -10,6 +9,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector;

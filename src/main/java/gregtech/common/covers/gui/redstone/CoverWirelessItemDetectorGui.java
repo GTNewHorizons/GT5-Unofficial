@@ -2,15 +2,8 @@ package gregtech.common.covers.gui.redstone;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.item.ItemStack;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -24,6 +17,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessItemDetector;
 

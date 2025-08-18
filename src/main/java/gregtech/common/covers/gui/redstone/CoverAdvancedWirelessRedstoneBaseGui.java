@@ -4,7 +4,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.UUID;
 
-import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -15,6 +14,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
@@ -40,7 +40,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
             .getUniqueID();
         column.child(makeFrequencyRow().paddingTop(10))
             .child(makeButtonRow(uuid))
-            .child(makeThirdFlow(syncManager,data));
+            .child(makeThirdFlow(syncManager, data));
 
     }
 
