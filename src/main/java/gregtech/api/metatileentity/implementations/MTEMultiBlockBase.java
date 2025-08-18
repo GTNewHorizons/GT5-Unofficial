@@ -2358,6 +2358,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     + tag.getInteger("maxParallelRecipes"));
         }
 
+        if (tag.hasKey("mode")) {
+            currentTip.add(
+                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                    + EnumChatFormatting.WHITE
+                    + tag.getString("mode")
+                    + EnumChatFormatting.RESET);
+        }
+
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
