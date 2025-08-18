@@ -342,6 +342,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public String getMachineModeName() {
-        return translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + machineMode);
+        return translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + mMode);
     }
 }
