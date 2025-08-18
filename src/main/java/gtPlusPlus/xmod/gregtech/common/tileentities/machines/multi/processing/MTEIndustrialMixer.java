@@ -90,7 +90,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, false)
             .addController("Second Layer Center")
-            .addCasingInfoMin(mCasingName, 6, false)
+            .addCasingInfoMin(mCasingName, 5, false)
             .addCasingInfoMin(mCasingName2, 2, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -139,7 +139,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 2, 0) && mCasing >= 6 && checkHatch();
+        return checkPiece(mName, 1, 2, 0) && mCasing >= 5 && checkHatch();
     }
 
     @Override
