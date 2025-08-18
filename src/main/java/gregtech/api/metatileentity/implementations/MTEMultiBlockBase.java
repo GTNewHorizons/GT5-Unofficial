@@ -2351,7 +2351,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
 
-        if(tag.getInteger("maxParallelRecipes") > 1) {
+        if (tag.getInteger("maxParallelRecipes") > 1) {
             currentTip.add(
                 StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                     + EnumChatFormatting.WHITE
