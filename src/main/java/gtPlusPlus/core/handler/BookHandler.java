@@ -172,7 +172,7 @@ public class BookHandler {
                 """
                     [1] 7x Hastelloy-X or I/O
                     [2] 5x Incoloy-DS Fluid Containment
-                    [3] 4x Zeron-100 Shielding
+                    [3] 4x Reactor Shield Casing
                     [4] 17x Hastelloy-N Sealant Case
                     Multiblock Construction
                     Convention is [LxHxW]

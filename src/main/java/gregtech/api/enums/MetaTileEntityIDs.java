@@ -1,20 +1,15 @@
 package gregtech.api.enums;
 
 /**
- * An enum for all registered MetaTileEntities.
- * No more magic numbers about TE's IDs. Yay!!!
- * The entries are sorted by ID, so if you need to take one,
- * please, pretty please, insert it at the correct place.
+ * An enum for all registered MetaTileEntities. No more magic numbers about TE's IDs. Yay!!! The entries are sorted by
+ * ID, so if you need to take one, please, pretty please, insert it at the correct place.
  * <p/>
- * This does not list all used IDs. If you are looking for
- * a free ID, you can use the java arg `-Dgt.debug=true` to
- * list all that are in use.
+ * This does not list all used IDs. If you are looking for a free ID, you can use the java arg `-Dgt.debug=true` to list
+ * all that are in use.
  * <p/>
- * Additionally, some ID ranges are blocked for automatic
- * generation, do not use these:
+ * Additionally, some ID ranges are blocked for automatic generation, do not use these:
  * <p/>
- * 4096 - 5095 are used for GregTech Frames.
- * 5096 - 6099 are used for GregTech Pipes.
+ * 4096 - 5095 are used for GregTech Frames. 5096 - 6099 are used for GregTech Pipes.
  */
 
 public enum MetaTileEntityIDs {
@@ -1260,6 +1255,8 @@ public enum MetaTileEntityIDs {
     OUTPUT_HATCH_UMV(12105),
     OUTPUT_HATCH_UXV(12106),
     OUTPUT_HATCH_MAX(12108),
+    VOID_HATCH(12109),
+    VOID_BUS(12110),
     cropGeneExtractorLV(12501),
     cropGeneExtractorMV(12502),
     cropGeneExtractorHV(12503),
@@ -1436,6 +1433,11 @@ public enum MetaTileEntityIDs {
     WORMHOLE_GENERATOR_CONTROLLER(13115),
     MegaChemicalReactor(13366),
     MegaOilCracker(13367),
+    AdvancedAssline(13532),
+    LinkedInputBus(13533),
+    ToolCast_MV(13534),
+    ToolCast_HV(13535),
+    ToolCast_EV(13536),
     DysonSwarmController(14001),
     PlanetaryGasSiphonController(14002),
     SpaceElevatorController(14003),
@@ -1458,6 +1460,7 @@ public enum MetaTileEntityIDs {
     BETTER_JUKEBOX_HV(14303),
     BETTER_JUKEBOX_EV(14304),
     BETTER_JUKEBOX_IV(14305),
+    WIRELESS_DYNAMO_ENERGIZED(15040),
     EV4AWirelessEnergyHatch(15065),
     EV16AWirelessEnergyHatch(15066),
     EV64AWirelessEnergyHatch(15067),

@@ -75,8 +75,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     void issueClientUpdate();
 
     /**
-     * Causes the machine to send a tile entity description packet to the client.
-     * Only has an effect on the server.
+     * Causes the machine to send a tile entity description packet to the client. Only has an effect on the server.
      *
      * @see IMetaTileEntity#getDescriptionData()
      * @see IMetaTileEntity#onDescriptionPacket(NBTTagCompound)

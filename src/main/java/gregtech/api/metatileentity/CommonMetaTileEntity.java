@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -67,8 +64,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     /**
      * While this is set to false, lag caused by this block won't be reported to console. Use it while the block is
-     * intentionally doing something that lags, such as scanning multiple chunks or file IO.
-     * Don't forget to set it back to true on the next tick.
+     * intentionally doing something that lags, such as scanning multiple chunks or file IO. Don't forget to set it back
+     * to true on the next tick.
      */
     public boolean doTickProfilingInThisTick = true;
 
@@ -523,18 +520,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block block, int meta, RenderBlocks renderer) {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
-        return false;
-    }
-
-    @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
         List<AxisAlignedBB> outputAABB, Entity collider) {
         AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(world, x, y, z);
@@ -568,9 +553,9 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     /**
-     * Opens GUI for the specified player. Currently, we have two ways to create GUI: MUI1 and MUI2.
-     * We're gradually migrating to MUI2. However, since cover panel is not supported for the time being,
-     * leave support for MUI1 ({@link IAddUIWidgets#addUIWidgets}) as well.
+     * Opens GUI for the specified player. Currently, we have two ways to create GUI: MUI1 and MUI2. We're gradually
+     * migrating to MUI2. However, since cover panel is not supported for the time being, leave support for MUI1
+     * ({@link IAddUIWidgets#addUIWidgets}) as well.
      */
     @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {

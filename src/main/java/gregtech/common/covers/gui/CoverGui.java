@@ -40,27 +40,19 @@ public class CoverGui<T extends Cover> {
 
     /**
      * Override this method to implement cover GUI if {@link Cover#hasCoverGUI} is true. If you want highly customized
-     * GUI,
-     * override {@link Cover#buildUI} instead.
+     * GUI, override {@link Cover#buildUI} instead.
      *
      * @param syncManager sync handler where widget sync handlers should be registered
      * @param column      main column to add child widgets
      */
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {}
 
-    /**
-     * Override this method to implement cover GUI if {@link Cover#hasCoverGUI} is true. Takes GuiData into account,
-     * useful for player data.
-     * If you want highly customize GUI,
-     * override {@link Cover#buildUI} instead.
-     *
-     * @param syncManager sync handler where widget sync handlers should be registered
-     * @param column      main column to add child widgets
-     */
 
     /**
      * Creates a standalone panel holding the UI for this cover. GuiData can be passed in as well.
      * <br>
+     * Creates a standalone panel holding the UI for this cover. <br>
+     
      * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
      * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
      */
@@ -73,10 +65,9 @@ public class CoverGui<T extends Cover> {
         return basePanel;
     }
 
-    /**
-     * Creates template panel for cover GUI. Called by {@link Cover#buildUI}.
-     * Override this method if you want to implement more customized GUI. Otherwise, implement {@link #addUIWidgets}
-     * instead. Has a version with GuiData passed in, for player uuid grabbing.
+    /*
+     * Creates template panel for cover GUI. Called by {@link Cover#buildUI}. Override this method if you want to
+     * implement more customized GUI. Otherwise, implement {@link #addUIWidgets} instead.
      *
      * @param panelName   the unique name of this panel in the context of your UI.
      * @param syncManager sync handler where widget sync handlers should be registered

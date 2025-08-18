@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -52,6 +54,7 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     public boolean mModeAlternative = false;
     public boolean mHarvestEnabled = true;
+    public boolean harvestFullGrowth = true;
 
     public MTECropHarvestor(final int aID, final int aTier, final String aDescription) {
         super(
@@ -190,9 +193,9 @@ public class MTECropHarvestor extends MTEBasicTank {
             if (aCrop == null) continue;
             if (!this.mHarvestEnabled) continue;
 
-            if (aCrop.canBeHarvested(tCrop) && tCrop.getSize() == aCrop.getOptimalHavestSize(tCrop)) {
+            if (aCrop.canBeHarvested(tCrop)) {
                 if (!getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) continue;
-                ItemStack[] aHarvest = tCrop.harvest_automated(true);
+                ItemStack[] aHarvest = tCrop.harvest_automated(this.harvestFullGrowth);
                 if (aHarvest == null) continue;
 
                 for (ItemStack aStack : aHarvest) {
@@ -473,6 +476,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
             "Secondary mode can Hydrate/Fertilize/Weed-EX",
+            "You can set the mode to harvest any growth stage crop or only fully mature ones",
             "Consumes " + powerUsage() + "eu per harvest",
             "Consumes " + powerUsageSecondary() + "eu per secondary operation",
             "Can harvest 2 block levels above and below itself",
@@ -536,6 +540,11 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid != null && aFluid.getFluid() == FluidRegistry.WATER;
+    }
+
+    @Override
     public boolean doesFillContainers() {
         return false;
     }
@@ -560,6 +569,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mModeAlternative", this.mModeAlternative);
         aNBT.setBoolean("mHarvestEnabled", this.mHarvestEnabled);
+        aNBT.setBoolean("harvestFullGrowth", this.harvestFullGrowth);
     }
 
     @Override
@@ -568,6 +578,9 @@ public class MTECropHarvestor extends MTEBasicTank {
         this.mModeAlternative = aNBT.getBoolean("mModeAlternative");
         if (aNBT.hasKey("mHarvestEnabled")) {
             this.mHarvestEnabled = aNBT.getBoolean("mHarvestEnabled");
+        }
+        if (aNBT.hasKey("harvestFullGrowth")) {
+            this.harvestFullGrowth = aNBT.getBoolean("harvestFullGrowth");
         }
     }
 
@@ -588,6 +601,14 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .addTooltip(1, "Disable Harvest")
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(67, 63)
+                .setSize(18, 18));
+        builder.widget(
+            new CycleButtonWidget().setToggle(() -> harvestFullGrowth, val -> harvestFullGrowth = val)
+                .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_GROWTH_TOGGLE)
+                .addTooltip(0, "Enable Full Growth Harvest")
+                .addTooltip(1, "Disable Full Growth Harvest")
+                .setBackground(GTUITextures.BUTTON_STANDARD)
+                .setPos(87, 63)
                 .setSize(18, 18));
         builder.widget(
             SlotGroup.ofItemHandler(inventoryHandler, 2)

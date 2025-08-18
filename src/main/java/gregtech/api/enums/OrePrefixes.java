@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -978,8 +980,8 @@ public enum OrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
     /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to
-     * get the Amounts in comparision to one Ingot. 0 = Null Negative = Undefined Amount
+     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to get the Amounts
+     * in comparision to one Ingot. 0 = Null Negative = Undefined Amount
      */
     public final long mMaterialAmount;
 
@@ -1182,13 +1184,23 @@ public enum OrePrefixes {
         return "";
     }
 
+    private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();
+
+    static {
+        for (OrePrefixes value : OrePrefixes.values()) {
+            NAME_TO_OREPREFIX.put(value.name(), value);
+        }
+    }
+
     public static OrePrefixes getPrefix(String aPrefixName) {
         return getPrefix(aPrefixName, null);
     }
 
     public static OrePrefixes getPrefix(String aPrefixName, OrePrefixes aReplacement) {
-        Object tObject = GTUtility.getFieldContent(OrePrefixes.class, aPrefixName, false, false);
-        if (tObject instanceof OrePrefixes) return (OrePrefixes) tObject;
+        final OrePrefixes value = NAME_TO_OREPREFIX.get(aPrefixName);
+        if (value != null) {
+            return value;
+        }
         return aReplacement;
     }
 

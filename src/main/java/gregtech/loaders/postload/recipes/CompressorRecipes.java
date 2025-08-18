@@ -256,8 +256,7 @@ public class CompressorRecipes implements Runnable {
 
         /*
          * GT_Values.RA.stdBuilder() .itemInputs( new ItemStack(Items.wheat, 9, 0) ) .itemOutputs( new
-         * ItemStack(Blocks.hay_block, 1, 0) ) .duration(15 * SECONDS) .eut(2)
-         * .addTo(sCompressorRecipes);
+         * ItemStack(Blocks.hay_block, 1, 0) ) .duration(15 * SECONDS) .eut(2) .addTo(sCompressorRecipes);
          */
 
         GTValues.RA.stdBuilder()

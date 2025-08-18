@@ -101,10 +101,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     private float outputFocus;
 
     /*
-     * c: Shielded accelerator casing
-     * v: Vacuum
-     * k: Superconducting coil
-     * d: Coolant Delivery casing
+     * c: Shielded accelerator casing v: Vacuum k: Superconducting coil d: Coolant Delivery casing
      */
 
     // TODO: E > 1200eV for x-ray lithography
@@ -590,7 +587,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
                     if (firstHatch) this.usingExotic = true;
 
-                    if (!this.usingExotic) return false; // If normal hatches are already being used, disallow exotics
+                    if (!this.usingExotic) return false; // If normal hatches are already being used, disallow
+                                                         // exotics
 
                     hatchExotic.updateTexture(aBaseCasingIndex);
                     hatchExotic.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -653,11 +651,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         this.outputParticleID = 1; // Photon
 
         /*
-         * If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter.
-         * This punishes having too low a machine focus for low values of input focus.
-         * EX: An input focus of 50 requires a machine focus of 100 to get an output focus of 50,
-         * whereas an input focus of 60 only requires around 80.
-         * In general, as input focus increases, output scales better with machine focus
+         * If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter. This punishes
+         * having too low a machine focus for low values of input focus. EX: An input focus of 50 requires a machine
+         * focus of 100 to get an output focus of 50, whereas an input focus of 60 only requires around 80. In general,
+         * as input focus increases, output scales better with machine focus
          */
         this.outputFocus = (inputFocus > this.machineFocus) ? ((inputFocus + this.machineFocus) / 2.5f)
             : inputFocus * (this.machineFocus / 100);
@@ -721,10 +718,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     /**
-     * Calculates the energy of the output particle as a function of machine voltage, input particle's energy,
-     * and the antenna tier.
-     * LaTeX:
-     * E_{Out} = \frac{E_{In}^{1.13*AntennaTier^{\frac{4}{9}}}}{40,000,000} *
+     * Calculates the energy of the output particle as a function of machine voltage, input particle's energy, and the
+     * antenna tier. LaTeX: E_{Out} = \frac{E_{In}^{1.13*AntennaTier^{\frac{4}{9}}}}{40,000,000} *
      * (-0.15^{\frac{2*EU_{In}}{60768*AntennaTier^{2.5}}}+1)
      *
      * @return The particle energy, in kEV
@@ -911,7 +906,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron (e-)"
+                    .getLocalisedName() // e.g. "Electron
+                                        // (e-)"
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"

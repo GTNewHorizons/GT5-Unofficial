@@ -10,6 +10,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.SBRContextHolder;
+import gregtech.api.render.SBRWorldContext;
 
 public interface IRenderedBlock {
 
@@ -56,6 +58,7 @@ public interface IRenderedBlock {
 
         public static final ErrorRenderer INSTANCE = new ErrorRenderer();
         public ITexture[] mErrorTexture = Textures.BlockIcons.ERROR_RENDERING;
+        private final SBRContextHolder contextHolder = new SBRContextHolder();
 
         @Override
         public ITexture[] getTexture(Block aBlock, ForgeDirection side, int aRenderPass,
@@ -101,13 +104,14 @@ public interface IRenderedBlock {
 
         @Override
         public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
+            final SBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, 0, aRenderer);
             aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F);
-            GTRendererBlock.renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
+            ctx.renderNegativeYFacing(mErrorTexture);
+            ctx.renderPositiveYFacing(mErrorTexture);
+            ctx.renderNegativeZFacing(mErrorTexture);
+            ctx.renderPositiveZFacing(mErrorTexture);
+            ctx.renderNegativeXFacing(mErrorTexture);
+            ctx.renderPositiveXFacing(mErrorTexture);
             return true;
         }
     }
