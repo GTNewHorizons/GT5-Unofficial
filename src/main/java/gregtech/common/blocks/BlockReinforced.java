@@ -5,8 +5,11 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.EntityWither;
@@ -16,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
@@ -144,6 +148,31 @@ public class BlockReinforced extends GTGenericBlock {
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "WSW", "GGG", "WGW", 'W', OrePrefixes.plate.get(Materials.Wood), 'G',
                 new ItemStack(Items.gunpowder, 1), 'S', new ItemStack(Items.string, 1) });
+        BlockDispenser.dispenseBehaviorRegistry
+            .putObject(ItemList.Block_Powderbarrel.getItem(), new BehaviorDefaultDispenseItem() {
+
+                @Override
+                protected ItemStack dispenseStack(IBlockSource dispenser, ItemStack dispensedItem) {
+                    if (dispensedItem.getItemDamage() != 5) return super.dispenseStack(dispenser, dispensedItem);
+                    EnumFacing enumfacing = BlockDispenser.func_149937_b(dispenser.getBlockMetadata());
+                    World world = dispenser.getWorld();
+                    int x = dispenser.getXInt() + enumfacing.getFrontOffsetX();
+                    int y = dispenser.getYInt() + enumfacing.getFrontOffsetY();
+                    int z = dispenser.getZInt() + enumfacing.getFrontOffsetZ();
+
+                    EntityTNTPrimed primedBarrel = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, null);
+                    world.spawnEntityInWorld(primedBarrel);
+                    new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f)
+                        .setVolume(1f)
+                        .setIdentifier(SoundResource.GAME_TNT_PRIMED)
+                        .setEntity(primedBarrel)
+                        .setWorld(world)
+                        .run();
+
+                    dispensedItem.stackSize--;
+                    return dispensedItem;
+                }
+            });
     }
 
     @Override
@@ -332,12 +361,12 @@ public class BlockReinforced extends GTGenericBlock {
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
         if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
-            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
-            world.spawnEntityInWorld(entitytntprimed);
+            EntityTNTPrimed primedBarrel = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
+            world.spawnEntityInWorld(primedBarrel);
             new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f)
                 .setVolume(1f)
                 .setIdentifier(SoundResource.GAME_TNT_PRIMED)
-                .setEntity(entitytntprimed)
+                .setEntity(primedBarrel)
                 .setWorld(world)
                 .run();
             world.setBlockToAir(x, y, z);
@@ -364,14 +393,14 @@ public class BlockReinforced extends GTGenericBlock {
     @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
         if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
-            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(
+            EntityTNTPrimed primedBarrel = new EntityTNTPrimed(
                 world,
                 x + 0.5F,
                 y + 0.5F,
                 z + 0.5F,
                 explosion.getExplosivePlacedBy());
-            entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
-            world.spawnEntityInWorld(entitytntprimed);
+            primedBarrel.fuse = (world.rand.nextInt(primedBarrel.fuse / 4) + primedBarrel.fuse / 8);
+            world.spawnEntityInWorld(primedBarrel);
         }
         super.onBlockExploded(world, x, y, z, explosion);
     }
@@ -382,7 +411,6 @@ public class BlockReinforced extends GTGenericBlock {
         if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem()
             .getItem() == Items.flint_and_steel) && world.getBlockMetadata(x, y, z) == 5) {
             removedByPlayer(world, player, x, y, z);
-
             return true;
         }
         return super.onBlockActivated(world, x, y, z, player, ordinalSide, xOffset, yOffset, zOffset);
