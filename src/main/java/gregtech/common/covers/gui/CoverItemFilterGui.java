@@ -1,7 +1,6 @@
 package gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -9,6 +8,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverItemFilter;
@@ -27,7 +27,7 @@ public class CoverItemFilterGui extends CoverGui<CoverItemFilter> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<FilterType> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,

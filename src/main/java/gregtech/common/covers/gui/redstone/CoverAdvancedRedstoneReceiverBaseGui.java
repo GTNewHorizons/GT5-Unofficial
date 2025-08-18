@@ -2,12 +2,12 @@ package gregtech.common.covers.gui.redstone;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
@@ -21,7 +21,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode> gateModeSync = new EnumSyncValue<>(
             CoverAdvancedRedstoneReceiverBase.GateMode.class,
             cover::getGateMode,
@@ -31,7 +31,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
     }
 
     @Override
-    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode> gateMode = (EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode>) syncManager
             .getSyncHandler("gateMode:0");
         return Flow.row()

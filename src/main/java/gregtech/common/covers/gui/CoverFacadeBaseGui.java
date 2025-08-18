@@ -1,9 +1,9 @@
 package gregtech.common.covers.gui;
 
+import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -28,7 +28,7 @@ public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)
                 .coverChildren()

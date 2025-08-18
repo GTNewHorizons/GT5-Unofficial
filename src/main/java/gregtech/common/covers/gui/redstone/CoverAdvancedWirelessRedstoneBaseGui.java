@@ -4,9 +4,9 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.UUID;
 
+import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.util.StatCollector;
 
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -33,14 +33,14 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
     protected boolean buttonRowSpacing = false;
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
         syncManager.syncValue("frequency", frequencySyncer);
         UUID uuid = data.getPlayer()
             .getUniqueID();
         column.child(makeFrequencyRow().paddingTop(10))
             .child(makeButtonRow(uuid))
-            .child(makeThirdFlow(syncManager));
+            .child(makeThirdFlow(syncManager,data));
 
     }
 
@@ -80,7 +80,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
     }
 
     // allows for overriding in sublcasses for better ui positioning
-    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         return Flow.row()
             .size(1, 1);
     }

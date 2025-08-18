@@ -1,13 +1,13 @@
 package gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverShutter;
@@ -27,7 +27,7 @@ public class CoverShutterGui extends CoverGui<CoverShutter> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<ShutterMode> modeSyncValue = new EnumSyncValue<>(
             ShutterMode.class,
             cover::getShutterMode,

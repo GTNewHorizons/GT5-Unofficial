@@ -1,8 +1,8 @@
 package gregtech.common.covers.gui.redstone;
 
+import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.util.StatCollector;
 
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -24,7 +24,7 @@ public class CoverWirelessMaintenenceDetectorGui
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceModeSync = new EnumSyncValue<>(
             CoverWirelessMaintenanceDetector.MaintenanceMode.class,
             cover::getMode,
@@ -34,7 +34,7 @@ public class CoverWirelessMaintenenceDetectorGui
     }
 
     @Override
-    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         // column contains 4 other rows, each has 2 enum values
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = (EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode>) syncManager

@@ -3,13 +3,13 @@ package gregtech.common.covers.gui.redstone;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessFluidDetector;
 
@@ -20,12 +20,12 @@ public class CoverWirelessFluidDetectorGui extends CoverAdvancedRedstoneTransmit
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         super.addUIWidgets(syncManager, column, data);
     }
 
     @Override
-    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         return Flow.column()

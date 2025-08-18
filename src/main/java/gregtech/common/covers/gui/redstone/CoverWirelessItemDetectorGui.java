@@ -2,6 +2,12 @@ package gregtech.common.covers.gui.redstone;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -29,11 +35,11 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
 
     // TODO: numericTextField with "Any" as default.
     @Override
-    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
-        final ICoverable tile = cover.getTile();
+        final ICoverable tile = data.getCoverable();
         IItemHandler inventoryHandler;
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
             && gtTile.getMetaTileEntity() != null
@@ -59,7 +65,7 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                     .child(
                         makeNumberField(88).value(thresholdSyncer)
                             .marginRight(2))
-                    .child(new TextWidget(IKey.lang(translateToLocal("gt.interact.desc.itemthreshold")))))
+                    .child(new TextWidget(translateToLocal("gt.interact.desc.itemthreshold"))))
             .coverChildrenWidth()
             .child(
                 Flow.row()
@@ -72,7 +78,7 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                             .setNumbers(-1, tile.getSizeInventory() - 1)
                             .marginRight(2))
                     .child(displayWidget)
-                    .child(new TextWidget(IKey.lang(translateToLocal("gt.interact.desc.item_slot")))))
+                    .child(new TextWidget(translateToLocal("gt.interact.desc.item_slot"))))
             .coverChildrenWidth()
 
             .child(physicalRow(physicalSyncer));

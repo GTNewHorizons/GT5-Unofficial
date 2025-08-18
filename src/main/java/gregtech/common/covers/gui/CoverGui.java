@@ -1,5 +1,6 @@
 package gregtech.common.covers.gui;
 
+import gregtech.api.modularui2.CoverGuiData;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -46,7 +47,7 @@ public class CoverGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @param column      main column to add child widgets
      */
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {}
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {}
 
     /**
      * Override this method to implement cover GUI if {@link Cover#hasCoverGUI} is true. Takes GuiData into account,
@@ -64,7 +65,7 @@ public class CoverGui<T extends Cover> {
      * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
      * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
      */
-    public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings, GuiData data) {
+    public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
         ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings, data);
         if (doesBindPlayerInventory()) {
             basePanel.bindPlayerInventory();
@@ -82,7 +83,7 @@ public class CoverGui<T extends Cover> {
      * @return UI panel to show
      */
     public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings,
-        GuiData data) {
+        CoverGuiData data) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()
