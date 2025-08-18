@@ -302,7 +302,7 @@ public final class SBRWorldContext extends SBRContextBase {
      */
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
-        return worldRenderPass == -1 || predicate.test(worldRenderPass);
+        return blockAccess instanceof blockrenderer6343.client.world.DummyWorld || predicate.test(worldRenderPass);
     }
 
     /**
