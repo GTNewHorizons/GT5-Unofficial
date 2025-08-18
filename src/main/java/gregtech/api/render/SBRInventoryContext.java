@@ -20,9 +20,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 /**
  * Represents the Inventory rendering context for a single block during a render pass.
  * <p>
@@ -31,7 +28,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  * the renderer, and the world in which it is rendered. It is passed
  * to various rendering methods throughout a block's render cycle.
  */
-@SideOnly(Side.CLIENT)
 public final class SBRInventoryContext extends SBRContextBase {
 
     private static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
