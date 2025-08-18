@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -374,6 +375,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", controllerTier);
+        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
     }
 
     @Override
@@ -383,9 +385,15 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("tier")) {
             currentTip.add(
-                "Tier: " + EnumChatFormatting.YELLOW
+                StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                    + EnumChatFormatting.YELLOW
                     + GTUtility.formatNumbers(tag.getInteger("tier"))
                     + EnumChatFormatting.RESET);
         }
+
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("maxParallelRecipes"));
     }
 }

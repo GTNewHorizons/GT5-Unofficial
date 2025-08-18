@@ -470,6 +470,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mMode.ordinal());
+        tag.setInteger("tier", getTierOfTower());
     }
 
     @Override
@@ -482,6 +483,11 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                 + EnumChatFormatting.WHITE
                 + StatCollector
                     .translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + tag.getInteger("mode"))
+                + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(tag.getInteger("tier"))
                 + EnumChatFormatting.RESET);
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -246,6 +247,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", machineMode);
+        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
     }
 
     @Override
@@ -258,6 +260,10 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
                 + EnumChatFormatting.WHITE
                 + translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("maxParallelRecipes"));
     }
 
     @Override

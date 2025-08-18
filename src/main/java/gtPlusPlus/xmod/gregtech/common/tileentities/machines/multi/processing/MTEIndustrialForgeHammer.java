@@ -22,11 +22,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -245,5 +252,30 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     private int getAnvilTier() {
         return mAnvilTier;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("tier", mAnvilTier);
+        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(tag.getInteger("tier"))
+                + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("maxParallelRecipes"));
     }
 }
