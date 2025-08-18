@@ -337,7 +337,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("mode", mPlasmaMode);
-        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
     }
 
     @Override
@@ -350,10 +349,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + (tag.getBoolean("mode") ? 1 : 0))
                 + EnumChatFormatting.RESET);
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("maxParallelRecipes"));
     }
 
     @SideOnly(Side.CLIENT)
