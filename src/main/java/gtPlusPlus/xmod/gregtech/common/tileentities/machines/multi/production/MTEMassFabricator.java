@@ -342,7 +342,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mMode);
-        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
     }
 
     @Override
@@ -355,9 +354,5 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("maxParallelRecipes"));
     }
 }
