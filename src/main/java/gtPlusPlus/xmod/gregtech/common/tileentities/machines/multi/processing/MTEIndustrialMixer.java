@@ -139,7 +139,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 2, 0) && mCasing >= 6 && checkHatch();
+        return checkPiece(mName, 1, 2, 0) && mCasing >= 5 && checkHatch();
     }
 
     @Override
