@@ -13,11 +13,11 @@ import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
@@ -26,8 +26,10 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -39,6 +41,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.common.entity.EntityPowderBarrelPrimed;
 
 public class BlockReinforced extends GTGenericBlock {
 
@@ -160,7 +163,12 @@ public class BlockReinforced extends GTGenericBlock {
                     int y = dispenser.getYInt() + enumfacing.getFrontOffsetY();
                     int z = dispenser.getZInt() + enumfacing.getFrontOffsetZ();
 
-                    EntityTNTPrimed primedBarrel = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, null);
+                    EntityPowderBarrelPrimed primedBarrel = new EntityPowderBarrelPrimed(
+                        world,
+                        x + 0.5F,
+                        y + 0.5F,
+                        z + 0.5F,
+                        null);
                     world.spawnEntityInWorld(primedBarrel);
                     new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f)
                         .setVolume(1f)
@@ -173,6 +181,9 @@ public class BlockReinforced extends GTGenericBlock {
                     return dispensedItem;
                 }
             });
+
+        EntityRegistry
+            .registerModEntity(EntityPowderBarrelPrimed.class, "PowderBarrelPrimed", 0, GTMod.GT, 64, 10, true);
     }
 
     @Override
@@ -360,8 +371,13 @@ public class BlockReinforced extends GTGenericBlock {
     @SuppressWarnings("deprecation")
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-        if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
-            EntityTNTPrimed primedBarrel = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
+        if (world.getBlockMetadata(x, y, z) == 5) {
+            EntityPowderBarrelPrimed primedBarrel = new EntityPowderBarrelPrimed(
+                world,
+                x + 0.5F,
+                y + 0.5F,
+                z + 0.5F,
+                player);
             world.spawnEntityInWorld(primedBarrel);
             new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f)
                 .setVolume(1f)
@@ -392,8 +408,8 @@ public class BlockReinforced extends GTGenericBlock {
 
     @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
-        if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
-            EntityTNTPrimed primedBarrel = new EntityTNTPrimed(
+        if (world.getBlockMetadata(x, y, z) == 5) {
+            EntityPowderBarrelPrimed primedBarrel = new EntityPowderBarrelPrimed(
                 world,
                 x + 0.5F,
                 y + 0.5F,
@@ -409,7 +425,7 @@ public class BlockReinforced extends GTGenericBlock {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int ordinalSide,
         float xOffset, float yOffset, float zOffset) {
         if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem()
-            .getItem() == Items.flint_and_steel) && world.getBlockMetadata(x, y, z) == 5) {
+            .getItem() instanceof ItemFlintAndSteel) && world.getBlockMetadata(x, y, z) == 5) {
             removedByPlayer(world, player, x, y, z);
             return true;
         }
