@@ -272,7 +272,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("itemPipeTier", Math.max(0, getPipeTier()));
         tag.setFloat("speedBonus", 400);
-        tag.setFloat("getMaxParallelRecipes", Math.max(0, getMaxParallelRecipes()));
     }
 
     private static final DecimalFormat dfNone = new DecimalFormat("#");
@@ -286,10 +285,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("itemPipeTier")));
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
