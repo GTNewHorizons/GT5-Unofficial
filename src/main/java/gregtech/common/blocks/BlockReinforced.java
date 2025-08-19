@@ -45,8 +45,8 @@ import gregtech.common.entity.EntityPowderBarrelPrimed;
 
 public class BlockReinforced extends GTGenericBlock {
 
-    public BlockReinforced(String aName) {
-        super(ItemStorage.class, aName, new MaterialReinforced());
+    public BlockReinforced(String name) {
+        super(ItemStorage.class, name, new MaterialReinforced());
         for (int i = 0; i < 16; i++) {
             Textures.BlockIcons.casingTexturePages[1][i + 80] = TextureFactory.of(this, i);
         }
@@ -187,100 +187,64 @@ public class BlockReinforced extends GTGenericBlock {
     }
 
     @Override
-    public String getHarvestTool(int aMeta) {
-        if (aMeta == 5 || aMeta == 4 || aMeta == 6 || aMeta == 7) return "axe";
-        if (aMeta == 2) return "wrench";
-        return "pickaxe";
+    public String getHarvestTool(int meta) {
+        return switch (meta) {
+            case 4, 5, 6, 7 -> "axe";
+            case 2 -> "wrench";
+            default -> "pickaxe";
+        };
     }
 
     @Override
-    public int getHarvestLevel(int aMeta) {
-        if (aMeta == 4 || aMeta == 5 || aMeta == 6 || aMeta == 7) return 1;
-        if (aMeta == 2) return 2;
-        if (aMeta == 9 || aMeta == 3 || aMeta == 1) return 5;
-        if (aMeta == 10 || aMeta == 11) return 7;
-        return 4;
+    public int getHarvestLevel(int meta) {
+        return switch (meta) {
+            case 4, 5, 6, 7 -> 1;
+            case 2 -> 2;
+            case 1, 3, 9 -> 5;
+            case 10, 11 -> 7;
+            default -> 4;
+        };
     }
 
     @Override
-    public IIcon getIcon(int ordinalSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
-                case 0 -> {
-                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
-                }
-                case 1 -> {
-                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
-                }
-                case 2 -> {
-                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
-                }
-                case 3 -> {
-                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
-                }
-                case 4, 6, 7 -> {
-                    return Blocks.coal_block.getIcon(0, 0);
-                }
-                case 5 -> {
-                    return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                }
-                case 8 -> {
-                    return Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();
-                }
-                case 9 -> {
-                    return Textures.BlockIcons.BLOCK_TITANIUMPREIN.getIcon();
-                }
-                case 10 -> {
-                    return Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
-                }
-                case 11 -> {
-                    return Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
-                }
-                case 12 -> {
-                    return Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
-                }
-            }
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+    public IIcon getIcon(int side, int meta) {
+        return switch (meta) {
+            case 0 -> Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
+            case 1 -> Textures.BlockIcons.BLOCK_IRREIN.getIcon();
+            case 2 -> Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
+            case 3 -> Textures.BlockIcons.BLOCK_TSREIN.getIcon();
+            case 4, 6, 7 -> Blocks.coal_block.getIcon(0, 0);
+            case 5 -> Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
+            case 8 -> Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();
+            case 9 -> Textures.BlockIcons.BLOCK_TITANIUMPREIN.getIcon();
+            case 10 -> Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
+            case 11 -> Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
+            case 12 -> Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     @Override
-    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld == null) {
+    public float getBlockHardness(World world, int x, int y, int z) {
+        if (world == null) {
             return 0.0F;
         }
-        if (aWorld.isAirBlock(aX, aY, aZ)) {
+        if (world.isAirBlock(x, y, z)) {
             return 0.0F;
         }
-        int tMeta = aWorld.getBlockMetadata(aX, aY, aZ);
-        if (tMeta == 0) {
-            return 60.0F;
-        }
-        if (tMeta == 1) {
-            return 400.0F;
-        }
-        if (tMeta == 2) {
-            return 5.0F;
-        }
-        if (tMeta == 3) {
-            return 250.0F;
-        }
-        if (tMeta == 4 || tMeta == 5 || tMeta == 6 || tMeta == 7) {
-            return 0.5F;
-        }
-        if (tMeta == 8) {
-            return 150.0F;
-        }
-        if (tMeta == 9) {
-            return 200.0F;
-        }
-        if (tMeta == 10) {
-            return 500.0F;
-        }
-        if (tMeta == 11) {
-            return 750.0F;
-        }
-        return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
+        int meta = world.getBlockMetadata(x, y, z);
+        return switch (meta) {
+            case 0 -> 60.0F;
+            case 1 -> 400.0F;
+            case 2 -> 5.0F;
+            case 3 -> 250.0F;
+            case 4, 5, 6, 7 -> 0.5F;
+            case 8 -> 150.0F;
+            case 9 -> 200.0F;
+            case 10 -> 500.0F;
+            case 11 -> 750.0F;
+            default -> Blocks.iron_block.getBlockHardness(world, x, y, z);
+        };
     }
 
     @Override
@@ -289,38 +253,20 @@ public class BlockReinforced extends GTGenericBlock {
         if (world == null) {
             return 0.0F;
         }
-        int tMeta = world.getBlockMetadata(x, y, z);
-        if (tMeta == 0) {
-            return 150.0F;
-        }
-        if (tMeta == 1) {
-            return 600.0F;
-        }
-        if (tMeta == 2) {
-            return 6.0F;
-        }
-        if (tMeta == 3) {
-            return 400.0F;
-        }
-        if (tMeta == 4 || tMeta == 6 || tMeta == 7) {
-            return 8.0F;
-        }
-        if (tMeta == 5) {
-            return 1.0F;
-        }
-        if (tMeta == 8) {
-            return 200.0F;
-        }
-        if (tMeta == 9) {
-            return 300.0F;
-        }
-        if (tMeta == 10) {
-            return 1000.0F;
-        }
-        if (tMeta == 11) {
-            return 2500.0F;
-        }
-        return super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        int meta = world.getBlockMetadata(x, y, z);
+        return switch (meta) {
+            case 0 -> 150.0F;
+            case 1 -> 600.0F;
+            case 2 -> 6.0F;
+            case 3 -> 400.0F;
+            case 4, 6, 7 -> 8.0F;
+            case 5 -> 1.0F;
+            case 8 -> 200.0F;
+            case 9 -> 300.0F;
+            case 10 -> 1000.0F;
+            case 11 -> 2500.0F;
+            default -> super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        };
     }
 
     @Override
@@ -334,12 +280,12 @@ public class BlockReinforced extends GTGenericBlock {
     }
 
     @Override
-    public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
+    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
+    public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
         return true;
     }
 
@@ -354,17 +300,16 @@ public class BlockReinforced extends GTGenericBlock {
     }
 
     @Override
-    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ);
+    public int getDamageValue(World world, int x, int y, int z) {
+        return world.getBlockMetadata(x, y, z);
     }
 
     @Override
-    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int aMetadata, float chance,
-        int aFortune) {
-        if (aMetadata == 4) {
-            this.dropBlockAsItem(aWorld, aX, aY, aZ, new ItemStack(Items.coal, XSTR_INSTANCE.nextInt(2) + 1, 1));
+    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float chance, int fortune) {
+        if (meta == 4) {
+            this.dropBlockAsItem(world, x, y, z, new ItemStack(Items.coal, XSTR_INSTANCE.nextInt(2) + 1, 1));
         } else {
-            super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, aMetadata, chance, aFortune);
+            super.dropBlockAsItemWithChance(world, x, y, z, meta, chance, fortune);
         }
     }
 
@@ -434,15 +379,15 @@ public class BlockReinforced extends GTGenericBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister aIconRegister) {}
+    public void registerBlockIcons(IIconRegister iconRegister) {}
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
+    public void getSubBlocks(Item item, CreativeTabs creativeTab, List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
-            ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName()
-                .contains(".name")) aList.add(aStack);
+            ItemStack stack = new ItemStack(item, 1, i);
+            if (!stack.getDisplayName()
+                .contains(".name")) list.add(stack);
         }
     }
 
