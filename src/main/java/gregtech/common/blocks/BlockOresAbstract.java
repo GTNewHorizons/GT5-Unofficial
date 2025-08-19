@@ -208,9 +208,6 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
 
     @Override
     public int getRenderType() {
-        if (GTRendererBlock.INSTANCE == null) {
-            return super.getRenderType();
-        }
         return GTRendererBlock.mRenderID;
     }
 

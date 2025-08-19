@@ -27,32 +27,32 @@ public class GTSidedTextureRender extends GTTextureBase implements ITexture, ICo
     }
 
     @Override
-    public void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXPos(SBRContextBase ctx) {
         mTextures[5].renderXPos(ctx);
     }
 
     @Override
-    public void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXNeg(SBRContextBase ctx) {
         mTextures[4].renderXNeg(ctx);
     }
 
     @Override
-    public void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYPos(SBRContextBase ctx) {
         mTextures[1].renderYPos(ctx);
     }
 
     @Override
-    public void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYNeg(SBRContextBase ctx) {
         mTextures[0].renderYNeg(ctx);
     }
 
     @Override
-    public void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZPos(SBRContextBase ctx) {
         mTextures[3].renderZPos(ctx);
     }
 
     @Override
-    public void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZNeg(SBRContextBase ctx) {
         mTextures[2].renderZNeg(ctx);
     }
 

@@ -281,6 +281,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
             @Override
             public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+                if (!inv.shouldBeCached()) {
+                    return true;
+                }
+
                 if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
                     activeDualInv = inv;
                     return true;

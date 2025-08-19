@@ -151,9 +151,6 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        if (GTRendererBlock.INSTANCE == null) {
-            return super.getRenderType();
-        }
         return GTRendererBlock.mRenderID;
     }
 
