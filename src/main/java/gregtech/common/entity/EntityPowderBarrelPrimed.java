@@ -8,14 +8,10 @@ public class EntityPowderBarrelPrimed extends EntityTNTPrimed {
 
     public EntityPowderBarrelPrimed(World world) {
         super(world);
+        this.fuse = 80;
     }
 
     public EntityPowderBarrelPrimed(World world, double x, double y, double z, EntityLivingBase igniter) {
         super(world, x, y, z, igniter);
-    }
-
-    @Override
-    protected void entityInit() {
-        this.fuse = 80;
     }
 }
