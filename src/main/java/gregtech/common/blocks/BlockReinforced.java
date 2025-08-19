@@ -57,7 +57,7 @@ public class BlockReinforced extends GTGenericBlock {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Plascrete Block");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Reinforced Block");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Brittle Charcoal");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Powderbarrel");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Powder Barrel");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Solid Super Fuel");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Magic Solid Super Fuel");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Steel Reinforced Block");
