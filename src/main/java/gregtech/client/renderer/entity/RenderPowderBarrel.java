@@ -1,5 +1,7 @@
 package gregtech.client.renderer.entity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -12,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import gregtech.api.enums.ItemList;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
 
+@SideOnly(Side.CLIENT)
 public class RenderPowderBarrel extends Render {
 
     private final RenderBlocks blockRenderer = new RenderBlocks();
