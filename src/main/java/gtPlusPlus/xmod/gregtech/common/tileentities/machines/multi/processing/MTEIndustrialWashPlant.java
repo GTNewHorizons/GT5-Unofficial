@@ -109,8 +109,8 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
             .addBulkMachineInfo(4, 5f, 1f)
+            .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
             .addInfo("Always requires an Input Hatch full of water to refill structure")
             .addInfo("Need to be filled with water.")
             .addInfo("Will automatically fill water from input hatch.")

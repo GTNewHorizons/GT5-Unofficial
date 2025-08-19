@@ -91,8 +91,8 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addBulkMachineInfo(4, 2.2f, 0.5f)
             .addInfo("Factory Grade Vacuum Furnace")
+            .addBulkMachineInfo(4, 2.2f, 0.5f)
             .addInfo("Can toggle the operation temperature with a Screwdriver")
             .addInfo("All Dehydrator recipes are Low Temp recipes")
             .addInfo("Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)")

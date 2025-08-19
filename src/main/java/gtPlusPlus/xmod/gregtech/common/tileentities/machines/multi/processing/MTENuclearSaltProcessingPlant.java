@@ -69,13 +69,13 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addBulkMachineInfo(2, 2.5f, 1f)
             .addInfo("Processes depleted nuclear salts that come from the LFTR")
             .addInfo("Handles the recipes of the Reactor Processor Unit and Cold Trap")
             .addInfo("Only Thermally Insulated Casings can be replaced with hatches")
             .addInfo("Mufflers on top, Energy Hatches on bottom, exactly 2 of each are required")
             .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
             .addInfo("Inputs go on the left side of the multi, outputs on the right side")
-            .addBulkMachineInfo(2, 2.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
