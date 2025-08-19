@@ -316,7 +316,7 @@ public class BlockReinforced extends GTGenericBlock {
     @SuppressWarnings("deprecation")
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-        if (world.getBlockMetadata(x, y, z) == 5) {
+        if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
             EntityPowderBarrelPrimed primedBarrel = new EntityPowderBarrelPrimed(
                 world,
                 x + 0.5F,
@@ -353,7 +353,7 @@ public class BlockReinforced extends GTGenericBlock {
 
     @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
-        if (world.getBlockMetadata(x, y, z) == 5) {
+        if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
             EntityPowderBarrelPrimed primedBarrel = new EntityPowderBarrelPrimed(
                 world,
                 x + 0.5F,
