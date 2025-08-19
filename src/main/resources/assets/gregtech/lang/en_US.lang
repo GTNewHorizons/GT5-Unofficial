@@ -745,7 +745,7 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
-GT5U.MBTT.Parallels=Processes up to %d recipes at once
+GT5U.MBTT.StaticParallels=Processes up to %d recipes at once
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
@@ -779,6 +779,18 @@ GT5U.MBTT.Display=to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
+GT5U.MBTT.ParallelBase=Processes %s items per %s Tier.
+GT5U.MBTT.SpeedBase=%s%% faster than single block machines of the same voltage
+GT5U.MBTT.SpeedTiered=%s%% faster than single block machines of the same voltage, per %s Tier.
+GT5U.MBTT.EuDiscountBase=Uses %s%% of the EU normally required.
+GT5U.MBTT.Tiers.Voltage=Voltage
+GT5U.MBTT.Tiers.Machine=Machine
+GT5U.MBTT.Tiers.Coil=Heating Coil
+GT5U.MBTT.Tiers.MachineCasing=Machine Casing
+GT5U.MBTT.Tiers.MetalMachineCasing=Metal Machine Casing
+GT5U.MBTT.Tiers.ItemPipe=Item Pipe Casing
+GT5U.MBTT.Tiers.FluidPipe=Pipe Casing
+GT5U.MBTT.Tiers.Solenoid=Solenoid
 GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
