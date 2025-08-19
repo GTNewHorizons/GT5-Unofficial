@@ -136,6 +136,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticParallelInfo(Integer parallels) {
+        String paraStr = EnumChatFormatting.GOLD + parallels.toString() + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_StaticParallels, parallels));
         return this;
     }

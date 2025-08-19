@@ -102,14 +102,12 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addBulkMachineInfo(16, 6f, 0.75f)
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
             .addInfo("Can be configured with a screwdriver to work as an Unpackager")
             .addInfo("Dust Schematics are inserted into the input buses")
             .addInfo("If inserted into the controller, it is shared across all buses")
             .addInfo("1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot")
-            .addInfo("500% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 75% of the EU/t normally required")
-            .addInfo("Processes 16 items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")

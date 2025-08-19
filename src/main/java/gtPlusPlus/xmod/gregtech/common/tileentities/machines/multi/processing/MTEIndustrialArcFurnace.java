@@ -86,8 +86,8 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("250% faster than using single block machines of the same voltage")
             .addInfo("Processes voltage tier * W items in Electric mode or 8 * voltage tier * W items in Plasma mode")
+            .addStaticSpeedInfo(3.5f)
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))

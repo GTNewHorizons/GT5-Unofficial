@@ -60,6 +60,7 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addBulkMachineInfo(4, 3.5f, 1f)
             .addInfo("250% faster than using single block machines of the same voltage")
             .addInfo("Processes four items per voltage tier")
             .addInfo("Extrusion Shape for recipe goes in the Input Bus")

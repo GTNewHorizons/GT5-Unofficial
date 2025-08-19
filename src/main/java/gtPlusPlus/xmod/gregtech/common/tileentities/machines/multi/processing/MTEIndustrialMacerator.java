@@ -100,9 +100,9 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("60% faster than using single block machines of the same voltage")
             .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
             .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
+            .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 3, true)
             .addController("Bottom center")

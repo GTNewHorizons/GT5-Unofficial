@@ -350,9 +350,9 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStaticParallelInfo(8)
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
-            .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(5, 5, 5, false)
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
