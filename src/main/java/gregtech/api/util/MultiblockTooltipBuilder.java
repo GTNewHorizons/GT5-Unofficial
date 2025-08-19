@@ -244,7 +244,7 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
-    //TODO: change formatting rules to allow for more precise floats
+    // TODO: change formatting rules to allow for more precise floats
     /**
      * Add a line of information about Steam Discount bonus relative to SB machines
      * Only consumes steam at %s%% of the steam flowrate normally required
@@ -264,13 +264,13 @@ public class MultiblockTooltipBuilder {
      *
      * @param parallels parallels
      * @param speed     Speed as defined in ProcessingLogic
-     * @param steamEff     steamEff as defined in ProcessingLogic
+     * @param steamEff  steamEff as defined in ProcessingLogic
      */
     public MultiblockTooltipBuilder addSteamBulkMachineInfo(int parallels, float speed, float steamEff) {
-        return addStaticParallelInfo(parallels)
-            .addStaticSteamSpeedInfo(speed)
+        return addStaticParallelInfo(parallels).addStaticSteamSpeedInfo(speed)
             .addStaticSteamEffInfo(steamEff);
     }
+
     /**
      * Add a number of basic lines of information about this structure
      *
