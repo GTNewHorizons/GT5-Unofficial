@@ -54,7 +54,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.SpeedBase");
     private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscountBase");
     private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.ParallelBase");
-    private static final String TT_DynamicSpeed= StatCollector.translateToLocal("GT5U.MBTT.SpeedTiered");
+    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.SpeedTiered");
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
@@ -145,13 +145,13 @@ public class MultiblockTooltipBuilder {
      * "Processes %s items per %s Tier."
      *
      * @param parallels Amount of parallels gained per tier
-     * @param tier Tiered object that determines bonus
+     * @param tier      Tiered object that determines bonus
      * @return Instance this method was called on.
      */
 
-    public MultiblockTooltipBuilder addDynamicParallelInfo(int parallels, TooltipTier tier){
-        String paraStr = EnumChatFormatting.GOLD+Integer.toString(parallels)+EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_DynamicParallels,paraStr,tier.getValue()));
+    public MultiblockTooltipBuilder addDynamicParallelInfo(int parallels, TooltipTier tier) {
+        String paraStr = EnumChatFormatting.GOLD + Integer.toString(parallels) + EnumChatFormatting.GRAY;
+        iLines.add(String.format(TT_DynamicParallels, paraStr, tier.getValue()));
         return this;
     }
 
@@ -162,36 +162,52 @@ public class MultiblockTooltipBuilder {
      * @param parallels Amount of parallels gained per Voltage tier
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addVoltageParallelInfo(int parallels){
+    public MultiblockTooltipBuilder addVoltageParallelInfo(int parallels) {
         return addDynamicParallelInfo(parallels, TooltipTier.VOLTAGE);
     }
 
     /**
      * Add a line of information about Speed bonus relative to SB machines
      * "%s%% faster than single block machines of the same voltage"
-     *  Subtracts 1F from the input, to match ProcessingLogic.
+     * Subtracts 1F from the input, to match ProcessingLogic.
      *
      * @param speed Speed as defined in ProcessingLogic
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStaticSpeedInfo(float speed){
+    public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
 
-         String speedStr = EnumChatFormatting.AQUA+Integer.toString( Math.round((speed - 1) * 100))+EnumChatFormatting.GRAY;
-         iLines.add(String.format(TT_StaticSpeed,speedStr));
-         return this;
+        String speedStr = EnumChatFormatting.AQUA + Integer.toString(Math.round((speed - 1) * 100))
+            + EnumChatFormatting.GRAY;
+        iLines.add(String.format(TT_StaticSpeed, speedStr));
+        return this;
     }
 
     /**
      * Add a line of information about Eu Discount bonus relative to SB machines
-     * "%s%% faster than single block machines of the same voltage"
+     * "Uses %s%% of the EU normally required"
      *
      * @param euEff euEff as defined in ProcessingLogic
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff){
-        String euStr = EnumChatFormatting.RED+Integer.toString( Math.round(euEff * 100))+EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_StaticEuEff,euStr));
+    public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
+        String euStr = EnumChatFormatting.RED + Integer.toString(Math.round(euEff * 100)) + EnumChatFormatting.GRAY;
+        iLines.add(String.format(TT_StaticEuEff, euStr));
         return this;
+    }
+
+    /**
+     * Add bulk information for parallels (voltageTier) , speed, euEff; in that order.
+     * "Processes %s items per Voltage Tier."
+     * "%s%% faster than single block machines of the same voltage"
+     * "Uses %s%% of the EU normally required."
+     *
+     * @param parallels parallels per voltage tier
+     * @param speed     Speed as defined in ProcessingLogic
+     * @param euEff     EuEff as defined in ProcessingLogic
+     */
+    public MultiblockTooltipBuilder addBulkMachineInfo(int parallels, float speed, float euEff) {
+        return addVoltageParallelInfo(parallels).addStaticSpeedInfo(speed)
+            .addStaticEuEffInfo(euEff);
     }
 
     /**
