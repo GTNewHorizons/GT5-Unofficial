@@ -55,6 +55,9 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscountBase");
     private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.ParallelBase");
     private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.SpeedTiered");
+    private static final String TT_Steam_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.Steam.Speed");
+    private static final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.Steam.Eff");
+
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
@@ -225,6 +228,49 @@ public class MultiblockTooltipBuilder {
             .addStaticEuEffInfo(euEff);
     }
 
+    /**
+     * Add a line of information about Speed bonus relative to SB machines
+     * %s%% faster than using single block steam machines of the same pressure
+     * Subtracts 1F from the input, to match ProcessingLogic.
+     *
+     * @param speed Speed as defined in ProcessingLogic
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStaticSteamSpeedInfo(float speed) {
+
+        String speedStr = EnumChatFormatting.AQUA + Integer.toString(Math.round((speed - 1) * 100))
+            + EnumChatFormatting.GRAY;
+        iLines.add(String.format(TT_Steam_StaticSpeed, speedStr));
+        return this;
+    }
+
+    //TODO: change formatting rules to allow for more precise floats
+    /**
+     * Add a line of information about Steam Discount bonus relative to SB machines
+     * Only consumes steam at %s%% of the steam flowrate normally required
+     *
+     * @param steamEff steamEff as defined in ProcessingLogic
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStaticSteamEffInfo(float steamEff) {
+        String steamStr = EnumChatFormatting.RED + Float.toString((steamEff * 100)) + EnumChatFormatting.GRAY;
+        iLines.add(String.format(TT_Steam_StaticSteamEff, steamStr));
+        return this;
+    }
+
+    /**
+     * For steam machines only. Assumes static parallels / buffs.
+     * Add bulk information for parallels (voltageTier) , speed, steamEff; in that order.
+     *
+     * @param parallels parallels
+     * @param speed     Speed as defined in ProcessingLogic
+     * @param steamEff     steamEff as defined in ProcessingLogic
+     */
+    public MultiblockTooltipBuilder addSteamBulkMachineInfo(int parallels, float speed, float steamEff) {
+        return addStaticParallelInfo(parallels)
+            .addStaticSteamSpeedInfo(speed)
+            .addStaticSteamEffInfo(steamEff);
+    }
     /**
      * Add a number of basic lines of information about this structure
      *
