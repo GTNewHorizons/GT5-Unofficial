@@ -148,7 +148,6 @@ public class MultiblockTooltipBuilder {
      * @param tier      Tiered object that determines bonus
      * @return Instance this method was called on.
      */
-
     public MultiblockTooltipBuilder addDynamicParallelInfo(int parallels, TooltipTier tier) {
         String paraStr = EnumChatFormatting.GOLD + Integer.toString(parallels) + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_DynamicParallels, paraStr, tier.getValue()));
@@ -179,6 +178,21 @@ public class MultiblockTooltipBuilder {
         String speedStr = EnumChatFormatting.AQUA + Integer.toString(Math.round((speed - 1) * 100))
             + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_StaticSpeed, speedStr));
+        return this;
+    }
+
+    /**
+     * Add a line of information about dynamic parallel count (tiered).
+     * "%s%% faster than single block machines of the same voltage, per %s Tier"
+     *
+     * @param speed Speed increment per tier
+     * @param tier  Tiered object that determines bonus
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+        String paraStr = EnumChatFormatting.AQUA + Integer.toString(Math.round((speed) * 100))
+            + EnumChatFormatting.GRAY;
+        iLines.add(String.format(TT_DynamicSpeed, paraStr, tier.getValue()));
         return this;
     }
 

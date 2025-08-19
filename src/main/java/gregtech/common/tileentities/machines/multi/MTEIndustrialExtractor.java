@@ -43,6 +43,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TooltipTier;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -164,9 +165,10 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Extractor")
-            .addInfo("200% faster than single block machines of the same voltage")
-            .addInfo("Only uses 85% of the EU/t normally required")
-            .addInfo("Gains 8 parallels per tier of Item Pipe Casing")
+            .addDynamicParallelInfo(8, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticSpeedInfo(3F)
+            .addStaticEuEffInfo(0.85F)
+
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
             .addCasingInfoMin("Stainless Steel Machine Casing", 45, false)
