@@ -15,7 +15,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
@@ -46,7 +45,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
     public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
         final boolean aF3_H) {
         final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
-            tString = GTLanguageManager.getTranslation(tKey);
+            tString = StatCollector.translateToLocal(tKey);
         if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
             aList.add(tString);
         }

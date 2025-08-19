@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
@@ -49,7 +50,7 @@ public enum GTPPCombType {
     }
 
     public String getName() {
-        return GTLanguageManager.getTranslation("gtplusplus.comb." + this.mNameUnlocal);
+        return StatCollector.translateToLocal("gtplusplus.comb." + this.mNameUnlocal);
     }
 
     public int[] getColours() {

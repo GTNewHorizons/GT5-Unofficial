@@ -9,11 +9,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.chunk.Chunk;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.commands.GTBaseCommand;
 import gregtech.common.blocks.TileEntityOres;
 
@@ -94,7 +94,7 @@ public class DetravScannerCommand extends GTBaseCommand {
                 TileEntityOres gt_entity = (TileEntityOres) entity;
                 short meta = gt_entity.getMetaData();
                 String name = Materials.getLocalizedNameForItem(
-                    GTLanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
+                    StatCollector.translateToLocal(b.getUnlocalizedName() + "." + meta + ".name"),
                     meta % 1000);
                 if (name.startsWith("Small")) continue;
                 if (fName == null || name.toLowerCase()

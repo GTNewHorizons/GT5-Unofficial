@@ -24,7 +24,6 @@ import detrav.utils.FluidColors;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
 
 /**
  * Created by wital_000 on 20.03.2016.
@@ -65,11 +64,11 @@ public class ProspectingPacket extends DetravPacket {
                     if (meta > 0) {
                         Materials tMaterial = GregTechAPI.sGeneratedMaterials[meta % 1000];
                         rgba = tMaterial.getRGBA();
-                        name = tMaterial.getLocalizedNameForItem(
-                            GTLanguageManager.getTranslation("gt.blockores." + meta + ".name"));
+                        name = tMaterial
+                            .getLocalizedNameForItem(StatCollector.translateToLocal("gt.blockores." + meta + ".name"));
                     } else {
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
-                        String translated = GTLanguageManager.getTranslation("bw.blocktype.ore");
+                        String translated = StatCollector.translateToLocal("bw.blocktype.ore");
                         name = translated.replace("%material", werkstoff.getLocalizedName());
                         rgba = werkstoff.getRGBA();
                     }

@@ -150,8 +150,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         // aList.add("Meta: "+(aStack.getItemDamage()-mOffset));
         int aOffsetMeta = getCorrectMetaForItemstack(aStack);
         aList.add(
-            GTLanguageManager
-                .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + aOffsetMeta + ".tooltip"));
+            StatCollector
+                .translateToLocal("gtplusplus." + this.getUnlocalizedName(aStack) + "." + aOffsetMeta + ".tooltip"));
 
         FluidStack f = getFluid(aStack);
         aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.0"));
@@ -624,8 +624,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     public String getItemStackDisplayName(final ItemStack aStack) {
         int keyValue = (getCorrectMetaForItemstack(aStack));
         keyValue = GTUtility.clamp(keyValue, 0, 4);
-        return GTLanguageManager
-            .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + keyValue + ".name");
+        return StatCollector
+            .translateToLocal("gtplusplus." + this.getUnlocalizedName(aStack) + "." + keyValue + ".name");
     }
 
     /**

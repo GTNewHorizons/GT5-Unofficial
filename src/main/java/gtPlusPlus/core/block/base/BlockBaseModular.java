@@ -9,6 +9,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -168,7 +169,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
+        return StatCollector.translateToLocal("gtplusplus." + getUnlocalizedName() + ".name")
             .replace("%s", "%temp")
             .replace("%material", this.thisBlockMaterialTranslatedName)
             .replace("%temp", "%s");
