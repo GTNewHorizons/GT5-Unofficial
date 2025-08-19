@@ -141,7 +141,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addSteamBulkMachineInfo(8,1.25f,0.625f)
+            .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the flowrate normally required")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
