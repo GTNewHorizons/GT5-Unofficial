@@ -52,7 +52,6 @@ import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.Column;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
@@ -247,28 +246,6 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setPos(191 - 13, 86 - 15)
                 .addTooltip(new Text(Tags.MODNAME).color(Color.GRAY.normal))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
-    }
-
-    // Widgets that depend on machine working status
-    protected @Nullable List<CycleButtonWidget> mMachineStatusWidgets;
-
-    protected void notifyMachineStatusWidgets() {
-        if (mMachineStatusWidgets == null) return;
-        for (CycleButtonWidget widget : mMachineStatusWidgets) {
-            widget.notifyTooltipChange();
-        }
-    }
-
-    @Override
-    public void enableWorking() {
-        super.enableWorking();
-        notifyMachineStatusWidgets();
-    }
-
-    @Override
-    public void onDisableWorking() {
-        super.onDisableWorking();
-        notifyMachineStatusWidgets();
     }
 
     protected @NotNull List<SlotWidget> slotWidgets = new ArrayList<>(1);

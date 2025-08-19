@@ -41,6 +41,22 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF_DISABLED;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_ON;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_ON_DISABLED;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF_DISABLED;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON_DISABLED;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF_DISABLED;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON_DISABLED;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_OFF;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF;
+import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_ON;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -48,6 +64,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -85,6 +102,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -982,48 +1000,45 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         configurationElements.setSynced(true);
 
         // Preserve weapon button
-        CycleButtonWidget tWidgetPreserveWeapon = new CycleButtonWidget();
+        CycleButtonWidget tWidgetPreserveWeapon = createEECSimpleWidget(
+            OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_ON,
+            OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF);
+
         configurationElements.widget(tWidgetPreserveWeapon.setToggle(() -> mPreserveWeapon, v -> {
             mPreserveWeapon = v;
             tWidgetPreserveWeapon.notifyTooltipChange();
         })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
             .dynamicTooltip(
                 () -> ImmutableList.of(
                     StatCollector.translateToLocal(
-                        "kubatech.gui.text.eec.preserve_weapon" + (mPreserveWeapon ? "_on" : "_off"))))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+                        "kubatech.gui.text.eec.preserve_weapon" + (mPreserveWeapon ? "_on" : "_off")))));
 
         // Cycle weapons button
-        CycleButtonWidget tWidgetCycleWeapons = new CycleButtonWidget();
+        CycleButtonWidget tWidgetCycleWeapons = createEECSimpleWidget(
+            OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON,
+            OVERLAY_BUTTON_EEC_WEAPON_CYCLING_OFF);
         configurationElements.widget(tWidgetCycleWeapons.setToggle(() -> mCycleWeapons, v -> {
             mCycleWeapons = v;
             tWidgetCycleWeapons.notifyTooltipChange();
         })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
             .dynamicTooltip(
                 () -> ImmutableList.of(
                     StatCollector
                         .translateToLocal("kubatech.gui.text.eec.cycle_weapons" + (mCycleWeapons ? "_on" : "_off"))))
-            .addTooltip(new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.cycle_weapons.info")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+            .addTooltip(new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.cycle_weapons.info"))));
 
         // Void damaged and enchanted button
-        CycleButtonWidget tWidgetVoidDamagedAndEnchanted = new CycleButtonWidget();
+        CycleButtonWidget tWidgetVoidDamagedAndEnchanted = createEECMachineStatusWidget(
+            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON,
+            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF,
+            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON_DISABLED,
+            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF_DISABLED);
         configurationElements
             .widget(tWidgetVoidDamagedAndEnchanted.setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
-                if (this.mMaxProgresstime <= 0) {
-                    voidAllDamagedAndEnchantedItems = v;
-                }
+                if (this.mMaxProgresstime > 0) return;
+                voidAllDamagedAndEnchantedItems = v;
                 tWidgetVoidDamagedAndEnchanted.notifyTooltipChange();
             })
-                .setTextureGetter(toggleButtonTextureGetter)
-                .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-                .setSize(16, 16)
                 .dynamicTooltip(() -> {
                     String tTooltipTitle = StatCollector.translateToLocal(
                         "kubatech.gui.text.eec.void_all_damaged" + (voidAllDamagedAndEnchantedItems ? "_on" : "_off"));
@@ -1032,20 +1047,20 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                             tTooltipTitle,
                             StatCollector.translateToLocal("kubatech.gui.text.no_change_when_running"));
                 })
-                .addTooltip(new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY));
+                .addTooltip(
+                    new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))));
 
         // Allow infernals button
-        CycleButtonWidget tWidgetAllowInfernals = new CycleButtonWidget();
+        CycleButtonWidget tWidgetAllowInfernals = createEECMachineStatusWidget(
+            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON,
+            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF,
+            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON_DISABLED,
+            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF_DISABLED);
         configurationElements.widget(tWidgetAllowInfernals.setToggle(() -> mIsProducingInfernalDrops, v -> {
-            if (this.mMaxProgresstime <= 0) {
-                mIsProducingInfernalDrops = v;
-            }
+            if (this.mMaxProgresstime > 0) return;
+            mIsProducingInfernalDrops = v;
             tWidgetAllowInfernals.notifyTooltipChange();
         })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
             .dynamicTooltip(() -> {
                 String tTooltipTitle = StatCollector.translateToLocal(
                     "kubatech.gui.text.eec.infernal_drop" + (mIsProducingInfernalDrops ? "_on" : "_off"));
@@ -1053,11 +1068,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     : ImmutableList
                         .of(tTooltipTitle, StatCollector.translateToLocal("kubatech.gui.text.no_change_when_running"));
             })
-            .addTooltip(new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+            .addTooltip(new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always"))));
 
         // Ritual mode button
-        CycleButtonWidget tWidgetRitualMode = new CycleButtonWidget();
+        CycleButtonWidget tWidgetRitualMode = createEECMachineStatusWidget(
+            OVERLAY_BUTTON_EEC_RITUAL_MODE_ON,
+            OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF,
+            OVERLAY_BUTTON_EEC_RITUAL_MODE_ON_DISABLED,
+            OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF_DISABLED);
         configurationElements.widget(tWidgetRitualMode.setToggle(() -> isInRitualMode, v -> {
             boolean tDidChangeRitualStatus = this.mMaxProgresstime <= 0;
             if (tDidChangeRitualStatus) {
@@ -1075,20 +1093,38 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
             }
         })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
             .dynamicTooltip(() -> {
                 String tTooltipTitle = StatCollector
                     .translateToLocal("kubatech.gui.text.eec.ritual_mode" + (isInRitualMode ? "_on" : "_off"));
                 return this.mMaxProgresstime <= 0 ? ImmutableList.of(tTooltipTitle)
                     : ImmutableList
                         .of(tTooltipTitle, StatCollector.translateToLocal("kubatech.gui.text.no_change_when_running"));
-            })
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+            }));
+    }
 
-        mMachineStatusWidgets = ImmutableList
-            .of(tWidgetVoidDamagedAndEnchanted, tWidgetAllowInfernals, tWidgetRitualMode);
+    private static CycleButtonWidget createEECSimpleWidget(IDrawable aOnTex, IDrawable aOffTex) {
+        CycleButtonWidget tButton = new CycleButtonWidget();
+        tButton.setTextureGetter(val -> val == 0 ? aOffTex : aOnTex)
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
+
+        return tButton;
+    }
+
+    private EECMachineStatusWidget createEECMachineStatusWidget(IDrawable aOnTex, IDrawable aOffTex,
+        IDrawable aLockedOnTex, IDrawable aLockedOffTex) {
+
+        EECMachineStatusWidget tButton = new EECMachineStatusWidget(
+            this,
+            lockVal -> lockVal == 0 ? aLockedOffTex : aLockedOnTex,
+            val -> val == 0 ? aOffTex : aOnTex);
+
+        tButton.setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
+
+        return tButton;
     }
 
     @Override
@@ -1163,6 +1199,43 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public final boolean supportsBatchMode() {
         return true;
+    }
+
+    private static final class EECMachineStatusWidget extends CycleButtonWidget {
+
+        private final MTEExtremeEntityCrusher mEEC;
+        private final Function<Integer, IDrawable> mWorkingGetter;
+        private final Function<Integer, IDrawable> mStoppedGetter;
+        private boolean mWorkingStatus;
+
+        private EECMachineStatusWidget(MTEExtremeEntityCrusher aEEC, Function<Integer, IDrawable> aWorkingGetter,
+            Function<Integer, IDrawable> aStoppedGetter) {
+            this.mEEC = aEEC;
+            this.mWorkingGetter = aWorkingGetter;
+            this.mStoppedGetter = aStoppedGetter;
+
+            this.mWorkingStatus = mEEC.mMaxProgresstime > 0;
+            this.textureGetter = mWorkingStatus ? mWorkingGetter : mStoppedGetter;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public void onScreenUpdate() {
+            super.onScreenUpdate();
+
+            boolean tWorkingStatus = mEEC.mMaxProgresstime > 0;
+            if (this.mWorkingStatus == tWorkingStatus) return;
+
+            this.textureGetter = tWorkingStatus ? mWorkingGetter : mStoppedGetter;
+
+            notifyTooltipChange();
+
+            // fake update toggle status to force change texture
+            setState(getter.get(), false, false);
+            markForUpdate();
+
+            this.mWorkingStatus = tWorkingStatus;
+        }
     }
 
     private static class EECFakePlayer extends FakePlayer {
