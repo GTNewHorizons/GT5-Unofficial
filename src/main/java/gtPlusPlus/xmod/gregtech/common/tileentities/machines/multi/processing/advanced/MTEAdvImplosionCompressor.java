@@ -171,5 +171,4 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     public int getMaxParallelRecipes() {
         return (GTUtility.getTier(this.getMaxInputVoltage()) / 2 + 1);
     }
-
 }
