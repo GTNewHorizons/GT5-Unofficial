@@ -401,7 +401,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+            StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + machineMode)
                 + EnumChatFormatting.RESET);

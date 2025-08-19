@@ -2360,7 +2360,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (tag.hasKey("mode")) {
             currentTip.add(
-                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                     + EnumChatFormatting.WHITE
                     + tag.getString("mode")
                     + EnumChatFormatting.RESET);
