@@ -90,6 +90,10 @@ public class TooltipHelper {
         return coloredText(tier, TIER_COLOR);
     }
 
+    public static String tierText(TooltipTier tier) {
+        return coloredText(tier.getValue(), TIER_COLOR);
+    }
+
     /**
      * Wraps input string in given color, if color is valid.
      *
