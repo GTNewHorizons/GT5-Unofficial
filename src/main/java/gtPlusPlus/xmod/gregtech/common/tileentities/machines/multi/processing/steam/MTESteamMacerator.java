@@ -276,9 +276,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addStaticParallelInfo(8)
-            .addInfo("25% faster than using single block steam machines of the same pressure")
-            .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
+            .addSteamBulkMachineInfo(8,1.25f,0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 3, 3, true)
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)

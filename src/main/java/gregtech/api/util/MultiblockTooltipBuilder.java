@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +47,9 @@ import gregtech.api.structure.IStructureChannels;
  * Originally created by kekzdealer
  */
 public class MultiblockTooltipBuilder {
+
+    //If you encounter issues with precision: change the amount of '#'s'
+    DecimalFormat df = new DecimalFormat("0.##");
 
     private static final String TAB = "   ";
     private static final String COLON = ": ";
@@ -172,14 +177,14 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about Speed bonus relative to SB machines
      * "%s%% faster than single block machines of the same voltage"
-     * Subtracts 1F from the input, to match ProcessingLogic.
+     * Subtracts 1F from the input, to match ProcessingLogic. e.g. speed = 3.5F, (1F / speed) = 250% faster
      *
      * @param speed Speed as defined in ProcessingLogic
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
 
-        String speedStr = EnumChatFormatting.AQUA + Integer.toString(Math.round((speed - 1) * 100))
+        String speedStr = EnumChatFormatting.AQUA + df.format((speed - 1) * 100) +"%"
             + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_StaticSpeed, speedStr));
         return this;
@@ -194,7 +199,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        String paraStr = EnumChatFormatting.AQUA + Integer.toString(Math.round((speed) * 100))
+        String paraStr = EnumChatFormatting.AQUA + df.format((speed) * 100) +"%"
             + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_DynamicSpeed, paraStr, tier.getValue()));
         return this;
@@ -208,12 +213,13 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
-        String euStr = EnumChatFormatting.RED + Integer.toString(Math.round(euEff * 100)) + EnumChatFormatting.GRAY;
+        String euStr = EnumChatFormatting.RED + df.format(euEff * 100) +"%"+ EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_StaticEuEff, euStr));
         return this;
     }
 
     /**
+     * For steam machines only.
      * Add bulk information for parallels (voltageTier) , speed, euEff; in that order.
      * "Processes %s items per Voltage Tier."
      * "%s%% faster than single block machines of the same voltage"
@@ -229,6 +235,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * For steam machines only.
      * Add a line of information about Speed bonus relative to SB machines
      * %s%% faster than using single block steam machines of the same pressure
      * Subtracts 1F from the input, to match ProcessingLogic.
@@ -238,14 +245,14 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSteamSpeedInfo(float speed) {
 
-        String speedStr = EnumChatFormatting.AQUA + Integer.toString(Math.round((speed - 1) * 100))
+        String speedStr = EnumChatFormatting.AQUA + df.format((speed-1)*100)+"%"
             + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_Steam_StaticSpeed, speedStr));
         return this;
     }
 
-    // TODO: change formatting rules to allow for more precise floats
     /**
+     * For steam machines only.
      * Add a line of information about Steam Discount bonus relative to SB machines
      * Only consumes steam at %s%% of the steam flowrate normally required
      *
@@ -253,7 +260,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSteamEffInfo(float steamEff) {
-        String steamStr = EnumChatFormatting.RED + Float.toString((steamEff * 100)) + EnumChatFormatting.GRAY;
+        String steamStr = EnumChatFormatting.RED + df.format(steamEff*100) + "%"+EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_Steam_StaticSteamEff, steamStr));
         return this;
     }
@@ -325,7 +332,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
         iLines.add(
-            TT_causes + COLON + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+            TT_causes +" "+ EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 
