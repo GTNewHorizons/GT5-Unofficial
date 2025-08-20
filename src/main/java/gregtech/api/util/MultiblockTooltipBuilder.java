@@ -59,6 +59,8 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscountBase");
     private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.ParallelBase");
     private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.SpeedTiered");
+    private static final String TT_DynamicEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscountTiered");
+
     private static final String TT_Steam_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.Steam.Speed");
     private static final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.Steam.Eff");
 
@@ -81,6 +83,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
     private static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
+    private static final String TT_produces = StatCollector.translateToLocal("GT5U.MBTT.Produces");
     private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
     private static final String TT_todisplay = StatCollector.translateToLocal("GT5U.MBTT.Display");
@@ -216,6 +219,20 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Add a line of information about dynamic parallel count (tiered).
+     * "Uses %s%% less EU per %s Tier"
+     *
+     * @param euEff euEff Increment per tier
+     * @param tier  Tiered object that determines bonus
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
+        String euStr = EnumChatFormatting.RED + df.format((euEff) * 100) + "%" + EnumChatFormatting.GRAY;
+        iLines.add(String.format(TT_DynamicEuEff, euStr, tier.getValue()));
+        return this;
+    }
+
+    /**
      * For steam machines only.
      * Add bulk information for parallels (voltageTier) , speed, euEff; in that order.
      * "Processes %s items per Voltage Tier."
@@ -327,8 +344,8 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
-        iLines
-            .add(TT_causes + " " + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+        iLines.add(
+            TT_produces + " " + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 

@@ -82,8 +82,6 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addBulkMachineInfo(4, 6f, 1f)
-            .addInfo("Circuit for recipe goes in the Input Bus")
-            .addInfo("Each Input Bus can have a different Circuit/Shape!")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")

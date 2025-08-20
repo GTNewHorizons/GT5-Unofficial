@@ -773,6 +773,7 @@ GT5U.MBTT.Uncertainty=Uncertainty Hatch
 GT5U.MBTT.InputData=Data Reception Connector
 GT5U.MBTT.OutputData=Data Transmission Connector
 GT5U.MBTT.Causes=Causes
+GT5U.MBTT.Produces=Produces
 GT5U.MBTT.PPS=pollution per second
 GT5U.MBTT.Hold=Hold
 GT5U.MBTT.Display=to display structure guidelines
@@ -783,6 +784,7 @@ GT5U.MBTT.ParallelBase=Processes %s items per %s Tier
 GT5U.MBTT.SpeedBase=%s faster than single block machines of the same voltage
 GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, per %s Tier
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
+GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Tiers.Voltage=Voltage
 GT5U.MBTT.Tiers.Machine=Machine
 GT5U.MBTT.Tiers.Coil=Heating Coil
@@ -2939,7 +2941,7 @@ GTPP.tooltip.dust-decay-hint=Only decays in a %s or a %s
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
 GTPP.tooltip.structure.data_orb_repository=Data Orb Repository
-GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch
+GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Hatch, Energy Hatch
 GTPP.tooltip.structure.rotor_assembly=Rotor Assembly
 
 GT5U.tooltip.pollution.produces=Produces %d Pollution/Second
