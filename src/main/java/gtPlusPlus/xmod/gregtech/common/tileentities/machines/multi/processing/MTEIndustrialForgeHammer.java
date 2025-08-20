@@ -88,7 +88,9 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: Tier x Anvil Tier x 8")
+            .addInfo("Parallel: Tier x Anvil Tier x 8")
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(1f)
             .addInfo("T1 - Vanilla Anvil");
         if (Railcraft.isModLoaded()) {
             tt.addInfo("T2 - Steel Anvil");
