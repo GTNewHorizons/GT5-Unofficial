@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,7 +47,7 @@ import gregtech.api.structure.IStructureChannels;
  */
 public class MultiblockTooltipBuilder {
 
-    //If you encounter issues with precision: change the amount of '#'s'
+    // If you encounter issues with precision: change the amount of '#'s'
     DecimalFormat df = new DecimalFormat("0.##");
 
     private static final String TAB = "   ";
@@ -184,8 +183,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
 
-        String speedStr = EnumChatFormatting.AQUA + df.format((speed - 1) * 100) +"%"
-            + EnumChatFormatting.GRAY;
+        String speedStr = EnumChatFormatting.AQUA + df.format((speed - 1) * 100) + "%" + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_StaticSpeed, speedStr));
         return this;
     }
@@ -199,8 +197,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        String paraStr = EnumChatFormatting.AQUA + df.format((speed) * 100) +"%"
-            + EnumChatFormatting.GRAY;
+        String paraStr = EnumChatFormatting.AQUA + df.format((speed) * 100) + "%" + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_DynamicSpeed, paraStr, tier.getValue()));
         return this;
     }
@@ -213,7 +210,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
-        String euStr = EnumChatFormatting.RED + df.format(euEff * 100) +"%"+ EnumChatFormatting.GRAY;
+        String euStr = EnumChatFormatting.RED + df.format(euEff * 100) + "%" + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_StaticEuEff, euStr));
         return this;
     }
@@ -245,8 +242,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSteamSpeedInfo(float speed) {
 
-        String speedStr = EnumChatFormatting.AQUA + df.format((speed-1)*100)+"%"
-            + EnumChatFormatting.GRAY;
+        String speedStr = EnumChatFormatting.AQUA + df.format((speed - 1) * 100) + "%" + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_Steam_StaticSpeed, speedStr));
         return this;
     }
@@ -260,7 +256,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSteamEffInfo(float steamEff) {
-        String steamStr = EnumChatFormatting.RED + df.format(steamEff*100) + "%"+EnumChatFormatting.GRAY;
+        String steamStr = EnumChatFormatting.RED + df.format(steamEff * 100) + "%" + EnumChatFormatting.GRAY;
         iLines.add(String.format(TT_Steam_StaticSteamEff, steamStr));
         return this;
     }
@@ -331,8 +327,8 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
-        iLines.add(
-            TT_causes +" "+ EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+        iLines
+            .add(TT_causes + " " + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 
