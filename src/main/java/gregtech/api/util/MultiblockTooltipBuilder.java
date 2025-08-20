@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -146,8 +148,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticParallelInfo(Integer parallels) {
-        String paraStr = EnumChatFormatting.GOLD + parallels.toString() + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_StaticParallels, paraStr));
+        iLines.add(String.format(TT_StaticParallels, TooltipHelper.parallelText(parallels.toString())));
         return this;
     }
 
@@ -159,9 +160,8 @@ public class MultiblockTooltipBuilder {
      * @param tier      Tiered object that determines bonus
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addDynamicParallelInfo(int parallels, TooltipTier tier) {
-        String paraStr = EnumChatFormatting.GOLD + Integer.toString(parallels) + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_DynamicParallels, paraStr, tier.getValue()));
+    public MultiblockTooltipBuilder addDynamicParallelInfo(Integer parallels, TooltipTier tier) {
+        iLines.add(String.format(TT_DynamicParallels, TooltipHelper.parallelText(parallels.toString()), tier.getValue()));
         return this;
     }
 
@@ -186,8 +186,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
 
-        String speedStr = EnumChatFormatting.AQUA + df.format((speed - 1)) + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_StaticSpeed, speedStr));
+        iLines.add(String.format(TT_StaticSpeed, TooltipHelper.speedText(df.format(speed-1))));
         return this;
     }
 
@@ -200,8 +199,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        String paraStr = EnumChatFormatting.AQUA + df.format((speed)) + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_DynamicSpeed, paraStr, tier.getValue()));
+        iLines.add(String.format(TT_DynamicSpeed, TooltipHelper.speedText(df.format(speed)), tier.getValue()));
         return this;
     }
 
@@ -213,8 +211,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
-        String euStr = EnumChatFormatting.RED + df.format(euEff) + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_StaticEuEff, euStr));
+        iLines.add(String.format(TT_StaticEuEff, TooltipHelper.effText(df.format(euEff))));
         return this;
     }
 
@@ -227,8 +224,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
-        String euStr = EnumChatFormatting.RED + df.format((euEff)) + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_DynamicEuEff, euStr, tier.getValue()));
+        iLines.add(String.format(TT_DynamicEuEff, TooltipHelper.effText(df.format(euEff)), tier.getValue()));
         return this;
     }
 
@@ -259,8 +255,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSteamSpeedInfo(float speed) {
 
-        String speedStr = EnumChatFormatting.AQUA + df.format((speed - 1)) + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_Steam_StaticSpeed, speedStr));
+        iLines.add(String.format(TT_Steam_StaticSpeed, TooltipHelper.speedText(df.format(speed-1))));
         return this;
     }
 
@@ -273,8 +268,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSteamEffInfo(float steamEff) {
-        String steamStr = EnumChatFormatting.RED + df.format(steamEff) + EnumChatFormatting.GRAY;
-        iLines.add(String.format(TT_Steam_StaticSteamEff, steamStr));
+        iLines.add(String.format(TT_Steam_StaticSteamEff, TooltipHelper.effText(df.format(steamEff))));
         return this;
     }
 

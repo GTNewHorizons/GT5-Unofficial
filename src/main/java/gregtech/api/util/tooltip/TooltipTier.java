@@ -1,12 +1,13 @@
-package gregtech.api.util;
+package gregtech.api.util.tooltip;
 
+import gregtech.api.util.MultiblockTooltipBuilder;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 /**
  * Contains a series of Lang-key / Tier Parings.
  * Assists in a few methods in {@link MultiblockTooltipBuilder}
- * 
+ *
  * Keys found under GT5U.MBTT.Tiers.* . Please add your own.
  */
 public enum TooltipTier {
@@ -27,6 +28,6 @@ public enum TooltipTier {
     }
 
     public String getValue() {
-        return EnumChatFormatting.WHITE + StatCollector.translateToLocal(this.key) + EnumChatFormatting.GRAY;
+        return TooltipHelper.tierText(StatCollector.translateToLocal(this.key));
     }
 }
