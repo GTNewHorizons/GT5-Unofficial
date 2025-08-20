@@ -218,7 +218,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         tt.addMachineType("Implosion Compressor, EIC")
             .addInfo("Explosions are fun")
             .addInfo("Uses electricity instead of Explosives")
-            .addInfo("Processes up to " + TooltipHelper.parallelText("4^(Tier - 1)") + " recipes at once")
+            .addInfo(TooltipHelper.parallelText("4^(Tier - 1)") + " Parallels")
             .addInfo("Tier is determined by containment block")
             .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
             .addInfo("Minimum allowed energy hatch tier is one below recipe tier")

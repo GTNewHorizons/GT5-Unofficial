@@ -149,7 +149,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         tt.addMachineType("Cracker, MOC")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
-            .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " discount")
+            .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " EU discount")
             .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
             .addInfo("More efficient than the Chemical Reactor")
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")

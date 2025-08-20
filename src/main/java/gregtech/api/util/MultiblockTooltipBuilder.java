@@ -237,7 +237,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
         iLines.add(
-            String.format(TT_DynamicEuEff, TooltipHelper.effText(euEff), tier.getValue()));
+            String.format(TT_DynamicEuEff, "-"+TooltipHelper.effText(euEff), tier.getValue()));
         return this;
     }
 
