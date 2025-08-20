@@ -68,8 +68,8 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo("Process up to " + TooltipHelper.parallelText(12) + " recipes at once with Heat Resistant Casings")
-            .addInfo("Or " + TooltipHelper.parallelText("24") + " with Heat Proof Casings")
+            .addInfo( TooltipHelper.parallelText(12) + " Parallels with Heat Resistant Casings")
+            .addInfo( TooltipHelper.parallelText(24) + " Parallels with Heat Proof Casings")
             .addDynamicEuEffInfo(0.04f, TooltipTier.VOLTAGE)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)

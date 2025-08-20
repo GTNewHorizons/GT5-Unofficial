@@ -212,8 +212,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        iLines.add(
-            String.format(TT_DynamicSpeed, TooltipHelper.speedText(percentageFormat.format(speed)), tier.getValue()));
+        iLines.add(String.format(TT_DynamicSpeed, TooltipHelper.speedText("+"+percentageFormat.format(speed)), tier.getValue()));
         return this;
     }
 

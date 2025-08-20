@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -61,7 +62,9 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Implosion Compressor")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
+            .addInfo(TooltipHelper.parallelText("1 + (Tier/2)")+" Parallels")
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(1f)
             .addInfo("Constructed exactly the same as a normal Implosion Compressor")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)

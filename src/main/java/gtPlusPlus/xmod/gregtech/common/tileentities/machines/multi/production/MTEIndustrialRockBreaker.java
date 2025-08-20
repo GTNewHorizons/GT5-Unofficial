@@ -88,7 +88,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
+            .addBulkMachineInfo(8,3f,0.75f)
             .addInfo("Use Integrated Circuit to determine recipe")
             .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
             .addInfo("Needs Water and Lava in input hatch")

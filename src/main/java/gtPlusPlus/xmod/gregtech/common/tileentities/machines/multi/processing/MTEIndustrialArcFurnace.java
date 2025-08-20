@@ -84,9 +84,10 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Processes up to " + TooltipHelper.parallelText("Width * Voltage Tier") + " recipes at once")
+            .addInfo(TooltipHelper.parallelText("Width * Voltage Tier") + " Parallels")
             .addInfo(TooltipHelper.parallelText("8x") + " Parallels in Plasma Mode")
             .addStaticSpeedInfo(3.5f)
+            .addStaticEuEffInfo(1f)
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
