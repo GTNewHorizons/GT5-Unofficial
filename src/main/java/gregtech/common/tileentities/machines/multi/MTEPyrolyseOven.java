@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
+import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -89,7 +90,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
             .addInfo("Industrial Charcoal producer")
-            .addInfo("Processing speed scales linearly with Coil tier:")
+            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))

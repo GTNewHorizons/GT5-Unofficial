@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -118,15 +119,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(
-                "Processes " + EnumChatFormatting.WHITE
-                    + "Voltage Tier"
-                    + EnumChatFormatting.GRAY
-                    + " * "
-                    + EnumChatFormatting.WHITE
-                    + "Coil Tier"
-                    + EnumChatFormatting.GRAY
-                    + " items")
+            .addInfo("Processes " + TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " items")
             .addDynamicSpeedInfo(0.05f, TooltipTier.COIL)
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))

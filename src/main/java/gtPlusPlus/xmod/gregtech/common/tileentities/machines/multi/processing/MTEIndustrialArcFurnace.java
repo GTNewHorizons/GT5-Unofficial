@@ -16,6 +16,7 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -83,7 +84,8 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Processes voltage tier * W items in Electric mode or 8 * voltage tier * W items in Plasma mode")
+            .addInfo("Processes up to "+TooltipHelper.parallelText("Width * Voltage Tier")+" recipes at once")
+            .addInfo(TooltipHelper.parallelText("8x")+" Parallels in Plasma Mode")
             .addStaticSpeedInfo(3.5f)
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")

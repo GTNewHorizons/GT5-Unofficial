@@ -16,6 +16,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -101,7 +102,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
+            .addInfo("Maximum of "+ TooltipHelper.parallelText("Voltage Tier * n")+" parallels")
             .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
             .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
