@@ -1,8 +1,8 @@
 package gregtech.api.util.tooltip;
 
-import gregtech.api.util.MultiblockTooltipBuilder;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 /**
  * Contains a series of Lang-key / Tier Parings.

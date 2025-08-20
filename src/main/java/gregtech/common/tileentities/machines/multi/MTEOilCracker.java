@@ -21,8 +21,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -50,6 +48,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
@@ -129,7 +129,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
             .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
             .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
-            .addInfo("Maximum of "+ TooltipHelper.effText(0.5f)+" discount")
+            .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " discount")
             .addEnergyHatch("Any casing", 1, 2, 3)
             .addMaintenanceHatch("Any casing", 1, 2, 3)
             .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, Any middle ring casing", 1)

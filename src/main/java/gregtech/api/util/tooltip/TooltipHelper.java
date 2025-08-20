@@ -1,8 +1,8 @@
 package gregtech.api.util.tooltip;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import java.text.DecimalFormat;
+
+import net.minecraft.util.EnumChatFormatting;
 
 /**
  * A list of helper methods that can be useful in creating tooltips.
@@ -16,24 +16,24 @@ public class TooltipHelper {
     public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
+
     /**
      * Wraps input string in parallel colors
      *
-     * @param parallels Amount of parallels turned into  {@link TooltipHelper#PARALLEL_COLOR}
+     * @param parallels Amount of parallels turned into {@link TooltipHelper#PARALLEL_COLOR}
      * @return Colored String
      */
-    public static String parallelText(String parallels)
-    {
-        return coloredText(parallels,PARALLEL_COLOR);
+    public static String parallelText(String parallels) {
+        return coloredText(parallels, PARALLEL_COLOR);
     }
+
     /**
      * Wraps input string in parallel colors
      *
-     * @param parallels Amount of parallels turned into  {@link TooltipHelper#PARALLEL_COLOR}
+     * @param parallels Amount of parallels turned into {@link TooltipHelper#PARALLEL_COLOR}
      * @return Colored String
      */
-    public static String parallelText(int parallels)
-    {
+    public static String parallelText(int parallels) {
         return parallelText(Integer.toString(parallels));
     }
 
@@ -43,9 +43,8 @@ public class TooltipHelper {
      * @param speed Speed difference. {@link TooltipHelper#SPEED_COLOR}
      * @return Colored String
      */
-    public static String speedText(String speed)
-    {
-        return coloredText(speed,SPEED_COLOR);
+    public static String speedText(String speed) {
+        return coloredText(speed, SPEED_COLOR);
     }
 
     /**
@@ -54,9 +53,8 @@ public class TooltipHelper {
      * @param speed Speed difference. {@link TooltipHelper#SPEED_COLOR}
      * @return Colored String
      */
-    public static String speedText(float speed)
-    {
-        return coloredText(percentageFormat.format(speed-1),SPEED_COLOR);
+    public static String speedText(float speed) {
+        return coloredText(percentageFormat.format(speed - 1), SPEED_COLOR);
     }
 
     /**
@@ -65,8 +63,7 @@ public class TooltipHelper {
      * @param eff Efficiency. {@link TooltipHelper#EFF_COLOR}
      * @return Colored String
      */
-    public static String effText(String eff)
-    {
+    public static String effText(String eff) {
         return coloredText(eff, EFF_COLOR);
     }
 
@@ -76,8 +73,7 @@ public class TooltipHelper {
      * @param eff Efficiency. {@link TooltipHelper#EFF_COLOR}
      * @return Colored String
      */
-    public static String effText(float eff)
-    {
+    public static String effText(float eff) {
         return coloredText(percentageFormat.format(eff), EFF_COLOR);
     }
 
@@ -89,21 +85,20 @@ public class TooltipHelper {
      * @param tier Tier . {@link TooltipHelper#TIER_COLOR}
      * @return Colored String
      */
-    public static String tierText(String tier)
-    {
-        return coloredText(tier,TIER_COLOR);
+    public static String tierText(String tier) {
+        return coloredText(tier, TIER_COLOR);
     }
 
     /**
      * Wraps input string in given color, if color is valid.
      *
-     * @param text Text to be colored
+     * @param text     Text to be colored
      * @param coloring Color to apply to text
      * @return Colored String, resets to gray coloring after
      */
-    public static String coloredText(String text, EnumChatFormatting coloring)
-    {
-        if (coloring.isColor() || coloring == EnumChatFormatting.GRAY) return String.format("%s%s%s",coloring, text ,EnumChatFormatting.GRAY);
+    public static String coloredText(String text, EnumChatFormatting coloring) {
+        if (coloring.isColor() || coloring == EnumChatFormatting.GRAY)
+            return String.format("%s%s%s", coloring, text, EnumChatFormatting.GRAY);
         return text;
     }
 }

@@ -13,8 +13,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -31,6 +29,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -68,8 +68,8 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo("Process "+ TooltipHelper.parallelText(12)+" recipes at once with Heat Resistant Casings")
-            .addInfo("Or "+TooltipHelper.parallelText("24")+" with Heat Proof Casings")
+            .addInfo("Process up to " + TooltipHelper.parallelText(12) + " recipes at once with Heat Resistant Casings")
+            .addInfo("Or " + TooltipHelper.parallelText("24") + " with Heat Proof Casings")
             .addDynamicEuEffInfo(0.04f, TooltipTier.VOLTAGE)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)

@@ -32,8 +32,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -66,6 +64,8 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -148,6 +148,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker, MOC")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
+            .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " discount")
             .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
             .addInfo("More efficient than the Chemical Reactor")
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
@@ -159,8 +161,6 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addUnlimitedTierSkips()
-            .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
-            .addInfo("Maximum of "+ TooltipHelper.effText(0.5f)+" discount")
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)

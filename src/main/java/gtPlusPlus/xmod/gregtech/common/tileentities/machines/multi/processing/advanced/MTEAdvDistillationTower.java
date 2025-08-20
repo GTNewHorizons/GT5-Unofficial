@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -53,6 +52,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -176,12 +176,12 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Uses "+ TooltipHelper.effText(0.85f)+" less energy in distillery mode")
-            .addInfo(TooltipHelper.speedText("250%/100%")+" faster in DT/distillery mode")
-            .addInfo("Right click the controller with screwdriver to change mode.")
             .addInfo("Max parallel dictated by tower tier and mode")
-            .addInfo("DTower Mode: "+TooltipHelper.parallelText("T1=4")+", "+TooltipHelper.parallelText("T2=12"))
-            .addInfo("Distillery Mode: "+TooltipHelper.parallelText("Tower Tier * (4*InputTier)"))
+            .addInfo("DTower Mode: " + TooltipHelper.parallelText("T1=4") + ", " + TooltipHelper.parallelText("T2=12"))
+            .addInfo("Distillery Mode: " + TooltipHelper.parallelText("Tower Tier * (4*InputTier)"))
+            .addInfo(TooltipHelper.speedText("250%/100%") + " faster in DT/distillery mode")
+            .addInfo("Uses " + TooltipHelper.effText(0.85f) + " less energy in distillery mode")
+            .addInfo("Right click the controller with screwdriver to change mode.")
             .addInfo("Distillery Mode require a full height tower")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)

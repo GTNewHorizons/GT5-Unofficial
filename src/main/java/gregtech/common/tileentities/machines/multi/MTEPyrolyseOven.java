@@ -18,7 +18,6 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -46,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 
 public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> implements ISurvivalConstructable {
 

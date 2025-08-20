@@ -24,7 +24,6 @@ import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -57,6 +56,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -272,9 +273,9 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
             .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
             .addInfo(String.format(
-                "Every coil tier gives a +%d%% speed bonus and a %d%% EU/t discount (multiplicative)",
-                (int) Math.round(SPEED_PER_COIL * 100),
-                (int) Math.round((1 - HEATING_COIL_EU_MULTIPLIER) * 100)
+                "Every coil tier gives a +%s speed bonus and a %s EU/t discount (multiplicative)",
+                TooltipHelper.speedText((float) SPEED_PER_COIL+1),
+                TooltipHelper.effText((float) (1-HEATING_COIL_EU_MULTIPLIER))
             ))
             .addInfo(String.format(
                 "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",

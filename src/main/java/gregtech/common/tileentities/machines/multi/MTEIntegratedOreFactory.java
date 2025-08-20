@@ -209,7 +209,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Sneak click with screwdriver to void the stone dust.")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
-            .addInfo(EnumChatFormatting.GREEN+"OP stands for Ore Processor ;)")
+            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
