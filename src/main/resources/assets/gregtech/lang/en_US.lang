@@ -1178,7 +1178,6 @@ GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
 GT5U.DEHP.mode.0=Direct Steam
 GT5U.DEHP.mode.1=Coolant Heating
-GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
 GT5U.machines.oreprocessor.Macerate=Macerate
@@ -1725,6 +1724,7 @@ GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
 GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
+GT5U.multiblock.runningMode=§eRunning Mode:
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)

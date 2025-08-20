@@ -161,5 +161,4 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     public int getMaxParallelRecipes() {
         return 2 * GTUtility.getTier(this.getMaxInputVoltage());
     }
-
 }
