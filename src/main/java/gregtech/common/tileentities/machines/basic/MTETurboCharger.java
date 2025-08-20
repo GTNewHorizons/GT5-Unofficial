@@ -38,7 +38,7 @@ public class MTETurboCharger extends MTECharger {
         for (byte b = -1; b < 16; b++) {
             rTextures[0][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1] };
             rTextures[1][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier] };
         }
         return rTextures;
     }

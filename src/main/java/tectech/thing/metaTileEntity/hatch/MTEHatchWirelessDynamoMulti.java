@@ -16,11 +16,11 @@ import java.util.UUID;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
-import tectech.thing.metaTileEntity.Textures;
 
 public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
@@ -72,12 +72,12 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier] };
     }
 
     @Override
