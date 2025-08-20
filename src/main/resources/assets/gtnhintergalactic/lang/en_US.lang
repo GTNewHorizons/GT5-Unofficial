@@ -254,9 +254,9 @@ gt.blockmachines.multimachine.project.ig.assembler.desc0=Module that adds the Sp
 gt.blockmachines.multimachine.project.ig.assembler.t1.desc1=Why do I need to assemble stuff in space again?
 gt.blockmachines.multimachine.project.ig.assembler.t2.desc1=Is this really necessary?
 gt.blockmachines.multimachine.project.ig.assembler.t3.desc1=I guess we'll never know.
-gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Runs at UHV with up to 4 parallels
-gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Runs at UIV with up to 16 parallels
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Runs at UXV with up to 64 parallels
+gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Runs at UHV with up to §a4 §7parallels
+gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Runs at UIV with up to §a16 §7parallels
+gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Runs at UXV with up to §a64 §7parallels
 gt.blockmachines.multimachine.project.ig.assembler.cfgi.0=Max parallels
 
 # Module Miner
@@ -301,10 +301,10 @@ gt.blockmachines.multimachine.project.ig.pump.t2.desc1=Literally sucks
 gt.blockmachines.multimachine.project.ig.pump.t3.desc1=S U C C
 gt.blockmachines.multimachine.project.ig.pump.desc3=Set Planet and Gas Type determine pumped fluid
 gt.blockmachines.multimachine.project.ig.pump.desc4=Can be void protected by locking output hatches
-gt.blockmachines.multimachine.project.ig.pump.t1.desc5=Runs at UHV with up to 4 parallels
-gt.blockmachines.multimachine.project.ig.pump.t2.desc5=Runs at UEV with up to 4 parallels per recipe
-gt.blockmachines.multimachine.project.ig.pump.t3.desc5=Runs at UXV with up to 64 parallels per recipe
-gt.blockmachines.multimachine.project.ig.pump.t2.desc6=Processes up to 4 different recipes at once
+gt.blockmachines.multimachine.project.ig.pump.t1.desc5=Runs at UHV with up to §a4 §7parallels
+gt.blockmachines.multimachine.project.ig.pump.t2.desc5=Runs at UEV with up to §a4 §7parallels per recipe
+gt.blockmachines.multimachine.project.ig.pump.t3.desc5=Runs at UXV with up to §a64 §7parallels per recipe
+gt.blockmachines.multimachine.project.ig.pump.t2.desc6=Processes up to §a4 §7different recipes at once
 gt.blockmachines.multimachine.project.ig.pump.cfgi.0=Planet Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.1=Gas Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.2=Parallels
