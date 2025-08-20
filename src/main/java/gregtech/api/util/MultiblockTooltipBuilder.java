@@ -233,7 +233,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * For steam machines only.
+     * =
      * Add bulk information for parallels (voltageTier) , speed, euEff; in that order.
      * "Processes %s items per Voltage Tier."
      * "%s%% faster than single block machines of the same voltage"
