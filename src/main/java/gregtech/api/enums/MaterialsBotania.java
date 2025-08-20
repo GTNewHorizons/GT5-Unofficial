@@ -14,7 +14,7 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 public class MaterialsBotania {
 
     // Botania materials.
-    public static Materials Manasteel = new MaterialBuilder(201, new TextureSet("Manasteel", false), "Manasteel")
+    public static Materials Manasteel = new MaterialBuilder(201, TextureSet.SET_MANASTEEL, "Manasteel")
         .setName("Manasteel")
         .setRGBA(70, 170, 230, 255)
         .addDustItems()
@@ -30,7 +30,7 @@ public class MaterialsBotania {
         .setAspects(
             Arrays.asList(new TC_AspectStack(TCAspects.METALLUM, 3), new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
         .constructMaterial();
-    public static Materials Terrasteel = new MaterialBuilder(202, new TextureSet("Manasteel", false), "Terrasteel")
+    public static Materials Terrasteel = new MaterialBuilder(202, TextureSet.SET_MANASTEEL, "Terrasteel")
         .setName("Terrasteel")
         .setRGBA(70, 200, 0, 255)
         .addDustItems()
@@ -49,28 +49,26 @@ public class MaterialsBotania {
                 new TC_AspectStack(TCAspects.TERRA, 1),
                 new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
         .constructMaterial();
-    public static Materials ElvenElementium = new MaterialBuilder(
-        203,
-        new TextureSet("Manasteel", false),
-        "Elven Elementium").setName("ElvenElementium")
-            .setRGBA(255, 45, 240, 255)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setToolSpeed(20.0F)
-            .setDurability(32768)
-            .setToolQuality(7)
-            .setMeltingPoint(7200)
-            .setBlastFurnaceTemp(7200)
-            .setBlastFurnaceRequired(true)
-            .setAspects(
-                Arrays.asList(
-                    new TC_AspectStack(TCAspects.METALLUM, 3),
-                    new TC_AspectStack(TCAspects.PRAECANTATIO, 2),
-                    new TC_AspectStack(TCAspects.AURAM, 1)))
-            .constructMaterial();
-    public static Materials Livingrock = new MaterialBuilder(204, new TextureSet("Livingrock", true), "Livingrock")
+    public static Materials ElvenElementium = new MaterialBuilder(203, TextureSet.SET_MANASTEEL, "Elven Elementium")
+        .setName("ElvenElementium")
+        .setRGBA(255, 45, 240, 255)
+        .addDustItems()
+        .addMetalItems()
+        .addToolHeadItems()
+        .addGearItems()
+        .setToolSpeed(20.0F)
+        .setDurability(32768)
+        .setToolQuality(7)
+        .setMeltingPoint(7200)
+        .setBlastFurnaceTemp(7200)
+        .setBlastFurnaceRequired(true)
+        .setAspects(
+            Arrays.asList(
+                new TC_AspectStack(TCAspects.METALLUM, 3),
+                new TC_AspectStack(TCAspects.PRAECANTATIO, 2),
+                new TC_AspectStack(TCAspects.AURAM, 1)))
+        .constructMaterial();
+    public static Materials Livingrock = new MaterialBuilder(204, TextureSet.SET_LIVINGROCK, "Livingrock")
         .setName("Livingrock")
         .addDustItems()
         .addToolHeadItems()
@@ -85,7 +83,7 @@ public class MaterialsBotania {
         .constructMaterial();
     public static Materials GaiaSpirit = new Materials(
         205,
-        new TextureSet("GaiaSpirit", true),
+        TextureSet.SET_GAIA_SPIRIT,
         32.0F,
         850000,
         12,
@@ -111,7 +109,7 @@ public class MaterialsBotania {
             new TC_AspectStack(TCAspects.AURAM, 24),
             new TC_AspectStack(TCAspects.VICTUS, 24),
             new TC_AspectStack(TCAspects.METALLUM, 1)));
-    public static Materials Livingwood = new MaterialBuilder(206, new TextureSet("Livingwood", true), "Livingwood")
+    public static Materials Livingwood = new MaterialBuilder(206, TextureSet.SET_LIVINGWOOD, "Livingwood")
         .setName("Livingwood")
         .addDustItems()
         .addMetalItems()
@@ -125,7 +123,7 @@ public class MaterialsBotania {
         .setDensityDivider(1)
         .setAspects(Arrays.asList(new TC_AspectStack(TCAspects.ARBOR, 4), new TC_AspectStack(TCAspects.VICTUS, 2)))
         .constructMaterial();
-    public static Materials Dreamwood = new MaterialBuilder(207, new TextureSet("Dreamwood", true), "Dreamwood")
+    public static Materials Dreamwood = new MaterialBuilder(207, TextureSet.SET_DREAMWOOD, "Dreamwood")
         .setName("Dreamwood")
         .addDustItems()
         .addMetalItems()
@@ -145,7 +143,7 @@ public class MaterialsBotania {
         .constructMaterial();
     public static Materials ManaDiamond = new Materials(
         208,
-        new TextureSet("ManaDiamond", true),
+        TextureSet.SET_MANA_DIAMOND,
         16.0F,
         2560,
         8,
@@ -172,7 +170,7 @@ public class MaterialsBotania {
             new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4)));
     public static Materials BotaniaDragonstone = new Materials(
         209,
-        new TextureSet("Dragonstone", true),
+        TextureSet.SET_DRAGONSTONE,
         24.0F,
         3840,
         12,
