@@ -89,7 +89,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(TooltipHelper.parallelText("Voltage Tier * Anvil Tier * 8")+" Parallels")
+            .addInfo(TooltipHelper.parallelText("Voltage Tier * Anvil Tier * 8") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addInfo("T1 - Vanilla Anvil");

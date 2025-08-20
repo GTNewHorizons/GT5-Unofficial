@@ -50,7 +50,6 @@ import gregtech.api.util.tooltip.TooltipTier;
  */
 public class MultiblockTooltipBuilder {
 
-
     private static final String TAB = "   ";
     private static final String COLON = ": ";
     private static final String SEPARATOR = ", ";
@@ -62,7 +61,8 @@ public class MultiblockTooltipBuilder {
     private static final String TT_SingularParallel = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Singular");
     private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Additional");
     private static final String TT_DynamicEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Additional");
-    private static final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.SteamDiscount.Base");
+    private static final String TT_Steam_StaticSteamEff = StatCollector
+        .translateToLocal("GT5U.MBTT.SteamDiscount.Base");
 
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
@@ -159,8 +159,11 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicParallelInfo(Integer parallels, TooltipTier tier) {
-        iLines
-            .add(String.format(parallels == 1 ? TT_SingularParallel : TT_DynamicParallels, TooltipHelper.parallelText(parallels), tier.getValue()));
+        iLines.add(
+            String.format(
+                parallels == 1 ? TT_SingularParallel : TT_DynamicParallels,
+                TooltipHelper.parallelText(parallels),
+                tier.getValue()));
         return this;
     }
 
@@ -185,10 +188,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addDynamicMultiplicativeParallelInfo(Integer factor, TooltipTier tier) {
         iLines.add(
-            String.format(
-                TT_DynamicParallels,
-                TooltipHelper.parallelText(factor.toString() + "x"),
-                tier.getValue()));
+            String.format(TT_DynamicParallels, TooltipHelper.parallelText(factor.toString() + "x"), tier.getValue()));
         return this;
     }
 
@@ -212,7 +212,11 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        iLines.add(String.format(TT_DynamicSpeed, TooltipHelper.speedText("+"+percentageFormat.format(speed)), tier.getValue()));
+        iLines.add(
+            String.format(
+                TT_DynamicSpeed,
+                TooltipHelper.speedText("+" + percentageFormat.format(speed)),
+                tier.getValue()));
         return this;
     }
 
@@ -235,8 +239,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
-        iLines.add(
-            String.format(TT_DynamicEuEff, "-"+TooltipHelper.effText(euEff), tier.getValue()));
+        iLines.add(String.format(TT_DynamicEuEff, "-" + TooltipHelper.effText(euEff), tier.getValue()));
         return this;
     }
 
@@ -331,7 +334,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
-        iLines.add(""+EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+        iLines.add("" + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 

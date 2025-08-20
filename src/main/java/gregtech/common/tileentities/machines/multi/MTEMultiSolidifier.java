@@ -188,10 +188,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + " to hold different molds")
             .addStaticParallelInfo(BASE_PARALLELS)
             .addInfo(
-                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH)
-                    + " Parallels per tier per width expansion")
-            .addInfo(
-                "Speeds up to a maximum of " + TooltipHelper.speedText(3f))
+                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH) + " Parallels per tier per width expansion")
+            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
