@@ -638,7 +638,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
-        if(baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
+        if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
         hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
