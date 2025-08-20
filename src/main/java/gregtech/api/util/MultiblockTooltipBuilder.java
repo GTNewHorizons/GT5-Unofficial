@@ -50,7 +50,7 @@ import gregtech.api.structure.IStructureChannels;
 public class MultiblockTooltipBuilder {
 
     // If you encounter issues with precision: change the amount of '#'s'
-    DecimalFormat df = new DecimalFormat("0.##%");
+    private final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     private static final String TAB = "   ";
     private static final String COLON = ": ";
@@ -186,7 +186,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
 
-        iLines.add(String.format(TT_StaticSpeed, TooltipHelper.speedText(df.format(speed-1))));
+        iLines.add(String.format(TT_StaticSpeed, TooltipHelper.speedText(percentageFormat.format(speed-1))));
         return this;
     }
 
@@ -199,7 +199,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        iLines.add(String.format(TT_DynamicSpeed, TooltipHelper.speedText(df.format(speed)), tier.getValue()));
+        iLines.add(String.format(TT_DynamicSpeed, TooltipHelper.speedText(percentageFormat.format(speed)), tier.getValue()));
         return this;
     }
 
@@ -211,7 +211,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
-        iLines.add(String.format(TT_StaticEuEff, TooltipHelper.effText(df.format(euEff))));
+        iLines.add(String.format(TT_StaticEuEff, TooltipHelper.effText(percentageFormat.format(euEff))));
         return this;
     }
 
@@ -224,7 +224,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
-        iLines.add(String.format(TT_DynamicEuEff, TooltipHelper.effText(df.format(euEff)), tier.getValue()));
+        iLines.add(String.format(TT_DynamicEuEff, TooltipHelper.effText(percentageFormat.format(euEff)), tier.getValue()));
         return this;
     }
 
@@ -255,7 +255,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSteamSpeedInfo(float speed) {
 
-        iLines.add(String.format(TT_Steam_StaticSpeed, TooltipHelper.speedText(df.format(speed-1))));
+        iLines.add(String.format(TT_Steam_StaticSpeed, TooltipHelper.speedText(percentageFormat.format(speed-1))));
         return this;
     }
 
@@ -268,7 +268,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSteamEffInfo(float steamEff) {
-        iLines.add(String.format(TT_Steam_StaticSteamEff, TooltipHelper.effText(df.format(steamEff))));
+        iLines.add(String.format(TT_Steam_StaticSteamEff, TooltipHelper.effText(percentageFormat.format(steamEff))));
         return this;
     }
 
