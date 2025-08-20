@@ -9,38 +9,20 @@ public class KubaTechUITextures {
     public static final UITexture OVERLAY_BUTTON_EEC_RITUAL_MODE_ON = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_ritual_mode_on");
 
-    public static final UITexture OVERLAY_BUTTON_EEC_RITUAL_MODE_ON_DISABLED = UITexture
-        .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_ritual_mode_on_disabled");
-
     public static final UITexture OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_ritual_mode_off");
-
-    public static final UITexture OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF_DISABLED = UITexture
-        .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_ritual_mode_off_disabled");
 
     public static final UITexture OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_spawn_infernals_on");
 
-    public static final UITexture OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON_DISABLED = UITexture
-        .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_spawn_infernals_on_disabled");
-
     public static final UITexture OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_spawn_infernals_off");
-
-    public static final UITexture OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF_DISABLED = UITexture
-        .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_spawn_infernals_off_disabled");
 
     public static final UITexture OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_void_damaged_and_enchanted_on");
 
-    public static final UITexture OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON_DISABLED = UITexture
-        .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_void_damaged_and_enchanted_on_disabled");
-
     public static final UITexture OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_void_damaged_and_enchanted_off");
-
-    public static final UITexture OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF_DISABLED = UITexture
-        .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_void_damaged_and_enchanted_off_disabled");
 
     public static final UITexture OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_weapon_cycling_on");

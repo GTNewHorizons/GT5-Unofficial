@@ -42,17 +42,11 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF_DISABLED;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_ON;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_ON_DISABLED;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF_DISABLED;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON_DISABLED;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF_DISABLED;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON_DISABLED;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_OFF;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF;
@@ -64,7 +58,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -1030,9 +1023,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         // Void damaged and enchanted button
         CycleButtonWidget tWidgetVoidDamagedAndEnchanted = createEECMachineStatusWidget(
             OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON,
-            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF,
-            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON_DISABLED,
-            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF_DISABLED);
+            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF);
         configurationElements
             .widget(tWidgetVoidDamagedAndEnchanted.setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
                 if (this.mMaxProgresstime > 0) return;
@@ -1053,9 +1044,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         // Allow infernals button
         CycleButtonWidget tWidgetAllowInfernals = createEECMachineStatusWidget(
             OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON,
-            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF,
-            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON_DISABLED,
-            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF_DISABLED);
+            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF);
         configurationElements.widget(tWidgetAllowInfernals.setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) return;
             mIsProducingInfernalDrops = v;
@@ -1073,9 +1062,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         // Ritual mode button
         CycleButtonWidget tWidgetRitualMode = createEECMachineStatusWidget(
             OVERLAY_BUTTON_EEC_RITUAL_MODE_ON,
-            OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF,
-            OVERLAY_BUTTON_EEC_RITUAL_MODE_ON_DISABLED,
-            OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF_DISABLED);
+            OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF);
         configurationElements.widget(tWidgetRitualMode.setToggle(() -> isInRitualMode, v -> {
             boolean tDidChangeRitualStatus = this.mMaxProgresstime <= 0;
             if (tDidChangeRitualStatus) {
@@ -1108,22 +1095,13 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
-
         return tButton;
     }
 
-    private EECMachineStatusWidget createEECMachineStatusWidget(IDrawable aOnTex, IDrawable aOffTex,
-        IDrawable aLockedOnTex, IDrawable aLockedOffTex) {
-
-        EECMachineStatusWidget tButton = new EECMachineStatusWidget(
-            this,
-            lockVal -> lockVal == 0 ? aLockedOffTex : aLockedOnTex,
-            val -> val == 0 ? aOffTex : aOnTex);
-
-        tButton.setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
+    private EECMachineStatusWidget createEECMachineStatusWidget(IDrawable aOnTex, IDrawable aOffTex) {
+        EECMachineStatusWidget tButton = new EECMachineStatusWidget(this, aOnTex, aOffTex);
+        tButton.setSize(16, 16)
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
-
         return tButton;
     }
 
@@ -1204,18 +1182,41 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private static final class EECMachineStatusWidget extends CycleButtonWidget {
 
         private final MTEExtremeEntityCrusher mEEC;
-        private final Function<Integer, IDrawable> mWorkingGetter;
-        private final Function<Integer, IDrawable> mStoppedGetter;
+
+        private final IDrawable[] mEnabledBG;
+        private final IDrawable[] mDisabledBG;
+
         private boolean mWorkingStatus;
 
-        private EECMachineStatusWidget(MTEExtremeEntityCrusher aEEC, Function<Integer, IDrawable> aWorkingGetter,
-            Function<Integer, IDrawable> aStoppedGetter) {
-            this.mEEC = aEEC;
-            this.mWorkingGetter = aWorkingGetter;
-            this.mStoppedGetter = aStoppedGetter;
+        private EECMachineStatusWidget(MTEExtremeEntityCrusher aEEC, IDrawable aEnabledTexture,
+            IDrawable aDisabledTexture) {
+            mEEC = aEEC;
 
-            this.mWorkingStatus = mEEC.mMaxProgresstime > 0;
-            this.textureGetter = mWorkingStatus ? mWorkingGetter : mStoppedGetter;
+            mEnabledBG = new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED, aEnabledTexture };
+            mDisabledBG = new IDrawable[] { GTUITextures.BUTTON_STANDARD, aDisabledTexture };
+
+            backgroundGetter = val -> val == 0 ? mDisabledBG : mEnabledBG;
+
+            mWorkingStatus = mEEC.mMaxProgresstime > 0;
+            textureGetter = val -> mWorkingStatus ? GTUITextures.OVERLAY_BUTTON_FORBIDDEN : IDrawable.EMPTY;
+        }
+
+        private EECMachineStatusWidget(MTEExtremeEntityCrusher aEEC, IDrawable[] aEnabledTextures,
+            IDrawable[] aDisabledTextures) {
+            mEEC = aEEC;
+
+            mEnabledBG = new IDrawable[aEnabledTextures.length + 1];
+            mEnabledBG[0] = GTUITextures.BUTTON_STANDARD_PRESSED;
+            System.arraycopy(aEnabledTextures, 0, mEnabledBG, 1, aEnabledTextures.length);
+
+            mDisabledBG = new IDrawable[aDisabledTextures.length + 1];
+            mDisabledBG[0] = GTUITextures.BUTTON_STANDARD;
+            System.arraycopy(aDisabledTextures, 0, mDisabledBG, 1, aDisabledTextures.length);
+
+            backgroundGetter = val -> val == 0 ? mDisabledBG : mEnabledBG;
+
+            mWorkingStatus = mEEC.mMaxProgresstime > 0;
+            textureGetter = val -> mWorkingStatus ? GTUITextures.OVERLAY_BUTTON_FORBIDDEN : IDrawable.EMPTY;
         }
 
         @Override
@@ -1224,17 +1225,20 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             super.onScreenUpdate();
 
             boolean tWorkingStatus = mEEC.mMaxProgresstime > 0;
-            if (this.mWorkingStatus == tWorkingStatus) return;
-
-            this.textureGetter = tWorkingStatus ? mWorkingGetter : mStoppedGetter;
+            if (mWorkingStatus == tWorkingStatus) return;
+            mWorkingStatus = tWorkingStatus;
 
             notifyTooltipChange();
 
             // fake update toggle status to force change texture
             setState(getter.get(), false, false);
             markForUpdate();
+        }
 
-            this.mWorkingStatus = tWorkingStatus;
+        @Override
+        public ClickResult onClick(int buttonId, boolean doubleClick) {
+            if (mWorkingStatus) return ClickResult.ACKNOWLEDGED;
+            return super.onClick(buttonId, doubleClick);
         }
     }
 
