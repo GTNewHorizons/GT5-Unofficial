@@ -11,9 +11,10 @@ import net.minecraft.util.EnumChatFormatting;
  */
 public class TooltipHelper {
 
+    public static final EnumChatFormatting DEFAULT = EnumChatFormatting.DARK_GRAY;
     public static final EnumChatFormatting PARALLEL_COLOR = EnumChatFormatting.GOLD;
-    public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.AQUA;
-    public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.RED;
+    public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
+    public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
@@ -34,7 +35,7 @@ public class TooltipHelper {
      * @return Colored String
      */
     public static String parallelText(int parallels) {
-        return parallelText(Integer.toString(parallels));
+        return coloredText(Integer.toString(parallels), parallels == 1 ? DEFAULT : PARALLEL_COLOR);
     }
 
     /**
@@ -54,7 +55,7 @@ public class TooltipHelper {
      * @return Colored String
      */
     public static String speedText(float speed) {
-        return coloredText(percentageFormat.format(speed - 1), SPEED_COLOR);
+        return coloredText(percentageFormat.format(speed), speed == 1f ? DEFAULT : SPEED_COLOR);
     }
 
     /**
@@ -69,12 +70,12 @@ public class TooltipHelper {
 
     /**
      * Wraps input string in EFF colors
-     *
+     * Will have Dark Gray if value is unchanged standard
      * @param eff Efficiency. {@link TooltipHelper#EFF_COLOR}
      * @return Colored String
      */
     public static String effText(float eff) {
-        return coloredText(percentageFormat.format(eff), EFF_COLOR);
+        return coloredText(percentageFormat.format(eff), eff == 1f ? DEFAULT : EFF_COLOR);
     }
 
     /**

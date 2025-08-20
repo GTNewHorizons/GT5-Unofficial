@@ -50,24 +50,20 @@ import gregtech.api.util.tooltip.TooltipTier;
  */
 public class MultiblockTooltipBuilder {
 
-    // If you encounter issues with precision: change the amount of '#'s'
 
     private static final String TAB = "   ";
     private static final String COLON = ": ";
     private static final String SEPARATOR = ", ";
     private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
-    private static final String TT_StaticParallels = StatCollector.translateToLocal("GT5U.MBTT.StaticParallels");
-    private static final String TT_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.SpeedBase");
-    private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscountBase");
-    private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.ParallelBase");
-    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.SpeedTiered");
-    private static final String TT_DynamicEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscountTiered");
+    private static final String TT_StaticParallels = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Base");
+    private static final String TT_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Base");
+    private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Base");
+    private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Additional");
+    private static final String TT_SingularParallel = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Singular");
+    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Additional");
+    private static final String TT_DynamicEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Additional");
+    private static final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.SteamDiscount.Base");
 
-    private static final String TT_Steam_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.Steam.Speed");
-    private static final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.Steam.Eff");
-
-    private static final String TT_DynamicParallels_Multiplicative = StatCollector
-        .translateToLocal("GT5U.MBTT.Parallel_Multiplicative");
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
@@ -150,7 +146,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticParallelInfo(Integer parallels) {
-        iLines.add(String.format(TT_StaticParallels, TooltipHelper.parallelText(parallels.toString())));
+        iLines.add(String.format(TT_StaticParallels, TooltipHelper.parallelText(parallels)));
         return this;
     }
 
@@ -164,7 +160,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addDynamicParallelInfo(Integer parallels, TooltipTier tier) {
         iLines
-            .add(String.format(TT_DynamicParallels, TooltipHelper.parallelText(parallels.toString()), tier.getValue()));
+            .add(String.format(parallels == 1 ? TT_SingularParallel : TT_DynamicParallels, TooltipHelper.parallelText(parallels), tier.getValue()));
         return this;
     }
 
@@ -190,29 +186,26 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addDynamicMultiplicativeParallelInfo(Integer factor, TooltipTier tier) {
         iLines.add(
             String.format(
-                TT_DynamicParallels_Multiplicative,
+                TT_DynamicParallels,
                 TooltipHelper.parallelText(factor.toString() + "x"),
                 tier.getValue()));
         return this;
     }
 
     /**
-     * Add a line of information about Speed bonus relative to SB machines
-     * "%s%% faster than single block machines of the same voltage"
-     * Subtracts 1F from the input, to match ProcessingLogic. e.g. speed = 3.5F, (1F / speed) = 250% faster
+     * Add a line of information about Speed bonus
      *
-     * @param speed Speed as defined in ProcessingLogic
+     * @param speed Speed as defined in ProcessingLogic. e.g (1F / 3.5F = 350% Speed
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
 
-        iLines.add(String.format(TT_StaticSpeed, TooltipHelper.speedText(percentageFormat.format(speed - 1))));
+        iLines.add(String.format(TT_StaticSpeed, TooltipHelper.speedText(speed)));
         return this;
     }
 
     /**
      * Add a line of information about dynamic parallel count (tiered).
-     * "%s%% faster than single block machines of the same voltage, per %s Tier"
      *
      * @param speed Speed increment per tier
      * @param tier  Tiered object that determines bonus
@@ -226,19 +219,17 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about Eu Discount bonus relative to SB machines
-     * "Uses %s%% of the EU normally required"
      *
      * @param euEff euEff as defined in ProcessingLogic
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
-        iLines.add(String.format(TT_StaticEuEff, TooltipHelper.effText(percentageFormat.format(euEff))));
+        iLines.add(String.format(TT_StaticEuEff, TooltipHelper.effText(euEff)));
         return this;
     }
 
     /**
      * Add a line of information about dynamic parallel count (tiered).
-     * "Uses %s%% less EU per %s Tier"
      *
      * @param euEff euEff Increment per tier
      * @param tier  Tiered object that determines bonus
@@ -246,16 +237,13 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
         iLines.add(
-            String.format(TT_DynamicEuEff, TooltipHelper.effText(percentageFormat.format(euEff)), tier.getValue()));
+            String.format(TT_DynamicEuEff, TooltipHelper.effText(euEff), tier.getValue()));
         return this;
     }
 
     /**
-     * =
+     *
      * Add bulk information for parallels (voltageTier) , speed, euEff; in that order.
-     * "Processes %s items per Voltage Tier."
-     * "%s%% faster than single block machines of the same voltage"
-     * "Uses %s%% of the EU normally required."
      *
      * @param parallels parallels per voltage tier
      * @param speed     Speed as defined in ProcessingLogic
@@ -268,23 +256,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * For steam machines only.
-     * Add a line of information about Speed bonus relative to SB machines
-     * %s%% faster than using single block steam machines of the same pressure
-     * Subtracts 1F from the input, to match ProcessingLogic.
-     *
-     * @param speed Speed as defined in ProcessingLogic
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addStaticSteamSpeedInfo(float speed) {
-
-        iLines.add(String.format(TT_Steam_StaticSpeed, TooltipHelper.speedText(percentageFormat.format(speed - 1))));
-        return this;
-    }
-
-    /**
-     * For steam machines only.
-     * Add a line of information about Steam Discount bonus relative to SB machines
-     * Only consumes steam at %s%% of the steam flowrate normally required
+     * Add a line of information about Steam Discount
      *
      * @param steamEff steamEff as defined in ProcessingLogic
      * @return Instance this method was called on.
@@ -303,7 +275,7 @@ public class MultiblockTooltipBuilder {
      * @param steamEff  steamEff as defined in ProcessingLogic
      */
     public MultiblockTooltipBuilder addSteamBulkMachineInfo(int parallels, float speed, float steamEff) {
-        return addStaticParallelInfo(parallels).addStaticSteamSpeedInfo(speed)
+        return addStaticParallelInfo(parallels).addStaticSpeedInfo(speed)
             .addStaticSteamEffInfo(steamEff);
     }
 
@@ -360,8 +332,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
-        iLines.add(
-            TT_produces + " " + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+        iLines.add(""+EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 
