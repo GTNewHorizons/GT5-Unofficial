@@ -1201,24 +1201,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             textureGetter = val -> mWorkingStatus ? GTUITextures.OVERLAY_BUTTON_FORBIDDEN : IDrawable.EMPTY;
         }
 
-        private EECMachineStatusWidget(MTEExtremeEntityCrusher aEEC, IDrawable[] aEnabledTextures,
-            IDrawable[] aDisabledTextures) {
-            mEEC = aEEC;
-
-            mEnabledBG = new IDrawable[aEnabledTextures.length + 1];
-            mEnabledBG[0] = GTUITextures.BUTTON_STANDARD_PRESSED;
-            System.arraycopy(aEnabledTextures, 0, mEnabledBG, 1, aEnabledTextures.length);
-
-            mDisabledBG = new IDrawable[aDisabledTextures.length + 1];
-            mDisabledBG[0] = GTUITextures.BUTTON_STANDARD;
-            System.arraycopy(aDisabledTextures, 0, mDisabledBG, 1, aDisabledTextures.length);
-
-            backgroundGetter = val -> val == 0 ? mDisabledBG : mEnabledBG;
-
-            mWorkingStatus = mEEC.mMaxProgresstime > 0;
-            textureGetter = val -> mWorkingStatus ? GTUITextures.OVERLAY_BUTTON_FORBIDDEN : IDrawable.EMPTY;
-        }
-
         @Override
         @SideOnly(Side.CLIENT)
         public void onScreenUpdate() {
