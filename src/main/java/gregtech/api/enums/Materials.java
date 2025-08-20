@@ -1491,8 +1491,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setOthers() {
         Mercury.add(SubTag.SMELTING_TO_GEM);
-        BandedIron.setOreReplacement(RoastedIron);
-        Garnierite.setOreReplacement(RoastedNickel);
     }
 
     private static void setDirectSmelting() {
