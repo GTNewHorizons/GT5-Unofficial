@@ -186,13 +186,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + "Solidifier Hatches"
                     + EnumChatFormatting.GRAY
                     + " to hold different molds")
-            .addInfo("Processes " + TooltipHelper.parallelText(BASE_PARALLELS) + " items per voltage tier")
+            .addStaticParallelInfo(BASE_PARALLELS)
             .addInfo(
-                "Processes an additional " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH)
-                    + " items per voltage tier per width expansion")
+                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH)
+                    + " Parallels per tier per width expansion")
             .addInfo(
-                "Speeds up to a maximum of " + TooltipHelper.speedText(3f)
-                    + " faster than singleblock machines while running")
+                "Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
