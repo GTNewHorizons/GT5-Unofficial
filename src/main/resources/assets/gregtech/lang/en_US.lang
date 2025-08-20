@@ -785,6 +785,7 @@ GT5U.MBTT.SpeedBase=%s faster than single block machines of the same voltage
 GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, per %s Tier
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
+GT5U.MBTT.Parallel_Multiplicative=%sx Parallels per %s Tier
 GT5U.MBTT.Tiers.Voltage=Voltage
 GT5U.MBTT.Tiers.Machine=Machine
 GT5U.MBTT.Tiers.Coil=Heating Coil

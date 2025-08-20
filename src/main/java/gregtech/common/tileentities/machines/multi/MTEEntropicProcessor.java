@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -212,8 +213,8 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
         tt.addMachineType("Entropic Processor")
             .addInfo("Processes substances by increasing or decreasing their entropy.")
             .addSeparator()
-            .addInfo("Has 8 parallels by default.")
-            .addInfo("Using Advanced Alchemical Constructs increases the machine's parallels to 32.")
+            .addInfo("Has "+ TooltipHelper.parallelText(8)+ " parallels by default.")
+            .addInfo("Using Advanced Alchemical Constructs increases the machine's parallels to "+TooltipHelper.parallelText(32)+".")
             .addSeparator()
             .addInfo("Mixes fluids or solids with a magical catalyst.")
             .addInfo("Catalyst is consumed by the recipe, then returned upon completion.")

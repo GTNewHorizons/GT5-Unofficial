@@ -37,6 +37,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -217,7 +219,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         tt.addMachineType("Implosion Compressor, EIC")
             .addInfo("Explosions are fun")
             .addInfo("Uses electricity instead of Explosives")
-            .addInfo("Can parallel up to 4^(Tier - 1)")
+            .addInfo("Can parallel up to "+ TooltipHelper.parallelText("4^(Tier - 1"))
             .addInfo("Tier is determined by containment block")
             .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
             .addInfo("Minimum allowed energy hatch tier is one below recipe tier")

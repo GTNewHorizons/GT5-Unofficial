@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -185,11 +186,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + "Solidifier Hatches"
                     + EnumChatFormatting.GRAY
                     + " to hold different molds")
-            .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
+            .addInfo("Processes " + TooltipHelper.parallelText(BASE_PARALLELS) + " items per voltage tier")
+            .addInfo("Processes an additional " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH) + " items per voltage tier per width expansion")
+            .addInfo("Speeds up to a maximum of "+TooltipHelper.speedText(3f)+" faster than singleblock machines while running")
             .addInfo("Decays at double the rate that it speeds up at")
-            .addInfo("Only uses 80% of the EU/t normally required")
-            .addInfo("Processes " + BASE_PARALLELS + " items per voltage tier")
-            .addInfo("Processes an additional " + PARALLELS_PER_WIDTH + " items per voltage tier per width expansion")
+            .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)

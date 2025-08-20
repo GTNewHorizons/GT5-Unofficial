@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -851,7 +852,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Power consumption is multiplied by Sqrt(structures).")
             .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
             .addInfo("Nanites have to be placed in a Nanite Containment Bus.")
-            .addInfo("The formula for parallels is the amount of nanites^0.75, rounded up.")
+            .addInfo("The formula for parallels is the "+ TooltipHelper.parallelText("amount of nanites^0.75")+", rounded up.")
             .addInfo("Maximum parallel is 256.")
             .addInfo("Recipes require a cooling upgrade to be overclocked.")
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")

@@ -2,6 +2,8 @@ package gregtech.api.util.tooltip;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import java.text.DecimalFormat;
+
 /**
  * A list of helper methods that can be useful in creating tooltips.
  * Meant to simplify creating non-standard, repeated text in tooltips.
@@ -13,7 +15,7 @@ public class TooltipHelper {
     public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.AQUA;
     public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
-
+    public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
     /**
      * Wraps input string in parallel colors
      *
@@ -25,6 +27,17 @@ public class TooltipHelper {
         return coloredText(parallels,PARALLEL_COLOR);
     }
     /**
+     * Wraps input string in parallel colors
+     *
+     * @param parallels Amount of parallels turned into  {@link TooltipHelper#PARALLEL_COLOR}
+     * @return Colored String
+     */
+    public static String parallelText(int parallels)
+    {
+        return parallelText(Integer.toString(parallels));
+    }
+
+    /**
      * Wraps input string in Speed colors
      *
      * @param speed Speed difference. {@link TooltipHelper#SPEED_COLOR}
@@ -34,10 +47,22 @@ public class TooltipHelper {
     {
         return coloredText(speed,SPEED_COLOR);
     }
+
+    /**
+     * Wraps input float in Speed colors, same as ProcessingLogic float
+     *
+     * @param speed Speed difference. {@link TooltipHelper#SPEED_COLOR}
+     * @return Colored String
+     */
+    public static String speedText(float speed)
+    {
+        return coloredText(percentageFormat.format(speed-1),SPEED_COLOR);
+    }
+
     /**
      * Wraps input string in EFF colors
      *
-     * @param eff Speed difference. {@link TooltipHelper#EFF_COLOR}
+     * @param eff Efficiency. {@link TooltipHelper#EFF_COLOR}
      * @return Colored String
      */
     public static String effText(String eff)
@@ -46,9 +71,20 @@ public class TooltipHelper {
     }
 
     /**
+     * Wraps input string in EFF colors
+     *
+     * @param eff Efficiency. {@link TooltipHelper#EFF_COLOR}
+     * @return Colored String
+     */
+    public static String effText(float eff)
+    {
+        return coloredText(percentageFormat.format(eff), EFF_COLOR);
+    }
+
+    /**
      * Wraps input string in Tier colors, for niche cases only.
      *
-     * @see TooltipTier#getValue() for a more standardized way, this is for niche cases.
+     * @see TooltipTier#getValue() for a more standardized way,
      *
      * @param tier Tier . {@link TooltipHelper#TIER_COLOR}
      * @return Colored String

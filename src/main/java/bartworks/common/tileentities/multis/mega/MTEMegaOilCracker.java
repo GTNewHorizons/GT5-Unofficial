@@ -32,6 +32,8 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -157,7 +159,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addUnlimitedTierSkips()
-            .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
+            .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
+            .addInfo("Maximum of "+ TooltipHelper.effText(0.5f)+" discount")
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)

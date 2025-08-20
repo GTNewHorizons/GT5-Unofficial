@@ -509,7 +509,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     .getLocalizedName(null));
         }
 
-        tt.addInfo("Requires 32 kL/s of coolant")
+        tt.addInfo("Requires 32 kL/s of coolant")            .addTecTechHatchInfo()
+
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front middle")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 676, false)

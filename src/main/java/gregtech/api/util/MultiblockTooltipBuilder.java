@@ -25,6 +25,8 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
 
+import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
+
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
  * Info section order should be:<br>
@@ -50,7 +52,6 @@ import gregtech.api.structure.IStructureChannels;
 public class MultiblockTooltipBuilder {
 
     // If you encounter issues with precision: change the amount of '#'s'
-    private final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     private static final String TAB = "   ";
     private static final String COLON = ": ";
@@ -66,6 +67,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_Steam_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.Steam.Speed");
     private static final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.Steam.Eff");
 
+    private static final String TT_DynamicParallels_Multiplicative = StatCollector.translateToLocal("GT5U.MBTT.Parallel_Multiplicative");
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
@@ -176,6 +178,28 @@ public class MultiblockTooltipBuilder {
         return addDynamicParallelInfo(parallels, TooltipTier.VOLTAGE);
     }
 
+    /**
+     * Add a line of information about multiplicative parallels per Tier
+     * "%sx Parallels per %s Tier"
+     *
+     * @param factor parallel multiplier
+     * @param tier Tiered object that determines bonus
+     * @return Instance this method was called on
+     */
+    public MultiblockTooltipBuilder addDynamicMultiplicativeParallelInfo(Integer factor, TooltipTier tier)
+    {
+        iLines.add(String.format(TT_DynamicParallels_Multiplicative,TooltipHelper.parallelText(factor.toString()),tier.getValue()));
+        return this;
+    }
+    /**
+     * Add a line of information about multiplicative parallels per Tier
+     * "%sx Parallels per Voltage Tier"
+     * @param parallels Amount of parallels gained per Voltage tier
+     * @return Instance this method was called on.
+        */
+    public MultiblockTooltipBuilder addVoltageMultiplicativeParallelInfo(int parallels) {
+        return addDynamicParallelInfo(parallels, TooltipTier.VOLTAGE);
+    }
     /**
      * Add a line of information about Speed bonus relative to SB machines
      * "%s%% faster than single block machines of the same voltage"
