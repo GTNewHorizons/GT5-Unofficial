@@ -85,8 +85,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("250% faster than using single block machines of the same voltage")
-            .addInfo("Processes eight recipes per voltage tier")
+            .addBulkMachineInfo(8, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, false)
             .addController("Second Layer Center")
