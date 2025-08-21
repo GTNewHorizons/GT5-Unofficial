@@ -547,8 +547,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 isValid = false;
                 return;
             }
-            attackDamage = MTEExtremeEntityCrusher.extractWeaponAttackDamage(stack);
-            looting = MTEExtremeEntityCrusher.extractWeaponLooting(stack);
+            attackDamage = MTEExtremeEntityCrusher.getWeaponAttackDamage(stack);
+            looting = MTEExtremeEntityCrusher.getWeaponLooting(stack);
             isValid = true;
         }
 
@@ -614,8 +614,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     tAttackDamage += weaponCache.attackDamage;
                     tLootingLevel += weaponCache.looting;
                 } else {
-                    tAttackDamage += extractWeaponAttackDamage(tWeaponToUse);
-                    tLootingLevel += extractWeaponLooting(tWeaponToUse);
+                    tAttackDamage += getWeaponAttackDamage(tWeaponToUse);
+                    tLootingLevel += getWeaponLooting(tWeaponToUse);
                 }
             }
 
@@ -783,7 +783,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             // we don't care, use original for the next run but destroy it in the weapon cache
             if (!mPreserveWeapon) {
                 weaponCache.setStackInSlot(0, null);
-                playSwordBreakSound();
+                playWeaponBreakSound();
                 return tWeapon;
             }
 
@@ -869,7 +869,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return Enchantment.looting.canApply(aWeapon);
     }
 
-    private static double extractWeaponAttackDamage(final ItemStack aWeapon) {
+    private static double getWeaponAttackDamage(final ItemStack aWeapon) {
         return aWeapon.getAttributeModifiers()
             .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
             .stream()
@@ -879,11 +879,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .sum();
     }
 
-    private static int extractWeaponLooting(final ItemStack aWeapon) {
+    private static int getWeaponLooting(final ItemStack aWeapon) {
         return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, aWeapon);
     }
 
-    private void playSwordBreakSound() {
+    private void playWeaponBreakSound() {
         final IGregTechTileEntity tMTE = this.getBaseMetaTileEntity();
 
         if (tMTE == null || tMTE.hasMufflerUpgrade()) return;
@@ -1205,14 +1205,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         @SideOnly(Side.CLIENT)
         public void onScreenUpdate() {
             super.onScreenUpdate();
-
             boolean tWorkingStatus = mEEC.mMaxProgresstime > 0;
             if (mWorkingStatus == tWorkingStatus) return;
             mWorkingStatus = tWorkingStatus;
 
             notifyTooltipChange();
-
-            // fake update toggle status to force change texture
             setState(getter.get(), false, false);
             markForUpdate();
         }
