@@ -8,9 +8,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package gregtech.api.render;
-
-import java.util.function.IntPredicate;
+package gregtech.common.render;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -20,6 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.ISBRContext;
 
 /**
  * Base class to represent the rendering context for a single block during a render pass.
@@ -39,9 +38,8 @@ import gregtech.api.interfaces.ITexture;
  * </ul>
  */
 @SuppressWarnings({ "UnusedReturnValue", "ClassWithTooManyFields" })
-public abstract class SBRContextBase {
+public abstract class SBRContextBase implements ISBRContext {
 
-    public static final int MAX_BRIGHTNESS = 0xf000f0;
     protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
     /**
      * Non-null placeholder RenderBlocks, replaced in {@link #setup}.
@@ -90,50 +88,47 @@ public abstract class SBRContextBase {
      * @param modelId      the Model ID for the block
      * @param renderBlocks the {@link RenderBlocks} renderer to use
      */
-    public SBRContextBase setup(@NotNull Block block, int modelId, @NotNull RenderBlocks renderBlocks) {
+    public ISBRContext setup(@NotNull Block block, int modelId, @NotNull RenderBlocks renderBlocks) {
         this.block = block;
         this.modelId = modelId;
         this.renderBlocks = renderBlocks;
         return this;
     }
 
+    @Override
     public final void setFullBlock(boolean fullBlock) {
         this.fullBlock = fullBlock;
     }
 
+    @Override
     public final @NotNull RenderBlocks getRenderBlocks() {
         return renderBlocks;
     }
 
+    @Override
     public final @NotNull Block getBlock() {
         return block;
     }
 
+    @Override
     public final int getModelId() {
         return modelId;
     }
 
+    @Override
     public final int getX() {
         return x;
     }
 
+    @Override
     public final int getY() {
         return y;
     }
 
+    @Override
     public final int getZ() {
         return z;
     }
-
-    /**
-     * Resets override flags to their default values.
-     * <p>
-     * This ensures deterministic rendering by clearing any leftover state
-     * from previous use of this context instance.
-     *
-     * @return this {@link SBRContextBase} instance for chaining
-     */
-    public abstract SBRContextBase reset();
 
     /**
      * Sets brightness override.
@@ -141,7 +136,8 @@ public abstract class SBRContextBase {
      * @param brightness the brightness override
      * @return the {@link SBRContextBase}
      */
-    public final SBRContextBase setBrightnessOverride(int brightness) {
+    @Override
+    public final ISBRContext setBrightnessOverride(int brightness) {
         hasBrightnessOverride = true;
         brightnessOverride = brightness;
         return this;
@@ -153,7 +149,8 @@ public abstract class SBRContextBase {
      * @param lightness the lightness override
      * @return the {@link SBRContextBase}
      */
-    public final SBRContextBase setLightnessOverride(float lightness) {
+    @Override
+    public final ISBRContext setLightnessOverride(float lightness) {
         hasLightnessOverride = true;
         lightnessOverride = lightness;
         return this;
@@ -165,81 +162,60 @@ public abstract class SBRContextBase {
      * @param side the side
      * @param rgba the primary short[] RGBA color array
      */
-    public final SBRContextBase setupColor(ForgeDirection side, short[] rgba) {
+    @Override
+    public final ISBRContext setupColor(ForgeDirection side, short[] rgba) {
         return setupColor(side, rgbaToInt(rgba));
     }
 
     /**
      * Like setRenderBounds, but automatically pulling the bounds from the context's block.
      */
-    public final SBRContextBase setRenderBoundsFromBlock() {
+    @Override
+    public final ISBRContext setRenderBoundsFromBlock() {
         renderBlocks.setRenderBoundsFromBlock(block);
         return this;
     }
 
-    /**
-     * Provides per-face rendering methods for this block rendering context.
-     * <p>
-     * Each method renders all non-null texture layers from the given array
-     * on the corresponding cuboid's face.
-     *
-     * @param tex the {@link ITexture} array containing the texture layers for the face
-     * @see #renderNegativeYFacing(ITexture[])
-     * @see #renderPositiveYFacing(ITexture[])
-     * @see #renderNegativeZFacing(ITexture[])
-     * @see #renderPositiveZFacing(ITexture[])
-     * @see #renderNegativeXFacing(ITexture[])
-     * @see #renderPositiveXFacing(ITexture[])
-     */
+    @Override
     public void renderNegativeYFacing(ITexture[] tex) {
         for (final ITexture layer : tex) {
             if (layer != null) layer.renderYNeg(this);
         }
     }
 
+    @Override
     public void renderPositiveYFacing(ITexture[] tex) {
         for (final ITexture layer : tex) {
             if (layer != null) layer.renderYPos(this);
         }
     }
 
+    @Override
     public void renderNegativeZFacing(ITexture[] tex) {
         for (final ITexture layer : tex) {
             if (layer != null) layer.renderZNeg(this);
         }
     }
 
+    @Override
     public void renderPositiveZFacing(ITexture[] tex) {
         for (final ITexture layer : tex) {
             if (layer != null) layer.renderZPos(this);
         }
     }
 
+    @Override
     public void renderNegativeXFacing(ITexture[] tex) {
         for (final ITexture layer : tex) {
             if (layer != null) layer.renderXNeg(this);
         }
     }
 
+    @Override
     public void renderPositiveXFacing(ITexture[] tex) {
         for (final ITexture layer : tex) {
             if (layer != null) layer.renderXPos(this);
         }
     }
 
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
-     * @param side     the side
-     * @param hexColor the primary color
-     */
-    public abstract SBRContextBase setupColor(ForgeDirection side, int hexColor);
-
-    /**
-     * Checks if rendering is allowed for the current pass.
-     *
-     * @param predicate a {@code boolean function(int pass)} to evaluate permission
-     * @return {@code true} if rendering is allowed for this pass
-     */
-    public abstract boolean canRenderInPass(@NotNull IntPredicate predicate);
 }

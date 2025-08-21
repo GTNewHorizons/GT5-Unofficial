@@ -8,7 +8,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package gregtech.api.render;
+package gregtech.common.render;
 
 import java.util.function.IntPredicate;
 
@@ -28,6 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.ISBRWorldContext;
+import gregtech.api.render.SBRContextHolder;
 
 /**
  * Represents the rendering context for a single block during a render pass.
@@ -37,7 +39,7 @@ import gregtech.api.interfaces.ITexture;
  * the renderer, and the world in which it is rendered. It is passed
  * to various rendering methods throughout a block's render cycle.
  */
-public final class SBRWorldContext extends SBRContextBase {
+public final class SBRWorldContext extends SBRContextBase implements ISBRWorldContext {
 
     private static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
 
@@ -90,7 +92,7 @@ public final class SBRWorldContext extends SBRContextBase {
      * <p>
      * Instances should be obtained via {@link SBRContextHolder#getSBRWorldContext}.
      */
-    SBRWorldContext() {}
+    public SBRWorldContext() {}
 
     /**
      * Gets mixed ambient occlusion value from two inputs, with a ratio applied to the final result.
@@ -119,6 +121,7 @@ public final class SBRWorldContext extends SBRContextBase {
      * @return this context instance, configured with the given parameters
      */
     @SuppressWarnings("MethodWithTooManyParameters")
+    public
     // Blame ISimpleBlockRenderingHandler.renderWorldBlock
     SBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
         super.setup(block, modelId, renderBlocks);
@@ -133,10 +136,12 @@ public final class SBRWorldContext extends SBRContextBase {
         return this;
     }
 
+    @Override
     public @NotNull IBlockAccess getBlockAccess() {
         return blockAccess;
     }
 
+    @Override
     public @Nullable TileEntity getTileEntity() {
         return blockAccess.getTileEntity(x, y, z);
     }
@@ -187,7 +192,7 @@ public final class SBRWorldContext extends SBRContextBase {
      * @return this {@link SBRContextBase} instance for chaining
      */
     @Override
-    public SBRWorldContext reset() {
+    public ISBRWorldContext reset() {
         this.hasBrightnessOverride = false;
         this.hasColorOverride = false;
         this.hasLightnessOverride = false;
@@ -249,7 +254,8 @@ public final class SBRWorldContext extends SBRContextBase {
      * @param side     the side
      * @param hexColor the primary color
      */
-    public SBRWorldContext setupColor(ForgeDirection side, int hexColor) {
+    @Override
+    public ISBRWorldContext setupColor(ForgeDirection side, int hexColor) {
         final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
         final int color = hasColorOverride ? colorOverride : hexColor;
 
@@ -326,7 +332,8 @@ public final class SBRWorldContext extends SBRContextBase {
      * @see #setupLightingYPos()
      * @see #setupLightingZPos()
      */
-    public SBRWorldContext setupLighting(ForgeDirection facing) {
+    @Override
+    public ISBRWorldContext setupLighting(ForgeDirection facing) {
         return switch (facing) {
             case DOWN -> setupLightingYNeg();
             case UP -> setupLightingYPos();
@@ -350,7 +357,7 @@ public final class SBRWorldContext extends SBRContextBase {
      *
      * @return the {@link SBRWorldContext}
      */
-    private SBRWorldContext setupLightingYNeg() {
+    private ISBRWorldContext setupLightingYNeg() {
         final int[][][] MBFB = this.MBFB;
         if (renderBlocks.enableAO) {
             final RenderBlocks renderBlocks = this.renderBlocks;
@@ -484,7 +491,7 @@ public final class SBRWorldContext extends SBRContextBase {
      *
      * @return the {@link SBRWorldContext}
      */
-    private SBRWorldContext setupLightingYPos() {
+    private ISBRWorldContext setupLightingYPos() {
         final int[][][] MBFB = this.MBFB;
         if (renderBlocks.enableAO) {
             final RenderBlocks renderBlocks = this.renderBlocks;
@@ -619,7 +626,7 @@ public final class SBRWorldContext extends SBRContextBase {
      *
      * @return the {@link SBRWorldContext}
      */
-    private SBRWorldContext setupLightingZNeg() {
+    private ISBRWorldContext setupLightingZNeg() {
         final int[][][] MBFB = this.MBFB;
         if (renderBlocks.enableAO) {
             final RenderBlocks renderBlocks = this.renderBlocks;
@@ -753,7 +760,7 @@ public final class SBRWorldContext extends SBRContextBase {
      *
      * @return the {@link SBRWorldContext}
      */
-    private SBRWorldContext setupLightingZPos() {
+    private ISBRWorldContext setupLightingZPos() {
         final int[][][] MBFB = this.MBFB;
         if (renderBlocks.enableAO) {
             final RenderBlocks renderBlocks = this.renderBlocks;
@@ -888,7 +895,7 @@ public final class SBRWorldContext extends SBRContextBase {
      *
      * @return the {@link SBRWorldContext}
      */
-    private SBRWorldContext setupLightingXNeg() {
+    private ISBRWorldContext setupLightingXNeg() {
         final int[][][] MBFB = this.MBFB;
         if (renderBlocks.enableAO) {
             final RenderBlocks renderBlocks = this.renderBlocks;
@@ -1022,7 +1029,7 @@ public final class SBRWorldContext extends SBRContextBase {
      *
      * @return the {@link SBRWorldContext}
      */
-    private SBRWorldContext setupLightingXPos() {
+    private ISBRWorldContext setupLightingXPos() {
         final int[][][] MBFB = this.MBFB;
         if (renderBlocks.enableAO) {
             final RenderBlocks renderBlocks = this.renderBlocks;

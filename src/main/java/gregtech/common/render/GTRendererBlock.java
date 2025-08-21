@@ -49,10 +49,10 @@ import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.SBRContextHolder;
-import gregtech.api.render.SBRInventoryContext;
-import gregtech.api.render.SBRWorldContext;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockOresAbstract;
@@ -73,7 +73,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     protected final SBRContextHolder sbrContextHolder = new SBRContextHolder();
 
-    public boolean renderStandardBlock(SBRWorldContext ctx) {
+    public boolean renderStandardBlock(ISBRWorldContext ctx) {
         final TileEntity tTileEntity = ctx.getTileEntity();
         if (tTileEntity instanceof IPipeRenderedTileEntity pipeRenderedTileEntity) {
             textureArray[0] = pipeRenderedTileEntity.getTextureCovered(DOWN);
@@ -107,7 +107,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         return false;
     }
 
-    public boolean renderStandardBlock(SBRWorldContext ctx, ITexture[][] aTextures) {
+    public boolean renderStandardBlock(ISBRWorldContext ctx, ITexture[][] aTextures) {
         ctx.getBlock()
             .setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         ctx.setRenderBoundsFromBlock();
@@ -160,7 +160,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     final ITexture[][] tCovers = new ITexture[VALID_DIRECTIONS.length][];
     final boolean[] tIsCovered = new boolean[VALID_DIRECTIONS.length];
 
-    public boolean renderPipeBlock(SBRWorldContext ctx, IPipeRenderedTileEntity aTileEntity) {
+    public boolean renderPipeBlock(ISBRWorldContext ctx, IPipeRenderedTileEntity aTileEntity) {
         final byte aConnections = aTileEntity.getConnections();
         final float thickness = aTileEntity.getThickNess();
         if (thickness >= 0.99F) {
@@ -580,7 +580,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final SBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
@@ -640,7 +640,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
-    private static void renderNormalInventoryMetaTileEntity(SBRInventoryContext ctx) {
+    private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx) {
         if ((ctx.getMeta() <= 0) || (ctx.getMeta() >= GregTechAPI.METATILEENTITIES.length)) {
             return;
         }
@@ -682,7 +682,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        final SBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final ISBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         final TileEntity tileEntity = ctx.getTileEntity();
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
