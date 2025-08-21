@@ -201,7 +201,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L "+EnumChatFormatting.BLUE+"Neptunium Plasma" +EnumChatFormatting.GRAY+" to "+focusText("focus"))
             .addInfo("The better the " + focusText("Focus Tier") + ", the " + focusText("stronger") + " the effect")
             .addInfo(focusText("Focused") + " Output will have its " + EnumChatFormatting.AQUA + "probability boosted" + EnumChatFormatting.GRAY + ", with other output's being reduced evenly by the total boost")
-            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L " + EnumChatFormatting.GREEN + "Fermium Plasma" + EnumChatFormatting.GRAY + " to " + EnumChatFormatting.GREEN + "boost all outputs")
+            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L " + EnumChatFormatting.DARK_GREEN + "Fermium Plasma" + EnumChatFormatting.GRAY + " to " + EnumChatFormatting.DARK_GREEN + "boost all outputs")
             .addSeparator()
             .addInfo("Use a screwdriver to enable Fluid mode")
             .addInfo("Fluid mode turns all possible outputs into their fluid variant, if avaliable")

@@ -137,9 +137,9 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo("Creates beams of Particles")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo(
-                "NEI shows the minimum EU/t requirement, Beam Focus, Beam Rate, and " + EnumChatFormatting.YELLOW
+                "NEI shows the minimum "+EnumChatFormatting.AQUA+"EU/t requirement"+EnumChatFormatting.GRAY+", Beam Focus, Beam Rate, and " + EnumChatFormatting.YELLOW
                     + "Maximum Beam Energy")
-            .addInfo("This upper limit is approached asymptomatically as operating power increases")
+            .addInfo("This upper limit is approached asymptotically as operating power increases")
             .addSeparator()
             .addInfo("Each " + particleText("Particle Type") + " has a " + energyText("Maximum Particle Energy"))
             .addInfo(particleLine("Alpha", "8000"))
@@ -147,28 +147,28 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo(particleLine("Neutron", "15000"))
             .addInfo(particleLine("Electron", "5000"))
             .addSeparator()
-            .addInfo("Each " + sourceText("Source input") + " has an " + ratioText("Associated Energy Ratio"))
+            .addInfo("Each " + sourceText("Source input") + " has an Associated " + ratioText("Energy Ratio"))
             .addInfo(sourceLine("U-238 Dust", "999"))
             .addInfo(sourceLine("Californium Dust", "999"))
             .addInfo(sourceLine("Tungsten Rods", "0.1"))
             .addInfo(sourceLine("Long LaB6 Rods", "0.3"))
             .addSeparator()
             .addInfo(
-                "Actual Beam Energy = min(" + energyText(
+                EnumChatFormatting.WHITE+"Actual Beam Energy"+EnumChatFormatting.GRAY+" = min(" + energyText(
                     "Max Particle Energy") + ", " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.GRAY + ")")
             .addInfo(
                 "For the formula, let " + EnumChatFormatting.GOLD
                     + "aeV"
                     + EnumChatFormatting.GRAY
-                    + " =  Max Beam Energy * (1 - 1.001^("
+                    + " =  "+EnumChatFormatting.YELLOW+"Max Beam Energy"+EnumChatFormatting.GRAY+" * ("+EnumChatFormatting.WHITE+"1"+EnumChatFormatting.GRAY+" - "+EnumChatFormatting.WHITE+"1.001"+EnumChatFormatting.GRAY+"^("
                     + ratioText("Energy Ratio")
-                    + " * (EU/t required - EU/t provided)))")
+                    + " * ("+EnumChatFormatting.AQUA +"EU/t required"+EnumChatFormatting.GRAY+" - "+EnumChatFormatting.RED+"EU/t provided"+EnumChatFormatting.GRAY+")))")
             .addInfo(
                 "In short, the " + particleText("particle beam's")
                     + " energy is capped to the "
                     + energyText("Max Particle Energy"))
             .addInfo(
-                "Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + " Maximum Beam Energy")
+                "Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
