@@ -245,8 +245,8 @@ gt.interact.desc.need_maint_rotor_lo=Emit if rotor needs maintenance low accurac
 gt.interact.desc.need_maint_rotor_hi=Emit if rotor needs maintenance high accuracy mod
 gt.interact.desc.issue=1 Issue
 gt.interact.desc.issues=%s Issues
-gt.interact.desc.issue_rotor_low=Rotor < 20%%
-gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
+gt.interact.desc.issue_rotor_low=Rotor < 20%
+gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
