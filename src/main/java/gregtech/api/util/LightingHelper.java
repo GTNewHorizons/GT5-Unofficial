@@ -19,17 +19,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * @deprecated use {@link gregtech.api.render.SBRContextHolder} to obtain:
- *             <ul>
- *             <li>a {@link gregtech.api.render.SBRWorldContext}</li>
- *             <li>or an {@link gregtech.api.render.SBRInventoryContext}.</li>
- *             </ul>
- */
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
-
-@Deprecated
 public class LightingHelper {
 
     public static final int NORMAL_BRIGHTNESS = 0xff00ff;
@@ -98,6 +89,21 @@ public class LightingHelper {
         float blue = color[2] / 255.0F;
 
         return new float[] { red, green, blue };
+    }
+
+    /**
+     * Resets override flags to their default values.
+     * <p>
+     * This ensures deterministic rendering by clearing any leftover state
+     * from previous use of this LightingHelper instance.
+     *
+     * @return the {@link LightingHelper}
+     */
+    public LightingHelper reset() {
+        hasBrightnessOverride = false;
+        hasColorOverride = false;
+        hasLightnessOverride = false;
+        return this;
     }
 
     /**
