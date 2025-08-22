@@ -241,7 +241,6 @@ public class RecipeGenBlastSmelterGTNH {
             }
 
             boolean recipeFound = false;
-            Logger.MACHINE_INFO("[ABS] searching for existing recipe for: " + mMoltenStack.getLocalizedName());
             for (GTRecipe recipe : recipeCandidates) {
                 if (itemStacksMatch(recipe.mInputs, newInput) && fluidStacksMatch(recipe.mFluidInputs, inputsF)
                     && GTUtility.areFluidsEqual(recipe.mFluidOutputs[0], mMoltenStack)) {
