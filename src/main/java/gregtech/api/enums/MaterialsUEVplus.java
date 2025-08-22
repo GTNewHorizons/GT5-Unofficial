@@ -904,7 +904,7 @@ public class MaterialsUEVplus {
     public static Materials LumipodExtract = new MaterialBuilder(165, TextureSet.SET_FLUID, "Bright Lumipod Extract")
         .addFluid()
         .addCell()
-        .setLiquidTemperature(10000)
+        .setLiquidTemperature(298)
         .setRGBA(215, 230, 187, 0)
         .setTransparent(true)
         .constructMaterial()
@@ -917,7 +917,7 @@ public class MaterialsUEVplus {
         TextureSet.SET_FLUID,
         "Biocatalyzed Propulsion Fluid").addFluid()
             .addCell()
-            .setLiquidTemperature(10000)
+            .setLiquidTemperature(303)
             .setRGBA(45, 31, 77, 0)
             .setTransparent(true)
             .constructMaterial()
