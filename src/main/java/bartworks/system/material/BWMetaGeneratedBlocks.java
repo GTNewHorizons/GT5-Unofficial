@@ -95,7 +95,6 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
 
     @Override
     public int getRenderType() {
-        if (BWBlockOreRenderer.INSTANCE == null) return super.getRenderType();
         return BWBlockOreRenderer.renderID;
     }
 

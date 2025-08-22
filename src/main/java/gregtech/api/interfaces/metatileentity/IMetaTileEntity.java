@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -36,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.render.SBRContextBase;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -355,13 +353,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer);
-
-    /**
-     * @return true if you override the Rendering.
-     */
-    @SideOnly(Side.CLIENT)
-    boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer);
+    default boolean render(SBRContextBase ctx) {
+        return false;
+    }
 
     /**
      * Gets the Output for the comparator on the given Side

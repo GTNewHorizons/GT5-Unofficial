@@ -281,6 +281,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
             @Override
             public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+                if (!inv.shouldBeCached()) {
+                    return true;
+                }
+
                 if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
                     activeDualInv = inv;
                     return true;
@@ -365,7 +369,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedup", speedup);
-        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
@@ -377,10 +380,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("parallels"));
     }
 
     @Override

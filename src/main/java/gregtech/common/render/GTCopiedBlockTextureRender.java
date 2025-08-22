@@ -27,84 +27,91 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         mMeta = aMeta;
     }
 
-    private IIcon getIcon(int ordinalSide, SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    private IIcon getIcon(int ordinalSide, SBRContextBase ctx) {
         final IIcon icon;
         if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
         else icon = mBlock.getIcon(mSide, mMeta);
         if (!Angelica.isModLoaded()) return icon;
         else return ctx instanceof SBRWorldContext ctxW
-            ? CTMUtils.getBlockIcon(icon, mBlock, ctxW.world, ctxW.x, ctxW.y, ctxW.z, ordinalSide)
+            ? CTMUtils
+                .getBlockIcon(icon, mBlock, ctxW.getBlockAccess(), ctxW.getX(), ctxW.getY(), ctxW.getZ(), ordinalSide)
             : CTMUtils.getBlockIcon(icon, mBlock, ordinalSide);
     }
 
     @Override
-    public void renderXPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXPos(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
-        ctx.renderer.field_152631_f = true;
-        startDrawingQuads(ctx.renderer, 1.0f, 0.0f, 0.0f);
+        ctx.getRenderBlocks().field_152631_f = true;
+        startDrawingQuads(ctx.getRenderBlocks(), 1.0f, 0.0f, 0.0f);
         ctx.reset()
             .setupColor(ForgeDirection.EAST, 0xffffff);
-        ctx.renderer.renderFaceXPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
-        ctx.renderer.field_152631_f = false;
+        ctx.getRenderBlocks()
+            .renderFaceXPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(ctx.getRenderBlocks());
+        ctx.getRenderBlocks().field_152631_f = false;
     }
 
     @Override
-    public void renderXNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderXNeg(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
-        startDrawingQuads(ctx.renderer, -1.0f, 0.0f, 0.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.WEST, 0xffffff);
-        ctx.renderer.renderFaceXNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        ctx.getRenderBlocks()
+            .renderFaceXNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderYPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYPos(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, 1.0f, 0.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.UP, 0xffffff);
-        ctx.renderer.renderFaceYPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        ctx.getRenderBlocks()
+            .renderFaceYPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderYNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderYNeg(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, -1.0f, 0.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.DOWN, 0xffffff);
-        ctx.renderer.renderFaceYNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        ctx.getRenderBlocks()
+            .renderFaceYNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderZPos(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZPos(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, 1.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.SOUTH, 0xffffff);
-        ctx.renderer.renderFaceZPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        ctx.getRenderBlocks()
+            .renderFaceZPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(ctx.getRenderBlocks());
     }
 
     @Override
-    public void renderZNeg(SBRContextBase<? extends SBRContextBase<?>> ctx) {
+    public void renderZNeg(SBRContextBase ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, -1.0f);
+        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);
-        ctx.renderer.field_152631_f = true;
+        ctx.getRenderBlocks().field_152631_f = true;
         ctx.reset()
             .setupColor(ForgeDirection.NORTH, 0xffffff);
-        ctx.renderer.renderFaceZNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
-        ctx.renderer.field_152631_f = false;
+        ctx.getRenderBlocks()
+            .renderFaceZNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(ctx.getRenderBlocks());
+        ctx.getRenderBlocks().field_152631_f = false;
     }
 
     @Override

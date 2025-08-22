@@ -7,7 +7,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import gregtech.api.enums.Mods;
-import gtnhintergalactic.block.BlockSpaceElevatorCable;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.nei.NEI_IG_Config;
@@ -31,9 +30,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
         if (Mods.GalacticraftCore.isModLoaded()) {
-            BlockSpaceElevatorCable.setRenderID(RenderingRegistry.getNextAvailableRenderId());
-            RenderingRegistry
-                .registerBlockHandler(BlockSpaceElevatorCable.getRenderID(), new RenderSpaceElevatorCable());
+            RenderingRegistry.registerBlockHandler(new RenderSpaceElevatorCable());
             ClientRegistry
                 .bindTileEntitySpecialRenderer(TileEntitySpaceElevatorCable.class, new RenderSpaceElevatorCable());
         }
