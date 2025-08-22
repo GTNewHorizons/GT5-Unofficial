@@ -97,8 +97,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private int tier;
     private int lastCheckedTierIndex = 0;
     private List<StructureData> tierCheckOrderList = Arrays.asList(StructureData.values());
-    private static FluidStack kerosene100;
-    private static FluidStack kerosene10;
     public final LimitingItemStackHandler turbineHolder = new LimitingItemStackHandler(8, 1);
     private static final String STRUCTURE_TIER_1 = "t1";
     private static final String STRUCTURE_TIER_2 = "t2";
@@ -702,11 +700,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             parallels /= 32;
         }
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
-        // during testing
     }
 
     private int ticker = 1; // shoutout pcb fac source code, just increments and drains (amountToDrain) of the given
-    // fluid every second
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
@@ -742,7 +738,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return true;
     }
 
-    // helper methods for all the silly variables in this class
 
     public int getRP() {
         RP = 4 * getSumRotorLevels();
