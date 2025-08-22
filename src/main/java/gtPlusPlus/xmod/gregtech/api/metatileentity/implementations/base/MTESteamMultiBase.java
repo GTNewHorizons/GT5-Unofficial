@@ -333,13 +333,10 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
         final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
 
-        for (MTEHatchOutput tHatch : filteredHatches) {
-            if (tHatch.outputsItems()) {
-                if (tHatch.storePartialItem(aStack, false)) {
-                    return true;// if stack is fully accepted, return early
-                }
-
-            }
+        for (int i = 0, filteredHatchesSize = filteredHatches.size(); i < filteredHatchesSize; i++) {
+            final MTEHatchOutput tHatch = filteredHatches.get(i);
+            // if stack is fully accepted, return early
+            if (tHatch.outputsItems() && tHatch.storePartialItem(aStack, false)) return true;
         }
 
         return aStack.stackSize <= 0;
