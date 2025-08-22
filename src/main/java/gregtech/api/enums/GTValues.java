@@ -599,17 +599,6 @@ public class GTValues {
             EnumChatFormatting.DARK_GREEN + BOLD,
             EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
-    public static final Supplier<String> AuthorNocDynamic = chain(
-        animatedText(
-            "Noc",
-            0,
-            1000,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
-
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE

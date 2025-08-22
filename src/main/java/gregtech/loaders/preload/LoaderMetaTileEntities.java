@@ -573,7 +573,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 public String get() {
                     return EnumChatFormatting.GRAY + " & ";
                 }
-            }, GTValues.AuthorNocDynamic));
+            }, GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
