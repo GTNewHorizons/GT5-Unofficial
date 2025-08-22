@@ -57,7 +57,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
         ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
         // spotless:on
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        aBlock.setBlockBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
@@ -105,7 +105,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
             }
         }
 
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        aBlock.setBlockBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
         // spotless:off

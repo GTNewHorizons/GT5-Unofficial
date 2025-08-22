@@ -91,11 +91,6 @@ public abstract class SBRContextBase implements ISBRContext {
     }
 
     @Override
-    public final void setFullBlock(boolean fullBlock) {
-        renderBlocks.partialRenderBounds = !fullBlock;
-    }
-
-    @Override
     public final @NotNull RenderBlocks getRenderBlocks() {
         return renderBlocks;
     }

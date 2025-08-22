@@ -16,8 +16,6 @@ public interface ISBRContext {
 
     int MAX_BRIGHTNESS = 0xf000f0;
 
-    void setFullBlock(boolean fullBlock);
-
     @NotNull
     RenderBlocks getRenderBlocks();
 

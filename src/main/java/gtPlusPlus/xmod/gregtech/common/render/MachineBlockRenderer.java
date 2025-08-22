@@ -148,7 +148,6 @@ public class MachineBlockRenderer extends GTRendererBlock {
         ctx.getBlock()
             .setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         ctx.setRenderBoundsFromBlock();
-        ctx.setFullBlock(true);
         ctx.renderNegativeYFacing(aTextures[DOWN.ordinal()]);
         ctx.renderPositiveYFacing(aTextures[UP.ordinal()]);
         ctx.renderNegativeZFacing(aTextures[ForgeDirection.NORTH.ordinal()]);

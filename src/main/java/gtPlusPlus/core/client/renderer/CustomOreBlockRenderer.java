@@ -61,7 +61,6 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
         final ISBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
-        ctx.setFullBlock(true);
 
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;

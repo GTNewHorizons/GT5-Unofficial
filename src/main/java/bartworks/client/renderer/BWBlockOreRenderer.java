@@ -79,7 +79,6 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
         final ISBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, modelId, aRenderer);
-        ctx.setFullBlock(true);
 
         fakeTileEntity.mMetaData = actualTileEntity.mMetaData;
         aRenderer.useInventoryTint = false;
