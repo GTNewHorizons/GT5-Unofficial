@@ -1591,19 +1591,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (dumpItem(validBusses, aStack, true, false)) return true;
         if (dumpItem(validBusses, aStack, false, false)) return true;
 
-        boolean outputSuccess = true;
         final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
-        while (outputSuccess && aStack.stackSize > 0) {
-            outputSuccess = false;
-            ItemStack single = aStack.splitStack(1);
-            for (MTEHatchOutput tHatch : filteredHatches) {
-                if (!outputSuccess && tHatch.outputsItems()) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .addStackToSlot(1, single)) outputSuccess = true;
+
+        for (MTEHatchOutput tHatch : filteredHatches) {
+            if (tHatch.outputsItems()) {
+                if (tHatch.storePartialItem(aStack, false)) {
+                    return true;// if stack is fully accepted, return early
                 }
+
             }
         }
-        return outputSuccess;
+
+        return aStack.stackSize <= 0;
     }
 
     public void addItemOutputs(ItemStack[] outputItems) {

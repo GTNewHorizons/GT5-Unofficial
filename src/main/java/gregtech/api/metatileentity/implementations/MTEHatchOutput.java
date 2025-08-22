@@ -2,6 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.util.GTUtility.areStacksEqual;
+import static gregtech.api.util.GTUtility.isStackInvalid;
 
 import java.lang.ref.WeakReference;
 
@@ -466,5 +468,43 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 .setMaxWidth(65)
                 .setPos(101, 30))
             .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
+    }
+
+
+    /**
+     * Attempt to store one stack into the empty fluid container slot if
+     * {@link gregtech.api.metatileentity.implementations.MTEHatchOutput#outputsItems()} returns true.
+     *
+     * @param stack    The stack to insert. Will be modified by this method (will contain whatever items could not be
+     *                 inserted; stackSize will be 0 when everything was inserted).
+     * @param simulate When true this bus will not be modified.
+     * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
+     */
+    public boolean storePartialItem(@Nonnull ItemStack stack, boolean simulate) {
+        if (!outputsItems()) return stack.stackSize == 0;
+        markDirty();
+
+        int index = 1;// the empty fluid container slot
+        ItemStack slot = mInventory[index];
+
+        // the slot has an item and the stacks can't be merged; ignore it
+        if (!isStackInvalid(slot) && !areStacksEqual(slot, stack)) return stack.stackSize == 0;
+
+        int inSlot = slot == null ? 0 : slot.stackSize;
+
+        int toInsert = Math.min(Math.min(getInventoryStackLimit(), stack.getMaxStackSize() - inSlot), stack.stackSize);
+
+        if (toInsert == 0) return stack.stackSize == 0;
+
+        if (!simulate) {
+            // if the slot is invalid create an empty stack in it
+            if (isStackInvalid(slot)) mInventory[index] = slot = stack.splitStack(0);
+
+            slot.stackSize += toInsert;
+        }
+
+        stack.stackSize -= toInsert;
+
+        return stack.stackSize == 0;
     }
 }
