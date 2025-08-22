@@ -738,7 +738,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return true;
     }
 
-
     public int getRP() {
         RP = 4 * getSumRotorLevels();
         if (mMode == 0.0) {
