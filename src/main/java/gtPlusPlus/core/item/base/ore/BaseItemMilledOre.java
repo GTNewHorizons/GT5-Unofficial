@@ -33,11 +33,12 @@ public class BaseItemMilledOre extends BaseOreComponent {
             if ((tPrefix.name()
                 .startsWith("ore")) && (tPrefix != OrePrefixes.orePoor)
                 && (tPrefix != OrePrefixes.oreSmall)
-                && (tPrefix != OrePrefixes.oreRich)
                 && (tPrefix != OrePrefixes.oreNormal)
-                && (tPrefix != OrePrefixes.oreEnd)
-                && (tPrefix != OrePrefixes.oreNether)
-                && (tPrefix != OrePrefixes.oreDense)) {
+                && (tPrefix != OrePrefixes.oreRich)
+                && (tPrefix != OrePrefixes.oreDense)
+                && (tPrefix != OrePrefixes.oreEnd) // distinct from OrePrefixes.oreEndstone
+                && (tPrefix != OrePrefixes.oreNether) // distinct from OrePrefixes.oreNetherrack
+            ) {
                 boolean tIsRich = (GTMod.proxy.mNetherOreYieldMultiplier && tPrefix == OrePrefixes.oreNetherrack)
                     || (GTMod.proxy.mEndOreYieldMultiplier && tPrefix == OrePrefixes.oreEndstone);
                 ItemStack oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
