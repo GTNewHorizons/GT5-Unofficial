@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,7 +40,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.items.SimpleSubItemClass;
@@ -72,7 +72,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
-public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor> implements ISurvivalConstructable {
+public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor>
+    implements ISurvivalConstructable {
 
     private static final int BASECASINGINDEX = 181;
 
@@ -111,8 +112,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         .addElement(
             'b',
             ofChain(
-                buildHatchAdder(MTEHighTempGasCooledReactor.class)
-                    .atLeast(OutputHatch, OutputBus, Maintenance, Energy)
+                buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(OutputHatch, OutputBus, Maintenance, Energy)
                     .dot(1)
                     .casingIndex(BASECASINGINDEX)
                     .build(),
@@ -120,8 +120,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(MTEHighTempGasCooledReactor.class)
-                    .atLeast(InputHatch, InputBus)
+                buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(InputHatch, InputBus)
                     .dot(2)
                     .casingIndex(BASECASINGINDEX)
                     .build(),

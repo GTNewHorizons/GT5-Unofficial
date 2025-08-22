@@ -10,8 +10,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +17,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -49,7 +49,8 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.tiles.TileNode;
 
-public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchCompleter> implements ISurvivalConstructable {
+public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchCompleter>
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 184;
     private static final int MAX_LENGTH = 13;
@@ -82,11 +83,10 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         .addElement(
             'c',
             ofChain( // Magical machine casing or hatch
-                buildHatchAdder(MTEResearchCompleter.class)
-                    .atLeast(InputBus, OutputBus, Energy, Maintenance)
-                        .dot(1)
-                            .casingIndex(CASING_INDEX)
-                                .build(),
+                buildHatchAdder(MTEResearchCompleter.class).atLeast(InputBus, OutputBus, Energy, Maintenance)
+                    .dot(1)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 onElementPass(MTEResearchCompleter::onCasingFound, ofBlock(GregTechAPI.sBlockCasings8, 8))))
         .addElement(
             'x',
@@ -379,10 +379,28 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         int tTotalLength = Math.min(MAX_LENGTH, stackSize.stackSize + 2);
         for (int i = 1; i < tTotalLength; i++) {
             mLength = i;
-            built = survivalBuildPiece(STRUCTURE_PIECE_LATER_HINT, stackSize, 1, 1, -i, elementBudget, env, false, true);
+            built = survivalBuildPiece(
+                STRUCTURE_PIECE_LATER_HINT,
+                stackSize,
+                1,
+                1,
+                -i,
+                elementBudget,
+                env,
+                false,
+                true);
             if (built >= 0) return built;
         }
         mLength = tTotalLength;
-        return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 0, 1, -(tTotalLength - 1), elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_LAST,
+            stackSize,
+            0,
+            1,
+            -(tTotalLength - 1),
+            elementBudget,
+            env,
+            false,
+            true);
     }
 }

@@ -9,10 +9,10 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.util.IGTHatchAdder;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,12 +25,15 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -43,6 +46,7 @@ import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -52,10 +56,6 @@ import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger> implements ISurvivalConstructable {
 
@@ -78,29 +78,26 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         .addElement(
             'C',
             ofChain(
-                buildHatchAdder(MTEAdvHeatExchanger.class)
-                    .atLeast(AdvHEHatches.ColdOutputHatch)
-                        .dot(2)
-                            .casingIndex(CASING_INDEX)
-                                .build(),
+                buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.ColdOutputHatch)
+                    .dot(2)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
         .addElement(
             'H',
             ofChain(
-                buildHatchAdder(MTEAdvHeatExchanger.class)
-                    .atLeast(AdvHEHatches.HotInputHatch)
-                        .dot(3)
-                            .casingIndex(CASING_INDEX)
-                                .build(),
+                buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.HotInputHatch)
+                    .dot(3)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
         .addElement(
             'h',
             ofChain(
-                buildHatchAdder(MTEAdvHeatExchanger.class)
-                    .atLeast(InputHatch, OutputHatch, Maintenance)
-                        .dot(1)
-                            .casingIndex(CASING_INDEX)
-                                .build(),
+                buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(InputHatch, OutputHatch, Maintenance)
+                    .dot(1)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
         .addElement(
             'c',

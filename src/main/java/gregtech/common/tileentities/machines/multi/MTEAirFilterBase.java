@@ -24,8 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -39,8 +37,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
@@ -67,7 +67,8 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
-public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase> implements ISurvivalConstructable {
+public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase>
+    implements ISurvivalConstructable {
 
     // Formerly configurable values
     public static final int POLLUTION_THRESHOLD = 10000;
@@ -102,28 +103,27 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                             { "c~c", "ccc", "ccc" }, }))
                 .addElement(
                     'c',
-                    ofChain(lazy(
-                        x -> ofChain(
-                            buildHatchAdder(MTEAirFilterBase.class)
-                                .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, OutputBus, Energy)
+                    ofChain(
+                        lazy(
+                            x -> ofChain(
+                                buildHatchAdder(MTEAirFilterBase.class)
+                                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, OutputBus, Energy)
                                     .dot(1)
-                                        .casingIndex(x.getCasingIndex())
-                                            .build(),
-                            ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())
-                            ))))
+                                    .casingIndex(x.getCasingIndex())
+                                    .build(),
+                                ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
                 .addElement('x', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))
                 .addElement('v', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getPipeMeta())))
                 .addElement(
                     'm',
-                    ofChain(lazy(
-                        x -> ofChain(
-
-                            buildHatchAdder(MTEAirFilterBase.class)
-                                .atLeast(Muffler)
-                                .dot(2)
-                                .casingIndex(x.getCasingIndex())
-                                .build(),
-                            ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
+                    ofChain(
+                        lazy(
+                            x -> ofChain(
+                                buildHatchAdder(MTEAirFilterBase.class).atLeast(Muffler)
+                                    .dot(2)
+                                    .casingIndex(x.getCasingIndex())
+                                    .build(),
+                                ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
                 .build();
         }
     };

@@ -20,13 +20,13 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -83,14 +83,12 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         .addElement(
             'c',
             ofChain(
-                buildHatchAdder(MTESOFuelCellMK1.class)
-                    .atLeast(InputHatch, InputHatch, OutputHatch, Maintenance)
-                        .dot(1)
-                            .casingIndex(CASING_TEXTURE_ID)
-                                .build(),
+                buildHatchAdder(MTESOFuelCellMK1.class).atLeast(InputHatch, InputHatch, OutputHatch, Maintenance)
+                    .dot(1)
+                    .casingIndex(CASING_TEXTURE_ID)
+                    .build(),
                 onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement(
-            'd', Dynamo.newAny(CASING_TEXTURE_ID, 2))
+        .addElement('d', Dynamo.newAny(CASING_TEXTURE_ID, 2))
         .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
         .addElement('e', ofBlockAnyMeta(Blocks.yszUnit))
         .build();

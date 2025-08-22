@@ -26,8 +26,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -37,8 +35,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
@@ -87,17 +87,15 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         .addElement(
             'b',
             ofChain(
-                buildHatchAdder(MTEManualTrafo.class)
-                    .atLeast(Energy, Maintenance)
-                        .dot(1)
-                            .casingIndex(CASING_INDEX)
-                                .build(),
+                buildHatchAdder(MTEManualTrafo.class).atLeast(Energy, Maintenance)
+                    .dot(1)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 ofBlock(GregTechAPI.sBlockCasings1, 2)))
         .addElement(
             'o',
             ofChain(
-                buildHatchAdder(MTEManualTrafo.class)
-                    .atLeast(Dynamo)
+                buildHatchAdder(MTEManualTrafo.class).atLeast(Dynamo)
                     .dot(2)
                     .casingIndex(CASING_INDEX)
                     .build(),
@@ -363,14 +361,31 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         int mHeight = Math.min(stackSize.stackSize, 8);
         mTiers = 0;
         boolean tapmode = this.mode > 1;
-        int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize
-            , 1, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
 
         for (int i = 0; i < mHeight; i++) {
             mTiers = i;
-            if (tapmode) built = survivalBuildPiece(STRUCTURE_PIECE_TAP_LAYER, stackSize, 2, i + 1, 0, elementBudget, env, false, true);
-            else built = survivalBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 1, i + 1, 0, elementBudget, env, false, true);
+            if (tapmode) built = survivalBuildPiece(
+                STRUCTURE_PIECE_TAP_LAYER,
+                stackSize,
+                2,
+                i + 1,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            else built = survivalBuildPiece(
+                STRUCTURE_PIECE_LAYER,
+                stackSize,
+                1,
+                i + 1,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
             if (built >= 0) return built;
         }
         mTiers = mHeight - 1;

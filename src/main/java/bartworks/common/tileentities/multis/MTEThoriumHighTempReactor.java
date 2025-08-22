@@ -25,8 +25,6 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,7 +36,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.items.SimpleSubItemClass;
@@ -60,7 +60,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor> implements ISurvivalConstructable {
+public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor>
+    implements ISurvivalConstructable {
 
     private static final int BASECASINGINDEX = 44;
     private int mCasingAmount = 0;
@@ -109,20 +110,18 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         .addElement(
             'b',
             ofChain(
-                buildHatchAdder(MTEThoriumHighTempReactor.class)
-                    .atLeast(OutputHatch, OutputBus, Maintenance)
-                        .dot(1)
-                            .casingIndex(BASECASINGINDEX)
-                                .build(),
+                buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(OutputHatch, OutputBus, Maintenance)
+                    .dot(1)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(MTEThoriumHighTempReactor.class)
-                    .atLeast(InputHatch, InputBus)
-                        .dot(2)
-                            .casingIndex(BASECASINGINDEX)
-                                .build(),
+                buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(InputHatch, InputBus)
+                    .dot(2)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
         .build();
 

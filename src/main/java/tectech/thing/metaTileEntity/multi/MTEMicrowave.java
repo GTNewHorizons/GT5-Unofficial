@@ -58,6 +58,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  * Created by danie_000 on 17.12.2016.
  */
 public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable {
+
     private static final int CASING_INDEX = 49;
     // region variables
     private boolean hasBeenPausedThisCycle = false;
@@ -87,13 +88,11 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         .addElement(
             'B',
             ofChain(
-            buildHatchAdder(MTEMicrowave.class)
-                .atLeast(Maintenance, Energy, OutputBus)
-                .dot(1)
-                .casingIndex(CASING_INDEX)
-                .buildAndChain(sBlockCasings4, 1),
-                ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, CASING_INDEX, 1, sBlockCasings4, 1)
-            ))
+                buildHatchAdder(MTEMicrowave.class).atLeast(Maintenance, Energy, OutputBus)
+                    .dot(1)
+                    .casingIndex(CASING_INDEX)
+                    .buildAndChain(sBlockCasings4, 1),
+                ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, CASING_INDEX, 1, sBlockCasings4, 1)))
         .build();
     // endregion
 

@@ -42,8 +42,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.util.IGTHatchAdder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -82,6 +80,7 @@ import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -96,6 +95,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.Sievert;
@@ -142,8 +142,16 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                     { "cc~cc", "ccccc", "ccccc", "ccccc", "ccccc" }, }))
         .addElement(
             'c',
-            ofChain(buildHatchAdder(MTEBioVat.class)
-                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy, RadioHatchElement.RadioHatch)
+            ofChain(
+                buildHatchAdder(MTEBioVat.class)
+                    .atLeast(
+                        Maintenance,
+                        InputBus,
+                        OutputBus,
+                        InputHatch,
+                        OutputHatch,
+                        Energy,
+                        RadioHatchElement.RadioHatch)
                     .dot(1)
                     .casingIndex(CASING_INDEX)
                     .build(),
@@ -773,7 +781,9 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     private enum RadioHatchElement implements IHatchElement<MTEBioVat> {
+
         RadioHatch(MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
+
             @Override
             public long count(MTEBioVat mteBioVat) {
                 return mteBioVat.mRadHatches.size();

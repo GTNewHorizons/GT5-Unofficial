@@ -20,14 +20,14 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -84,8 +84,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         .addElement(
             'c',
             ofChain(
-                buildHatchAdder(MTESOFuelCellMK2.class)
-                    .atLeast(InputHatch, InputHatch, OutputHatch, Maintenance)
+                buildHatchAdder(MTESOFuelCellMK2.class).atLeast(InputHatch, InputHatch, OutputHatch, Maintenance)
                     .dot(1)
                     .casingIndex(CASING_TEXTURE_ID)
                     .build(),
