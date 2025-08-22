@@ -561,7 +561,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         } else if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length)
             && aBlock instanceof BlockMachines
             && (GregTechAPI.METATILEENTITIES[aMeta] != null)
-            && (!GregTechAPI.METATILEENTITIES[aMeta].render(ctx))) {
+            && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(ctx))) {
                 renderNormalInventoryMetaTileEntity(ctx);
             } else if (aBlock instanceof BlockFrameBox) {
                 ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
@@ -674,7 +674,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         if (tileEntity instanceof IGregTechTileEntity) {
             final IMetaTileEntity metaTileEntity;
             if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null
-                && metaTileEntity.render(ctx)) {
+                && metaTileEntity.renderInWorld(ctx)) {
                 return tessAccess.gt5u$hasVertices();
             }
         }

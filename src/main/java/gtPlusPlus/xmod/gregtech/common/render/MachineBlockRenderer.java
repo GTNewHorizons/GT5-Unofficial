@@ -630,7 +630,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
         if (aBlock instanceof BlockMachines) {
             if (aMeta > 0 && aMeta < GregTechAPI.METATILEENTITIES.length
                 && GregTechAPI.METATILEENTITIES[aMeta] != null
-                && !GregTechAPI.METATILEENTITIES[aMeta].render(ctx)) {
+                && !GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(ctx)) {
                 renderNormalInventoryMetaTileEntity(ctx);
             }
         }
@@ -650,7 +650,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
             && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null
             && tessAccess.gt5u$hasVertices()
             && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity()
-                .render(ctx)
+                .renderInWorld(ctx)
             || (aTileEntity instanceof IPipeRenderedTileEntity
                 ? renderPipeBlock(ctx, (IPipeRenderedTileEntity) aTileEntity)
                 : renderStandardBlock(ctx)));
