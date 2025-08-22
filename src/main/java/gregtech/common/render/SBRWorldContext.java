@@ -202,48 +202,54 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
 
     @Override
     public void renderNegativeYFacing(ITexture[] tex) {
-        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, 0))
-            return;
+        final RenderBlocks renderBlocks = this.renderBlocks;
+        if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+            && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, 0)) return;
         setupLightingYNeg();
         super.renderNegativeYFacing(tex);
     }
 
     @Override
     public void renderPositiveYFacing(ITexture[] tex) {
-        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, 1))
-            return;
+        final RenderBlocks renderBlocks = this.renderBlocks;
+        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+            && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, 1)) return;
         setupLightingYPos();
         super.renderPositiveYFacing(tex);
     }
 
     @Override
     public void renderNegativeZFacing(ITexture[] tex) {
-        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, 2))
-            return;
+        final RenderBlocks renderBlocks = this.renderBlocks;
+        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+            && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, 2)) return;
         setupLightingZNeg();
         super.renderNegativeZFacing(tex);
     }
 
     @Override
     public void renderPositiveZFacing(ITexture[] tex) {
-        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, 3))
-            return;
+        final RenderBlocks renderBlocks = this.renderBlocks;
+        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+            && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, 3)) return;
         setupLightingZPos();
         super.renderPositiveZFacing(tex);
     }
 
     @Override
     public void renderNegativeXFacing(ITexture[] tex) {
-        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, 4))
-            return;
+        final RenderBlocks renderBlocks = this.renderBlocks;
+        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+            && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, 4)) return;
         setupLightingXNeg();
         super.renderNegativeXFacing(tex);
     }
 
     @Override
     public void renderPositiveXFacing(ITexture[] tex) {
-        if (fullBlock && !renderBlocks.renderAllFaces && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, 5))
-            return;
+        final RenderBlocks renderBlocks = this.renderBlocks;
+        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+            && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, 5)) return;
         setupLightingXPos();
         super.renderPositiveXFacing(tex);
     }
@@ -359,16 +365,16 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private ISBRWorldContext setupLightingYNeg() {
         final int[][][] MBFB = this.MBFB;
+        // Use neighbor light if face is flush with neighbor, otherwise current block brightness
+        final int iY = block.getBlockBoundsMinY() < FLUSH_MIN ? 0 : 1;
+        final RenderBlocks renderBlocks = this.renderBlocks;
         if (renderBlocks.enableAO) {
-            final RenderBlocks renderBlocks = this.renderBlocks;
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
             final double renderMinZ = renderBlocks.renderMinZ;
             final double renderMaxZ = renderBlocks.renderMaxZ;
             final double renderMinX = renderBlocks.renderMinX;
             final double renderMaxX = renderBlocks.renderMaxX;
-
-            final int iY = renderMinY > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
 
             final int mixedBrightness = MBFB[1][iY][1];
             brightness = mixedBrightness;
@@ -471,8 +477,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
                 (1.0D - renderMaxZ) * renderMaxX,
                 (1.0D - renderMaxZ) * (1.0D - renderMaxX));
         } else {
-            final int iY = block.getBlockBoundsMinY() < FLUSH_MIN ? 0 : 1;
-            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
             Tessellator.instance.setBrightness(MBFB[1][iY][1]);
         }
 
@@ -493,16 +497,16 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private ISBRWorldContext setupLightingYPos() {
         final int[][][] MBFB = this.MBFB;
+        // Use neighbor light if face is flush with neighbor, otherwise current block brightness
+        final int iY = block.getBlockBoundsMaxY() > FLUSH_MAX ? 2 : 1;
+        final RenderBlocks renderBlocks = this.renderBlocks;
         if (renderBlocks.enableAO) {
-            final RenderBlocks renderBlocks = this.renderBlocks;
             final float[][][] AOLV = this.AOLV;
             final double renderMaxY = renderBlocks.renderMaxY;
             final double renderMinZ = renderBlocks.renderMinZ;
             final double renderMaxZ = renderBlocks.renderMaxZ;
             final double renderMinX = renderBlocks.renderMinX;
             final double renderMaxX = renderBlocks.renderMaxX;
-
-            final int iY = renderMaxY < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
 
             final int mixedBrightness = MBFB[1][iY][1];
             brightness = mixedBrightness;
@@ -606,8 +610,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
                 (1.0D - renderMaxZ) * renderMinX,
                 (1.0D - renderMaxZ) * (1.0D - renderMinX));
         } else {
-            final int iY = block.getBlockBoundsMaxY() > FLUSH_MAX ? 2 : 1;
-            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
             Tessellator.instance.setBrightness(MBFB[1][iY][1]);
         }
 
@@ -628,16 +630,16 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private ISBRWorldContext setupLightingZNeg() {
         final int[][][] MBFB = this.MBFB;
+        // Use neighbor light if face is flush with neighbor, otherwise current block brightness
+        final int iZ = block.getBlockBoundsMinZ() < FLUSH_MIN ? 0 : 1;
+        final RenderBlocks renderBlocks = this.renderBlocks;
         if (renderBlocks.enableAO) {
-            final RenderBlocks renderBlocks = this.renderBlocks;
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
             final double renderMaxY = renderBlocks.renderMaxY;
             final double renderMinZ = renderBlocks.renderMinZ;
             final double renderMinX = renderBlocks.renderMinX;
             final double renderMaxX = renderBlocks.renderMaxX;
-
-            final int iZ = renderMinZ > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
 
             final int mixedBrightness = MBFB[1][1][iZ];
             brightness = mixedBrightness;
@@ -740,8 +742,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
                 (1.0D - renderMinY) * renderMinX,
                 (1.0D - renderMinY) * (1.0D - renderMinX));
         } else {
-            final int iZ = block.getBlockBoundsMinZ() < FLUSH_MIN ? 0 : 1;
-            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
             Tessellator.instance.setBrightness(MBFB[1][1][iZ]);
         }
 
@@ -762,16 +762,16 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private ISBRWorldContext setupLightingZPos() {
         final int[][][] MBFB = this.MBFB;
+        // Use neighbor light if face is flush with neighbor, otherwise current block brightness
+        final int iZ = block.getBlockBoundsMaxZ() > FLUSH_MAX ? 2 : 1;
+        final RenderBlocks renderBlocks = this.renderBlocks;
         if (renderBlocks.enableAO) {
-            final RenderBlocks renderBlocks = this.renderBlocks;
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
             final double renderMaxY = renderBlocks.renderMaxY;
             final double renderMaxZ = renderBlocks.renderMaxZ;
             final double renderMinX = renderBlocks.renderMinX;
             final double renderMaxX = renderBlocks.renderMaxX;
-
-            final int iZ = renderMaxZ < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
 
             final int mixedBrightness = MBFB[1][1][iZ];
             brightness = mixedBrightness;
@@ -875,8 +875,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
                 (1.0D - renderMaxY) * renderMaxX,
                 renderMaxY * renderMaxX);
         } else {
-            final int iZ = block.getBlockBoundsMaxZ() > FLUSH_MAX ? 2 : 1;
-            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
             Tessellator.instance.setBrightness(MBFB[1][1][iZ]);
         }
 
@@ -897,16 +895,16 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private ISBRWorldContext setupLightingXNeg() {
         final int[][][] MBFB = this.MBFB;
+        // Use neighbor light if face is flush with neighbor, otherwise current block brightness
+        final int iX = block.getBlockBoundsMinX() < FLUSH_MIN ? 0 : 1;
+        final RenderBlocks renderBlocks = this.renderBlocks;
         if (renderBlocks.enableAO) {
-            final RenderBlocks renderBlocks = this.renderBlocks;
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
             final double renderMaxY = renderBlocks.renderMaxY;
             final double renderMinZ = renderBlocks.renderMinZ;
             final double renderMaxZ = renderBlocks.renderMaxZ;
             final double renderMinX = renderBlocks.renderMinX;
-
-            final int iX = renderMinX > 0.0F + NO_Z_FIGHT_OFFSET ? 1 : 0;
 
             final int mixedBrightness = MBFB[iX][1][1];
             brightness = mixedBrightness;
@@ -1009,8 +1007,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
                 (1.0D - renderMinY) * (1.0D - renderMaxZ),
                 (1.0D - renderMinY) * renderMaxZ);
         } else {
-            final int iX = block.getBlockBoundsMinX() < FLUSH_MIN ? 0 : 1;
-            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
             Tessellator.instance.setBrightness(MBFB[iX][1][1]);
         }
 
@@ -1031,16 +1027,16 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private ISBRWorldContext setupLightingXPos() {
         final int[][][] MBFB = this.MBFB;
+        // Use neighbor light if face is flush with neighbor, otherwise current block brightness
+        final int iX = block.getBlockBoundsMaxX() > FLUSH_MAX ? 2 : 1;
+        final RenderBlocks renderBlocks = this.renderBlocks;
         if (renderBlocks.enableAO) {
-            final RenderBlocks renderBlocks = this.renderBlocks;
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
             final double renderMaxY = renderBlocks.renderMaxY;
             final double renderMinZ = renderBlocks.renderMinZ;
             final double renderMaxZ = renderBlocks.renderMaxZ;
             final double renderMaxX = renderBlocks.renderMaxX;
-
-            final int iX = renderMaxX < 1.0F - NO_Z_FIGHT_OFFSET ? 1 : 2;
 
             final int mixedBrightness = MBFB[iX][1][1];
             brightness = mixedBrightness;
@@ -1144,8 +1140,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
                 renderMaxY * (1.0D - renderMaxZ),
                 renderMaxY * renderMaxZ);
         } else {
-            final int iX = block.getBlockBoundsMaxX() > FLUSH_MAX ? 2 : 1;
-            // Use neighbor brightness if face is flush with neighbor, otherwise current block brightness
             Tessellator.instance.setBrightness(MBFB[iX][1][1]);
         }
 

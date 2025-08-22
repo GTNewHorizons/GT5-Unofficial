@@ -58,13 +58,8 @@ public abstract class SBRContextBase implements ISBRContext {
      */
     protected int x, y, z;
     protected int modelId;
-    /**
-     * Determines if block faces can be culled
-     */
-    protected boolean fullBlock;
 
     protected boolean hasLightnessOverride;
-
     protected float lightnessOverride;
     protected boolean hasBrightnessOverride;
     protected int brightnessOverride;
@@ -97,7 +92,7 @@ public abstract class SBRContextBase implements ISBRContext {
 
     @Override
     public final void setFullBlock(boolean fullBlock) {
-        this.fullBlock = fullBlock;
+        renderBlocks.partialRenderBounds = !fullBlock;
     }
 
     @Override
@@ -169,6 +164,8 @@ public abstract class SBRContextBase implements ISBRContext {
 
     /**
      * Like setRenderBounds, but automatically pulling the bounds from the context's block.
+     * 
+     * @see net.minecraft.client.renderer.RenderBlocks#setRenderBoundsFromBlock(Block)
      */
     @Override
     public final ISBRContext setRenderBoundsFromBlock() {
