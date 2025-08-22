@@ -67,6 +67,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.TooltipTier;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings12;
@@ -365,9 +366,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + " | "
                     + EnumChatFormatting.GREEN
                     + "Heavy")
-            .addInfo("200% faster than singleblock machines of the same voltage")
-            .addInfo("Only uses 70% of the EU/t normally required")
-            .addInfo("Will not perform overclocks over the hatch tier+1.")
+
+            .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + " Hatch Tier + 1")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
@@ -375,11 +375,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + "2"
                     + EnumChatFormatting.GRAY
                     + " Turbine Slots per Structure Tier")
-            .addInfo(
-                "Gains " + EnumChatFormatting.WHITE
-                    + "4"
-                    + EnumChatFormatting.GRAY
-                    + " * (Total Turbine Tier) Parallels. Non-Huge Turbines have lowered effectiveness.")
+            .addDynamicParallelInfo(4, TooltipTier.TURBINE)
+            .addInfo("Non-Huge Turbines have reduced effectiveness")
+            .addStaticSpeedInfo(3f)
+            .addStaticEuEffInfo(0.7f)
             .addInfo(
                 "Requires Recipe Tier * " + EnumChatFormatting.BLUE
                     + "10L/s"
@@ -474,6 +473,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
             return survivalBuildPiece(
@@ -482,7 +483,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 horizontalOffset,
                 verticalOffset,
                 depthOffset,
-                elementBudget,
+                realBudget,
                 env,
                 false,
                 true);
@@ -494,7 +495,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 horizontalOffset,
                 verticalOffset,
                 depthOffset,
-                elementBudget,
+                realBudget,
                 env,
                 false,
                 true);
@@ -506,7 +507,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 horizontalOffset,
                 verticalOffset,
                 depthOffset,
-                elementBudget,
+                realBudget,
                 env,
                 false,
                 true);
@@ -518,7 +519,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 horizontalOffset,
                 verticalOffset,
                 depthOffset,
-                elementBudget,
+                realBudget,
                 env,
                 false,
                 true);
@@ -571,7 +572,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
-                if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                if (!checkFluid(7 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mMode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 if (mMode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");

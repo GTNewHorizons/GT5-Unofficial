@@ -6,7 +6,7 @@ import net.minecraft.util.StatCollector;
 /**
  * Contains a series of Lang-key / Tier Parings.
  * Assists in a few methods in {@link MultiblockTooltipBuilder}
- * 
+ *
  * Keys found under GT5U.MBTT.Tiers.* . Please add your own.
  */
 public enum TooltipTier {
@@ -18,7 +18,8 @@ public enum TooltipTier {
     METAL_CASING("GT5U.MBTT.Tiers.MetalMachineCasing"),
     ITEM_PIPE_CASING("GT5U.MBTT.Tiers.ItemPipe"),
     PIPE_CASING("GT5U.MBTT.Tiers.FluidPipe"),
-    SOLENOID("GT5U.MBTT.Tiers.Solenoid");
+    SOLENOID("GT5U.MBTT.Tiers.Solenoid"),
+    TURBINE("GT5U.MBTT.Tiers.Turbine");
 
     public final String key;
 

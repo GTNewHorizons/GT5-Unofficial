@@ -588,7 +588,6 @@ public class GTValues {
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
-        text("Author: "),
         animatedText(
             "Noc",
             0,
@@ -611,9 +610,8 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
-    public static final String AuthorChrom = "Author: " + EnumChatFormatting.BLUE + BOLD + "Chrom";
+
     public static final Supplier<String> fancyAuthorChrom = chain(
-        text("Author: "),
         animatedText(
             "Chrom",
             0,

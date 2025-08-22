@@ -45,8 +45,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import java.util.function.Supplier;
-
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
@@ -567,13 +565,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_ChamberCentrifuge.get(1),
-            chain(GTValues.fancyAuthorChrom, new Supplier<String>() {
-
-                @Override
-                public String get() {
-                    return EnumChatFormatting.GRAY + " & ";
-                }
-            }, GTValues.AuthorNoc));
+            chain(
+                () -> "Author ",
+                GTValues.fancyAuthorChrom,
+                () -> EnumChatFormatting.GRAY + " & ",
+                GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")

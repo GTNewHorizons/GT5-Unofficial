@@ -77,7 +77,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.centrifugestatsmenu")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.machineinfo")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
