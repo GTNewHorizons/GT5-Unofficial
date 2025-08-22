@@ -470,7 +470,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
     }
 
-
     /**
      * Attempt to store one stack into the empty fluid container slot if
      * {@link gregtech.api.metatileentity.implementations.MTEHatchOutput#outputsItems()} returns true.
