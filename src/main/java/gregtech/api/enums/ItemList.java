@@ -2703,7 +2703,10 @@ public enum ItemList implements IItemContainer {
     Extra_Casting_Basins_Solidifier_Modular,
     Hypercooler_Solidifier_Modular,
     Streamlined_Casters_Solidifier_Modular,
-    Active_Time_Dilation_System_Solidifier_Modular
+    Active_Time_Dilation_System_Solidifier_Modular,
+    Magnetic_Chassis_T1_Solidifier_Modular,
+    Magnetic_Chassis_T2_Solidifier_Modular,
+    Magnetic_Chassis_T3_Solidifier_Modular,
 
     // semicolon after the comment to reduce merge conflicts
     ;
