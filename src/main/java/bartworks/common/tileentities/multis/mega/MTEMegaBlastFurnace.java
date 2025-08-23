@@ -13,25 +13,26 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
-import java.util.Arrays;
-
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,10 +43,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
-import bartworks.util.BWUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoltageIndex;
@@ -53,7 +52,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -67,79 +66,53 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 
-public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace> implements ISurvivalConstructable {
+public class MTEMegaBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaBlastFurnace>
+    implements ISurvivalConstructable {
 
-    private static final int CASING_INDEX = 11;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaBlastFurnace>builder()
-        .addShape("main", createShape())
-        .addElement('=', StructureElementAirNoHint.getInstance())
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            // spotless:off
+            new String[][]{
+                {"BBBBBBBBBBBBBBB", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAA~AAAAAAA", "AAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBMBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "AC           CA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "ACCCCCCCCCCCCCA", "BBBBBBBBBBBBBBB"},
+                {"BBBBBBBBBBBBBBB", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBB"}})
+        //spotless:on
         .addElement(
-            't',
-            buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
-                .casingIndex(CASING_INDEX)
+            'B',
+            buildHatchAdder(MTEMegaBlastFurnace.class)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                .casingIndex(Casings.HeatProofCasing.textureId)
                 .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
-        .addElement('m', Muffler.newAny(CASING_INDEX, 2))
+                .buildAndChain(onElementPass(MTEMegaBlastFurnace::onCasingAdded, Casings.HeatProofCasing.asElement())))
         .addElement(
             'C',
             GTStructureChannels.HEATING_COIL
                 .use(activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
-        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement(
-            'b',
-            buildHatchAdder(MTEMegaBlastFurnace.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
+        .addElement('A', chainAllGlasses())
+        .addElement('M', HatchElement.Muffler.newAny(Casings.HeatProofCasing.textureId, 2))
         .build();
 
-    private static String[][] createShape() {
-        String[][] raw = new String[20][];
-
-        raw[0] = new String[15];
-        String topCasing = "ttttttttttttttt";
-        String middleTopCasing = "tttttttmttttttt";
-        raw[0][0] = topCasing;
-        for (int i = 1; i < 15; i++) {
-            raw[0][i] = topCasing;
-        }
-        raw[0][7] = middleTopCasing;
-
-        raw[1] = new String[15];
-        String allGlass = "ggggggggggggggg";
-        String allCoil = "gCCCCCCCCCCCCCg";
-        String middleLine = "gC===========Cg";
-        raw[1][0] = allGlass;
-        raw[1][1] = allCoil;
-        raw[1][13] = allCoil;
-        raw[1][14] = allGlass;
-        for (int i = 2; i < 13; i++) {
-            raw[1][i] = middleLine;
-        }
-        for (int i = 2; i < 19; i++) {
-            raw[i] = raw[1];
-        }
-        String bottomCasing = "bbbbbbbbbbbbbbb";
-        raw[19] = new String[15];
-        for (int i = 0; i < 15; i++) {
-            raw[19][i] = bottomCasing;
-        }
-
-        raw[17] = Arrays.copyOf(raw[17], raw[17].length);
-        raw[17][0] = "ggggggg~ggggggg";
-
-        return transpose(raw);
-    }
-
-    private HeatingCoilLevel mCoilLevel;
+    private int mCasingAmount;
     private int mHeatingCapacity;
-    private int glassTier = -1;
-    private final static int polPtick = PollutionConfig.basePollutionMBFSecond / 20
-        * Configuration.Multiblocks.megaMachinesMax;
+    private HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
+    private byte glassTier = -1;
 
-    public MTEMegaBlastFurnace(int aID, String aName, String aNameRegional) {
+    public MTEMegaBlastFurnace(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -148,27 +121,64 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+    public IStructureDefinition<MTEMegaBlastFurnace> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEMegaBlastFurnace(this.mName);
     }
 
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
+        if (side == aFacing) {
+            if (aActive) {
+                rTexture = new ITexture[] { Casings.HeatProofCasing.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] { Casings.HeatProofCasing.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Casings.HeatProofCasing.getCasingTexture() };
+        }
+        return rTexture;
+    }
+
+    // spotless:off
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-            .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
-            .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
-            .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
-            .addInfo("Additionally gives +100K for every tier past MV")
+            .addInfo(EnumChatFormatting.WHITE + "Noble gases " + EnumChatFormatting.GRAY + "can be used to reduce recipe time.")
+            .addInfo(EnumChatFormatting.AQUA + "-5% " + EnumChatFormatting.GRAY + "EU usage multiplicatively for each " + EnumChatFormatting.RED + "900K " + EnumChatFormatting.GRAY + "over the required heat.")
+            .addInfo("Adds " + EnumChatFormatting.RED + "100K " + EnumChatFormatting.GRAY + "for every tier past " + EnumChatFormatting.AQUA + "MV")
+            .addInfo("Each " + EnumChatFormatting.RED + "900K " + EnumChatFormatting.GRAY + "over the required heat reduces power consumption by " + EnumChatFormatting.GOLD + "5%" + EnumChatFormatting.GRAY + " multiplicatively")
+            .addInfo(EnumChatFormatting.RED + "1800K " + EnumChatFormatting.GRAY + "over required heat grants " + EnumChatFormatting.GOLD + "perfect overclock" + EnumChatFormatting.GRAY + ", giving " + EnumChatFormatting.GOLD + "100% efficiency.")
             .addTecTechHatchInfo()
             .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
-            .addController("3rd layer center")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
             .addCasingInfoExactly("Heating Coils", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 1007, true)
@@ -180,88 +190,68 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addInputHatch("Any bottom layer casing")
             .addOutputBus("Any bottom layer casing")
             .addOutputHatch("Any Heat Proof Machine Casing")
-            .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
+    // spotless:on
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        this.glassTier = aNBT.getInteger("glasTier");
-        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
-            this.inputSeparation = aNBT.getBoolean("isBussesSeparate");
-        }
-        if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
-            this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
-        }
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 17, 0);
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (!aPlayer.isSneaking()) {
-            this.inputSeparation = !this.inputSeparation;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + this.inputSeparation);
-            return true;
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        this.glassTier = -1;
+        this.setCoilLevel(HeatingCoilLevel.None);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 17, 0, realBudget, env, false, true);
+    }
+
+    private void onCasingAdded() {
+        mCasingAmount++;
+    }
+
+    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
+        this.mCoilLevel = aCoilLevel;
+    }
+
+    public HeatingCoilLevel getCoilLevel() {
+        return this.mCoilLevel;
+    }
+
+    public void setGlassTier(byte tier) {
+        this.glassTier = tier;
+    }
+
+    public byte getGlassTier() {
+        return this.glassTier;
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasingAmount = 0;
+        mHeatingCapacity = 0;
+        glassTier = -1;
+        setCoilLevel(HeatingCoilLevel.None);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 17, 0)) return false;
+        if (mMaintenanceHatches.size() != 1) return false;
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (mCasingAmount < 48) return false;
+
+        for (MTEHatchEnergy hatch : mEnergyHatches) {
+            if (hatch.mTier < glassTier) {
+                return false;
+            }
         }
-        this.batchMode = !this.batchMode;
-        if (this.batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (glassTier < VoltageIndex.UV) {
+            if (mExoticEnergyHatches.size() > 0) return false;
         }
+        mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputEu()) - 2);
         return true;
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setInteger("glasTier", this.glassTier);
-    }
-
-    @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return polPtick * 20;
-    }
-
-    @Override
-    protected String[] getExtendedInfoData() {
-        return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(this.mHeatingCapacity)
-            + EnumChatFormatting.RESET
-            + " K" };
     }
 
     @Override
@@ -283,71 +273,25 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel)
+            .setAvailableVoltage(this.getMaxInputEu())
+            .setAvailableAmperage(1)
+            .setUnlimitedTierSkips();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        super.getInfoData();
+        return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(this.mHeatingCapacity)
+            + EnumChatFormatting.RESET
+            + " K" };
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return Configuration.Multiblocks.megaMachinesMax;
-    }
-
-    @Override
-    public IStructureDefinition<MTEMegaBlastFurnace> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece("main", stackSize, hintsOnly, 7, 17, 0);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (this.mMachine) return -1;
-        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        this.glassTier = -1;
-        this.setCoilLevel(HeatingCoilLevel.None);
-        return this.survivalBuildPiece("main", stackSize, 7, 17, 0, realBudget, env, false, true);
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        this.mHeatingCapacity = 0;
-        this.glassTier = -1;
-
-        this.setCoilLevel(HeatingCoilLevel.None);
-
-        if (!this.checkPiece("main", 7, 17, 0) || this.getCoilLevel() == HeatingCoilLevel.None
-            || this.mMaintenanceHatches.size() != 1) return false;
-
-        if (this.glassTier < VoltageIndex.UV) {
-            for (MTEHatch hatch : this.mExoticEnergyHatches) {
-                if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
-                }
-                if (this.glassTier < hatch.mTier) {
-                    return false;
-                }
-            }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
-                }
-            }
-        }
-
-        this.mHeatingCapacity = (int) this.getCoilLevel()
-            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-
-        return true;
     }
 
     @Override
@@ -361,7 +305,12 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    public boolean supportsInputSeparation() {
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MEGA_BLAST_FURNACE_LOOP;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
         return true;
     }
 
@@ -371,13 +320,12 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    public boolean supportsVoidProtection() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_MEGA_BLAST_FURNACE_LOOP;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return PollutionConfig.basePollutionMBFSecond;
     }
 }
