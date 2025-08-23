@@ -169,7 +169,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Particle Accelerator")
+        tt.addMachineType("Particle Accelerator, LINAC")
             .addInfo("Accelerates charged particles to higher energies by running them through an electric field")
             .addInfo("Electrically neutral particles are therefore unaffected")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
