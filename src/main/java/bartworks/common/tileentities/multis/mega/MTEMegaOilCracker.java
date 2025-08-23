@@ -13,14 +13,12 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -32,9 +30,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,13 +41,14 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -62,69 +59,62 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
-public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> implements ISurvivalConstructable {
+public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOilCracker>
+    implements ISurvivalConstructable {
 
-    private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMegaOilCracker> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaOilCracker>builder()
         .addShape(
+            // spotless:off
             STRUCTURE_PIECE_MAIN,
             transpose(
                 new String[][] {
-                    { " p         p ", "ppgggggggggpp", " pgggggggggp ", " pgggMMMgggp ", " pgggMMMgggp ",
-                        " pgggMMMgggp ", " pgggggggggp ", "ppgggggggggpp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
-                        " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
-                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l c c c c r ", " l c c c c r ",
-                        " l c c c c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
-                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
-                        " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { "ppmmmm~mmmmpp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp",
-                        "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppmmmmmmmmmpp" }, }))
+                    {" s         s ","ssgggggggggss"," sgggggggggs "," sgggMMMgggs "," sgggMMMgggs "," sgggMMMgggs "," sgggggggggs ","ssgggggggggss"," s         s "},
+                    {" s         s ","sgggggggggggs"," g c c c c g "," g c c c c g "," g c c c c g "," g c c c c g "," g c c c c g ","sgggggggggggs"," s         s "},
+                    {" s         s ","sgggggggggggs"," g c c c c g "," l   c   c r "," l c c c c r "," l   c   c r "," g c c c c g ","sgggggggggggs"," s         s "},
+                    {" s         s ","sgggggggggggs"," g c c c c g "," l c c c c r "," l c c c c r "," l c c c c r "," g c c c c g ","sgggggggggggs"," s         s "},
+                    {" s         s ","sgggggggggggs"," g c c c c g "," l   c   c r "," l c c c c r "," l   c   c r "," g c c c c g ","sgggggggggggs"," s         s "},
+                    {" s         s ","sgggggggggggs"," g c c c c g "," g c c c c g "," g c c c c g "," g c c c c g "," g c c c c g ","sgggggggggggs"," s         s "},
+                    {"ssmmmm~mmmmss","sssssssssssss","sssssssssssss","sssssssssssss","sssssssssssss","sssssssssssss","sssssssssssss","sssssssssssss","ssmmmmmmmmmss"}}))
+            //spotless:on
         .addElement(
             'c',
             GTStructureChannels.HEATING_COIL
                 .use(activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
-
-        .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        .addElement('s', Casings.CleanStainlessSteelCasing.asElement())
         .addElement(
             'l',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList))
                 .dot(2)
-                .casingIndex(CASING_INDEX)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                .casingIndex(Casings.CleanStainlessSteelCasing.textureId)
+                .buildAndChain(Casings.CleanStainlessSteelCasing.asElement()))
         .addElement(
             'r',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList))
                 .dot(3)
-                .casingIndex(CASING_INDEX)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                .casingIndex(Casings.CleanStainlessSteelCasing.textureId)
+                .buildAndChain(Casings.CleanStainlessSteelCasing.asElement()))
         .addElement(
             'm',
             buildHatchAdder(MTEMegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
-                .casingIndex(CASING_INDEX)
+                .casingIndex(Casings.CleanStainlessSteelCasing.textureId)
                 .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                .buildAndChain(Casings.CleanStainlessSteelCasing.asElement()))
         .addElement(
             'M',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList))
                 .dot(4)
-                .casingIndex(CASING_INDEX)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                .casingIndex(Casings.CleanStainlessSteelCasing.textureId)
+                .buildAndChain(Casings.CleanStainlessSteelCasing.asElement()))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
     private int glassTier = -1;
@@ -183,16 +173,17 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Casings.CleanStainlessSteelCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+            return new ITexture[] { Casings.CleanStainlessSteelCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -202,7 +193,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
+        return new ITexture[] { Casings.CleanStainlessSteelCasing.getCasingTexture() };
     }
 
     @Override
@@ -247,7 +238,6 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, env, false, true);
     }
-    // -------------- TEC TECH COMPAT ----------------
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -260,9 +250,6 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
-                if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
-                }
                 if (this.glassTier < hatch.mTier) {
                     return false;
                 }
@@ -426,21 +413,6 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override
