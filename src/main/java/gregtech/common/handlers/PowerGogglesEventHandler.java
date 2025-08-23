@@ -65,9 +65,8 @@ public class PowerGogglesEventHandler {
         UUID uuid = player.getUniqueID();
 
         int playerTicks = tickMap.getOrDefault(uuid, 0) + 1;
-        tickMap.put(uuid, playerTicks % PowerGogglesHudHandler.ticksBetweenMeasurements);
+        tickMap.put(uuid, forceUpdate ? 1 : playerTicks % PowerGogglesHudHandler.ticksBetweenMeasurements);
 
-        if (forceUpdate) tickMap.put(uuid, 1);
         if (tickMap.get(uuid) != 1) return;
         if (isValidLink(player, lscLinkMap.get(uuid))) {
             MTELapotronicSuperCapacitor lsc = getLsc(player);
