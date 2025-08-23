@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.text.WordUtils;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.util.GTLanguageManager;
 
 public enum CombType {
@@ -223,6 +224,8 @@ public enum CombType {
     REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
     // Metals Addition
     PYRITE(172, "pyrite", true, Materials.Pyrite, 100, 0xB67206, 0x654004, ItemComb.Voltage.HV),
+    // Botania Line
+    MANASTEEL(173, "manasteel", true, MaterialsBotania.Manasteel, 50, 0x4BAFFB, 0xCEEAFD, ItemComb.Voltage.LV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
