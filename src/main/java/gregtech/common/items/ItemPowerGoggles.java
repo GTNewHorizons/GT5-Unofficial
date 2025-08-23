@@ -33,38 +33,49 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     }
 
     @Override
+    // Links the goggles to the right clicked LSC
+    // This is only called by the client and when a block is right clicked. onItemRightClick called if false returned
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) { // this is only ever called by client
+        int ordinalSide, float hitX, float hitY, float hitZ) {
+        // Shift right click -> Player wants to unlink goggles so skip to onItemRightClick
+        if (player.isSneaking()) {
+            return false;
+        }
+
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity instanceof IGregTechTileEntity te) {
-            if (te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor) {
-                if (!player.isSneaking()) {
-                    NBTTagCompound tag = new NBTTagCompound();
-                    tag.setInteger("x", x);
-                    tag.setInteger("y", y);
-                    tag.setInteger("z", z);
-                    tag.setInteger("dim", player.dimension);
-                    tag.setString("dimName", te.getWorld().provider.getDimensionName());
-                    NW.sendToServer(new GTPacketUpdateItem(tag));
-                    stack.setTagCompound(tag);
-                    player.addChatMessage(
-                        new ChatComponentText(
-                            StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
-                }
-            } else {
-                player.addChatMessage(
-                    new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
-            }
-        } else {
+        if (!isLSC(tileEntity)) {
             player
                 .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
+            return true;
         }
+
+        addLSCTag(stack, x, y, z, player, tileEntity);
+        player.addChatMessage(
+            new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
+
         return true;
     }
 
+    private void addLSCTag(ItemStack stack, int x, int y, int z, EntityPlayer player, TileEntity tileEntity) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("x", x);
+        tag.setInteger("y", y);
+        tag.setInteger("z", z);
+        tag.setInteger("dim", player.dimension);
+        tag.setString("dimName", ((IGregTechTileEntity) tileEntity).getWorld().provider.getDimensionName());
+        NW.sendToServer(new GTPacketUpdateItem(tag));
+        stack.setTagCompound(tag);
+    }
+
+    private boolean isLSC(TileEntity tileEntity) {
+        return tileEntity instanceof IGregTechTileEntity te
+            && te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor;
+    }
+
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) { // called by both server and
-                                                                                           // client
+    // Called by both server and client
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+
         if (!world.isRemote) {
             if (player.isSneaking()) {
                 stack.setTagCompound(new NBTTagCompound());
