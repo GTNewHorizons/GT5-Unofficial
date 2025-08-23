@@ -76,41 +76,68 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     @Override
     // Called by both server and client
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-
-        if (!world.isRemote) {
-            if (player.isSneaking()) {
-                stack.setTagCompound(new NBTTagCompound());
-                player
-                    .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
-            } else {
-
-                InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
-                // Try to equip into empty slots first
-                for (int i = 0; i < baubles.getSizeInventory(); i++) {
-                    ItemStack bauble = baubles.getStackInSlot(i);
-                    if (bauble == null && canEquip(stack, player)) {
-                        baubles.setInventorySlotContents(i, stack.copy());
-                        this.onEquipped(stack, player);
-                        if (!player.capabilities.isCreativeMode) {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        }
-                        return stack;
-                    }
-                }
-                for (int i = 0; i < baubles.getSizeInventory(); i++) {
-                    ItemStack bauble = baubles.getStackInSlot(i);
-                    if (bauble != null && bauble.getItem() instanceof ItemPowerGoggles) {
-                        baubles.setInventorySlotContents(i, stack.copy());
-                        ((IBauble) bauble.getItem()).onEquipped(stack, player);
-                        if (!player.capabilities.isCreativeMode) {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        }
-                        return bauble.copy();
-                    }
-                }
-            }
+        if (world.isRemote) {
+            return super.onItemRightClick(stack, world, player);
         }
-        return super.onItemRightClick(stack, world, player);
+
+        if (player.isSneaking()) {
+            unlinkGoggles(stack, player);
+            return super.onItemRightClick(stack, world, player);
+        }
+
+        ItemStack goggles = equipHeldGoggles(player, stack);
+        return goggles != null ? goggles : super.onItemRightClick(stack, world, player);
+    }
+
+    private void unlinkGoggles(ItemStack stack, EntityPlayer player) {
+        stack.setTagCompound(new NBTTagCompound());
+        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
+    }
+
+    private ItemStack equipHeldGoggles(EntityPlayer player, ItemStack stack) {
+        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+
+        if (canEquip(stack, player)) {
+            return equipIntoFreeSlot(stack, baubles, player);
+        }
+        return replaceWornGoggles(stack, baubles, player);
+    }
+
+    private ItemStack equipIntoFreeSlot(ItemStack stack, InventoryBaubles baubles, EntityPlayer player) {
+        for (int i = 0; i < baubles.getSizeInventory(); i++) {
+            ItemStack bauble = baubles.getStackInSlot(i);
+            if (bauble != null) {
+                continue;
+            }
+
+            baubles.setInventorySlotContents(i, stack.copy());
+            this.onEquipped(stack, player);
+            if (!player.capabilities.isCreativeMode) {
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+            }
+            return stack;
+        }
+
+        // No empty slots or can't equip goggles
+        return null;
+    }
+
+    private ItemStack replaceWornGoggles(ItemStack stack, InventoryBaubles baubles, EntityPlayer player) {
+        for (int i = 0; i < baubles.getSizeInventory(); i++) {
+            ItemStack bauble = baubles.getStackInSlot(i);
+            if (bauble == null || !(bauble.getItem() instanceof ItemPowerGoggles)) {
+                continue;
+            }
+
+            baubles.setInventorySlotContents(i, stack.copy());
+            ((IBauble) bauble.getItem()).onEquipped(stack, player);
+            if (!player.capabilities.isCreativeMode) {
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+            }
+            return bauble.copy();
+        }
+        // No goggles to replace
+        return null;
     }
 
     @Override
