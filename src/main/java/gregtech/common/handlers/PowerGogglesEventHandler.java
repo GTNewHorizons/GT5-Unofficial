@@ -64,10 +64,10 @@ public class PowerGogglesEventHandler {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
         UUID uuid = player.getUniqueID();
 
-        int playerTicks = tickMap.getOrDefault(uuid, 0) + 1;
-        tickMap.put(uuid, forceUpdate ? 1 : playerTicks % PowerGogglesHudHandler.ticksBetweenMeasurements);
+        int playerTicks = forceUpdate ? 1 : tickMap.getOrDefault(uuid, 0) + 1;
+        tickMap.put(uuid, playerTicks % PowerGogglesHudHandler.ticksBetweenMeasurements);
 
-        if (tickMap.get(uuid) != 1) return;
+        if (playerTicks != 1) return;
         if (isValidLink(player, lscLinkMap.get(uuid))) {
             MTELapotronicSuperCapacitor lsc = getLsc(player);
             NW.sendToPlayer(
