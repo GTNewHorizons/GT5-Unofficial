@@ -3,6 +3,7 @@ package gregtech.common.items;
 import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
+import java.util.Objects;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -144,16 +145,16 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
         super.addInformation(stack, player, tooltip, bool);
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && !stack.getTagCompound()
-            .hasNoTags()) {
-            tooltip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.power_goggles.link_tooltip",
-                    tag.getInteger("x"),
-                    tag.getInteger("y"),
-                    tag.getInteger("z"),
-                    tag.getString("dimName")));
+        if (tag == null || tag.hasNoTags()) {
+            return;
         }
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.power_goggles.link_tooltip",
+                tag.getInteger("x"),
+                tag.getInteger("y"),
+                tag.getInteger("z"),
+                tag.getString("dimName")));
     }
 
     @Override
@@ -167,6 +168,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
         if (player.worldObj.isRemote || !(player instanceof EntityPlayerMP playerMP)) return;
+
         NBTTagCompound tag = itemstack.getTagCompound();
         DimensionalCoord coords = null;
         if (tag != null && !tag.hasNoTags()) {
@@ -176,9 +178,9 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                 tag.getInteger("z"),
                 tag.getInteger("dim"));
         }
+
         DimensionalCoord current = PowerGogglesEventHandler.getLscLink(player.getUniqueID());
-        if ((coords != null && current == null) || (coords == null && current != null)
-            || (current != null && !current.isEqual(coords))) {
+        if (!Objects.equals(current, coords)) {
             PowerGogglesEventHandler.setLscLink(playerMP, coords);
             PowerGogglesEventHandler.forceUpdate = true;
             PowerGogglesEventHandler.forceRefresh = true;
@@ -196,7 +198,9 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     public static ItemStack getEquippedPowerGoggles(EntityLivingBase player) {
         InventoryBaubles baubles = PlayerHandler.getPlayerBaubles((EntityPlayer) player);
         for (ItemStack bauble : baubles.stackList) {
-            if (bauble != null && bauble.getItem() instanceof ItemPowerGoggles) return bauble;
+            if (bauble != null && bauble.getItem() instanceof ItemPowerGoggles) {
+                return bauble;
+            }
         }
         return null;
     }
