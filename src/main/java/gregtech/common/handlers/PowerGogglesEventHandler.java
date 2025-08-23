@@ -64,8 +64,9 @@ public class PowerGogglesEventHandler {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
         UUID uuid = player.getUniqueID();
 
-        int playerTicks = forceUpdate ? 1 : tickMap.getOrDefault(uuid, 0) + 1;
-        tickMap.put(uuid, playerTicks % PowerGogglesHudHandler.ticksBetweenMeasurements);
+        int playerTicks = forceUpdate ? 1
+            : (tickMap.getOrDefault(uuid, 0) + 1) % PowerGogglesHudHandler.ticksBetweenMeasurements;
+        tickMap.put(uuid, playerTicks);
 
         if (playerTicks != 1) return;
         if (isValidLink(player, lscLinkMap.get(uuid))) {
