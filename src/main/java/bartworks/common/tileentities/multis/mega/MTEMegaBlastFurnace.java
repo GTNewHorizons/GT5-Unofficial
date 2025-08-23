@@ -69,6 +69,10 @@ import gregtech.common.pollution.PollutionConfig;
 public class MTEMegaBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaBlastFurnace>
     implements ISurvivalConstructable {
 
+    private int mCasingAmount;
+    private int mHeatingCapacity;
+    private HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
+    private byte glassTier = -1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaBlastFurnace>builder()
@@ -106,11 +110,6 @@ public class MTEMegaBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaB
         .addElement('A', chainAllGlasses())
         .addElement('M', HatchElement.Muffler.newAny(Casings.HeatProofCasing.textureId, 2))
         .build();
-
-    private int mCasingAmount;
-    private int mHeatingCapacity;
-    private HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
-    private byte glassTier = -1;
 
     public MTEMegaBlastFurnace(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

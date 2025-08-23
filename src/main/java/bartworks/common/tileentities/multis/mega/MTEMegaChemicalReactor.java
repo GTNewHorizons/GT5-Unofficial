@@ -25,10 +25,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -38,24 +35,57 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalReactor>
+public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMegaChemicalReactor>
     implements ISurvivalConstructable {
 
     private int glassTier = -1;
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<MTEMegaChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMegaChemicalReactor>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] {
+                    // spotless:off
+                    {"TTTTT","DPTPD","DPTPD","DPTPD","DPTPD","DPTPD","DPTPD","DPTPD","TTTTT"},
+                    {"TGGGT"," GGG "," GGG "," GGG "," GGG "," GGG "," GGG "," GGG ","TEEET"},
+                    {"TG~GT"," GCG "," GCG "," GCG "," GCG "," GCG "," GCG "," GCG ","TEEET"},
+                    {"TGGGT"," GGG "," GGG "," GGG "," GGG "," GGG "," GGG "," GGG ","TEEET"},
+                    {"TTTTT","DPTPD","DPTPD","DPTPD","DPTPD","DPTPD","DPTPD","DPTPD","TTTTT"}}))
+                    // spotless:on
+        .addElement('P', Casings.PipeCasingPTFE.asElement())
+        .addElement('T', Casings.ChemicallyInertCasing.asElement())
+        .addElement(
+            'D',
+            buildHatchAdder(MTEMegaChemicalReactor.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch)
+                .casingIndex(Casings.ChemicallyInertCasing.textureId)
+                .dot(1)
+                .buildAndChain(Casings.ChemicallyInertCasing.asElement()))
+        .addElement(
+            'E',
+            buildHatchAdder(MTEMegaChemicalReactor.class)
+                .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
+                .casingIndex(Casings.ChemicallyInertCasing.textureId)
+                .dot(2)
+                .buildAndChain(Casings.ChemicallyInertCasing.asElement()))
+        .addElement('C', ofChain(ofBlock(GregTechAPI.sBlockCasings4, 7), ofBlock(GregTechAPI.sBlockCasings5, 13)))
+        .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .build();
 
     public MTEMegaChemicalReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -66,37 +96,13 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     }
 
     @Override
-    public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo("What molecule do you want to synthesize ?")
-            .addInfo("Or you want to replace something in this molecule ?")
-            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addGlassEnergyLimitInfo()
-            .addPerfectOCInfo()
-            .addTecTechHatchInfo()
-            .addMinGlassForLaser(VoltageIndex.UV)
-            .addUnlimitedTierSkips()
-            .beginStructureBlock(5, 5, 9, false)
-            .addController("Front center")
-            .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
-            .addCasingInfoExactly("Fusion Coil Block", 7, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 28, false)
-            .addCasingInfoExactly("Any Tiered Glass", 64, true)
-            .addEnergyHatch("Hint block ", 3)
-            .addMaintenanceHatch("Hint block ", 2)
-            .addInputHatch("Hint block ", 1)
-            .addInputBus("Hint block ", 1)
-            .addOutputBus("Hint block ", 1)
-            .addOutputHatch("Hint block ", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
-        return tt;
+    public IStructureDefinition<MTEMegaChemicalReactor> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMegaChemicalReactor(this.mName);
+        return new MTEMegaChemicalReactor(mName);
     }
 
     @Override
@@ -125,46 +131,39 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
         return new ITexture[] { casingTexturePages[1][48] };
     }
 
+    // TODO: change TT after chrombread's tooltip improvements
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
+    public MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Chemical Reactor, MCR")
+            .addInfo("What molecule do you want to synthesize ?")
+            .addInfo("Or you want to replace something in this molecule ?")
+            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addGlassEnergyLimitInfo()
+            .addPerfectOCInfo()
+            .addTecTechHatchInfo()
+            .addMinGlassForLaser(VoltageIndex.UV)
+            .addUnlimitedTierSkips()
+            .beginStructureBlock(5, 5, 9, false)
+            .addController("Front center")
+            .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
+            .addCasingInfoExactly("Fusion Coil Block", 7, false)
+            .addCasingInfoExactly("PTFE Pipe Casing", 28, false)
+            .addCasingInfoExactly("Any Tiered Glass", 64, true)
+            .addEnergyHatch("Hint block ", 2)
+            .addMaintenanceHatch("Hint block ", 2)
+            .addInputHatch("Hint block ", 1)
+            .addInputBus("Hint block ", 1)
+            .addOutputBus("Hint block ", 1)
+            .addOutputHatch("Hint block ", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
+        return tt;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.multiblockChemicalReactorRecipes;
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
-            this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
-        }
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        inputSeparation = !inputSeparation;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            this.batchMode = !this.batchMode;
-            if (this.batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -180,77 +179,29 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
 
     @Override
     public void construct(ItemStack aStack, boolean aHintsOnly) {
-        this.buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 2, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 2, 2, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (this.mMachine) return -1;
+        if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, env, false, true);
     }
-    // -------------- TEC TECH COMPAT ----------------
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.glassTier = -1;
+        glassTier = -1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0)) return false;
+        if (mMaintenanceHatches.size() != 1) return false;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0) || this.mMaintenanceHatches.size() != 1) return false;
-
-        if (this.glassTier < VoltageIndex.UV) {
-            for (MTEHatch hatch : this.mExoticEnergyHatches) {
-                if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
-                }
-                if (this.glassTier < hatch.mTier) {
-                    return false;
-                }
-            }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
-                }
+        for (MTEHatchEnergy mEnergyHatch : mEnergyHatches) {
+            if (mEnergyHatch.mTier >= glassTier) {
+                return false;
             }
         }
-
+        if (glassTier < VoltageIndex.UV && !mExoticEnergyHatches.isEmpty()) return false;
         return true;
-    }
-
-    private static final int CASING_INDEX = 176;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEMegaChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMegaChemicalReactor>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { { "ttttt", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "ttttt" },
-                    { "tgggt", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", "teeet" },
-                    { "tg~gt", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", " gcg ", "teret" },
-                    { "tgggt", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", " ggg ", "teeet" },
-                    { "ttttt", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "dptpd", "ttttt" }, }))
-        .addElement('p', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        .addElement('t', ofBlock(GregTechAPI.sBlockCasings8, 0))
-        .addElement(
-            'd',
-            buildHatchAdder(MTEMegaChemicalReactor.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
-        .addElement('r', Maintenance.newAny(CASING_INDEX, 2))
-        .addElement(
-            'e',
-            buildHatchAdder(MTEMegaChemicalReactor.class)
-                .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus)
-                .casingIndex(CASING_INDEX)
-                .dot(3)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
-        .addElement('c', ofChain(ofBlock(GregTechAPI.sBlockCasings4, 7), ofBlock(GregTechAPI.sBlockCasings5, 13)))
-        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .build();
-
-    @Override
-    public IStructureDefinition<MTEMegaChemicalReactor> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -265,6 +216,11 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
 
     @Override
     public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }
