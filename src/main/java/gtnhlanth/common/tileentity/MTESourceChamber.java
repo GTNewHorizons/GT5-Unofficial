@@ -133,12 +133,13 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Particle Source")
             .addInfo("Creates beams of Particles")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addInfo(
-                "NEI shows the minimum "+EnumChatFormatting.AQUA+"EU/t requirement"+EnumChatFormatting.GRAY+", Beam Focus, Beam Rate, and " + EnumChatFormatting.YELLOW
-                    + "Maximum Beam Energy")
+            .addSeparator()
+            .addInfo("NEI shows the minimum " + EnumChatFormatting.AQUA + "EU/t requirement" + EnumChatFormatting.GRAY + ", Beam Focus, Beam Rate, and " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
+            .addInfo("All recipes last for one second")
             .addInfo("This upper limit is approached asymptotically as operating power increases")
             .addSeparator()
             .addInfo("Each " + particleText("Particle Type") + " has a " + energyText("Maximum Particle Energy"))
@@ -153,22 +154,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo(sourceLine("Tungsten Rods", "0.1"))
             .addInfo(sourceLine("Long LaB6 Rods", "0.3"))
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.WHITE+"Actual Beam Energy"+EnumChatFormatting.GRAY+" = min(" + energyText(
-                    "Max Particle Energy") + ", " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.GRAY + ")")
-            .addInfo(
-                "For the formula, let " + EnumChatFormatting.GOLD
-                    + "aeV"
-                    + EnumChatFormatting.GRAY
-                    + " =  "+EnumChatFormatting.YELLOW+"Max Beam Energy"+EnumChatFormatting.GRAY+" * ("+EnumChatFormatting.WHITE+"1"+EnumChatFormatting.GRAY+" - "+EnumChatFormatting.WHITE+"1.001"+EnumChatFormatting.GRAY+"^("
-                    + ratioText("Energy Ratio")
-                    + " * ("+EnumChatFormatting.AQUA +"EU/t required"+EnumChatFormatting.GRAY+" - "+EnumChatFormatting.RED+"EU/t provided"+EnumChatFormatting.GRAY+")))")
-            .addInfo(
-                "In short, the " + particleText("particle beam's")
-                    + " energy is capped to the "
-                    + energyText("Max Particle Energy"))
-            .addInfo(
-                "Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
+            .addInfo(EnumChatFormatting.WHITE + "Actual Beam Energy = min(" + energyText("Max Particle Energy") + ", " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.GRAY + ")")
+            .addInfo("Where " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.WHITE + " =  "+EnumChatFormatting.YELLOW+"Max Beam Energy"+EnumChatFormatting.WHITE+" * (1 - 1.001^(" + ratioText("Energy Ratio") + " * (" + EnumChatFormatting.AQUA + "EU/t required"+EnumChatFormatting.WHITE+" - "+EnumChatFormatting.RED+"EU/t provided"+EnumChatFormatting.WHITE+")))")
+            .addInfo("In short, the " + particleText("particle beam's") + " energy is capped to the " + energyText("Max Particle Energy"))
+            .addInfo("Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
@@ -181,6 +170,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addOutputBus(addDotText(2))
             .toolTipFinisher();
         return tt;
+        //spotless:on
     }
 
     private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
