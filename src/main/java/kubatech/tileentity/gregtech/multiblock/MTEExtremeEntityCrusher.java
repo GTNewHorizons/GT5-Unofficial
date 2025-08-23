@@ -24,7 +24,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -89,7 +88,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -630,9 +628,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             double tAttackDamage = DIAMOND_SPIKES_DAMAGE;
             int tLootingLevel = 0;
 
-            int tBatchMultiplier = batchMode ? 16 : 1;
+            final int tBatchMultiplier = batchMode ? 16 : 1;
 
-            int tMaxTries = 2; // 2 => Weapon already in the slot + one extra
+            final int tMaxTries = 2; // 2 => Weapon already in the slot + one extra
             ItemStack tWeaponToUse = cycleWeaponsUntilNoBreakage(recipe, tBatchMultiplier, tMaxTries);
 
             if (tWeaponToUse != null) {
@@ -684,59 +682,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    @SuppressWarnings("UnstableApiUsage")
-    private ItemStack cycleWeaponsUntilNoBreakage(MobHandlerLoader.MobEECRecipe aRecipe, final int aBatchModeMultiplier,
+    private ItemStack cycleWeaponsUntilNoBreakage(final MobHandlerLoader.MobEECRecipe aRecipe, final int aBatchModeMultiplier,
         int aMaxTries) {
         int tCurrentInputBus = 0;
         int tCurrentInputBusSlot = 0;
         int tBusCount = mInputBusses.size();
 
-        // spotless:off
-        GT_FML_LOGGER.warn("[Kynake] ########## BEGIN EEC SWORD CYCLE ##########");
-        GT_FML_LOGGER.warn("[Kynake] EET has {} input busses", tBusCount);
-        GT_FML_LOGGER.warn("[Kynake] Will try to use at most {} swords", aMaxTries);
-        Stopwatch dStopwatch = Stopwatch.createStarted();
-        // spotless:on
-
         ItemStack tWeapon = this.weaponCache.getStackInSlot(0);
         if (!this.weaponCache.isValid) {
-            if (!mCycleWeapons) {
-
-                // spotless:off
-                GT_FML_LOGGER.warn("[Kynake] Weapon cache has no valid weapon, and Sword Cycle is disabled");
-                GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
-                GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
-                // spotless:on
-
-                return null;
-            }
-
-            // If we have to replace the cache right from the start
-            // that already counts as one of the tries
+            if (!mCycleWeapons) return null;
             aMaxTries--;
         }
 
         for (int i = 0; i < aMaxTries; i++) {
-            if (!this.weaponCache.isValid) { // pull weapon to cache
-
-                // spotless:off
-                GT_FML_LOGGER.warn("[Kynake] Weapon Slot is empty, will try to find a weapon from input busses");
-                // spotless:on
-
-                if (tBusCount == 0) {
-
-                    // spotless:off
-                    GT_FML_LOGGER.warn("[Kynake] No Busses found");
-                    GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
-                    GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
-                    // spotless:on
-
-                    return null;
-                }
-
-                // spotless:off
-                GT_FML_LOGGER.warn("[Kynake] {}tarting search from Bus #{}, Slot #{}", (i == 0 ? "S" : "Res"), tCurrentInputBus, tCurrentInputBusSlot);
-                // spotless:on
+            if (!this.weaponCache.isValid) {
+                // Try to find weapon from inputs
+                if (tBusCount == 0) return null;
 
                 for (int tBusIndex = tCurrentInputBus; tBusIndex < tBusCount; tBusIndex++) {
                     MTEHatchInputBus tBus = mInputBusses.get(tBusIndex);
@@ -748,11 +709,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                         ItemStack tItem = tBus.mInventory[tSlotIndex];
                         if (tItem == null || tItem.stackSize == 0 || !isUsableWeapon(tItem)) continue;
 
-                        // spotless:off
-                        GT_FML_LOGGER.warn("[Kynake] Found item: {}", tItem.getDisplayName());
-                        // spotless:on
 
-                        // Move item from input bus to weapon slot
                         tWeapon = tItem;
                         weaponCache.setStackInSlot(0, tItem);
                         tBus.mInventory[tSlotIndex] = null;
@@ -764,104 +721,43 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     tCurrentInputBus++;
                 }
 
-                // Looped through all busses and found no usable items
+                // Looped through all buses and found no usable weapon
                 if (!weaponCache.isValid) {
                     weaponCache.setStackInSlot(0, null);
-
-                    // spotless:off
-                    GT_FML_LOGGER.warn("[Kynake] No valid items found");
-                    GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
-                    GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
-                    // spotless:on
-
                     return null;
                 }
             }
 
-            // At this point it should be that: weaponCache == tWeapon
-
-            // spotless:off
-            dStopwatch.stop();
-            // spotless:on
-
             ItemStack tWeaponResult = runWeaponHitSimulation(tWeapon, aRecipe.recipe.entity, aBatchModeMultiplier);
 
-            // spotless:off
-            dStopwatch.start();
-            // spotless:on
-
+            // Weapon didn't break, use it
             if (tWeaponResult != null) {
-                // spotless:off
-                GT_FML_LOGGER.warn("[Kynake] Sword cycle ended on: {}", tWeaponResult.getDisplayName());
-                GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
-                GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
-                // spotless:on
-
-                // Didn't break. Replace weapon with simulation result and return it
                 weaponCache.setStackInSlot(0, tWeaponResult);
                 return tWeaponResult;
             }
 
-            // spotless:off
-            GT_FML_LOGGER.warn("[Kynake] {} broke, sword cycle continues...", tWeapon.getDisplayName());
-            // spotless:on
+            // Weapon copy broke during simulation, do we care?
 
-            // weapon copy broke during simulation, do we care?
-
-            // we don't care, use original for the next run but destroy it in the weapon cache
+            // We don't, use it for the next run and destroy it.
             if (!mPreserveWeapon) {
                 weaponCache.setStackInSlot(0, null);
                 playWeaponBreakSound();
                 return tWeapon;
             }
 
-            // we DO care! try to move original to output
-            if (!mCycleWeapons || !addOutputPartial(tWeapon, false)) {
-
-                // spotless:off
-                GT_FML_LOGGER.warn("[Kynake] Unable to move {} out of the weapon slot. Ending sword cycle", tWeapon.getDisplayName());
-                GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
-                GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
-                // spotless:on
-
-                // Can't move weapon don't use it as part of the next run,
-                // keep it on controller slot
-                return null;
-            }
-
-            // try again with the next weapon on the list
-            tWeapon = null;
+            // We do care. Preserve the weapon
+            if (!mCycleWeapons || !addOutputPartial(tWeapon, false)) return null;
             weaponCache.setStackInSlot(0, null);
-
-            // spotless:off
-            GT_FML_LOGGER.warn("[Kynake] Sword cycle finished pass #{}", i);
-            // spotless:on
+            tWeapon = null;
         }
 
-        // spotless:off
-        GT_FML_LOGGER.warn("[Kynake] Sword cycle exceeded maximum number of tries: {}. No weapon strong enough found", aMaxTries);
-        GT_FML_LOGGER.warn("[Kynake] Sword cycle took {}", dStopwatch.stop());
-        GT_FML_LOGGER.warn("[Kynake] ########## END EEC SWORD CYCLE ##########");
-        // spotless:on
-
-        // Exceeded max number of tries. When this happens the weapon slot should
-        // already be empty. We stop the simulations here, so simply return unable to use
         return null;
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     private ItemStack runWeaponHitSimulation(ItemStack aWeapon, final EntityLiving aTarget,
         final int aBatchModeMultiplier) {
         if (aWeapon == null || !aWeapon.isItemStackDamageable()) return aWeapon;
         if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
-
-        // spotless:off
-        GT_FML_LOGGER.warn("[Kynake] ========== BEGIN EEC DAMAGE SIMULATION ==========");
-        GT_FML_LOGGER.warn("[Kynake] Weapon: {}", aWeapon.getDisplayName());
-        GT_FML_LOGGER.warn("[Kynake] Test Runs: {}", aBatchModeMultiplier);
-        Stopwatch dStopwatch = Stopwatch.createStarted();
-        int dStartingDamage = aWeapon.getItemDamage();
-        // spotless:on
 
         ItemStack tWeaponCopy = aWeapon.copy();
         Item tItem = tWeaponCopy.getItem();
@@ -870,26 +766,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         for (int i = 0; i < aBatchModeMultiplier; i++) {
             if (!tItem.hitEntity(tWeaponCopy, aTarget, EECPlayer)) break;
             if (tWeaponCopy.stackSize == 0) {
-
-                // spotless:off
-                GT_FML_LOGGER.warn("[Kynake] Weapon broke after {} hits", i);
-                GT_FML_LOGGER.warn("[Kynake] Simulation took {}", dStopwatch.stop());
-                GT_FML_LOGGER.warn("[Kynake] ========== END EEC DAMAGE SIMULATION ==========");
-                // spotless:on
-
                 EECPlayer.currentWeapon = null;
                 return null;
             }
         }
         EECPlayer.currentWeapon = null;
-
-        // spotless:off
-        GT_FML_LOGGER.warn("[Kynake] Weapon survived with {}/{} hitpoints. Received {} points of damage",
-            tWeaponCopy.getMaxDamage() - tWeaponCopy.getItemDamage(), tWeaponCopy.getMaxDamage(), tWeaponCopy.getItemDamage() - dStartingDamage);
-        GT_FML_LOGGER.warn("[Kynake] Simulation took {}", dStopwatch.stop());
-        GT_FML_LOGGER.warn("[Kynake] ========== END EEC DAMAGE SIMULATION ==========");
-        // spotless:on
-
         return tWeaponCopy;
     }
 
@@ -916,11 +797,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         if (tMTE == null || tMTE.hasMufflerUpgrade()) return;
 
+        // A little muffled and modulated, helps simulate a Low-Pass filter
         GTUtility.sendSoundToPlayers(
             tMTE.getWorld(),
             SoundResource.RANDOM_BREAK,
-            0.5F, // A little muffled because the sword is inside the MTE
-            0.9F, // Helps simulate a Low-Pass filter
+            0.5F,
+            0.9F,
             tMTE.getXCoord(),
             tMTE.getYCoord(),
             tMTE.getZCoord());
