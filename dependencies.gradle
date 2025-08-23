@@ -130,10 +130,6 @@ dependencies {
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
-
-    implementation("com.github.GTNewHorizons:PersonalSpace:1.0.33")
-    implementation("com.github.GTNewHorizons:MatterManipulator:0.0.44-GTNH-pre")
-    implementation("com.github.GTNewHorizons:Angelica:1.0.0-beta54")
 }
 
 // deps may transitively add Baubles, so we replace it
