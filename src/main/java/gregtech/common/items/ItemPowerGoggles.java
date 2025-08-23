@@ -49,14 +49,12 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
             return true;
         }
 
-        addLSCTag(stack, x, y, z, player, tileEntity);
-        player.addChatMessage(
-            new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
+        linkGoggles(stack, x, y, z, player, tileEntity);
 
         return true;
     }
 
-    private void addLSCTag(ItemStack stack, int x, int y, int z, EntityPlayer player, TileEntity tileEntity) {
+    private void linkGoggles(ItemStack stack, int x, int y, int z, EntityPlayer player, TileEntity tileEntity) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("x", x);
         tag.setInteger("y", y);
@@ -65,6 +63,9 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         tag.setString("dimName", ((IGregTechTileEntity) tileEntity).getWorld().provider.getDimensionName());
         NW.sendToServer(new GTPacketUpdateItem(tag));
         stack.setTagCompound(tag);
+
+        player.addChatMessage(
+            new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
     }
 
     private boolean isLSC(TileEntity tileEntity) {
