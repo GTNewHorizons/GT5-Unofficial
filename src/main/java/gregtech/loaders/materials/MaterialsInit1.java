@@ -64,13 +64,11 @@ import static gregtech.api.enums.Materials.Osmiridium;
 import static gregtech.api.enums.Materials.Osmium;
 import static gregtech.api.enums.Materials.Oxygen;
 import static gregtech.api.enums.Materials.Palladium;
-import static gregtech.api.enums.Materials.Phosphate;
 import static gregtech.api.enums.Materials.PhosphoricAcid;
 import static gregtech.api.enums.Materials.Phosphorus;
 import static gregtech.api.enums.Materials.Platinum;
 import static gregtech.api.enums.Materials.Potassium;
 import static gregtech.api.enums.Materials.PulsatingIron;
-import static gregtech.api.enums.Materials.RareEarth;
 import static gregtech.api.enums.Materials.Redstone;
 import static gregtech.api.enums.Materials.RedstoneAlloy;
 import static gregtech.api.enums.Materials.Samarium;
@@ -209,9 +207,9 @@ public class MaterialsInit1 {
         Materials.Bentonite = loadBentonite();
         Materials.FullersEarth = loadFullersEarth();
         Materials.Pitchblende = loadPitchblende();
+        Materials.Monazite = loadMonazite();
 
         // spotless:off
-        Materials.Monazite                = new Materials( 520, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8                   ,  50,  70,  50,   0,   "Monazite"                ,   "Monazite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(RareEarth, 1), new MaterialStack(Phosphate, 1))); // Wikipedia: (Ce, La, Nd, Th, Sm, Gd)PO4 Monazite also smelt-extract to Helium, it is brown like the rare earth Item Monazite sand deposits are inevitably of the monazite-(Ce) composition. Typically, the lanthanides in such monazites contain about 45.8% cerium, about 24% lanthanum, about 17% neodymium, about 5% praseodymium, and minor quantities of samarium, gadolinium, and yttrium. Europium concentrations tend to be low, about 0.05% Thorium content of monazite is variable.
         Materials.Malachite               = new Materials( 871, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,   5,  95,   5,   0,   "Malachite"               ,   "Malachite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Copper, 2), new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 5))); // Cu2CO3(OH)2
         Materials.Mirabilite              = new Materials( 900, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 250, 210,   0,   "Mirabilite"              ,   "Mirabilite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 4))); // Na2SO4 10H2O
         Materials.Mica                    = new Materials( 901, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 195, 195, 205,   0,   "Mica"                    ,   "Mica"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // KAl2(AlSi3O10)(F,OH)2
@@ -10567,6 +10565,27 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Uraninite, 3)
             .addMaterial(Materials.Thorium, 1)
             .addMaterial(Materials.Lead, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMonazite() {
+        return new MaterialBuilder().setName("Monazite")
+            .setDefaultLocalName("Monazite")
+            .setMetaItemSubID(520)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x324632)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Wikipedia: (Ce, La, Nd, Th, Sm, Gd)PO4 Monazite also smelt-extract to Helium, it is brown like the rare
+            // earth Item Monazite sand deposits are inevitably of the monazite-(Ce) composition. Typically, the
+            // lanthanides in such monazites contain about 45.8% cerium, about 24% lanthanum, about 17% neodymium, about
+            // 5% praseodymium, and minor quantities of samarium, gadolinium, and yttrium. Europium concentrations tend
+            // to be low, about 0.05% Thorium content of monazite is variable.
+            .addMaterial(Materials.RareEarth, 1)
+            .addMaterial(Materials.Phosphate, 1)
             .constructMaterial();
     }
 
