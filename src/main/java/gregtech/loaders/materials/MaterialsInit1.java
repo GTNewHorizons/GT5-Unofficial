@@ -192,9 +192,9 @@ public class MaterialsInit1 {
         Materials.Lapis = loadLapis();
         Materials.Blaze = loadBlaze();
         Materials.EnderPearl = loadEnderPearl();
+        Materials.EnderEye = loadEnderEye();
 
         // spotless:off
-        Materials.EnderEye                = new Materials( 533, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 160, 250, 230,   0,   "EnderEye"                ,   "Endereye"                      ,    5,      10,         -1,    0, false, false,   1,   2,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(EnderPearl, 1), new MaterialStack(Blaze, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.Flint                   = new Materials( 802, TextureSet.SET_FLINT             ,   2.5F,    128,  1, 1            |64          ,   0,  32,  64,   0,   "Flint"                   ,   "Flint"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Diatomite               = new Materials( 948, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 225, 225, 225,   0,   "Diatomite"               ,   "Diatomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Arrays.asList(new MaterialStack(Flint, 8), new MaterialStack(BandedIron, 1), new MaterialStack(Sapphire, 1)));
         Materials.VolcanicAsh             = new Materials( 940, TextureSet.SET_FLINT             ,   1.0F,      0,  0, 1                         ,  60,  50,  50,   0,   "VolcanicAsh"             ,   "Volcanic Ashes"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Flint, 6), new MaterialStack(Iron, 1), new MaterialStack(Magnesium, 1)));
@@ -9465,6 +9465,32 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.ALIENIS, 4)
             .addAspect(TCAspects.ITER, 4)
             .addAspect(TCAspects.PRAECANTATIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnderEye() {
+        return new MaterialBuilder().setName("EnderEye")
+            .setDefaultLocalName("Endereye")
+            .setMetaItemSubID(533)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0xa0fae6)
+            .setToolSpeed(1.0f)
+            .setDurability(16)
+            .setToolQuality(1)
+            .addDustItems()
+            .addGemItems()
+            .setFuelType(5)
+            .setFuelPower(10)
+            .setDensityMultiplier(2)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.EnderPearl, 1)
+            .addMaterial(Materials.Blaze, 1)
+            .addAspect(TCAspects.SENSUS, 4)
+            .addAspect(TCAspects.ALIENIS, 4)
+            .addAspect(TCAspects.ITER, 4)
+            .addAspect(TCAspects.PRAECANTATIO, 3)
+            .addAspect(TCAspects.IGNIS, 2)
             .constructMaterial();
     }
 
