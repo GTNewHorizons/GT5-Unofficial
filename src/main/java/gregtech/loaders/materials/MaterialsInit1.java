@@ -206,9 +206,9 @@ public class MaterialsInit1 {
         Materials.Tantalite = loadTantalite();
         Materials.Lepidolite = loadLepidolite();
         Materials.Glauconite = loadGlauconite();
+        Materials.GlauconiteSand = loadGlauconiteSand();
 
         // spotless:off
-        Materials.GlauconiteSand          = new Materials( 949, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 130, 180,  60,   0,   "GlauconiteSand"          ,   "Glauconite Sand"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 2), new MaterialStack(Aluminium, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
         Materials.Vermiculite             = new Materials( 932, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 200, 180,  15,   0,   "Vermiculite"             ,   "Vermiculite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Iron, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 12))); // (Mg+2, Fe+2, Fe+3)3 [(AlSi)4O10] (OH)2 4H2O)
         Materials.Bentonite               = new Materials( 927, TextureSet.SET_ROUGH             ,   1.0F,      0,  2, 1    |8                   , 245, 215, 210,   0,   "Bentonite"               ,   "Bentonite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Magnesium, 6), new MaterialStack(Silicon, 12), new MaterialStack(Hydrogen, 6), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 36))); // (Na,Ca)0.33(Al,Mg)2(Si4O10)(OH)2 nH2O
         Materials.FullersEarth            = new Materials( 928, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 160, 160, 120,   0,   "FullersEarth"            ,   "Fullers Earth"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 11))); // (Mg,Al)2Si4O10(OH) 4(H2O)
@@ -10471,6 +10471,23 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Glauconite")
             .setDefaultLocalName("Glauconite")
             .setMetaItemSubID(933)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x82b43c)
+            .addDustItems()
+            .addOreItems()
+            // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Magnesium, 2)
+            .addMaterial(Materials.Aluminium, 4)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlauconiteSand() {
+        return new MaterialBuilder().setName("GlauconiteSand")
+            .setDefaultLocalName("Glauconite Sand")
+            .setMetaItemSubID(949)
             .setIconSet(TextureSet.SET_DULL)
             .setRGB(0x82b43c)
             .addDustItems()
