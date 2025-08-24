@@ -202,9 +202,9 @@ public class MaterialsInit1 {
         Materials.Marble = loadMarble();
         Materials.Sugar = loadSugar();
         Materials.Thaumium = loadThaumium();
+        Materials.Vinteum = loadVinteum();
 
         // spotless:off
-        Materials.Vinteum                 = new Materials( 529, TextureSet.SET_METALLIC          ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 100, 200, 255,   0,   "Vinteum"                 ,   "Vinteum"                       ,    5,      32,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , 2, Collections.singletonList(new MaterialStack(Thaumium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Vis                     = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3, 0                         , 128,   0, 255,   0,   "Vis"                     ,   "Vis"                           ,    5,      32,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Collections.singletonList(new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AURAM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Redrock                 = new Materials( 846, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 255,  80,  50,   0,   "Redrock"                 ,   "Redrock"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Calcite, 2), new MaterialStack(Flint, 1), new MaterialStack(Clay, 1)));
         Materials.PotassiumFeldspar       = new Materials( 847, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 120,  40,  40,   0,   "PotassiumFeldspar"       ,   "Potassium Feldspar"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 8)));
@@ -10128,6 +10128,31 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Magic, 1)
             .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVinteum() {
+        return new MaterialBuilder().setName("Vinteum")
+            .setDefaultLocalName("Vinteum")
+            .setMetaItemSubID(529)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x64c8ff)
+            .setToolSpeed(10.0f)
+            .setDurability(128)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuelType(5)
+            .setFuelPower(32)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Thaumium, 1)
+            .addAspect(TCAspects.VITREUS, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
