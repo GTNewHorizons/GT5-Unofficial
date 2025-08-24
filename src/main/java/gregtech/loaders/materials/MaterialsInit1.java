@@ -2408,6 +2408,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadWaterLine() {
+        Materials.FlocculationWasteLiquid = loadFlocculationWasteLiquid();
         Materials.Grade1PurifiedWater = loadGrade1PurifiedWater();
         Materials.Grade2PurifiedWater = loadGrade2PurifiedWater();
         Materials.Grade3PurifiedWater = loadGrade3PurifiedWater();
@@ -2416,7 +2417,20 @@ public class MaterialsInit1 {
         Materials.Grade6PurifiedWater = loadGrade6PurifiedWater();
         Materials.Grade7PurifiedWater = loadGrade7PurifiedWater();
         Materials.Grade8PurifiedWater = loadGrade8PurifiedWater();
-        Materials.FlocculationWasteLiquid = loadFlocculationWasteLiquid();
+    }
+
+    private static Materials loadFlocculationWasteLiquid() {
+        return new MaterialBuilder().setName("FlocculationWasteLiquid")
+            .setDefaultLocalName("Flocculation Waste Liquid")
+            .setMetaItemSubID(562)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x003d3a52)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
     }
 
     private static Materials loadGrade1PurifiedWater() {
@@ -2524,20 +2538,6 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
             .setARGB(0x00c5c5ff)
-            .addCell()
-            .setMeltingPoint(273)
-            .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-    }
-
-    private static Materials loadFlocculationWasteLiquid() {
-        return new MaterialBuilder().setName("FlocculationWasteLiquid")
-            .setDefaultLocalName("Flocculation Waste Liquid")
-            .setMetaItemSubID(562)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeBlue)
-            .setARGB(0x003d3a52)
             .addCell()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)

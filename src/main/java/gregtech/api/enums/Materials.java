@@ -163,6 +163,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Uranium235;
 
     // Water Line
+    public static Materials FlocculationWasteLiquid;
     public static Materials Grade1PurifiedWater;
     public static Materials Grade2PurifiedWater;
     public static Materials Grade3PurifiedWater;
@@ -171,7 +172,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Grade6PurifiedWater;
     public static Materials Grade7PurifiedWater;
     public static Materials Grade8PurifiedWater;
-    public static Materials FlocculationWasteLiquid;
 
     // Random
     public static Materials Organic;
