@@ -14,7 +14,6 @@ import static gregtech.api.enums.Materials.Cadmium;
 import static gregtech.api.enums.Materials.Caesium;
 import static gregtech.api.enums.Materials.Calcium;
 import static gregtech.api.enums.Materials.Carbon;
-import static gregtech.api.enums.Materials.Cerium;
 import static gregtech.api.enums.Materials.Chlorine;
 import static gregtech.api.enums.Materials.Chrome;
 import static gregtech.api.enums.Materials.Clay;
@@ -203,9 +202,9 @@ public class MaterialsInit1 {
         Materials.GraniticMineralSand = loadGraniticMineralSand();
         Materials.GarnetSand = loadGarnetSand();
         Materials.QuartzSand = loadQuartzSand();
+        Materials.Bastnasite = loadBastnasite();
 
         // spotless:off
-        Materials.Bastnasite              = new Materials( 905, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 200, 110,  45,   0,   "Bastnasite"              ,   "Bastnasite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Cerium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Fluorine, 1), new MaterialStack(Oxygen, 3))); // (Ce, La, Y)CO3F
         Materials.Pentlandite             = new Materials( 909, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 165, 150,   5,   0,   "Pentlandite"             ,   "Pentlandite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Nickel, 9), new MaterialStack(Sulfur, 8))); // (Fe,Ni)9S8
         Materials.Spodumene               = new Materials( 920, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 190, 170, 170,   0,   "Spodumene"               ,   "Spodumene"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6))); // LiAl(SiO3)2
         Materials.Pollucite               = new Materials( 919, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 210, 210,   0,   "Pollucite"               ,   "Pollucite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Caesium, 2), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 12))); // (Cs,Na)2Al2Si4O12 2H2O (also a source of Rb)
@@ -10370,6 +10369,23 @@ public class MaterialsInit1 {
             .addOreItems()
             .addMaterial(Materials.CertusQuartz, 1)
             .addMaterial(Materials.Quartzite, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBastnasite() {
+        return new MaterialBuilder().setName("Bastnasite")
+            .setDefaultLocalName("Bastnasite")
+            .setMetaItemSubID(905)
+            .setIconSet(TextureSet.SET_FINE)
+            .setRGB(0xc86e2d)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Ce, La, Y)CO3F
+            .addMaterial(Materials.Cerium, 1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Fluorine, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
