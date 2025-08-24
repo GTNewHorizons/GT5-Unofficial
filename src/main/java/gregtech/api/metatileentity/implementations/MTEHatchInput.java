@@ -31,16 +31,18 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchInput extends MTEHatch {
 
-    public RecipeMap<?> mRecipeMap = null;
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
     public boolean disableFilter = true;
+    public RecipeMap<?> mRecipeMap = null;
+    private Integer customCapacity = null;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
-        this(
+        super(
             aID,
             aName,
             aNameRegional,
             aTier,
+            4,
             new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
                 "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
     }
@@ -74,6 +76,13 @@ public class MTEHatchInput extends MTEHatch {
 
     public MTEHatchInput(String aName, int aSlots, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
+    }
+
+    public void setCustomCapacity(int capacity) {
+        this.customCapacity = capacity;
+        if (mDescriptionArray != null && mDescriptionArray.length > 0)
+            mDescriptionArray[mDescriptionArray.length - 1] = String
+                .format("Capacity: %sL", GTUtility.formatNumbers(capacity));
     }
 
     @Override
@@ -113,6 +122,9 @@ public class MTEHatchInput extends MTEHatch {
         if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
         }
+        if (customCapacity != null) {
+            aNBT.setInteger("customCapacity", customCapacity);
+        }
     }
 
     @Override
@@ -120,6 +132,9 @@ public class MTEHatchInput extends MTEHatch {
         super.loadNBTData(aNBT);
         disableFilter = aNBT.getBoolean("disableFilter");
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
+        if (aNBT.hasKey("customCapacity")) {
+            customCapacity = aNBT.getInteger("customCapacity");
+        }
     }
 
     @Override
@@ -143,7 +158,6 @@ public class MTEHatchInput extends MTEHatch {
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", getBaseMetaTileEntity().getColorization());
-
     }
 
     @Override
@@ -152,14 +166,10 @@ public class MTEHatchInput extends MTEHatch {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         byte color = accessor.getNBTData()
             .getByte("color");
-        if (color >= 0 && color < 16) currenttip.add(
-            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
-    }
-
-    @Override
-    public boolean doesFillContainers() {
-        // return true;
-        return false;
+        if (color >= 0 && color < 16) {
+            currenttip.add(
+                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+        }
     }
 
     @Override
@@ -204,7 +214,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public int getCapacity() {
-        return 8000 * (1 << mTier);
+        return customCapacity != null ? customCapacity : (8000 * (1 << mTier));
     }
 
     @Override
@@ -212,10 +222,8 @@ public class MTEHatchInput extends MTEHatch {
         ItemStack aTool) {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
-        else {
-            disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
-        }
+        disableFilter = !disableFilter;
+        GTUtility
+            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
     }
 }
