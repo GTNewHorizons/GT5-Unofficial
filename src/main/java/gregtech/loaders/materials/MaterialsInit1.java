@@ -241,9 +241,9 @@ public class MaterialsInit1 {
         Materials.Dimethyldichlorosilane = loadDimethyldichlorosilane();
         Materials.Chloromethane = loadChloromethane();
         Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
+        Materials.Tetrafluoroethylene = loadTetrafluoroethylene();
 
         // spotless:off
-        Materials.Tetrafluoroethylene       = new MaterialBuilder(666, TextureSet.SET_FLUID      ,                                                                                                     "Tetrafluoroethylene").addCell().addGas().setRGB(125, 125, 125).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)).addElectrolyzerRecipe().constructMaterial();
         Materials.HydrofluoricAcid          = new MaterialBuilder(667, TextureSet.SET_FLUID      ,                                                                                                     "Hydrofluoric Acid").setName("HydrofluoricAcid_GT5U").addCell().addFluid().setRGB(0, 136, 170).setColor(Dyes.dyeLightBlue).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Chloroform                = new MaterialBuilder(668, TextureSet.SET_FLUID      ,                                                                                                     "Chloroform").addCell().addFluid().setRGB(137, 44, 160).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.BisphenolA                = new MaterialBuilder(669, TextureSet.SET_FLUID      ,                                                                                                     "Bisphenol A").addCell().setRGB(212, 170, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 15), new MaterialStack(Hydrogen, 16), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
@@ -8026,6 +8026,16 @@ public class MaterialsInit1 {
             .setRGB(220, 220, 0)
             .setColor(Dyes.dyeYellow)
             .setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadTetrafluoroethylene() {
+        return new MaterialBuilder(666, TextureSet.SET_FLUID, "Tetrafluoroethylene").addCell()
+            .addGas()
+            .setRGB(125, 125, 125)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
