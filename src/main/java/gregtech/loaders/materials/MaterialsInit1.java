@@ -192,9 +192,9 @@ public class MaterialsInit1 {
         Materials.Steel = loadSteel();
         Materials.Stibnite = loadStibnite();
         Materials.SulfuricAcid = loadSulfuricAcid();
+        Materials.Tanzanite = loadTanzanite();
 
         // spotless:off
-        Materials.Tanzanite               = new Materials( 508, TextureSet.SET_GEM_VERTICAL      ,   7.0F,    256,  2, 1  |4|8      |64          ,  64,   0, 200, 127,   "Tanzanite"               ,   "Tanzanite"                     ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Calcium, 2), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 13)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Tetrahedrite            = new Materials( 840, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 200,  32,   0,   0,   "Tetrahedrite"            ,   "Tetrahedrite"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Copper, 3), new MaterialStack(Antimony, 1), new MaterialStack(Sulfur, 3), new MaterialStack(Iron, 1))); //Cu3SbS3 + x(Fe,Zn)6Sb2S9
         Materials.TinAlloy                = new Materials( 363, TextureSet.SET_METALLIC          ,   6.5F,     96,  2, 1|2          |64|128      , 200, 200, 200,   0,   "TinAlloy"                ,   "Tin Alloy"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Topaz                   = new Materials( 507, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          , 255, 128,   0, 127,   "Topaz"                   ,   "Topaz"                         ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
@@ -8843,6 +8843,30 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadTanzanite() {
+        return new MaterialBuilder().setName("Tanzanite")
+            .setDefaultLocalName("Tanzanite")
+            .setMetaItemSubID(508)
+            .setIconSet(TextureSet.SET_GEM_VERTICAL)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0x7f4000c8)
+            .setToolSpeed(7.0f)
+            .setDurability(256)
+            .setToolQuality(2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Calcium, 2)
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Oxygen, 13)
+            .addAspect(TCAspects.LUCRUM, 5)
+            .addAspect(TCAspects.VITREUS, 3)
             .constructMaterial();
     }
 
