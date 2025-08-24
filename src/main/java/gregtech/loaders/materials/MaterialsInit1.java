@@ -167,6 +167,7 @@ public class MaterialsInit1 {
         loadRandom();
         loadDontCare();
         loadUnknownComponents();
+        loadTiers();
         loadNotExact();
         loadTODOThis();
         loadFirstDegreeCompounds();
@@ -2883,7 +2884,6 @@ public class MaterialsInit1 {
         Materials.Adamantium = loadAdamantium();
         Materials.Adamite = loadAdamite();
         Materials.Adluorite = loadAdluorite();
-        Materials.Advanced = loadAdvanced();
         Materials.Agate = loadAgate();
         Materials.Alduorite = loadAlduorite();
         Materials.Amber = loadAmber();
@@ -3009,7 +3009,6 @@ public class MaterialsInit1 {
         Materials.Sunstone = loadSunstone();
         Materials.Tar = loadTar();
         Materials.Tartarite = loadTartarite();
-        Materials.Ultimate = loadUltimate();
         Materials.UUAmplifier = loadUUAmplifier();
         Materials.UUMatter = loadUUMatter();
         Materials.Void = loadVoid();
@@ -3060,14 +3059,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadAdvanced() {
-        return new MaterialBuilder().setName("Advanced")
-            .setDefaultLocalName("Advanced")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 4)
             .constructMaterial();
     }
 
@@ -4778,14 +4769,6 @@ public class MaterialsInit1 {
             .setTurbineMultipliers(1120, 1120, 1);
     }
 
-    private static Materials loadUltimate() {
-        return new MaterialBuilder().setName("Ultimate")
-            .setDefaultLocalName("Ultimate")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 8)
-            .constructMaterial();
-    }
-
     private static Materials loadUUAmplifier() {
         return new MaterialBuilder().setName("UUAmplifier")
             .setDefaultLocalName("UU-Amplifier")
@@ -4897,6 +4880,161 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
+            .constructMaterial();
+    }
+
+    private static void loadTiers() {
+        Materials.ULV = loadULV();
+        Materials.LV = loadLV();
+        Materials.MV = loadMV();
+        Materials.HV = loadHV();
+        Materials.EV = loadEV();
+        Materials.IV = loadIV();
+        Materials.LuV = loadLuV();
+        Materials.ZPM = loadZPM();
+        Materials.UV = loadUV();
+        Materials.UHV = loadUHV();
+        Materials.UEV = loadUEV();
+        Materials.UIV = loadUIV();
+        Materials.UMV = loadUMV();
+        Materials.UXV = loadUXV();
+        Materials.MAX = loadMAX();
+
+        // Aliases for the old style of tiered circuits
+        Materials.Primitive = Materials.ULV;
+        Materials.Basic = Materials.LV;
+        Materials.Good = Materials.MV;
+        Materials.Advanced = Materials.HV;
+        Materials.Data = Materials.EV;
+        Materials.Elite = Materials.IV;
+        Materials.Master = Materials.LuV;
+        Materials.Ultimate = Materials.ZPM;
+        // Materials.Superconductor = Materials.UV;
+        Materials.Infinite = Materials.UHV;
+        Materials.Bio = Materials.UEV;
+        Materials.Optical = Materials.UIV;
+        Materials.Exotic = Materials.UMV;
+        Materials.Cosmic = Materials.UXV;
+        Materials.Transcendent = Materials.MAX;
+    }
+
+    private static Materials loadULV() {
+        return new MaterialBuilder().setName("Primitive")
+            .setDefaultLocalName("Primitive")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLV() {
+        return new MaterialBuilder().setName("Basic")
+            .setDefaultLocalName("Basic")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMV() {
+        return new MaterialBuilder().setName("Good")
+            .setDefaultLocalName("Good")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadHV() {
+        return new MaterialBuilder().setName("Advanced")
+            .setDefaultLocalName("Advanced")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadEV() {
+        return new MaterialBuilder().setName("Data")
+            .setDefaultLocalName("Data")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadIV() {
+        return new MaterialBuilder().setName("Elite")
+            .setDefaultLocalName("Elite")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadLuV() {
+        return new MaterialBuilder().setName("Master")
+            .setDefaultLocalName("Master")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 7)
+            .constructMaterial();
+    }
+
+    private static Materials loadZPM() {
+        return new MaterialBuilder().setName("Ultimate")
+            .setDefaultLocalName("Ultimate")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadUV() {
+        return new MaterialBuilder().setName("Superconductor")
+            .setDefaultLocalName("Superconductor")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadUHV() {
+        return new MaterialBuilder().setName("Infinite")
+            .setDefaultLocalName("Infinite")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadUEV() {
+        return new MaterialBuilder().setName("Bio")
+            .setDefaultLocalName("Bio")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 11)
+            .constructMaterial();
+    }
+
+    private static Materials loadUIV() {
+        return new MaterialBuilder().setName("Optical")
+            .setDefaultLocalName("Optical")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadUMV() {
+        return new MaterialBuilder().setName("Exotic")
+            .setDefaultLocalName("Exotic")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 13)
+            .constructMaterial();
+    }
+
+    private static Materials loadUXV() {
+        return new MaterialBuilder().setName("Cosmic")
+            .setDefaultLocalName("Cosmic")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 14)
+            .constructMaterial();
+    }
+
+    private static Materials loadMAX() {
+        return new MaterialBuilder().setName("Transcendent")
+            .setDefaultLocalName("Transcendent")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 15)
             .constructMaterial();
     }
 
