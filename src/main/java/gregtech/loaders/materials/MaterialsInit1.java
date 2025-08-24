@@ -183,8 +183,9 @@ public class MaterialsInit1 {
         loadRoastedOres();
         loadSiliconLine();
 
+        Materials.SolderingAlloy = loadSolderingAlloy();
+
         // spotless:off
-        Materials.SolderingAlloy          = new Materials( 314, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 220, 220, 230,   0,   "SolderingAlloy"          ,   "Soldering Alloy"               ,    0,       0,        400,  400, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 9), new MaterialStack(Antimony, 1)));
         Materials.GalliumArsenide         = new Materials( 980, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 160, 160, 160,   0,   "GalliumArsenide"         ,   "Gallium Arsenide"              ,    0,       0,         -1, 1200,  true, false,   1,   1,   1, Dyes.dyeGray        , 2, Arrays.asList(new MaterialStack(Arsenic, 1), new MaterialStack(Gallium, 1)));
         Materials.IndiumGalliumPhosphide  = new Materials( 981, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 160, 140, 190,   0,   "IndiumGalliumPhosphide"  ,   "Indium Gallium Phosphide"      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 2, Arrays.asList(new MaterialStack(Indium, 1), new MaterialStack(Gallium, 1), new MaterialStack(Phosphorus, 1)));
         Materials.Spessartine             = new Materials( 838, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 255, 100, 100,   0,   "Spessartine"             ,   "Spessartine"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Manganese, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
@@ -8681,6 +8682,23 @@ public class MaterialsInit1 {
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
                     new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .constructMaterial();
+    }
+
+    private static Materials loadSolderingAlloy() {
+        return new MaterialBuilder().setName("SolderingAlloy")
+            .setDefaultLocalName("Soldering Alloy")
+            .setMetaItemSubID(314)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdce6)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(400)
+            .setBlastFurnaceTemp(400)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Tin, 9)
+            .addMaterial(Materials.Antimony, 1)
             .constructMaterial();
     }
 
