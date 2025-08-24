@@ -475,7 +475,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Chromite;
     public static Materials ChromiumDioxide;
     public static Materials Cinnabar;
-    public static Materials Clay;
     public static Materials Coal;
     public static Materials Cobaltite;
     public static Materials Cooperite;
@@ -706,6 +705,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials YttriumBariumCuprate;
 
     // Second Degree Compounds
+    public static Materials Clay;
     public static Materials WoodSealed;
     public static Materials LiveRoot;
     public static Materials IronWood;
