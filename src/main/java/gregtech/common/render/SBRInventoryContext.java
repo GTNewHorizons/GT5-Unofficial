@@ -8,7 +8,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package gregtech.api.render;
+package gregtech.common.render;
 
 import java.util.function.IntPredicate;
 
@@ -20,6 +20,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.SBRContextHolder;
+
 /**
  * Represents the Inventory rendering context for a single block during a render pass.
  * <p>
@@ -28,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * the renderer, and the world in which it is rendered. It is passed
  * to various rendering methods throughout a block's render cycle.
  */
-public final class SBRInventoryContext extends SBRContextBase {
+public final class SBRInventoryContext extends SBRContextBase implements ISBRInventoryContext {
 
     private static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
     private int meta;
@@ -38,7 +41,7 @@ public final class SBRInventoryContext extends SBRContextBase {
      * <p>
      * Instances should be obtained via {@link SBRContextHolder#getSBRInventoryContext}.
      */
-    SBRInventoryContext() {}
+    public SBRInventoryContext() {}
 
     /**
      * Configures this {@link SBRInventoryContext} to render a single {@link Block}
@@ -50,7 +53,7 @@ public final class SBRInventoryContext extends SBRContextBase {
      * @param renderer the {@link RenderBlocks} renderer to use
      * @return this context instance, configured with the given parameters
      */
-    SBRInventoryContext setup(@NotNull Block block, int meta, int modelId, @NotNull RenderBlocks renderer) {
+    public ISBRInventoryContext setup(@NotNull Block block, int meta, int modelId, @NotNull RenderBlocks renderer) {
         super.setup(block, modelId, renderer);
         this.meta = meta;
         reset();
@@ -65,7 +68,8 @@ public final class SBRInventoryContext extends SBRContextBase {
      *
      * @return this {@link SBRInventoryContext} instance for chaining
      */
-    public SBRInventoryContext reset() {
+    @Override
+    public ISBRInventoryContext reset() {
         hasBrightnessOverride = false;
         hasColorOverride = false;
         setLightnessOverride(1.0F);
@@ -78,7 +82,8 @@ public final class SBRInventoryContext extends SBRContextBase {
      * @param side     the side
      * @param hexColor the primary color
      */
-    public SBRInventoryContext setupColor(ForgeDirection side, int hexColor) {
+    @Override
+    public ISBRInventoryContext setupColor(ForgeDirection side, int hexColor) {
         final Tessellator tessellator = Tessellator.instance;
         final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
 
@@ -103,6 +108,7 @@ public final class SBRInventoryContext extends SBRContextBase {
         return true;
     }
 
+    @Override
     public int getMeta() {
         return meta;
     }
