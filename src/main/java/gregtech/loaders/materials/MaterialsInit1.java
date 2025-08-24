@@ -201,9 +201,9 @@ public class MaterialsInit1 {
         Materials.GarnetYellow = loadGarnetYellow();
         Materials.Marble = loadMarble();
         Materials.Sugar = loadSugar();
+        Materials.Thaumium = loadThaumium();
 
         // spotless:off
-        Materials.Thaumium                = new Materials( 330, TextureSet.SET_METALLIC          ,  12.0F,    256,  3, 1|2          |64|128      , 150, 100, 200,   0,   "Thaumium"                ,   "Thaumium"                      ,    0,       0,         -1,    0, false, false,   5,   2,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Vinteum                 = new Materials( 529, TextureSet.SET_METALLIC          ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 100, 200, 255,   0,   "Vinteum"                 ,   "Vinteum"                       ,    5,      32,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , 2, Collections.singletonList(new MaterialStack(Thaumium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Vis                     = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3, 0                         , 128,   0, 255,   0,   "Vis"                     ,   "Vis"                           ,    5,      32,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Collections.singletonList(new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AURAM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Redrock                 = new Materials( 846, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 255,  80,  50,   0,   "Redrock"                 ,   "Redrock"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Calcite, 2), new MaterialStack(Flint, 1), new MaterialStack(Clay, 1)));
@@ -10107,6 +10107,28 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.HERBA, 1)
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.AER, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadThaumium() {
+        return new MaterialBuilder().setName("Thaumium")
+            .setDefaultLocalName("Thaumium")
+            .setMetaItemSubID(330)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x9664c8)
+            .setToolSpeed(12.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setDensityMultiplier(2)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
 
