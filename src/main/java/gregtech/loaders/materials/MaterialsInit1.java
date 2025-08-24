@@ -233,9 +233,9 @@ public class MaterialsInit1 {
         Materials.SulfurTrioxide = loadSulfurTrioxide();
         Materials.NitricAcid = loadNitricAcid();
         Materials.Dimethylhydrazine = loadDimethylhydrazine();
+        Materials.Chloramine = loadChloramine();
 
         // spotless:off
-        Materials.Chloramine                = new MaterialBuilder(655, TextureSet.SET_FLUID      ,                                                                                                     "Chloramine").addCell().addFluid().setRGB(63, 159, 128).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Dimethylamine             = new MaterialBuilder(656, TextureSet.SET_FLUID      ,                                                                                                     "Dimethylamine").addCell().addGas().setRGB(85, 68, 105).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 7), new MaterialStack(Nitrogen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.DinitrogenTetroxide       = new MaterialBuilder(657, TextureSet.SET_FLUID      ,                                                                                                     "Dinitrogen Tetroxide").addCell().addGas().setRGB(0, 65, 132).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 4)).addElectrolyzerRecipe().constructMaterial();
         Materials.NitricOxide               = new MaterialBuilder(658, TextureSet.SET_FLUID      ,                                                                                                     "Nitric Oxide").addCell().addGas().setRGB(125, 200, 240).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -7933,6 +7933,19 @@ public class MaterialsInit1 {
                 new MaterialStack(Carbon, 2),
                 new MaterialStack(Hydrogen, 8),
                 new MaterialStack(Nitrogen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChloramine() {
+        return new MaterialBuilder(655, TextureSet.SET_FLUID, "Chloramine").addCell()
+            .addFluid()
+            .setRGB(63, 159, 128)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(
+                new MaterialStack(Nitrogen, 1),
+                new MaterialStack(Hydrogen, 2),
+                new MaterialStack(Chlorine, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
