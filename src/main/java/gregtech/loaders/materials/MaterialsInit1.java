@@ -218,9 +218,9 @@ public class MaterialsInit1 {
         Materials.Wollastonite = loadWollastonite();
         Materials.Zeolite = loadZeolite();
         Materials.Kyanite = loadKyanite();
+        Materials.Kaolinite = loadKaolinite();
 
         // spotless:off
-        Materials.Kaolinite               = new Materials( 929, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 245, 235, 235,   0,   "Kaolinite"               ,   "Kaolinite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Al2Si2O5(OH)4
         Materials.Talc                    = new Materials( 902, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   ,  90, 180,  90,   0,   "Talc"                    ,   "Talc"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
         Materials.Soapstone               = new Materials( 877, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  95, 145,  95,   0,   "Soapstone"               ,   "Soapstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
         Materials.Concrete                = new Materials( 947, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 100, 100, 100,   0,   "Concrete"                ,   "Concrete"                      ,    0,       0,        300,    0, false, false,   0,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Stone, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
@@ -10769,6 +10769,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Aluminium, 2)
             .addMaterial(Materials.Silicon, 1)
             .addMaterial(Materials.Oxygen, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadKaolinite() {
+        return new MaterialBuilder().setName("Kaolinite")
+            .setDefaultLocalName("Kaolinite")
+            .setMetaItemSubID(929)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf5ebeb)
+            .addDustItems()
+            .addOreItems()
+            // Al2Si2O5(OH)4
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 9)
             .constructMaterial();
     }
 
