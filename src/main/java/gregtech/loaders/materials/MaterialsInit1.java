@@ -237,9 +237,9 @@ public class MaterialsInit1 {
         Materials.Dimethylamine = loadDimethylamine();
         Materials.DinitrogenTetroxide = loadDinitrogenTetroxide();
         Materials.NitricOxide = loadNitricOxide();
+        Materials.Ammonia = loadAmmonia();
 
         // spotless:off
-        Materials.Ammonia                   = new MaterialBuilder(659, TextureSet.SET_FLUID      ,                                                                                                     "Ammonia").addCell().addGas().setRGB(63, 52, 128).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.Dimethyldichlorosilane    = new MaterialBuilder(663, TextureSet.SET_FLUID      ,                                                                                                     "Dimethyldichlorosilane").addCell().addFluid().setRGB(68, 22, 80).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Chlorine, 2), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Chloromethane             = new MaterialBuilder(664, TextureSet.SET_FLUID      ,                                                                                                     "Chloromethane").addCell().addGas().setRGB(200, 44, 160).setColor(Dyes.dyeMagenta).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.PhosphorousPentoxide      = new MaterialBuilder(665, TextureSet.SET_FLUID      ,                                                                                                     "Phosphorous Pentoxide").addCell().addDustItems().setRGB(220, 220, 0).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10)).addElectrolyzerRecipe().constructMaterial();
@@ -7979,6 +7979,16 @@ public class MaterialsInit1 {
             .setRGB(125, 200, 240)
             .setColor(Dyes.dyeCyan)
             .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAmmonia() {
+        return new MaterialBuilder(659, TextureSet.SET_FLUID, "Ammonia").addCell()
+            .addGas()
+            .setRGB(63, 52, 128)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
