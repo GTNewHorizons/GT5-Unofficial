@@ -195,9 +195,9 @@ public class MaterialsInit1 {
         Materials.Tanzanite = loadTanzanite();
         Materials.Tetrahedrite = loadTetrahedrite();
         Materials.TinAlloy = loadTinAlloy();
+        Materials.Topaz = loadTopaz();
 
         // spotless:off
-        Materials.Topaz                   = new Materials( 507, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          , 255, 128,   0, 127,   "Topaz"                   ,   "Topaz"                         ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
         Materials.Tungstate               = new Materials( 841, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   ,  55,  50,  35,   0,   "Tungstate"               ,   "Tungstate"                     ,    0,       0,       2500, 2500,  true, false,   4,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Lithium, 2), new MaterialStack(Oxygen, 4)));
         Materials.Ultimet                 = new Materials( 344, TextureSet.SET_SHINY             ,   9.0F,   2048,  4, 1|2          |64|128      , 180, 180, 230,   0,   "Ultimet"                 ,   "Ultimet"                       ,    0,       0,       2700, 2700,  true, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Cobalt, 5), new MaterialStack(Chrome, 2), new MaterialStack(Nickel, 1), new MaterialStack(Molybdenum, 1))); // 54% Cobalt, 26% Chromium, 9% Nickel, 5% Molybdenum, 3% Iron, 2% Tungsten, 0.8% Manganese, 0.3% Silicon, 0.08% Nitrogen and 0.06% Carbon
         Materials.Uraninite               = new Materials( 922, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  35,  35,  35,   0,   "Uraninite"               ,   "Uraninite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , 2, Arrays.asList(new MaterialStack(Uranium, 1), new MaterialStack(Oxygen, 2)));
@@ -8907,6 +8907,30 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTopaz() {
+        return new MaterialBuilder().setName("Topaz")
+            .setDefaultLocalName("Topaz")
+            .setMetaItemSubID(507)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x7fff8000)
+            .setToolSpeed(7.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 4)
             .constructMaterial();
     }
 
