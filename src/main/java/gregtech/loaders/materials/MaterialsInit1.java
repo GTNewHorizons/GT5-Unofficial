@@ -243,9 +243,9 @@ public class MaterialsInit1 {
         Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
         Materials.Tetrafluoroethylene = loadTetrafluoroethylene();
         Materials.HydrofluoricAcid = loadHydrofluoricAcid();
+        Materials.Chloroform = loadChloroform();
 
         // spotless:off
-        Materials.Chloroform                = new MaterialBuilder(668, TextureSet.SET_FLUID      ,                                                                                                     "Chloroform").addCell().addFluid().setRGB(137, 44, 160).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.BisphenolA                = new MaterialBuilder(669, TextureSet.SET_FLUID      ,                                                                                                     "Bisphenol A").addCell().setRGB(212, 170, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 15), new MaterialStack(Hydrogen, 16), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.AceticAcid                = new MaterialBuilder(670, TextureSet.SET_FLUID      ,                                                                                                     "Acetic Acid").addCell().addFluid().setRGB(200, 180, 160).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.CalciumAcetateSolution    = new MaterialBuilder(671, TextureSet.SET_RUBY       ,                                                                                                     "Calcium Acetate Solution").addCell().addFluid().setRGB(220, 200, 180).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 4), new MaterialStack(Oxygen, 4), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().constructMaterial();
@@ -8047,6 +8047,19 @@ public class MaterialsInit1 {
             .setRGB(0, 136, 170)
             .setColor(Dyes.dyeLightBlue)
             .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChloroform() {
+        return new MaterialBuilder(668, TextureSet.SET_FLUID, "Chloroform").addCell()
+            .addFluid()
+            .setRGB(137, 44, 160)
+            .setColor(Dyes.dyePurple)
+            .setMaterialList(
+                new MaterialStack(Carbon, 1),
+                new MaterialStack(Hydrogen, 1),
+                new MaterialStack(Chlorine, 3))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
