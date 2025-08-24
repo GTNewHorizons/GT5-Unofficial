@@ -223,9 +223,9 @@ public class MaterialsInit1 {
         Materials.Butane = loadButane();
         Materials.Butene = loadButene();
         Materials.Butadiene = loadButadiene();
+        Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
 
         // spotless:off
-        Materials.RawStyreneButadieneRubber = new MaterialBuilder(634, TextureSet.SET_SHINY      ,                                                                                                     "Raw Styrene-Butadiene Rubber").addDustItems().setRGB(84, 64, 61).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3)).constructMaterial();
         Materials.StyreneButadieneRubber    = new MaterialBuilder(635, TextureSet.SET_SHINY      ,                                                                                                     "Styrene-Butadiene Rubber").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(128).setToolQuality(1).setRGB(33, 26, 24).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3)).constructMaterial();
         Materials.Toluene                   = new MaterialBuilder(647, TextureSet.SET_FLUID      ,                                                                                                     "Toluene").addCell().setRGB(80, 29, 5).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(328).setMaterialList(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
         Materials.Epichlorohydrin           = new MaterialBuilder(648, TextureSet.SET_FLUID      ,                                                                                                     "Epichlorohydrin").addCell().setRGB(80, 29, 5).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -7813,6 +7813,14 @@ public class MaterialsInit1 {
             .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6))
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadRawStyreneButadieneRubber() {
+        return new MaterialBuilder(634, TextureSet.SET_SHINY, "Raw Styrene-Butadiene Rubber").addDustItems()
+            .setRGB(84, 64, 61)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
             .constructMaterial();
     }
 
