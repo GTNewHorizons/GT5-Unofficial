@@ -256,9 +256,9 @@ public class MaterialsInit1 {
         Materials.VinylAcetate = loadVinylAcetate();
         Materials.PolyvinylAcetate = loadPolyvinylAcetate();
         Materials.MethylAcetate = loadMethylAcetate();
+        Materials.AllylChloride = loadAllylChloride();
 
         // spotless:off
-        Materials.AllylChloride             = new MaterialBuilder(682, TextureSet.SET_FLUID      ,                                                                                                     "Allyl Chloride").addCell().addFluid().setRGB(135, 222, 170).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.HydrochloricAcid          = new MaterialBuilder(683, TextureSet.SET_FLUID      ,                                                                                                     "Hydrochloric Acid").setName("HydrochloricAcid_GT5U").addCell().addFluid().setRGB(183, 200, 196).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1)).constructMaterial();
         Materials.HypochlorousAcid          = new MaterialBuilder(684, TextureSet.SET_FLUID      ,                                                                                                     "Hypochlorous Acid").addCell().addFluid().setRGB(111, 138, 145).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.SodiumOxide               = new MaterialBuilder(744, TextureSet.SET_DULL       ,                                                                                                     "Sodium Oxide").setName("SodiumOxide").addDustItems().setRGB(255, 255, 235).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -8190,6 +8190,19 @@ public class MaterialsInit1 {
             .setRGB(238, 198, 175)
             .setColor(Dyes.dyeOrange)
             .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAllylChloride() {
+        return new MaterialBuilder(682, TextureSet.SET_FLUID, "Allyl Chloride").addCell()
+            .addFluid()
+            .setRGB(135, 222, 170)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(
+                new MaterialStack(Carbon, 3),
+                new MaterialStack(Hydrogen, 5),
+                new MaterialStack(Chlorine, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
