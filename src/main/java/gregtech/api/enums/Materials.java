@@ -217,6 +217,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Adamantium;
     public static Materials Adamite;
     public static Materials Adluorite;
+    public static Materials Advanced;
     public static Materials Agate;
     public static Materials Alduorite;
     public static Materials Amber;
@@ -230,23 +231,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Bitumen;
     public static Materials Black;
     public static Materials Blizz;
+    public static Materials Bloodstone;
     public static Materials Blueschist;
     public static Materials Bluestone;
-    public static Materials Bloodstone;
     public static Materials Blutonium;
     public static Materials Carmot;
     public static Materials Celenegil;
     public static Materials CertusQuartz;
     public static Materials CertusQuartzCharged;
     public static Materials Ceruclase;
+    public static Materials Chert;
+    public static Materials Chimerite;
+    public static Materials Chrysocolla;
     public static Materials Citrine;
     public static Materials CobaltHexahydrate;
     public static Materials ConstructionFoam;
-    public static Materials Chert;
-    public static Materials Chimerite;
     public static Materials Coral;
     public static Materials CrudeOil;
-    public static Materials Chrysocolla;
     public static Materials CrystalFlux;
     public static Materials Cyanite;
     public static Materials Dacite;
@@ -275,8 +276,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Gabbro;
     public static Materials Glowstone;
     public static Materials Gneiss;
-    public static Materials Graphite;
     public static Materials Graphene;
+    public static Materials Graphite;
     public static Materials Greenschist;
     public static Materials Greenstone;
     public static Materials Greywacke;
@@ -287,15 +288,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ignatius;
     public static Materials Infernal;
     public static Materials Infuscolium;
-    public static Materials InfusedGold;
     public static Materials InfusedAir;
-    public static Materials InfusedFire;
+    public static Materials InfusedDull;
     public static Materials InfusedEarth;
-    public static Materials InfusedWater;
     public static Materials InfusedEntropy;
+    public static Materials InfusedFire;
+    public static Materials InfusedGold;
     public static Materials InfusedOrder;
     public static Materials InfusedVis;
-    public static Materials InfusedDull;
+    public static Materials InfusedWater;
     public static Materials Inolashite;
     public static Materials Invisium;
     public static Materials Jade;
@@ -342,6 +343,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Sunstone;
     public static Materials Tar;
     public static Materials Tartarite;
+    public static Materials Ultimate;
     public static Materials UUAmplifier;
     public static Materials UUMatter;
     public static Materials Void;
@@ -350,8 +352,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Vyroxeres;
     public static Materials Yellorium;
     public static Materials Zectium;
-    public static Materials Ultimate;
-    public static Materials Advanced;
 
     // Tiered materials, primarily Circuitry, Batteries and other Technical things
     public static Materials ULV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Primitive"               ,   "Primitive"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 1)));
