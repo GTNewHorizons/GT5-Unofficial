@@ -225,9 +225,9 @@ public class MaterialsInit1 {
         Materials.Butadiene = loadButadiene();
         Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
         Materials.StyreneButadieneRubber = loadStyreneButadieneRubber();
+        Materials.Toluene = loadToluene();
 
         // spotless:off
-        Materials.Toluene                   = new MaterialBuilder(647, TextureSet.SET_FLUID      ,                                                                                                     "Toluene").addCell().setRGB(80, 29, 5).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(328).setMaterialList(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
         Materials.Epichlorohydrin           = new MaterialBuilder(648, TextureSet.SET_FLUID      ,                                                                                                     "Epichlorohydrin").addCell().setRGB(80, 29, 5).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.PolyvinylChloride         = new MaterialBuilder(649, TextureSet.SET_DULL       ,                                                                                                     "Polyvinyl Chloride").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(215, 230, 230).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).constructMaterial();
         Materials.VinylChloride             = new MaterialBuilder(650, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Chloride").addCell().addGas().setRGB(225, 240, 240).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -7835,6 +7835,17 @@ public class MaterialsInit1 {
             .setRGB(33, 26, 24)
             .setColor(Dyes.dyeBlack)
             .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadToluene() {
+        return new MaterialBuilder(647, TextureSet.SET_FLUID, "Toluene").addCell()
+            .setRGB(80, 29, 5)
+            .setColor(Dyes.dyeBrown)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(328)
+            .setMaterialList(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
