@@ -184,9 +184,9 @@ public class MaterialsInit1 {
         Materials.RoastedCopper = loadRoastedCopper();
         Materials.RoastedAntimony = loadRoastedAntimony();
         Materials.RoastedIron = loadRoastedIron();
+        Materials.RoastedNickel = loadRoastedNickel();
 
         // spotless:off
-        Materials.RoastedNickel             = new MaterialBuilder(549, TextureSet.SET_METALLIC, "Roasted Nickel").setName("RoastedNickel").addDustItems().setRGB(70, 140, 45).addOreItems().constructMaterial();
         Materials.RoastedZinc               = new MaterialBuilder(550, TextureSet.SET_DULL    , "Roasted Zinc").setName("RoastedZinc").addDustItems().setRGB(209, 209, 209).constructMaterial();
         Materials.RoastedCobalt             = new MaterialBuilder(551, TextureSet.SET_METALLIC, "Roasted Cobalt").setName("RoastedCobalt").addDustItems().setRGB(8, 64, 9).constructMaterial();
         Materials.RoastedArsenic            = new MaterialBuilder(552, TextureSet.SET_SHINY   , "Roasted Arsenic").setName("RoastedArsenic").addDustItems().setRGB(240, 240, 240).constructMaterial();
@@ -8463,6 +8463,14 @@ public class MaterialsInit1 {
         return new MaterialBuilder(548, TextureSet.SET_DULL, "Roasted Iron").setName("RoastedIron")
             .addDustItems()
             .setRGB(148, 98, 98)
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedNickel() {
+        return new MaterialBuilder(549, TextureSet.SET_METALLIC, "Roasted Nickel").setName("RoastedNickel")
+            .addDustItems()
+            .setRGB(70, 140, 45)
             .addOreItems()
             .constructMaterial();
     }
