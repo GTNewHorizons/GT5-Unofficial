@@ -58,7 +58,6 @@ import static gregtech.api.enums.Materials.Iridium;
 import static gregtech.api.enums.Materials.Iron;
 import static gregtech.api.enums.Materials.Lead;
 import static gregtech.api.enums.Materials.Lithium;
-import static gregtech.api.enums.Materials.Magic;
 import static gregtech.api.enums.Materials.Magnesium;
 import static gregtech.api.enums.Materials.Magnetite;
 import static gregtech.api.enums.Materials.Manganese;
@@ -203,9 +202,9 @@ public class MaterialsInit1 {
         Materials.Sugar = loadSugar();
         Materials.Thaumium = loadThaumium();
         Materials.Vinteum = loadVinteum();
+        Materials.Vis = loadVis();
 
         // spotless:off
-        Materials.Vis                     = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3, 0                         , 128,   0, 255,   0,   "Vis"                     ,   "Vis"                           ,    5,      32,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Collections.singletonList(new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AURAM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Redrock                 = new Materials( 846, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 255,  80,  50,   0,   "Redrock"                 ,   "Redrock"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Calcite, 2), new MaterialStack(Flint, 1), new MaterialStack(Clay, 1)));
         Materials.PotassiumFeldspar       = new Materials( 847, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 120,  40,  40,   0,   "PotassiumFeldspar"       ,   "Potassium Feldspar"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 8)));
         Materials.Biotite                 = new Materials( 848, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1                         ,  20,  30,  20,   0,   "Biotite"                 ,   "Biotite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 3), new MaterialStack(Aluminium, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 10)));
@@ -10153,6 +10152,21 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Thaumium, 1)
             .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVis() {
+        return new MaterialBuilder().setName("Vis")
+            .setDefaultLocalName("Vis")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x8000ff)
+            .setFuelType(5)
+            .setFuelPower(32)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.AURAM, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
