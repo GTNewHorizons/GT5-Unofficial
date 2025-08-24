@@ -199,9 +199,9 @@ public class MaterialsInit1 {
         Materials.Basalt = loadBasalt();
         Materials.GarnetRed = loadGarnetRed();
         Materials.GarnetYellow = loadGarnetYellow();
+        Materials.Marble = loadMarble();
 
         // spotless:off
-        Materials.Marble                  = new Materials( 845, TextureSet.SET_FINE              ,   1.0F,     16,  1, 1            |64|128      , 200, 200, 200,   0,   "Marble"                  ,   "Marble"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Calcite, 7)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1)));
         Materials.Sugar                   = new Materials( 803, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 250, 250, 250,   0,   "Sugar"                   ,   "Sugar"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 25)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HERBA, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 1)));
         Materials.Thaumium                = new Materials( 330, TextureSet.SET_METALLIC          ,  12.0F,    256,  3, 1|2          |64|128      , 150, 100, 200,   0,   "Thaumium"                ,   "Thaumium"                      ,    0,       0,         -1,    0, false, false,   5,   2,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Vinteum                 = new Materials( 529, TextureSet.SET_METALLIC          ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 100, 200, 255,   0,   "Vinteum"                 ,   "Vinteum"                       ,    5,      32,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , 2, Collections.singletonList(new MaterialStack(Thaumium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
@@ -10069,6 +10069,26 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Grossular, 8)
             .addMaterial(Materials.Uvarovite, 3)
             .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadMarble() {
+        return new MaterialBuilder().setName("Marble")
+            .setDefaultLocalName("Marble")
+            .setMetaItemSubID(845)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc8c8c8)
+            .setToolSpeed(1.0f)
+            .setDurability(16)
+            .setToolQuality(1)
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Calcite, 7)
+            .addAspect(TCAspects.PERFODIO, 1)
             .constructMaterial();
     }
 
