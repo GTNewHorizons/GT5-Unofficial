@@ -203,9 +203,9 @@ public class MaterialsInit1 {
         Materials.Vinteum = loadVinteum();
         Materials.Vis = loadVis();
         Materials.Redrock = loadRedrock();
+        Materials.PotassiumFeldspar = loadPotassiumFeldspar();
 
         // spotless:off
-        Materials.PotassiumFeldspar       = new Materials( 847, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 120,  40,  40,   0,   "PotassiumFeldspar"       ,   "Potassium Feldspar"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 8)));
         Materials.Biotite                 = new Materials( 848, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1                         ,  20,  30,  20,   0,   "Biotite"                 ,   "Biotite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 3), new MaterialStack(Aluminium, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 10)));
         Materials.GraniteBlack            = new Materials( 849, TextureSet.SET_ROUGH             ,   4.0F,     64,  3, 1            |64|128      ,  10,  10,  10,   0,   "GraniteBlack"            ,   "Black Granite"                 ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Biotite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
         Materials.GraniteRed              = new Materials( 850, TextureSet.SET_ROUGH             ,   4.0F,     64,  3, 1            |64|128      , 255,   0, 128,   0,   "GraniteRed"              ,   "Red Granite"                   ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeMagenta     , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(PotassiumFeldspar, 1), new MaterialStack(Oxygen, 3)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
@@ -10182,6 +10182,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Calcite, 2)
             .addMaterial(Materials.Flint, 1)
             .addMaterial(Materials.Clay, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassiumFeldspar() {
+        return new MaterialBuilder().setName("PotassiumFeldspar")
+            .setDefaultLocalName("Potassium Feldspar")
+            .setMetaItemSubID(847)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x782828)
+            .addDustItems()
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 8)
             .constructMaterial();
     }
 
