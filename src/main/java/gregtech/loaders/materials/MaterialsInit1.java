@@ -185,9 +185,9 @@ public class MaterialsInit1 {
         Materials.SiliconSG = loadSiliconSG();
         Materials.CalciumDisilicide = loadCalciumDisilicide();
         Materials.SiliconTetrafluoride = loadSiliconTetrafluoride();
+        Materials.SiliconTetrachloride = loadSiliconTetrachloride();
 
         // spotless:off
-        Materials.SiliconTetrachloride    = new MaterialBuilder(  968, TextureSet.SET_FLUID            ,  "Silicon Tetrachloride").setName("SiliconTetrachloride").addCell().addFluid().setRGB(220, 220, 220).setColor(Dyes.dyeWhite).setMeltingPoint(204).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 4)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//SICL4
         Materials.Trichlorosilane         = new MaterialBuilder(  972, TextureSet.SET_FLUID            ,   "Trichlorosilane" ).setName("Trichlorosilane" ).addCell().addFluid().setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(139).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//HSICL3
         Materials.Hexachlorodisilane      = new MaterialBuilder(  973, TextureSet.SET_FLUID            ,  "Hexachlorodisilane").setName("Hexachlorodisilane" ).addCell().addFluid().setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(272).setExtraData(1).setMaterialList(new MaterialStack(Silicon, 2), new MaterialStack(Chlorine, 6)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).constructMaterial();//SI2CL6
         Materials.Dichlorosilane          = new MaterialBuilder(  799, TextureSet.SET_FLUID            ,   "Dichlorosilane").setName("Dichlorosilane").addCell().addGas().setTransparent(true).setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(151).setExtraData(1).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Chlorine, 2)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//SIH2CL2
@@ -8555,6 +8555,22 @@ public class MaterialsInit1 {
             .setMeltingPoint(178)
             // SIF4
             .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 4))
+            .setAspects(
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconTetrachloride() {
+        return new MaterialBuilder(968, TextureSet.SET_FLUID, "Silicon Tetrachloride").setName("SiliconTetrachloride")
+            .addCell()
+            .addFluid()
+            .setRGB(220, 220, 220)
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(204)
+            // SICL4
+            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 4))
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
