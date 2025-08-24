@@ -12,7 +12,6 @@ import static gregtech.api.enums.Materials.Ash;
 import static gregtech.api.enums.Materials.BandedIron;
 import static gregtech.api.enums.Materials.Barium;
 import static gregtech.api.enums.Materials.Basalt;
-import static gregtech.api.enums.Materials.Beryllium;
 import static gregtech.api.enums.Materials.Biotite;
 import static gregtech.api.enums.Materials.Bismuth;
 import static gregtech.api.enums.Materials.BismuthBronze;
@@ -192,9 +191,9 @@ public class MaterialsInit1 {
         Materials.Redstone = loadRedstone();
         Materials.Lapis = loadLapis();
         Materials.Blaze = loadBlaze();
+        Materials.EnderPearl = loadEnderPearl();
 
         // spotless:off
-        Materials.EnderPearl              = new Materials( 532, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 108, 220, 200,   0,   "EnderPearl"              ,   "Enderpearl"                    ,    0,       0,         -1,    0, false, false,   1,  16,  10, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Beryllium, 1), new MaterialStack(Potassium, 4), new MaterialStack(Nitrogen, 5), new MaterialStack(Magic, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2)));
         Materials.EnderEye                = new Materials( 533, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 160, 250, 230,   0,   "EnderEye"                ,   "Endereye"                      ,    5,      10,         -1,    0, false, false,   1,   2,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(EnderPearl, 1), new MaterialStack(Blaze, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.Flint                   = new Materials( 802, TextureSet.SET_FLINT             ,   2.5F,    128,  1, 1            |64          ,   0,  32,  64,   0,   "Flint"                   ,   "Flint"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Diatomite               = new Materials( 948, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 225, 225, 225,   0,   "Diatomite"               ,   "Diatomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Arrays.asList(new MaterialStack(Flint, 8), new MaterialStack(BandedIron, 1), new MaterialStack(Sapphire, 1)));
@@ -9441,6 +9440,31 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Magic, 1)
             .addAspect(TCAspects.PRAECANTATIO, 2)
             .addAspect(TCAspects.IGNIS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnderPearl() {
+        return new MaterialBuilder().setName("EnderPearl")
+            .setDefaultLocalName("Enderpearl")
+            .setMetaItemSubID(532)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x6cdcc8)
+            .setToolSpeed(1.0f)
+            .setDurability(16)
+            .setToolQuality(1)
+            .addDustItems()
+            .addGemItems()
+            .setDensityMultiplier(16)
+            .setDensityDivider(10)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Beryllium, 1)
+            .addMaterial(Materials.Potassium, 4)
+            .addMaterial(Materials.Nitrogen, 5)
+            .addMaterial(Materials.Magic, 6)
+            .addAspect(TCAspects.ALIENIS, 4)
+            .addAspect(TCAspects.ITER, 4)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
             .constructMaterial();
     }
 
