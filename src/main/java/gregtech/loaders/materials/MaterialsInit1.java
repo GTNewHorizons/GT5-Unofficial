@@ -175,9 +175,8 @@ public class MaterialsInit1 {
         loadUnclassified2();
         loadUnclassified3();
         loadUnclassified4();
+        loadUnclassified5();
 
-        Materials.GrowthMediumRaw = loadGrowthMediumRaw();
-        Materials.GrowthMediumSterilized = loadGrowthMediumSterilized();
         Materials.FerriteMixture = loadFerriteMixture();
         Materials.NickelZincFerrite = loadNickelZincFerrite();
         Materials.Massicot = loadMassicot();
@@ -7580,6 +7579,11 @@ public class MaterialsInit1 {
             .setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7))
             .addElectrolyzerRecipe()
             .constructMaterial();
+    }
+
+    private static void loadUnclassified5() {
+        Materials.GrowthMediumRaw = loadGrowthMediumRaw();
+        Materials.GrowthMediumSterilized = loadGrowthMediumSterilized();
     }
 
     private static Materials loadGrowthMediumRaw() {
