@@ -211,9 +211,9 @@ public class MaterialsInit1 {
         Materials.Malachite = loadMalachite();
         Materials.Mirabilite = loadMirabilite();
         Materials.Mica = loadMica();
+        Materials.Trona = loadTrona();
 
         // spotless:off
-        Materials.Trona                   = new Materials( 903, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 135, 135,  95,   0,   "Trona"                   ,   "Trona"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 3), new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 6))); // Na3(CO3)(HCO3) 2H2O
         Materials.Barite                  = new Materials( 904, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 230, 235, 255,   0,   "Barite"                  ,   "Barite"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Barium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)));
         Materials.Gypsum                  = new Materials( 934, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 250,   0,   "Gypsum"                  ,   "Gypsum"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4), new MaterialStack(Water, 2))); // CaSO4 2H2O
         Materials.Alunite                 = new Materials( 911, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 225, 180,  65,   0,   "Alunite"                 ,   "Alunite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 14))); // KAl3(SO4)2(OH)6
@@ -10638,6 +10638,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silicon, 3)
             .addMaterial(Materials.Fluorine, 2)
             .addMaterial(Materials.Oxygen, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadTrona() {
+        return new MaterialBuilder().setName("Trona")
+            .setDefaultLocalName("Trona")
+            .setMetaItemSubID(903)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x87875f)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Na3(CO3)(HCO3) 2H2O
+            .addMaterial(Materials.Sodium, 3)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Water, 2)
+            .addMaterial(Materials.Oxygen, 6)
             .constructMaterial();
     }
 
