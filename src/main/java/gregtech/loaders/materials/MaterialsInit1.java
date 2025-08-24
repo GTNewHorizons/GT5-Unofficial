@@ -212,9 +212,9 @@ public class MaterialsInit1 {
         Materials.Mirabilite = loadMirabilite();
         Materials.Mica = loadMica();
         Materials.Trona = loadTrona();
+        Materials.Barite = loadBarite();
 
         // spotless:off
-        Materials.Barite                  = new Materials( 904, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 230, 235, 255,   0,   "Barite"                  ,   "Barite"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Barium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)));
         Materials.Gypsum                  = new Materials( 934, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 250,   0,   "Gypsum"                  ,   "Gypsum"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4), new MaterialStack(Water, 2))); // CaSO4 2H2O
         Materials.Alunite                 = new Materials( 911, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 225, 180,  65,   0,   "Alunite"                 ,   "Alunite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 14))); // KAl3(SO4)2(OH)6
         Materials.Dolomite                = new Materials( 914, TextureSet.SET_FLINT             ,   1.0F,      0,  1, 1    |8                   , 225, 205, 205,   0,   "Dolomite"                ,   "Dolomite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Oxygen, 6))); // CaMg(CO3)2
@@ -10656,6 +10656,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 1)
             .addMaterial(Materials.Water, 2)
             .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadBarite() {
+        return new MaterialBuilder().setName("Barite")
+            .setDefaultLocalName("Barite")
+            .setMetaItemSubID(904)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xe6ebff)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Barium, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
