@@ -445,11 +445,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // TODO: this
     public static Materials AluminiumBrass;
-    public static Materials Osmiridium;
-    public static Materials Sunnarium;
     public static Materials Endstone;
     public static Materials Netherrack;
+    public static Materials Osmiridium;
     public static Materials SoulSand;
+    public static Materials Sunnarium;
 
     // First Degree Compounds
     public static Materials Methane;

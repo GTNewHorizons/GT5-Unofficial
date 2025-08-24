@@ -5620,11 +5620,11 @@ public class MaterialsInit1 {
 
     private static void loadTODOThis() {
         Materials.AluminiumBrass = loadAluminiumBrass();
-        Materials.Osmiridium = loadOsmiridium();
-        Materials.Sunnarium = loadSunnarium();
         Materials.Endstone = loadEndstone();
         Materials.Netherrack = loadNetherrack();
+        Materials.Osmiridium = loadOsmiridium();
         Materials.SoulSand = loadSoulSand();
+        Materials.Sunnarium = loadSunnarium();
     }
 
     private static Materials loadAluminiumBrass() {
@@ -5638,6 +5638,27 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadEndstone() {
+        return new MaterialBuilder().setName("Endstone")
+            .setDefaultLocalName("Endstone")
+            .setMetaItemSubID(808)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherrack() {
+        return new MaterialBuilder().setName("Netherrack")
+            .setDefaultLocalName("Netherrack")
+            .setMetaItemSubID(807)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
+            .addDustItems()
             .constructMaterial();
     }
 
@@ -5666,6 +5687,15 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadSoulSand() {
+        return new MaterialBuilder().setName("SoulSand")
+            .setDefaultLocalName("Soulsand")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .addDustItems()
+            .constructMaterial();
+    }
+
     private static Materials loadSunnarium() {
         return new MaterialBuilder().setName("Sunnarium")
             .setDefaultLocalName("Sunnarium")
@@ -5681,36 +5711,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(4200)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .constructMaterial();
-    }
-
-    private static Materials loadEndstone() {
-        return new MaterialBuilder().setName("Endstone")
-            .setDefaultLocalName("Endstone")
-            .setMetaItemSubID(808)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeYellow)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadNetherrack() {
-        return new MaterialBuilder().setName("Netherrack")
-            .setDefaultLocalName("Netherrack")
-            .setMetaItemSubID(807)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xc80000)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadSoulSand() {
-        return new MaterialBuilder().setName("SoulSand")
-            .setDefaultLocalName("Soulsand")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeBrown)
-            .addDustItems()
             .constructMaterial();
     }
 
