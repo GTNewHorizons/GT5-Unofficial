@@ -193,9 +193,9 @@ public class MaterialsInit1 {
         Materials.Stibnite = loadStibnite();
         Materials.SulfuricAcid = loadSulfuricAcid();
         Materials.Tanzanite = loadTanzanite();
+        Materials.Tetrahedrite = loadTetrahedrite();
 
         // spotless:off
-        Materials.Tetrahedrite            = new Materials( 840, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 200,  32,   0,   0,   "Tetrahedrite"            ,   "Tetrahedrite"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Copper, 3), new MaterialStack(Antimony, 1), new MaterialStack(Sulfur, 3), new MaterialStack(Iron, 1))); //Cu3SbS3 + x(Fe,Zn)6Sb2S9
         Materials.TinAlloy                = new Materials( 363, TextureSet.SET_METALLIC          ,   6.5F,     96,  2, 1|2          |64|128      , 200, 200, 200,   0,   "TinAlloy"                ,   "Tin Alloy"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Topaz                   = new Materials( 507, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          , 255, 128,   0, 127,   "Topaz"                   ,   "Topaz"                         ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
         Materials.Tungstate               = new Materials( 841, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   ,  55,  50,  35,   0,   "Tungstate"               ,   "Tungstate"                     ,    0,       0,       2500, 2500,  true, false,   4,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Lithium, 2), new MaterialStack(Oxygen, 4)));
@@ -8867,6 +8867,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 13)
             .addAspect(TCAspects.LUCRUM, 5)
             .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadTetrahedrite() {
+        return new MaterialBuilder().setName("Tetrahedrite")
+            .setDefaultLocalName("Tetrahedrite")
+            .setMetaItemSubID(840)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc82000)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            // Cu3SbS3 + x(Fe,Zn)6Sb2S9
+            .addMaterial(Materials.Copper, 3)
+            .addMaterial(Materials.Antimony, 1)
+            .addMaterial(Materials.Sulfur, 3)
+            .addMaterial(Materials.Iron, 1)
             .constructMaterial();
     }
 
