@@ -688,6 +688,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
+        return getTexture(side);
+    }
+
+    @Override
+    public ITexture[] getTexture(ForgeDirection side) {
         final ITexture rIcon = getCoverTexture(side);
         if (rIcon != null) return new ITexture[] { rIcon };
         return getTextureUncovered(side);
@@ -709,21 +714,24 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ITexture[] getTextureUncovered(ForgeDirection sideDirection) {
-        int tConnections = mConnections;
-        if (tConnections == IConnectable.CONNECTED_WEST || tConnections == IConnectable.CONNECTED_EAST)
-            tConnections = IConnectable.CONNECTED_WEST | IConnectable.CONNECTED_EAST;
-        else if (tConnections == IConnectable.CONNECTED_DOWN || tConnections == IConnectable.CONNECTED_UP)
-            tConnections = IConnectable.CONNECTED_DOWN | IConnectable.CONNECTED_UP;
-        else if (tConnections == IConnectable.CONNECTED_NORTH || tConnections == IConnectable.CONNECTED_SOUTH)
-            tConnections = IConnectable.CONNECTED_NORTH | IConnectable.CONNECTED_SOUTH;
-        if (hasValidMetaTileEntity()) return mMetaTileEntity.getTexture(
+        if (!hasValidMetaTileEntity()) return Textures.BlockIcons.ERROR_RENDERING;
+        final int tConnections, connexions = mConnections;
+        tConnections = switch (connexions) {
+            case IConnectable.CONNECTED_WEST, IConnectable.CONNECTED_EAST -> IConnectable.CONNECTED_WEST
+                | IConnectable.CONNECTED_EAST;
+            case IConnectable.CONNECTED_DOWN, IConnectable.CONNECTED_UP -> IConnectable.CONNECTED_DOWN
+                | IConnectable.CONNECTED_UP;
+            case IConnectable.CONNECTED_NORTH, IConnectable.CONNECTED_SOUTH -> IConnectable.CONNECTED_NORTH
+                | IConnectable.CONNECTED_SOUTH;
+            default -> connexions;
+        };
+        return mMetaTileEntity.getTexture(
             this,
             sideDirection,
             tConnections,
             mColor - 1,
             tConnections == 0 || (tConnections & sideDirection.flag) != 0,
             getOutputRedstoneSignal(sideDirection) > 0);
-        return Textures.BlockIcons.ERROR_RENDERING;
     }
 
     @Override

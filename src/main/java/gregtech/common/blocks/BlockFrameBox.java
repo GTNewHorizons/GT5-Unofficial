@@ -151,7 +151,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     @Override

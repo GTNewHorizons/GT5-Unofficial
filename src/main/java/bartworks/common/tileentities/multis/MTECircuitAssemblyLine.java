@@ -652,7 +652,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+            StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
         if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(
