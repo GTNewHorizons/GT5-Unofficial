@@ -7683,67 +7683,122 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified9() {
+        Materials.AceticAcid = loadAceticAcid();
+        Materials.Acetone = loadAcetone();
+        Materials.AllylChloride = loadAllylChloride();
+        Materials.Ammonia = loadAmmonia();
+        Materials.Benzene = loadBenzene();
         Materials.BioDiesel = loadBioDiesel();
-        Materials.NitrationMixture = loadNitrationMixture();
-        Materials.Glycerol = loadGlycerol();
-        Materials.SodiumBisulfate = loadSodiumBisulfate();
-        Materials.PolyphenyleneSulfide = loadPolyphenyleneSulfide();
-        Materials.Dichlorobenzene = loadDichlorobenzene();
-        Materials.Polystyrene = loadPolystyrene();
-        Materials.Styrene = loadStyrene();
-        Materials.Isoprene = loadIsoprene();
-        Materials.Tetranitromethane = loadTetranitromethane();
-        Materials.Ethenone = loadEthenone();
-        Materials.Ethane = loadEthane();
-        Materials.Propane = loadPropane();
+        Materials.BisphenolA = loadBisphenolA();
+        Materials.Butadiene = loadButadiene();
         Materials.Butane = loadButane();
         Materials.Butene = loadButene();
-        Materials.Butadiene = loadButadiene();
-        Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
-        Materials.StyreneButadieneRubber = loadStyreneButadieneRubber();
-        Materials.Toluene = loadToluene();
+        Materials.CalciumAcetateSolution = loadCalciumAcetateSolution();
+        Materials.CarbonMonoxide = loadCarbonMonoxide();
+        Materials.Chloramine = loadChloramine();
+        Materials.Chloroform = loadChloroform();
+        Materials.Chloromethane = loadChloromethane();
+        Materials.Cumene = loadCumene();
+        Materials.Dichlorobenzene = loadDichlorobenzene();
+        Materials.Dimethylamine = loadDimethylamine();
+        Materials.Dimethyldichlorosilane = loadDimethyldichlorosilane();
+        Materials.Dimethylhydrazine = loadDimethylhydrazine();
+        Materials.DinitrogenTetroxide = loadDinitrogenTetroxide();
         Materials.Epichlorohydrin = loadEpichlorohydrin();
+        Materials.Ethane = loadEthane();
+        Materials.Ethenone = loadEthenone();
+        Materials.Ethylene = loadEthylene();
+        Materials.Glycerol = loadGlycerol();
+        Materials.HydrochloricAcid = loadHydrochloricAcid();
+        Materials.HydrofluoricAcid = loadHydrofluoricAcid();
+        Materials.HypochlorousAcid = loadHypochlorousAcid();
+        Materials.IronIIIChloride = loadIronIIIChloride();
+        Materials.Isoprene = loadIsoprene();
+        Materials.LifeEssence = loadLifeEssence();
+        Materials.MetalMixture = loadMetalMixture();
+        Materials.Methanol = loadMethanol();
+        Materials.MethylAcetate = loadMethylAcetate();
+        Materials.NitrationMixture = loadNitrationMixture();
+        Materials.NitricAcid = loadNitricAcid();
+        Materials.NitricOxide = loadNitricOxide();
+        Materials.Phenol = loadPhenol();
+        Materials.PhosphoricAcid = loadPhosphoricAcid();
+        Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
+        Materials.PolyphenyleneSulfide = loadPolyphenyleneSulfide();
+        Materials.Polystyrene = loadPolystyrene();
+        Materials.PolyvinylAcetate = loadPolyvinylAcetate();
         Materials.PolyvinylChloride = loadPolyvinylChloride();
-        Materials.VinylChloride = loadVinylChloride();
+        Materials.Propane = loadPropane();
+        Materials.Propene = loadPropene();
+        Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
+        Materials.SaltWater = loadSaltWater();
+        Materials.SodiumBisulfate = loadSodiumBisulfate();
+        Materials.SodiumHydroxide = loadSodiumHydroxide();
+        Materials.SodiumOxide = loadSodiumOxide();
+        Materials.Styrene = loadStyrene();
+        Materials.StyreneButadieneRubber = loadStyreneButadieneRubber();
         Materials.SulfurDioxide = loadSulfurDioxide();
         Materials.SulfurTrioxide = loadSulfurTrioxide();
-        Materials.NitricAcid = loadNitricAcid();
-        Materials.Dimethylhydrazine = loadDimethylhydrazine();
-        Materials.Chloramine = loadChloramine();
-        Materials.Dimethylamine = loadDimethylamine();
-        Materials.DinitrogenTetroxide = loadDinitrogenTetroxide();
-        Materials.NitricOxide = loadNitricOxide();
-        Materials.Ammonia = loadAmmonia();
-        Materials.Dimethyldichlorosilane = loadDimethyldichlorosilane();
-        Materials.Chloromethane = loadChloromethane();
-        Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
         Materials.Tetrafluoroethylene = loadTetrafluoroethylene();
-        Materials.HydrofluoricAcid = loadHydrofluoricAcid();
-        Materials.Chloroform = loadChloroform();
-        Materials.BisphenolA = loadBisphenolA();
-        Materials.AceticAcid = loadAceticAcid();
-        Materials.CalciumAcetateSolution = loadCalciumAcetateSolution();
-        Materials.Acetone = loadAcetone();
-        Materials.Methanol = loadMethanol();
-        Materials.CarbonMonoxide = loadCarbonMonoxide();
-        Materials.MetalMixture = loadMetalMixture();
-        Materials.Ethylene = loadEthylene();
-        Materials.Propene = loadPropene();
+        Materials.Tetranitromethane = loadTetranitromethane();
+        Materials.Toluene = loadToluene();
         Materials.VinylAcetate = loadVinylAcetate();
-        Materials.PolyvinylAcetate = loadPolyvinylAcetate();
-        Materials.MethylAcetate = loadMethylAcetate();
-        Materials.AllylChloride = loadAllylChloride();
-        Materials.HydrochloricAcid = loadHydrochloricAcid();
-        Materials.HypochlorousAcid = loadHypochlorousAcid();
-        Materials.SodiumOxide = loadSodiumOxide();
-        Materials.SodiumHydroxide = loadSodiumHydroxide();
-        Materials.Benzene = loadBenzene();
-        Materials.Phenol = loadPhenol();
-        Materials.Cumene = loadCumene();
-        Materials.PhosphoricAcid = loadPhosphoricAcid();
-        Materials.SaltWater = loadSaltWater();
-        Materials.IronIIIChloride = loadIronIIIChloride();
-        Materials.LifeEssence = loadLifeEssence();
+        Materials.VinylChloride = loadVinylChloride();
+    }
+
+    private static Materials loadAceticAcid() {
+        return new MaterialBuilder(670, TextureSet.SET_FLUID, "Acetic Acid").addCell()
+            .addFluid()
+            .setRGB(200, 180, 160)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAcetone() {
+        return new MaterialBuilder(672, TextureSet.SET_FLUID, "Acetone").addCell()
+            .addFluid()
+            .setRGB(175, 175, 175)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAllylChloride() {
+        return new MaterialBuilder(682, TextureSet.SET_FLUID, "Allyl Chloride").addCell()
+            .addFluid()
+            .setRGB(135, 222, 170)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(
+                new MaterialStack(Carbon, 3),
+                new MaterialStack(Hydrogen, 5),
+                new MaterialStack(Chlorine, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAmmonia() {
+        return new MaterialBuilder(659, TextureSet.SET_FLUID, "Ammonia").addCell()
+            .addGas()
+            .setRGB(63, 52, 128)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadBenzene() {
+        return new MaterialBuilder(686, TextureSet.SET_FLUID, "Benzene").addCell()
+            .addFluid()
+            .setRGB(26, 26, 26)
+            .setColor(Dyes.dyeGray)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(360)
+            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
     }
 
     private static Materials loadBioDiesel() {
@@ -7756,139 +7811,26 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadNitrationMixture() {
-        return new MaterialBuilder(628, TextureSet.SET_FLUID, "Nitration Mixture").addCell()
-            .setRGB(230, 226, 171)
+    private static Materials loadBisphenolA() {
+        return new MaterialBuilder(669, TextureSet.SET_FLUID, "Bisphenol A").addCell()
+            .setRGB(212, 170, 0)
             .setColor(Dyes.dyeBrown)
-            .constructMaterial();
-    }
-
-    private static Materials loadGlycerol() {
-        return new MaterialBuilder(629, TextureSet.SET_FLUID, "Glycerol").addCell()
-            .addFluid()
-            .setRGB(135, 222, 135)
-            .setColor(Dyes.dyeLime)
-            .setFuelType(MaterialBuilder.SEMIFLUID)
-            .setFuelPower(164)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8), new MaterialStack(Oxygen, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadSodiumBisulfate() {
-        return new MaterialBuilder(630, TextureSet.SET_FLUID, "Sodium Bisulfate").addDustItems()
-            .setRGB(0, 68, 85)
-            .setColor(Dyes.dyeBlue)
             .setMaterialList(
-                new MaterialStack(Sodium, 1),
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Sulfur, 1),
-                new MaterialStack(Oxygen, 4))
-            .constructMaterial();
-    }
-
-    private static Materials loadPolyphenyleneSulfide() {
-        return new MaterialBuilder(631, TextureSet.SET_DULL, "Polyphenylene Sulfide").addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setToolSpeed(3.0f)
-            .setDurability(32)
-            .setToolQuality(1)
-            .setRGB(170, 136, 0)
-            .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Sulfur, 1))
-            .constructMaterial();
-    }
-
-    private static Materials loadDichlorobenzene() {
-        return new MaterialBuilder(632, TextureSet.SET_FLUID, "Dichlorobenzene").addCell()
-            .addFluid()
-            .setRGB(0, 68, 85)
-            .setColor(Dyes.dyeBlue)
-            .setMaterialList(
-                new MaterialStack(Carbon, 6),
-                new MaterialStack(Hydrogen, 4),
-                new MaterialStack(Chlorine, 2))
+                new MaterialStack(Carbon, 15),
+                new MaterialStack(Hydrogen, 16),
+                new MaterialStack(Oxygen, 2))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
-    private static Materials loadPolystyrene() {
-        return new MaterialBuilder(636, TextureSet.SET_DULL, "Polystyrene").addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setToolSpeed(3.0f)
-            .setDurability(32)
-            .setToolQuality(1)
-            .setRGB(190, 180, 170)
-            .setColor(Dyes.dyeLightGray)
-            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
-            .constructMaterial();
-    }
-
-    private static Materials loadStyrene() {
-        return new MaterialBuilder(637, TextureSet.SET_FLUID, "Styrene").addCell()
-            .addFluid()
-            .setRGB(210, 200, 190)
-            .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadIsoprene() {
-        return new MaterialBuilder(638, TextureSet.SET_FLUID, "Isoprene").addCell()
-            .addFluid()
-            .setRGB(20, 20, 20)
-            .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadTetranitromethane() {
-        return new MaterialBuilder(639, TextureSet.SET_FLUID, "Tetranitromethane").addCell()
-            .addFluid()
-            .setRGB(15, 40, 40)
-            .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Nitrogen, 4), new MaterialStack(Oxygen, 8))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadEthenone() {
-        return new MaterialBuilder(641, TextureSet.SET_FLUID, "Ethenone").addCell()
+    private static Materials loadButadiene() {
+        return new MaterialBuilder(646, TextureSet.SET_FLUID, "Butadiene").addCell()
             .addGas()
-            .setRGB(20, 20, 70)
-            .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadEthane() {
-        return new MaterialBuilder(642, TextureSet.SET_FLUID, "Ethane").addCell()
-            .addGas()
-            .setRGB(200, 200, 255)
-            .setColor(Dyes.dyeLightBlue)
+            .setRGB(232, 105, 0)
+            .setColor(Dyes.dyeOrange)
             .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(168)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6))
-            .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
-            .constructMaterial();
-    }
-
-    private static Materials loadPropane() {
-        return new MaterialBuilder(643, TextureSet.SET_FLUID, "Propane").addCell()
-            .addGas()
-            .setRGB(250, 226, 80)
-            .setColor(Dyes.dyeYellow)
-            .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(232)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8))
+            .setFuelPower(206)
+            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6))
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -7920,48 +7862,139 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadButadiene() {
-        return new MaterialBuilder(646, TextureSet.SET_FLUID, "Butadiene").addCell()
-            .addGas()
-            .setRGB(232, 105, 0)
-            .setColor(Dyes.dyeOrange)
-            .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(206)
-            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6))
+    private static Materials loadCalciumAcetateSolution() {
+        return new MaterialBuilder(671, TextureSet.SET_RUBY, "Calcium Acetate Solution").addCell()
+            .addFluid()
+            .setRGB(220, 200, 180)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(
+                new MaterialStack(Calcium, 1),
+                new MaterialStack(Carbon, 4),
+                new MaterialStack(Oxygen, 4),
+                new MaterialStack(Hydrogen, 6))
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
             .constructMaterial();
     }
 
-    private static Materials loadRawStyreneButadieneRubber() {
-        return new MaterialBuilder(634, TextureSet.SET_SHINY, "Raw Styrene-Butadiene Rubber").addDustItems()
-            .setRGB(84, 64, 61)
-            .setColor(Dyes.dyeGray)
-            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
-            .constructMaterial();
-    }
-
-    private static Materials loadStyreneButadieneRubber() {
-        return new MaterialBuilder(635, TextureSet.SET_SHINY, "Styrene-Butadiene Rubber").addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setToolSpeed(3.0f)
-            .setDurability(128)
-            .setToolQuality(1)
-            .setRGB(33, 26, 24)
-            .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
-            .constructMaterial();
-    }
-
-    private static Materials loadToluene() {
-        return new MaterialBuilder(647, TextureSet.SET_FLUID, "Toluene").addCell()
-            .setRGB(80, 29, 5)
+    private static Materials loadCarbonMonoxide() {
+        return new MaterialBuilder(674, TextureSet.SET_FLUID, "Carbon Monoxide").addCell()
+            .addGas()
+            .setRGB(14, 72, 128)
             .setColor(Dyes.dyeBrown)
             .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(328)
-            .setMaterialList(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8))
+            .setFuelPower(24)
+            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadChloramine() {
+        return new MaterialBuilder(655, TextureSet.SET_FLUID, "Chloramine").addCell()
+            .addFluid()
+            .setRGB(63, 159, 128)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(
+                new MaterialStack(Nitrogen, 1),
+                new MaterialStack(Hydrogen, 2),
+                new MaterialStack(Chlorine, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChloroform() {
+        return new MaterialBuilder(668, TextureSet.SET_FLUID, "Chloroform").addCell()
+            .addFluid()
+            .setRGB(137, 44, 160)
+            .setColor(Dyes.dyePurple)
+            .setMaterialList(
+                new MaterialStack(Carbon, 1),
+                new MaterialStack(Hydrogen, 1),
+                new MaterialStack(Chlorine, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChloromethane() {
+        return new MaterialBuilder(664, TextureSet.SET_FLUID, "Chloromethane").addCell()
+            .addGas()
+            .setRGB(200, 44, 160)
+            .setColor(Dyes.dyeMagenta)
+            .setMaterialList(
+                new MaterialStack(Carbon, 1),
+                new MaterialStack(Hydrogen, 3),
+                new MaterialStack(Chlorine, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCumene() {
+        return new MaterialBuilder(688, TextureSet.SET_FLUID, "Isopropylbenzene").addCell()
+            .addFluid()
+            .setRGB(85, 34, 0)
+            .setColor(Dyes.dyeBrown)
+            .setMaterialList(new MaterialStack(Carbon, 9), new MaterialStack(Hydrogen, 12))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDichlorobenzene() {
+        return new MaterialBuilder(632, TextureSet.SET_FLUID, "Dichlorobenzene").addCell()
+            .addFluid()
+            .setRGB(0, 68, 85)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(
+                new MaterialStack(Carbon, 6),
+                new MaterialStack(Hydrogen, 4),
+                new MaterialStack(Chlorine, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethylamine() {
+        return new MaterialBuilder(656, TextureSet.SET_FLUID, "Dimethylamine").addCell()
+            .addGas()
+            .setRGB(85, 68, 105)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 7),
+                new MaterialStack(Nitrogen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethyldichlorosilane() {
+        return new MaterialBuilder(663, TextureSet.SET_FLUID, "Dimethyldichlorosilane").addCell()
+            .addFluid()
+            .setRGB(68, 22, 80)
+            .setColor(Dyes.dyePurple)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 6),
+                new MaterialStack(Chlorine, 2),
+                new MaterialStack(Silicon, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethylhydrazine() {
+        return new MaterialBuilder(654, TextureSet.SET_FLUID, "1,1-Dimethylhydrazine").addCell()
+            .addFluid()
+            .setRGB(0, 0, 85)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 8),
+                new MaterialStack(Nitrogen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDinitrogenTetroxide() {
+        return new MaterialBuilder(657, TextureSet.SET_FLUID, "Dinitrogen Tetroxide").addCell()
+            .addGas()
+            .setRGB(0, 65, 132)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 4))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7976,6 +8009,250 @@ public class MaterialsInit1 {
                 new MaterialStack(Chlorine, 1),
                 new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadEthane() {
+        return new MaterialBuilder(642, TextureSet.SET_FLUID, "Ethane").addCell()
+            .addGas()
+            .setRGB(200, 200, 255)
+            .setColor(Dyes.dyeLightBlue)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(168)
+            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6))
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadEthenone() {
+        return new MaterialBuilder(641, TextureSet.SET_FLUID, "Ethenone").addCell()
+            .addGas()
+            .setRGB(20, 20, 70)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadEthylene() {
+        return new MaterialBuilder(677, TextureSet.SET_FLUID, "Ethylene").addCell()
+            .addGas()
+            .setRGB(225, 225, 225)
+            .setColor(Dyes.dyeWhite)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(128)
+            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4))
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlycerol() {
+        return new MaterialBuilder(629, TextureSet.SET_FLUID, "Glycerol").addCell()
+            .addFluid()
+            .setRGB(135, 222, 135)
+            .setColor(Dyes.dyeLime)
+            .setFuelType(MaterialBuilder.SEMIFLUID)
+            .setFuelPower(164)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadHydrochloricAcid() {
+        return new MaterialBuilder(683, TextureSet.SET_FLUID, "Hydrochloric Acid").setName("HydrochloricAcid_GT5U")
+            .addCell()
+            .addFluid()
+            .setRGB(183, 200, 196)
+            .setColor(Dyes.dyeLightGray)
+            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadHydrofluoricAcid() {
+        return new MaterialBuilder(667, TextureSet.SET_FLUID, "Hydrofluoric Acid").setName("HydrofluoricAcid_GT5U")
+            .addCell()
+            .addFluid()
+            .setRGB(0, 136, 170)
+            .setColor(Dyes.dyeLightBlue)
+            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadHypochlorousAcid() {
+        return new MaterialBuilder(684, TextureSet.SET_FLUID, "Hypochlorous Acid").addCell()
+            .addFluid()
+            .setRGB(111, 138, 145)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(
+                new MaterialStack(Hydrogen, 1),
+                new MaterialStack(Chlorine, 1),
+                new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadIronIIIChloride() {
+        return new MaterialBuilder(693, TextureSet.SET_FLUID, "Iron III Chloride").setName("IronIIIChloride")
+            .addCell()
+            .addFluid()
+            .setRGB(22, 21, 14)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Chlorine, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadIsoprene() {
+        return new MaterialBuilder(638, TextureSet.SET_FLUID, "Isoprene").addCell()
+            .addFluid()
+            .setRGB(20, 20, 20)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadLifeEssence() {
+        return new MaterialBuilder(694, TextureSet.SET_FLUID, "Life").setName("lifeessence")
+            .addCell()
+            .addFluid()
+            .setFuelPower(100)
+            .setFuelType(5)
+            .setRGB(110, 3, 3)
+            .setColor(Dyes.dyeRed)
+            .setMaterialList()
+            .constructMaterial();
+    }
+
+    private static Materials loadMetalMixture() {
+        return new MaterialBuilder(676, TextureSet.SET_METALLIC, "Metal Mixture").addDustItems()
+            .setRGB(80, 45, 22)
+            .setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
+    private static Materials loadMethanol() {
+        return new MaterialBuilder(673, TextureSet.SET_FLUID, "Methanol").addCell()
+            .addFluid()
+            .setRGB(170, 136, 0)
+            .setColor(Dyes.dyeBrown)
+            .setFuelPower(84)
+            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadMethylAcetate() {
+        return new MaterialBuilder(681, TextureSet.SET_FLUID, "Methyl Acetate").addCell()
+            .addFluid()
+            .setRGB(238, 198, 175)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadNitrationMixture() {
+        return new MaterialBuilder(628, TextureSet.SET_FLUID, "Nitration Mixture").addCell()
+            .setRGB(230, 226, 171)
+            .setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitricAcid() {
+        return new MaterialBuilder(653, TextureSet.SET_FLUID, "Nitric Acid").addCell()
+            .addFluid()
+            .setRGB(230, 226, 171)
+            .setMaterialList(
+                new MaterialStack(Hydrogen, 1),
+                new MaterialStack(Nitrogen, 1),
+                new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadNitricOxide() {
+        return new MaterialBuilder(658, TextureSet.SET_FLUID, "Nitric Oxide").addCell()
+            .addGas()
+            .setRGB(125, 200, 240)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPhenol() {
+        return new MaterialBuilder(687, TextureSet.SET_FLUID, "Phenol").addCell()
+            .addFluid()
+            .setRGB(120, 68, 33)
+            .setColor(Dyes.dyeBrown)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(288)
+            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphoricAcid() {
+        return new MaterialBuilder(689, TextureSet.SET_FLUID, "Phosphoric Acid").setName("PhosphoricAcid_GT5U")
+            .addCell()
+            .addFluid()
+            .setRGB(220, 220, 0)
+            .setColor(Dyes.dyeYellow)
+            .setMaterialList(
+                new MaterialStack(Hydrogen, 3),
+                new MaterialStack(Phosphorus, 1),
+                new MaterialStack(Oxygen, 4))
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphorousPentoxide() {
+        return new MaterialBuilder(665, TextureSet.SET_FLUID, "Phosphorous Pentoxide").addCell()
+            .addDustItems()
+            .setRGB(220, 220, 0)
+            .setColor(Dyes.dyeYellow)
+            .setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyphenyleneSulfide() {
+        return new MaterialBuilder(631, TextureSet.SET_DULL, "Polyphenylene Sulfide").addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .setRGB(170, 136, 0)
+            .setColor(Dyes.dyeBrown)
+            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Sulfur, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadPolystyrene() {
+        return new MaterialBuilder(636, TextureSet.SET_DULL, "Polystyrene").addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .setRGB(190, 180, 170)
+            .setColor(Dyes.dyeLightGray)
+            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyvinylAcetate() {
+        return new MaterialBuilder(680, TextureSet.SET_FLUID, "Polyvinyl Acetate").addCell()
+            .addFluid()
+            .setRGB(255, 153, 85)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
             .constructMaterial();
     }
 
@@ -7996,16 +8273,100 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadVinylChloride() {
-        return new MaterialBuilder(650, TextureSet.SET_FLUID, "Vinyl Chloride").addCell()
+    private static Materials loadPropane() {
+        return new MaterialBuilder(643, TextureSet.SET_FLUID, "Propane").addCell()
             .addGas()
-            .setRGB(225, 240, 240)
-            .setColor(Dyes.dyeLightGray)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 3),
-                new MaterialStack(Chlorine, 1))
+            .setRGB(250, 226, 80)
+            .setColor(Dyes.dyeYellow)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(232)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8))
             .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadPropene() {
+        return new MaterialBuilder(678, TextureSet.SET_FLUID, "Propene").addCell()
+            .addGas()
+            .setRGB(255, 221, 85)
+            .setColor(Dyes.dyeYellow)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(192)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6))
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadRawStyreneButadieneRubber() {
+        return new MaterialBuilder(634, TextureSet.SET_SHINY, "Raw Styrene-Butadiene Rubber").addDustItems()
+            .setRGB(84, 64, 61)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadSaltWater() {
+        return new MaterialBuilder(692, TextureSet.SET_FLUID, "Salt Water").addCell()
+            .addFluid()
+            .setRGB(0, 0, 200)
+            .setColor(Dyes.dyeBlue)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumBisulfate() {
+        return new MaterialBuilder(630, TextureSet.SET_FLUID, "Sodium Bisulfate").addDustItems()
+            .setRGB(0, 68, 85)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(
+                new MaterialStack(Sodium, 1),
+                new MaterialStack(Hydrogen, 1),
+                new MaterialStack(Sulfur, 1),
+                new MaterialStack(Oxygen, 4))
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumHydroxide() {
+        return new MaterialBuilder(685, TextureSet.SET_DULL, "Sodium Hydroxide").setName("SodiumHydroxide_GT5U")
+            .addDustItems()
+            .setRGB(0, 51, 128)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumOxide() {
+        return new MaterialBuilder(744, TextureSet.SET_DULL, "Sodium Oxide").setName("SodiumOxide")
+            .addDustItems()
+            .setRGB(255, 255, 235)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadStyrene() {
+        return new MaterialBuilder(637, TextureSet.SET_FLUID, "Styrene").addCell()
+            .addFluid()
+            .setRGB(210, 200, 190)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadStyreneButadieneRubber() {
+        return new MaterialBuilder(635, TextureSet.SET_SHINY, "Styrene-Butadiene Rubber").addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(3.0f)
+            .setDurability(128)
+            .setToolQuality(1)
+            .setRGB(33, 26, 24)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
             .constructMaterial();
     }
 
@@ -8029,124 +8390,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadNitricAcid() {
-        return new MaterialBuilder(653, TextureSet.SET_FLUID, "Nitric Acid").addCell()
-            .addFluid()
-            .setRGB(230, 226, 171)
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Nitrogen, 1),
-                new MaterialStack(Oxygen, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadDimethylhydrazine() {
-        return new MaterialBuilder(654, TextureSet.SET_FLUID, "1,1-Dimethylhydrazine").addCell()
-            .addFluid()
-            .setRGB(0, 0, 85)
-            .setColor(Dyes.dyeBlue)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 8),
-                new MaterialStack(Nitrogen, 2))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadChloramine() {
-        return new MaterialBuilder(655, TextureSet.SET_FLUID, "Chloramine").addCell()
-            .addFluid()
-            .setRGB(63, 159, 128)
-            .setColor(Dyes.dyeCyan)
-            .setMaterialList(
-                new MaterialStack(Nitrogen, 1),
-                new MaterialStack(Hydrogen, 2),
-                new MaterialStack(Chlorine, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadDimethylamine() {
-        return new MaterialBuilder(656, TextureSet.SET_FLUID, "Dimethylamine").addCell()
-            .addGas()
-            .setRGB(85, 68, 105)
-            .setColor(Dyes.dyeGray)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 7),
-                new MaterialStack(Nitrogen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadDinitrogenTetroxide() {
-        return new MaterialBuilder(657, TextureSet.SET_FLUID, "Dinitrogen Tetroxide").addCell()
-            .addGas()
-            .setRGB(0, 65, 132)
-            .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 4))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadNitricOxide() {
-        return new MaterialBuilder(658, TextureSet.SET_FLUID, "Nitric Oxide").addCell()
-            .addGas()
-            .setRGB(125, 200, 240)
-            .setColor(Dyes.dyeCyan)
-            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadAmmonia() {
-        return new MaterialBuilder(659, TextureSet.SET_FLUID, "Ammonia").addCell()
-            .addGas()
-            .setRGB(63, 52, 128)
-            .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadDimethyldichlorosilane() {
-        return new MaterialBuilder(663, TextureSet.SET_FLUID, "Dimethyldichlorosilane").addCell()
-            .addFluid()
-            .setRGB(68, 22, 80)
-            .setColor(Dyes.dyePurple)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 6),
-                new MaterialStack(Chlorine, 2),
-                new MaterialStack(Silicon, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadChloromethane() {
-        return new MaterialBuilder(664, TextureSet.SET_FLUID, "Chloromethane").addCell()
-            .addGas()
-            .setRGB(200, 44, 160)
-            .setColor(Dyes.dyeMagenta)
-            .setMaterialList(
-                new MaterialStack(Carbon, 1),
-                new MaterialStack(Hydrogen, 3),
-                new MaterialStack(Chlorine, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadPhosphorousPentoxide() {
-        return new MaterialBuilder(665, TextureSet.SET_FLUID, "Phosphorous Pentoxide").addCell()
-            .addDustItems()
-            .setRGB(220, 220, 0)
-            .setColor(Dyes.dyeYellow)
-            .setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
     private static Materials loadTetrafluoroethylene() {
         return new MaterialBuilder(666, TextureSet.SET_FLUID, "Tetrafluoroethylene").addCell()
             .addGas()
@@ -8157,128 +8400,24 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadHydrofluoricAcid() {
-        return new MaterialBuilder(667, TextureSet.SET_FLUID, "Hydrofluoric Acid").setName("HydrofluoricAcid_GT5U")
-            .addCell()
+    private static Materials loadTetranitromethane() {
+        return new MaterialBuilder(639, TextureSet.SET_FLUID, "Tetranitromethane").addCell()
             .addFluid()
-            .setRGB(0, 136, 170)
-            .setColor(Dyes.dyeLightBlue)
-            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1))
+            .setRGB(15, 40, 40)
+            .setColor(Dyes.dyeBlack)
+            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Nitrogen, 4), new MaterialStack(Oxygen, 8))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
-    private static Materials loadChloroform() {
-        return new MaterialBuilder(668, TextureSet.SET_FLUID, "Chloroform").addCell()
-            .addFluid()
-            .setRGB(137, 44, 160)
-            .setColor(Dyes.dyePurple)
-            .setMaterialList(
-                new MaterialStack(Carbon, 1),
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Chlorine, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadBisphenolA() {
-        return new MaterialBuilder(669, TextureSet.SET_FLUID, "Bisphenol A").addCell()
-            .setRGB(212, 170, 0)
-            .setColor(Dyes.dyeBrown)
-            .setMaterialList(
-                new MaterialStack(Carbon, 15),
-                new MaterialStack(Hydrogen, 16),
-                new MaterialStack(Oxygen, 2))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadAceticAcid() {
-        return new MaterialBuilder(670, TextureSet.SET_FLUID, "Acetic Acid").addCell()
-            .addFluid()
-            .setRGB(200, 180, 160)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadCalciumAcetateSolution() {
-        return new MaterialBuilder(671, TextureSet.SET_RUBY, "Calcium Acetate Solution").addCell()
-            .addFluid()
-            .setRGB(220, 200, 180)
-            .setColor(Dyes.dyeCyan)
-            .setMaterialList(
-                new MaterialStack(Calcium, 1),
-                new MaterialStack(Carbon, 4),
-                new MaterialStack(Oxygen, 4),
-                new MaterialStack(Hydrogen, 6))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadAcetone() {
-        return new MaterialBuilder(672, TextureSet.SET_FLUID, "Acetone").addCell()
-            .addFluid()
-            .setRGB(175, 175, 175)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadMethanol() {
-        return new MaterialBuilder(673, TextureSet.SET_FLUID, "Methanol").addCell()
-            .addFluid()
-            .setRGB(170, 136, 0)
-            .setColor(Dyes.dyeBrown)
-            .setFuelPower(84)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadCarbonMonoxide() {
-        return new MaterialBuilder(674, TextureSet.SET_FLUID, "Carbon Monoxide").addCell()
-            .addGas()
-            .setRGB(14, 72, 128)
+    private static Materials loadToluene() {
+        return new MaterialBuilder(647, TextureSet.SET_FLUID, "Toluene").addCell()
+            .setRGB(80, 29, 5)
             .setColor(Dyes.dyeBrown)
             .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(24)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1))
-            .constructMaterial();
-    }
-
-    private static Materials loadMetalMixture() {
-        return new MaterialBuilder(676, TextureSet.SET_METALLIC, "Metal Mixture").addDustItems()
-            .setRGB(80, 45, 22)
-            .setColor(Dyes.dyeBrown)
-            .constructMaterial();
-    }
-
-    private static Materials loadEthylene() {
-        return new MaterialBuilder(677, TextureSet.SET_FLUID, "Ethylene").addCell()
-            .addGas()
-            .setRGB(225, 225, 225)
-            .setColor(Dyes.dyeWhite)
-            .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(128)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4))
+            .setFuelPower(328)
+            .setMaterialList(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8))
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
-            .constructMaterial();
-    }
-
-    private static Materials loadPropene() {
-        return new MaterialBuilder(678, TextureSet.SET_FLUID, "Propene").addCell()
-            .addGas()
-            .setRGB(255, 221, 85)
-            .setColor(Dyes.dyeYellow)
-            .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(192)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6))
-            .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
             .constructMaterial();
     }
 
@@ -8292,155 +8431,16 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadPolyvinylAcetate() {
-        return new MaterialBuilder(680, TextureSet.SET_FLUID, "Polyvinyl Acetate").addCell()
-            .addFluid()
-            .setRGB(255, 153, 85)
-            .setColor(Dyes.dyeOrange)
-            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
-            .constructMaterial();
-    }
-
-    private static Materials loadMethylAcetate() {
-        return new MaterialBuilder(681, TextureSet.SET_FLUID, "Methyl Acetate").addCell()
-            .addFluid()
-            .setRGB(238, 198, 175)
-            .setColor(Dyes.dyeOrange)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadAllylChloride() {
-        return new MaterialBuilder(682, TextureSet.SET_FLUID, "Allyl Chloride").addCell()
-            .addFluid()
-            .setRGB(135, 222, 170)
-            .setColor(Dyes.dyeCyan)
+    private static Materials loadVinylChloride() {
+        return new MaterialBuilder(650, TextureSet.SET_FLUID, "Vinyl Chloride").addCell()
+            .addGas()
+            .setRGB(225, 240, 240)
+            .setColor(Dyes.dyeLightGray)
             .setMaterialList(
-                new MaterialStack(Carbon, 3),
-                new MaterialStack(Hydrogen, 5),
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 3),
                 new MaterialStack(Chlorine, 1))
             .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadHydrochloricAcid() {
-        return new MaterialBuilder(683, TextureSet.SET_FLUID, "Hydrochloric Acid").setName("HydrochloricAcid_GT5U")
-            .addCell()
-            .addFluid()
-            .setRGB(183, 200, 196)
-            .setColor(Dyes.dyeLightGray)
-            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
-            .constructMaterial();
-    }
-
-    private static Materials loadHypochlorousAcid() {
-        return new MaterialBuilder(684, TextureSet.SET_FLUID, "Hypochlorous Acid").addCell()
-            .addFluid()
-            .setRGB(111, 138, 145)
-            .setColor(Dyes.dyeGray)
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Chlorine, 1),
-                new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadSodiumOxide() {
-        return new MaterialBuilder(744, TextureSet.SET_DULL, "Sodium Oxide").setName("SodiumOxide")
-            .addDustItems()
-            .setRGB(255, 255, 235)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadSodiumHydroxide() {
-        return new MaterialBuilder(685, TextureSet.SET_DULL, "Sodium Hydroxide").setName("SodiumHydroxide_GT5U")
-            .addDustItems()
-            .setRGB(0, 51, 128)
-            .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1))
-            .constructMaterial();
-    }
-
-    private static Materials loadBenzene() {
-        return new MaterialBuilder(686, TextureSet.SET_FLUID, "Benzene").addCell()
-            .addFluid()
-            .setRGB(26, 26, 26)
-            .setColor(Dyes.dyeGray)
-            .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(360)
-            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadPhenol() {
-        return new MaterialBuilder(687, TextureSet.SET_FLUID, "Phenol").addCell()
-            .addFluid()
-            .setRGB(120, 68, 33)
-            .setColor(Dyes.dyeBrown)
-            .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(288)
-            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadCumene() {
-        return new MaterialBuilder(688, TextureSet.SET_FLUID, "Isopropylbenzene").addCell()
-            .addFluid()
-            .setRGB(85, 34, 0)
-            .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Carbon, 9), new MaterialStack(Hydrogen, 12))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadPhosphoricAcid() {
-        return new MaterialBuilder(689, TextureSet.SET_FLUID, "Phosphoric Acid").setName("PhosphoricAcid_GT5U")
-            .addCell()
-            .addFluid()
-            .setRGB(220, 220, 0)
-            .setColor(Dyes.dyeYellow)
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 3),
-                new MaterialStack(Phosphorus, 1),
-                new MaterialStack(Oxygen, 4))
-            .constructMaterial();
-    }
-
-    private static Materials loadSaltWater() {
-        return new MaterialBuilder(692, TextureSet.SET_FLUID, "Salt Water").addCell()
-            .addFluid()
-            .setRGB(0, 0, 200)
-            .setColor(Dyes.dyeBlue)
-            .constructMaterial();
-    }
-
-    private static Materials loadIronIIIChloride() {
-        return new MaterialBuilder(693, TextureSet.SET_FLUID, "Iron III Chloride").setName("IronIIIChloride")
-            .addCell()
-            .addFluid()
-            .setRGB(22, 21, 14)
-            .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Chlorine, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadLifeEssence() {
-        return new MaterialBuilder(694, TextureSet.SET_FLUID, "Life").setName("lifeessence")
-            .addCell()
-            .addFluid()
-            .setFuelPower(100)
-            .setFuelType(5)
-            .setRGB(110, 3, 3)
-            .setColor(Dyes.dyeRed)
-            .setMaterialList()
             .constructMaterial();
     }
 
