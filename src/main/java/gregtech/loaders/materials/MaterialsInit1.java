@@ -242,9 +242,9 @@ public class MaterialsInit1 {
         Materials.Chloromethane = loadChloromethane();
         Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
         Materials.Tetrafluoroethylene = loadTetrafluoroethylene();
+        Materials.HydrofluoricAcid = loadHydrofluoricAcid();
 
         // spotless:off
-        Materials.HydrofluoricAcid          = new MaterialBuilder(667, TextureSet.SET_FLUID      ,                                                                                                     "Hydrofluoric Acid").setName("HydrofluoricAcid_GT5U").addCell().addFluid().setRGB(0, 136, 170).setColor(Dyes.dyeLightBlue).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Chloroform                = new MaterialBuilder(668, TextureSet.SET_FLUID      ,                                                                                                     "Chloroform").addCell().addFluid().setRGB(137, 44, 160).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.BisphenolA                = new MaterialBuilder(669, TextureSet.SET_FLUID      ,                                                                                                     "Bisphenol A").addCell().setRGB(212, 170, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 15), new MaterialStack(Hydrogen, 16), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.AceticAcid                = new MaterialBuilder(670, TextureSet.SET_FLUID      ,                                                                                                     "Acetic Acid").addCell().addFluid().setRGB(200, 180, 160).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
@@ -8036,6 +8036,17 @@ public class MaterialsInit1 {
             .setRGB(125, 125, 125)
             .setColor(Dyes.dyeGray)
             .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadHydrofluoricAcid() {
+        return new MaterialBuilder(667, TextureSet.SET_FLUID, "Hydrofluoric Acid").setName("HydrofluoricAcid_GT5U")
+            .addCell()
+            .addFluid()
+            .setRGB(0, 136, 170)
+            .setColor(Dyes.dyeLightBlue)
+            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
