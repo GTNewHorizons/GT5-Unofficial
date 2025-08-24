@@ -74,7 +74,6 @@ import static gregtech.api.enums.Materials.Iron;
 import static gregtech.api.enums.Materials.Lazurite;
 import static gregtech.api.enums.Materials.Lead;
 import static gregtech.api.enums.Materials.Lithium;
-import static gregtech.api.enums.Materials.LiveRoot;
 import static gregtech.api.enums.Materials.Magic;
 import static gregtech.api.enums.Materials.Magnesium;
 import static gregtech.api.enums.Materials.Magnetite;
@@ -186,9 +185,9 @@ public class MaterialsInit1 {
         Materials.Jasper = loadJasper();
         Materials.WoodSealed = loadWoodSealed();
         Materials.LiveRoot = loadLiveRoot();
+        Materials.IronWood = loadIronWood();
 
         // spotless:off
-        Materials.IronWood                = new Materials( 338, TextureSet.SET_WOOD              ,   6.0F,    384,  2, 1|2          |64|128      , 150, 140, 110,   0,   "IronWood"                ,   "Ironwood"                      ,    5,       8,         -1,    0, false, false,   2,  19,  18, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 9), new MaterialStack(LiveRoot, 9), new MaterialStack(Gold, 1)));
         Materials.Glass                   = new Materials( 890, TextureSet.SET_GLASS             ,   1.0F,      4,  0, 1  |4                     , 250, 250, 250, 220,   "Glass"                   ,   "Glass"                         ,    0,       0,       1500,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.BorosilicateGlass  = new MaterialBuilder(611, TextureSet.SET_GLASS             ,                                                                                                     "Borosilicate Glass").addDustItems().addMetalItems().setRGB(230, 243, 230).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7)).addCentrifugeRecipe().constructMaterial();
         Materials.Perlite                 = new Materials( 925, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  30,  20,  30,   0,   "Perlite"                 ,   "Perlite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)));
@@ -9216,6 +9215,31 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.ARBOR, 2)
             .addAspect(TCAspects.VICTUS, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIronWood() {
+        return new MaterialBuilder().setName("IronWood")
+            .setDefaultLocalName("Ironwood")
+            .setMetaItemSubID(338)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x968c6e)
+            .setToolSpeed(6.0f)
+            .setDurability(384)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuelType(5)
+            .setFuelPower(8)
+            .setDensityMultiplier(19)
+            .setDensityDivider(18)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 9)
+            .addMaterial(Materials.LiveRoot, 9)
+            .addMaterial(Materials.Gold, 1)
             .constructMaterial();
     }
 
