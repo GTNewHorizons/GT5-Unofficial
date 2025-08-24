@@ -215,9 +215,9 @@ public class MaterialsInit1 {
         Materials.Gypsum = loadGypsum();
         Materials.Alunite = loadAlunite();
         Materials.Dolomite = loadDolomite();
+        Materials.Wollastonite = loadWollastonite();
 
         // spotless:off
-        Materials.Wollastonite            = new Materials( 915, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 240, 240,   0,   "Wollastonite"            ,   "Wollastonite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))); // CaSiO3
         Materials.Zeolite                 = new Materials( 916, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 230, 230,   0,   "Zeolite"                 ,   "Zeolite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Calcium, 4), new MaterialStack(Silicon, 27), new MaterialStack(Aluminium, 9), new MaterialStack(Oxygen, 72))); // NaCa4(Si27Al9)O72
         Materials.Kyanite                 = new Materials( 924, TextureSet.SET_FLINT             ,   1.0F,      0,  2, 1    |8                   , 110, 110, 250,   0,   "Kyanite"                 ,   "Kyanite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 5))); // Al2SiO5
         Materials.Kaolinite               = new Materials( 929, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 245, 235, 235,   0,   "Kaolinite"               ,   "Kaolinite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Al2Si2O5(OH)4
@@ -10721,6 +10721,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Magnesium, 1)
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadWollastonite() {
+        return new MaterialBuilder().setName("Wollastonite")
+            .setDefaultLocalName("Wollastonite")
+            .setMetaItemSubID(915)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf0f0f0)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // CaSiO3
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
