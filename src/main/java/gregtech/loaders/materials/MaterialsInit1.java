@@ -189,9 +189,9 @@ public class MaterialsInit1 {
         Materials.Spessartine = loadSpessartine();
         Materials.Sphalerite = loadSphalerite();
         Materials.StainlessSteel = loadStainlessSteel();
+        Materials.Steel = loadSteel();
 
         // spotless:off
-        Materials.Steel                   = new Materials( 305, TextureSet.SET_METALLIC          ,   6.0F,    512,  3, 1|2          |64|128      , 128, 128, 128,   0,   "Steel"                   ,   "Steel"                         ,    0,       0,       1811, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Iron, 50), new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
         Materials.Stibnite                = new Materials( 945, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   ,  70,  70,  70,   0,   "Stibnite"                ,   "Stibnite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Antimony, 2), new MaterialStack(Sulfur, 3)));
         Materials.SulfuricAcid            = new Materials( 720, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 128,   0,   0,   "SulfuricAcid"            ,   "Sulfuric Acid"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)));
         Materials.Tanzanite               = new Materials( 508, TextureSet.SET_GEM_VERTICAL      ,   7.0F,    256,  2, 1  |4|8      |64          ,  64,   0, 200, 127,   "Tanzanite"               ,   "Tanzanite"                     ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Calcium, 2), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 13)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
@@ -8786,6 +8786,33 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Chrome, 1)
             .addMaterial(Materials.Manganese, 1)
             .addMaterial(Materials.Nickel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSteel() {
+        return new MaterialBuilder().setName("Steel")
+            .setDefaultLocalName("Steel")
+            .setMetaItemSubID(305)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .setToolSpeed(6.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1811)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 50)
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
