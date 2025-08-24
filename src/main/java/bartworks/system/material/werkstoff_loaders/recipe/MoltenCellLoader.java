@@ -231,7 +231,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) Math.max(
                         werkstoff.getStats()
-                            .getMass() / 8,
+                            .getMass() / 9,
                         1L))
                 .eut(
                     werkstoff.getStats()
