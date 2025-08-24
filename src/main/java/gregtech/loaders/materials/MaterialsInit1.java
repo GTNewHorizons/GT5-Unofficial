@@ -188,9 +188,9 @@ public class MaterialsInit1 {
         Materials.IronWood = loadIronWood();
         Materials.Glass = loadGlass();
         Materials.BorosilicateGlass = loadBorosilicateGlass();
+        Materials.Perlite = loadPerlite();
 
         // spotless:off
-        Materials.Perlite                 = new Materials( 925, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  30,  20,  30,   0,   "Perlite"                 ,   "Perlite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)));
         Materials.Borax                   = new Materials( 941, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 250, 250, 250,   0,   "Borax"                   ,   "Borax"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Oxygen, 7), new MaterialStack(Water, 10)));
         Materials.Lignite                 = new Materials( 538, TextureSet.SET_LIGNITE           ,   1.0F,      0,  0, 1  |4|8                   , 100,  70,  70,   0,   "Lignite"                 ,   "Lignite Coal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Carbon, 3), new MaterialStack(Water, 1)));
         Materials.Olivine                 = new Materials( 505, TextureSet.SET_RUBY              ,   7.0F,    256,  2, 1  |4|8      |64          , 150, 255, 150, 127,   "Olivine"                 ,   "Olivine"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeLime        , 1, Arrays.asList(new MaterialStack(Magnesium, 2), new MaterialStack(Iron, 1), new MaterialStack(SiliconDioxide, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
@@ -9269,6 +9269,21 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7))
             .addCentrifugeRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPerlite() {
+        return new MaterialBuilder().setName("Perlite")
+            .setDefaultLocalName("Perlite")
+            .setMetaItemSubID(925)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x1e141e)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Obsidian, 2)
+            .addMaterial(Materials.Water, 1)
             .constructMaterial();
     }
 
