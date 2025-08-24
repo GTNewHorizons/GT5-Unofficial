@@ -46,7 +46,6 @@ import static gregtech.api.enums.Materials.GarnetRed;
 import static gregtech.api.enums.Materials.GarnetYellow;
 import static gregtech.api.enums.Materials.Glass;
 import static gregtech.api.enums.Materials.Gold;
-import static gregtech.api.enums.Materials.GraniteBlack;
 import static gregtech.api.enums.Materials.HSSG;
 import static gregtech.api.enums.Materials.Hydrogen;
 import static gregtech.api.enums.Materials.Indium;
@@ -55,7 +54,6 @@ import static gregtech.api.enums.Materials.Iron;
 import static gregtech.api.enums.Materials.Lead;
 import static gregtech.api.enums.Materials.Lithium;
 import static gregtech.api.enums.Materials.Magnesium;
-import static gregtech.api.enums.Materials.Magnetite;
 import static gregtech.api.enums.Materials.Manganese;
 import static gregtech.api.enums.Materials.MelodicAlloy;
 import static gregtech.api.enums.Materials.Molybdenum;
@@ -206,9 +204,9 @@ public class MaterialsInit1 {
         Materials.Realgar = loadRealgar();
         Materials.VanadiumMagnetite = loadVanadiumMagnetite();
         Materials.BasalticMineralSand = loadBasalticMineralSand();
+        Materials.GraniticMineralSand = loadGraniticMineralSand();
 
         // spotless:off
-        Materials.GraniticMineralSand     = new Materials( 936, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   ,  40,  60,  60,   0,   "GraniticMineralSand"     ,   "Granitic Mineral Sand"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Magnetite, 1), new MaterialStack(GraniteBlack, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
         Materials.GarnetSand              = new Materials( 938, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "GarnetSand"              ,   "Garnet Sand"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(GarnetRed, 1), new MaterialStack(GarnetYellow, 1)));
         Materials.QuartzSand              = new Materials( 939, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 194, 178, 128,   0,   "QuartzSand"              ,   "Quartz Sand"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(CertusQuartz, 1), new MaterialStack(Quartzite, 1)));
         Materials.Bastnasite              = new Materials( 905, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 200, 110,  45,   0,   "Bastnasite"              ,   "Bastnasite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Cerium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Fluorine, 1), new MaterialStack(Oxygen, 3))); // (Ce, La, Y)CO3F
@@ -10328,6 +10326,23 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Magnetite, 1)
             .addMaterial(Materials.Basalt, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGraniticMineralSand() {
+        return new MaterialBuilder().setName("GraniticMineralSand")
+            .setDefaultLocalName("Granitic Mineral Sand")
+            .setMetaItemSubID(936)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x283c3c)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magnetite, 1)
+            .addMaterial(Materials.GraniteBlack, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
             .constructMaterial();
