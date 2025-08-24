@@ -253,9 +253,9 @@ public class MaterialsInit1 {
         Materials.MetalMixture = loadMetalMixture();
         Materials.Ethylene = loadEthylene();
         Materials.Propene = loadPropene();
+        Materials.VinylAcetate = loadVinylAcetate();
 
         // spotless:off
-        Materials.VinylAcetate              = new MaterialBuilder(679, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Acetate").addCell().addFluid().setRGB(255, 179, 128).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.PolyvinylAcetate          = new MaterialBuilder(680, TextureSet.SET_FLUID      ,                                                                                                     "Polyvinyl Acetate").addCell().addFluid().setRGB(255, 153, 85).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).constructMaterial();
         Materials.MethylAcetate             = new MaterialBuilder(681, TextureSet.SET_FLUID      ,                                                                                                     "Methyl Acetate").addCell().addFluid().setRGB(238, 198, 175).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.AllylChloride             = new MaterialBuilder(682, TextureSet.SET_FLUID      ,                                                                                                     "Allyl Chloride").addCell().addFluid().setRGB(135, 222, 170).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -8162,6 +8162,16 @@ public class MaterialsInit1 {
             .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6))
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadVinylAcetate() {
+        return new MaterialBuilder(679, TextureSet.SET_FLUID, "Vinyl Acetate").addCell()
+            .addFluid()
+            .setRGB(255, 179, 128)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
