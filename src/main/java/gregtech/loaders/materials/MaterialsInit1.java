@@ -187,9 +187,9 @@ public class MaterialsInit1 {
         Materials.LiveRoot = loadLiveRoot();
         Materials.IronWood = loadIronWood();
         Materials.Glass = loadGlass();
+        Materials.BorosilicateGlass = loadBorosilicateGlass();
 
         // spotless:off
-        Materials.BorosilicateGlass  = new MaterialBuilder(611, TextureSet.SET_GLASS             ,                                                                                                     "Borosilicate Glass").addDustItems().addMetalItems().setRGB(230, 243, 230).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7)).addCentrifugeRecipe().constructMaterial();
         Materials.Perlite                 = new Materials( 925, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  30,  20,  30,   0,   "Perlite"                 ,   "Perlite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)));
         Materials.Borax                   = new Materials( 941, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 250, 250, 250,   0,   "Borax"                   ,   "Borax"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Oxygen, 7), new MaterialStack(Water, 10)));
         Materials.Lignite                 = new Materials( 538, TextureSet.SET_LIGNITE           ,   1.0F,      0,  0, 1  |4|8                   , 100,  70,  70,   0,   "Lignite"                 ,   "Lignite Coal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Carbon, 3), new MaterialStack(Water, 1)));
@@ -9259,6 +9259,16 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadBorosilicateGlass() {
+        return new MaterialBuilder(611, TextureSet.SET_GLASS, "Borosilicate Glass").addDustItems()
+            .addMetalItems()
+            .setRGB(230, 243, 230)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7))
+            .addCentrifugeRecipe()
             .constructMaterial();
     }
 
