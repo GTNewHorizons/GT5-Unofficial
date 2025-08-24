@@ -246,9 +246,9 @@ public class MaterialsInit1 {
         Materials.Chloroform = loadChloroform();
         Materials.BisphenolA = loadBisphenolA();
         Materials.AceticAcid = loadAceticAcid();
+        Materials.CalciumAcetateSolution = loadCalciumAcetateSolution();
 
         // spotless:off
-        Materials.CalciumAcetateSolution    = new MaterialBuilder(671, TextureSet.SET_RUBY       ,                                                                                                     "Calcium Acetate Solution").addCell().addFluid().setRGB(220, 200, 180).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 4), new MaterialStack(Oxygen, 4), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().constructMaterial();
         Materials.Acetone                   = new MaterialBuilder(672, TextureSet.SET_FLUID      ,                                                                                                     "Acetone").addCell().addFluid().setRGB(175, 175, 175).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Methanol                  = new MaterialBuilder(673, TextureSet.SET_FLUID      ,                                                                                                     "Methanol").addCell().addFluid().setRGB(170, 136, 0).setColor(Dyes.dyeBrown).setFuelPower(84).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.CarbonMonoxide            = new MaterialBuilder(674, TextureSet.SET_FLUID      ,                                                                                                     "Carbon Monoxide").addCell().addGas().setRGB(14, 72, 128).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1)).constructMaterial();
@@ -8082,6 +8082,20 @@ public class MaterialsInit1 {
             .setRGB(200, 180, 160)
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCalciumAcetateSolution() {
+        return new MaterialBuilder(671, TextureSet.SET_RUBY, "Calcium Acetate Solution").addCell()
+            .addFluid()
+            .setRGB(220, 200, 180)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(
+                new MaterialStack(Calcium, 1),
+                new MaterialStack(Carbon, 4),
+                new MaterialStack(Oxygen, 4),
+                new MaterialStack(Hydrogen, 6))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
