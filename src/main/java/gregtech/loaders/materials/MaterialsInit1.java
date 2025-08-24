@@ -190,9 +190,9 @@ public class MaterialsInit1 {
         Materials.Hexachlorodisilane = loadHexachlorodisilane();
         Materials.Dichlorosilane = loadDichlorosilane();
         Materials.Silane = loadSilane();
+        Materials.Calciumhydride = loadCalciumhydride();
 
         // spotless:off
-        Materials.Calciumhydride          = new Materials(  797, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 220, 220, 220,   0,   "CalciumHydride"          ,   "Calcium Hydride"               ,    0,       0,       1089,   -1, false, false,   1,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Hydrogen, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//CaH2
         Materials.AluminiumFluoride       = new Materials(  969, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Aluminiumfluoride"       ,   "Aluminium Fluoride"            ,    0,       0,       1533,   -1, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Aluminium, 1), new MaterialStack(Fluorine, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//ALF3
 
         Materials.SolderingAlloy          = new Materials( 314, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 220, 220, 230,   0,   "SolderingAlloy"          ,   "Soldering Alloy"               ,    0,       0,        400,  400, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 9), new MaterialStack(Antimony, 1)));
@@ -8642,6 +8642,25 @@ public class MaterialsInit1 {
             // SIH4
             .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Hydrogen, 4))
             .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
+            .constructMaterial();
+    }
+
+    private static Materials loadCalciumhydride() {
+        return new MaterialBuilder().setName("CalciumHydride")
+            .setDefaultLocalName("Calcium Hydride")
+            .setMetaItemSubID(797)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xdcdcdc)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1089)
+            .addElectrolyzerRecipe()
+            // CaH2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
