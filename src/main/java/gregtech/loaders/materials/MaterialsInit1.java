@@ -228,9 +228,9 @@ public class MaterialsInit1 {
         Materials.Toluene = loadToluene();
         Materials.Epichlorohydrin = loadEpichlorohydrin();
         Materials.PolyvinylChloride = loadPolyvinylChloride();
+        Materials.VinylChloride = loadVinylChloride();
 
         // spotless:off
-        Materials.VinylChloride             = new MaterialBuilder(650, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Chloride").addCell().addGas().setRGB(225, 240, 240).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.SulfurDioxide             = new MaterialBuilder(651, TextureSet.SET_FLUID      ,                                                                                                     "Sulfur Dioxide").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
         Materials.SulfurTrioxide            = new MaterialBuilder(652, TextureSet.SET_FLUID      ,                                                                                                     "Sulfur Trioxide").addCell().addGas().setGasTemperature(344).setRGB(160, 160, 20).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.NitricAcid                = new MaterialBuilder(653, TextureSet.SET_FLUID      ,                                                                                                     "Nitric Acid").addCell().addFluid().setRGB(230, 226, 171).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
@@ -7876,6 +7876,19 @@ public class MaterialsInit1 {
                 new MaterialStack(Carbon, 2),
                 new MaterialStack(Hydrogen, 3),
                 new MaterialStack(Chlorine, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadVinylChloride() {
+        return new MaterialBuilder(650, TextureSet.SET_FLUID, "Vinyl Chloride").addCell()
+            .addGas()
+            .setRGB(225, 240, 240)
+            .setColor(Dyes.dyeLightGray)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 3),
+                new MaterialStack(Chlorine, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
