@@ -656,7 +656,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials VinylAcetate;
     public static Materials VinylChloride;
 
-    // Roasted Ore Dust
+    // Roasted Ores
     public static Materials RoastedCopper;
     public static Materials RoastedAntimony;
     public static Materials RoastedIron;
