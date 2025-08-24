@@ -638,15 +638,20 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             final int tMaxTries = 2; // 2 => Weapon already in the slot + one extra
             ItemStack tWeaponToUse = cycleWeaponsUntilNoBreakage(recipe, tBatchMultiplier, tMaxTries);
 
+            if (this.mCycleWeapons && weaponCache.getStackInSlot(0) == null) {
+                moveWeaponFromInputToCache();
+            }
+
+            ItemStack tWeaponInCache = weaponCache.getStackInSlot(0);
             if (tWeaponToUse != null) {
-                if (tWeaponToUse == weaponCache.getStackInSlot(0)) {
+                if (tWeaponToUse == tWeaponInCache) {
                     tAttackDamage += weaponCache.attackDamage;
                     tLootingLevel += weaponCache.looting;
                 } else {
                     tAttackDamage += getWeaponAttackDamage(tWeaponToUse);
                     tLootingLevel += getWeaponLooting(tWeaponToUse);
                 }
-            } else if (weaponCache.getStackInSlot(0) != null) {
+            } else if (tWeaponInCache != null) {
                 mIsPreventingGUIWeaponUse = true;
             }
 
@@ -689,9 +694,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     private ItemStack cycleWeaponsUntilNoBreakage(final MobHandlerLoader.MobEECRecipe aRecipe,
         final int aBatchModeMultiplier, int aMaxTries) {
+        final int tBusCount = mInputBusses.size();
         int tCurrentInputBus = 0;
         int tCurrentInputBusSlot = 0;
-        int tBusCount = mInputBusses.size();
 
         ItemStack tWeapon = this.weaponCache.getStackInSlot(0);
         if (!this.weaponCache.isValid) {
@@ -732,7 +737,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 }
             }
 
-            ItemStack tWeaponResult = runWeaponHitSimulation(tWeapon, aRecipe.recipe.entity, aBatchModeMultiplier);
+            ItemStack tWeaponResult = runWeaponHitSimulation(
+                tWeapon,
+                aRecipe.recipe.entity,
+                aBatchModeMultiplier,
+                mPreserveWeapon);
 
             // Weapon didn't break, use it
             if (tWeaponResult != null) {
@@ -759,7 +768,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     private ItemStack runWeaponHitSimulation(ItemStack aWeapon, final EntityLiving aTarget,
-        final int aBatchModeMultiplier) {
+        final int aBatchModeMultiplier, final boolean aPreventPerfectUnbreaking) {
         if (aWeapon == null || !aWeapon.isItemStackDamageable()) return aWeapon;
         if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
 
@@ -768,6 +777,16 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         EECPlayer.currentWeapon = tWeaponCopy;
         for (int i = 0; i < aBatchModeMultiplier; i++) {
+            // Force max weapons at max damage to be considered broken,
+            // even if they would survive a hit by having the Unbreaking enchantment.
+            // This prevents weapons from being effectively unbreakable due to the
+            // removal the chance-based chance of the weapon breaking.
+            if (aPreventPerfectUnbreaking && tWeaponCopy.getItemDamage() == tWeaponCopy.getMaxDamage()) {
+                EECPlayer.currentWeapon = null;
+                return null;
+            }
+
+            // Simulate hit on entity with the weapon's copy
             if (!tItem.hitEntity(tWeaponCopy, aTarget, EECPlayer)) break;
             if (tWeaponCopy.stackSize == 0) {
                 EECPlayer.currentWeapon = null;
@@ -776,6 +795,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         }
         EECPlayer.currentWeapon = null;
         return tWeaponCopy;
+    }
+
+    private void moveWeaponFromInputToCache() {
+        if (this.weaponCache.isValid) return;
+        for (MTEHatchInputBus tBus : mInputBusses) {
+            for (int tSlotIndex = 0; tSlotIndex < tBus.mInventory.length; tSlotIndex++) {
+                if (!tBus.isValidSlot(tSlotIndex)) continue;
+
+                ItemStack tItem = tBus.mInventory[tSlotIndex];
+                if (tItem == null || tItem.stackSize == 0 || !isUsableWeapon(tItem)) continue;
+
+                weaponCache.setStackInSlot(0, tItem);
+                tBus.mInventory[tSlotIndex] = null;
+                return;
+            }
+        }
     }
 
     private static boolean isUsableWeapon(final ItemStack aWeapon) {
