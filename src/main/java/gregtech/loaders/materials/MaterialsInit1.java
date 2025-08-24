@@ -233,10 +233,9 @@ public class MaterialsInit1 {
         Materials.Aluminiumoxide = loadAlumina();
         Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
         Materials.Cryolite = loadCryolite();
+        Materials.RedMud = loadRedMud();
 
         // spotless:off
-        Materials.RedMud                  = new MaterialBuilder(743, TextureSet.SET_FLUID, "Red Mud").addCell().addFluid().setRGB(140, 22, 22).setColor(Dyes.dyeRed).constructMaterial();
-
         Materials.Brick                   = new MaterialBuilder(625, TextureSet.SET_ROUGH      ,                                                                                                     "Brick").addDustItems().setRGB(155, 86, 67).setColor(Dyes.dyeBrown).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Oxygen, 11)).constructMaterial();
         Materials.Fireclay                = new MaterialBuilder(626, TextureSet.SET_ROUGH      ,                                                                                                     "Fireclay").addDustItems().setRGB(173, 160, 155).setExtraData(2).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1)).constructMaterial();
 
@@ -11201,6 +11200,14 @@ public class MaterialsInit1 {
                 new MaterialStack(Sodium, 3),
                 new MaterialStack(Aluminium, 1),
                 new MaterialStack(Fluorine, 6))
+            .constructMaterial();
+    }
+
+    private static Materials loadRedMud() {
+        return new MaterialBuilder(743, TextureSet.SET_FLUID, "Red Mud").addCell()
+            .addFluid()
+            .setRGB(140, 22, 22)
+            .setColor(Dyes.dyeRed)
             .constructMaterial();
     }
 
