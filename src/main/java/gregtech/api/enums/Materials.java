@@ -191,27 +191,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.
      * But I do see potential uses in some of these Materials.
      */
-    public static Materials Serpentine;
-    public static Materials Flux;
-    public static Materials OsmiumTetroxide;
-    public static Materials RubberTreeSap;
-    public static Materials PhasedIron;
-    public static Materials PhasedGold;
-    public static Materials HeeEndium;
-    public static Materials Teslatite;
-    public static Materials Fluix;
-    public static Materials DarkThaumium;
     public static Materials Alfium;
-    public static Materials Mutation;
     public static Materials Aquamarine;
-    public static Materials Ender;
-    public static Materials SodiumPeroxide;
-    public static Materials IridiumSodiumOxide;
-    public static Materials PlatinumGroupSludge;
+    public static Materials DarkThaumium;
     public static Materials Draconium;
     public static Materials DraconiumAwakened;
-    public static Materials PurpleAlloy;
+    public static Materials Ender;
+    public static Materials Fluix;
+    public static Materials Flux;
+    public static Materials HeeEndium;
     public static Materials InfusedTeslatite;
+    public static Materials IridiumSodiumOxide;
+    public static Materials Mutation;
+    public static Materials OsmiumTetroxide;
+    public static Materials PhasedGold;
+    public static Materials PhasedIron;
+    public static Materials PlatinumGroupSludge;
+    public static Materials PurpleAlloy;
+    public static Materials RubberTreeSap;
+    public static Materials Serpentine;
+    public static Materials SodiumPeroxide;
+    public static Materials Teslatite;
 
     // Unknown Material Components. Dead End Section.
     public static Materials Adamantium;

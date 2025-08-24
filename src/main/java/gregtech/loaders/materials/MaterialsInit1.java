@@ -2647,131 +2647,32 @@ public class MaterialsInit1 {
     }
 
     private static void loadDontCare() {
-        Materials.Serpentine = loadSerpentine();
-        Materials.Flux = loadFlux();
-        Materials.OsmiumTetroxide = loadOsmiumTetroxide();
-        Materials.RubberTreeSap = loadRubberTreeSap();
-        Materials.PhasedIron = loadPhasedIron();
-        Materials.PhasedGold = loadPhasedGold();
-        Materials.HeeEndium = loadHeeEndium();
-        Materials.Teslatite = loadTeslatite();
-        Materials.Fluix = loadFluix();
-        Materials.DarkThaumium = loadDarkThaumium();
         Materials.Alfium = loadAlfium();
-        Materials.Mutation = loadMutation();
         Materials.Aquamarine = loadAquamarine();
-        Materials.Ender = loadEnder();
-        Materials.SodiumPeroxide = loadSodiumPeroxide();
-        Materials.IridiumSodiumOxide = loadIridiumSodiumOxide();
-        Materials.PlatinumGroupSludge = loadPlatinumGroupSludge();
+        Materials.DarkThaumium = loadDarkThaumium();
         Materials.Draconium = loadDraconium();
         Materials.DraconiumAwakened = loadDraconiumAwakened();
-        Materials.PurpleAlloy = loadPurpleAlloy();
+        Materials.Ender = loadEnder();
+        Materials.Fluix = loadFluix();
+        Materials.Flux = loadFlux();
+        Materials.HeeEndium = loadHeeEndium();
         Materials.InfusedTeslatite = loadInfusedTeslatite();
-    }
-
-    private static Materials loadSerpentine() {
-        return new MaterialBuilder().setName("Serpentine")
-            .setDefaultLocalName("Serpentine")
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadFlux() {
-        return new MaterialBuilder().setName("Flux")
-            .setDefaultLocalName("Flux")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadOsmiumTetroxide() {
-        return new MaterialBuilder().setName("OsmiumTetroxide")
-            .setDefaultLocalName("Osmium Tetroxide")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadRubberTreeSap() {
-        return new MaterialBuilder().setName("RubberTreeSap")
-            .setDefaultLocalName("Rubber Tree Sap")
-            .constructMaterial();
-    }
-
-    private static Materials loadPhasedIron() {
-        return new MaterialBuilder().setName("PhasedIron")
-            .setDefaultLocalName("Phased Iron")
-            .addDustItems()
-            .addMetalItems()
-            .setMeltingPoint(3300)
-            .setBlastFurnaceTemp(3300)
-            .setBlastFurnaceRequired(true)
-            .constructMaterial();
-    }
-
-    private static Materials loadPhasedGold() {
-        return new MaterialBuilder().setName("PhasedGold")
-            .setDefaultLocalName("Phased Gold")
-            .addDustItems()
-            .addMetalItems()
-            .setBlastFurnaceTemp(1800)
-            .setBlastFurnaceRequired(true)
-            .constructMaterial();
-    }
-
-    private static Materials loadHeeEndium() {
-        return new MaterialBuilder().setName("HeeEndium")
-            .setDefaultLocalName("Endium")
-            .setMetaItemSubID(770)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeLightBlue)
-            .setRGB(0xa5dcfa)
-            .setToolSpeed(16.0f)
-            .setDurability(1024)
-            .setToolQuality(4)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTeslatite() {
-        return new MaterialBuilder().setName("Teslatite")
-            .setDefaultLocalName("Teslatite")
-            .setRGB(0x3cb4c8)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadFluix() {
-        return new MaterialBuilder().setName("Fluix")
-            .setDefaultLocalName("Fluix")
-            .addDustItems()
-            .addGemItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadDarkThaumium() {
-        return new MaterialBuilder().setName("DarkThaumium")
-            .setDefaultLocalName("Dark Thaumium")
-            .addDustItems()
-            .addMetalItems()
-            .constructMaterial();
+        Materials.IridiumSodiumOxide = loadIridiumSodiumOxide();
+        Materials.Mutation = loadMutation();
+        Materials.OsmiumTetroxide = loadOsmiumTetroxide();
+        Materials.PhasedGold = loadPhasedGold();
+        Materials.PhasedIron = loadPhasedIron();
+        Materials.PlatinumGroupSludge = loadPlatinumGroupSludge();
+        Materials.PurpleAlloy = loadPurpleAlloy();
+        Materials.RubberTreeSap = loadRubberTreeSap();
+        Materials.Serpentine = loadSerpentine();
+        Materials.SodiumPeroxide = loadSodiumPeroxide();
+        Materials.Teslatite = loadTeslatite();
     }
 
     private static Materials loadAlfium() {
         return new MaterialBuilder().setName("Alfium")
             .setDefaultLocalName("Alfium")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadMutation() {
-        return new MaterialBuilder().setName("Mutation")
-            .setDefaultLocalName("Mutation")
             .addDustItems()
             .constructMaterial();
     }
@@ -2784,34 +2685,11 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadEnder() {
-        return new MaterialBuilder().setName("Ender")
-            .setDefaultLocalName("Ender")
+    private static Materials loadDarkThaumium() {
+        return new MaterialBuilder().setName("DarkThaumium")
+            .setDefaultLocalName("Dark Thaumium")
             .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadSodiumPeroxide() {
-        return new MaterialBuilder().setName("SodiumPeroxide")
-            .setDefaultLocalName("Sodium Peroxide")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadIridiumSodiumOxide() {
-        return new MaterialBuilder().setName("IridiumSodiumOxide")
-            .setDefaultLocalName("Iridium Sodium Oxide")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadPlatinumGroupSludge() {
-        return new MaterialBuilder().setName("PlatinumGroupSludge")
-            .setDefaultLocalName("Platinum Group Sludge")
-            .setMetaItemSubID(241)
-            .setIconSet(TextureSet.SET_POWDER)
-            .setRGB(0x001e00)
-            .addDustItems()
+            .addMetalItems()
             .constructMaterial();
     }
 
@@ -2865,10 +2743,43 @@ public class MaterialsInit1 {
             .setHasCorrespondingPlasma(true);
     }
 
-    private static Materials loadPurpleAlloy() {
-        return new MaterialBuilder().setName("PurpleAlloy")
-            .setDefaultLocalName("Purple Alloy")
-            .setRGB(0x64b4ff)
+    private static Materials loadEnder() {
+        return new MaterialBuilder().setName("Ender")
+            .setDefaultLocalName("Ender")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFluix() {
+        return new MaterialBuilder().setName("Fluix")
+            .setDefaultLocalName("Fluix")
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFlux() {
+        return new MaterialBuilder().setName("Flux")
+            .setDefaultLocalName("Flux")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHeeEndium() {
+        return new MaterialBuilder().setName("HeeEndium")
+            .setDefaultLocalName("Endium")
+            .setMetaItemSubID(770)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xa5dcfa)
+            .setToolSpeed(16.0f)
+            .setDurability(1024)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
             .constructMaterial();
     }
 
@@ -2876,6 +2787,95 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("InfusedTeslatite")
             .setDefaultLocalName("Infused Teslatite")
             .setRGB(0x64b4ff)
+            .constructMaterial();
+    }
+
+    private static Materials loadIridiumSodiumOxide() {
+        return new MaterialBuilder().setName("IridiumSodiumOxide")
+            .setDefaultLocalName("Iridium Sodium Oxide")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMutation() {
+        return new MaterialBuilder().setName("Mutation")
+            .setDefaultLocalName("Mutation")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOsmiumTetroxide() {
+        return new MaterialBuilder().setName("OsmiumTetroxide")
+            .setDefaultLocalName("Osmium Tetroxide")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPhasedGold() {
+        return new MaterialBuilder().setName("PhasedGold")
+            .setDefaultLocalName("Phased Gold")
+            .addDustItems()
+            .addMetalItems()
+            .setBlastFurnaceTemp(1800)
+            .setBlastFurnaceRequired(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhasedIron() {
+        return new MaterialBuilder().setName("PhasedIron")
+            .setDefaultLocalName("Phased Iron")
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(3300)
+            .setBlastFurnaceTemp(3300)
+            .setBlastFurnaceRequired(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadPlatinumGroupSludge() {
+        return new MaterialBuilder().setName("PlatinumGroupSludge")
+            .setDefaultLocalName("Platinum Group Sludge")
+            .setMetaItemSubID(241)
+            .setIconSet(TextureSet.SET_POWDER)
+            .setRGB(0x001e00)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPurpleAlloy() {
+        return new MaterialBuilder().setName("PurpleAlloy")
+            .setDefaultLocalName("Purple Alloy")
+            .setRGB(0x64b4ff)
+            .constructMaterial();
+    }
+
+    private static Materials loadRubberTreeSap() {
+        return new MaterialBuilder().setName("RubberTreeSap")
+            .setDefaultLocalName("Rubber Tree Sap")
+            .constructMaterial();
+    }
+
+    private static Materials loadSerpentine() {
+        return new MaterialBuilder().setName("Serpentine")
+            .setDefaultLocalName("Serpentine")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumPeroxide() {
+        return new MaterialBuilder().setName("SodiumPeroxide")
+            .setDefaultLocalName("Sodium Peroxide")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadTeslatite() {
+        return new MaterialBuilder().setName("Teslatite")
+            .setDefaultLocalName("Teslatite")
+            .setRGB(0x3cb4c8)
+            .addDustItems()
             .constructMaterial();
     }
 
