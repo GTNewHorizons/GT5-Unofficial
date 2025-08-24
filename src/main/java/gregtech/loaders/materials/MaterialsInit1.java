@@ -204,9 +204,9 @@ public class MaterialsInit1 {
         Materials.QuartzSand = loadQuartzSand();
         Materials.Bastnasite = loadBastnasite();
         Materials.Pentlandite = loadPentlandite();
+        Materials.Spodumene = loadSpodumene();
 
         // spotless:off
-        Materials.Spodumene               = new Materials( 920, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 190, 170, 170,   0,   "Spodumene"               ,   "Spodumene"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6))); // LiAl(SiO3)2
         Materials.Pollucite               = new Materials( 919, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 210, 210,   0,   "Pollucite"               ,   "Pollucite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Caesium, 2), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 12))); // (Cs,Na)2Al2Si4O12 2H2O (also a source of Rb)
         Materials.Tantalite               = new Materials( 921, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 145,  80,  40,   0,   "Tantalite"               ,   "Tantalite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Tantalum, 2), new MaterialStack(Oxygen, 6))); // (Fe, Mn)Ta2O6 (also source of Nb)
         Materials.Lepidolite              = new Materials( 907, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 240,  50, 140,   0,   "Lepidolite"              ,   "Lepidolite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Lithium, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // K(Li,Al,Rb)3(Al,Si)4O10(F,OH)2
@@ -10401,6 +10401,22 @@ public class MaterialsInit1 {
             // (Fe,Ni)9S8
             .addMaterial(Materials.Nickel, 9)
             .addMaterial(Materials.Sulfur, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadSpodumene() {
+        return new MaterialBuilder().setName("Spodumene")
+            .setDefaultLocalName("Spodumene")
+            .setMetaItemSubID(920)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xbeaaaa)
+            .addDustItems()
+            .addOreItems()
+            // LiAl(SiO3)2
+            .addMaterial(Materials.Lithium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Oxygen, 6)
             .constructMaterial();
     }
 
