@@ -89,7 +89,6 @@ import static gregtech.api.enums.Materials.Tungsten;
 import static gregtech.api.enums.Materials.TungstenSteel;
 import static gregtech.api.enums.Materials.Uranium;
 import static gregtech.api.enums.Materials.Vanadium;
-import static gregtech.api.enums.Materials.Water;
 import static gregtech.api.enums.Materials.Zinc;
 
 import java.util.Arrays;
@@ -213,9 +212,9 @@ public class MaterialsInit1 {
         Materials.Mica = loadMica();
         Materials.Trona = loadTrona();
         Materials.Barite = loadBarite();
+        Materials.Gypsum = loadGypsum();
 
         // spotless:off
-        Materials.Gypsum                  = new Materials( 934, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 250,   0,   "Gypsum"                  ,   "Gypsum"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4), new MaterialStack(Water, 2))); // CaSO4 2H2O
         Materials.Alunite                 = new Materials( 911, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 225, 180,  65,   0,   "Alunite"                 ,   "Alunite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 14))); // KAl3(SO4)2(OH)6
         Materials.Dolomite                = new Materials( 914, TextureSet.SET_FLINT             ,   1.0F,      0,  1, 1    |8                   , 225, 205, 205,   0,   "Dolomite"                ,   "Dolomite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Oxygen, 6))); // CaMg(CO3)2
         Materials.Wollastonite            = new Materials( 915, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 240, 240,   0,   "Wollastonite"            ,   "Wollastonite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))); // CaSiO3
@@ -10671,6 +10670,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Barium, 1)
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadGypsum() {
+        return new MaterialBuilder().setName("Gypsum")
+            .setDefaultLocalName("Gypsum")
+            .setMetaItemSubID(934)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xe6e6fa)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // CaSO4 2H2O
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .addMaterial(Materials.Water, 2)
             .constructMaterial();
     }
 
