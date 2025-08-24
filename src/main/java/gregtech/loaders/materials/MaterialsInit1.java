@@ -267,10 +267,9 @@ public class MaterialsInit1 {
         Materials.PhosphoricAcid = loadPhosphoricAcid();
         Materials.SaltWater = loadSaltWater();
         Materials.IronIIIChloride = loadIronIIIChloride();
+        Materials.LifeEssence = loadLifeEssence();
 
         // spotless:off
-        Materials.LifeEssence               = new MaterialBuilder(694, TextureSet.SET_FLUID      ,                                                                                                     "Life").setName("lifeessence").addCell().addFluid().setFuelPower(100).setFuelType(5).setRGB(110, 3, 3).setColor(Dyes.dyeRed).setMaterialList().constructMaterial();
-
         Materials.RoastedCopper             = new MaterialBuilder(546, TextureSet.SET_DULL    , "Roasted Copper").setName("RoastedCopper").addDustItems().setRGB(77, 18, 18).constructMaterial();
         Materials.RoastedAntimony           = new MaterialBuilder(547, TextureSet.SET_DULL    , "Roasted Antimony").setName("RoastedAntimony").addDustItems().setRGB(196, 178, 194).constructMaterial();
         Materials.RoastedIron               = new MaterialBuilder(548, TextureSet.SET_DULL    , "Roasted Iron").setName("RoastedIron").addDustItems().setRGB(148, 98, 98).addOreItems().constructMaterial();
@@ -8312,6 +8311,18 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBlack)
             .setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Chlorine, 3))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadLifeEssence() {
+        return new MaterialBuilder(694, TextureSet.SET_FLUID, "Life").setName("lifeessence")
+            .addCell()
+            .addFluid()
+            .setFuelPower(100)
+            .setFuelType(5)
+            .setRGB(110, 3, 3)
+            .setColor(Dyes.dyeRed)
+            .setMaterialList()
             .constructMaterial();
     }
 
