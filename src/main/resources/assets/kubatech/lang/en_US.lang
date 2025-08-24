@@ -56,7 +56,7 @@ kubatech.gui.text.tea_acceptor.in.tooltip=Average input from the last 5 seconds
 
 kubatech.gui.text.eec.preserve_weapon_on=Weapon Preservation: ON
 kubatech.gui.text.eec.preserve_weapon_off=Weapon Preservation: OFF
-kubatech.gui.text.eec.preserve_weapon_warning=Not using GUI weapon!
+kubatech.gui.text.eec.preserve_weapon_warning=Not using GUI weapon.
 kubatech.gui.text.eec.cycle_weapons_on=Weapon Cycling: ON
 kubatech.gui.text.eec.cycle_weapons_off=Weapon Cycling: OFF
 kubatech.gui.text.eec.cycle_weapons.info=If §fWeapon Preservation§r is enabled, moves almost broken weapons from the GUI to Output Buses, if there's space.

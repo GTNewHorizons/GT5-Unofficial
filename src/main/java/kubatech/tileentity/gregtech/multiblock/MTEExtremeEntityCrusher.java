@@ -311,14 +311,16 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo(
                 "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
                     + " levels).")
+            .addInfo(
+                "If the weapon has durability it will be damaged in each run. In batch mode the damage is multiplied 16x.")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
-            .addInfo("Also produces 120 Liquid XP per operation.")
+            .addInfo("Produces 120L of Liquid XP per operation.")
             .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
             .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
             .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
             .addInfo("You can enable ritual mode with a screwdriver.")
             .addInfo(
-                "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
+                "When in ritual mode and the Well Of Suffering ritual is activated directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
             .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
@@ -682,8 +684,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private ItemStack cycleWeaponsUntilNoBreakage(final MobHandlerLoader.MobEECRecipe aRecipe, final int aBatchModeMultiplier,
-        int aMaxTries) {
+    private ItemStack cycleWeaponsUntilNoBreakage(final MobHandlerLoader.MobEECRecipe aRecipe,
+        final int aBatchModeMultiplier, int aMaxTries) {
         int tCurrentInputBus = 0;
         int tCurrentInputBusSlot = 0;
         int tBusCount = mInputBusses.size();
@@ -708,7 +710,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
                         ItemStack tItem = tBus.mInventory[tSlotIndex];
                         if (tItem == null || tItem.stackSize == 0 || !isUsableWeapon(tItem)) continue;
-
 
                         tWeapon = tItem;
                         weaponCache.setStackInSlot(0, tItem);
@@ -872,12 +873,13 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         screenElements.widget(
             new TextWidget(new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.preserve_weapon_warning")))
                 .setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(Color.YELLOW.normal)
+                .setDefaultColor(EnumChatFormatting.YELLOW)
                 .setEnabled(widget -> mIsPreventingGUIWeaponUse && !isInRitualMode && mMaxProgresstime > 0));
         screenElements.widget(
             new FakeSyncWidget.BooleanSyncer(
                 () -> this.mIsPreventingGUIWeaponUse,
                 val -> this.mIsPreventingGUIWeaponUse = val));
+
         super.drawTexts(screenElements, inventorySlot);
     }
 
