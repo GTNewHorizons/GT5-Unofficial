@@ -190,9 +190,9 @@ public class MaterialsInit1 {
         Materials.BorosilicateGlass = loadBorosilicateGlass();
         Materials.Perlite = loadPerlite();
         Materials.Borax = loadBorax();
+        Materials.Lignite = loadLignite();
 
         // spotless:off
-        Materials.Lignite                 = new Materials( 538, TextureSet.SET_LIGNITE           ,   1.0F,      0,  0, 1  |4|8                   , 100,  70,  70,   0,   "Lignite"                 ,   "Lignite Coal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Carbon, 3), new MaterialStack(Water, 1)));
         Materials.Olivine                 = new Materials( 505, TextureSet.SET_RUBY              ,   7.0F,    256,  2, 1  |4|8      |64          , 150, 255, 150, 127,   "Olivine"                 ,   "Olivine"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeLime        , 1, Arrays.asList(new MaterialStack(Magnesium, 2), new MaterialStack(Iron, 1), new MaterialStack(SiliconDioxide, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.Opal                    = new Materials( 510, TextureSet.SET_OPAL              ,   7.0F,    256,  2, 1  |4|8      |64          ,   0,   0, 255,   0,   "Opal"                    ,   "Opal"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Amethyst                = new Materials( 509, TextureSet.SET_FLINT             ,   7.0F,    256,  3, 1  |4|8      |64          , 210,  50, 210, 127,   "Amethyst"                ,   "Amethyst"                      ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
@@ -9301,6 +9301,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Boron, 4)
             .addMaterial(Materials.Oxygen, 7)
             .addMaterial(Materials.Water, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadLignite() {
+        return new MaterialBuilder().setName("Lignite")
+            .setDefaultLocalName("Lignite Coal")
+            .setMetaItemSubID(538)
+            .setIconSet(TextureSet.SET_LIGNITE)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x644646)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Water, 1)
             .constructMaterial();
     }
 
