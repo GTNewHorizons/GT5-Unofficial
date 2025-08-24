@@ -197,9 +197,9 @@ public class MaterialsInit1 {
         Materials.Alumite = loadAlumite();
         Materials.Manyullyn = loadManyullyn();
         Materials.Steeleaf = loadSteeleaf();
+        Materials.Knightmetal = loadKnightmetal();
 
         // spotless:off
-        Materials.Knightmetal             = new Materials( 362, TextureSet.SET_METALLIC          ,   8.0F,   1024,  3, 1|2          |64|128      , 210, 240, 200,   0,   "Knightmetal"             ,   "Knightmetal"                   ,    5,      24,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLime        , 2, Arrays.asList(new MaterialStack(Steel, 2), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1), new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2)));
         Materials.SterlingSilver          = new Materials( 350, TextureSet.SET_SHINY             ,  13.0F,    128,  2, 1|2          |64|128      , 250, 220, 225,   0,   "SterlingSilver"          ,   "Sterling Silver"               ,    0,       0,         -1, 1700,  true, false,   4,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Silver, 4)));
         Materials.RoseGold                = new Materials( 351, TextureSet.SET_SHINY             ,  14.0F,    128,  2, 1|2          |64|128      , 255, 230,  30,   0,   "RoseGold"                ,   "Rose Gold"                     ,    0,       0,         -1, 1600,  true, false,   4,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Gold, 4)));
         Materials.BlackBronze             = new Materials( 352, TextureSet.SET_DULL              ,  12.0F,    256,  2, 1|2          |64|128      , 100,  50, 125,   0,   "BlackBronze"             ,   "Black Bronze"                  ,    0,       0,         -1, 2000,  true, false,   4,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Gold, 1), new MaterialStack(Silver, 1), new MaterialStack(Copper, 3)));
@@ -9701,6 +9701,30 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.HERBA, 2)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadKnightmetal() {
+        return new MaterialBuilder().setName("Knightmetal")
+            .setDefaultLocalName("Knightmetal")
+            .setMetaItemSubID(362)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xd2f0c8)
+            .setToolSpeed(8.0f)
+            .setDurability(1024)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuelType(5)
+            .setFuelPower(24)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Steel, 2)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.LUCRUM, 1)
+            .addAspect(TCAspects.METALLUM, 2)
             .constructMaterial();
     }
 
