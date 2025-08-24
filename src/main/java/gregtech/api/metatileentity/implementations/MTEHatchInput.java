@@ -44,7 +44,7 @@ public class MTEHatchInput extends MTEHatch {
             aTier,
             4,
             new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
+                String.format("Capacity: %sL", GTUtility.formatNumbers(8000L * (1L << aTier))) });
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -58,8 +58,9 @@ public class MTEHatchInput extends MTEHatch {
             aName,
             aNameRegional,
             aTier,
-            new String[] { "Fluid Input for Multiblocks", "", "Can hold " + aSlot + " types of fluid." });
-        mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)) + "L";
+            new String[] { "Fluid Input for Multiblocks", "Can hold " + aSlot + " types of fluid." });
+        mDescriptionArray[1] = String
+            .format("Capacity: %sL", GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)));
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -122,9 +123,6 @@ public class MTEHatchInput extends MTEHatch {
         if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
         }
-        if (customCapacity != null) {
-            aNBT.setInteger("customCapacity", customCapacity);
-        }
     }
 
     @Override
@@ -132,9 +130,6 @@ public class MTEHatchInput extends MTEHatch {
         super.loadNBTData(aNBT);
         disableFilter = aNBT.getBoolean("disableFilter");
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
-        if (aNBT.hasKey("customCapacity")) {
-            customCapacity = aNBT.getInteger("customCapacity");
-        }
     }
 
     @Override
