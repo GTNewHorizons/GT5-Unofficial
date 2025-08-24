@@ -208,9 +208,9 @@ public class MaterialsInit1 {
         Materials.Glauconite = loadGlauconite();
         Materials.GlauconiteSand = loadGlauconiteSand();
         Materials.Vermiculite = loadVermiculite();
+        Materials.Bentonite = loadBentonite();
 
         // spotless:off
-        Materials.Bentonite               = new Materials( 927, TextureSet.SET_ROUGH             ,   1.0F,      0,  2, 1    |8                   , 245, 215, 210,   0,   "Bentonite"               ,   "Bentonite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Magnesium, 6), new MaterialStack(Silicon, 12), new MaterialStack(Hydrogen, 6), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 36))); // (Na,Ca)0.33(Al,Mg)2(Si4O10)(OH)2 nH2O
         Materials.FullersEarth            = new Materials( 928, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 160, 160, 120,   0,   "FullersEarth"            ,   "Fullers Earth"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 11))); // (Mg,Al)2Si4O10(OH) 4(H2O)
         Materials.Pitchblende             = new Materials( 873, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 200, 210,   0,   0,   "Pitchblende"             ,   "Pitchblende"                   ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Uraninite, 3), new MaterialStack(Thorium, 1), new MaterialStack(Lead, 1)));
         Materials.Monazite                = new Materials( 520, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8                   ,  50,  70,  50,   0,   "Monazite"                ,   "Monazite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(RareEarth, 1), new MaterialStack(Phosphate, 1))); // Wikipedia: (Ce, La, Nd, Th, Sm, Gd)PO4 Monazite also smelt-extract to Helium, it is brown like the rare earth Item Monazite sand deposits are inevitably of the monazite-(Ce) composition. Typically, the lanthanides in such monazites contain about 45.8% cerium, about 24% lanthanum, about 17% neodymium, about 5% praseodymium, and minor quantities of samarium, gadolinium, and yttrium. Europium concentrations tend to be low, about 0.05% Thorium content of monazite is variable.
@@ -10516,6 +10516,25 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Water, 4)
             .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadBentonite() {
+        return new MaterialBuilder().setName("Bentonite")
+            .setDefaultLocalName("Bentonite")
+            .setMetaItemSubID(927)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setRGB(0xf5d7d2)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Na,Ca)0.33(Al,Mg)2(Si4O10)(OH)2 nH2O
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Magnesium, 6)
+            .addMaterial(Materials.Silicon, 12)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Water, 5)
+            .addMaterial(Materials.Oxygen, 36)
             .constructMaterial();
     }
 
