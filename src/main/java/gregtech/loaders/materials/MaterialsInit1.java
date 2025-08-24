@@ -213,9 +213,9 @@ public class MaterialsInit1 {
         Materials.Trona = loadTrona();
         Materials.Barite = loadBarite();
         Materials.Gypsum = loadGypsum();
+        Materials.Alunite = loadAlunite();
 
         // spotless:off
-        Materials.Alunite                 = new Materials( 911, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 225, 180,  65,   0,   "Alunite"                 ,   "Alunite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 14))); // KAl3(SO4)2(OH)6
         Materials.Dolomite                = new Materials( 914, TextureSet.SET_FLINT             ,   1.0F,      0,  1, 1    |8                   , 225, 205, 205,   0,   "Dolomite"                ,   "Dolomite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Oxygen, 6))); // CaMg(CO3)2
         Materials.Wollastonite            = new Materials( 915, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 240, 240,   0,   "Wollastonite"            ,   "Wollastonite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))); // CaSiO3
         Materials.Zeolite                 = new Materials( 916, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 230, 230,   0,   "Zeolite"                 ,   "Zeolite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Calcium, 4), new MaterialStack(Silicon, 27), new MaterialStack(Aluminium, 9), new MaterialStack(Oxygen, 72))); // NaCa4(Si27Al9)O72
@@ -10687,6 +10687,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Oxygen, 4)
             .addMaterial(Materials.Water, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadAlunite() {
+        return new MaterialBuilder().setName("Alunite")
+            .setDefaultLocalName("Alunite")
+            .setMetaItemSubID(911)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xe1b441)
+            .addDustItems()
+            .addOreItems()
+            // KAl3(SO4)2(OH)6
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 14)
             .constructMaterial();
     }
 
