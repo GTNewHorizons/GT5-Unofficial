@@ -169,7 +169,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Screw.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L))
-                                .fluidInputs(aMaterial.getMolten(1 * EIGHTH_INGOTS))
+                                .fluidInputs(aMaterial.getMolten(1 * NUGGETS))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);

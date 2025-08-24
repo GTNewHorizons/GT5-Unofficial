@@ -165,7 +165,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Screw.get(0))
                     .itemOutputs(material.getScrew(1))
-                    .fluidInputs(material.getFluidStack(18))
+                    .fluidInputs(material.getFluidStack(16))
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
