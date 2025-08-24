@@ -589,8 +589,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // Unclassified 8 materials
     public static Materials Magnesia;
-    public static Materials Quicklime;
     public static Materials Potash;
+    public static Materials Quicklime;
     public static Materials SodaAsh;
 
     // Unclassified 9 materials

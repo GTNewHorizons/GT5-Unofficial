@@ -178,11 +178,8 @@ public class MaterialsInit1 {
         loadUnclassified5();
         loadUnclassified6();
         loadUnclassified7();
+        loadUnclassified8();
 
-        Materials.Magnesia = loadMagnesia();
-        Materials.Quicklime = loadQuicklime();
-        Materials.Potash = loadPotash();
-        Materials.SodaAsh = loadSodaAsh();
         Materials.BioDiesel = loadBioDiesel();
         Materials.NitrationMixture = loadNitrationMixture();
         Materials.Glycerol = loadGlycerol();
@@ -7704,6 +7701,13 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static void loadUnclassified8() {
+        Materials.Magnesia = loadMagnesia();
+        Materials.Potash = loadPotash();
+        Materials.Quicklime = loadQuicklime();
+        Materials.SodaAsh = loadSodaAsh();
+    }
+
     private static Materials loadMagnesia() {
         return new MaterialBuilder(621, TextureSet.SET_DULL, "Magnesia").addDustItems()
             .setRGB(255, 225, 225)
@@ -7712,20 +7716,20 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadQuicklime() {
-        return new MaterialBuilder(622, TextureSet.SET_DULL, "Quicklime").addDustItems()
-            .setRGB(240, 240, 240)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
     private static Materials loadPotash() {
         return new MaterialBuilder(623, TextureSet.SET_DULL, "Potash").addDustItems()
             .setRGB(120, 66, 55)
             .setColor(Dyes.dyeBrown)
             .setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadQuicklime() {
+        return new MaterialBuilder(622, TextureSet.SET_DULL, "Quicklime").addDustItems()
+            .setRGB(240, 240, 240)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
