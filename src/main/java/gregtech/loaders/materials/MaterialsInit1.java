@@ -227,9 +227,9 @@ public class MaterialsInit1 {
         Materials.StyreneButadieneRubber = loadStyreneButadieneRubber();
         Materials.Toluene = loadToluene();
         Materials.Epichlorohydrin = loadEpichlorohydrin();
+        Materials.PolyvinylChloride = loadPolyvinylChloride();
 
         // spotless:off
-        Materials.PolyvinylChloride         = new MaterialBuilder(649, TextureSet.SET_DULL       ,                                                                                                     "Polyvinyl Chloride").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(215, 230, 230).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).constructMaterial();
         Materials.VinylChloride             = new MaterialBuilder(650, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Chloride").addCell().addGas().setRGB(225, 240, 240).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.SulfurDioxide             = new MaterialBuilder(651, TextureSet.SET_FLUID      ,                                                                                                     "Sulfur Dioxide").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
         Materials.SulfurTrioxide            = new MaterialBuilder(652, TextureSet.SET_FLUID      ,                                                                                                     "Sulfur Trioxide").addCell().addGas().setGasTemperature(344).setRGB(160, 160, 20).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
@@ -7859,6 +7859,23 @@ public class MaterialsInit1 {
                 new MaterialStack(Chlorine, 1),
                 new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyvinylChloride() {
+        return new MaterialBuilder(649, TextureSet.SET_DULL, "Polyvinyl Chloride").addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .setRGB(215, 230, 230)
+            .setColor(Dyes.dyeLightGray)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 3),
+                new MaterialStack(Chlorine, 1))
             .constructMaterial();
     }
 
