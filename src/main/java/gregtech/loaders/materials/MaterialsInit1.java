@@ -236,7 +236,7 @@ public class MaterialsInit1 {
         Materials.SodiumHydroxide = loadSodiumHydroxide();
         Materials.Benzene = loadBenzene();
         Materials.Phenol = loadPhenol();
-        Materials.Cumene = loadIsopropylbenzene();
+        Materials.Cumene = loadCumene();
         Materials.PhosphoricAcid = loadPhosphoricAcid();
         Materials.SaltWater = loadSaltWater();
         Materials.IronIIIChloride = loadIronIIIChloride();
@@ -8387,7 +8387,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadIsopropylbenzene() {
+    private static Materials loadCumene() {
         return new MaterialBuilder(688, TextureSet.SET_FLUID, "Isopropylbenzene").addCell()
             .addFluid()
             .setRGB(85, 34, 0)
