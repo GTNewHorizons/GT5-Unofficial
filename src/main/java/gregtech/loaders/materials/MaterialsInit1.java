@@ -254,9 +254,9 @@ public class MaterialsInit1 {
         Materials.Ethylene = loadEthylene();
         Materials.Propene = loadPropene();
         Materials.VinylAcetate = loadVinylAcetate();
+        Materials.PolyvinylAcetate = loadPolyvinylAcetate();
 
         // spotless:off
-        Materials.PolyvinylAcetate          = new MaterialBuilder(680, TextureSet.SET_FLUID      ,                                                                                                     "Polyvinyl Acetate").addCell().addFluid().setRGB(255, 153, 85).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).constructMaterial();
         Materials.MethylAcetate             = new MaterialBuilder(681, TextureSet.SET_FLUID      ,                                                                                                     "Methyl Acetate").addCell().addFluid().setRGB(238, 198, 175).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.AllylChloride             = new MaterialBuilder(682, TextureSet.SET_FLUID      ,                                                                                                     "Allyl Chloride").addCell().addFluid().setRGB(135, 222, 170).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.HydrochloricAcid          = new MaterialBuilder(683, TextureSet.SET_FLUID      ,                                                                                                     "Hydrochloric Acid").setName("HydrochloricAcid_GT5U").addCell().addFluid().setRGB(183, 200, 196).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1)).constructMaterial();
@@ -8172,6 +8172,15 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeOrange)
             .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyvinylAcetate() {
+        return new MaterialBuilder(680, TextureSet.SET_FLUID, "Polyvinyl Acetate").addCell()
+            .addFluid()
+            .setRGB(255, 153, 85)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
             .constructMaterial();
     }
 
