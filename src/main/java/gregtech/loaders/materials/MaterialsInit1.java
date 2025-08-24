@@ -196,9 +196,9 @@ public class MaterialsInit1 {
         Materials.Apatite = loadApatite();
         Materials.Alumite = loadAlumite();
         Materials.Manyullyn = loadManyullyn();
+        Materials.Steeleaf = loadSteeleaf();
 
         // spotless:off
-        Materials.Steeleaf                = new Materials( 339, TextureSet.SET_LEAF              ,   8.0F,    768,  3, 1|2          |64|128      ,  50, 127,  50,   0,   "Steeleaf"                ,   "Steeleaf"                      ,    5,      24,         -1,    0, false, false,   4,   1,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(Steel, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HERBA, 2), new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Knightmetal             = new Materials( 362, TextureSet.SET_METALLIC          ,   8.0F,   1024,  3, 1|2          |64|128      , 210, 240, 200,   0,   "Knightmetal"             ,   "Knightmetal"                   ,    5,      24,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLime        , 2, Arrays.asList(new MaterialStack(Steel, 2), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1), new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2)));
         Materials.SterlingSilver          = new Materials( 350, TextureSet.SET_SHINY             ,  13.0F,    128,  2, 1|2          |64|128      , 250, 220, 225,   0,   "SterlingSilver"          ,   "Sterling Silver"               ,    0,       0,         -1, 1700,  true, false,   4,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Silver, 4)));
         Materials.RoseGold                = new Materials( 351, TextureSet.SET_SHINY             ,  14.0F,    128,  2, 1|2          |64|128      , 255, 230,  30,   0,   "RoseGold"                ,   "Rose Gold"                     ,    0,       0,         -1, 1600,  true, false,   4,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Gold, 4)));
@@ -9676,6 +9676,31 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Cobalt, 1)
             .addMaterial(Materials.Ardite, 1)
             .addAspect(TCAspects.STRONTIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSteeleaf() {
+        return new MaterialBuilder().setName("Steeleaf")
+            .setDefaultLocalName("Steeleaf")
+            .setMetaItemSubID(339)
+            .setIconSet(TextureSet.SET_LEAF)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x327f32)
+            .setToolSpeed(8.0f)
+            .setDurability(768)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuelType(5)
+            .setFuelPower(24)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.HERBA, 2)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
 
