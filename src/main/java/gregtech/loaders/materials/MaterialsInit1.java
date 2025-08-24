@@ -238,9 +238,9 @@ public class MaterialsInit1 {
         Materials.DinitrogenTetroxide = loadDinitrogenTetroxide();
         Materials.NitricOxide = loadNitricOxide();
         Materials.Ammonia = loadAmmonia();
+        Materials.Dimethyldichlorosilane = loadDimethyldichlorosilane();
 
         // spotless:off
-        Materials.Dimethyldichlorosilane    = new MaterialBuilder(663, TextureSet.SET_FLUID      ,                                                                                                     "Dimethyldichlorosilane").addCell().addFluid().setRGB(68, 22, 80).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Chlorine, 2), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Chloromethane             = new MaterialBuilder(664, TextureSet.SET_FLUID      ,                                                                                                     "Chloromethane").addCell().addGas().setRGB(200, 44, 160).setColor(Dyes.dyeMagenta).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.PhosphorousPentoxide      = new MaterialBuilder(665, TextureSet.SET_FLUID      ,                                                                                                     "Phosphorous Pentoxide").addCell().addDustItems().setRGB(220, 220, 0).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10)).addElectrolyzerRecipe().constructMaterial();
         Materials.Tetrafluoroethylene       = new MaterialBuilder(666, TextureSet.SET_FLUID      ,                                                                                                     "Tetrafluoroethylene").addCell().addGas().setRGB(125, 125, 125).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)).addElectrolyzerRecipe().constructMaterial();
@@ -7989,6 +7989,20 @@ public class MaterialsInit1 {
             .setRGB(63, 52, 128)
             .setColor(Dyes.dyeBlue)
             .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethyldichlorosilane() {
+        return new MaterialBuilder(663, TextureSet.SET_FLUID, "Dimethyldichlorosilane").addCell()
+            .addFluid()
+            .setRGB(68, 22, 80)
+            .setColor(Dyes.dyePurple)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 6),
+                new MaterialStack(Chlorine, 2),
+                new MaterialStack(Silicon, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
