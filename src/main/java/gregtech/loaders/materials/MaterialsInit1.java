@@ -252,9 +252,9 @@ public class MaterialsInit1 {
         Materials.CarbonMonoxide = loadCarbonMonoxide();
         Materials.MetalMixture = loadMetalMixture();
         Materials.Ethylene = loadEthylene();
+        Materials.Propene = loadPropene();
 
         // spotless:off
-        Materials.Propene                   = new MaterialBuilder(678, TextureSet.SET_FLUID      ,                                                                                                     "Propene").addCell().addGas().setRGB(255, 221, 85).setColor(Dyes.dyeYellow).setFuelType(MaterialBuilder.GAS).setFuelPower(192).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.VinylAcetate              = new MaterialBuilder(679, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Acetate").addCell().addFluid().setRGB(255, 179, 128).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.PolyvinylAcetate          = new MaterialBuilder(680, TextureSet.SET_FLUID      ,                                                                                                     "Polyvinyl Acetate").addCell().addFluid().setRGB(255, 153, 85).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).constructMaterial();
         Materials.MethylAcetate             = new MaterialBuilder(681, TextureSet.SET_FLUID      ,                                                                                                     "Methyl Acetate").addCell().addFluid().setRGB(238, 198, 175).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
@@ -8147,6 +8147,19 @@ public class MaterialsInit1 {
             .setFuelType(MaterialBuilder.GAS)
             .setFuelPower(128)
             .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4))
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadPropene() {
+        return new MaterialBuilder(678, TextureSet.SET_FLUID, "Propene").addCell()
+            .addGas()
+            .setRGB(255, 221, 85)
+            .setColor(Dyes.dyeYellow)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(192)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6))
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
