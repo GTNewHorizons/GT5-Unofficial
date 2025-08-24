@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
@@ -11,12 +10,15 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.*;
-import gregtech.common.items.CombType;
-import gregtech.loaders.misc.GTBees;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -284,17 +286,6 @@ public class AutoclaveRecipes implements Runnable {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(autoclaveRecipes);
-
-    if (Botania.isModLoaded()) {
-        GTValues.RA.stdBuilder()
-            .itemInputs (GTBees.combs.getStackForType(CombType.DRAGONSTONE, 6),
-                GTOreDictUnificator.get(OrePrefixes.gemFlawless, MaterialsBotania.ManaDiamond, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, MaterialsBotania.BotaniaDragonstone, 1))
-            .fluidInputs(Materials.Void.getMolten(1 * EIGHTH_INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(autoclaveRecipes);
-            }
 
     }
 }

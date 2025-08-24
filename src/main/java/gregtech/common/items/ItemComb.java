@@ -44,7 +44,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -915,15 +919,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             100,
             NI,
             50 * 100);
-        // Botania Line
-        addCentrifugeToItemStack(
-            CombType.MANASTEEL,
-            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, MaterialsBotania.Manasteel, 1L) },
-            new int[] { 100 * 100 },
-            Voltage.LV,
-            20 * SECONDS);
-
-
         // (Noble)gas Line
         addFluidExtractorProcess(CombType.HELIUM, Materials.Helium.getGas(250), Voltage.HV);
         addFluidExtractorProcess(CombType.ARGON, Materials.Argon.getGas(250), Voltage.MV);
