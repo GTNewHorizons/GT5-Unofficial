@@ -184,9 +184,9 @@ public class MaterialsInit1 {
         loadSiliconLine();
 
         Materials.SolderingAlloy = loadSolderingAlloy();
+        Materials.GalliumArsenide = loadGalliumArsenide();
 
         // spotless:off
-        Materials.GalliumArsenide         = new Materials( 980, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 160, 160, 160,   0,   "GalliumArsenide"         ,   "Gallium Arsenide"              ,    0,       0,         -1, 1200,  true, false,   1,   1,   1, Dyes.dyeGray        , 2, Arrays.asList(new MaterialStack(Arsenic, 1), new MaterialStack(Gallium, 1)));
         Materials.IndiumGalliumPhosphide  = new Materials( 981, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 160, 140, 190,   0,   "IndiumGalliumPhosphide"  ,   "Indium Gallium Phosphide"      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 2, Arrays.asList(new MaterialStack(Indium, 1), new MaterialStack(Gallium, 1), new MaterialStack(Phosphorus, 1)));
         Materials.Spessartine             = new Materials( 838, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 255, 100, 100,   0,   "Spessartine"             ,   "Spessartine"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Manganese, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.Sphalerite              = new Materials( 839, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Sphalerite"              ,   "Sphalerite"                    ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , 0, Arrays.asList(new MaterialStack(Zinc, 1), new MaterialStack(Sulfur, 1)));
@@ -8699,6 +8699,23 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Tin, 9)
             .addMaterial(Materials.Antimony, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGalliumArsenide() {
+        return new MaterialBuilder().setName("GalliumArsenide")
+            .setDefaultLocalName("Gallium Arsenide")
+            .setMetaItemSubID(980)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xa0a0a0)
+            .addDustItems()
+            .addMetalItems()
+            .setBlastFurnaceTemp(1200)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Arsenic, 1)
+            .addMaterial(Materials.Gallium, 1)
             .constructMaterial();
     }
 
