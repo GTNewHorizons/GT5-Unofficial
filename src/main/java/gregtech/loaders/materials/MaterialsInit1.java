@@ -191,9 +191,9 @@ public class MaterialsInit1 {
         Materials.Perlite = loadPerlite();
         Materials.Borax = loadBorax();
         Materials.Lignite = loadLignite();
+        Materials.Olivine = loadOlivine();
 
         // spotless:off
-        Materials.Olivine                 = new Materials( 505, TextureSet.SET_RUBY              ,   7.0F,    256,  2, 1  |4|8      |64          , 150, 255, 150, 127,   "Olivine"                 ,   "Olivine"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeLime        , 1, Arrays.asList(new MaterialStack(Magnesium, 2), new MaterialStack(Iron, 1), new MaterialStack(SiliconDioxide, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.Opal                    = new Materials( 510, TextureSet.SET_OPAL              ,   7.0F,    256,  2, 1  |4|8      |64          ,   0,   0, 255,   0,   "Opal"                    ,   "Opal"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Amethyst                = new Materials( 509, TextureSet.SET_FLINT             ,   7.0F,    256,  3, 1  |4|8      |64          , 210,  50, 210, 127,   "Amethyst"                ,   "Amethyst"                      ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
         Materials.Redstone                = new Materials( 810, TextureSet.SET_ROUGH             ,   1.0F,      0,  2, 1    |8                   , 200,   0,   0,   0,   "Redstone"                ,   "Redstone"                      ,    0,       0,        500,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Silicon, 1), new MaterialStack(Pyrite, 5), new MaterialStack(Ruby, 1), new MaterialStack(Mercury, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
@@ -9317,6 +9317,29 @@ public class MaterialsInit1 {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Water, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadOlivine() {
+        return new MaterialBuilder().setName("Olivine")
+            .setDefaultLocalName("Olivine")
+            .setMetaItemSubID(505)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x7f96ff96)
+            .setToolSpeed(7.0f)
+            .setDurability(256)
+            .setToolQuality(2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Magnesium, 2)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.SiliconDioxide, 2)
+            .addAspect(TCAspects.LUCRUM, 4)
+            .addAspect(TCAspects.VITREUS, 2)
             .constructMaterial();
     }
 
