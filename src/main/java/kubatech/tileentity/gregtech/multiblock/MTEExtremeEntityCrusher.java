@@ -312,7 +312,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
                     + " levels).")
             .addInfo(
-                "If the weapon has durability it will be damaged in each run. In batch mode the damage is multiplied 16x.")
+                "If the weapon has durability it will be damaged in each run. In batch mode the damage is multiplied "
+                    + EnumChatFormatting.BLUE
+                    + "16x")
             .addInfo("Enable Weapon Preservation to prevent the weapon from breaking in it's last hit.")
             .addInfo(
                 "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output.")
