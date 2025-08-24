@@ -171,11 +171,8 @@ public class MaterialsInit1 {
         loadNotExact();
         loadTODOThis();
         loadFirstDegreeCompounds();
+        loadUnclassified1();
 
-        Materials.OilExtraHeavy = loadOilExtraHeavy();
-        Materials.OilHeavy = loadOilHeavy();
-        Materials.OilMedium = loadOilMedium();
-        Materials.OilLight = loadOilLight();
         Materials.NatruralGas = loadNatruralGas(); // Nat"r"uralGas lol
         Materials.SulfuricGas = loadSulfuricGas();
         Materials.Gas = loadGas();
@@ -7323,6 +7320,13 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static void loadUnclassified1() {
+        Materials.OilExtraHeavy = loadOilExtraHeavy();
+        Materials.OilHeavy = loadOilHeavy();
+        Materials.OilLight = loadOilLight();
+        Materials.OilMedium = loadOilMedium();
+    }
+
     private static Materials loadOilExtraHeavy() {
         return new MaterialBuilder().setName("OilExtraHeavy")
             .setDefaultLocalName("Very Heavy Oil")
@@ -7349,19 +7353,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadOilMedium() {
-        return new MaterialBuilder().setName("OilMedium")
-            .setDefaultLocalName("Raw Oil")
-            .setMetaItemSubID(731)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeBlack)
-            .setRGB(0x0a0a0a)
-            .addCell()
-            .setFuelType(3)
-            .setFuelPower(30)
-            .constructMaterial();
-    }
-
     private static Materials loadOilLight() {
         return new MaterialBuilder().setName("OilLight")
             .setDefaultLocalName("Light Oil")
@@ -7372,6 +7363,19 @@ public class MaterialsInit1 {
             .addCell()
             .setFuelType(3)
             .setFuelPower(20)
+            .constructMaterial();
+    }
+
+    private static Materials loadOilMedium() {
+        return new MaterialBuilder().setName("OilMedium")
+            .setDefaultLocalName("Raw Oil")
+            .setMetaItemSubID(731)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(30)
             .constructMaterial();
     }
 

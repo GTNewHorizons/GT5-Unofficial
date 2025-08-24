@@ -545,8 +545,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Unclassified 1 materials
     public static Materials OilExtraHeavy;
     public static Materials OilHeavy;
-    public static Materials OilMedium;
     public static Materials OilLight;
+    public static Materials OilMedium;
 
     // Unclassified 2 materials
     public static Materials NatruralGas;
