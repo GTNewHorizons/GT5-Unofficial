@@ -216,9 +216,9 @@ public class MaterialsInit1 {
         Materials.Alunite = loadAlunite();
         Materials.Dolomite = loadDolomite();
         Materials.Wollastonite = loadWollastonite();
+        Materials.Zeolite = loadZeolite();
 
         // spotless:off
-        Materials.Zeolite                 = new Materials( 916, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 230, 230,   0,   "Zeolite"                 ,   "Zeolite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Calcium, 4), new MaterialStack(Silicon, 27), new MaterialStack(Aluminium, 9), new MaterialStack(Oxygen, 72))); // NaCa4(Si27Al9)O72
         Materials.Kyanite                 = new Materials( 924, TextureSet.SET_FLINT             ,   1.0F,      0,  2, 1    |8                   , 110, 110, 250,   0,   "Kyanite"                 ,   "Kyanite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 5))); // Al2SiO5
         Materials.Kaolinite               = new Materials( 929, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 245, 235, 235,   0,   "Kaolinite"               ,   "Kaolinite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Al2Si2O5(OH)4
         Materials.Talc                    = new Materials( 902, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   ,  90, 180,  90,   0,   "Talc"                    ,   "Talc"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
@@ -10737,6 +10737,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Calcium, 1)
             .addMaterial(Materials.Silicon, 1)
             .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadZeolite() {
+        return new MaterialBuilder().setName("Zeolite")
+            .setDefaultLocalName("Zeolite")
+            .setMetaItemSubID(916)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf0e6e6)
+            .addDustItems()
+            .addOreItems()
+            // NaCa4(Si27Al9)O72
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Calcium, 4)
+            .addMaterial(Materials.Silicon, 27)
+            .addMaterial(Materials.Aluminium, 9)
+            .addMaterial(Materials.Oxygen, 72)
             .constructMaterial();
     }
 
