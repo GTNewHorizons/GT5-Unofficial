@@ -222,9 +222,9 @@ public class MaterialsInit1 {
         Materials.Talc = loadTalc();
         Materials.Soapstone = loadSoapstone();
         Materials.Concrete = loadConcrete();
+        Materials.IronMagnetic = loadIronMagnetic();
 
         // spotless:off
-        Materials.IronMagnetic            = new Materials( 354, TextureSet.SET_MAGNETIC          ,   6.0F,    256,  2, 1|2          |64|128      , 200, 200, 200,   0,   "IronMagnetic"            ,   "Magnetic Iron"                 ,    0,       0,         -1,    0, false, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
         Materials.SteelMagnetic           = new Materials( 355, TextureSet.SET_MAGNETIC          ,   6.0F,    512,  3, 1|2          |64|128      , 128, 128, 128,   0,   "SteelMagnetic"           ,   "Magnetic Steel"                ,    0,       0,       1000, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Steel, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
         Materials.NeodymiumMagnetic       = new Materials( 356, TextureSet.SET_MAGNETIC          ,   7.0F,    512,  2, 1|2          |64|128      , 100, 100, 100,   0,   "NeodymiumMagnetic"       ,   "Magnetic Neodymium"            ,    0,       0,       1297, 1297,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Neodymium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 3)));
         Materials.SamariumMagnetic        = new Materials( 399, TextureSet.SET_MAGNETIC          ,   1.0F,      0,  2, 1|2          |64|128      , 255, 255, 204,   0,   "SamariumMagnetic"        ,   "Magnetic Samarium"             ,    0,       0,       1345, 1345,  true, false,   4,   1,   1, Dyes.dyeWhite       , 1, Collections.singletonList(new MaterialStack(Samarium, 1)),Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO,10)));
@@ -10833,6 +10833,29 @@ public class MaterialsInit1 {
             .setMeltingPoint(300)
             .addMaterial(Materials.Stone, 1)
             .addAspect(TCAspects.TERRA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIronMagnetic() {
+        return new MaterialBuilder().setName("IronMagnetic")
+            .setDefaultLocalName("Magnetic Iron")
+            .setMetaItemSubID(354)
+            .setIconSet(TextureSet.SET_MAGNETIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xc8c8c8)
+            .setToolSpeed(6.0f)
+            .setDurability(256)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
             .constructMaterial();
     }
 
