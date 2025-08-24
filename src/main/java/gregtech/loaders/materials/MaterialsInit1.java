@@ -258,9 +258,9 @@ public class MaterialsInit1 {
         Materials.MethylAcetate = loadMethylAcetate();
         Materials.AllylChloride = loadAllylChloride();
         Materials.HydrochloricAcid = loadHydrochloricAcid();
+        Materials.HypochlorousAcid = loadHypochlorousAcid();
 
         // spotless:off
-        Materials.HypochlorousAcid          = new MaterialBuilder(684, TextureSet.SET_FLUID      ,                                                                                                     "Hypochlorous Acid").addCell().addFluid().setRGB(111, 138, 145).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.SodiumOxide               = new MaterialBuilder(744, TextureSet.SET_DULL       ,                                                                                                     "Sodium Oxide").setName("SodiumOxide").addDustItems().setRGB(255, 255, 235).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.SodiumHydroxide           = new MaterialBuilder(685, TextureSet.SET_DULL       ,                                                                                                     "Sodium Hydroxide").setName("SodiumHydroxide_GT5U").addDustItems().setRGB(0, 51, 128).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)).constructMaterial();
         Materials.Benzene                   = new MaterialBuilder(686, TextureSet.SET_FLUID      ,                                                                                                     "Benzene").addCell().addFluid().setRGB(26, 26, 26).setColor(Dyes.dyeGray).setFuelType(MaterialBuilder.GAS).setFuelPower(360).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().constructMaterial();
@@ -8214,6 +8214,19 @@ public class MaterialsInit1 {
             .setRGB(183, 200, 196)
             .setColor(Dyes.dyeLightGray)
             .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadHypochlorousAcid() {
+        return new MaterialBuilder(684, TextureSet.SET_FLUID, "Hypochlorous Acid").addCell()
+            .addFluid()
+            .setRGB(111, 138, 145)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(
+                new MaterialStack(Hydrogen, 1),
+                new MaterialStack(Chlorine, 1),
+                new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
