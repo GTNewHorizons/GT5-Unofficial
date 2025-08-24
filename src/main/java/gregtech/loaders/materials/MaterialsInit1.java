@@ -192,9 +192,9 @@ public class MaterialsInit1 {
         Materials.Borax = loadBorax();
         Materials.Lignite = loadLignite();
         Materials.Olivine = loadOlivine();
+        Materials.Opal = loadOpal();
 
         // spotless:off
-        Materials.Opal                    = new Materials( 510, TextureSet.SET_OPAL              ,   7.0F,    256,  2, 1  |4|8      |64          ,   0,   0, 255,   0,   "Opal"                    ,   "Opal"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Amethyst                = new Materials( 509, TextureSet.SET_FLINT             ,   7.0F,    256,  3, 1  |4|8      |64          , 210,  50, 210, 127,   "Amethyst"                ,   "Amethyst"                      ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
         Materials.Redstone                = new Materials( 810, TextureSet.SET_ROUGH             ,   1.0F,      0,  2, 1    |8                   , 200,   0,   0,   0,   "Redstone"                ,   "Redstone"                      ,    0,       0,        500,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Silicon, 1), new MaterialStack(Pyrite, 5), new MaterialStack(Ruby, 1), new MaterialStack(Mercury, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
         Materials.Lapis                   = new Materials( 526, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  70,  70, 220,   0,   "Lapis"                   ,   "Lapis"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 2, Arrays.asList(new MaterialStack(Lazurite, 12), new MaterialStack(Sodalite, 2), new MaterialStack(Pyrite, 1), new MaterialStack(Calcite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1)));
@@ -9340,6 +9340,27 @@ public class MaterialsInit1 {
             .addMaterial(Materials.SiliconDioxide, 2)
             .addAspect(TCAspects.LUCRUM, 4)
             .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadOpal() {
+        return new MaterialBuilder().setName("Opal")
+            .setDefaultLocalName("Opal")
+            .setMetaItemSubID(510)
+            .setIconSet(TextureSet.SET_OPAL)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
+            .setToolSpeed(7.0f)
+            .setDurability(256)
+            .setToolQuality(2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.LUCRUM, 5)
+            .addAspect(TCAspects.VITREUS, 3)
             .constructMaterial();
     }
 
