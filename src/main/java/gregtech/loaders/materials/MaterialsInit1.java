@@ -250,9 +250,9 @@ public class MaterialsInit1 {
         Materials.Acetone = loadAcetone();
         Materials.Methanol = loadMethanol();
         Materials.CarbonMonoxide = loadCarbonMonoxide();
+        Materials.MetalMixture = loadMetalMixture();
 
         // spotless:off
-        Materials.MetalMixture              = new MaterialBuilder(676, TextureSet.SET_METALLIC   ,                                                                                                     "Metal Mixture").addDustItems().setRGB(80, 45, 22).setColor(Dyes.dyeBrown).constructMaterial();
         Materials.Ethylene                  = new MaterialBuilder(677, TextureSet.SET_FLUID      ,                                                                                                     "Ethylene").addCell().addGas().setRGB(225, 225, 225).setColor(Dyes.dyeWhite).setFuelType(MaterialBuilder.GAS).setFuelPower(128).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.Propene                   = new MaterialBuilder(678, TextureSet.SET_FLUID      ,                                                                                                     "Propene").addCell().addGas().setRGB(255, 221, 85).setColor(Dyes.dyeYellow).setFuelType(MaterialBuilder.GAS).setFuelPower(192).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.VinylAcetate              = new MaterialBuilder(679, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Acetate").addCell().addFluid().setRGB(255, 179, 128).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
@@ -8129,6 +8129,13 @@ public class MaterialsInit1 {
             .setFuelType(MaterialBuilder.GAS)
             .setFuelPower(24)
             .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadMetalMixture() {
+        return new MaterialBuilder(676, TextureSet.SET_METALLIC, "Metal Mixture").addDustItems()
+            .setRGB(80, 45, 22)
+            .setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
 
