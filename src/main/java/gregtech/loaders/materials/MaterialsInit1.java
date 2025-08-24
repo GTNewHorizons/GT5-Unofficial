@@ -204,9 +204,9 @@ public class MaterialsInit1 {
         Materials.GraniteBlack = loadGraniteBlack();
         Materials.GraniteRed = loadGraniteRed();
         Materials.Chrysotile = loadChrysotile();
+        Materials.Realgar = loadRealgar();
 
         // spotless:off
-        Materials.Realgar                 = new Materials( 913, TextureSet.SET_DULL              ,   1.0F,     32,  1, 1|2  |8      |64|128      , 140, 100, 100,   0,   "Realgar"                 ,   "Realgar"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Arsenic, 4), new MaterialStack(Sulfur,4)));
         Materials.VanadiumMagnetite       = new Materials( 923, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   ,  35,  35,  60,   0,   "VanadiumMagnetite"       ,   "Vanadium Magnetite"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Magnetite, 1), new MaterialStack(Vanadium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1))); // Mixture of Fe3O4 and V2O5
         Materials.BasalticMineralSand     = new Materials( 935, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   ,  40,  50,  40,   0,   "BasalticMineralSand"     ,   "Basaltic Mineral Sand"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Magnetite, 1), new MaterialStack(Basalt, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
         Materials.GraniticMineralSand     = new Materials( 936, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   ,  40,  60,  60,   0,   "GraniticMineralSand"     ,   "Granitic Mineral Sand"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Magnetite, 1), new MaterialStack(GraniteBlack, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
@@ -10276,6 +10276,27 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Asbestos, 1)
             .constructMaterial()
             .setTurbineMultipliers(280, 280, 1);
+    }
+
+    private static Materials loadRealgar() {
+        return new MaterialBuilder().setName("Realgar")
+            .setDefaultLocalName("Realgar")
+            .setMetaItemSubID(913)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x8c6464)
+            .setToolSpeed(1.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Arsenic, 4)
+            .addMaterial(Materials.Sulfur, 4)
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
