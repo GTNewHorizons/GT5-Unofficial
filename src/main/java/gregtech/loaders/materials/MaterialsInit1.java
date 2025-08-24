@@ -186,9 +186,9 @@ public class MaterialsInit1 {
         Materials.WoodSealed = loadWoodSealed();
         Materials.LiveRoot = loadLiveRoot();
         Materials.IronWood = loadIronWood();
+        Materials.Glass = loadGlass();
 
         // spotless:off
-        Materials.Glass                   = new Materials( 890, TextureSet.SET_GLASS             ,   1.0F,      4,  0, 1  |4                     , 250, 250, 250, 220,   "Glass"                   ,   "Glass"                         ,    0,       0,       1500,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.BorosilicateGlass  = new MaterialBuilder(611, TextureSet.SET_GLASS             ,                                                                                                     "Borosilicate Glass").addDustItems().addMetalItems().setRGB(230, 243, 230).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7)).addCentrifugeRecipe().constructMaterial();
         Materials.Perlite                 = new Materials( 925, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  30,  20,  30,   0,   "Perlite"                 ,   "Perlite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)));
         Materials.Borax                   = new Materials( 941, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 250, 250, 250,   0,   "Borax"                   ,   "Borax"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Oxygen, 7), new MaterialStack(Water, 10)));
@@ -9240,6 +9240,25 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 9)
             .addMaterial(Materials.LiveRoot, 9)
             .addMaterial(Materials.Gold, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlass() {
+        return new MaterialBuilder().setName("Glass")
+            .setDefaultLocalName("Glass")
+            .setMetaItemSubID(890)
+            .setIconSet(TextureSet.SET_GLASS)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0xdcfafafa)
+            .setToolSpeed(1.0f)
+            .setDurability(4)
+            .setToolQuality(0)
+            .addDustItems()
+            .addGemItems()
+            .setMeltingPoint(1500)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.VITREUS, 2)
             .constructMaterial();
     }
 
