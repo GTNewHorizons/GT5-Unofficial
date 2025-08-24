@@ -542,13 +542,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
 
-    // Unclassified 1 materials
+    // Unclassified 01 materials
     public static Materials OilExtraHeavy;
     public static Materials OilHeavy;
     public static Materials OilLight;
     public static Materials OilMedium;
 
-    // Unclassified 2 materials
+    // Unclassified 02 materials
     public static Materials Gas;
     public static Materials HeavyFuel;
     public static Materials LightFuel;
@@ -560,25 +560,25 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SulfuricLightFuel;
     public static Materials SulfuricNaphtha;
 
-    // Unclassified 3 materials
+    // Unclassified 03 materials
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
     public static Materials ReinforceGlass;
 
-    // Unclassified 4 materials
+    // Unclassified 04 materials
     public static Materials Chlorobenzene;
     public static Materials DilutedHydrochloricAcid;
     public static Materials Pyrochlore;
 
-    // Unclassified 5 materials
+    // Unclassified 05 materials
     public static Materials GrowthMediumRaw;
     public static Materials GrowthMediumSterilized;
 
-    // Unclassified 6 materials
+    // Unclassified 06 materials
     public static Materials FerriteMixture;
     public static Materials NickelZincFerrite;
 
-    // Unclassified 7 materials
+    // Unclassified 07 materials
     public static Materials AntimonyTrioxide;
     public static Materials ArsenicTrioxide;
     public static Materials CobaltOxide;
@@ -587,13 +587,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Massicot;
     public static Materials Zincite;
 
-    // Unclassified 8 materials
+    // Unclassified 08 materials
     public static Materials Magnesia;
     public static Materials Potash;
     public static Materials Quicklime;
     public static Materials SodaAsh;
 
-    // Unclassified 9 materials
+    // Unclassified 09 materials
     public static Materials AceticAcid;
     public static Materials Acetone;
     public static Materials AllylChloride;
@@ -678,6 +678,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SiliconTetrafluoride;
     public static Materials Trichlorosilane;
 
+    // Unclassified 10 materials
     public static Materials SolderingAlloy;
     public static Materials GalliumArsenide;
     public static Materials IndiumGalliumPhosphide;
