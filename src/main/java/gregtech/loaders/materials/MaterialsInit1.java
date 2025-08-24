@@ -84,13 +84,11 @@ import static gregtech.api.enums.Materials.Styrene;
 import static gregtech.api.enums.Materials.Sulfur;
 import static gregtech.api.enums.Materials.SulfuricAcid;
 import static gregtech.api.enums.Materials.Thaumium;
-import static gregtech.api.enums.Materials.Thorium;
 import static gregtech.api.enums.Materials.Tin;
 import static gregtech.api.enums.Materials.Titanium;
 import static gregtech.api.enums.Materials.Tritanium;
 import static gregtech.api.enums.Materials.Tungsten;
 import static gregtech.api.enums.Materials.TungstenSteel;
-import static gregtech.api.enums.Materials.Uraninite;
 import static gregtech.api.enums.Materials.Uranium;
 import static gregtech.api.enums.Materials.Vanadium;
 import static gregtech.api.enums.Materials.Water;
@@ -210,9 +208,9 @@ public class MaterialsInit1 {
         Materials.Vermiculite = loadVermiculite();
         Materials.Bentonite = loadBentonite();
         Materials.FullersEarth = loadFullersEarth();
+        Materials.Pitchblende = loadPitchblende();
 
         // spotless:off
-        Materials.Pitchblende             = new Materials( 873, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 200, 210,   0,   0,   "Pitchblende"             ,   "Pitchblende"                   ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Uraninite, 3), new MaterialStack(Thorium, 1), new MaterialStack(Lead, 1)));
         Materials.Monazite                = new Materials( 520, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8                   ,  50,  70,  50,   0,   "Monazite"                ,   "Monazite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(RareEarth, 1), new MaterialStack(Phosphate, 1))); // Wikipedia: (Ce, La, Nd, Th, Sm, Gd)PO4 Monazite also smelt-extract to Helium, it is brown like the rare earth Item Monazite sand deposits are inevitably of the monazite-(Ce) composition. Typically, the lanthanides in such monazites contain about 45.8% cerium, about 24% lanthanum, about 17% neodymium, about 5% praseodymium, and minor quantities of samarium, gadolinium, and yttrium. Europium concentrations tend to be low, about 0.05% Thorium content of monazite is variable.
         Materials.Malachite               = new Materials( 871, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,   5,  95,   5,   0,   "Malachite"               ,   "Malachite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Copper, 2), new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 5))); // Cu2CO3(OH)2
         Materials.Mirabilite              = new Materials( 900, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 250, 210,   0,   "Mirabilite"              ,   "Mirabilite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 4))); // Na2SO4 10H2O
@@ -10553,6 +10551,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 1)
             .addMaterial(Materials.Water, 4)
             .addMaterial(Materials.Oxygen, 11)
+            .constructMaterial();
+    }
+
+    private static Materials loadPitchblende() {
+        return new MaterialBuilder().setName("Pitchblende")
+            .setDefaultLocalName("Pitchblende")
+            .setMetaItemSubID(873)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xc8d200)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Uraninite, 3)
+            .addMaterial(Materials.Thorium, 1)
+            .addMaterial(Materials.Lead, 1)
             .constructMaterial();
     }
 
