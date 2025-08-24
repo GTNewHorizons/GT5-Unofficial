@@ -667,16 +667,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RoastedZinc;
 
     // Silicon Line
-    public static Materials SiliconSG;
-    public static Materials CalciumDisilicide;
-    public static Materials SiliconTetrafluoride;
-    public static Materials SiliconTetrachloride;
-    public static Materials Trichlorosilane;
-    public static Materials Hexachlorodisilane;
-    public static Materials Dichlorosilane;
-    public static Materials Silane;
-    public static Materials Calciumhydride;
     public static Materials AluminiumFluoride;
+    public static Materials CalciumDisilicide;
+    public static Materials Calciumhydride;
+    public static Materials Dichlorosilane;
+    public static Materials Hexachlorodisilane;
+    public static Materials Silane;
+    public static Materials SiliconSG;
+    public static Materials SiliconTetrachloride;
+    public static Materials SiliconTetrafluoride;
+    public static Materials Trichlorosilane;
 
     public static Materials SolderingAlloy;
     public static Materials GalliumArsenide;

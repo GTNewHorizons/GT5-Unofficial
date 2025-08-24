@@ -8496,35 +8496,33 @@ public class MaterialsInit1 {
     }
 
     private static void loadSiliconLine() {
-        Materials.SiliconSG = loadSiliconSG();
-        Materials.CalciumDisilicide = loadCalciumDisilicide();
-        Materials.SiliconTetrafluoride = loadSiliconTetrafluoride();
-        Materials.SiliconTetrachloride = loadSiliconTetrachloride();
-        Materials.Trichlorosilane = loadTrichlorosilane();
-        Materials.Hexachlorodisilane = loadHexachlorodisilane();
-        Materials.Dichlorosilane = loadDichlorosilane();
-        Materials.Silane = loadSilane();
-        Materials.Calciumhydride = loadCalciumhydride();
         Materials.AluminiumFluoride = loadAluminiumFluoride();
+        Materials.CalciumDisilicide = loadCalciumDisilicide();
+        Materials.Calciumhydride = loadCalciumhydride();
+        Materials.Dichlorosilane = loadDichlorosilane();
+        Materials.Hexachlorodisilane = loadHexachlorodisilane();
+        Materials.Silane = loadSilane();
+        Materials.SiliconSG = loadSiliconSG();
+        Materials.SiliconTetrachloride = loadSiliconTetrachloride();
+        Materials.SiliconTetrafluoride = loadSiliconTetrafluoride();
+        Materials.Trichlorosilane = loadTrichlorosilane();
     }
 
-    private static Materials loadSiliconSG() {
-        return new MaterialBuilder().setName("SiliconSolarGrade")
-            .setDefaultLocalName("Silicon Solar Grade (Poly SI)")
-            .setMetaItemSubID(856)
+    private static Materials loadAluminiumFluoride() {
+        return new MaterialBuilder().setName("Aluminiumfluoride")
+            .setDefaultLocalName("Aluminium Fluoride")
+            .setMetaItemSubID(969)
             .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyeBlack)
-            .setRGB(0x505064)
+            .setColor(Dyes.dyeWhite)
             .addDustItems()
-            .addMetalItems()
             .addOreItems()
-            .addPlasma()
-            .setMeltingPoint(2273)
-            .setBlastFurnaceTemp(2273)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addAspect(TCAspects.METALLUM, 4)
-            .addAspect(TCAspects.TENEBRAE, 2)
+            .setMeltingPoint(1533)
+            .addElectrolyzerRecipe()
+            // ALF3
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Fluorine, 3)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
@@ -8547,69 +8545,22 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadSiliconTetrafluoride() {
-        return new MaterialBuilder(967, TextureSet.SET_FLUID, "Silicon Tetrafluoride").setName("SiliconTetrafluoride")
-            .addCell()
-            .addGas()
-            .setTransparent(true)
-            .setRGB(200, 200, 200)
-            .setColor(Dyes.dyeWhite)
-            .setMeltingPoint(178)
-            // SIF4
-            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 4))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
-            .constructMaterial();
-    }
-
-    private static Materials loadSiliconTetrachloride() {
-        return new MaterialBuilder(968, TextureSet.SET_FLUID, "Silicon Tetrachloride").setName("SiliconTetrachloride")
-            .addCell()
-            .addFluid()
-            .setRGB(220, 220, 220)
-            .setColor(Dyes.dyeWhite)
-            .setMeltingPoint(204)
-            // SICL4
-            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 4))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
-            .constructMaterial();
-    }
-
-    private static Materials loadTrichlorosilane() {
-        return new MaterialBuilder(972, TextureSet.SET_FLUID, "Trichlorosilane").setName("Trichlorosilane")
-            .addCell()
-            .addFluid()
-            .setRGB(255, 255, 255)
-            .setColor(Dyes.dyeWhite)
-            .setMeltingPoint(139)
-            // HSICL3
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Silicon, 1),
-                new MaterialStack(Chlorine, 3))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
-            .constructMaterial();
-    }
-
-    private static Materials loadHexachlorodisilane() {
-        return new MaterialBuilder(973, TextureSet.SET_FLUID, "Hexachlorodisilane").setName("Hexachlorodisilane")
-            .addCell()
-            .addFluid()
-            .setRGB(255, 255, 255)
-            .setColor(Dyes.dyeWhite)
-            .setMeltingPoint(272)
-            .setExtraData(1)
-            // SI2CL6
-            .setMaterialList(new MaterialStack(Silicon, 2), new MaterialStack(Chlorine, 6))
-            .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
+    private static Materials loadCalciumhydride() {
+        return new MaterialBuilder().setName("CalciumHydride")
+            .setDefaultLocalName("Calcium Hydride")
+            .setMetaItemSubID(797)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xdcdcdc)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1089)
+            .addElectrolyzerRecipe()
+            // CaH2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
@@ -8634,6 +8585,20 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadHexachlorodisilane() {
+        return new MaterialBuilder(973, TextureSet.SET_FLUID, "Hexachlorodisilane").setName("Hexachlorodisilane")
+            .addCell()
+            .addFluid()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(272)
+            .setExtraData(1)
+            // SI2CL6
+            .setMaterialList(new MaterialStack(Silicon, 2), new MaterialStack(Chlorine, 6))
+            .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
+            .constructMaterial();
+    }
+
     private static Materials loadSilane() {
         return new MaterialBuilder(798, TextureSet.SET_FLUID, "Silane").setName("Silane")
             .addCell()
@@ -8647,40 +8612,75 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadCalciumhydride() {
-        return new MaterialBuilder().setName("CalciumHydride")
-            .setDefaultLocalName("Calcium Hydride")
-            .setMetaItemSubID(797)
+    private static Materials loadSiliconSG() {
+        return new MaterialBuilder().setName("SiliconSolarGrade")
+            .setDefaultLocalName("Silicon Solar Grade (Poly SI)")
+            .setMetaItemSubID(856)
             .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyeGray)
-            .setRGB(0xdcdcdc)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x505064)
             .addDustItems()
+            .addMetalItems()
             .addOreItems()
-            .setMeltingPoint(1089)
-            .addElectrolyzerRecipe()
-            // CaH2
-            .addMaterial(Materials.Calcium, 1)
-            .addMaterial(Materials.Hydrogen, 2)
-            .addAspect(TCAspects.TERRA, 1)
-            .addAspect(TCAspects.ORDO, 1)
+            .addPlasma()
+            .setMeltingPoint(2273)
+            .setBlastFurnaceTemp(2273)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addAspect(TCAspects.METALLUM, 4)
+            .addAspect(TCAspects.TENEBRAE, 2)
             .constructMaterial();
     }
 
-    private static Materials loadAluminiumFluoride() {
-        return new MaterialBuilder().setName("Aluminiumfluoride")
-            .setDefaultLocalName("Aluminium Fluoride")
-            .setMetaItemSubID(969)
-            .setIconSet(TextureSet.SET_METALLIC)
+    private static Materials loadSiliconTetrachloride() {
+        return new MaterialBuilder(968, TextureSet.SET_FLUID, "Silicon Tetrachloride").setName("SiliconTetrachloride")
+            .addCell()
+            .addFluid()
+            .setRGB(220, 220, 220)
             .setColor(Dyes.dyeWhite)
-            .addDustItems()
-            .addOreItems()
-            .setMeltingPoint(1533)
-            .addElectrolyzerRecipe()
-            // ALF3
-            .addMaterial(Materials.Aluminium, 1)
-            .addMaterial(Materials.Fluorine, 3)
-            .addAspect(TCAspects.TERRA, 1)
-            .addAspect(TCAspects.ORDO, 1)
+            .setMeltingPoint(204)
+            // SICL4
+            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 4))
+            .setAspects(
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconTetrafluoride() {
+        return new MaterialBuilder(967, TextureSet.SET_FLUID, "Silicon Tetrafluoride").setName("SiliconTetrafluoride")
+            .addCell()
+            .addGas()
+            .setTransparent(true)
+            .setRGB(200, 200, 200)
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(178)
+            // SIF4
+            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 4))
+            .setAspects(
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .constructMaterial();
+    }
+
+    private static Materials loadTrichlorosilane() {
+        return new MaterialBuilder(972, TextureSet.SET_FLUID, "Trichlorosilane").setName("Trichlorosilane")
+            .addCell()
+            .addFluid()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(139)
+            // HSICL3
+            .setMaterialList(
+                new MaterialStack(Hydrogen, 1),
+                new MaterialStack(Silicon, 1),
+                new MaterialStack(Chlorine, 3))
+            .setAspects(
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
+                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
             .constructMaterial();
     }
 
