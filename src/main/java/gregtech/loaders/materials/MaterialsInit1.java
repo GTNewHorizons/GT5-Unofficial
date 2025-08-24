@@ -230,9 +230,9 @@ public class MaterialsInit1 {
         Materials.PolyvinylChloride = loadPolyvinylChloride();
         Materials.VinylChloride = loadVinylChloride();
         Materials.SulfurDioxide = loadSulfurDioxide();
+        Materials.SulfurTrioxide = loadSulfurTrioxide();
 
         // spotless:off
-        Materials.SulfurTrioxide            = new MaterialBuilder(652, TextureSet.SET_FLUID      ,                                                                                                     "Sulfur Trioxide").addCell().addGas().setGasTemperature(344).setRGB(160, 160, 20).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.NitricAcid                = new MaterialBuilder(653, TextureSet.SET_FLUID      ,                                                                                                     "Nitric Acid").addCell().addFluid().setRGB(230, 226, 171).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.Dimethylhydrazine         = new MaterialBuilder(654, TextureSet.SET_FLUID      ,                                                                                                     "1,1-Dimethylhydrazine").addCell().addFluid().setRGB(0, 0, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 8), new MaterialStack(Nitrogen, 2)).addElectrolyzerRecipe().constructMaterial();
         Materials.Chloramine                = new MaterialBuilder(655, TextureSet.SET_FLUID      ,                                                                                                     "Chloramine").addCell().addFluid().setRGB(63, 159, 128).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -7898,6 +7898,17 @@ public class MaterialsInit1 {
             .setRGB(200, 200, 25)
             .setColor(Dyes.dyeYellow)
             .setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfurTrioxide() {
+        return new MaterialBuilder(652, TextureSet.SET_FLUID, "Sulfur Trioxide").addCell()
+            .addGas()
+            .setGasTemperature(344)
+            .setRGB(160, 160, 20)
+            .setColor(Dyes.dyeYellow)
+            .setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
