@@ -203,9 +203,9 @@ public class MaterialsInit1 {
         Materials.GarnetSand = loadGarnetSand();
         Materials.QuartzSand = loadQuartzSand();
         Materials.Bastnasite = loadBastnasite();
+        Materials.Pentlandite = loadPentlandite();
 
         // spotless:off
-        Materials.Pentlandite             = new Materials( 909, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 165, 150,   5,   0,   "Pentlandite"             ,   "Pentlandite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Nickel, 9), new MaterialStack(Sulfur, 8))); // (Fe,Ni)9S8
         Materials.Spodumene               = new Materials( 920, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 190, 170, 170,   0,   "Spodumene"               ,   "Spodumene"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6))); // LiAl(SiO3)2
         Materials.Pollucite               = new Materials( 919, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 210, 210,   0,   "Pollucite"               ,   "Pollucite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Caesium, 2), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 12))); // (Cs,Na)2Al2Si4O12 2H2O (also a source of Rb)
         Materials.Tantalite               = new Materials( 921, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 145,  80,  40,   0,   "Tantalite"               ,   "Tantalite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Tantalum, 2), new MaterialStack(Oxygen, 6))); // (Fe, Mn)Ta2O6 (also source of Nb)
@@ -10386,6 +10386,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Fluorine, 1)
             .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadPentlandite() {
+        return new MaterialBuilder().setName("Pentlandite")
+            .setDefaultLocalName("Pentlandite")
+            .setMetaItemSubID(909)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xa59605)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Fe,Ni)9S8
+            .addMaterial(Materials.Nickel, 9)
+            .addMaterial(Materials.Sulfur, 8)
             .constructMaterial();
     }
 
