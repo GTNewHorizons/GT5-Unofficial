@@ -200,9 +200,9 @@ public class MaterialsInit1 {
         Materials.Uraninite = loadeUraninite();
         Materials.Uvarovite = loadUvarovite();
         Materials.VanadiumGallium = loadVanadiumGallium();
+        Materials.Wood = loadWood();
 
         // spotless:off
-        Materials.Wood                    = new Materials( 809, TextureSet.SET_WOOD              ,   2.0F,     16,  0, 1|2          |64|128      , 100,  50,   0,   0,   "Wood"                    ,   "Wood"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2)));
         Materials.WroughtIron             = new Materials( 304, TextureSet.SET_METALLIC          ,   6.0F,    384,  2, 1|2          |64|128      , 200, 180, 180,   0,   "WroughtIron"             ,   "Wrought Iron"                  ,    0,       0,       1811,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , 2, Collections.singletonList(new MaterialStack(Iron, 1)));
         Materials.Wulfenite               = new Materials( 882, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 255, 128,   0,   0,   "Wulfenite"               ,   "Wulfenite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4)));
         Materials.YellowLimonite          = new Materials( 931, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 200, 200,   0,   0,   "YellowLimonite"          ,   "Yellow Limonite"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2))); // FeO(OH) + a bit of Ni and Co
@@ -9028,6 +9028,27 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Vanadium, 3)
             .addMaterial(Materials.Gallium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadWood() {
+        return new MaterialBuilder().setName("Wood")
+            .setDefaultLocalName("Wood")
+            .setMetaItemSubID(809)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x643200)
+            .setToolSpeed(2.0f)
+            .setDurability(16)
+            .setToolQuality(0)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addAspect(TCAspects.ARBOR, 2)
             .constructMaterial();
     }
 
