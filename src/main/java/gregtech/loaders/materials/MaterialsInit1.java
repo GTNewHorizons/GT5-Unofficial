@@ -176,9 +176,8 @@ public class MaterialsInit1 {
         loadUnclassified3();
         loadUnclassified4();
         loadUnclassified5();
+        loadUnclassified6();
 
-        Materials.FerriteMixture = loadFerriteMixture();
-        Materials.NickelZincFerrite = loadNickelZincFerrite();
         Materials.Massicot = loadMassicot();
         Materials.ArsenicTrioxide = loadArsenicTrioxide();
         Materials.CobaltOxide = loadCobaltOxide();
@@ -7603,6 +7602,11 @@ public class MaterialsInit1 {
             .setRGB(222, 170, 135)
             .setColor(Dyes.dyeOrange)
             .constructMaterial();
+    }
+
+    private static void loadUnclassified6() {
+        Materials.FerriteMixture = loadFerriteMixture();
+        Materials.NickelZincFerrite = loadNickelZincFerrite();
     }
 
     private static Materials loadFerriteMixture() {
