@@ -15,7 +15,6 @@ import static gregtech.api.enums.Materials.Caesium;
 import static gregtech.api.enums.Materials.Calcium;
 import static gregtech.api.enums.Materials.Carbon;
 import static gregtech.api.enums.Materials.Cerium;
-import static gregtech.api.enums.Materials.CertusQuartz;
 import static gregtech.api.enums.Materials.Chlorine;
 import static gregtech.api.enums.Materials.Chrome;
 import static gregtech.api.enums.Materials.Clay;
@@ -74,7 +73,6 @@ import static gregtech.api.enums.Materials.Phosphorus;
 import static gregtech.api.enums.Materials.Platinum;
 import static gregtech.api.enums.Materials.Potassium;
 import static gregtech.api.enums.Materials.PulsatingIron;
-import static gregtech.api.enums.Materials.Quartzite;
 import static gregtech.api.enums.Materials.RareEarth;
 import static gregtech.api.enums.Materials.Redstone;
 import static gregtech.api.enums.Materials.RedstoneAlloy;
@@ -204,9 +202,9 @@ public class MaterialsInit1 {
         Materials.BasalticMineralSand = loadBasalticMineralSand();
         Materials.GraniticMineralSand = loadGraniticMineralSand();
         Materials.GarnetSand = loadGarnetSand();
+        Materials.QuartzSand = loadQuartzSand();
 
         // spotless:off
-        Materials.QuartzSand              = new Materials( 939, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 194, 178, 128,   0,   "QuartzSand"              ,   "Quartz Sand"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(CertusQuartz, 1), new MaterialStack(Quartzite, 1)));
         Materials.Bastnasite              = new Materials( 905, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 200, 110,  45,   0,   "Bastnasite"              ,   "Bastnasite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Cerium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Fluorine, 1), new MaterialStack(Oxygen, 3))); // (Ce, La, Y)CO3F
         Materials.Pentlandite             = new Materials( 909, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 165, 150,   5,   0,   "Pentlandite"             ,   "Pentlandite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Nickel, 9), new MaterialStack(Sulfur, 8))); // (Fe,Ni)9S8
         Materials.Spodumene               = new Materials( 920, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 190, 170, 170,   0,   "Spodumene"               ,   "Spodumene"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6))); // LiAl(SiO3)2
@@ -10358,6 +10356,20 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.GarnetRed, 1)
             .addMaterial(Materials.GarnetYellow, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadQuartzSand() {
+        return new MaterialBuilder().setName("QuartzSand")
+            .setDefaultLocalName("Quartz Sand")
+            .setMetaItemSubID(939)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc2b280)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.CertusQuartz, 1)
+            .addMaterial(Materials.Quartzite, 1)
             .constructMaterial();
     }
 
