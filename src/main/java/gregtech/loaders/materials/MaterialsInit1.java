@@ -8437,21 +8437,14 @@ public class MaterialsInit1 {
     }
 
     private static void loadRoastedOres() {
-        Materials.RoastedCopper = loadRoastedCopper();
         Materials.RoastedAntimony = loadRoastedAntimony();
+        Materials.RoastedArsenic = loadRoastedArsenic();
+        Materials.RoastedCobalt = loadRoastedCobalt();
+        Materials.RoastedCopper = loadRoastedCopper();
         Materials.RoastedIron = loadRoastedIron();
+        Materials.RoastedLead = loadRoastedLead();
         Materials.RoastedNickel = loadRoastedNickel();
         Materials.RoastedZinc = loadRoastedZinc();
-        Materials.RoastedCobalt = loadRoastedCobalt();
-        Materials.RoastedArsenic = loadRoastedArsenic();
-        Materials.RoastedLead = loadRoastedLead();
-    }
-
-    private static Materials loadRoastedCopper() {
-        return new MaterialBuilder(546, TextureSet.SET_DULL, "Roasted Copper").setName("RoastedCopper")
-            .addDustItems()
-            .setRGB(77, 18, 18)
-            .constructMaterial();
     }
 
     private static Materials loadRoastedAntimony() {
@@ -8461,11 +8454,39 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadRoastedArsenic() {
+        return new MaterialBuilder(552, TextureSet.SET_SHINY, "Roasted Arsenic").setName("RoastedArsenic")
+            .addDustItems()
+            .setRGB(240, 240, 240)
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedCobalt() {
+        return new MaterialBuilder(551, TextureSet.SET_METALLIC, "Roasted Cobalt").setName("RoastedCobalt")
+            .addDustItems()
+            .setRGB(8, 64, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedCopper() {
+        return new MaterialBuilder(546, TextureSet.SET_DULL, "Roasted Copper").setName("RoastedCopper")
+            .addDustItems()
+            .setRGB(77, 18, 18)
+            .constructMaterial();
+    }
+
     private static Materials loadRoastedIron() {
         return new MaterialBuilder(548, TextureSet.SET_DULL, "Roasted Iron").setName("RoastedIron")
             .addDustItems()
             .setRGB(148, 98, 98)
             .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedLead() {
+        return new MaterialBuilder(553, TextureSet.SET_SHINY, "Roasted Lead").setName("RoastedLead")
+            .addDustItems()
+            .setRGB(168, 149, 43)
             .constructMaterial();
     }
 
@@ -8481,27 +8502,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder(550, TextureSet.SET_DULL, "Roasted Zinc").setName("RoastedZinc")
             .addDustItems()
             .setRGB(209, 209, 209)
-            .constructMaterial();
-    }
-
-    private static Materials loadRoastedCobalt() {
-        return new MaterialBuilder(551, TextureSet.SET_METALLIC, "Roasted Cobalt").setName("RoastedCobalt")
-            .addDustItems()
-            .setRGB(8, 64, 9)
-            .constructMaterial();
-    }
-
-    private static Materials loadRoastedArsenic() {
-        return new MaterialBuilder(552, TextureSet.SET_SHINY, "Roasted Arsenic").setName("RoastedArsenic")
-            .addDustItems()
-            .setRGB(240, 240, 240)
-            .constructMaterial();
-    }
-
-    private static Materials loadRoastedLead() {
-        return new MaterialBuilder(553, TextureSet.SET_SHINY, "Roasted Lead").setName("RoastedLead")
-            .addDustItems()
-            .setRGB(168, 149, 43)
             .constructMaterial();
     }
 

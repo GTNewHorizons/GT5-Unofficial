@@ -657,14 +657,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials VinylChloride;
 
     // Roasted Ores
-    public static Materials RoastedCopper;
     public static Materials RoastedAntimony;
+    public static Materials RoastedArsenic;
+    public static Materials RoastedCobalt;
+    public static Materials RoastedCopper;
     public static Materials RoastedIron;
+    public static Materials RoastedLead;
     public static Materials RoastedNickel;
     public static Materials RoastedZinc;
-    public static Materials RoastedCobalt;
-    public static Materials RoastedArsenic;
-    public static Materials RoastedLead;
 
     // Silicon Line
     public static Materials SiliconSG;
