@@ -2684,13 +2684,49 @@ public enum GTBeeDefinition implements IBeeDefinition {
 
     // Botanic bees
     MANASTEEL(GTBranchDefinition.BOTANIC, "ManaSteel", true, new Color(0x4BAFFB), new Color(0xCEEAFD), beeSpecies -> {
-        beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.MANASTEEL), 0.33f);
+        beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.MANASTEEL), 0.30f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> dis.registerMutation(getSpecies(MAGICBEES, "BotAlfheim"), STEEL, 15)
             .requireResource("blockManasteel")),
+    MMM(GTBranchDefinition.BOTANIC, "MMM", true, new Color(0x3F9B7B), new Color(0x76FFCF), beeSpecies -> {
+        beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.MMM), 0.33f);
+        beeSpecies.setHumidity(EnumHumidity.NORMAL);
+        beeSpecies.setHasEffect();
+    }, template ->
+        {AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+        AlleleHelper.instance.set(template, SPEED, GTBees.speedBlinding);
+        },
+        dis -> dis.registerMutation(MANASTEEL, MACHINIST, 1)
+            .requireResource("blockManaDiamond")),
+    ELVENELEMENTIUM(GTBranchDefinition.BOTANIC, "ElvenElementium", true, new Color(0xC72ED9), new Color(0xEFBFF9), beeSpecies -> {
+        beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.ELVENELEMENTIUM), 0.33f);
+        beeSpecies.setHumidity(EnumHumidity.NORMAL);
+    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
+        dis -> dis.init()),
+    DRAGONSTONE(GTBranchDefinition.BOTANIC, "DragonStone", true, new Color(0xE022FC), new Color(0xF9DFFE), beeSpecies -> {
+        beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.DRAGONSTONE), 0.25f);
+        beeSpecies.setHumidity(EnumHumidity.NORMAL);
+    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONG),
+        dis -> dis.registerMutation(ELVENELEMENTIUM, MMM, 10)
+            .requireResource("blockBotaniaDragonstone")),
+    TERRASTEEL(GTBranchDefinition.BOTANIC, "TerraSteel", true, new Color(0x51BA00), new Color(0xAEFF6B), beeSpecies -> {
+        beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.TERRASTEEL), 0.10f);
+        beeSpecies.setHumidity(EnumHumidity.NORMAL);
+    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER),
+        dis -> dis.registerMutation(ELVENELEMENTIUM, SHADOWMETAL, 5)
+            .requireResource("blockTerrasteel")),
+    GAIASPIRIT(GTBranchDefinition.BOTANIC, "GAIASPIRIT", true, new Color(0x758997), new Color(0xB7D6EB), beeSpecies -> {
+        beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.GAIASPIRIT), 0.15f);
+        beeSpecies.setHumidity(EnumHumidity.NORMAL);
+        beeSpecies.setHasEffect();
+    }, template -> {AlleleHelper.instance.set(template, LIFESPAN, GTBees.blinkLife);
+        AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+    },
+        dis -> dis.registerMutation(NAQUADAH, TERRASTEEL, 1, 3)
+            .requireResource("frameGtGaiaSpirit")),
 
-    // Endgame bees
+        // Endgame bees
     JAEGERMEISTER(GTBranchDefinition.ENDGAME, "JaegerMeister", false, new Color(0x05AD18), new Color(0xE7DAC3),
         beeSpecies -> {
             beeSpecies.addProduct(GTModHandler.getModItem(CropsPlusPlus.ID, "BppPotions", 1L, 8), 0.01f);

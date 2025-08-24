@@ -226,6 +226,11 @@ public enum CombType {
     PYRITE(172, "pyrite", true, Materials.Pyrite, 100, 0xB67206, 0x654004, ItemComb.Voltage.HV),
     // Botania Line
     MANASTEEL(173, "manasteel", true, MaterialsBotania.Manasteel, 50, 0x4BAFFB, 0xCEEAFD, ItemComb.Voltage.LV),
+    MMM(174, "m-m-m", true, Materials._NULL, 50, 0x3F9B7B, 0x76FFCF, ItemComb.Voltage.EV),
+    ELVENELEMENTIUM(175, "elvenelementium", true, MaterialsBotania.ElvenElementium, 50, 0xC72ED9, 0xEFBFF9, ItemComb.Voltage.EV),
+    DRAGONSTONE(176, "dragonstone", true, MaterialsBotania.BotaniaDragonstone, 50, 0xE022FC, 0xF9DFFE, ItemComb.Voltage.EV),
+    TERRASTEEL(177, "terrasteel", true, MaterialsBotania.Terrasteel, 50, 0x51BA00, 0xAEFF6B, ItemComb.Voltage.IV),
+    GAIASPIRIT(178, "gaiaspirit", true, MaterialsBotania.GaiaSpirit, 50, 0x758997, 0xB7D6EB, ItemComb.Voltage.LuV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
