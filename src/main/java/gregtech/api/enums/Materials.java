@@ -90,10 +90,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Chrome;
     public static Materials Cobalt;
     public static Materials Copper;
+    public static Materials Desh; // Not a real element
     public static Materials Dysprosium;
-    public static Materials Empty;
+    public static Materials Empty; // Not a real element
     public static Materials Erbium;
     public static Materials Europium;
+    public static Materials Flerovium;
     public static Materials Fluorine;
     public static Materials Gadolinium;
     public static Materials Gallium;
@@ -108,11 +110,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Lead;
     public static Materials Lithium;
     public static Materials Lutetium;
-    public static Materials Magic;
+    public static Materials Magic; // Not a real element
     public static Materials Magnesium;
     public static Materials Manganese;
     public static Materials Mercury;
+    public static Materials MeteoricIron; // Not a real element
     public static Materials Molybdenum;
+    public static Materials Naquadah; // Not a real element
     public static Materials Neodymium;
     public static Materials Neutronium;
     public static Materials Nickel;
@@ -143,7 +147,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Thulium;
     public static Materials Tin;
     public static Materials Titanium;
-    public static Materials Tritanium;
+    public static Materials Tritanium; // Not a real element
     public static Materials Tungsten;
     public static Materials Uranium;
     public static Materials Vanadium;
@@ -168,9 +172,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Grade7PurifiedWater;
     public static Materials Grade8PurifiedWater;
     public static Materials FlocculationWasteLiquid;
-
-    // GT++
-    public static Materials Flerovium;
 
     // Random
     public static Materials Organic;
@@ -252,7 +253,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials DarkIron;
     public static Materials DarkStone;
     public static Materials Demonite;
-    public static Materials Desh;
     public static Materials Desichalkos;
     public static Materials Dilithium;
     public static Materials Draconic;
@@ -307,14 +307,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Magma;
     public static Materials Mawsitsit;
     public static Materials Mercassium;
-    public static Materials MeteoricIron;
     public static Materials MeteoricSteel;
     public static Materials Meteorite;
     public static Materials Meutoite;
     public static Materials Migmatite;
     public static Materials Mimichite;
     public static Materials Moonstone;
-    public static Materials Naquadah;
     public static Materials NaquadahAlloy;
     public static Materials NaquadahEnriched;
     public static Materials Naquadria;
