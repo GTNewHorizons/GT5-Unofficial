@@ -265,9 +265,9 @@ public class MaterialsInit1 {
         Materials.Phenol = loadPhenol();
         Materials.Cumene = loadIsopropylbenzene();
         Materials.PhosphoricAcid = loadPhosphoricAcid();
+        Materials.SaltWater = loadSaltWater();
 
         // spotless:off
-        Materials.SaltWater                 = new MaterialBuilder(692, TextureSet.SET_FLUID      ,                                                                                                     "Salt Water").addCell().addFluid().setRGB(0, 0, 200).setColor(Dyes.dyeBlue).constructMaterial();
         Materials.IronIIIChloride           = new MaterialBuilder(693, TextureSet.SET_FLUID      ,                                                                                                     "Iron III Chloride").setName("IronIIIChloride").addCell().addFluid().setRGB(22, 21, 14).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Chlorine, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.LifeEssence               = new MaterialBuilder(694, TextureSet.SET_FLUID      ,                                                                                                     "Life").setName("lifeessence").addCell().addFluid().setFuelPower(100).setFuelType(5).setRGB(110, 3, 3).setColor(Dyes.dyeRed).setMaterialList().constructMaterial();
 
@@ -8293,6 +8293,14 @@ public class MaterialsInit1 {
                 new MaterialStack(Hydrogen, 3),
                 new MaterialStack(Phosphorus, 1),
                 new MaterialStack(Oxygen, 4))
+            .constructMaterial();
+    }
+
+    private static Materials loadSaltWater() {
+        return new MaterialBuilder(692, TextureSet.SET_FLUID, "Salt Water").addCell()
+            .addFluid()
+            .setRGB(0, 0, 200)
+            .setColor(Dyes.dyeBlue)
             .constructMaterial();
     }
 
