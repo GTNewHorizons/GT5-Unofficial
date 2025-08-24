@@ -214,9 +214,9 @@ public class MaterialsInit1 {
         Materials.Barite = loadBarite();
         Materials.Gypsum = loadGypsum();
         Materials.Alunite = loadAlunite();
+        Materials.Dolomite = loadDolomite();
 
         // spotless:off
-        Materials.Dolomite                = new Materials( 914, TextureSet.SET_FLINT             ,   1.0F,      0,  1, 1    |8                   , 225, 205, 205,   0,   "Dolomite"                ,   "Dolomite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Oxygen, 6))); // CaMg(CO3)2
         Materials.Wollastonite            = new Materials( 915, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 240, 240,   0,   "Wollastonite"            ,   "Wollastonite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))); // CaSiO3
         Materials.Zeolite                 = new Materials( 916, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 230, 230,   0,   "Zeolite"                 ,   "Zeolite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Calcium, 4), new MaterialStack(Silicon, 27), new MaterialStack(Aluminium, 9), new MaterialStack(Oxygen, 72))); // NaCa4(Si27Al9)O72
         Materials.Kyanite                 = new Materials( 924, TextureSet.SET_FLINT             ,   1.0F,      0,  2, 1    |8                   , 110, 110, 250,   0,   "Kyanite"                 ,   "Kyanite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 5))); // Al2SiO5
@@ -10704,6 +10704,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silicon, 2)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 14)
+            .constructMaterial();
+    }
+
+    private static Materials loadDolomite() {
+        return new MaterialBuilder().setName("Dolomite")
+            .setDefaultLocalName("Dolomite")
+            .setMetaItemSubID(914)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setRGB(0xe1cdcd)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // CaMg(CO3)2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Oxygen, 6)
             .constructMaterial();
     }
 
