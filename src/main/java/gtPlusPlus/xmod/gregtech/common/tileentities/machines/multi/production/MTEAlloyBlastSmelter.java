@@ -86,7 +86,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom Center")
-            .addCasingInfoMin("Blast Smelter Casings", 4, false)
+            .addCasingInfoMin("Blast Smelter Casings", 3, false)
             .addCasingInfoMin("Blast Smelter Heat Containment Coils", 16, false)
             .addInputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -134,7 +134,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 3, 0) && mCasing >= 4 && checkHatch();
+        return checkPiece(mName, 1, 3, 0) && mCasing >= 3 && checkHatch();
     }
 
     @Override

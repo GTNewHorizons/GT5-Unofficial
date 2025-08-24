@@ -69,14 +69,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
     @Override
     public int getRenderType() {
-        try {
-            if (CustomOreBlockRenderer.INSTANCE != null) {
-                return CustomOreBlockRenderer.INSTANCE.mRenderID;
-            }
-            return super.getRenderType();
-        } catch (NullPointerException n) {
-            return 0;
-        }
+        return CustomOreBlockRenderer.mRenderID;
     }
 
     /**

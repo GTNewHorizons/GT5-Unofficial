@@ -753,7 +753,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         final String ARROW = " " + AQUA + "-> ";
 
         List<String> des = new ArrayList<>();
-        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1") + " ");
+        des.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.runningMode") + " ");
 
         switch (mode) {
             case 0 -> {
