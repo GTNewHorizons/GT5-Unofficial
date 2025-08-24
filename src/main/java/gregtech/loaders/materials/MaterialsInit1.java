@@ -181,8 +181,9 @@ public class MaterialsInit1 {
         loadUnclassified8();
         loadUnclassified9();
 
+        Materials.RoastedCopper = loadRoastedCopper();
+
         // spotless:off
-        Materials.RoastedCopper             = new MaterialBuilder(546, TextureSet.SET_DULL    , "Roasted Copper").setName("RoastedCopper").addDustItems().setRGB(77, 18, 18).constructMaterial();
         Materials.RoastedAntimony           = new MaterialBuilder(547, TextureSet.SET_DULL    , "Roasted Antimony").setName("RoastedAntimony").addDustItems().setRGB(196, 178, 194).constructMaterial();
         Materials.RoastedIron               = new MaterialBuilder(548, TextureSet.SET_DULL    , "Roasted Iron").setName("RoastedIron").addDustItems().setRGB(148, 98, 98).addOreItems().constructMaterial();
         Materials.RoastedNickel             = new MaterialBuilder(549, TextureSet.SET_METALLIC, "Roasted Nickel").setName("RoastedNickel").addDustItems().setRGB(70, 140, 45).addOreItems().constructMaterial();
@@ -8441,6 +8442,13 @@ public class MaterialsInit1 {
                 new MaterialStack(Hydrogen, 3),
                 new MaterialStack(Chlorine, 1))
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedCopper() {
+        return new MaterialBuilder(546, TextureSet.SET_DULL, "Roasted Copper").setName("RoastedCopper")
+            .addDustItems()
+            .setRGB(77, 18, 18)
             .constructMaterial();
     }
 
