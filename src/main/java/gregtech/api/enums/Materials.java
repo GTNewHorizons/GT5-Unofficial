@@ -561,9 +561,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SulfuricNaphtha;
 
     // Unclassified 3 materials
-    public static Materials ReinforceGlass;
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
+    public static Materials ReinforceGlass;
 
     // Unclassified 4 materials
     public static Materials Chlorobenzene;
