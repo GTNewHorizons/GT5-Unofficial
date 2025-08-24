@@ -47,7 +47,6 @@ import static gregtech.api.enums.Materials.Indium;
 import static gregtech.api.enums.Materials.Iridium;
 import static gregtech.api.enums.Materials.Iron;
 import static gregtech.api.enums.Materials.Lead;
-import static gregtech.api.enums.Materials.Lithium;
 import static gregtech.api.enums.Materials.Magnesium;
 import static gregtech.api.enums.Materials.Manganese;
 import static gregtech.api.enums.Materials.MelodicAlloy;
@@ -205,9 +204,9 @@ public class MaterialsInit1 {
         Materials.Spodumene = loadSpodumene();
         Materials.Pollucite = loadPollucite();
         Materials.Tantalite = loadTantalite();
+        Materials.Lepidolite = loadLepidolite();
 
         // spotless:off
-        Materials.Lepidolite              = new Materials( 907, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 240,  50, 140,   0,   "Lepidolite"              ,   "Lepidolite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Lithium, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // K(Li,Al,Rb)3(Al,Si)4O10(F,OH)2
         Materials.Glauconite              = new Materials( 933, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 130, 180,  60,   0,   "Glauconite"              ,   "Glauconite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 2), new MaterialStack(Aluminium, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
         Materials.GlauconiteSand          = new Materials( 949, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 130, 180,  60,   0,   "GlauconiteSand"          ,   "Glauconite Sand"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 2), new MaterialStack(Aluminium, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
         Materials.Vermiculite             = new Materials( 932, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 200, 180,  15,   0,   "Vermiculite"             ,   "Vermiculite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Iron, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 12))); // (Mg+2, Fe+2, Fe+3)3 [(AlSi)4O10] (OH)2 4H2O)
@@ -10448,6 +10447,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Manganese, 1)
             .addMaterial(Materials.Tantalum, 2)
             .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadLepidolite() {
+        return new MaterialBuilder().setName("Lepidolite")
+            .setDefaultLocalName("Lepidolite")
+            .setMetaItemSubID(907)
+            .setIconSet(TextureSet.SET_FINE)
+            .setRGB(0xf0328c)
+            .addDustItems()
+            .addOreItems()
+            // K(Li,Al,Rb)3(Al,Si)4O10(F,OH)2
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Lithium, 3)
+            .addMaterial(Materials.Aluminium, 4)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Oxygen, 10)
             .constructMaterial();
     }
 
