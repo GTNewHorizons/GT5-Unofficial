@@ -201,9 +201,9 @@ public class MaterialsInit1 {
         Materials.DamascusSteel = loadDamascusSteel();
         Materials.TungstenSteel = loadTungstenSteel();
         Materials.NitroCoalFuel = loadNitroCoalFuel();
+        Materials.NitroFuel = loadNitroFuel();
 
         // spotless:off
-        Materials.NitroFuel               = new Materials( 709, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 200, 255,   0,   0,   "NitroFuel"               ,   "Cetane-Boosted Diesel"         ,    0,    1000,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        );
         Materials.RedAlloy                = new Materials( 308, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1|2                       , 200,   0,   0,   0,   "RedAlloy"                ,   "Red Alloy"                     ,    0,       0,        500,    0, false, false,   3,   5,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Redstone, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 3)));
         Materials.CobaltBrass             = new Materials( 343, TextureSet.SET_METALLIC          ,   8.0F,    256,  2, 1|2          |64|128      , 180, 180, 160,   0,   "CobaltBrass"             ,   "Cobalt Brass"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Brass, 7), new MaterialStack(Tin, 1), new MaterialStack(Cobalt, 1)));
         Materials.TricalciumPhosphate     = new Materials( 534, TextureSet.SET_FLINT             ,   1.0F,      0, 2,  1|4|8|16                  , 255, 255,   0,   0,   "TricalciumPhosphate"     ,   "Tricalcium Phosphate"          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Phosphate, 2)));
@@ -9943,6 +9943,18 @@ public class MaterialsInit1 {
             .setFuelPower(48)
             .addMaterial(Materials.Glyceryl, 1)
             .addMaterial(Materials.CoalFuel, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitroFuel() {
+        return new MaterialBuilder().setName("NitroFuel")
+            .setDefaultLocalName("Cetane-Boosted Diesel")
+            .setMetaItemSubID(709)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xc8ff00)
+            .addCell()
+            .setFuelPower(1000)
             .constructMaterial();
     }
 
