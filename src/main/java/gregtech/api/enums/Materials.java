@@ -545,11 +545,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SodiumSulfide;
     public static Materials HydricSulfide;
 
+    // Unclassified 1 materials
     public static Materials OilExtraHeavy;
     public static Materials OilHeavy;
     public static Materials OilMedium;
     public static Materials OilLight;
 
+    // Unclassified 2 materials
     public static Materials NatruralGas;
     public static Materials SulfuricGas;
     public static Materials Gas;
@@ -561,20 +563,25 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HeavyFuel;
     public static Materials LPG;
 
+    // Unclassified 3 materials
     public static Materials ReinforceGlass;
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
 
+    // Unclassified 4 materials
     public static Materials Chlorobenzene;
     public static Materials DilutedHydrochloricAcid;
     public static Materials Pyrochlore;
 
+    // Unclassified 5 materials
     public static Materials GrowthMediumRaw;
     public static Materials GrowthMediumSterilized;
 
+    // Unclassified 6 materials
     public static Materials FerriteMixture;
     public static Materials NickelZincFerrite;
 
+    // Unclassified 7 materials
     public static Materials Massicot;
     public static Materials ArsenicTrioxide;
     public static Materials CobaltOxide;
@@ -583,11 +590,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CupricOxide;
     public static Materials Ferrosilite;
 
+    // Unclassified 8 materials
     public static Materials Magnesia;
     public static Materials Quicklime;
     public static Materials Potash;
     public static Materials SodaAsh;
 
+    // Unclassified 9 materials
     public static Materials BioDiesel;
     public static Materials NitrationMixture;
     public static Materials Glycerol;
