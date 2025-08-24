@@ -185,9 +185,9 @@ public class MaterialsInit1 {
         Materials.Bauxite = loadBauxite();
         Materials.Clay = loadClay();
         Materials.Jasper = loadJasper();
+        Materials.WoodSealed = loadWoodSealed();
 
         // spotless:off
-        Materials.WoodSealed              = new Materials( 889, TextureSet.SET_WOOD              ,   3.0F,     24,  0, 1|2          |64|128      ,  80,  40,   0,   0,   "WoodSealed"              ,   "Sealed Wood"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 0, Collections.singletonList(new MaterialStack(Wood, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2), new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1)));
         Materials.LiveRoot                = new Materials( 832, TextureSet.SET_WOOD              ,   1.0F,      0,  1, 1                         , 220, 200,   0,   0,   "LiveRoot"                ,   "Liveroot"                      ,    5,      16,         -1,    0, false, false,   2,   4,   3, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Wood, 3), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2), new TCAspects.TC_AspectStack(TCAspects.VICTUS, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.IronWood                = new Materials( 338, TextureSet.SET_WOOD              ,   6.0F,    384,  2, 1|2          |64|128      , 150, 140, 110,   0,   "IronWood"                ,   "Ironwood"                      ,    5,       8,         -1,    0, false, false,   2,  19,  18, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 9), new MaterialStack(LiveRoot, 9), new MaterialStack(Gold, 1)));
         Materials.Glass                   = new Materials( 890, TextureSet.SET_GLASS             ,   1.0F,      4,  0, 1  |4                     , 250, 250, 250, 220,   "Glass"                   ,   "Glass"                         ,    0,       0,       1500,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
@@ -9176,6 +9176,26 @@ public class MaterialsInit1 {
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.LUCRUM, 4)
             .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadWoodSealed() {
+        return new MaterialBuilder().setName("WoodSealed")
+            .setDefaultLocalName("Sealed Wood")
+            .setMetaItemSubID(889)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x502800)
+            .setToolSpeed(3.0f)
+            .setDurability(24)
+            .setToolQuality(0)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addMaterial(Materials.Wood, 1)
+            .addAspect(TCAspects.ARBOR, 2)
+            .addAspect(TCAspects.FABRICO, 1)
             .constructMaterial();
     }
 
