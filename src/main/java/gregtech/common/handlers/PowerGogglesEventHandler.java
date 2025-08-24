@@ -33,7 +33,7 @@ import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class PowerGogglesEventHandler {
 
-    private static int ticks = 0;
+    private static Map<UUID, Integer> tickMap = new HashMap<>();
     public static Minecraft mc;
     public static Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
     public static boolean forceUpdate = false;
@@ -61,19 +61,22 @@ public class PowerGogglesEventHandler {
     }
 
     private void doServerStuff(TickEvent.PlayerTickEvent event) {
-        ticks++;
-        ticks %= PowerGogglesHudHandler.ticksBetweenMeasurements;
-        if (forceUpdate) ticks = 1;
-        if (ticks != 1) return;
         EntityPlayerMP player = (EntityPlayerMP) event.player;
-        if (isValidLink(player, lscLinkMap.get(player.getUniqueID()))) {
+        UUID uuid = player.getUniqueID();
+
+        int playerTicks = forceUpdate ? 1
+            : (tickMap.getOrDefault(uuid, 0) + 1) % PowerGogglesHudHandler.ticksBetweenMeasurements;
+        tickMap.put(uuid, playerTicks);
+
+        if (playerTicks != 1) return;
+        if (isValidLink(player, lscLinkMap.get(uuid))) {
             MTELapotronicSuperCapacitor lsc = getLsc(player);
             NW.sendToPlayer(
                 new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), forceRefresh),
                 player);
         } else {
-            if (lscLinkMap.get(player.getUniqueID()) != null) {
-                lscLinkMap.put(player.getUniqueID(), null);
+            if (lscLinkMap.get(uuid) != null) {
+                lscLinkMap.put(uuid, null);
                 forceRefresh = true;
             }
             NW.sendToPlayer(
