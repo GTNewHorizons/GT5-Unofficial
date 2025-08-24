@@ -174,18 +174,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Grade8PurifiedWater;
 
     // Random
-    public static Materials Organic;
-    public static Materials AnyCopper;
     public static Materials AnyBronze;
+    public static Materials AnyCopper;
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
-    public static Materials Crystal;
-    public static Materials Quartz;
-    public static Materials Metal;
-    public static Materials Unknown;
-    public static Materials Cobblestone;
     public static Materials BrickNether;
+    public static Materials Cobblestone;
+    public static Materials Crystal;
+    public static Materials Metal;
+    public static Materials Organic;
+    public static Materials Quartz;
+    public static Materials Unknown;
 
     /*
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.

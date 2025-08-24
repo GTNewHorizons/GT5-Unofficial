@@ -2546,25 +2546,24 @@ public class MaterialsInit1 {
     }
 
     private static void loadRandom() {
-        Materials.Organic = loadOrganic();
-        Materials.AnyCopper = loadAnyCopper();
         Materials.AnyBronze = loadAnyBronze();
+        Materials.AnyCopper = loadAnyCopper();
         Materials.AnyIron = loadAnyIron();
         Materials.AnyRubber = loadAnyRubber();
         Materials.AnySyntheticRubber = loadAnySyntheticRubber();
-        Materials.Crystal = loadCrystal();
-        Materials.Quartz = loadQuartz();
-        Materials.Metal = loadMetal();
-        Materials.Unknown = loadUnknown();
-        Materials.Cobblestone = loadCobblestone();
         Materials.BrickNether = loadBrickNether();
+        Materials.Cobblestone = loadCobblestone();
+        Materials.Crystal = loadCrystal();
+        Materials.Metal = loadMetal();
+        Materials.Organic = loadOrganic();
+        Materials.Quartz = loadQuartz();
+        Materials.Unknown = loadUnknown();
     }
 
-    private static Materials loadOrganic() {
-        return new MaterialBuilder().setName("Organic")
-            .setDefaultLocalName("Organic")
-            .setMetaItemSubID(-1)
-            .setIconSet(TextureSet.SET_LEAF)
+    private static Materials loadAnyBronze() {
+        return new MaterialBuilder().setName("AnyBronze")
+            .setDefaultLocalName("AnyBronze")
+            .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
 
@@ -2572,13 +2571,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("AnyCopper")
             .setDefaultLocalName("AnyCopper")
             .setMetaItemSubID(-1)
-            .setIconSet(TextureSet.SET_SHINY)
-            .constructMaterial();
-    }
-
-    private static Materials loadAnyBronze() {
-        return new MaterialBuilder().setName("AnyBronze")
-            .setDefaultLocalName("AnyBronze")
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2604,30 +2596,9 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadCrystal() {
-        return new MaterialBuilder().setName("Crystal")
-            .setDefaultLocalName("Crystal")
-            .setIconSet(TextureSet.SET_SHINY)
-            .constructMaterial();
-    }
-
-    private static Materials loadQuartz() {
-        return new MaterialBuilder().setName("Quartz")
-            .setDefaultLocalName("Quartz")
-            .setIconSet(TextureSet.SET_QUARTZ)
-            .constructMaterial();
-    }
-
-    private static Materials loadMetal() {
-        return new MaterialBuilder().setName("Metal")
-            .setDefaultLocalName("Metal")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .constructMaterial();
-    }
-
-    private static Materials loadUnknown() {
-        return new MaterialBuilder().setName("Unknown")
-            .setDefaultLocalName("Unknown")
+    private static Materials loadBrickNether() {
+        return new MaterialBuilder().setName("BrickNether")
+            .setDefaultLocalName("BrickNether")
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
@@ -2639,9 +2610,38 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadBrickNether() {
-        return new MaterialBuilder().setName("BrickNether")
-            .setDefaultLocalName("BrickNether")
+    private static Materials loadCrystal() {
+        return new MaterialBuilder().setName("Crystal")
+            .setDefaultLocalName("Crystal")
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadMetal() {
+        return new MaterialBuilder().setName("Metal")
+            .setDefaultLocalName("Metal")
+            .setIconSet(TextureSet.SET_METALLIC)
+            .constructMaterial();
+    }
+
+    private static Materials loadOrganic() {
+        return new MaterialBuilder().setName("Organic")
+            .setDefaultLocalName("Organic")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_LEAF)
+            .constructMaterial();
+    }
+
+    private static Materials loadQuartz() {
+        return new MaterialBuilder().setName("Quartz")
+            .setDefaultLocalName("Quartz")
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .constructMaterial();
+    }
+
+    private static Materials loadUnknown() {
+        return new MaterialBuilder().setName("Unknown")
+            .setDefaultLocalName("Unknown")
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
