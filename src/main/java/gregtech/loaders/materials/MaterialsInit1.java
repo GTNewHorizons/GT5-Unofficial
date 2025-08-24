@@ -191,9 +191,9 @@ public class MaterialsInit1 {
         Materials.Amethyst = loadAmethyst();
         Materials.Redstone = loadRedstone();
         Materials.Lapis = loadLapis();
+        Materials.Blaze = loadBlaze();
 
         // spotless:off
-        Materials.Blaze                   = new Materials( 801, TextureSet.SET_POWDER            ,   2.0F,     16,  1, 1            |64          , 255, 200,   0,   0,   "Blaze"                   ,   "Blaze"                         ,    0,       0,       6400,    0, false, false,   2,   3,   2, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(DarkAsh, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
         Materials.EnderPearl              = new Materials( 532, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 108, 220, 200,   0,   "EnderPearl"              ,   "Enderpearl"                    ,    0,       0,         -1,    0, false, false,   1,  16,  10, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Beryllium, 1), new MaterialStack(Potassium, 4), new MaterialStack(Nitrogen, 5), new MaterialStack(Magic, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2)));
         Materials.EnderEye                = new Materials( 533, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 160, 250, 230,   0,   "EnderEye"                ,   "Endereye"                      ,    5,      10,         -1,    0, false, false,   1,   2,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(EnderPearl, 1), new MaterialStack(Blaze, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.Flint                   = new Materials( 802, TextureSet.SET_FLINT             ,   2.5F,    128,  1, 1            |64          ,   0,  32,  64,   0,   "Flint"                   ,   "Flint"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
@@ -9417,6 +9417,30 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Pyrite, 1)
             .addMaterial(Materials.Calcite, 1)
             .addAspect(TCAspects.SENSUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlaze() {
+        return new MaterialBuilder().setName("Blaze")
+            .setDefaultLocalName("Blaze")
+            .setMetaItemSubID(801)
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffc800)
+            .setToolSpeed(2.0f)
+            .setDurability(16)
+            .setToolQuality(1)
+            .addDustItems()
+            .addToolHeadItems()
+            .setMeltingPoint(6400)
+            .setDensityMultiplier(3)
+            .setDensityDivider(2)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.DarkAsh, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addAspect(TCAspects.IGNIS, 4)
             .constructMaterial();
     }
 
