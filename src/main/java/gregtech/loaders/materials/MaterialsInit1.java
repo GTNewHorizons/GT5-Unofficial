@@ -221,9 +221,9 @@ public class MaterialsInit1 {
         Materials.Ethane = loadEthane();
         Materials.Propane = loadPropane();
         Materials.Butane = loadButane();
+        Materials.Butene = loadButene();
 
         // spotless:off
-        Materials.Butene                    = new MaterialBuilder(645, TextureSet.SET_FLUID      ,                                                                                                     "Butene").addCell().addGas().setRGB(207, 80, 5).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.GAS).setFuelPower(256).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.Butadiene                 = new MaterialBuilder(646, TextureSet.SET_FLUID      ,                                                                                                     "Butadiene").addCell().addGas().setRGB(232, 105, 0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.GAS).setFuelPower(206).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
         Materials.RawStyreneButadieneRubber = new MaterialBuilder(634, TextureSet.SET_SHINY      ,                                                                                                     "Raw Styrene-Butadiene Rubber").addDustItems().setRGB(84, 64, 61).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3)).constructMaterial();
         Materials.StyreneButadieneRubber    = new MaterialBuilder(635, TextureSet.SET_SHINY      ,                                                                                                     "Styrene-Butadiene Rubber").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(128).setToolQuality(1).setRGB(33, 26, 24).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3)).constructMaterial();
@@ -7785,6 +7785,19 @@ public class MaterialsInit1 {
             .setFuelType(MaterialBuilder.GAS)
             .setFuelPower(296)
             .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 10))
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadButene() {
+        return new MaterialBuilder(645, TextureSet.SET_FLUID, "Butene").addCell()
+            .addGas()
+            .setRGB(207, 80, 5)
+            .setColor(Dyes.dyeOrange)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(256)
+            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 8))
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
