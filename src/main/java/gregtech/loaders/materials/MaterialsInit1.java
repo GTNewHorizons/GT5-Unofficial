@@ -191,9 +191,9 @@ public class MaterialsInit1 {
         Materials.StainlessSteel = loadStainlessSteel();
         Materials.Steel = loadSteel();
         Materials.Stibnite = loadStibnite();
+        Materials.SulfuricAcid = loadSulfuricAcid();
 
         // spotless:off
-        Materials.SulfuricAcid            = new Materials( 720, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 128,   0,   0,   "SulfuricAcid"            ,   "Sulfuric Acid"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)));
         Materials.Tanzanite               = new Materials( 508, TextureSet.SET_GEM_VERTICAL      ,   7.0F,    256,  2, 1  |4|8      |64          ,  64,   0, 200, 127,   "Tanzanite"               ,   "Tanzanite"                     ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Calcium, 2), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 13)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Tetrahedrite            = new Materials( 840, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 200,  32,   0,   0,   "Tetrahedrite"            ,   "Tetrahedrite"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Copper, 3), new MaterialStack(Antimony, 1), new MaterialStack(Sulfur, 3), new MaterialStack(Iron, 1))); //Cu3SbS3 + x(Fe,Zn)6Sb2S9
         Materials.TinAlloy                = new Materials( 363, TextureSet.SET_METALLIC          ,   6.5F,     96,  2, 1|2          |64|128      , 200, 200, 200,   0,   "TinAlloy"                ,   "Tin Alloy"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
@@ -8828,6 +8828,21 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Antimony, 2)
             .addMaterial(Materials.Sulfur, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricAcid() {
+        return new MaterialBuilder().setName("SulfuricAcid")
+            .setDefaultLocalName("Sulfuric Acid")
+            .setMetaItemSubID(720)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
