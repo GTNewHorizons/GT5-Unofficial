@@ -262,9 +262,9 @@ public class MaterialsInit1 {
         Materials.SodiumOxide = loadSodiumOxide();
         Materials.SodiumHydroxide = loadSodiumHydroxide();
         Materials.Benzene = loadBenzene();
+        Materials.Phenol = loadPhenol();
 
         // spotless:off
-        Materials.Phenol                    = new MaterialBuilder(687, TextureSet.SET_FLUID      ,                                                                                                     "Phenol").addCell().addFluid().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(288).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Cumene                    = new MaterialBuilder(688, TextureSet.SET_FLUID      ,                                                                                                     "Isopropylbenzene").addCell().addFluid().setRGB(85, 34, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 9), new MaterialStack(Hydrogen, 12)).addElectrolyzerRecipe().constructMaterial();
         Materials.PhosphoricAcid            = new MaterialBuilder(689, TextureSet.SET_FLUID      ,                                                                                                     "Phosphoric Acid").setName("PhosphoricAcid_GT5U").addCell().addFluid().setRGB(220, 220, 0).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Hydrogen, 3), new MaterialStack(Phosphorus, 1), new MaterialStack(Oxygen, 4)).constructMaterial();
         Materials.SaltWater                 = new MaterialBuilder(692, TextureSet.SET_FLUID      ,                                                                                                     "Salt Water").addCell().addFluid().setRGB(0, 0, 200).setColor(Dyes.dyeBlue).constructMaterial();
@@ -8257,6 +8257,18 @@ public class MaterialsInit1 {
             .setFuelType(MaterialBuilder.GAS)
             .setFuelPower(360)
             .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPhenol() {
+        return new MaterialBuilder(687, TextureSet.SET_FLUID, "Phenol").addCell()
+            .addFluid()
+            .setRGB(120, 68, 33)
+            .setColor(Dyes.dyeBrown)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(288)
+            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
