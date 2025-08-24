@@ -270,8 +270,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             Pair.of(GregTechAPI.sBlockCasingsFoundry,1),
             Pair.of(GregTechAPI.sBlockCasingsFoundry,2),
             Pair.of(GregTechAPI.sBlockCasingsFoundry,3)), -1, MTEModularSolidifier::setMachineTier,MTEModularSolidifier::getMachineTier)))
-
-        .addElement('F', ofBlock(GregTechAPI.sBlockCasings11, 6))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7)) // item pipe casing
         .addElement(
             'H',
@@ -663,7 +661,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Nullable
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasingsFoundry) return null;
-        //if (metaID < 1 || metaID > 3) return null;
+        if (metaID < 1 || metaID > 3) return null;
         return metaID;
     }
 
