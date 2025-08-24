@@ -189,9 +189,9 @@ public class MaterialsInit1 {
         Materials.Trichlorosilane = loadTrichlorosilane();
         Materials.Hexachlorodisilane = loadHexachlorodisilane();
         Materials.Dichlorosilane = loadDichlorosilane();
+        Materials.Silane = loadSilane();
 
         // spotless:off
-        Materials.Silane                  = new MaterialBuilder(  798, TextureSet.SET_FLUID            ,   "Silane").setName( "Silane").addCell().addGas().setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(88).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Hydrogen, 4)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).constructMaterial();//SIH4
         Materials.Calciumhydride          = new Materials(  797, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 220, 220, 220,   0,   "CalciumHydride"          ,   "Calcium Hydride"               ,    0,       0,       1089,   -1, false, false,   1,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Hydrogen, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//CaH2
         Materials.AluminiumFluoride       = new Materials(  969, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Aluminiumfluoride"       ,   "Aluminium Fluoride"            ,    0,       0,       1533,   -1, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Aluminium, 1), new MaterialStack(Fluorine, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//ALF3
 
@@ -8629,6 +8629,19 @@ public class MaterialsInit1 {
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
                     new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .constructMaterial();
+    }
+
+    private static Materials loadSilane() {
+        return new MaterialBuilder(798, TextureSet.SET_FLUID, "Silane").setName("Silane")
+            .addCell()
+            .addGas()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(88)
+            // SIH4
+            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Hydrogen, 4))
+            .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
             .constructMaterial();
     }
 
