@@ -496,7 +496,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ice;
     public static Materials Ilmenite;
     public static Materials Invar;
-    public static Materials Jasper;
     public static Materials Kanthal;
     public static Materials Lazurite;
     public static Materials LiquidAir;
@@ -706,6 +705,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // Second Degree Compounds
     public static Materials Clay;
+    public static Materials Jasper;
     public static Materials WoodSealed;
     public static Materials LiveRoot;
     public static Materials IronWood;
