@@ -350,8 +350,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Vyroxeres;
     public static Materials Yellorium;
     public static Materials Zectium;
-    public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 8)));
-    public static Materials Advanced                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 4)));
+    public static Materials Ultimate;
+    public static Materials Advanced;
 
     // Tiered materials, primarily Circuitry, Batteries and other Technical things
     public static Materials ULV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Primitive"               ,   "Primitive"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 1)));

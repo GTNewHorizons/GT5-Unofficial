@@ -3016,6 +3016,8 @@ public class MaterialsInit1 {
         Materials.Vyroxeres = loadVyroxeres();
         Materials.Yellorium = loadYellorium();
         Materials.Zectium = loadZectium();
+        Materials.Ultimate = loadUltimate();
+        Materials.Advanced = loadAdvanced();
     }
 
     private static Materials loadAdamantium() {
@@ -4879,6 +4881,22 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadUltimate() {
+        return new MaterialBuilder().setName("Ultimate")
+            .setDefaultLocalName("Ultimate")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadAdvanced() {
+        return new MaterialBuilder().setName("Advanced")
+            .setDefaultLocalName("Advanced")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 4)
             .constructMaterial();
     }
 
