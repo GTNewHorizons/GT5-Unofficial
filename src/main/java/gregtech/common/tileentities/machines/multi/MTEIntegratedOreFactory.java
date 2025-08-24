@@ -652,8 +652,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = simpleWasherRecipes.findRecipeQuery()
-                        .caching(false)
                         .items(aStack)
+                        .fluids(Materials.Water.getFluid(100))
                         .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
