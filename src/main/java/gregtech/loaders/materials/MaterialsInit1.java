@@ -171,7 +171,6 @@ public class MaterialsInit1 {
         loadNotExact();
         loadTODOThis();
         loadFirstDegreeCompounds();
-        loadUnclassified1();
 
         Materials.OilExtraHeavy = loadOilExtraHeavy();
         Materials.OilHeavy = loadOilHeavy();
@@ -5715,15 +5714,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadFirstDegreeCompounds() {
-        Materials.Methane = loadMethane();
-        Materials.CarbonDioxide = loadCarbonDioxide();
-        Materials.NobleGases = loadNobleGases();
         Materials.Air = loadAir();
-        Materials.LiquidAir = loadLiquidAir();
-        Materials.LiquidNitrogen = loadLiquidNitrogen();
-        Materials.LiquidOxygen = loadLiquidOxygen();
-        Materials.SiliconDioxide = loadSiliconDioxide();
-        Materials.Jasper = loadJasper();
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
         Materials.AnnealedCopper = loadAnnealedCopper();
@@ -5731,12 +5722,14 @@ public class MaterialsInit1 {
         Materials.Ash = loadAsh();
         Materials.BandedIron = loadBandedIron();
         Materials.BatteryAlloy = loadBatteryAlloy();
+        Materials.Bauxite = loadBauxite();
         Materials.BlueTopaz = loadBlueTopaz();
         Materials.Bone = loadBone();
         Materials.Brass = loadBrass();
         Materials.Bronze = loadBronze();
         Materials.BrownLimonite = loadBrownLimonite();
         Materials.Calcite = loadCalcite();
+        Materials.CarbonDioxide = loadCarbonDioxide();
         Materials.Cassiterite = loadCassiterite();
         Materials.CassiteriteSand = loadCassiteriteSand();
         Materials.Chalcopyrite = loadChalcopyrite();
@@ -5744,8 +5737,6 @@ public class MaterialsInit1 {
         Materials.Chromite = loadChromite();
         Materials.ChromiumDioxide = loadChromiumDioxide();
         Materials.Cinnabar = loadCinnabar();
-        Materials.Water = loadWater();
-        Materials.Steam = Materials.Water;
         Materials.Clay = loadClay();
         Materials.Coal = loadCoal();
         Materials.Cobaltite = loadCobaltite();
@@ -5756,6 +5747,7 @@ public class MaterialsInit1 {
         Materials.Diamond = loadDiamond();
         Materials.Electrum = loadElectrum();
         Materials.Emerald = loadEmerald();
+        Materials.Epoxid = loadEpoxid();
         Materials.FreshWater = loadFreshWater();
         Materials.Galena = loadGalena();
         Materials.Garnierite = loadGarnierite();
@@ -5763,96 +5755,57 @@ public class MaterialsInit1 {
         Materials.GreenSapphire = loadGreenSapphire();
         Materials.Grossular = loadGrossular();
         Materials.HolyWater = loadHolyWater();
+        Materials.HydricSulfide = loadHydricSulfide();
         Materials.Ice = loadIce();
         Materials.Ilmenite = loadIlmenite();
-        Materials.Rutile = loadRutile();
-        Materials.Bauxite = loadBauxite();
-        Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
-        Materials.Magnesiumchloride = loadMagnesiumchloride();
         Materials.Invar = loadInvar();
+        Materials.Jasper = loadJasper();
         Materials.Kanthal = loadKanthal();
         Materials.Lazurite = loadLazurite();
+        Materials.LiquidAir = loadLiquidAir();
+        Materials.LiquidNitrogen = loadLiquidNitrogen();
+        Materials.LiquidOxygen = loadLiquidOxygen();
         Materials.Magnalium = loadMagnalium();
         Materials.Magnesite = loadMagnesite();
+        Materials.Magnesiumchloride = loadMagnesiumchloride();
         Materials.Magnetite = loadMagnetite();
+        Materials.Methane = loadMethane();
         Materials.Molybdenite = loadMolybdenite();
         Materials.Nichrome = loadNichrome();
         Materials.NiobiumNitride = loadNiobiumNitride();
         Materials.NiobiumTitanium = loadNiobiumTitanium();
         Materials.NitroCarbon = loadNitroCarbon();
         Materials.NitrogenDioxide = loadNitrogenDioxide();
+        Materials.NobleGases = loadNobleGases();
         Materials.Obsidian = loadObsidian();
         Materials.Phosphate = loadPhosphate();
         Materials.PigIron = loadPigIron();
         Materials.Plastic = loadPlastic();
-        Materials.Epoxid = loadEpoxid();
-        Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
-        Materials.Silicone = loadSilicone();
         Materials.Polycaprolactam = loadPolycaprolactam();
+        Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
         Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
         Materials.Powellite = loadPowellite();
         Materials.Pumice = loadPumice();
         Materials.Pyrite = loadPyrite();
         Materials.Pyrolusite = loadPyrolusite();
         Materials.Pyrope = loadPyrope();
+        Materials.RawRubber = loadRawRubber();
         Materials.RockSalt = loadRockSalt();
         Materials.Rubber = loadRubber();
-        Materials.RawRubber = loadRawRubber();
         Materials.Ruby = loadRuby();
+        Materials.Rutile = loadRutile();
         Materials.Salt = loadSalt();
         Materials.Saltpeter = loadSaltpeter();
         Materials.Sapphire = loadSapphire();
-    }
-
-    private static Materials loadMethane() {
-        return new MaterialBuilder().setName("Methane")
-            .setDefaultLocalName("Methane")
-            .setMetaItemSubID(715)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeMagenta)
-            .addCell()
-            .setFuelType(1)
-            .setFuelPower(104)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Carbon, 1)
-            .addMaterial(Materials.Hydrogen, 4)
-            .constructMaterial();
-    }
-
-    private static Materials loadCarbonDioxide() {
-        return new MaterialBuilder().setName("CarbonDioxide")
-            .setDefaultLocalName("Carbon Dioxide")
-            .setMetaItemSubID(497)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0xf0a9d0f5)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(25)
-            .setBlastFurnaceTemp(1)
-            .addMaterial(Materials.Carbon, 1)
-            .addMaterial(Materials.Oxygen, 2)
-            .constructMaterial()
-            .setHasCorrespondingGas(true);
-    }
-
-    private static Materials loadNobleGases() {
-        return new MaterialBuilder().setName("NobleGases")
-            .setDefaultLocalName("Noble Gases")
-            .setMetaItemSubID(496)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0xf0a9d0f5)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(4)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.CarbonDioxide, 21)
-            .addMaterial(Materials.Helium, 9)
-            .addMaterial(Materials.Methane, 3)
-            .addMaterial(Materials.Deuterium, 1)
-            .constructMaterial()
-            .setHasCorrespondingGas(true);
+        Materials.Scheelite = loadScheelite();
+        Materials.SiliconDioxide = loadSiliconDioxide();
+        Materials.Silicone = loadSilicone();
+        Materials.Snow = loadSnow();
+        Materials.Sodalite = loadSodalite();
+        Materials.SodiumPersulfate = loadSodiumPersulfate();
+        Materials.SodiumSulfide = loadSodiumSulfide();
+        Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
+        Materials.Water = Materials.Steam = loadWater();
     }
 
     private static Materials loadAir() {
@@ -5867,84 +5820,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 11)
             .addMaterial(Materials.Argon, 1)
             .addMaterial(Materials.NobleGases, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadLiquidAir() {
-        return new MaterialBuilder().setName("LiquidAir")
-            .setDefaultLocalName("Liquid Air")
-            .setMetaItemSubID(495)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0xf0a9d0f5)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(4)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Nitrogen, 40)
-            .addMaterial(Materials.Oxygen, 11)
-            .addMaterial(Materials.Argon, 1)
-            .addMaterial(Materials.NobleGases, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadLiquidNitrogen() {
-        return new MaterialBuilder().setName("LiquidNitrogen")
-            .setDefaultLocalName("Liquid Nitrogen")
-            .setMetaItemSubID(494)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0xf0a9d0f5)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(4)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Nitrogen, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadLiquidOxygen() {
-        return new MaterialBuilder().setName("LiquidOxygen")
-            .setDefaultLocalName("Liquid Oxygen")
-            .setMetaItemSubID(493)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0xf0a9d0f5)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(4)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Oxygen, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadSiliconDioxide() {
-        return new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F)
-            .setDurability(0)
-            .setToolQuality(1)
-            .addDustItems()
-            .setRGB(255, 255, 255)
-            .setColor(Dyes.dyeLightGray)
-            .setExtraData(0)
-            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2))
-            .constructMaterial();
-    }
-
-    private static Materials loadJasper() {
-        return new MaterialBuilder().setName("Jasper")
-            .setDefaultLocalName("Jasper")
-            .setMetaItemSubID(511)
-            .setIconSet(TextureSet.SET_EMERALD)
-            .setColor(Dyes.dyeRed)
-            .setARGB(0x64c85050)
-            .addDustItems()
-            .addGemItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.SiliconDioxide, 1)
-            .addAspect(TCAspects.LUCRUM, 4)
-            .addAspect(TCAspects.VITREUS, 2)
             .constructMaterial();
     }
 
@@ -6054,6 +5929,23 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Lead, 4)
             .addMaterial(Materials.Antimony, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBauxite() {
+        return new MaterialBuilder().setName("Bauxite")
+            .setDefaultLocalName("Bauxite")
+            .setMetaItemSubID(822)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Rutile, 2)
+            .addMaterial(Materials.Aluminium, 16)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Oxygen, 11)
             .constructMaterial();
     }
 
@@ -6172,6 +6064,23 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadCarbonDioxide() {
+        return new MaterialBuilder().setName("CarbonDioxide")
+            .setDefaultLocalName("Carbon Dioxide")
+            .setMetaItemSubID(497)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(25)
+            .setBlastFurnaceTemp(1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial()
+            .setHasCorrespondingGas(true);
+    }
+
     private static Materials loadCassiterite() {
         return new MaterialBuilder().setName("Cassiterite")
             .setDefaultLocalName("Cassiterite")
@@ -6287,20 +6196,6 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Mercury, 1)
             .addMaterial(Materials.Sulfur, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadWater() {
-        return new MaterialBuilder().setName("Water")
-            .setDefaultLocalName("Water")
-            .setMetaItemSubID(701)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeBlue)
-            .setRGB(0x0000ff)
-            .addCell()
-            .addMaterial(Materials.Hydrogen, 2)
-            .addMaterial(Materials.Oxygen, 1)
-            .addAspect(TCAspects.AQUA, 2)
             .constructMaterial();
     }
 
@@ -6499,6 +6394,28 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadEpoxid() {
+        return new MaterialBuilder().setName("Epoxid")
+            .setDefaultLocalName("Epoxid")
+            .setMetaItemSubID(470)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc88c14)
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 21)
+            .addMaterial(Materials.Hydrogen, 24)
+            .addMaterial(Materials.Oxygen, 4)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
     private static Materials loadFreshWater() {
         return new MaterialBuilder().setName("FreshWater")
             .setDefaultLocalName("Fresh Water")
@@ -6610,6 +6527,18 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadHydricSulfide() {
+        return new MaterialBuilder().setName("HydricSulfide")
+            .setDefaultLocalName("Hydrogen Sulfide")
+            .setMetaItemSubID(460)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
     private static Materials loadIce() {
         return new MaterialBuilder().setName("Ice")
             .setDefaultLocalName("Ice")
@@ -6641,65 +6570,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadRutile() {
-        return new MaterialBuilder().setName("Rutile")
-            .setDefaultLocalName("Rutile")
-            .setMetaItemSubID(375)
-            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xd40d5c)
-            .addDustItems()
-            .addOreItems()
-            .setDensityMultiplier(2)
-            .addMaterial(Materials.Titanium, 1)
-            .addMaterial(Materials.Oxygen, 2)
-            .constructMaterial();
-    }
-
-    private static Materials loadBauxite() {
-        return new MaterialBuilder().setName("Bauxite")
-            .setDefaultLocalName("Bauxite")
-            .setMetaItemSubID(822)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeBrown)
-            .setRGB(0xc86400)
-            .addDustItems()
-            .addOreItems()
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Rutile, 2)
-            .addMaterial(Materials.Aluminium, 16)
-            .addMaterial(Materials.Hydrogen, 10)
-            .addMaterial(Materials.Oxygen, 11)
-            .constructMaterial();
-    }
-
-    private static Materials loadTitaniumtetrachloride() {
-        return new MaterialBuilder().setName("Titaniumtetrachloride")
-            .setDefaultLocalName("Titaniumtetrachloride")
-            .setMetaItemSubID(376)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xd40d5c)
-            .addCell()
-            .addMaterial(Materials.Titanium, 1)
-            .addMaterial(Materials.Chlorine, 4)
-            .constructMaterial();
-    }
-
-    private static Materials loadMagnesiumchloride() {
-        return new MaterialBuilder().setName("Magnesiumchloride")
-            .setDefaultLocalName("Magnesiumchloride")
-            .setMetaItemSubID(377)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xd40d5c)
-            .addDustItems()
-            .addCell()
-            .addMaterial(Materials.Magnesium, 1)
-            .addMaterial(Materials.Chlorine, 2)
-            .constructMaterial();
-    }
-
     private static Materials loadInvar() {
         return new MaterialBuilder().setName("Invar")
             .setDefaultLocalName("Invar")
@@ -6719,6 +6589,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Nickel, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.GELUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadJasper() {
+        return new MaterialBuilder().setName("Jasper")
+            .setDefaultLocalName("Jasper")
+            .setMetaItemSubID(511)
+            .setIconSet(TextureSet.SET_EMERALD)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x64c85050)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.LUCRUM, 4)
+            .addAspect(TCAspects.VITREUS, 2)
             .constructMaterial();
     }
 
@@ -6764,6 +6652,54 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadLiquidAir() {
+        return new MaterialBuilder().setName("LiquidAir")
+            .setDefaultLocalName("Liquid Air")
+            .setMetaItemSubID(495)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Nitrogen, 40)
+            .addMaterial(Materials.Oxygen, 11)
+            .addMaterial(Materials.Argon, 1)
+            .addMaterial(Materials.NobleGases, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidNitrogen() {
+        return new MaterialBuilder().setName("LiquidNitrogen")
+            .setDefaultLocalName("Liquid Nitrogen")
+            .setMetaItemSubID(494)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Nitrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidOxygen() {
+        return new MaterialBuilder().setName("LiquidOxygen")
+            .setDefaultLocalName("Liquid Oxygen")
+            .setMetaItemSubID(493)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
     private static Materials loadMagnalium() {
         return new MaterialBuilder().setName("Magnalium")
             .setDefaultLocalName("Magnalium")
@@ -6800,6 +6736,20 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadMagnesiumchloride() {
+        return new MaterialBuilder().setName("Magnesiumchloride")
+            .setDefaultLocalName("Magnesiumchloride")
+            .setMetaItemSubID(377)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xd40d5c)
+            .addDustItems()
+            .addCell()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Chlorine, 2)
+            .constructMaterial();
+    }
+
     private static Materials loadMagnetite() {
         return new MaterialBuilder().setName("Magnetite")
             .setDefaultLocalName("Magnetite")
@@ -6814,6 +6764,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 4)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMethane() {
+        return new MaterialBuilder().setName("Methane")
+            .setDefaultLocalName("Methane")
+            .setMetaItemSubID(715)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeMagenta)
+            .addCell()
+            .setFuelType(1)
+            .setFuelPower(104)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 4)
             .constructMaterial();
     }
 
@@ -6924,6 +6889,25 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadNobleGases() {
+        return new MaterialBuilder().setName("NobleGases")
+            .setDefaultLocalName("Noble Gases")
+            .setMetaItemSubID(496)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.CarbonDioxide, 21)
+            .addMaterial(Materials.Helium, 9)
+            .addMaterial(Materials.Methane, 3)
+            .addMaterial(Materials.Deuterium, 1)
+            .constructMaterial()
+            .setHasCorrespondingGas(true);
+    }
+
     private static Materials loadObsidian() {
         return new MaterialBuilder().setName("Obsidian")
             .setDefaultLocalName("Obsidian")
@@ -6997,64 +6981,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadEpoxid() {
-        return new MaterialBuilder().setName("Epoxid")
-            .setDefaultLocalName("Epoxid")
-            .setMetaItemSubID(470)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .setRGB(0xc88c14)
-            .setToolSpeed(3.0f)
-            .setDurability(32)
-            .setToolQuality(1)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(400)
-            .addMaterial(Materials.Carbon, 21)
-            .addMaterial(Materials.Hydrogen, 24)
-            .addMaterial(Materials.Oxygen, 4)
-            .addAspect(TCAspects.MOTUS, 2)
-            .constructMaterial();
-    }
-
-    private static Materials loadPolydimethylsiloxane() {
-        return new MaterialBuilder(633, TextureSet.SET_FLUID, "Polydimethylsiloxane").addDustItems()
-            .setRGB(245, 245, 245)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 6),
-                new MaterialStack(Oxygen, 1),
-                new MaterialStack(Silicon, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadSilicone() {
-        return new MaterialBuilder().setName("Silicone")
-            .setDefaultLocalName("Silicone Rubber")
-            .setMetaItemSubID(471)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .setRGB(0xdcdcdc)
-            .setToolSpeed(3.0f)
-            .setDurability(128)
-            .setToolQuality(1)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(900)
-            .addMaterial(Materials.Carbon, 2)
-            .addMaterial(Materials.Hydrogen, 6)
-            .addMaterial(Materials.Oxygen, 1)
-            .addMaterial(Materials.Silicon, 1)
-            .addAspect(TCAspects.MOTUS, 2)
-            .constructMaterial();
-    }
-
     private static Materials loadPolycaprolactam() {
         return new MaterialBuilder().setName("Polycaprolactam")
             .setDefaultLocalName("Polycaprolactam")
@@ -7075,6 +7001,19 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolydimethylsiloxane() {
+        return new MaterialBuilder(633, TextureSet.SET_FLUID, "Polydimethylsiloxane").addDustItems()
+            .setRGB(245, 245, 245)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(
+                new MaterialStack(Carbon, 2),
+                new MaterialStack(Hydrogen, 6),
+                new MaterialStack(Oxygen, 1),
+                new MaterialStack(Silicon, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7175,6 +7114,21 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadRawRubber() {
+        return new MaterialBuilder().setName("RawRubber")
+            .setDefaultLocalName("Raw Rubber")
+            .setMetaItemSubID(896)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xccc789)
+            .addDustItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
     private static Materials loadRockSalt() {
         return new MaterialBuilder().setName("RockSalt")
             .setDefaultLocalName("Rock Salt")
@@ -7211,21 +7165,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadRawRubber() {
-        return new MaterialBuilder().setName("RawRubber")
-            .setDefaultLocalName("Raw Rubber")
-            .setMetaItemSubID(896)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .setRGB(0xccc789)
-            .addDustItems()
-            .setMeltingPoint(400)
-            .addMaterial(Materials.Carbon, 5)
-            .addMaterial(Materials.Hydrogen, 8)
-            .addAspect(TCAspects.MOTUS, 2)
-            .constructMaterial();
-    }
-
     private static Materials loadRuby() {
         return new MaterialBuilder().setName("Ruby")
             .setDefaultLocalName("Ruby")
@@ -7245,6 +7184,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 3)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadRutile() {
+        return new MaterialBuilder().setName("Rutile")
+            .setDefaultLocalName("Rutile")
+            .setMetaItemSubID(375)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xd40d5c)
+            .addDustItems()
+            .addOreItems()
+            .setDensityMultiplier(2)
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -7298,15 +7252,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static void loadUnclassified1() {
-        Materials.Scheelite = loadScheelite();
-        Materials.Snow = loadSnow();
-        Materials.Sodalite = loadSodalite();
-        Materials.SodiumPersulfate = loadSodiumPersulfate();
-        Materials.SodiumSulfide = loadSodiumSulfide();
-        Materials.HydricSulfide = loadHydricSulfide();
-    }
-
     private static Materials loadScheelite() {
         return new MaterialBuilder().setName("Scheelite")
             .setDefaultLocalName("Scheelite")
@@ -7321,6 +7266,41 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Tungsten, 1)
             .addMaterial(Materials.Calcium, 1)
             .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconDioxide() {
+        return new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F)
+            .setDurability(0)
+            .setToolQuality(1)
+            .addDustItems()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeLightGray)
+            .setExtraData(0)
+            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadSilicone() {
+        return new MaterialBuilder().setName("Silicone")
+            .setDefaultLocalName("Silicone Rubber")
+            .setMetaItemSubID(471)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcdc)
+            .setToolSpeed(3.0f)
+            .setDurability(128)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(900)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addAspect(TCAspects.MOTUS, 2)
             .constructMaterial();
     }
 
@@ -7385,15 +7365,30 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadHydricSulfide() {
-        return new MaterialBuilder().setName("HydricSulfide")
-            .setDefaultLocalName("Hydrogen Sulfide")
-            .setMetaItemSubID(460)
+    private static Materials loadTitaniumtetrachloride() {
+        return new MaterialBuilder().setName("Titaniumtetrachloride")
+            .setDefaultLocalName("Titaniumtetrachloride")
+            .setMetaItemSubID(376)
             .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeOrange)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xd40d5c)
+            .addCell()
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Chlorine, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadWater() {
+        return new MaterialBuilder().setName("Water")
+            .setDefaultLocalName("Water")
+            .setMetaItemSubID(701)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
             .addCell()
             .addMaterial(Materials.Hydrogen, 2)
-            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 2)
             .constructMaterial();
     }
 

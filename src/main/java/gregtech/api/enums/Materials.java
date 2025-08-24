@@ -452,15 +452,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Sunnarium;
 
     // First Degree Compounds
-    public static Materials Methane;
-    public static Materials CarbonDioxide;
-    public static Materials NobleGases;
     public static Materials Air;
-    public static Materials LiquidAir;
-    public static Materials LiquidNitrogen;
-    public static Materials LiquidOxygen;
-    public static Materials SiliconDioxide;
-    public static Materials Jasper;
     public static Materials Almandine;
     public static Materials Andradite;
     public static Materials AnnealedCopper;
@@ -468,12 +460,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ash;
     public static Materials BandedIron;
     public static Materials BatteryAlloy;
+    public static Materials Bauxite;
     public static Materials BlueTopaz;
     public static Materials Bone;
     public static Materials Brass;
     public static Materials Bronze;
     public static Materials BrownLimonite;
     public static Materials Calcite;
+    public static Materials CarbonDioxide;
     public static Materials Cassiterite;
     public static Materials CassiteriteSand;
     public static Materials Chalcopyrite;
@@ -481,7 +475,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Chromite;
     public static Materials ChromiumDioxide;
     public static Materials Cinnabar;
-    public static Materials Water;
     public static Materials Clay;
     public static Materials Coal;
     public static Materials Cobaltite;
@@ -492,6 +485,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Diamond;
     public static Materials Electrum;
     public static Materials Emerald;
+    public static Materials Epoxid;
     public static Materials FreshWater;
     public static Materials Galena;
     public static Materials Garnierite;
@@ -499,51 +493,57 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GreenSapphire;
     public static Materials Grossular;
     public static Materials HolyWater;
+    public static Materials HydricSulfide;
     public static Materials Ice;
     public static Materials Ilmenite;
-    public static Materials Rutile;
-    public static Materials Bauxite;
-    public static Materials Titaniumtetrachloride;
-    public static Materials Magnesiumchloride;
     public static Materials Invar;
+    public static Materials Jasper;
     public static Materials Kanthal;
     public static Materials Lazurite;
+    public static Materials LiquidAir;
+    public static Materials LiquidNitrogen;
+    public static Materials LiquidOxygen;
     public static Materials Magnalium;
     public static Materials Magnesite;
+    public static Materials Magnesiumchloride;
     public static Materials Magnetite;
+    public static Materials Methane;
     public static Materials Molybdenite;
     public static Materials Nichrome;
     public static Materials NiobiumNitride;
     public static Materials NiobiumTitanium;
     public static Materials NitroCarbon;
     public static Materials NitrogenDioxide;
+    public static Materials NobleGases;
     public static Materials Obsidian;
     public static Materials Phosphate;
     public static Materials PigIron;
     public static Materials Plastic;
-    public static Materials Epoxid;
-    public static Materials Polydimethylsiloxane;
-    public static Materials Silicone;
     public static Materials Polycaprolactam;
+    public static Materials Polydimethylsiloxane;
     public static Materials Polytetrafluoroethylene;
     public static Materials Powellite;
     public static Materials Pumice;
     public static Materials Pyrite;
     public static Materials Pyrolusite;
     public static Materials Pyrope;
+    public static Materials RawRubber;
     public static Materials RockSalt;
     public static Materials Rubber;
-    public static Materials RawRubber;
     public static Materials Ruby;
+    public static Materials Rutile;
     public static Materials Salt;
     public static Materials Saltpeter;
     public static Materials Sapphire;
     public static Materials Scheelite;
+    public static Materials SiliconDioxide;
+    public static Materials Silicone;
     public static Materials Snow;
     public static Materials Sodalite;
     public static Materials SodiumPersulfate;
     public static Materials SodiumSulfide;
-    public static Materials HydricSulfide;
+    public static Materials Titaniumtetrachloride;
+    public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
 
     // Unclassified 1 materials
     public static Materials OilExtraHeavy;
@@ -979,9 +979,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Misc GT Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
-
-    // Aliases
-    public static Materials Steam; // Steam.getGas(..) reads better than Water.getGas(..)
 
     // spotless:on
 
