@@ -181,17 +181,7 @@ public class MaterialsInit1 {
         loadUnclassified8();
         loadUnclassified9();
         loadRoastedOres();
-
-        Materials.SiliconSG = loadSiliconSG();
-        Materials.CalciumDisilicide = loadCalciumDisilicide();
-        Materials.SiliconTetrafluoride = loadSiliconTetrafluoride();
-        Materials.SiliconTetrachloride = loadSiliconTetrachloride();
-        Materials.Trichlorosilane = loadTrichlorosilane();
-        Materials.Hexachlorodisilane = loadHexachlorodisilane();
-        Materials.Dichlorosilane = loadDichlorosilane();
-        Materials.Silane = loadSilane();
-        Materials.Calciumhydride = loadCalciumhydride();
-        Materials.AluminiumFluoride = loadAluminiumFluoride();
+        loadSiliconLine();
 
         // spotless:off
         Materials.SolderingAlloy          = new Materials( 314, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 220, 220, 230,   0,   "SolderingAlloy"          ,   "Soldering Alloy"               ,    0,       0,        400,  400, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 9), new MaterialStack(Antimony, 1)));
@@ -8503,6 +8493,19 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(209, 209, 209)
             .constructMaterial();
+    }
+
+    private static void loadSiliconLine() {
+        Materials.SiliconSG = loadSiliconSG();
+        Materials.CalciumDisilicide = loadCalciumDisilicide();
+        Materials.SiliconTetrafluoride = loadSiliconTetrafluoride();
+        Materials.SiliconTetrachloride = loadSiliconTetrachloride();
+        Materials.Trichlorosilane = loadTrichlorosilane();
+        Materials.Hexachlorodisilane = loadHexachlorodisilane();
+        Materials.Dichlorosilane = loadDichlorosilane();
+        Materials.Silane = loadSilane();
+        Materials.Calciumhydride = loadCalciumhydride();
+        Materials.AluminiumFluoride = loadAluminiumFluoride();
     }
 
     private static Materials loadSiliconSG() {
