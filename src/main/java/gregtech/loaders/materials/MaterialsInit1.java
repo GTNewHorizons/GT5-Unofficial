@@ -220,9 +220,9 @@ public class MaterialsInit1 {
         Materials.Kyanite = loadKyanite();
         Materials.Kaolinite = loadKaolinite();
         Materials.Talc = loadTalc();
+        Materials.Soapstone = loadSoapstone();
 
         // spotless:off
-        Materials.Soapstone               = new Materials( 877, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  95, 145,  95,   0,   "Soapstone"               ,   "Soapstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
         Materials.Concrete                = new Materials( 947, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 100, 100, 100,   0,   "Concrete"                ,   "Concrete"                      ,    0,       0,        300,    0, false, false,   0,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Stone, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
         Materials.IronMagnetic            = new Materials( 354, TextureSet.SET_MAGNETIC          ,   6.0F,    256,  2, 1|2          |64|128      , 200, 200, 200,   0,   "IronMagnetic"            ,   "Magnetic Iron"                 ,    0,       0,         -1,    0, false, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
         Materials.SteelMagnetic           = new Materials( 355, TextureSet.SET_MAGNETIC          ,   6.0F,    512,  3, 1|2          |64|128      , 128, 128, 128,   0,   "SteelMagnetic"           ,   "Magnetic Steel"                ,    0,       0,       1000, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Steel, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
@@ -10794,6 +10794,23 @@ public class MaterialsInit1 {
             .setMetaItemSubID(902)
             .setIconSet(TextureSet.SET_DULL)
             .setRGB(0x5ab45a)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // H2Mg3(SiO3)4
+            .addMaterial(Materials.Magnesium, 3)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadSoapstone() {
+        return new MaterialBuilder().setName("Soapstone")
+            .setDefaultLocalName("Soapstone")
+            .setMetaItemSubID(877)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x5f915f)
             .addDustItems()
             .addOreItems()
             .addElectrolyzerRecipe()
