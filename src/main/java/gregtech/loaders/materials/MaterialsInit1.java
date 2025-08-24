@@ -235,9 +235,9 @@ public class MaterialsInit1 {
         Materials.Dimethylhydrazine = loadDimethylhydrazine();
         Materials.Chloramine = loadChloramine();
         Materials.Dimethylamine = loadDimethylamine();
+        Materials.DinitrogenTetroxide = loadDinitrogenTetroxide();
 
         // spotless:off
-        Materials.DinitrogenTetroxide       = new MaterialBuilder(657, TextureSet.SET_FLUID      ,                                                                                                     "Dinitrogen Tetroxide").addCell().addGas().setRGB(0, 65, 132).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 4)).addElectrolyzerRecipe().constructMaterial();
         Materials.NitricOxide               = new MaterialBuilder(658, TextureSet.SET_FLUID      ,                                                                                                     "Nitric Oxide").addCell().addGas().setRGB(125, 200, 240).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Ammonia                   = new MaterialBuilder(659, TextureSet.SET_FLUID      ,                                                                                                     "Ammonia").addCell().addGas().setRGB(63, 52, 128).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3)).addElectrolyzerRecipe().constructMaterial();
         Materials.Dimethyldichlorosilane    = new MaterialBuilder(663, TextureSet.SET_FLUID      ,                                                                                                     "Dimethyldichlorosilane").addCell().addFluid().setRGB(68, 22, 80).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Chlorine, 2), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -7959,6 +7959,16 @@ public class MaterialsInit1 {
                 new MaterialStack(Carbon, 2),
                 new MaterialStack(Hydrogen, 7),
                 new MaterialStack(Nitrogen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDinitrogenTetroxide() {
+        return new MaterialBuilder(657, TextureSet.SET_FLUID, "Dinitrogen Tetroxide").addCell()
+            .addGas()
+            .setRGB(0, 65, 132)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 4))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
