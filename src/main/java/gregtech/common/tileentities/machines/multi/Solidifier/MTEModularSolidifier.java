@@ -669,7 +669,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        mTier = 0;
+        mTier = -1;
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && mCasingAmount >= 14) {
             return checkModules();
         }
