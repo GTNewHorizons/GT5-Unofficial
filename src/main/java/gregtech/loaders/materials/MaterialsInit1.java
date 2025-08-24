@@ -217,9 +217,9 @@ public class MaterialsInit1 {
         Materials.Dolomite = loadDolomite();
         Materials.Wollastonite = loadWollastonite();
         Materials.Zeolite = loadZeolite();
+        Materials.Kyanite = loadKyanite();
 
         // spotless:off
-        Materials.Kyanite                 = new Materials( 924, TextureSet.SET_FLINT             ,   1.0F,      0,  2, 1    |8                   , 110, 110, 250,   0,   "Kyanite"                 ,   "Kyanite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 5))); // Al2SiO5
         Materials.Kaolinite               = new Materials( 929, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 245, 235, 235,   0,   "Kaolinite"               ,   "Kaolinite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Al2Si2O5(OH)4
         Materials.Talc                    = new Materials( 902, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   ,  90, 180,  90,   0,   "Talc"                    ,   "Talc"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
         Materials.Soapstone               = new Materials( 877, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  95, 145,  95,   0,   "Soapstone"               ,   "Soapstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
@@ -10754,6 +10754,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silicon, 27)
             .addMaterial(Materials.Aluminium, 9)
             .addMaterial(Materials.Oxygen, 72)
+            .constructMaterial();
+    }
+
+    private static Materials loadKyanite() {
+        return new MaterialBuilder().setName("Kyanite")
+            .setDefaultLocalName("Kyanite")
+            .setMetaItemSubID(924)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setRGB(0x6e6efa)
+            .addDustItems()
+            .addOreItems()
+            // Al2SiO5
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 5)
             .constructMaterial();
     }
 
