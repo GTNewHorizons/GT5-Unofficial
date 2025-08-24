@@ -34,7 +34,7 @@ public class MTEHatchInput extends MTEHatch {
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
     public boolean disableFilter = true;
     public RecipeMap<?> mRecipeMap = null;
-    private Integer customCapacity = null;
+    private int customCapacity = 0;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -209,7 +209,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public int getCapacity() {
-        return customCapacity != null ? customCapacity : (8000 * (1 << mTier));
+        return customCapacity != 0 ? customCapacity : (8000 * (1 << mTier));
     }
 
     @Override
