@@ -5039,8 +5039,8 @@ public class MaterialsInit1 {
     }
 
     private static void loadNotExact() {
-        Materials.Antimatter = loadAntimatter();
         Materials.AdvancedGlue = loadAdvancedGlue();
+        Materials.Antimatter = loadAntimatter();
         Materials.Biomass = loadBiomass();
         Materials.CharcoalByproducts = loadCharcoalByproducts();
         Materials.Cheese = loadCheese();
@@ -5052,23 +5052,24 @@ public class MaterialsInit1 {
         Materials.Coffee = loadCoffee();
         Materials.Creosote = loadCreosote();
         Materials.Ethanol = loadEthanol();
-        Materials.FishOil = loadFishOil();
         Materials.FermentedBiomass = loadFermentedBiomass();
+        Materials.FishOil = loadFishOil();
+        Materials.FryingOilHot = loadFryingOilHot();
         Materials.Fuel = loadFuel();
         Materials.Glue = loadGlue();
         Materials.Gunpowder = loadGunpowder();
-        Materials.FryingOilHot = loadFryingOilHot();
         Materials.Honey = loadHoney();
         Materials.Leather = loadLeather();
         Materials.Lubricant = loadLubricant();
         Materials.McGuffium239 = loadMcGuffium239();
-        Materials.MeatRaw = loadMeatRaw();
         Materials.MeatCooked = loadMeatCooked();
+        Materials.MeatRaw = loadMeatRaw();
         Materials.Milk = loadMilk();
         Materials.Mud = loadMud();
         Materials.Oil = loadOil();
         Materials.Paper = loadPaper();
         Materials.Peat = loadPeat();
+        // Materials.Protomatter = loadProtomatter();
         Materials.RareEarth = loadRareEarth();
         Materials.Red = loadRed();
         Materials.Reinforced = loadReinforced();
@@ -5080,20 +5081,11 @@ public class MaterialsInit1 {
         Materials.Unstable = loadUnstable();
         Materials.Unstableingot = loadUnstableingot();
         Materials.Vinegar = loadVinegar();
+        Materials.WeedEX9000 = loadWeedEX9000();
         Materials.Wheat = loadWheat();
         Materials.WoodGas = loadWoodGas();
         Materials.WoodTar = loadWoodTar();
         Materials.WoodVinegar = loadWoodVinegar();
-        Materials.WeedEX9000 = loadWeedEX9000();
-    }
-
-    private static Materials loadAntimatter() {
-        return new MaterialBuilder().setName("Antimatter")
-            .setDefaultLocalName("Antimatter")
-            .setColor(Dyes.dyePink)
-            .addAspect(TCAspects.POTENTIA, 9)
-            .addAspect(TCAspects.PERFODIO, 8)
-            .constructMaterial();
     }
 
     private static Materials loadAdvancedGlue() {
@@ -5103,6 +5095,15 @@ public class MaterialsInit1 {
             .setRGB(255, 255, 185)
             .setColor(Dyes.dyeYellow)
             .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 5)))
+            .constructMaterial();
+    }
+
+    private static Materials loadAntimatter() {
+        return new MaterialBuilder().setName("Antimatter")
+            .setDefaultLocalName("Antimatter")
+            .setColor(Dyes.dyePink)
+            .addAspect(TCAspects.POTENTIA, 9)
+            .addAspect(TCAspects.PERFODIO, 8)
             .constructMaterial();
     }
 
@@ -5234,6 +5235,14 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadFermentedBiomass() {
+        return new MaterialBuilder(691, TextureSet.SET_FLUID, "Fermented Biomass").addCell()
+            .addFluid()
+            .setRGB(68, 85, 0)
+            .setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
     private static Materials loadFishOil() {
         return new MaterialBuilder().setName("FishOil")
             .setDefaultLocalName("Fish Oil")
@@ -5248,11 +5257,16 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadFermentedBiomass() {
-        return new MaterialBuilder(691, TextureSet.SET_FLUID, "Fermented Biomass").addCell()
-            .addFluid()
-            .setRGB(68, 85, 0)
-            .setColor(Dyes.dyeBrown)
+    private static Materials loadFryingOilHot() {
+        return new MaterialBuilder().setName("FryingOilHot")
+            .setDefaultLocalName("Hot Frying Oil")
+            .setMetaItemSubID(727)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc8c400)
+            .addCell()
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -5290,19 +5304,6 @@ public class MaterialsInit1 {
             .addDustItems()
             .addAspect(TCAspects.PERDITIO, 3)
             .addAspect(TCAspects.IGNIS, 4)
-            .constructMaterial();
-    }
-
-    private static Materials loadFryingOilHot() {
-        return new MaterialBuilder().setName("FryingOilHot")
-            .setDefaultLocalName("Hot Frying Oil")
-            .setMetaItemSubID(727)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeOrange)
-            .setRGB(0xc8c400)
-            .addCell()
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -5361,17 +5362,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadMeatRaw() {
-        return new MaterialBuilder().setName("MeatRaw")
-            .setDefaultLocalName("Raw Meat")
-            .setMetaItemSubID(892)
-            .setIconSet(TextureSet.SET_FINE)
-            .setColor(Dyes.dyePink)
-            .setRGB(0xff6464)
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadMeatCooked() {
         return new MaterialBuilder().setName("MeatCooked")
             .setDefaultLocalName("Cooked Meat")
@@ -5379,6 +5369,17 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FINE)
             .setColor(Dyes.dyePink)
             .setRGB(0x963c14)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMeatRaw() {
+        return new MaterialBuilder().setName("MeatRaw")
+            .setDefaultLocalName("Raw Meat")
+            .setMetaItemSubID(892)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xff6464)
             .addDustItems()
             .constructMaterial();
     }
@@ -5572,6 +5573,13 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadWeedEX9000() {
+        return new MaterialBuilder(242, TextureSet.SET_FLUID, "Weed-EX 9000").addFluid()
+            .setRGB(64, 224, 86)
+            .setColor(Dyes.dyeGreen)
+            .constructMaterial();
+    }
+
     private static Materials loadWheat() {
         return new MaterialBuilder().setName("Wheat")
             .setDefaultLocalName("Wheat")
@@ -5607,13 +5615,6 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(212, 85, 0)
             .setColor(Dyes.dyeBrown)
-            .constructMaterial();
-    }
-
-    private static Materials loadWeedEX9000() {
-        return new MaterialBuilder(242, TextureSet.SET_FLUID, "Weed-EX 9000").addFluid()
-            .setRGB(64, 224, 86)
-            .setColor(Dyes.dyeGreen)
             .constructMaterial();
     }
 

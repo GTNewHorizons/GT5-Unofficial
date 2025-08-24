@@ -395,9 +395,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
 
     // Not possible to determine exact Components
-    public static Materials Antimatter;
-    public static Materials Protomatter;
     public static Materials AdvancedGlue;
+    public static Materials Antimatter;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
@@ -409,23 +408,24 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Coffee;
     public static Materials Creosote;
     public static Materials Ethanol;
-    public static Materials FishOil;
     public static Materials FermentedBiomass;
+    public static Materials FishOil;
+    public static Materials FryingOilHot;
     public static Materials Fuel;
     public static Materials Glue;
     public static Materials Gunpowder;
-    public static Materials FryingOilHot;
     public static Materials Honey;
     public static Materials Leather;
     public static Materials Lubricant;
     public static Materials McGuffium239;
-    public static Materials MeatRaw;
     public static Materials MeatCooked;
+    public static Materials MeatRaw;
     public static Materials Milk;
     public static Materials Mud;
     public static Materials Oil;
     public static Materials Paper;
     public static Materials Peat;
+    public static Materials Protomatter;
     public static Materials RareEarth;
     public static Materials Red;
     public static Materials Reinforced;
@@ -437,11 +437,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Unstable;
     public static Materials Unstableingot;
     public static Materials Vinegar;
+    public static Materials WeedEX9000;
     public static Materials Wheat;
     public static Materials WoodGas;
     public static Materials WoodTar;
     public static Materials WoodVinegar;
-    public static Materials WeedEX9000;
 
     // TODO: this
     public static Materials AluminiumBrass;
