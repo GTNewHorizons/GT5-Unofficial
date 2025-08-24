@@ -239,9 +239,9 @@ public class MaterialsInit1 {
         Materials.NitricOxide = loadNitricOxide();
         Materials.Ammonia = loadAmmonia();
         Materials.Dimethyldichlorosilane = loadDimethyldichlorosilane();
+        Materials.Chloromethane = loadChloromethane();
 
         // spotless:off
-        Materials.Chloromethane             = new MaterialBuilder(664, TextureSet.SET_FLUID      ,                                                                                                     "Chloromethane").addCell().addGas().setRGB(200, 44, 160).setColor(Dyes.dyeMagenta).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.PhosphorousPentoxide      = new MaterialBuilder(665, TextureSet.SET_FLUID      ,                                                                                                     "Phosphorous Pentoxide").addCell().addDustItems().setRGB(220, 220, 0).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10)).addElectrolyzerRecipe().constructMaterial();
         Materials.Tetrafluoroethylene       = new MaterialBuilder(666, TextureSet.SET_FLUID      ,                                                                                                     "Tetrafluoroethylene").addCell().addGas().setRGB(125, 125, 125).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)).addElectrolyzerRecipe().constructMaterial();
         Materials.HydrofluoricAcid          = new MaterialBuilder(667, TextureSet.SET_FLUID      ,                                                                                                     "Hydrofluoric Acid").setName("HydrofluoricAcid_GT5U").addCell().addFluid().setRGB(0, 136, 170).setColor(Dyes.dyeLightBlue).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1)).addElectrolyzerRecipe().constructMaterial();
@@ -8003,6 +8003,19 @@ public class MaterialsInit1 {
                 new MaterialStack(Hydrogen, 6),
                 new MaterialStack(Chlorine, 2),
                 new MaterialStack(Silicon, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChloromethane() {
+        return new MaterialBuilder(664, TextureSet.SET_FLUID, "Chloromethane").addCell()
+            .addGas()
+            .setRGB(200, 44, 160)
+            .setColor(Dyes.dyeMagenta)
+            .setMaterialList(
+                new MaterialStack(Carbon, 1),
+                new MaterialStack(Hydrogen, 3),
+                new MaterialStack(Chlorine, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
