@@ -579,13 +579,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials NickelZincFerrite;
 
     // Unclassified 7 materials
-    public static Materials Massicot;
+    public static Materials AntimonyTrioxide;
     public static Materials ArsenicTrioxide;
     public static Materials CobaltOxide;
-    public static Materials Zincite;
-    public static Materials AntimonyTrioxide;
     public static Materials CupricOxide;
     public static Materials Ferrosilite;
+    public static Materials Massicot;
+    public static Materials Zincite;
 
     // Unclassified 8 materials
     public static Materials Magnesia;

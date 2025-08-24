@@ -177,14 +177,8 @@ public class MaterialsInit1 {
         loadUnclassified4();
         loadUnclassified5();
         loadUnclassified6();
+        loadUnclassified7();
 
-        Materials.Massicot = loadMassicot();
-        Materials.ArsenicTrioxide = loadArsenicTrioxide();
-        Materials.CobaltOxide = loadCobaltOxide();
-        Materials.Zincite = loadZincite();
-        Materials.AntimonyTrioxide = loadAntimonyTrioxide();
-        Materials.CupricOxide = loadCupricOxide();
-        Materials.Ferrosilite = loadFerrosilite();
         Materials.Magnesia = loadMagnesia();
         Materials.Quicklime = loadQuicklime();
         Materials.Potash = loadPotash();
@@ -7636,11 +7630,21 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadMassicot() {
-        return new MaterialBuilder(614, TextureSet.SET_DULL, "Massicot").addDustItems()
-            .setRGB(255, 221, 85)
-            .setColor(Dyes.dyeYellow)
-            .setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1))
+    private static void loadUnclassified7() {
+        Materials.AntimonyTrioxide = loadAntimonyTrioxide();
+        Materials.ArsenicTrioxide = loadArsenicTrioxide();
+        Materials.CobaltOxide = loadCobaltOxide();
+        Materials.CupricOxide = loadCupricOxide();
+        Materials.Ferrosilite = loadFerrosilite();
+        Materials.Massicot = loadMassicot();
+        Materials.Zincite = loadZincite();
+    }
+
+    private static Materials loadAntimonyTrioxide() {
+        return new MaterialBuilder(618, TextureSet.SET_DULL, "Antimony Trioxide").addDustItems()
+            .setRGB(230, 230, 240)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7663,24 +7667,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadZincite() {
-        return new MaterialBuilder(617, TextureSet.SET_DULL, "Zincite").addDustItems()
-            .setRGB(255, 255, 245)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static Materials loadAntimonyTrioxide() {
-        return new MaterialBuilder(618, TextureSet.SET_DULL, "Antimony Trioxide").addDustItems()
-            .setRGB(230, 230, 240)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
     private static Materials loadCupricOxide() {
         return new MaterialBuilder(619, TextureSet.SET_DULL, "Cupric Oxide").addDustItems()
             .setRGB(15, 15, 15)
@@ -7696,6 +7682,24 @@ public class MaterialsInit1 {
             .setRGB(151, 99, 42)
             .setColor(Dyes.dyeBrown)
             .setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadMassicot() {
+        return new MaterialBuilder(614, TextureSet.SET_DULL, "Massicot").addDustItems()
+            .setRGB(255, 221, 85)
+            .setColor(Dyes.dyeYellow)
+            .setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadZincite() {
+        return new MaterialBuilder(617, TextureSet.SET_DULL, "Zincite").addDustItems()
+            .setRGB(255, 255, 245)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
