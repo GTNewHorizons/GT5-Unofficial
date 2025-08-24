@@ -8661,9 +8661,9 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified10() {
-        Materials.SolderingAlloy = loadSolderingAlloy();
         Materials.GalliumArsenide = loadGalliumArsenide();
         Materials.IndiumGalliumPhosphide = loadIndiumGalliumPhosphide();
+        Materials.SolderingAlloy = loadSolderingAlloy();
         Materials.Spessartine = loadSpessartine();
         Materials.Sphalerite = loadSphalerite();
         Materials.StainlessSteel = loadStainlessSteel();
@@ -8684,23 +8684,6 @@ public class MaterialsInit1 {
         Materials.Wulfenite = loadWulfenite();
         Materials.YellowLimonite = loadYellowLimonite();
         Materials.YttriumBariumCuprate = loadYttriumBariumCuprate();
-    }
-
-    private static Materials loadSolderingAlloy() {
-        return new MaterialBuilder().setName("SolderingAlloy")
-            .setDefaultLocalName("Soldering Alloy")
-            .setMetaItemSubID(314)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .setRGB(0xdcdce6)
-            .addDustItems()
-            .addMetalItems()
-            .setMeltingPoint(400)
-            .setBlastFurnaceTemp(400)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Tin, 9)
-            .addMaterial(Materials.Antimony, 1)
-            .constructMaterial();
     }
 
     private static Materials loadGalliumArsenide() {
@@ -8733,6 +8716,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Indium, 1)
             .addMaterial(Materials.Gallium, 1)
             .addMaterial(Materials.Phosphorus, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSolderingAlloy() {
+        return new MaterialBuilder().setName("SolderingAlloy")
+            .setDefaultLocalName("Soldering Alloy")
+            .setMetaItemSubID(314)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdce6)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(400)
+            .setBlastFurnaceTemp(400)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Tin, 9)
+            .addMaterial(Materials.Antimony, 1)
             .constructMaterial();
     }
 

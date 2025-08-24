@@ -679,9 +679,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Trichlorosilane;
 
     // Unclassified 10 materials
-    public static Materials SolderingAlloy;
     public static Materials GalliumArsenide;
     public static Materials IndiumGalliumPhosphide;
+    public static Materials SolderingAlloy;
     public static Materials Spessartine;
     public static Materials Sphalerite;
     public static Materials StainlessSteel;
