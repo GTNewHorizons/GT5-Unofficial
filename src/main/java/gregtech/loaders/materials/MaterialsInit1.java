@@ -198,9 +198,9 @@ public class MaterialsInit1 {
         Materials.Manyullyn = loadManyullyn();
         Materials.Steeleaf = loadSteeleaf();
         Materials.Knightmetal = loadKnightmetal();
+        Materials.SterlingSilver = loadSterlingSilver();
 
         // spotless:off
-        Materials.SterlingSilver          = new Materials( 350, TextureSet.SET_SHINY             ,  13.0F,    128,  2, 1|2          |64|128      , 250, 220, 225,   0,   "SterlingSilver"          ,   "Sterling Silver"               ,    0,       0,         -1, 1700,  true, false,   4,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Silver, 4)));
         Materials.RoseGold                = new Materials( 351, TextureSet.SET_SHINY             ,  14.0F,    128,  2, 1|2          |64|128      , 255, 230,  30,   0,   "RoseGold"                ,   "Rose Gold"                     ,    0,       0,         -1, 1600,  true, false,   4,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Gold, 4)));
         Materials.BlackBronze             = new Materials( 352, TextureSet.SET_DULL              ,  12.0F,    256,  2, 1|2          |64|128      , 100,  50, 125,   0,   "BlackBronze"             ,   "Black Bronze"                  ,    0,       0,         -1, 2000,  true, false,   4,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Gold, 1), new MaterialStack(Silver, 1), new MaterialStack(Copper, 3)));
         Materials.BismuthBronze           = new Materials( 353, TextureSet.SET_DULL              ,   8.0F,    256,  2, 1|2          |64|128      , 100, 125, 125,   0,   "BismuthBronze"           ,   "Bismuth Bronze"                ,    0,       0,         -1, 1100,  true, false,   4,   1,   1, Dyes.dyeCyan        , 2, Arrays.asList(new MaterialStack(Bismuth, 1), new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)));
@@ -9725,6 +9725,28 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Magic, 1)
             .addAspect(TCAspects.LUCRUM, 1)
             .addAspect(TCAspects.METALLUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSterlingSilver() {
+        return new MaterialBuilder().setName("SterlingSilver")
+            .setDefaultLocalName("Sterling Silver")
+            .setMetaItemSubID(350)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfadce1)
+            .setToolSpeed(13.0f)
+            .setDurability(128)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1700)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Silver, 4)
             .constructMaterial();
     }
 
