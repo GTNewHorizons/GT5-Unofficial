@@ -209,9 +209,9 @@ public class MaterialsInit1 {
         Materials.Pitchblende = loadPitchblende();
         Materials.Monazite = loadMonazite();
         Materials.Malachite = loadMalachite();
+        Materials.Mirabilite = loadMirabilite();
 
         // spotless:off
-        Materials.Mirabilite              = new Materials( 900, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 250, 210,   0,   "Mirabilite"              ,   "Mirabilite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 4))); // Na2SO4 10H2O
         Materials.Mica                    = new Materials( 901, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 195, 195, 205,   0,   "Mica"                    ,   "Mica"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // KAl2(AlSi3O10)(F,OH)2
         Materials.Trona                   = new Materials( 903, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 135, 135,  95,   0,   "Trona"                   ,   "Trona"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 3), new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 6))); // Na3(CO3)(HCO3) 2H2O
         Materials.Barite                  = new Materials( 904, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 230, 235, 255,   0,   "Barite"                  ,   "Barite"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Barium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)));
@@ -10604,6 +10604,23 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadMirabilite() {
+        return new MaterialBuilder().setName("Mirabilite")
+            .setDefaultLocalName("Mirabilite")
+            .setMetaItemSubID(900)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf0fad2)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Na2SO4 10H2O
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Water, 10)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
