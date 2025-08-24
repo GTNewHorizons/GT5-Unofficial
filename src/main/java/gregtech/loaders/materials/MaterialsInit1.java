@@ -183,9 +183,9 @@ public class MaterialsInit1 {
         loadRoastedOres();
 
         Materials.SiliconSG = loadSiliconSG();
+        Materials.CalciumDisilicide = loadCalciumDisilicide();
 
         // spotless:off
-        Materials.CalciumDisilicide       = new Materials(  971, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 180, 180, 180,   0,   "CalciumDisilicide"       ,   "Calcium Disilicide"            ,    0,       0,       1313,   -1, false, false,   1,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//CaSi2
         Materials.SiliconTetrafluoride    = new MaterialBuilder(  967, TextureSet.SET_FLUID            , "Silicon Tetrafluoride" ).setName("SiliconTetrafluoride").addCell().addGas().setTransparent(true).setRGB(200, 200, 200).setColor(Dyes.dyeWhite).setMeltingPoint(178).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 4)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//SIF4
         Materials.SiliconTetrachloride    = new MaterialBuilder(  968, TextureSet.SET_FLUID            ,  "Silicon Tetrachloride").setName("SiliconTetrachloride").addCell().addFluid().setRGB(220, 220, 220).setColor(Dyes.dyeWhite).setMeltingPoint(204).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 4)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//SICL4
         Materials.Trichlorosilane         = new MaterialBuilder(  972, TextureSet.SET_FLUID            ,   "Trichlorosilane" ).setName("Trichlorosilane" ).addCell().addFluid().setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(139).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//HSICL3
@@ -8523,6 +8523,25 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addAspect(TCAspects.METALLUM, 4)
             .addAspect(TCAspects.TENEBRAE, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalciumDisilicide() {
+        return new MaterialBuilder().setName("CalciumDisilicide")
+            .setDefaultLocalName("Calcium Disilicide")
+            .setMetaItemSubID(971)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xb4b4b4)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1313)
+            .addElectrolyzerRecipe()
+            // CaSi2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Silicon, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.ORDO, 1)
             .constructMaterial();
     }
 
