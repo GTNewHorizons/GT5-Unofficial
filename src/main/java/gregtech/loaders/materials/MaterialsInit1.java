@@ -208,9 +208,9 @@ public class MaterialsInit1 {
         Materials.FullersEarth = loadFullersEarth();
         Materials.Pitchblende = loadPitchblende();
         Materials.Monazite = loadMonazite();
+        Materials.Malachite = loadMalachite();
 
         // spotless:off
-        Materials.Malachite               = new Materials( 871, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,   5,  95,   5,   0,   "Malachite"               ,   "Malachite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Copper, 2), new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 5))); // Cu2CO3(OH)2
         Materials.Mirabilite              = new Materials( 900, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 250, 210,   0,   "Mirabilite"              ,   "Mirabilite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 4))); // Na2SO4 10H2O
         Materials.Mica                    = new Materials( 901, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 195, 195, 205,   0,   "Mica"                    ,   "Mica"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // KAl2(AlSi3O10)(F,OH)2
         Materials.Trona                   = new Materials( 903, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 135, 135,  95,   0,   "Trona"                   ,   "Trona"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 3), new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 6))); // Na3(CO3)(HCO3) 2H2O
@@ -10586,6 +10586,24 @@ public class MaterialsInit1 {
             // to be low, about 0.05% Thorium content of monazite is variable.
             .addMaterial(Materials.RareEarth, 1)
             .addMaterial(Materials.Phosphate, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMalachite() {
+        return new MaterialBuilder().setName("Malachite")
+            .setDefaultLocalName("Malachite")
+            .setMetaItemSubID(871)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x055f05)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Cu2CO3(OH)2
+            .addMaterial(Materials.Copper, 2)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 5)
             .constructMaterial();
     }
 
