@@ -227,11 +227,11 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Screw.get(0))
                 .itemOutputs(werkstoff.get(screw))
-                .fluidInputs(werkstoff.getMolten(1 * NUGGETS))
+                .fluidInputs(werkstoff.getMolten(1 * EIGHTH_INGOTS))
                 .duration(
                     (int) Math.max(
                         werkstoff.getStats()
-                            .getMass() / 9,
+                            .getMass() / 8,
                         1L))
                 .eut(
                     werkstoff.getStats()
