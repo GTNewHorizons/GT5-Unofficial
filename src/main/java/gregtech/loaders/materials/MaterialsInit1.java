@@ -196,9 +196,9 @@ public class MaterialsInit1 {
         Materials.Tetrahedrite = loadTetrahedrite();
         Materials.TinAlloy = loadTinAlloy();
         Materials.Topaz = loadTopaz();
+        Materials.Tungstate = loadTungstate();
 
         // spotless:off
-        Materials.Tungstate               = new Materials( 841, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   ,  55,  50,  35,   0,   "Tungstate"               ,   "Tungstate"                     ,    0,       0,       2500, 2500,  true, false,   4,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Lithium, 2), new MaterialStack(Oxygen, 4)));
         Materials.Ultimet                 = new Materials( 344, TextureSet.SET_SHINY             ,   9.0F,   2048,  4, 1|2          |64|128      , 180, 180, 230,   0,   "Ultimet"                 ,   "Ultimet"                       ,    0,       0,       2700, 2700,  true, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Cobalt, 5), new MaterialStack(Chrome, 2), new MaterialStack(Nickel, 1), new MaterialStack(Molybdenum, 1))); // 54% Cobalt, 26% Chromium, 9% Nickel, 5% Molybdenum, 3% Iron, 2% Tungsten, 0.8% Manganese, 0.3% Silicon, 0.08% Nitrogen and 0.06% Carbon
         Materials.Uraninite               = new Materials( 922, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  35,  35,  35,   0,   "Uraninite"               ,   "Uraninite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , 2, Arrays.asList(new MaterialStack(Uranium, 1), new MaterialStack(Oxygen, 2)));
         Materials.Uvarovite               = new Materials( 842, TextureSet.SET_DIAMOND           ,   1.0F,      0,  2, 1    |8                   , 180, 255, 180,   0,   "Uvarovite"               ,   "Uvarovite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Chrome, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
@@ -8931,6 +8931,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 6)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadTungstate() {
+        return new MaterialBuilder().setName("Tungstate")
+            .setDefaultLocalName("Tungstate")
+            .setMetaItemSubID(841)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x373223)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(2500)
+            .setBlastFurnaceTemp(2500)
+            .setBlastFurnaceRequired(true)
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Lithium, 2)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
