@@ -193,9 +193,9 @@ public class MaterialsInit1 {
         Materials.Lignite = loadLignite();
         Materials.Olivine = loadOlivine();
         Materials.Opal = loadOpal();
+        Materials.Amethyst = loadAmethyst();
 
         // spotless:off
-        Materials.Amethyst                = new Materials( 509, TextureSet.SET_FLINT             ,   7.0F,    256,  3, 1  |4|8      |64          , 210,  50, 210, 127,   "Amethyst"                ,   "Amethyst"                      ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
         Materials.Redstone                = new Materials( 810, TextureSet.SET_ROUGH             ,   1.0F,      0,  2, 1    |8                   , 200,   0,   0,   0,   "Redstone"                ,   "Redstone"                      ,    0,       0,        500,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Silicon, 1), new MaterialStack(Pyrite, 5), new MaterialStack(Ruby, 1), new MaterialStack(Mercury, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
         Materials.Lapis                   = new Materials( 526, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  70,  70, 220,   0,   "Lapis"                   ,   "Lapis"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 2, Arrays.asList(new MaterialStack(Lazurite, 12), new MaterialStack(Sodalite, 2), new MaterialStack(Pyrite, 1), new MaterialStack(Calcite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1)));
         Materials.Blaze                   = new Materials( 801, TextureSet.SET_POWDER            ,   2.0F,     16,  1, 1            |64          , 255, 200,   0,   0,   "Blaze"                   ,   "Blaze"                         ,    0,       0,       6400,    0, false, false,   2,   3,   2, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(DarkAsh, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
@@ -9361,6 +9361,28 @@ public class MaterialsInit1 {
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.LUCRUM, 5)
             .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadAmethyst() {
+        return new MaterialBuilder().setName("Amethyst")
+            .setDefaultLocalName("Amethyst")
+            .setMetaItemSubID(509)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setColor(Dyes.dyePink)
+            .setARGB(0x7fd232d2)
+            .setToolSpeed(7.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SiliconDioxide, 4)
+            .addMaterial(Materials.Iron, 1)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 4)
             .constructMaterial();
     }
 
