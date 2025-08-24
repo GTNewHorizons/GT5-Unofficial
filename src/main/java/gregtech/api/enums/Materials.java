@@ -460,7 +460,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ash;
     public static Materials BandedIron;
     public static Materials BatteryAlloy;
-    public static Materials Bauxite;
     public static Materials BlueTopaz;
     public static Materials Bone;
     public static Materials Brass;
@@ -704,6 +703,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials YttriumBariumCuprate;
 
     // Second Degree Compounds
+    public static Materials Bauxite;
     public static Materials Clay;
     public static Materials Jasper;
     public static Materials WoodSealed;
