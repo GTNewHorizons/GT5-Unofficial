@@ -200,9 +200,9 @@ public class MaterialsInit1 {
         Materials.GarnetRed = loadGarnetRed();
         Materials.GarnetYellow = loadGarnetYellow();
         Materials.Marble = loadMarble();
+        Materials.Sugar = loadSugar();
 
         // spotless:off
-        Materials.Sugar                   = new Materials( 803, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 250, 250, 250,   0,   "Sugar"                   ,   "Sugar"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 25)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HERBA, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 1)));
         Materials.Thaumium                = new Materials( 330, TextureSet.SET_METALLIC          ,  12.0F,    256,  3, 1|2          |64|128      , 150, 100, 200,   0,   "Thaumium"                ,   "Thaumium"                      ,    0,       0,         -1,    0, false, false,   5,   2,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Vinteum                 = new Materials( 529, TextureSet.SET_METALLIC          ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 100, 200, 255,   0,   "Vinteum"                 ,   "Vinteum"                       ,    5,      32,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , 2, Collections.singletonList(new MaterialStack(Thaumium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Vis                     = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3, 0                         , 128,   0, 255,   0,   "Vis"                     ,   "Vis"                           ,    5,      32,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Collections.singletonList(new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AURAM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
@@ -10089,6 +10089,24 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Magnesium, 1)
             .addMaterial(Materials.Calcite, 7)
             .addAspect(TCAspects.PERFODIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSugar() {
+        return new MaterialBuilder().setName("Sugar")
+            .setDefaultLocalName("Sugar")
+            .setMetaItemSubID(803)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Water, 5)
+            .addMaterial(Materials.Oxygen, 25)
+            .addAspect(TCAspects.HERBA, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.AER, 1)
             .constructMaterial();
     }
 
