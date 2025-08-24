@@ -2,7 +2,6 @@ package gregtech.loaders.materials;
 
 import static gregtech.api.enums.Materials.Aluminium;
 import static gregtech.api.enums.Materials.Americium;
-import static gregtech.api.enums.Materials.Andradite;
 import static gregtech.api.enums.Materials.Antimony;
 import static gregtech.api.enums.Materials.Arsenic;
 import static gregtech.api.enums.Materials.Asbestos;
@@ -52,7 +51,6 @@ import static gregtech.api.enums.Materials.GarnetYellow;
 import static gregtech.api.enums.Materials.Glass;
 import static gregtech.api.enums.Materials.Gold;
 import static gregtech.api.enums.Materials.GraniteBlack;
-import static gregtech.api.enums.Materials.Grossular;
 import static gregtech.api.enums.Materials.HSSG;
 import static gregtech.api.enums.Materials.Hydrogen;
 import static gregtech.api.enums.Materials.Indium;
@@ -111,7 +109,6 @@ import static gregtech.api.enums.Materials.Tungsten;
 import static gregtech.api.enums.Materials.TungstenSteel;
 import static gregtech.api.enums.Materials.Uraninite;
 import static gregtech.api.enums.Materials.Uranium;
-import static gregtech.api.enums.Materials.Uvarovite;
 import static gregtech.api.enums.Materials.Vanadium;
 import static gregtech.api.enums.Materials.Water;
 import static gregtech.api.enums.Materials.Zinc;
@@ -201,9 +198,9 @@ public class MaterialsInit1 {
         Materials.TricalciumPhosphate = loadTricalciumPhosphate();
         Materials.Basalt = loadBasalt();
         Materials.GarnetRed = loadGarnetRed();
+        Materials.GarnetYellow = loadGarnetYellow();
 
         // spotless:off
-        Materials.GarnetYellow            = new Materials( 528, TextureSet.SET_RUBY              ,   7.0F,    128,  2, 1  |4|8      |64          , 200, 200,  80, 127,   "GarnetYellow"            ,   "Yellow Garnet"                 ,    0,       0,         -1,    0, false,  true,   4,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Andradite, 5), new MaterialStack(Grossular, 8), new MaterialStack(Uvarovite, 3)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Marble                  = new Materials( 845, TextureSet.SET_FINE              ,   1.0F,     16,  1, 1            |64|128      , 200, 200, 200,   0,   "Marble"                  ,   "Marble"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Calcite, 7)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1)));
         Materials.Sugar                   = new Materials( 803, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 250, 250, 250,   0,   "Sugar"                   ,   "Sugar"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 25)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HERBA, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 1)));
         Materials.Thaumium                = new Materials( 330, TextureSet.SET_METALLIC          ,  12.0F,    256,  3, 1|2          |64|128      , 150, 100, 200,   0,   "Thaumium"                ,   "Thaumium"                      ,    0,       0,         -1,    0, false, false,   5,   2,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
@@ -10049,6 +10046,28 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Pyrope, 3)
             .addMaterial(Materials.Almandine, 5)
             .addMaterial(Materials.Spessartine, 8)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadGarnetYellow() {
+        return new MaterialBuilder().setName("GarnetYellow")
+            .setDefaultLocalName("Yellow Garnet")
+            .setMetaItemSubID(528)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x7fc8c850)
+            .setToolSpeed(7.0f)
+            .setDurability(128)
+            .setToolQuality(2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Andradite, 5)
+            .addMaterial(Materials.Grossular, 8)
+            .addMaterial(Materials.Uvarovite, 3)
             .addAspect(TCAspects.VITREUS, 3)
             .constructMaterial();
     }
