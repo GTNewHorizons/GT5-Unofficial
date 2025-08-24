@@ -84,7 +84,6 @@ import static gregtech.api.enums.Materials.Stone;
 import static gregtech.api.enums.Materials.Styrene;
 import static gregtech.api.enums.Materials.Sulfur;
 import static gregtech.api.enums.Materials.SulfuricAcid;
-import static gregtech.api.enums.Materials.Tantalum;
 import static gregtech.api.enums.Materials.Thaumium;
 import static gregtech.api.enums.Materials.Thorium;
 import static gregtech.api.enums.Materials.Tin;
@@ -205,9 +204,9 @@ public class MaterialsInit1 {
         Materials.Pentlandite = loadPentlandite();
         Materials.Spodumene = loadSpodumene();
         Materials.Pollucite = loadPollucite();
+        Materials.Tantalite = loadTantalite();
 
         // spotless:off
-        Materials.Tantalite               = new Materials( 921, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 145,  80,  40,   0,   "Tantalite"               ,   "Tantalite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Tantalum, 2), new MaterialStack(Oxygen, 6))); // (Fe, Mn)Ta2O6 (also source of Nb)
         Materials.Lepidolite              = new Materials( 907, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 240,  50, 140,   0,   "Lepidolite"              ,   "Lepidolite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Lithium, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // K(Li,Al,Rb)3(Al,Si)4O10(F,OH)2
         Materials.Glauconite              = new Materials( 933, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 130, 180,  60,   0,   "Glauconite"              ,   "Glauconite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 2), new MaterialStack(Aluminium, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
         Materials.GlauconiteSand          = new Materials( 949, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 130, 180,  60,   0,   "GlauconiteSand"          ,   "Glauconite Sand"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 2), new MaterialStack(Aluminium, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
@@ -10433,6 +10432,22 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silicon, 4)
             .addMaterial(Materials.Water, 2)
             .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadTantalite() {
+        return new MaterialBuilder().setName("Tantalite")
+            .setDefaultLocalName("Tantalite")
+            .setMetaItemSubID(921)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x915028)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Fe, Mn)Ta2O6 (also source of Nb)
+            .addMaterial(Materials.Manganese, 1)
+            .addMaterial(Materials.Tantalum, 2)
+            .addMaterial(Materials.Oxygen, 6)
             .constructMaterial();
     }
 
