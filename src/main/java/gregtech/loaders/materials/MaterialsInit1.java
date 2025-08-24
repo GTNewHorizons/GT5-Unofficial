@@ -71,7 +71,6 @@ import static gregtech.api.enums.Materials.Hydrogen;
 import static gregtech.api.enums.Materials.Indium;
 import static gregtech.api.enums.Materials.Iridium;
 import static gregtech.api.enums.Materials.Iron;
-import static gregtech.api.enums.Materials.Lazurite;
 import static gregtech.api.enums.Materials.Lead;
 import static gregtech.api.enums.Materials.Lithium;
 import static gregtech.api.enums.Materials.Magic;
@@ -101,7 +100,6 @@ import static gregtech.api.enums.Materials.Platinum;
 import static gregtech.api.enums.Materials.Potassium;
 import static gregtech.api.enums.Materials.PotassiumFeldspar;
 import static gregtech.api.enums.Materials.PulsatingIron;
-import static gregtech.api.enums.Materials.Pyrite;
 import static gregtech.api.enums.Materials.Pyrope;
 import static gregtech.api.enums.Materials.Quartzite;
 import static gregtech.api.enums.Materials.RareEarth;
@@ -115,7 +113,6 @@ import static gregtech.api.enums.Materials.Silicon;
 import static gregtech.api.enums.Materials.SiliconDioxide;
 import static gregtech.api.enums.Materials.Silver;
 import static gregtech.api.enums.Materials.Snow;
-import static gregtech.api.enums.Materials.Sodalite;
 import static gregtech.api.enums.Materials.Sodium;
 import static gregtech.api.enums.Materials.SoulSand;
 import static gregtech.api.enums.Materials.Spessartine;
@@ -193,9 +190,9 @@ public class MaterialsInit1 {
         Materials.Opal = loadOpal();
         Materials.Amethyst = loadAmethyst();
         Materials.Redstone = loadRedstone();
+        Materials.Lapis = loadLapis();
 
         // spotless:off
-        Materials.Lapis                   = new Materials( 526, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  70,  70, 220,   0,   "Lapis"                   ,   "Lapis"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 2, Arrays.asList(new MaterialStack(Lazurite, 12), new MaterialStack(Sodalite, 2), new MaterialStack(Pyrite, 1), new MaterialStack(Calcite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1)));
         Materials.Blaze                   = new Materials( 801, TextureSet.SET_POWDER            ,   2.0F,     16,  1, 1            |64          , 255, 200,   0,   0,   "Blaze"                   ,   "Blaze"                         ,    0,       0,       6400,    0, false, false,   2,   3,   2, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(DarkAsh, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
         Materials.EnderPearl              = new Materials( 532, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 108, 220, 200,   0,   "EnderPearl"              ,   "Enderpearl"                    ,    0,       0,         -1,    0, false, false,   1,  16,  10, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Beryllium, 1), new MaterialStack(Potassium, 4), new MaterialStack(Nitrogen, 5), new MaterialStack(Magic, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2)));
         Materials.EnderEye                = new Materials( 533, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 160, 250, 230,   0,   "EnderEye"                ,   "Endereye"                      ,    5,      10,         -1,    0, false, false,   1,   2,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(EnderPearl, 1), new MaterialStack(Blaze, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
@@ -9401,6 +9398,25 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Mercury, 3)
             .addAspect(TCAspects.MACHINA, 1)
             .addAspect(TCAspects.POTENTIA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadLapis() {
+        return new MaterialBuilder().setName("Lapis")
+            .setDefaultLocalName("Lapis")
+            .setMetaItemSubID(526)
+            .setIconSet(TextureSet.SET_LAPIS)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x4646dc)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Lazurite, 12)
+            .addMaterial(Materials.Sodalite, 2)
+            .addMaterial(Materials.Pyrite, 1)
+            .addMaterial(Materials.Calcite, 1)
+            .addAspect(TCAspects.SENSUS, 1)
             .constructMaterial();
     }
 
