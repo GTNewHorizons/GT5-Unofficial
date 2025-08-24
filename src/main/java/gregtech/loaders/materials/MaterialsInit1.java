@@ -15,7 +15,6 @@ import static gregtech.api.enums.Materials.Brick;
 import static gregtech.api.enums.Materials.Butadiene;
 import static gregtech.api.enums.Materials.Cadmium;
 import static gregtech.api.enums.Materials.Caesium;
-import static gregtech.api.enums.Materials.Calcite;
 import static gregtech.api.enums.Materials.Calcium;
 import static gregtech.api.enums.Materials.Carbon;
 import static gregtech.api.enums.Materials.Cerium;
@@ -203,9 +202,9 @@ public class MaterialsInit1 {
         Materials.Thaumium = loadThaumium();
         Materials.Vinteum = loadVinteum();
         Materials.Vis = loadVis();
+        Materials.Redrock = loadRedrock();
 
         // spotless:off
-        Materials.Redrock                 = new Materials( 846, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 255,  80,  50,   0,   "Redrock"                 ,   "Redrock"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Calcite, 2), new MaterialStack(Flint, 1), new MaterialStack(Clay, 1)));
         Materials.PotassiumFeldspar       = new Materials( 847, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 120,  40,  40,   0,   "PotassiumFeldspar"       ,   "Potassium Feldspar"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 8)));
         Materials.Biotite                 = new Materials( 848, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1                         ,  20,  30,  20,   0,   "Biotite"                 ,   "Biotite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 3), new MaterialStack(Aluminium, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 10)));
         Materials.GraniteBlack            = new Materials( 849, TextureSet.SET_ROUGH             ,   4.0F,     64,  3, 1            |64|128      ,  10,  10,  10,   0,   "GraniteBlack"            ,   "Black Granite"                 ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Biotite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
@@ -10168,6 +10167,21 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Magic, 1)
             .addAspect(TCAspects.AURAM, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedrock() {
+        return new MaterialBuilder().setName("Redrock")
+            .setDefaultLocalName("Redrock")
+            .setMetaItemSubID(846)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff5032)
+            .addDustItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Calcite, 2)
+            .addMaterial(Materials.Flint, 1)
+            .addMaterial(Materials.Clay, 1)
             .constructMaterial();
     }
 
