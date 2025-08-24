@@ -247,9 +247,9 @@ public class MaterialsInit1 {
         Materials.BisphenolA = loadBisphenolA();
         Materials.AceticAcid = loadAceticAcid();
         Materials.CalciumAcetateSolution = loadCalciumAcetateSolution();
+        Materials.Acetone = loadAcetone();
 
         // spotless:off
-        Materials.Acetone                   = new MaterialBuilder(672, TextureSet.SET_FLUID      ,                                                                                                     "Acetone").addCell().addFluid().setRGB(175, 175, 175).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.Methanol                  = new MaterialBuilder(673, TextureSet.SET_FLUID      ,                                                                                                     "Methanol").addCell().addFluid().setRGB(170, 136, 0).setColor(Dyes.dyeBrown).setFuelPower(84).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
         Materials.CarbonMonoxide            = new MaterialBuilder(674, TextureSet.SET_FLUID      ,                                                                                                     "Carbon Monoxide").addCell().addGas().setRGB(14, 72, 128).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1)).constructMaterial();
         Materials.MetalMixture              = new MaterialBuilder(676, TextureSet.SET_METALLIC   ,                                                                                                     "Metal Mixture").addDustItems().setRGB(80, 45, 22).setColor(Dyes.dyeBrown).constructMaterial();
@@ -8096,6 +8096,16 @@ public class MaterialsInit1 {
                 new MaterialStack(Carbon, 4),
                 new MaterialStack(Oxygen, 4),
                 new MaterialStack(Hydrogen, 6))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAcetone() {
+        return new MaterialBuilder(672, TextureSet.SET_FLUID, "Acetone").addCell()
+            .addFluid()
+            .setRGB(175, 175, 175)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
