@@ -221,9 +221,9 @@ public class MaterialsInit1 {
         Materials.Kaolinite = loadKaolinite();
         Materials.Talc = loadTalc();
         Materials.Soapstone = loadSoapstone();
+        Materials.Concrete = loadConcrete();
 
         // spotless:off
-        Materials.Concrete                = new Materials( 947, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 100, 100, 100,   0,   "Concrete"                ,   "Concrete"                      ,    0,       0,        300,    0, false, false,   0,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Stone, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
         Materials.IronMagnetic            = new Materials( 354, TextureSet.SET_MAGNETIC          ,   6.0F,    256,  2, 1|2          |64|128      , 200, 200, 200,   0,   "IronMagnetic"            ,   "Magnetic Iron"                 ,    0,       0,         -1,    0, false, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
         Materials.SteelMagnetic           = new Materials( 355, TextureSet.SET_MAGNETIC          ,   6.0F,    512,  3, 1|2          |64|128      , 128, 128, 128,   0,   "SteelMagnetic"           ,   "Magnetic Steel"                ,    0,       0,       1000, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Steel, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
         Materials.NeodymiumMagnetic       = new Materials( 356, TextureSet.SET_MAGNETIC          ,   7.0F,    512,  2, 1|2          |64|128      , 100, 100, 100,   0,   "NeodymiumMagnetic"       ,   "Magnetic Neodymium"            ,    0,       0,       1297, 1297,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Neodymium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 3)));
@@ -10819,6 +10819,20 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silicon, 4)
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadConcrete() {
+        return new MaterialBuilder().setName("Concrete")
+            .setDefaultLocalName("Concrete")
+            .setMetaItemSubID(947)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x646464)
+            .addDustItems()
+            .setMeltingPoint(300)
+            .addMaterial(Materials.Stone, 1)
+            .addAspect(TCAspects.TERRA, 1)
             .constructMaterial();
     }
 
