@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.Solidifier;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -26,8 +27,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import gregtech.common.blocks.BlockCasingsFoundry;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -40,6 +44,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
@@ -92,7 +97,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static int depthOffset = 0;
 
     public boolean terminalSwitch = false;
-    private int mTier = 3; // 1 - base , 2 - ~UEV, 3 - ~UMV
+    private int mTier = 0; // 1 - UEV , 2 - ~UI0oV, 3 - ~UXV
     private final float speedModifierBase = 2.5F;
     private final float euEffBase = 1F;
     private final int parallelScaleBase = 16;
@@ -257,11 +262,17 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
-        // .addElement('D' ,ofBlock(GregTechAPI.sBlockFrames,81))
         .addElement('D', ofFrame(MaterialsUEVplus.TranscendentMetal))
         .addElement('E', lazy(() -> ofBlock(GodforgeCasings, 0)))
-        .addElement('F', ofBlock(GregTechAPI.sBlockCasings9, 0)) // temp
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7)) // temp
+        .addElement('F', GTStructureChannels.MAGNETIC_CHASSIS.use(ofBlocksTiered(
+            MTEModularSolidifier::getTierFromMeta,
+            ImmutableList.of(
+            Pair.of(GregTechAPI.sBlockCasingsFoundry,1),
+            Pair.of(GregTechAPI.sBlockCasingsFoundry,2),
+            Pair.of(GregTechAPI.sBlockCasingsFoundry,3)), -1, MTEModularSolidifier::setMachineTier,MTEModularSolidifier::getMachineTier)))
+
+        .addElement('F', ofBlock(GregTechAPI.sBlockCasings11, 6))
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7)) // item pipe casing
         .addElement(
             'H',
             buildHatchAdder(MTEModularSolidifier.class)
@@ -646,39 +657,33 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         mCasingAmount++;
     }
 
+    private void setMachineTier(int tier){ mTier = tier;}
+    private int getMachineTier() {return mTier;}
+
+    @Nullable
+    private static Integer getTierFromMeta(Block block, Integer metaID) {
+        if (block != GregTechAPI.sBlockCasingsFoundry) return null;
+        //if (metaID < 1 || metaID > 3) return null;
+        return metaID;
+    }
+
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mTier = 0;
-        // todo: tiered structure 1 - 3
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && mCasingAmount >= 14) {
-            mTier = 3;
             return checkModules();
         }
-        /*
-         * if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
-         * {
-         * mTier = 2;
-         * return checkModules();
-         * }
-         * if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
-         * {
-         * mTier = 1;
-         * return checkModules();
-         * }
-         */
         return false;
     }
+
 
     private boolean checkModules() {
         for (int i = 0; i < 2 + (mTier - 1); i++) {
             SolidifierModules m = modules[i];
-            if (!checkPiece(
-                m.structureID,
-                moduleHorizontalOffsets[i],
-                moduleVerticalOffsets[i],
-                moduleDepthOffsets[i])) {
-                renderTileEntity.setModuleStatusWithIndex(false, i);
+            if (!checkPiece(m.structureID, moduleHorizontalOffsets[i], moduleVerticalOffsets[i], moduleDepthOffsets[i])) {
+                if (renderTileEntity != null) renderTileEntity.setModuleStatusWithIndex(false, i);
                 return false;
             }
             if (renderTileEntity != null) renderTileEntity.setModuleColorWithIndex(modules[i].rgbArr, i);
