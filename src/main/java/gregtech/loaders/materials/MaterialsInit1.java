@@ -172,17 +172,8 @@ public class MaterialsInit1 {
         loadTODOThis();
         loadFirstDegreeCompounds();
         loadUnclassified1();
+        loadUnclassified2();
 
-        Materials.NatruralGas = loadNatruralGas(); // Nat"r"uralGas lol
-        Materials.SulfuricGas = loadSulfuricGas();
-        Materials.Gas = loadGas();
-        Materials.SulfuricNaphtha = loadSulfuricNaphtha();
-        Materials.SulfuricLightFuel = loadSulfuricLightFuel();
-        Materials.SulfuricHeavyFuel = loadSulfuricHeavyFuel();
-        Materials.Naphtha = loadNaphtha();
-        Materials.LightFuel = loadLightFuel();
-        Materials.HeavyFuel = loadHeavyFuel();
-        Materials.LPG = loadLPG();
         Materials.ReinforceGlass = loadReinforceGlass();
         Materials.BioMediumRaw = loadBioMediumRaw();
         Materials.BioMediumSterilized = loadBioMediumSterilized();
@@ -7379,6 +7370,86 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static void loadUnclassified2() {
+        Materials.Gas = loadGas();
+        Materials.HeavyFuel = loadHeavyFuel();
+        Materials.LightFuel = loadLightFuel();
+        Materials.LPG = loadLPG();
+        Materials.Naphtha = loadNaphtha();
+        Materials.NatruralGas = loadNatruralGas(); // Nat"r"uralGas lol
+        Materials.SulfuricGas = loadSulfuricGas();
+        Materials.SulfuricHeavyFuel = loadSulfuricHeavyFuel();
+        Materials.SulfuricLightFuel = loadSulfuricLightFuel();
+        Materials.SulfuricNaphtha = loadSulfuricNaphtha();
+    }
+
+    private static Materials loadGas() {
+        return new MaterialBuilder().setName("Gas")
+            .setDefaultLocalName("Refinery Gas")
+            .setMetaItemSubID(735)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .setFuelType(1)
+            .setFuelPower(160)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
+    private static Materials loadHeavyFuel() {
+        return new MaterialBuilder().setName("HeavyFuel")
+            .setDefaultLocalName("Heavy Fuel")
+            .setMetaItemSubID(741)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuelType(3)
+            .setFuelPower(240)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
+    private static Materials loadLightFuel() {
+        return new MaterialBuilder().setName("LightFuel")
+            .setDefaultLocalName("Light Fuel")
+            .setMetaItemSubID(740)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuelPower(305)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
+    private static Materials loadLPG() {
+        return new MaterialBuilder().setName("LPG")
+            .setDefaultLocalName("LPG")
+            .setMetaItemSubID(742)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuelType(1)
+            .setFuelPower(320)
+            .constructMaterial();
+    }
+
+    private static Materials loadNaphtha() {
+        return new MaterialBuilder().setName("Naphtha")
+            .setDefaultLocalName("Naphtha")
+            .setMetaItemSubID(739)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuelType(1)
+            .setFuelPower(220)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
     private static Materials loadNatruralGas() {
         return new MaterialBuilder().setName("NatruralGas")
             .setDefaultLocalName("Natural Gas")
@@ -7403,28 +7474,15 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadGas() {
-        return new MaterialBuilder().setName("Gas")
-            .setDefaultLocalName("Refinery Gas")
-            .setMetaItemSubID(735)
+    private static Materials loadSulfuricHeavyFuel() {
+        return new MaterialBuilder().setName("SulfuricHeavyFuel")
+            .setDefaultLocalName("Sulfuric Heavy Fuel")
+            .setMetaItemSubID(738)
             .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .setFuelType(1)
-            .setFuelPower(160)
-            .constructMaterial()
-            .setCanBeCracked(true);
-    }
-
-    private static Materials loadSulfuricNaphtha() {
-        return new MaterialBuilder().setName("SulfuricNaphtha")
-            .setDefaultLocalName("Sulfuric Naphtha")
-            .setMetaItemSubID(736)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
+            .setColor(Dyes.dyeBlack)
             .setRGB(0xffff00)
             .addCell()
-            .setFuelType(1)
+            .setFuelType(3)
             .setFuelPower(40)
             .constructMaterial();
     }
@@ -7441,70 +7499,16 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadSulfuricHeavyFuel() {
-        return new MaterialBuilder().setName("SulfuricHeavyFuel")
-            .setDefaultLocalName("Sulfuric Heavy Fuel")
-            .setMetaItemSubID(738)
+    private static Materials loadSulfuricNaphtha() {
+        return new MaterialBuilder().setName("SulfuricNaphtha")
+            .setDefaultLocalName("Sulfuric Naphtha")
+            .setMetaItemSubID(736)
             .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeBlack)
+            .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
             .addCell()
-            .setFuelType(3)
+            .setFuelType(1)
             .setFuelPower(40)
-            .constructMaterial();
-    }
-
-    private static Materials loadNaphtha() {
-        return new MaterialBuilder().setName("Naphtha")
-            .setDefaultLocalName("Naphtha")
-            .setMetaItemSubID(739)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setRGB(0xffff00)
-            .addCell()
-            .setFuelType(1)
-            .setFuelPower(220)
-            .constructMaterial()
-            .setCanBeCracked(true);
-    }
-
-    private static Materials loadLightFuel() {
-        return new MaterialBuilder().setName("LightFuel")
-            .setDefaultLocalName("Light Fuel")
-            .setMetaItemSubID(740)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setRGB(0xffff00)
-            .addCell()
-            .setFuelPower(305)
-            .constructMaterial()
-            .setCanBeCracked(true);
-    }
-
-    private static Materials loadHeavyFuel() {
-        return new MaterialBuilder().setName("HeavyFuel")
-            .setDefaultLocalName("Heavy Fuel")
-            .setMetaItemSubID(741)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeBlack)
-            .setRGB(0xffff00)
-            .addCell()
-            .setFuelType(3)
-            .setFuelPower(240)
-            .constructMaterial()
-            .setCanBeCracked(true);
-    }
-
-    private static Materials loadLPG() {
-        return new MaterialBuilder().setName("LPG")
-            .setDefaultLocalName("LPG")
-            .setMetaItemSubID(742)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setRGB(0xffff00)
-            .addCell()
-            .setFuelType(1)
-            .setFuelPower(320)
             .constructMaterial();
     }
 

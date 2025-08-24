@@ -549,16 +549,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials OilMedium;
 
     // Unclassified 2 materials
+    public static Materials Gas;
+    public static Materials HeavyFuel;
+    public static Materials LightFuel;
+    public static Materials LPG;
+    public static Materials Naphtha;
     public static Materials NatruralGas;
     public static Materials SulfuricGas;
-    public static Materials Gas;
-    public static Materials SulfuricNaphtha;
-    public static Materials SulfuricLightFuel;
     public static Materials SulfuricHeavyFuel;
-    public static Materials Naphtha;
-    public static Materials LightFuel;
-    public static Materials HeavyFuel;
-    public static Materials LPG;
+    public static Materials SulfuricLightFuel;
+    public static Materials SulfuricNaphtha;
 
     // Unclassified 3 materials
     public static Materials ReinforceGlass;
