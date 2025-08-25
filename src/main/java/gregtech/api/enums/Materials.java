@@ -482,6 +482,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CobaltOxide;
     public static Materials Cobaltite;
     public static Materials Cooperite;
+    public static Materials CupricOxide;
     public static Materials Cupronickel;
     public static Materials DarkAsh;
     public static Materials DeepIron;
@@ -583,7 +584,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GrowthMediumSterilized;
 
     // Unclassified 07 materials
-    public static Materials CupricOxide;
     public static Materials Ferrosilite;
     public static Materials Massicot;
     public static Materials Zincite;

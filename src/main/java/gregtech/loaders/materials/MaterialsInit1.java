@@ -5401,6 +5401,7 @@ public class MaterialsInit1 {
         Materials.CobaltOxide = loadCobaltOxide();
         Materials.Cobaltite = loadCobaltite();
         Materials.Cooperite = loadCooperite();
+        Materials.CupricOxide = loadCupricOxide();
         Materials.Cupronickel = loadCupronickel();
         Materials.DarkAsh = loadDarkAsh();
         Materials.DeepIron = loadDeepIron();
@@ -5949,6 +5950,16 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Palladium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCupricOxide() {
+        return new MaterialBuilder(619, TextureSet.SET_DULL, "Cupric Oxide").addDustItems()
+            .setRGB(15, 15, 15)
+            .setColor(Dyes.dyeBlack)
+            .setMeltingPoint(1599)
+            .setMaterialList(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7402,20 +7413,9 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified07() {
-        Materials.CupricOxide = loadCupricOxide();
         Materials.Ferrosilite = loadFerrosilite();
         Materials.Massicot = loadMassicot();
         Materials.Zincite = loadZincite();
-    }
-
-    private static Materials loadCupricOxide() {
-        return new MaterialBuilder(619, TextureSet.SET_DULL, "Cupric Oxide").addDustItems()
-            .setRGB(15, 15, 15)
-            .setColor(Dyes.dyeBlack)
-            .setMeltingPoint(1599)
-            .setMaterialList(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadFerrosilite() {
