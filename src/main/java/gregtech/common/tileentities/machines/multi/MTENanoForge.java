@@ -524,8 +524,15 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe)
-                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
+                // Perfect OC for recipes for struct tier 1-3 if recipe tier is lower than struct tier
+                // If struct is t4, only apply perfect OC if the parallel mechanic is used
+                double OCFactor = 2.0;
+                if ((mSpecialTier < 4 || recipe.mSpecialValue < 3) && mSpecialTier > recipe.mSpecialValue) {
+                    OCFactor = 4.0;
+                } else if (recipe.mSpecialValue == 3 && maxParallel > 1) {
+                    OCFactor = 4.0;
+                }
+                return super.createOverclockCalculator(recipe).setDurationDecreasePerOC(OCFactor)
                     .setDurationModifier(mSpecialTier >= 4 ? GTUtility.powInt(0.9999, maxParallel) : 1);
             }
         };
