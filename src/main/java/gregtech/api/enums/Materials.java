@@ -472,6 +472,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CassiteriteSand;
     public static Materials Chalcopyrite;
     public static Materials Charcoal;
+    public static Materials Chlorobenzene;
     public static Materials Chromite;
     public static Materials ChromiumDioxide;
     public static Materials Cinnabar;
@@ -573,7 +574,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials ReinforceGlass;
 
     // Unclassified 04 materials
-    public static Materials Chlorobenzene;
     public static Materials DilutedHydrochloricAcid;
     public static Materials Pyrochlore;
 

@@ -5392,6 +5392,7 @@ public class MaterialsInit1 {
         Materials.CassiteriteSand = loadCassiteriteSand();
         Materials.Chalcopyrite = loadChalcopyrite();
         Materials.Charcoal = loadCharcoal();
+        Materials.Chlorobenzene = loadChlorobenzene();
         Materials.Chromite = loadChromite();
         Materials.ChromiumDioxide = loadChromiumDioxide();
         Materials.Cinnabar = loadCinnabar();
@@ -5797,6 +5798,19 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.POTENTIA, 2)
             .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadChlorobenzene() {
+        return new MaterialBuilder(605, TextureSet.SET_FLUID, "Chlorobenzene").addCell()
+            .addFluid()
+            .setRGB(0, 50, 65)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(
+                new MaterialStack(Carbon, 6),
+                new MaterialStack(Hydrogen, 5),
+                new MaterialStack(Chlorine, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7312,22 +7326,8 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified04() {
-        Materials.Chlorobenzene = loadChlorobenzene();
         Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
         Materials.Pyrochlore = loadPyrochlore();
-    }
-
-    private static Materials loadChlorobenzene() {
-        return new MaterialBuilder(605, TextureSet.SET_FLUID, "Chlorobenzene").addCell()
-            .addFluid()
-            .setRGB(0, 50, 65)
-            .setColor(Dyes.dyeGray)
-            .setMaterialList(
-                new MaterialStack(Carbon, 6),
-                new MaterialStack(Hydrogen, 5),
-                new MaterialStack(Chlorine, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadDilutedHydrochloricAcid() {
