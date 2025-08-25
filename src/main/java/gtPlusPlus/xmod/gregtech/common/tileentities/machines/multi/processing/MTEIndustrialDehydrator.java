@@ -18,7 +18,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -27,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -58,8 +56,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialDehydratorGui;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDehydrator>
     implements ISurvivalConstructable {
@@ -92,9 +88,9 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Vacuum Furnace")
+            .addBulkMachineInfo(4, 2.2f, 0.5f)
             .addInfo("Can toggle the operation temperature with a Screwdriver")
             .addInfo("All Dehydrator recipes are Low Temp recipes")
-            .addInfo("Speed: +120% | EU Usage: 50% | Parallel: 4")
             .addInfo("Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)")
             .addInfo("Each 1800K over the min. Heat Capacity allows for one upgraded overclock")
             .addInfo("Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%")
@@ -276,21 +272,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + translateToLocal(
-                    "GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode."
-                        + (tag.getBoolean("mode") ? MACHINEMODE_DEHYDRATOR : MACHINEMODE_VACUUMFURNACE))
-                + EnumChatFormatting.RESET);
+        tag.setString("mode", getMachineModeName());
     }
 
     @Override
