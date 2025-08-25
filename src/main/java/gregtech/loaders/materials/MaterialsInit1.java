@@ -5371,6 +5371,7 @@ public class MaterialsInit1 {
 
     private static void loadDegree1Compounds() {
         Materials.AceticAcid = loadAceticAcid();
+        Materials.Acetone = loadAcetone();
         Materials.Air = loadAir();
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
@@ -5485,6 +5486,16 @@ public class MaterialsInit1 {
             .setRGB(200, 180, 160)
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAcetone() {
+        return new MaterialBuilder(672, TextureSet.SET_FLUID, "Acetone").addCell()
+            .addFluid()
+            .setRGB(175, 175, 175)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7453,7 +7464,6 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified09() {
-        Materials.Acetone = loadAcetone();
         Materials.AllylChloride = loadAllylChloride();
         Materials.Ammonia = loadAmmonia();
         Materials.Benzene = loadBenzene();
@@ -7512,16 +7522,6 @@ public class MaterialsInit1 {
         Materials.Toluene = loadToluene();
         Materials.VinylAcetate = loadVinylAcetate();
         Materials.VinylChloride = loadVinylChloride();
-    }
-
-    private static Materials loadAcetone() {
-        return new MaterialBuilder(672, TextureSet.SET_FLUID, "Acetone").addCell()
-            .addFluid()
-            .setRGB(175, 175, 175)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadAllylChloride() {
