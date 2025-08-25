@@ -5386,6 +5386,7 @@ public class MaterialsInit1 {
         Materials.BlueTopaz = loadBlueTopaz();
         Materials.Bone = loadBone();
         Materials.Brass = loadBrass();
+        Materials.Brick = loadBrick();
         Materials.Bronze = loadBronze();
         Materials.BrownLimonite = loadBrownLimonite();
         Materials.Calcite = loadCalcite();
@@ -5647,6 +5648,18 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Copper, 3)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrick() {
+        return new MaterialBuilder(625, TextureSet.SET_ROUGH, "Brick").addDustItems()
+            .setRGB(155, 86, 67)
+            .setColor(Dyes.dyeBrown)
+            .setExtraData(0)
+            .setMaterialList(
+                new MaterialStack(Aluminium, 2),
+                new MaterialStack(Silicon, 4),
+                new MaterialStack(Oxygen, 11))
             .constructMaterial();
     }
 
@@ -11197,20 +11210,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified11() {
-        Materials.Brick = loadBrick();
         Materials.Fireclay = loadFireclay();
-    }
-
-    private static Materials loadBrick() {
-        return new MaterialBuilder(625, TextureSet.SET_ROUGH, "Brick").addDustItems()
-            .setRGB(155, 86, 67)
-            .setColor(Dyes.dyeBrown)
-            .setExtraData(0)
-            .setMaterialList(
-                new MaterialStack(Aluminium, 2),
-                new MaterialStack(Silicon, 4),
-                new MaterialStack(Oxygen, 11))
-            .constructMaterial();
     }
 
     private static Materials loadFireclay() {
