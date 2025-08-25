@@ -109,7 +109,7 @@ public class MaterialsInit1 {
         loadTiers();
         loadNotExact();
         loadTODOThis();
-        loadFirstDegreeCompounds();
+        loadDegree1Compounds();
         loadUnclassified01();
         loadUnclassified02();
         loadUnclassified03();
@@ -122,24 +122,9 @@ public class MaterialsInit1 {
         loadRoastedOres();
         loadSiliconLine();
         loadUnclassified10();
-        loadSecondDegreeCompounds();
-
-        // Third Degree Compounds
-        Materials.Basalt = loadBasalt();
-        Materials.BlueSteel = loadBlueSteel();
-        Materials.BorosilicateGlass = loadBorosilicateGlass();
-        Materials.EnderEye = loadEnderEye();
-        Materials.GarnetSand = loadGarnetSand();
-        Materials.HSSG = loadHSSG();
-        Materials.IronWood = loadIronWood();
-        Materials.Pyrotheum = loadPyrotheum();
-        Materials.GraniteRed = loadGraniteRed();
-        Materials.RedSteel = loadRedSteel();
-
-        // Fourth Degree Compounds
-        Materials.BasalticMineralSand = loadBasalticMineralSand();
-        Materials.HSSE = loadHSSE();
-        Materials.HSSS = loadHSSS();
+        loadDegree2Compounds();
+        loadDegree3Compounds();
+        loadDegree4Compounds();
 
         // spotless:off
         Materials.Brick                   = new MaterialBuilder(625, TextureSet.SET_ROUGH      ,                                                                                                     "Brick").addDustItems().setRGB(155, 86, 67).setColor(Dyes.dyeBrown).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Oxygen, 11)).constructMaterial();
@@ -5415,7 +5400,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static void loadFirstDegreeCompounds() {
+    private static void loadDegree1Compounds() {
         Materials.Air = loadAir();
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
@@ -8964,7 +8949,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static void loadSecondDegreeCompounds() {
+    private static void loadDegree2Compounds() {
         Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
         Materials.Aluminiumoxide = loadAluminiumoxide();
         Materials.Alumite = loadAlumite();
@@ -10930,6 +10915,19 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static void loadDegree3Compounds() {
+        Materials.Basalt = loadBasalt();
+        Materials.BlueSteel = loadBlueSteel();
+        Materials.BorosilicateGlass = loadBorosilicateGlass();
+        Materials.EnderEye = loadEnderEye();
+        Materials.GarnetSand = loadGarnetSand();
+        Materials.HSSG = loadHSSG();
+        Materials.IronWood = loadIronWood();
+        Materials.Pyrotheum = loadPyrotheum();
+        Materials.GraniteRed = loadGraniteRed();
+        Materials.RedSteel = loadRedSteel();
+    }
+
     private static Materials loadBasalt() {
         return new MaterialBuilder().setName("Basalt")
             .setDefaultLocalName("Basalt")
@@ -11146,6 +11144,12 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Steel, 2)
             .addMaterial(Materials.BlackSteel, 4)
             .constructMaterial();
+    }
+
+    private static void loadDegree4Compounds() {
+        Materials.BasalticMineralSand = loadBasalticMineralSand();
+        Materials.HSSE = loadHSSE();
+        Materials.HSSS = loadHSSS();
     }
 
     private static Materials loadBasalticMineralSand() {

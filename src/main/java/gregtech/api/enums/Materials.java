@@ -451,7 +451,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SoulSand;
     public static Materials Sunnarium;
 
-    // First Degree Compounds
+    // Degree 1 Compounds
     public static Materials Air;
     public static Materials Almandine;
     public static Materials Andradite;
@@ -702,7 +702,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials YellowLimonite;
     public static Materials YttriumBariumCuprate;
 
-    // Second Degree Compounds
+    // Degree 2 Compounds
     public static Materials Aluminiumhydroxide;
     public static Materials Aluminiumoxide;
     public static Materials Alumite;
@@ -803,7 +803,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials WoodSealed;
     public static Materials Zeolite;
 
-    // Third Degree Compounds
+    // Degree 3 Compounds
     public static Materials Basalt;
     public static Materials BlueSteel;
     public static Materials BorosilicateGlass;
@@ -815,7 +815,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GraniteRed;
     public static Materials RedSteel;
 
-    // Fourth Degree Compounds
+    // Degree 4 Compounds
     public static Materials BasalticMineralSand;
     public static Materials HSSE;
     public static Materials HSSS;
