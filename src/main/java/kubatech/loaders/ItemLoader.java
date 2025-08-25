@@ -32,6 +32,7 @@ import static kubatech.api.enums.ItemList.EarlGrayTea;
 import static kubatech.api.enums.ItemList.FermentedTeaLeaf;
 import static kubatech.api.enums.ItemList.GreenTea;
 import static kubatech.api.enums.ItemList.GreenTeaLeaf;
+import static kubatech.api.enums.ItemList.KubaFakeItemEECVoid;
 import static kubatech.api.enums.ItemList.LegendaryBlackTea;
 import static kubatech.api.enums.ItemList.LegendaryButterflyTea;
 import static kubatech.api.enums.ItemList.LegendaryEarlGrayTea;
@@ -145,5 +146,8 @@ public class ItemLoader {
         DEFCAwakenedSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t3")));
         DEFCChaoticSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t4")));
 
+        // Fake EEC button item
+        KubaFakeItemEECVoid.set(kubaitems.registerProxyItem(new ItemProxy("fakeitem_eecvoid")))
+            .hidden();
     }
 }
