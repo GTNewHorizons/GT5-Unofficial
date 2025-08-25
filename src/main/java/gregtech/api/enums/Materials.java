@@ -509,6 +509,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Methane;
     public static Materials Molybdenite;
     public static Materials Nichrome;
+    public static Materials NickelZincFerrite;
     public static Materials NiobiumNitride;
     public static Materials NiobiumTitanium;
     public static Materials NitroCarbon;
@@ -575,9 +576,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Unclassified 05 materials
     public static Materials GrowthMediumRaw;
     public static Materials GrowthMediumSterilized;
-
-    // Unclassified 06 materials
-    public static Materials NickelZincFerrite;
 
     // Unclassified 07 materials
     public static Materials AntimonyTrioxide;

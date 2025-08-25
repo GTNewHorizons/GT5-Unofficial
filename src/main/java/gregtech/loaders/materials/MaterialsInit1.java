@@ -114,7 +114,6 @@ public class MaterialsInit1 {
         loadUnclassified03();
         loadUnclassified04();
         loadUnclassified05();
-        loadUnclassified06();
         loadUnclassified07();
         loadUnclassified08();
         loadUnclassified09();
@@ -5431,6 +5430,7 @@ public class MaterialsInit1 {
         Materials.Methane = loadMethane();
         Materials.Molybdenite = loadMolybdenite();
         Materials.Nichrome = loadNichrome();
+        Materials.NickelZincFerrite = loadNickelZincFerrite();
         Materials.NiobiumNitride = loadNiobiumNitride();
         Materials.NiobiumTitanium = loadNiobiumTitanium();
         Materials.NitroCarbon = loadNitroCarbon();
@@ -6449,6 +6449,25 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadNickelZincFerrite() {
+        return new MaterialBuilder(613, TextureSet.SET_ROUGH, "Nickel-Zinc Ferrite").addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(3.0f)
+            .setDurability(32)
+            .setRGB(60, 60, 60)
+            .setColor(Dyes.dyeBlack)
+            .setBlastFurnaceRequired(true)
+            .setBlastFurnaceTemp(1500)
+            .setMaterialList(
+                new MaterialStack(Nickel, 1),
+                new MaterialStack(Zinc, 1),
+                new MaterialStack(Iron, 4),
+                new MaterialStack(Oxygen, 8))
+            .constructMaterial();
+    }
+
     private static Materials loadNiobiumNitride() {
         // Anti-Reflective Material
         return new MaterialBuilder().setName("NiobiumNitride")
@@ -7315,29 +7334,6 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(222, 170, 135)
             .setColor(Dyes.dyeOrange)
-            .constructMaterial();
-    }
-
-    private static void loadUnclassified06() {
-        Materials.NickelZincFerrite = loadNickelZincFerrite();
-    }
-
-    private static Materials loadNickelZincFerrite() {
-        return new MaterialBuilder(613, TextureSet.SET_ROUGH, "Nickel-Zinc Ferrite").addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setToolSpeed(3.0f)
-            .setDurability(32)
-            .setRGB(60, 60, 60)
-            .setColor(Dyes.dyeBlack)
-            .setBlastFurnaceRequired(true)
-            .setBlastFurnaceTemp(1500)
-            .setMaterialList(
-                new MaterialStack(Nickel, 1),
-                new MaterialStack(Zinc, 1),
-                new MaterialStack(Iron, 4),
-                new MaterialStack(Oxygen, 8))
             .constructMaterial();
     }
 
