@@ -5424,6 +5424,7 @@ public class MaterialsInit1 {
         Materials.LiquidNitrogen = loadLiquidNitrogen();
         Materials.LiquidOxygen = loadLiquidOxygen();
         Materials.Magnalium = loadMagnalium();
+        Materials.Magnesia = loadMagnesia();
         Materials.Magnesite = loadMagnesite();
         Materials.Magnesiumchloride = loadMagnesiumchloride();
         Materials.Magnetite = loadMagnetite();
@@ -6344,6 +6345,14 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Magnesium, 1)
             .addMaterial(Materials.Aluminium, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnesia() {
+        return new MaterialBuilder(621, TextureSet.SET_DULL, "Magnesia").addDustItems()
+            .setRGB(255, 225, 225)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 1))
             .constructMaterial();
     }
 
@@ -7412,18 +7421,9 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified08() {
-        Materials.Magnesia = loadMagnesia();
         Materials.Potash = loadPotash();
         Materials.Quicklime = loadQuicklime();
         Materials.SodaAsh = loadSodaAsh();
-    }
-
-    private static Materials loadMagnesia() {
-        return new MaterialBuilder(621, TextureSet.SET_DULL, "Magnesia").addDustItems()
-            .setRGB(255, 225, 225)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 1))
-            .constructMaterial();
     }
 
     private static Materials loadPotash() {

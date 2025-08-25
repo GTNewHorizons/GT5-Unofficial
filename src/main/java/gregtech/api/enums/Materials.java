@@ -503,6 +503,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials LiquidNitrogen;
     public static Materials LiquidOxygen;
     public static Materials Magnalium;
+    public static Materials Magnesia;
     public static Materials Magnesite;
     public static Materials Magnesiumchloride;
     public static Materials Magnetite;
@@ -587,7 +588,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Zincite;
 
     // Unclassified 08 materials
-    public static Materials Magnesia;
     public static Materials Potash;
     public static Materials Quicklime;
     public static Materials SodaAsh;
