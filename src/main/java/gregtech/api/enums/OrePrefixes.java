@@ -183,7 +183,7 @@ public enum OrePrefixes {
     comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64,
         101),
     /** consisting out of a Bolt. */
-    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 9,
+    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8,
         64, 27),
     /** consisting out of 1/2 Stick. */
     ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28),
