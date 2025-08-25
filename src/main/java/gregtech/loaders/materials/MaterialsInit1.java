@@ -131,9 +131,9 @@ public class MaterialsInit1 {
         Materials.Electrotine = loadElectrotine();
         Materials.Galgadorian = loadGalgadorian();
         Materials.EnhancedGalgadorian = loadEnhancedGalgadorian();
+        Materials.BloodInfusedIron = loadBloodInfusedIron();
 
         // spotless:off
-        Materials.BloodInfusedIron        = new Materials( 977, TextureSet.SET_METALLIC          ,  10.0F,    384,  2, 1|2          |64|128      ,  69,   9,  10,   0,   "BloodInfusedIron"        ,   "Blood Infused Iron"            ,    0,       0,       2400,    0, false, false,   3,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3),  new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
         Materials.Shadow                  = new Materials( 368, TextureSet.SET_METALLIC          ,  32.0F,   8192,  4, 1|2  |8      |64|128      ,  16,   3,  66,   0,   "Shadow"                  ,   "Shadow Metal"                  ,    0,       0,       1800, 1800,  true, false,   3,   4,   3, Dyes.dyeBlue        );
 
         Materials.Ledox                   = new Materials( 390, TextureSet.SET_SHINY             ,  15.0F,   1024,  4, 1|2  |8      |64|128      ,   0, 116, 255,   0,   "Ledox"                   ,   "Ledox"                         ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeBlue        );
@@ -11525,6 +11525,26 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(4500)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadBloodInfusedIron() {
+        return new MaterialBuilder().setName("BloodInfusedIron")
+            .setDefaultLocalName("Blood Infused Iron")
+            .setMetaItemSubID(977)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x45090a)
+            .setToolSpeed(10.0f)
+            .setDurability(384)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2400)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
 
