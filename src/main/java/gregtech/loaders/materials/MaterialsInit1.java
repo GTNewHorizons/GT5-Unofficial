@@ -5384,6 +5384,7 @@ public class MaterialsInit1 {
         Materials.Ash = loadAsh();
         Materials.BandedIron = loadBandedIron();
         Materials.BatteryAlloy = loadBatteryAlloy();
+        Materials.Benzene = loadBenzene();
         Materials.BlueTopaz = loadBlueTopaz();
         Materials.Bone = loadBone();
         Materials.Brass = loadBrass();
@@ -5664,6 +5665,18 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Lead, 4)
             .addMaterial(Materials.Antimony, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBenzene() {
+        return new MaterialBuilder(686, TextureSet.SET_FLUID, "Benzene").addCell()
+            .addFluid()
+            .setRGB(26, 26, 26)
+            .setColor(Dyes.dyeGray)
+            .setFuelType(MaterialBuilder.GAS)
+            .setFuelPower(360)
+            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7489,7 +7502,6 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified09() {
-        Materials.Benzene = loadBenzene();
         Materials.BioDiesel = loadBioDiesel();
         Materials.BisphenolA = loadBisphenolA();
         Materials.Butadiene = loadButadiene();
@@ -7545,18 +7557,6 @@ public class MaterialsInit1 {
         Materials.Toluene = loadToluene();
         Materials.VinylAcetate = loadVinylAcetate();
         Materials.VinylChloride = loadVinylChloride();
-    }
-
-    private static Materials loadBenzene() {
-        return new MaterialBuilder(686, TextureSet.SET_FLUID, "Benzene").addCell()
-            .addFluid()
-            .setRGB(26, 26, 26)
-            .setColor(Dyes.dyeGray)
-            .setFuelType(MaterialBuilder.GAS)
-            .setFuelPower(360)
-            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadBioDiesel() {

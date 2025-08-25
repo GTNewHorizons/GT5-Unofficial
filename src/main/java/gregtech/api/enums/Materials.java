@@ -466,6 +466,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ash;
     public static Materials BandedIron;
     public static Materials BatteryAlloy;
+    public static Materials Benzene;
     public static Materials BlueTopaz;
     public static Materials Bone;
     public static Materials Brass;
@@ -591,7 +592,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GrowthMediumSterilized;
 
     // Unclassified 09 materials
-    public static Materials Benzene;
     public static Materials BioDiesel;
     public static Materials BisphenolA;
     public static Materials Butadiene;
