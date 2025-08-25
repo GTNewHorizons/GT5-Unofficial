@@ -641,7 +641,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PolyvinylChloride;
     public static Materials Propane;
     public static Materials Propene;
-    public static Materials RawStyreneButadieneRubber;
     public static Materials SaltWater;
     public static Materials SodiumBisulfate;
     public static Materials SodiumHydroxide;
@@ -771,6 +770,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Pollucite;
     public static Materials PotassiumFeldspar;
     public static Materials QuartzSand;
+    public static Materials RawStyreneButadieneRubber;
     public static Materials Realgar;
     public static Materials RedAlloy;
     public static Materials RedMud;

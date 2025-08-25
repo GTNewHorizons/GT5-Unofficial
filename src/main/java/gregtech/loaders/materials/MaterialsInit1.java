@@ -7532,7 +7532,6 @@ public class MaterialsInit1 {
         Materials.PolyvinylChloride = loadPolyvinylChloride();
         Materials.Propane = loadPropane();
         Materials.Propene = loadPropene();
-        Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
         Materials.SaltWater = loadSaltWater();
         Materials.SodiumBisulfate = loadSodiumBisulfate();
         Materials.SodiumHydroxide = loadSodiumHydroxide();
@@ -8098,14 +8097,6 @@ public class MaterialsInit1 {
             .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6))
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
-            .constructMaterial();
-    }
-
-    private static Materials loadRawStyreneButadieneRubber() {
-        return new MaterialBuilder(634, TextureSet.SET_SHINY, "Raw Styrene-Butadiene Rubber").addDustItems()
-            .setRGB(84, 64, 61)
-            .setColor(Dyes.dyeGray)
-            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
             .constructMaterial();
     }
 
@@ -9039,6 +9030,7 @@ public class MaterialsInit1 {
         Materials.Pollucite = loadPollucite();
         Materials.PotassiumFeldspar = loadPotassiumFeldspar();
         Materials.QuartzSand = loadQuartzSand();
+        Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
         Materials.Realgar = loadRealgar();
         Materials.RedAlloy = loadRedAlloy();
         Materials.RedMud = loadRedMud();
@@ -10326,6 +10318,14 @@ public class MaterialsInit1 {
             .addOreItems()
             .addMaterial(Materials.CertusQuartz, 1)
             .addMaterial(Materials.Quartzite, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRawStyreneButadieneRubber() {
+        return new MaterialBuilder(634, TextureSet.SET_SHINY, "Raw Styrene-Butadiene Rubber").addDustItems()
+            .setRGB(84, 64, 61)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
             .constructMaterial();
     }
 
