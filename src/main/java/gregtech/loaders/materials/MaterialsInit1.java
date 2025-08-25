@@ -5370,6 +5370,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadDegree1Compounds() {
+        Materials.AceticAcid = loadAceticAcid();
         Materials.Air = loadAir();
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
@@ -5476,6 +5477,16 @@ public class MaterialsInit1 {
         Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
         Materials.Water = Materials.Steam = loadWater();
         Materials.Zincite = loadZincite();
+    }
+
+    private static Materials loadAceticAcid() {
+        return new MaterialBuilder(670, TextureSet.SET_FLUID, "Acetic Acid").addCell()
+            .addFluid()
+            .setRGB(200, 180, 160)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
     }
 
     private static Materials loadAir() {
@@ -7442,7 +7453,6 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified09() {
-        Materials.AceticAcid = loadAceticAcid();
         Materials.Acetone = loadAcetone();
         Materials.AllylChloride = loadAllylChloride();
         Materials.Ammonia = loadAmmonia();
@@ -7502,16 +7512,6 @@ public class MaterialsInit1 {
         Materials.Toluene = loadToluene();
         Materials.VinylAcetate = loadVinylAcetate();
         Materials.VinylChloride = loadVinylChloride();
-    }
-
-    private static Materials loadAceticAcid() {
-        return new MaterialBuilder(670, TextureSet.SET_FLUID, "Acetic Acid").addCell()
-            .addFluid()
-            .setRGB(200, 180, 160)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadAcetone() {

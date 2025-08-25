@@ -452,6 +452,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Sunnarium;
 
     // Degree 1 Compounds
+    public static Materials AceticAcid;
     public static Materials Air;
     public static Materials Almandine;
     public static Materials Andradite;
@@ -587,7 +588,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GrowthMediumSterilized;
 
     // Unclassified 09 materials
-    public static Materials AceticAcid;
     public static Materials Acetone;
     public static Materials AllylChloride;
     public static Materials Ammonia;
