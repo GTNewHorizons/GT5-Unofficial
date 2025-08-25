@@ -127,8 +127,7 @@ public class MaterialsInit1 {
         loadDegree4Compounds();
         loadUnclassified11();
 
-        // spotless:off
-        Materials.PotassiumNitrade     = loadPotassiumNitrade();
+        Materials.PotassiumNitrade = loadPotassiumNitrade();
         Materials.ChromiumTrioxide = loadChromiumTrioxide();
         Materials.Nitrochlorobenzene = loadNitrochlorobenzene();
         Materials.Dimethylbenzene = loadDimethylbenzene();
@@ -137,8 +136,9 @@ public class MaterialsInit1 {
         Materials.Dichlorobenzidine = loadDichlorobenzidine();
         Materials.Diaminobenzidin = loadDiaminobenzidin();
         Materials.Diphenylisophthalate = loadDiphenylisophthalate();
-        Materials.Polybenzimidazole   = new Materials(599, TextureSet.SET_DULL                 ,3.0F,     64,  1, 1|2          |64|128      , 45, 45,  45,   0,   "Polybenzimidazole"   ,   "Polybenzimidazole"  ,    0,       0,        1450,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Carbon, 20), new MaterialStack(Nitrogen, 4), new MaterialStack(Hydrogen, 12)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ORDO, 2),new TCAspects.TC_AspectStack(TCAspects.VOLATUS, 1)));
+        Materials.Polybenzimidazole = loadPolybenzimidazole();
 
+        // spotless:off
         Materials.MTBEMixture        = loadMtbeMixture();
         Materials.MTBEMixtureAlt = loadMtbeMixtureAlt();
         Materials.NitrousOxide       = loadNitrousOxide();
@@ -11353,6 +11353,29 @@ public class MaterialsInit1 {
                 new MaterialStack(Carbon, 20),
                 new MaterialStack(Hydrogen, 14),
                 new MaterialStack(Oxygen, 4))
+            .constructMaterial();
+    }
+
+    private static Materials loadPolybenzimidazole() {
+        return new MaterialBuilder().setName("Polybenzimidazole")
+            .setDefaultLocalName("Polybenzimidazole")
+            .setMetaItemSubID(599)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x2d2d2d)
+            .setToolSpeed(3.0f)
+            .setDurability(64)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1450)
+            .addMaterial(Materials.Carbon, 20)
+            .addMaterial(Materials.Nitrogen, 4)
+            .addMaterial(Materials.Hydrogen, 12)
+            .addAspect(TCAspects.ORDO, 2)
+            .addAspect(TCAspects.VOLATUS, 1)
             .constructMaterial();
     }
 
