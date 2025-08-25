@@ -743,7 +743,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GraniteRed;
     public static Materials GraniticMineralSand;
     public static Materials Gypsum;
-    public static Materials HSSG;
     public static Materials HSSS;
     public static Materials HydratedCoal;
     public static Materials IronMagnetic;
@@ -815,6 +814,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BorosilicateGlass;
     public static Materials EnderEye;
     public static Materials GarnetSand;
+    public static Materials HSSG;
 
     // Fourth Degree Compounds
     public static Materials BasalticMineralSand;
