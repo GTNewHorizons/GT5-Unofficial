@@ -711,7 +711,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Amethyst;
     public static Materials Apatite;
     public static Materials Barite;
-    public static Materials Basalt;
     public static Materials BasalticMineralSand;
     public static Materials Bastnasite;
     public static Materials Bauxite;
@@ -815,6 +814,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Wollastonite;
     public static Materials WoodSealed;
     public static Materials Zeolite;
+
+    // Third Degree Compounds
+    public static Materials Basalt;
 
     public static Materials Brick;
     public static Materials Fireclay;
