@@ -542,6 +542,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SiliconDioxide;
     public static Materials Silicone;
     public static Materials Snow;
+    public static Materials SodaAsh;
     public static Materials Sodalite;
     public static Materials SodiumPersulfate;
     public static Materials SodiumSulfide;
@@ -588,9 +589,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ferrosilite;
     public static Materials Massicot;
     public static Materials Zincite;
-
-    // Unclassified 08 materials
-    public static Materials SodaAsh;
 
     // Unclassified 09 materials
     public static Materials AceticAcid;
