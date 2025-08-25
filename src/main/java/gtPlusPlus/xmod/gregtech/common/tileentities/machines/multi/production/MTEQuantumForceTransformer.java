@@ -73,6 +73,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -185,25 +186,27 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Quantum Force Transformer, QFT")
-            .addInfo("Allows Complex chemical lines to be performed instantly in one step")
-            .addInfo("Every recipe requires a catalyst, each catalyst adds 1 parallel and lasts forever")
-            .addInfo("Catalysts have to be placed in a Bulk Catalyst Housing")
-            .addInfo("All inputs go on the bottom, all outputs go on the top")
-            .addInfo("Put a circuit in the controller to specify the focused output")
-            .addInfo("Check NEI to see the order of outputs, and which circuit number you need")
-            .addInfo("If separate input buses are enabled put the circuit in the circuit slot of the bus")
-            .addInfo("Uses FocusTier*4*sqrt(parallels) Neptunium Plasma if focusing")
-            .addInfo("Can use FocusTier*4*sqrt(parallels) Fermium Plasma for additional chance output")
-            .addInfo("Use a screwdriver to enable Fluid mode")
-            .addInfo(
-                "Fluid mode turns all possible outputs into their fluid variant, those which can't are left as they were")
-            .addInfo("This multi gets improved when all casings of some types are upgraded")
-            .addInfo("Casing functions:")
-            .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
-            .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
-            .addTecTechHatchInfo()
+            .addInfo("Allows Complex processing lines to be performed instantly in one step")
+            .addSeparator()
+            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum recipe tier")
+            .addInfo("Every recipe requires a specific " + catalystText("catalyst"))
+            .addInfo(catalystText("Catalysts") + " have to be placed in a Bulk Catalyst Housing")
+            .addInfo("Gains " + TooltipHelper.parallelText("1") + " Parallel per " + catalystText("Catalyst"))
+            .addSeparator()
+            .addInfo(focusText("Shielding Core") + " Tier determines " + focusText("Focusing") + " Bonuses")
+            .addInfo("Put a circuit in the controller to specify the focused output, based on NEI order")
+            .addInfo("If Input Separation is on: put the circuit in the circuit slot of the bus")
+            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L "+EnumChatFormatting.BLUE+"Neptunium Plasma" +EnumChatFormatting.GRAY+" to "+focusText("focus"))
+            .addInfo("The better the " + focusText("Focus Tier") + ", the " + focusText("stronger") + " the effect")
+            .addInfo(focusText("Focused") + " Output will have its " + EnumChatFormatting.AQUA + "probability boosted" + EnumChatFormatting.GRAY + ", with other output's being reduced evenly by the total boost")
+            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L " + EnumChatFormatting.DARK_GREEN + "Fermium Plasma" + EnumChatFormatting.GRAY + " to " + EnumChatFormatting.DARK_GREEN + "boost all outputs")
+            .addSeparator()
+            .addInfo("Use a screwdriver to enable "+EnumChatFormatting.BLUE+"Fluid mode")
+            .addInfo("Fluid mode turns all possible outputs into their fluid variant, if avaliable")
             .addUnlimitedTierSkips()
+            .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
             .addController("Bottom Center")
@@ -217,16 +220,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
             .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
             .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Bulk Catalyst Housing: "
-                    + EnumChatFormatting.BLUE
-                    + "Bottom"
-                    + EnumChatFormatting.GRAY
-                    + " Layer")
+            .addStructureInfo(EnumChatFormatting.WHITE + "Bulk Catalyst Housing: " + EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer")
             .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
             .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
             .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
+        //spotless:on
     }
 
     @Override
@@ -849,4 +848,13 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         }
         return false;
     }
+
+    private String catalystText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.LIGHT_PURPLE, text, EnumChatFormatting.GRAY);
+    }
+
+    private String focusText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.GREEN, text, EnumChatFormatting.GRAY);
+    }
+
 }

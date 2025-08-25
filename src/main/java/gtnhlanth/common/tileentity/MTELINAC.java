@@ -25,7 +25,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -169,23 +168,29 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Particle Accelerator")
-            .addInfo("Controller block for the LINAC")
-            .addInfo("Accelerates charged particles to higher energies")
-            .addInfo("Increasing length increases output energy, but decreases focus")
-            .addInfo("Use a lower temperature coolant to improve output focus")
-            .addInfo("Output energy does not scale for input energies higher than 7500 keV")
+        // spotless:off
+        tt.addMachineType("Particle Accelerator, LINAC")
+            .addInfo("Accelerates charged particles to higher energies by running them through an electric field")
+            .addInfo("Electrically neutral particles are therefore unaffected")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addInfo("Valid Coolants:");
-
-        // Valid coolant list
-        for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
-            tt.addInfo(
-                "- " + FluidRegistry.getFluid(fluidName)
-                    .getLocalizedName(null));
-        }
-
-        tt.addInfo("Requires (length)kL/s of coolant")
+            .addSeparator()
+            .addInfo("Increasing Structure Length increases output "+createEnergyText("Beam Energy")+" but decreases "+createFocusText("Beam Focus"))
+            .addInfo("Requires " + EnumChatFormatting.WHITE + "Length * kL/s " + EnumChatFormatting.GRAY + "of " + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " for operation")
+            .addInfo(createFocusText("Beam Focus") + " loss can be mitigated more effectively with lower temperature " + EnumChatFormatting.AQUA+"coolant")
+            .addInfo("Valid coolants:")
+            .addInfo(coolantLine("Coolant",300))
+            .addInfo(coolantLine("Liquid Nitrogen",90))
+            .addInfo(coolantLine("Liquid Oxygen",90))
+            .addInfo(coolantLine("Super Coolant",1))
+            .addSeparator()
+            .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = max("+EnumChatFormatting.YELLOW+"V"+EnumChatFormatting.WHITE+",50) * 10^"+EnumChatFormatting.RED+"IE")
+            .addInfo("where " + EnumChatFormatting.YELLOW + "V" + EnumChatFormatting.WHITE + " = (Length - 1) * cbrt(" + EnumChatFormatting.DARK_GREEN + "Machine Voltage" + EnumChatFormatting.WHITE + ") / 4")
+            .addInfo("and " + EnumChatFormatting.RED + "IE " + EnumChatFormatting.WHITE + "= 1+min(" + EnumChatFormatting.LIGHT_PURPLE + "Input Beam Energy" + EnumChatFormatting.WHITE + ", 7500) / " + EnumChatFormatting.GREEN + "Maximum Source Energy")
+            .addInfo(EnumChatFormatting.RED + "Input Beam Energies" + EnumChatFormatting.GRAY + " higher than 7500keV are treated as if they are 7500keV")
+            .addInfo(EnumChatFormatting.GREEN +"Maximum Source Energy"+EnumChatFormatting.GRAY + " refers to values in the Source Chamber Tooltip")
+            .addSeparator()
+            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ")/2")
+            .addInfo("where " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + " = min(max((-0.9 * Length * 1.1^(0.2 * " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + ") + 110), 5), 90)")
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom")
             .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 325, 1285, false)
@@ -203,6 +208,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        //spotless:on
         return tt;
     }
 
@@ -591,4 +597,21 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return false;
     }
 
+    private String createFocusText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
+    }
+
+    private String createEnergyText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.BLUE, text, EnumChatFormatting.GRAY);
+    }
+
+    private String coolantLine(String coolant, int kelvin) {
+        return "  " + EnumChatFormatting.AQUA
+            + coolant
+            + EnumChatFormatting.GRAY
+            + " : "
+            + EnumChatFormatting.GOLD
+            + kelvin
+            + "K";
+    }
 }
