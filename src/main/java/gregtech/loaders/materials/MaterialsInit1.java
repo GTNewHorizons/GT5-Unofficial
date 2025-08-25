@@ -5433,6 +5433,7 @@ public class MaterialsInit1 {
         Materials.Magnesite = loadMagnesite();
         Materials.Magnesiumchloride = loadMagnesiumchloride();
         Materials.Magnetite = loadMagnetite();
+        Materials.Massicot = loadMassicot();
         Materials.Methane = loadMethane();
         Materials.Molybdenite = loadMolybdenite();
         Materials.Nichrome = loadNichrome();
@@ -6482,6 +6483,15 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadMassicot() {
+        return new MaterialBuilder(614, TextureSet.SET_DULL, "Massicot").addDustItems()
+            .setRGB(255, 221, 85)
+            .setColor(Dyes.dyeYellow)
+            .setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
     private static Materials loadMethane() {
         return new MaterialBuilder().setName("Methane")
             .setDefaultLocalName("Methane")
@@ -7423,17 +7433,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified07() {
-        Materials.Massicot = loadMassicot();
         Materials.Zincite = loadZincite();
-    }
-
-    private static Materials loadMassicot() {
-        return new MaterialBuilder(614, TextureSet.SET_DULL, "Massicot").addDustItems()
-            .setRGB(255, 221, 85)
-            .setColor(Dyes.dyeYellow)
-            .setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadZincite() {

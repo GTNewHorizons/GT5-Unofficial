@@ -514,6 +514,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Magnesite;
     public static Materials Magnesiumchloride;
     public static Materials Magnetite;
+    public static Materials Massicot;
     public static Materials Methane;
     public static Materials Molybdenite;
     public static Materials Nichrome;
@@ -585,7 +586,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GrowthMediumSterilized;
 
     // Unclassified 07 materials
-    public static Materials Massicot;
     public static Materials Zincite;
 
     // Unclassified 09 materials
