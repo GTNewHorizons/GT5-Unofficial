@@ -5407,6 +5407,7 @@ public class MaterialsInit1 {
         Materials.Electrum = loadElectrum();
         Materials.Emerald = loadEmerald();
         Materials.Epoxid = loadEpoxid();
+        Materials.FerriteMixture = loadFerriteMixture();
         Materials.FreshWater = loadFreshWater();
         Materials.Galena = loadGalena();
         Materials.Garnierite = loadGarnierite();
@@ -6049,6 +6050,14 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Hydrogen, 24)
             .addMaterial(Materials.Oxygen, 4)
             .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadFerriteMixture() {
+        return new MaterialBuilder(612, TextureSet.SET_METALLIC, "Ferrite Mixture").addDustItems()
+            .setRGB(180, 180, 180)
+            .setColor(Dyes.dyeGray)
+            .setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4))
             .constructMaterial();
     }
 
@@ -7310,16 +7319,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified06() {
-        Materials.FerriteMixture = loadFerriteMixture();
         Materials.NickelZincFerrite = loadNickelZincFerrite();
-    }
-
-    private static Materials loadFerriteMixture() {
-        return new MaterialBuilder(612, TextureSet.SET_METALLIC, "Ferrite Mixture").addDustItems()
-            .setRGB(180, 180, 180)
-            .setColor(Dyes.dyeGray)
-            .setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4))
-            .constructMaterial();
     }
 
     private static Materials loadNickelZincFerrite() {
