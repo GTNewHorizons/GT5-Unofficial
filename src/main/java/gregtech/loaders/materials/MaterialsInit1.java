@@ -5375,6 +5375,7 @@ public class MaterialsInit1 {
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
         Materials.AnnealedCopper = loadAnnealedCopper();
+        Materials.AntimonyTrioxide = loadAntimonyTrioxide();
         Materials.Asbestos = loadAsbestos();
         Materials.Ash = loadAsh();
         Materials.BandedIron = loadBandedIron();
@@ -5532,6 +5533,15 @@ public class MaterialsInit1 {
             .addGearItems()
             .addCentrifugeRecipe()
             .addMaterial(Materials.Copper, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAntimonyTrioxide() {
+        return new MaterialBuilder(618, TextureSet.SET_DULL, "Antimony Trioxide").addDustItems()
+            .setRGB(230, 230, 240)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7372,22 +7382,12 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified07() {
-        Materials.AntimonyTrioxide = loadAntimonyTrioxide();
         Materials.ArsenicTrioxide = loadArsenicTrioxide();
         Materials.CobaltOxide = loadCobaltOxide();
         Materials.CupricOxide = loadCupricOxide();
         Materials.Ferrosilite = loadFerrosilite();
         Materials.Massicot = loadMassicot();
         Materials.Zincite = loadZincite();
-    }
-
-    private static Materials loadAntimonyTrioxide() {
-        return new MaterialBuilder(618, TextureSet.SET_DULL, "Antimony Trioxide").addDustItems()
-            .setRGB(230, 230, 240)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadArsenicTrioxide() {
