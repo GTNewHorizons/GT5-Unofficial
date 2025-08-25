@@ -187,7 +187,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
             .addInfo("Monitors multiblock machines in range.")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
-            .addInfo("Provides maintenance, power control, monitoring and etc.")
+            .addInfo("Provides maintenance, power control, monitoring, and more.")
             .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
             .addInfo("Place drones in input bus; only one needed to operate.")
             .addInfo("Automatically upgrade based on the drone level in the input bus.")
