@@ -43,17 +43,17 @@ public class ToolSoftMallet extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
+        return SoundResource.GTCEU_OP_SOFT_HAMMER.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
+        return SoundResource.GTCEU_OP_SOFT_HAMMER.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
+        return SoundResource.GTCEU_OP_SOFT_HAMMER.toString();
     }
 
     @Override

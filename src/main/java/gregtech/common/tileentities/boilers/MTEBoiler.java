@@ -2,6 +2,7 @@ package gregtech.common.tileentities.boilers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -56,6 +59,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.pollution.Pollution;
 
@@ -72,6 +76,12 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         this::getSteamCapacity);
     public boolean mHadNoWater = false;
     private int mExcessWater = 0;
+    public boolean playHeating = false;
+    public boolean playBoiling = false;
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop mHeatingSound;
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop mBoilingSound;
 
     public MTEBoiler(int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
@@ -234,6 +244,10 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            updateSoundLoops(aBaseMetaTileEntity, playBoiling);
+        }
+
         pollute(aTick);
 
         if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) return;
@@ -249,6 +263,56 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         ventSteamIfTankIsFull();
         updateFuelTimed(aBaseMetaTileEntity, aTick);
         calculateHeatUp(aBaseMetaTileEntity, aTick);
+
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        byte oSoundStatus = playBoiling ? (byte) 1 : 0;
+        playBoiling = (aValue == 1);
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) (playBoiling ? 1 : 0);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void updateSoundLoops(IGregTechTileEntity aBaseMetaTileEntity, boolean playBoiling) {
+        if (playBoiling) {
+            if (mBoilingSound == null) {
+                mBoilingSound = new GTSoundLoop(
+                    SoundResource.GTCEU_LOOP_BOILER.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    false);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(mBoilingSound);
+            }
+        } else {
+            if (mBoilingSound != null) {
+                mBoilingSound.setFadeMe(true);
+                mBoilingSound = null;
+            }
+        }
+        if (aBaseMetaTileEntity.isActive()) {
+            if (mHeatingSound == null) {
+                mHeatingSound = new GTSoundLoop(
+                    SoundResource.GTCEU_LOOP_FURNACE.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(mHeatingSound);
+            }
+        } else {
+            if (mHeatingSound != null) {
+                mHeatingSound.setFadeMe(true);
+                mHeatingSound = null;
+            }
+        }
     }
 
     private boolean isNotAllowedToWork(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -262,8 +326,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0)
-            && (aTick % getHeatUpRate() == 0L)) {
+        boolean wasHeating = (this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0)
+            && (aTick % getHeatUpRate() == 0L);
+        if (wasHeating) {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
         }
@@ -297,9 +362,11 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     return true;
                 }
                 produceSteam(getProductionPerSecond() / 2);
+                playBoiling = true;
             }
         } else {
             this.mHadNoWater = false;
+            playBoiling = false;
         }
         return false;
     }
