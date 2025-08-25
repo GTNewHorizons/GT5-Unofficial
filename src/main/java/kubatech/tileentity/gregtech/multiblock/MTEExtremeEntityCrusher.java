@@ -315,7 +315,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "If the weapon has durability it will be damaged in each run. In batch mode the damage is multiplied "
                     + EnumChatFormatting.BLUE
                     + "16x")
-            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking in it's last hit.")
+            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit.")
             .addInfo(
                 "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output.")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
