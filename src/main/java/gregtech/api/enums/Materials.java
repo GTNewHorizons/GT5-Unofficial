@@ -457,6 +457,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Andradite;
     public static Materials AnnealedCopper;
     public static Materials AntimonyTrioxide;
+    public static Materials ArsenicTrioxide;
     public static Materials Asbestos;
     public static Materials Ash;
     public static Materials BandedIron;
@@ -581,7 +582,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GrowthMediumSterilized;
 
     // Unclassified 07 materials
-    public static Materials ArsenicTrioxide;
     public static Materials CobaltOxide;
     public static Materials CupricOxide;
     public static Materials Ferrosilite;
