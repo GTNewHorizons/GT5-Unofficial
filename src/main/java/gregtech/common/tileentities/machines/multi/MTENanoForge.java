@@ -902,13 +902,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.2")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 80)
+                    .setPos(0, 75)
                     .setSize(244, 60))
             .widget(
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.3")
                     .setDefaultColor(EnumChatFormatting.GREEN)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 140)
+                    .setPos(0, 135)
                     .setSize(244, 20))
             .widget(
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.4")
@@ -927,7 +927,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     .setDefaultColor(EnumChatFormatting.GREEN)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(0, 230)
-                    .setSize(244, 20));
+                    .setSize(244, 20))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.7")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 255)
+                    .setSize(244, 50));
         builder.widget(
             scrollable.setSize(244, 244)
                 .setPos(3, 3))
