@@ -11375,14 +11375,55 @@ public class MaterialsInit1 {
     }
 
     private static void loadGasolineLine() {
+        Materials.AntiKnock = loadAntiKnock();
+        Materials.GasolinePremium = loadGasolinePremium();
+        Materials.GasolineRaw = loadGasolineRaw();
+        Materials.GasolineRegular = loadGasolineRegular();
         Materials.MTBEMixture = loadMTBEMixture();
         Materials.MTBEMixtureAlt = loadMTBEMixtureAlt();
         Materials.NitrousOxide = loadNitrousOxide();
-        Materials.AntiKnock = loadAntiKnock();
         Materials.Octane = loadOctane();
-        Materials.GasolineRaw = loadGasolineRaw();
-        Materials.GasolineRegular = loadGasolineRegular();
-        Materials.GasolinePremium = loadGasolinePremium();
+    }
+
+    private static Materials loadAntiKnock() {
+        return new MaterialBuilder(994, TextureSet.SET_FLUID, "Anti-Knock Agent").setName("EthylTertButylEther")
+            .addCell()
+            .addFluid()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(
+                new MaterialStack(Carbon, 6),
+                new MaterialStack(Hydrogen, 14),
+                new MaterialStack(Oxygen, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadGasolinePremium() {
+        return new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell()
+            .addFluid()
+            .setRGB(255, 165, 0)
+            .setColor(Dyes.dyeOrange)
+            .setFuelType(MaterialBuilder.DIESEL)
+            .setFuelPower(2500)
+            .constructMaterial();
+    }
+
+    private static Materials loadGasolineRaw() {
+        return new MaterialBuilder(996, TextureSet.SET_FLUID, "Raw Gasoline").addCell()
+            .addFluid()
+            .setRGB(255, 100, 0)
+            .setColor(Dyes.dyeOrange)
+            .constructMaterial();
+    }
+
+    private static Materials loadGasolineRegular() {
+        return new MaterialBuilder(997, TextureSet.SET_FLUID, "Gasoline").addCell()
+            .addFluid()
+            .setRGB(255, 165, 0)
+            .setColor(Dyes.dyeOrange)
+            .setFuelType(MaterialBuilder.DIESEL)
+            .setFuelPower(576)
+            .constructMaterial();
     }
 
     private static Materials loadMTBEMixture() {
@@ -11419,19 +11460,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadAntiKnock() {
-        return new MaterialBuilder(994, TextureSet.SET_FLUID, "Anti-Knock Agent").setName("EthylTertButylEther")
-            .addCell()
-            .addFluid()
-            .setRGB(255, 255, 255)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(
-                new MaterialStack(Carbon, 6),
-                new MaterialStack(Hydrogen, 14),
-                new MaterialStack(Oxygen, 1))
-            .constructMaterial();
-    }
-
     private static Materials loadOctane() {
         return new MaterialBuilder(995, TextureSet.SET_FLUID, "Octane").addCell()
             .addFluid()
@@ -11440,34 +11468,6 @@ public class MaterialsInit1 {
             .setFuelType(MaterialBuilder.DIESEL)
             .setFuelPower(80)
             .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18))
-            .constructMaterial();
-    }
-
-    private static Materials loadGasolineRaw() {
-        return new MaterialBuilder(996, TextureSet.SET_FLUID, "Raw Gasoline").addCell()
-            .addFluid()
-            .setRGB(255, 100, 0)
-            .setColor(Dyes.dyeOrange)
-            .constructMaterial();
-    }
-
-    private static Materials loadGasolineRegular() {
-        return new MaterialBuilder(997, TextureSet.SET_FLUID, "Gasoline").addCell()
-            .addFluid()
-            .setRGB(255, 165, 0)
-            .setColor(Dyes.dyeOrange)
-            .setFuelType(MaterialBuilder.DIESEL)
-            .setFuelPower(576)
-            .constructMaterial();
-    }
-
-    private static Materials loadGasolinePremium() {
-        return new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell()
-            .addFluid()
-            .setRGB(255, 165, 0)
-            .setColor(Dyes.dyeOrange)
-            .setFuelType(MaterialBuilder.DIESEL)
-            .setFuelPower(2500)
             .constructMaterial();
     }
 

@@ -837,14 +837,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Potassiumdichromate;
 
     // Gasoline Line
+    public static Materials AntiKnock;
+    public static Materials GasolinePremium;
+    public static Materials GasolineRaw;
+    public static Materials GasolineRegular;
     public static Materials MTBEMixture;
     public static Materials MTBEMixtureAlt;
     public static Materials NitrousOxide;
-    public static Materials AntiKnock;
     public static Materials Octane;
-    public static Materials GasolineRaw;
-    public static Materials GasolineRegular;
-    public static Materials GasolinePremium;
 
     //ADDED
     public static Materials Electrotine;
