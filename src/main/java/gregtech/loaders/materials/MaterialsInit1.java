@@ -5373,6 +5373,7 @@ public class MaterialsInit1 {
         Materials.AceticAcid = loadAceticAcid();
         Materials.Acetone = loadAcetone();
         Materials.Air = loadAir();
+        Materials.AllylChloride = loadAllylChloride();
         Materials.Almandine = loadAlmandine();
         Materials.Andradite = loadAndradite();
         Materials.AnnealedCopper = loadAnnealedCopper();
@@ -5512,6 +5513,19 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Oxygen, 11)
             .addMaterial(Materials.Argon, 1)
             .addMaterial(Materials.NobleGases, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAllylChloride() {
+        return new MaterialBuilder(682, TextureSet.SET_FLUID, "Allyl Chloride").addCell()
+            .addFluid()
+            .setRGB(135, 222, 170)
+            .setColor(Dyes.dyeCyan)
+            .setMaterialList(
+                new MaterialStack(Carbon, 3),
+                new MaterialStack(Hydrogen, 5),
+                new MaterialStack(Chlorine, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7464,7 +7478,6 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified09() {
-        Materials.AllylChloride = loadAllylChloride();
         Materials.Ammonia = loadAmmonia();
         Materials.Benzene = loadBenzene();
         Materials.BioDiesel = loadBioDiesel();
@@ -7522,19 +7535,6 @@ public class MaterialsInit1 {
         Materials.Toluene = loadToluene();
         Materials.VinylAcetate = loadVinylAcetate();
         Materials.VinylChloride = loadVinylChloride();
-    }
-
-    private static Materials loadAllylChloride() {
-        return new MaterialBuilder(682, TextureSet.SET_FLUID, "Allyl Chloride").addCell()
-            .addFluid()
-            .setRGB(135, 222, 170)
-            .setColor(Dyes.dyeCyan)
-            .setMaterialList(
-                new MaterialStack(Carbon, 3),
-                new MaterialStack(Hydrogen, 5),
-                new MaterialStack(Chlorine, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadAmmonia() {
