@@ -719,7 +719,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BlackBronze;
     public static Materials BlackSteel;
     public static Materials Blaze;
-    public static Materials BlueSteel;
     public static Materials Borax;
     public static Materials BorosilicateGlass;
     public static Materials Chrysotile;
@@ -816,6 +815,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // Third Degree Compounds
     public static Materials Basalt;
+    public static Materials BlueSteel;
 
     // Fourth Degree Compounds
     public static Materials BasalticMineralSand;
