@@ -131,6 +131,7 @@ public class MaterialsInit1 {
         Materials.EnderEye = loadEnderEye();
         Materials.GarnetSand = loadGarnetSand();
         Materials.HSSG = loadHSSG();
+        Materials.IronWood = loadIronWood();
 
         // Fourth Degree Compounds
         Materials.BasalticMineralSand = loadBasalticMineralSand();
@@ -9011,7 +9012,6 @@ public class MaterialsInit1 {
         Materials.Gypsum = loadGypsum();
         Materials.HydratedCoal = loadHydratedCoal();
         Materials.IronMagnetic = loadIronMagnetic();
-        Materials.IronWood = loadIronWood();
         Materials.Jasper = loadJasper();
         Materials.Kaolinite = loadKaolinite();
         Materials.Knightmetal = loadKnightmetal();
@@ -9859,31 +9859,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadIronWood() {
-        return new MaterialBuilder().setName("IronWood")
-            .setDefaultLocalName("Ironwood")
-            .setMetaItemSubID(338)
-            .setIconSet(TextureSet.SET_WOOD)
-            .setColor(Dyes.dyeBrown)
-            .setRGB(0x968c6e)
-            .setToolSpeed(6.0f)
-            .setDurability(384)
-            .setToolQuality(2)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setFuelType(5)
-            .setFuelPower(8)
-            .setDensityMultiplier(19)
-            .setDensityDivider(18)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Iron, 9)
-            .addMaterial(Materials.LiveRoot, 9)
-            .addMaterial(Materials.Gold, 1)
             .constructMaterial();
     }
 
@@ -11145,6 +11120,31 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Chrome, 1)
             .addMaterial(Materials.Molybdenum, 2)
             .addMaterial(Materials.Vanadium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIronWood() {
+        return new MaterialBuilder().setName("IronWood")
+            .setDefaultLocalName("Ironwood")
+            .setMetaItemSubID(338)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x968c6e)
+            .setToolSpeed(6.0f)
+            .setDurability(384)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuelType(5)
+            .setFuelPower(8)
+            .setDensityMultiplier(19)
+            .setDensityDivider(18)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 9)
+            .addMaterial(Materials.LiveRoot, 9)
+            .addMaterial(Materials.Gold, 1)
             .constructMaterial();
     }
 

@@ -745,7 +745,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Gypsum;
     public static Materials HydratedCoal;
     public static Materials IronMagnetic;
-    public static Materials IronWood;
     public static Materials Jasper;
     public static Materials Kaolinite;
     public static Materials Knightmetal;
@@ -814,6 +813,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials EnderEye;
     public static Materials GarnetSand;
     public static Materials HSSG;
+    public static Materials IronWood;
 
     // Fourth Degree Compounds
     public static Materials BasalticMineralSand;
