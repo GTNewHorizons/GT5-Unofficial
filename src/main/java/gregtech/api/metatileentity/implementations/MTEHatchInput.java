@@ -31,18 +31,20 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchInput extends MTEHatch {
 
-    public RecipeMap<?> mRecipeMap = null;
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
     public boolean disableFilter = true;
+    public RecipeMap<?> mRecipeMap = null;
+    private int customCapacity = 0;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
-        this(
+        super(
             aID,
             aName,
             aNameRegional,
             aTier,
+            4,
             new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
+                String.format("Capacity: %sL", GTUtility.formatNumbers(8000L * (1L << aTier))) });
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -56,8 +58,9 @@ public class MTEHatchInput extends MTEHatch {
             aName,
             aNameRegional,
             aTier,
-            new String[] { "Fluid Input for Multiblocks", "", "Can hold " + aSlot + " types of fluid." });
-        mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)) + "L";
+            new String[] { "Fluid Input for Multiblocks", "Can hold " + aSlot + " types of fluid." });
+        mDescriptionArray[1] = String
+            .format("Capacity: %sL", GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)));
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -74,6 +77,13 @@ public class MTEHatchInput extends MTEHatch {
 
     public MTEHatchInput(String aName, int aSlots, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
+    }
+
+    public void setCustomCapacity(int capacity) {
+        this.customCapacity = capacity;
+        if (mDescriptionArray != null && mDescriptionArray.length > 0)
+            mDescriptionArray[mDescriptionArray.length - 1] = String
+                .format("Capacity: %sL", GTUtility.formatNumbers(capacity));
     }
 
     @Override
@@ -143,7 +153,6 @@ public class MTEHatchInput extends MTEHatch {
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", getBaseMetaTileEntity().getColorization());
-
     }
 
     @Override
@@ -152,14 +161,10 @@ public class MTEHatchInput extends MTEHatch {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         byte color = accessor.getNBTData()
             .getByte("color");
-        if (color >= 0 && color < 16) currenttip.add(
-            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
-    }
-
-    @Override
-    public boolean doesFillContainers() {
-        // return true;
-        return false;
+        if (color >= 0 && color < 16) {
+            currenttip.add(
+                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+        }
     }
 
     @Override
@@ -204,7 +209,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public int getCapacity() {
-        return 8000 * (1 << mTier);
+        return customCapacity != 0 ? customCapacity : (8000 * (1 << mTier));
     }
 
     @Override
@@ -212,10 +217,8 @@ public class MTEHatchInput extends MTEHatch {
         ItemStack aTool) {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
-        else {
-            disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
-        }
+        disableFilter = !disableFilter;
+        GTUtility
+            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
     }
 }
