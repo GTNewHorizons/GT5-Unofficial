@@ -11466,11 +11466,31 @@ public class MaterialsInit1 {
     }
 
     private static void loadAdded() {
-        Materials.Electrotine = loadElectrotine();
-        Materials.Galgadorian = loadGalgadorian();
-        Materials.EnhancedGalgadorian = loadEnhancedGalgadorian();
         Materials.BloodInfusedIron = loadBloodInfusedIron();
+        Materials.Electrotine = loadElectrotine();
+        Materials.EnhancedGalgadorian = loadEnhancedGalgadorian();
+        Materials.Galgadorian = loadGalgadorian();
         Materials.Shadow = loadShadow();
+    }
+
+    private static Materials loadBloodInfusedIron() {
+        return new MaterialBuilder().setName("BloodInfusedIron")
+            .setDefaultLocalName("Blood Infused Iron")
+            .setMetaItemSubID(977)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x45090a)
+            .setToolSpeed(10.0f)
+            .setDurability(384)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2400)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
     }
 
     private static Materials loadElectrotine() {
@@ -11485,27 +11505,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Redstone, 1)
             .addMaterial(Materials.Electrum, 1)
             .addAspect(TCAspects.ELECTRUM, 2)
-            .constructMaterial();
-    }
-
-    private static Materials loadGalgadorian() {
-        return new MaterialBuilder().setName("Galgadorian")
-            .setDefaultLocalName("Galgadorian")
-            .setMetaItemSubID(384)
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyePink)
-            .setRGB(0x9a6977)
-            .setToolSpeed(16.0f)
-            .setDurability(3600)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(3000)
-            .setBlastFurnaceTemp(3000)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial();
     }
 
@@ -11530,23 +11529,24 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadBloodInfusedIron() {
-        return new MaterialBuilder().setName("BloodInfusedIron")
-            .setDefaultLocalName("Blood Infused Iron")
-            .setMetaItemSubID(977)
+    private static Materials loadGalgadorian() {
+        return new MaterialBuilder().setName("Galgadorian")
+            .setDefaultLocalName("Galgadorian")
+            .setMetaItemSubID(384)
             .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0x45090a)
-            .setToolSpeed(10.0f)
-            .setDurability(384)
-            .setToolQuality(2)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x9a6977)
+            .setToolSpeed(16.0f)
+            .setDurability(3600)
+            .setToolQuality(3)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setMeltingPoint(2400)
-            .addAspect(TCAspects.METALLUM, 3)
-            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .setMeltingPoint(3000)
+            .setBlastFurnaceTemp(3000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial();
     }
 

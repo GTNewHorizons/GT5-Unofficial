@@ -847,10 +847,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Octane;
 
     // Added
-    public static Materials Electrotine;
-    public static Materials Galgadorian;
-    public static Materials EnhancedGalgadorian;
     public static Materials BloodInfusedIron;
+    public static Materials Electrotine;
+    public static Materials EnhancedGalgadorian;
+    public static Materials Galgadorian;
     public static Materials Shadow;
 
     /**
