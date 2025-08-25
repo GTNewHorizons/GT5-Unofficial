@@ -529,6 +529,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Powellite;
     public static Materials Pumice;
     public static Materials Pyrite;
+    public static Materials Pyrochlore;
     public static Materials Pyrolusite;
     public static Materials Pyrope;
     public static Materials Quicklime;
@@ -573,9 +574,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
     public static Materials ReinforceGlass;
-
-    // Unclassified 04 materials
-    public static Materials Pyrochlore;
 
     // Unclassified 05 materials
     public static Materials GrowthMediumRaw;
