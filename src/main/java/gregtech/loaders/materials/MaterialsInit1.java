@@ -5444,6 +5444,7 @@ public class MaterialsInit1 {
         Materials.Polycaprolactam = loadPolycaprolactam();
         Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
         Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
+        Materials.Potash = loadPotash();
         Materials.Powellite = loadPowellite();
         Materials.Pumice = loadPumice();
         Materials.Pyrite = loadPyrite();
@@ -6693,6 +6694,15 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadPotash() {
+        return new MaterialBuilder(623, TextureSet.SET_DULL, "Potash").addDustItems()
+            .setRGB(120, 66, 55)
+            .setColor(Dyes.dyeBrown)
+            .setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
     private static Materials loadPowellite() {
         return new MaterialBuilder().setName("Powellite")
             .setDefaultLocalName("Powellite")
@@ -7421,18 +7431,8 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified08() {
-        Materials.Potash = loadPotash();
         Materials.Quicklime = loadQuicklime();
         Materials.SodaAsh = loadSodaAsh();
-    }
-
-    private static Materials loadPotash() {
-        return new MaterialBuilder(623, TextureSet.SET_DULL, "Potash").addDustItems()
-            .setRGB(120, 66, 55)
-            .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadQuicklime() {

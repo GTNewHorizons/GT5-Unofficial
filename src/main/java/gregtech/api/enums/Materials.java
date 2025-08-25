@@ -523,6 +523,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Polycaprolactam;
     public static Materials Polydimethylsiloxane;
     public static Materials Polytetrafluoroethylene;
+    public static Materials Potash;
     public static Materials Powellite;
     public static Materials Pumice;
     public static Materials Pyrite;
@@ -588,7 +589,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Zincite;
 
     // Unclassified 08 materials
-    public static Materials Potash;
     public static Materials Quicklime;
     public static Materials SodaAsh;
 
