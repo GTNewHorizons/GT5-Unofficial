@@ -11375,17 +11375,17 @@ public class MaterialsInit1 {
     }
 
     private static void loadGasolineLine() {
-        Materials.MTBEMixture = loadMtbeMixture();
-        Materials.MTBEMixtureAlt = loadMtbeMixtureAlt();
+        Materials.MTBEMixture = loadMTBEMixture();
+        Materials.MTBEMixtureAlt = loadMTBEMixtureAlt();
         Materials.NitrousOxide = loadNitrousOxide();
-        Materials.AntiKnock = loadEthylTertButylEther();
+        Materials.AntiKnock = loadAntiKnock();
         Materials.Octane = loadOctane();
-        Materials.GasolineRaw = loadRawGasoline();
-        Materials.GasolineRegular = loadGasoline();
-        Materials.GasolinePremium = loadHighOctaneGasoline();
+        Materials.GasolineRaw = loadGasolineRaw();
+        Materials.GasolineRegular = loadGasolineRegular();
+        Materials.GasolinePremium = loadGasolinePremium();
     }
 
-    private static Materials loadMtbeMixture() {
+    private static Materials loadMTBEMixture() {
         return new MaterialBuilder(983, TextureSet.SET_FLUID, "MTBE Reaction Mixture (Butene)").addCell()
             .addGas()
             .setRGB(255, 255, 255)
@@ -11397,7 +11397,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadMtbeMixtureAlt() {
+    private static Materials loadMTBEMixtureAlt() {
         return new MaterialBuilder(425, TextureSet.SET_FLUID, "MTBE Reaction Mixture (Butane)").addCell()
             .addGas()
             .setRGB(255, 255, 255)
@@ -11419,7 +11419,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadEthylTertButylEther() {
+    private static Materials loadAntiKnock() {
         return new MaterialBuilder(994, TextureSet.SET_FLUID, "Anti-Knock Agent").setName("EthylTertButylEther")
             .addCell()
             .addFluid()
@@ -11443,7 +11443,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadRawGasoline() {
+    private static Materials loadGasolineRaw() {
         return new MaterialBuilder(996, TextureSet.SET_FLUID, "Raw Gasoline").addCell()
             .addFluid()
             .setRGB(255, 100, 0)
@@ -11451,7 +11451,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadGasoline() {
+    private static Materials loadGasolineRegular() {
         return new MaterialBuilder(997, TextureSet.SET_FLUID, "Gasoline").addCell()
             .addFluid()
             .setRGB(255, 165, 0)
@@ -11461,7 +11461,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadHighOctaneGasoline() {
+    private static Materials loadGasolinePremium() {
         return new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell()
             .addFluid()
             .setRGB(255, 165, 0)
