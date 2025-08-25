@@ -84,6 +84,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
@@ -337,13 +338,25 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Precise Assembler, Assembler, PrAss")
-            .addInfo("The error is no more than 7nm.")
-            .addInfo("Can assemble precise components in Precise Mode.")
-            .addInfo("Can work like a normal assembler in Normal Mode.")
-            .addInfo("Use a screwdriver to change the mode.")
-            .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
-            .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
-            .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
+            .addInfo("No more than 7nm of error")
+            .addInfo("Has Two Modes: Precise and Normal")
+            .addInfo("Use a Screwdriver to change modes")
+            .addSeparator()
+            .addInfo("Precise Mode unlocks the ability to assemble precise components")
+            .addInfo("Casing Tier determines Maximum Recipe Tier")
+            .addSeparator()
+            .addInfo("Normal Mode allows standard assembler recipes")
+            .addInfo(
+                EnumChatFormatting.WHITE + "Precise Casing"
+                    + EnumChatFormatting.GRAY
+                    + " Tier determines "
+                    + TooltipHelper.parallelText("Parallels"))
+            .addInfo(
+                tieredTextLine("Imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV") + "->"
+                    + tieredTextLine("16", "32", "64", "128", "256")
+                    + " Parallels")
+            .addStaticSpeedInfo(2f)
+            .addSeparator()
             .addInfo(
                 "Machine Casing limits the voltage tier the machine can work on, "
                     + GTValues.TIER_COLORS[VoltageIndex.UHV]
@@ -573,5 +586,26 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     .setEnabled(ignored -> machineTier > 0 && machineTier < 9))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> machineTier, tier -> machineTier = tier));
         super.drawTexts(screenElements, inventorySlot);
+    }
+
+    private String tieredTextLine(String mk0, String mk1, String mk2, String mk3, String mk4) {
+        return EnumChatFormatting.GREEN + mk0
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.BLUE
+            + mk1
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + mk2
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.GOLD
+            + mk3
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "/"
+            + EnumChatFormatting.RED
+            + mk4
+            + EnumChatFormatting.GRAY;
     }
 }
