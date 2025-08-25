@@ -5403,6 +5403,7 @@ public class MaterialsInit1 {
         Materials.DarkAsh = loadDarkAsh();
         Materials.DeepIron = loadDeepIron();
         Materials.Diamond = loadDiamond();
+        Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
         Materials.Electrum = loadElectrum();
         Materials.Emerald = loadEmerald();
         Materials.Epoxid = loadEpoxid();
@@ -6001,6 +6002,17 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.VITREUS, 3)
             .addAspect(TCAspects.LUCRUM, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadDilutedHydrochloricAcid() {
+        return new MaterialBuilder(606, TextureSet.SET_FLUID, "Diluted Hydrochloric Acid")
+            .setName("DilutedHydrochloricAcid_GT5U")
+            .addCell()
+            .addFluid()
+            .setRGB(153, 167, 163)
+            .setColor(Dyes.dyeLightGray)
+            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
             .constructMaterial();
     }
 
@@ -7326,19 +7338,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified04() {
-        Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
         Materials.Pyrochlore = loadPyrochlore();
-    }
-
-    private static Materials loadDilutedHydrochloricAcid() {
-        return new MaterialBuilder(606, TextureSet.SET_FLUID, "Diluted Hydrochloric Acid")
-            .setName("DilutedHydrochloricAcid_GT5U")
-            .addCell()
-            .addFluid()
-            .setRGB(153, 167, 163)
-            .setColor(Dyes.dyeLightGray)
-            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
-            .constructMaterial();
     }
 
     private static Materials loadPyrochlore() {

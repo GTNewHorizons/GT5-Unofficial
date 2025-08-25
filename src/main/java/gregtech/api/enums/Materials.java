@@ -483,6 +483,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials DarkAsh;
     public static Materials DeepIron;
     public static Materials Diamond;
+    public static Materials DilutedHydrochloricAcid;
     public static Materials Electrum;
     public static Materials Emerald;
     public static Materials Epoxid;
@@ -574,7 +575,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials ReinforceGlass;
 
     // Unclassified 04 materials
-    public static Materials DilutedHydrochloricAcid;
     public static Materials Pyrochlore;
 
     // Unclassified 05 materials
