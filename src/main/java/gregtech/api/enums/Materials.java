@@ -463,6 +463,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BlueTopaz;
     public static Materials Bone;
     public static Materials Brass;
+    public static Materials Brick;
     public static Materials Bronze;
     public static Materials BrownLimonite;
     public static Materials Calcite;
@@ -808,6 +809,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BlueSteel;
     public static Materials BorosilicateGlass;
     public static Materials EnderEye;
+    public static Materials Fireclay;
     public static Materials GarnetSand;
     public static Materials HSSG;
     public static Materials IronWood;
@@ -819,10 +821,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BasalticMineralSand;
     public static Materials HSSE;
     public static Materials HSSS;
-
-    // Unclassified 11 materials
-    public static Materials Brick;
-    public static Materials Fireclay;
 
     // Polybenzimidazole Line
     public static Materials ChromiumTrioxide;
