@@ -54,6 +54,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -452,6 +453,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 drainedMagmatter = 0;
                 if (mSpecialTier >= 4) {
                     boolean foundNanite = false;
+                    boolean foundOtherNanite = false;
                     ItemStack inputNanite = recipe.mOutputs[0];
 
                     int busWithNaniteIndex = 0;
@@ -473,11 +475,20 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                             } else {
                                 inputItem = inputBus.getStackInSlot(j);
                             }
-                            if (inputItem != null && inputItem.isItemEqual(inputNanite)) {
-                                busWithNaniteIndex = i;
-                                slotWithNaniteIndex = j;
-                                foundNanite = true;
-                                break;
+                            if (inputItem != null) {
+                                ItemData data = GTOreDictUnificator.getAssociation(inputItem);
+                                if (data == null) {
+                                    continue;
+                                }
+                                if (data.mPrefix == OrePrefixes.nanite) {
+                                    if (inputItem.isItemEqual(inputNanite)) {
+                                        busWithNaniteIndex = i;
+                                        slotWithNaniteIndex = j;
+                                        foundNanite = true;
+                                    } else {
+                                        foundOtherNanite = true;
+                                    }
+                                }
                             }
                         }
                     }
@@ -494,7 +505,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         }
                     }
 
-                    if (foundNanite) {
+                    if (foundNanite && !foundOtherNanite) {
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,
