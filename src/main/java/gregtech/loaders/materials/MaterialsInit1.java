@@ -134,6 +134,7 @@ public class MaterialsInit1 {
         Materials.IronWood = loadIronWood();
         Materials.Pyrotheum = loadPyrotheum();
         Materials.GraniteRed = loadGraniteRed();
+        Materials.RedSteel = loadRedSteel();
 
         // Fourth Degree Compounds
         Materials.BasalticMineralSand = loadBasalticMineralSand();
@@ -9034,7 +9035,6 @@ public class MaterialsInit1 {
         Materials.Realgar = loadRealgar();
         Materials.RedAlloy = loadRedAlloy();
         Materials.RedMud = loadRedMud();
-        Materials.RedSteel = loadRedSteel();
         Materials.Redrock = loadRedrock();
         Materials.Redstone = loadRedstone();
         Materials.RoseGold = loadRoseGold();
@@ -10356,31 +10356,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadRedSteel() {
-        return new MaterialBuilder().setName("RedSteel")
-            .setDefaultLocalName("Red Steel")
-            .setMetaItemSubID(348)
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0x8c6464)
-            .setToolSpeed(7.0f)
-            .setDurability(896)
-            .setToolQuality(4)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(1300)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.SterlingSilver, 1)
-            .addMaterial(Materials.BismuthBronze, 1)
-            .addMaterial(Materials.Steel, 2)
-            .addMaterial(Materials.BlackSteel, 4)
-            .constructMaterial();
-    }
-
     private static Materials loadRedrock() {
         return new MaterialBuilder().setName("Redrock")
             .setDefaultLocalName("Redrock")
@@ -11145,6 +11120,31 @@ public class MaterialsInit1 {
             .addMaterial(Materials.PotassiumFeldspar, 1)
             .addMaterial(Materials.Oxygen, 3)
             .addAspect(TCAspects.TUTAMEN, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedSteel() {
+        return new MaterialBuilder().setName("RedSteel")
+            .setDefaultLocalName("Red Steel")
+            .setMetaItemSubID(348)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x8c6464)
+            .setToolSpeed(7.0f)
+            .setDurability(896)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1300)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.SterlingSilver, 1)
+            .addMaterial(Materials.BismuthBronze, 1)
+            .addMaterial(Materials.Steel, 2)
+            .addMaterial(Materials.BlackSteel, 4)
             .constructMaterial();
     }
 

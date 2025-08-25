@@ -773,7 +773,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Realgar;
     public static Materials RedAlloy;
     public static Materials RedMud;
-    public static Materials RedSteel;
     public static Materials Redrock;
     public static Materials Redstone;
     public static Materials RoseGold;
@@ -814,6 +813,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials IronWood;
     public static Materials Pyrotheum;
     public static Materials GraniteRed;
+    public static Materials RedSteel;
 
     // Fourth Degree Compounds
     public static Materials BasalticMineralSand;
