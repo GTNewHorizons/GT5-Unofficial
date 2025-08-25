@@ -127,12 +127,7 @@ public class MaterialsInit1 {
         loadUnclassified11();
         loadPolybenzimidazoleLine();
         loadGasolineLine();
-
-        Materials.Electrotine = loadElectrotine();
-        Materials.Galgadorian = loadGalgadorian();
-        Materials.EnhancedGalgadorian = loadEnhancedGalgadorian();
-        Materials.BloodInfusedIron = loadBloodInfusedIron();
-        Materials.Shadow = loadShadow();
+        loadAdded();
 
         // spotless:off
         Materials.Ledox                   = new Materials( 390, TextureSet.SET_SHINY             ,  15.0F,   1024,  4, 1|2  |8      |64|128      ,   0, 116, 255,   0,   "Ledox"                   ,   "Ledox"                         ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeBlue        );
@@ -11468,6 +11463,14 @@ public class MaterialsInit1 {
             .setFuelPower(80)
             .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18))
             .constructMaterial();
+    }
+
+    private static void loadAdded() {
+        Materials.Electrotine = loadElectrotine();
+        Materials.Galgadorian = loadGalgadorian();
+        Materials.EnhancedGalgadorian = loadEnhancedGalgadorian();
+        Materials.BloodInfusedIron = loadBloodInfusedIron();
+        Materials.Shadow = loadShadow();
     }
 
     private static Materials loadElectrotine() {
