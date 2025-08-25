@@ -124,7 +124,6 @@ public class MaterialsInit1 {
         loadDegree2Compounds();
         loadDegree3Compounds();
         loadDegree4Compounds();
-        loadUnclassified11();
         loadPolybenzimidazoleLine();
         loadGasolineLine();
         loadAdded();
@@ -10907,6 +10906,7 @@ public class MaterialsInit1 {
         Materials.BlueSteel = loadBlueSteel();
         Materials.BorosilicateGlass = loadBorosilicateGlass();
         Materials.EnderEye = loadEnderEye();
+        Materials.Fireclay = loadFireclay();
         Materials.GarnetSand = loadGarnetSand();
         Materials.HSSG = loadHSSG();
         Materials.IronWood = loadIronWood();
@@ -10996,6 +10996,15 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.ITER, 4)
             .addAspect(TCAspects.PRAECANTATIO, 3)
             .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadFireclay() {
+        return new MaterialBuilder(626, TextureSet.SET_ROUGH, "Fireclay").addDustItems()
+            .setRGB(173, 160, 155)
+            .setExtraData(2)
+            .setColor(Dyes.dyeBrown)
+            .setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1))
             .constructMaterial();
     }
 
@@ -11206,19 +11215,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.HSSG, 6)
             .addMaterial(Materials.Iridium, 2)
             .addMaterial(Materials.Osmium, 1)
-            .constructMaterial();
-    }
-
-    private static void loadUnclassified11() {
-        Materials.Fireclay = loadFireclay();
-    }
-
-    private static Materials loadFireclay() {
-        return new MaterialBuilder(626, TextureSet.SET_ROUGH, "Fireclay").addDustItems()
-            .setRGB(173, 160, 155)
-            .setExtraData(2)
-            .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1))
             .constructMaterial();
     }
 
