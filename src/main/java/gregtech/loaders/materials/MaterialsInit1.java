@@ -129,6 +129,7 @@ public class MaterialsInit1 {
         Materials.BlueSteel = loadBlueSteel();
         Materials.BorosilicateGlass = loadBorosilicateGlass();
         Materials.EnderEye = loadEnderEye();
+        Materials.GarnetSand = loadGarnetSand();
 
         // Fourth Degree Compounds
         Materials.BasalticMineralSand = loadBasalticMineralSand();
@@ -8997,7 +8998,6 @@ public class MaterialsInit1 {
         Materials.Flint = loadFlint();
         Materials.FullersEarth = loadFullersEarth();
         Materials.GarnetRed = loadGarnetRed();
-        Materials.GarnetSand = loadGarnetSand();
         Materials.GarnetYellow = loadGarnetYellow();
         Materials.Glass = loadGlass();
         Materials.Glauconite = loadGlauconite();
@@ -9671,21 +9671,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Almandine, 5)
             .addMaterial(Materials.Spessartine, 8)
             .addAspect(TCAspects.VITREUS, 3)
-            .constructMaterial();
-    }
-
-    private static Materials loadGarnetSand() {
-        return new MaterialBuilder().setName("GarnetSand")
-            .setDefaultLocalName("Garnet Sand")
-            .setMetaItemSubID(938)
-            .setIconSet(TextureSet.SET_SAND)
-            .setColor(Dyes.dyeOrange)
-            .setRGB(0xc86400)
-            .addDustItems()
-            .addOreItems()
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.GarnetRed, 1)
-            .addMaterial(Materials.GarnetYellow, 1)
             .constructMaterial();
     }
 
@@ -11198,6 +11183,21 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.ITER, 4)
             .addAspect(TCAspects.PRAECANTATIO, 3)
             .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGarnetSand() {
+        return new MaterialBuilder().setName("GarnetSand")
+            .setDefaultLocalName("Garnet Sand")
+            .setMetaItemSubID(938)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.GarnetRed, 1)
+            .addMaterial(Materials.GarnetYellow, 1)
             .constructMaterial();
     }
 

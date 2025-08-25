@@ -735,7 +735,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Flint;
     public static Materials FullersEarth;
     public static Materials GarnetRed;
-    public static Materials GarnetSand;
     public static Materials GarnetYellow;
     public static Materials Glass;
     public static Materials Glauconite;
@@ -816,6 +815,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BlueSteel;
     public static Materials BorosilicateGlass;
     public static Materials EnderEye;
+    public static Materials GarnetSand;
 
     // Fourth Degree Compounds
     public static Materials BasalticMineralSand;
