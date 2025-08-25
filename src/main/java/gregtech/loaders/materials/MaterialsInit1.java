@@ -5450,6 +5450,7 @@ public class MaterialsInit1 {
         Materials.Pyrite = loadPyrite();
         Materials.Pyrolusite = loadPyrolusite();
         Materials.Pyrope = loadPyrope();
+        Materials.Quicklime = loadQuicklime();
         Materials.RawRubber = loadRawRubber();
         Materials.RockSalt = loadRockSalt();
         Materials.Rubber = loadRubber();
@@ -6779,6 +6780,15 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadQuicklime() {
+        return new MaterialBuilder(622, TextureSet.SET_DULL, "Quicklime").addDustItems()
+            .setRGB(240, 240, 240)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
     private static Materials loadRawRubber() {
         return new MaterialBuilder().setName("RawRubber")
             .setDefaultLocalName("Raw Rubber")
@@ -7431,17 +7441,7 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified08() {
-        Materials.Quicklime = loadQuicklime();
         Materials.SodaAsh = loadSodaAsh();
-    }
-
-    private static Materials loadQuicklime() {
-        return new MaterialBuilder(622, TextureSet.SET_DULL, "Quicklime").addDustItems()
-            .setRGB(240, 240, 240)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadSodaAsh() {

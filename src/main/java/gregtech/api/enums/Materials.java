@@ -529,6 +529,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Pyrite;
     public static Materials Pyrolusite;
     public static Materials Pyrope;
+    public static Materials Quicklime;
     public static Materials RawRubber;
     public static Materials RockSalt;
     public static Materials Rubber;
@@ -589,7 +590,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Zincite;
 
     // Unclassified 08 materials
-    public static Materials Quicklime;
     public static Materials SodaAsh;
 
     // Unclassified 09 materials
