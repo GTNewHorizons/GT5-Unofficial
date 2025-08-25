@@ -127,6 +127,7 @@ public class MaterialsInit1 {
         // Third Degree Compounds
         Materials.Basalt = loadBasalt();
         Materials.BlueSteel = loadBlueSteel();
+        Materials.BorosilicateGlass = loadBorosilicateGlass();
 
         // Fourth Degree Compounds
         Materials.BasalticMineralSand = loadBasalticMineralSand();
@@ -8980,7 +8981,6 @@ public class MaterialsInit1 {
         Materials.BlackSteel = loadBlackSteel();
         Materials.Blaze = loadBlaze();
         Materials.Borax = loadBorax();
-        Materials.BorosilicateGlass = loadBorosilicateGlass();
         Materials.Chrysotile = loadChrysotile();
         Materials.Clay = loadClay();
         Materials.CobaltBrass = loadCobaltBrass();
@@ -9383,16 +9383,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Boron, 4)
             .addMaterial(Materials.Oxygen, 7)
             .addMaterial(Materials.Water, 10)
-            .constructMaterial();
-    }
-
-    private static Materials loadBorosilicateGlass() {
-        return new MaterialBuilder(611, TextureSet.SET_GLASS, "Borosilicate Glass").addDustItems()
-            .addMetalItems()
-            .setRGB(230, 243, 230)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7))
-            .addCentrifugeRecipe()
             .constructMaterial();
     }
 
@@ -11198,6 +11188,16 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Brass, 1)
             .addMaterial(Materials.Steel, 2)
             .addMaterial(Materials.BlackSteel, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadBorosilicateGlass() {
+        return new MaterialBuilder(611, TextureSet.SET_GLASS, "Borosilicate Glass").addDustItems()
+            .addMetalItems()
+            .setRGB(230, 243, 230)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7))
+            .addCentrifugeRecipe()
             .constructMaterial();
     }
 
