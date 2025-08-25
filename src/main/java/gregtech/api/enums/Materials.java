@@ -820,6 +820,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HSSE;
     public static Materials HSSS;
 
+    // Unclassified 11 materials
     public static Materials Brick;
     public static Materials Fireclay;
 

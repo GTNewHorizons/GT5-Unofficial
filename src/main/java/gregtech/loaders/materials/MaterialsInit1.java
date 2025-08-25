@@ -126,8 +126,10 @@ public class MaterialsInit1 {
         loadDegree3Compounds();
         loadDegree4Compounds();
 
+        // Unclassified 11 materials
+        Materials.Brick = loadBrick();
+
         // spotless:off
-        Materials.Brick                   = new MaterialBuilder(625, TextureSet.SET_ROUGH      ,                                                                                                     "Brick").addDustItems().setRGB(155, 86, 67).setColor(Dyes.dyeBrown).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Oxygen, 11)).constructMaterial();
         Materials.Fireclay                = new MaterialBuilder(626, TextureSet.SET_ROUGH      ,                                                                                                     "Fireclay").addDustItems().setRGB(173, 160, 155).setExtraData(2).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1)).constructMaterial();
 
         Materials.PotassiumNitrade     = loadPotassiumNitrade();
@@ -11219,6 +11221,18 @@ public class MaterialsInit1 {
             .addMaterial(Materials.HSSG, 6)
             .addMaterial(Materials.Iridium, 2)
             .addMaterial(Materials.Osmium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrick() {
+        return new MaterialBuilder(625, TextureSet.SET_ROUGH, "Brick").addDustItems()
+            .setRGB(155, 86, 67)
+            .setColor(Dyes.dyeBrown)
+            .setExtraData(0)
+            .setMaterialList(
+                new MaterialStack(Aluminium, 2),
+                new MaterialStack(Silicon, 4),
+                new MaterialStack(Oxygen, 11))
             .constructMaterial();
     }
 
