@@ -128,10 +128,9 @@ public class MaterialsInit1 {
 
         // Unclassified 11 materials
         Materials.Brick = loadBrick();
+        Materials.Fireclay = loadFireclay();
 
         // spotless:off
-        Materials.Fireclay                = new MaterialBuilder(626, TextureSet.SET_ROUGH      ,                                                                                                     "Fireclay").addDustItems().setRGB(173, 160, 155).setExtraData(2).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1)).constructMaterial();
-
         Materials.PotassiumNitrade     = loadPotassiumNitrade();
         Materials.ChromiumTrioxide = loadChromiumTrioxide();
         Materials.Nitrochlorobenzene = loadNitrochlorobenzene();
@@ -11233,6 +11232,15 @@ public class MaterialsInit1 {
                 new MaterialStack(Aluminium, 2),
                 new MaterialStack(Silicon, 4),
                 new MaterialStack(Oxygen, 11))
+            .constructMaterial();
+    }
+
+    private static Materials loadFireclay() {
+        return new MaterialBuilder(626, TextureSet.SET_ROUGH, "Fireclay").addDustItems()
+            .setRGB(173, 160, 155)
+            .setExtraData(2)
+            .setColor(Dyes.dyeBrown)
+            .setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1))
             .constructMaterial();
     }
 
