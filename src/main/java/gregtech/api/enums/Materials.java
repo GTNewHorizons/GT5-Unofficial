@@ -457,6 +457,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Air;
     public static Materials AllylChloride;
     public static Materials Almandine;
+    public static Materials Ammonia;
     public static Materials Andradite;
     public static Materials AnnealedCopper;
     public static Materials AntimonyTrioxide;
@@ -590,7 +591,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GrowthMediumSterilized;
 
     // Unclassified 09 materials
-    public static Materials Ammonia;
     public static Materials Benzene;
     public static Materials BioDiesel;
     public static Materials BisphenolA;

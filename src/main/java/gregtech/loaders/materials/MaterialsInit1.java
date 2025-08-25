@@ -5375,6 +5375,7 @@ public class MaterialsInit1 {
         Materials.Air = loadAir();
         Materials.AllylChloride = loadAllylChloride();
         Materials.Almandine = loadAlmandine();
+        Materials.Ammonia = loadAmmonia();
         Materials.Andradite = loadAndradite();
         Materials.AnnealedCopper = loadAnnealedCopper();
         Materials.AntimonyTrioxide = loadAntimonyTrioxide();
@@ -5542,6 +5543,16 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 3)
             .addMaterial(Materials.Silicon, 3)
             .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadAmmonia() {
+        return new MaterialBuilder(659, TextureSet.SET_FLUID, "Ammonia").addCell()
+            .addGas()
+            .setRGB(63, 52, 128)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7478,7 +7489,6 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified09() {
-        Materials.Ammonia = loadAmmonia();
         Materials.Benzene = loadBenzene();
         Materials.BioDiesel = loadBioDiesel();
         Materials.BisphenolA = loadBisphenolA();
@@ -7535,16 +7545,6 @@ public class MaterialsInit1 {
         Materials.Toluene = loadToluene();
         Materials.VinylAcetate = loadVinylAcetate();
         Materials.VinylChloride = loadVinylChloride();
-    }
-
-    private static Materials loadAmmonia() {
-        return new MaterialBuilder(659, TextureSet.SET_FLUID, "Ammonia").addCell()
-            .addGas()
-            .setRGB(63, 52, 128)
-            .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadBenzene() {
