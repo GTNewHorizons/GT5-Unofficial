@@ -115,13 +115,13 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     @Override
     @SideOnly(Side.CLIENT)
     public boolean renderInInventory(ISBRInventoryContext ctx) {
-        final float tThickness = this.getThickness();
+        final float tThickness = getThickness();
         final float pipeMin = (BLOCK_MAX - tThickness) / 2.0F;
         final float pipeMax = BLOCK_MAX - pipeMin;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMin, BLOCK_MAX, pipeMax, pipeMax);
 
-        final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
+        final IGregTechTileEntity mte = getBaseMetaTileEntity();
         final ITexture[] sideTexture = getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false);
         final ITexture[] endTexture = getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false);
         ctx.renderNegativeYFacing(sideTexture);
@@ -133,14 +133,15 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return true;
     }
 
+    @SuppressWarnings("OverlyComplexMethod") // Naturally complex logic
     @Override
     @SideOnly(Side.CLIENT)
     public boolean renderInWorld(ISBRWorldContext ctx) {
-        BaseMetaPipeEntity rte = (BaseMetaPipeEntity) ctx.getTileEntity();
+        BaseMetaPipeEntity rte = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (rte == null) return false;
 
         final byte aConnections = rte.getConnections();
-        final float thickness = rte.getThickNess();
+        final float thickness = getThickness();
         if (thickness >= 1) {
             ctx.renderNegativeYFacing(rte.getTextureCovered(DOWN));
             ctx.renderPositiveYFacing(rte.getTextureCovered(UP));
