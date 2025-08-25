@@ -4498,7 +4498,7 @@ public class MaterialsInit1 {
             .setMetaItemSubID(970)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
-            .setRGB(0x1c0639)
+            .setARGB(0x001c0639)
             .setToolSpeed(32.0f)
             .setDurability(512)
             .setToolQuality(4)
