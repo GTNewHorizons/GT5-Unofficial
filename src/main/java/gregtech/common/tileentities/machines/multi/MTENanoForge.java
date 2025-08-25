@@ -509,7 +509,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         }
                     }
                 }
-                maxParallel = Math.max((int) (drainedMagmatter / (144 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
+                maxParallel = Math.max((int) (drainedMagmatter / (288 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
             }
