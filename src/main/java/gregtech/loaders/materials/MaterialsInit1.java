@@ -115,7 +115,6 @@ public class MaterialsInit1 {
         loadUnclassified04();
         loadUnclassified05();
         loadUnclassified07();
-        loadUnclassified08();
         loadUnclassified09();
         loadRoastedOres();
         loadSiliconLine();
@@ -5463,6 +5462,7 @@ public class MaterialsInit1 {
         Materials.SiliconDioxide = loadSiliconDioxide();
         Materials.Silicone = loadSilicone();
         Materials.Snow = loadSnow();
+        Materials.SodaAsh = loadSodaAsh();
         Materials.Sodalite = loadSodalite();
         Materials.SodiumPersulfate = loadSodiumPersulfate();
         Materials.SodiumSulfide = loadSodiumSulfide();
@@ -6994,6 +6994,15 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadSodaAsh() {
+        return new MaterialBuilder(624, TextureSet.SET_DULL, "Soda Ash").addDustItems()
+            .setRGB(220, 220, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
     private static Materials loadSodalite() {
         return new MaterialBuilder().setName("Sodalite")
             .setDefaultLocalName("Sodalite")
@@ -7436,19 +7445,6 @@ public class MaterialsInit1 {
             .setRGB(255, 255, 245)
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
-    }
-
-    private static void loadUnclassified08() {
-        Materials.SodaAsh = loadSodaAsh();
-    }
-
-    private static Materials loadSodaAsh() {
-        return new MaterialBuilder(624, TextureSet.SET_DULL, "Soda Ash").addDustItems()
-            .setRGB(220, 220, 255)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3))
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
