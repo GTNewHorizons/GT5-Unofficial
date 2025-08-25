@@ -155,8 +155,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("Heavy Industry, now right at your doorstep!")
             .addInfo("Plant tier is determined by casing tier")
             .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
-            // .addInfo("Higher tier coils increases processing speed : T1 = 50%, T2 = 100%, T3 = 150%...")
-            // .addInfo("Higher tier pipe casing boosts parallel and reduces catalyst consumption :")
             .addDynamicParallelInfo(2, TooltipTier.ITEM_PIPE_CASING)
             .addInfo(
                 "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING)
