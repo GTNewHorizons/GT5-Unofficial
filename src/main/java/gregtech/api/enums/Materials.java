@@ -557,6 +557,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SodiumSulfide;
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
+    public static Materials Zincite;
 
     // Unclassified 01 materials
     public static Materials OilExtraHeavy;
@@ -584,9 +585,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Unclassified 05 materials
     public static Materials GrowthMediumRaw;
     public static Materials GrowthMediumSterilized;
-
-    // Unclassified 07 materials
-    public static Materials Zincite;
 
     // Unclassified 09 materials
     public static Materials AceticAcid;

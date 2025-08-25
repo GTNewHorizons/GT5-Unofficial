@@ -113,7 +113,6 @@ public class MaterialsInit1 {
         loadUnclassified02();
         loadUnclassified03();
         loadUnclassified05();
-        loadUnclassified07();
         loadUnclassified09();
         loadRoastedOres();
         loadSiliconLine();
@@ -5476,6 +5475,7 @@ public class MaterialsInit1 {
         Materials.SodiumSulfide = loadSodiumSulfide();
         Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
         Materials.Water = Materials.Steam = loadWater();
+        Materials.Zincite = loadZincite();
     }
 
     private static Materials loadAir() {
@@ -7173,6 +7173,15 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadZincite() {
+        return new MaterialBuilder(617, TextureSet.SET_DULL, "Zincite").addDustItems()
+            .setRGB(255, 255, 245)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
     private static void loadUnclassified01() {
         Materials.OilExtraHeavy = loadOilExtraHeavy();
         Materials.OilHeavy = loadOilHeavy();
@@ -7429,19 +7438,6 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(222, 170, 135)
             .setColor(Dyes.dyeOrange)
-            .constructMaterial();
-    }
-
-    private static void loadUnclassified07() {
-        Materials.Zincite = loadZincite();
-    }
-
-    private static Materials loadZincite() {
-        return new MaterialBuilder(617, TextureSet.SET_DULL, "Zincite").addDustItems()
-            .setRGB(255, 255, 245)
-            .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
