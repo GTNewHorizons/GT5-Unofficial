@@ -730,7 +730,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Diatomite;
     public static Materials DilutedSulfuricAcid;
     public static Materials Dolomite;
-    public static Materials EnderEye;
     public static Materials EnderPearl;
     public static Materials EpoxidFiberReinforced;
     public static Materials Flint;
@@ -816,6 +815,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Basalt;
     public static Materials BlueSteel;
     public static Materials BorosilicateGlass;
+    public static Materials EnderEye;
 
     // Fourth Degree Compounds
     public static Materials BasalticMineralSand;

@@ -128,6 +128,7 @@ public class MaterialsInit1 {
         Materials.Basalt = loadBasalt();
         Materials.BlueSteel = loadBlueSteel();
         Materials.BorosilicateGlass = loadBorosilicateGlass();
+        Materials.EnderEye = loadEnderEye();
 
         // Fourth Degree Compounds
         Materials.BasalticMineralSand = loadBasalticMineralSand();
@@ -8991,7 +8992,6 @@ public class MaterialsInit1 {
         Materials.Diatomite = loadDiatomite();
         Materials.DilutedSulfuricAcid = loadDilutedSulfuricAcid();
         Materials.Dolomite = loadDolomite();
-        Materials.EnderEye = loadEnderEye();
         Materials.EnderPearl = loadEnderPearl();
         Materials.EpoxidFiberReinforced = loadEpoxidFiberReinforced();
         Materials.Flint = loadFlint();
@@ -9566,32 +9566,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Magnesium, 1)
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Oxygen, 6)
-            .constructMaterial();
-    }
-
-    private static Materials loadEnderEye() {
-        return new MaterialBuilder().setName("EnderEye")
-            .setDefaultLocalName("Endereye")
-            .setMetaItemSubID(533)
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeGreen)
-            .setRGB(0xa0fae6)
-            .setToolSpeed(1.0f)
-            .setDurability(16)
-            .setToolQuality(1)
-            .addDustItems()
-            .addGemItems()
-            .setFuelType(5)
-            .setFuelPower(10)
-            .setDensityMultiplier(2)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.EnderPearl, 1)
-            .addMaterial(Materials.Blaze, 1)
-            .addAspect(TCAspects.SENSUS, 4)
-            .addAspect(TCAspects.ALIENIS, 4)
-            .addAspect(TCAspects.ITER, 4)
-            .addAspect(TCAspects.PRAECANTATIO, 3)
-            .addAspect(TCAspects.IGNIS, 2)
             .constructMaterial();
     }
 
@@ -11198,6 +11172,32 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7))
             .addCentrifugeRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadEnderEye() {
+        return new MaterialBuilder().setName("EnderEye")
+            .setDefaultLocalName("Endereye")
+            .setMetaItemSubID(533)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0xa0fae6)
+            .setToolSpeed(1.0f)
+            .setDurability(16)
+            .setToolQuality(1)
+            .addDustItems()
+            .addGemItems()
+            .setFuelType(5)
+            .setFuelPower(10)
+            .setDensityMultiplier(2)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.EnderPearl, 1)
+            .addMaterial(Materials.Blaze, 1)
+            .addAspect(TCAspects.SENSUS, 4)
+            .addAspect(TCAspects.ALIENIS, 4)
+            .addAspect(TCAspects.ITER, 4)
+            .addAspect(TCAspects.PRAECANTATIO, 3)
+            .addAspect(TCAspects.IGNIS, 2)
             .constructMaterial();
     }
 
