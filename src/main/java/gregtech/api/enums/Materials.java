@@ -770,7 +770,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Pitchblende;
     public static Materials Pollucite;
     public static Materials PotassiumFeldspar;
-    public static Materials Pyrotheum;
     public static Materials QuartzSand;
     public static Materials Realgar;
     public static Materials RedAlloy;
@@ -814,6 +813,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GarnetSand;
     public static Materials HSSG;
     public static Materials IronWood;
+    public static Materials Pyrotheum;
 
     // Fourth Degree Compounds
     public static Materials BasalticMineralSand;
