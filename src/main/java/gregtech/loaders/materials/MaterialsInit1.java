@@ -5398,6 +5398,7 @@ public class MaterialsInit1 {
         Materials.ChromiumDioxide = loadChromiumDioxide();
         Materials.Cinnabar = loadCinnabar();
         Materials.Coal = loadCoal();
+        Materials.CobaltOxide = loadCobaltOxide();
         Materials.Cobaltite = loadCobaltite();
         Materials.Cooperite = loadCooperite();
         Materials.Cupronickel = loadCupronickel();
@@ -5906,6 +5907,15 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.POTENTIA, 2)
             .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltOxide() {
+        return new MaterialBuilder(616, TextureSet.SET_DULL, "Cobalt Oxide").addDustItems()
+            .setRGB(102, 128, 0)
+            .setColor(Dyes.dyeGreen)
+            .setMaterialList(new MaterialStack(Cobalt, 1), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -7392,20 +7402,10 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified07() {
-        Materials.CobaltOxide = loadCobaltOxide();
         Materials.CupricOxide = loadCupricOxide();
         Materials.Ferrosilite = loadFerrosilite();
         Materials.Massicot = loadMassicot();
         Materials.Zincite = loadZincite();
-    }
-
-    private static Materials loadCobaltOxide() {
-        return new MaterialBuilder(616, TextureSet.SET_DULL, "Cobalt Oxide").addDustItems()
-            .setRGB(102, 128, 0)
-            .setColor(Dyes.dyeGreen)
-            .setMaterialList(new MaterialStack(Cobalt, 1), new MaterialStack(Oxygen, 1))
-            .addElectrolyzerRecipe()
-            .constructMaterial();
     }
 
     private static Materials loadCupricOxide() {
