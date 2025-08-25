@@ -492,6 +492,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Emerald;
     public static Materials Epoxid;
     public static Materials FerriteMixture;
+    public static Materials Ferrosilite;
     public static Materials FreshWater;
     public static Materials Galena;
     public static Materials Garnierite;
@@ -584,7 +585,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GrowthMediumSterilized;
 
     // Unclassified 07 materials
-    public static Materials Ferrosilite;
     public static Materials Massicot;
     public static Materials Zincite;
 
