@@ -125,10 +125,7 @@ public class MaterialsInit1 {
         loadDegree2Compounds();
         loadDegree3Compounds();
         loadDegree4Compounds();
-
-        // Unclassified 11 materials
-        Materials.Brick = loadBrick();
-        Materials.Fireclay = loadFireclay();
+        loadUnclassified11();
 
         // spotless:off
         Materials.PotassiumNitrade     = loadPotassiumNitrade();
@@ -11221,6 +11218,11 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iridium, 2)
             .addMaterial(Materials.Osmium, 1)
             .constructMaterial();
+    }
+
+    private static void loadUnclassified11() {
+        Materials.Brick = loadBrick();
+        Materials.Fireclay = loadFireclay();
     }
 
     private static Materials loadBrick() {
