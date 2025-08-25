@@ -245,8 +245,8 @@ gt.interact.desc.need_maint_rotor_lo=Emit if rotor needs maintenance low accurac
 gt.interact.desc.need_maint_rotor_hi=Emit if rotor needs maintenance high accuracy mod
 gt.interact.desc.issue=1 Issue
 gt.interact.desc.issues=%s Issues
-gt.interact.desc.issue_rotor_low=Rotor < 20%%
-gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
+gt.interact.desc.issue_rotor_low=Rotor < 20%
+gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
@@ -997,6 +997,8 @@ gt.recipe.replicator=Replicator
 gt.recipe.replicator.description=Producing Elemental Matter
 gt.recipe.rockbreaker=Rock Breaker
 gt.recipe.rockbreaker.description=Put Lava and Water adjacent, or Lava around and Soul Sand below
+gt.recipe.rockbreaker.fakeitem.side=IT'S FREE! Place Lava on Side
+gt.recipe.rockbreaker.fakeitem.top=IT'S FREE! Place Lava on Top
 gt.recipe.scanner=Scanner
 gt.recipe.scanner.description=Scans Crops and other things.
 gt.recipe.sifter=Sifter
