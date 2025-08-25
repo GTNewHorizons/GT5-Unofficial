@@ -126,17 +126,7 @@ public class MaterialsInit1 {
         loadDegree3Compounds();
         loadDegree4Compounds();
         loadUnclassified11();
-
-        Materials.PotassiumNitrade = loadPotassiumNitrade();
-        Materials.ChromiumTrioxide = loadChromiumTrioxide();
-        Materials.Nitrochlorobenzene = loadNitrochlorobenzene();
-        Materials.Dimethylbenzene = loadDimethylbenzene();
-        Materials.Potassiumdichromate = loadPotassiumdichromate();
-        Materials.PhthalicAcid = loadPhthalicAcid();
-        Materials.Dichlorobenzidine = loadDichlorobenzidine();
-        Materials.Diaminobenzidin = loadDiaminobenzidin();
-        Materials.Diphenylisophthalate = loadDiphenylisophthalate();
-        Materials.Polybenzimidazole = loadPolybenzimidazole();
+        loadPolybenzimidazoleStuff();
 
         // spotless:off
         Materials.MTBEMixture        = loadMtbeMixture();
@@ -11244,6 +11234,19 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBrown)
             .setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1))
             .constructMaterial();
+    }
+
+    private static void loadPolybenzimidazoleStuff() {
+        Materials.PotassiumNitrade = loadPotassiumNitrade();
+        Materials.ChromiumTrioxide = loadChromiumTrioxide();
+        Materials.Nitrochlorobenzene = loadNitrochlorobenzene();
+        Materials.Dimethylbenzene = loadDimethylbenzene();
+        Materials.Potassiumdichromate = loadPotassiumdichromate();
+        Materials.PhthalicAcid = loadPhthalicAcid();
+        Materials.Dichlorobenzidine = loadDichlorobenzidine();
+        Materials.Diaminobenzidin = loadDiaminobenzidin();
+        Materials.Diphenylisophthalate = loadDiphenylisophthalate();
+        Materials.Polybenzimidazole = loadPolybenzimidazole();
     }
 
     private static Materials loadPotassiumNitrade() {
