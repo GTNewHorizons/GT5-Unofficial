@@ -825,16 +825,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Fireclay;
 
     // Polybenzimidazole stuff
-    public static Materials PotassiumNitrade;
     public static Materials ChromiumTrioxide;
-    public static Materials Nitrochlorobenzene;
-    public static Materials Dimethylbenzene;
-    public static Materials Potassiumdichromate;
-    public static Materials PhthalicAcid;
-    public static Materials Dichlorobenzidine;
     public static Materials Diaminobenzidin;
+    public static Materials Dichlorobenzidine;
+    public static Materials Dimethylbenzene;
     public static Materials Diphenylisophthalate;
+    public static Materials Nitrochlorobenzene;
+    public static Materials PhthalicAcid;
     public static Materials Polybenzimidazole;
+    public static Materials PotassiumNitrade;
+    public static Materials Potassiumdichromate;
 
     //Gasoline
     public static Materials MTBEMixture;
