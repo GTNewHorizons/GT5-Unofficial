@@ -449,6 +449,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                drainedMagmatter = 0;
                 if (mSpecialTier >= 4) {
                     boolean foundNanite = false;
                     ItemStack inputNanite = recipe.mOutputs[0];
@@ -507,8 +508,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                                 .decrStackSize(slotWithNaniteIndex, 1);
                         }
                     }
-                } else {
-                    drainedMagmatter = 0;
                 }
                 maxParallel = Math.max((int) (drainedMagmatter / (144 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
