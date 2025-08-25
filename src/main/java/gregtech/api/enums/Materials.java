@@ -836,7 +836,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PotassiumNitrade;
     public static Materials Potassiumdichromate;
 
-    //Gasoline
+    // Gasoline Line
     public static Materials MTBEMixture;
     public static Materials MTBEMixtureAlt;
     public static Materials NitrousOxide;
