@@ -65,6 +65,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TooltipTier;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -205,10 +206,10 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Autoclave")
-            .addInfo("Processes 12 items per Item Pipe Casing Tier.")
+            .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
+            .addDynamicSpeedInfo(0.25f, TooltipTier.COIL)
             .addInfo("Energy consumption is reduced with higher fluid pipe tiers.")
             .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
-            .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage.")
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
@@ -343,7 +344,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         tag.setInteger("fluidPipeTier", getFluidPipeTier());
         tag.setInteger("itemPipeTier", getItemPipeTier());
         tag.setInteger("coilTier", getCoilTier());
-        tag.setFloat("getMaxParallelRecipes", getMaxParallelRecipes());
     }
 
     private static final DecimalFormat dfTwo = new DecimalFormat("0.00");
@@ -367,10 +367,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("itemPipeTier")));
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
                 + EnumChatFormatting.WHITE

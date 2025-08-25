@@ -6,23 +6,14 @@ import static gregtech.api.enums.GTValues.SIDE_NORTH;
 import static gregtech.api.enums.GTValues.SIDE_SOUTH;
 import static gregtech.api.enums.GTValues.SIDE_UP;
 import static gregtech.api.enums.GTValues.SIDE_WEST;
-import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_DOWN;
-import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_EAST;
-import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_NORTH;
-import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_SOUTH;
-import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_UP;
-import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_WEST;
-import static gregtech.api.interfaces.metatileentity.IConnectable.NO_CONNECTION;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
 import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -40,20 +31,18 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
-import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.RenderOverlay;
-import gregtech.api.render.SBRInventoryContext;
-import gregtech.api.render.SBRWorldContext;
+import gregtech.api.render.SBRContextHolder;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockOresAbstract;
@@ -63,28 +52,20 @@ import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
-    public static final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
-    public static final float blockMin = 0.0F;
-    public static final float blockMax = 1.0F;
-    private static final float coverThickness = blockMax / 8.0F;
-    private static final float coverInnerMin = blockMin + coverThickness;
-    private static final float coverInnerMax = blockMax - coverThickness;
+    public static final int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
+    public static final float BLOCK_MIN = 0.0F;
+    public static final float BLOCK_MAX = 1.0F;
     private final ITexture[][] textureArray = new ITexture[6][];
     private final ITexture[] overlayHolder = new ITexture[1];
 
-    public boolean renderStandardBlock(SBRWorldContext ctx) {
-        final TileEntity tTileEntity = ctx.world.getTileEntity(ctx.x, ctx.y, ctx.z);
-        if (tTileEntity instanceof IPipeRenderedTileEntity pipeRenderedTileEntity) {
-            textureArray[0] = pipeRenderedTileEntity.getTextureCovered(DOWN);
-            textureArray[1] = pipeRenderedTileEntity.getTextureCovered(UP);
-            textureArray[2] = pipeRenderedTileEntity.getTextureCovered(NORTH);
-            textureArray[3] = pipeRenderedTileEntity.getTextureCovered(SOUTH);
-            textureArray[4] = pipeRenderedTileEntity.getTextureCovered(WEST);
-            textureArray[5] = pipeRenderedTileEntity.getTextureCovered(EAST);
-            return renderStandardBlock(ctx, textureArray);
-        }
+    protected final SBRContextHolder sbrContextHolder = new SBRContextHolder();
+
+    public boolean renderStandardBlock(ISBRWorldContext ctx) {
+        final TileEntity tTileEntity = ctx.getTileEntity();
+        final ITexture[][] textureArray = this.textureArray;
+        final Block block = ctx.getBlock();
         if (tTileEntity instanceof IAllSidedTexturedTileEntity allSidedTexturedTileEntity) {
-            ITexture[] texture = allSidedTexturedTileEntity.getTexture(ctx.block);
+            ITexture[] texture = allSidedTexturedTileEntity.getTexture(block);
             textureArray[0] = texture;
             textureArray[1] = texture;
             textureArray[2] = texture;
@@ -94,24 +75,25 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             return renderStandardBlock(ctx, textureArray);
         }
         if (tTileEntity instanceof ITexturedTileEntity texturedTileEntity) {
-            textureArray[0] = texturedTileEntity.getTexture(ctx.block, DOWN);
-            textureArray[1] = texturedTileEntity.getTexture(ctx.block, UP);
-            textureArray[2] = texturedTileEntity.getTexture(ctx.block, NORTH);
-            textureArray[3] = texturedTileEntity.getTexture(ctx.block, SOUTH);
-            textureArray[4] = texturedTileEntity.getTexture(ctx.block, WEST);
-            textureArray[5] = texturedTileEntity.getTexture(ctx.block, EAST);
+            textureArray[0] = texturedTileEntity.getTexture(block, DOWN);
+            textureArray[1] = texturedTileEntity.getTexture(block, UP);
+            textureArray[2] = texturedTileEntity.getTexture(block, NORTH);
+            textureArray[3] = texturedTileEntity.getTexture(block, SOUTH);
+            textureArray[4] = texturedTileEntity.getTexture(block, WEST);
+            textureArray[5] = texturedTileEntity.getTexture(block, EAST);
             return renderStandardBlock(ctx, textureArray);
         }
 
         return false;
     }
 
-    public boolean renderStandardBlock(SBRWorldContext ctx, ITexture[][] aTextures) {
-        ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-        ctx.fullBlock = true;
+    public boolean renderStandardBlock(ISBRWorldContext ctx, ITexture[][] aTextures) {
+        ctx.getBlock()
+            .setBlockBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+        ctx.setRenderBoundsFromBlock();
 
-        ITexture[] overlays = RenderOverlay.get(ctx.world, ctx.x, ctx.y, ctx.z);
+        final ITexture[] overlays = RenderOverlay.get(ctx.getBlockAccess(), ctx.getX(), ctx.getY(), ctx.getZ());
+        final ITexture[] overlayHolder = this.overlayHolder;
         if (overlays != null) {
             ctx.renderNegativeYFacing(aTextures[SIDE_DOWN]);
             if (overlays[SIDE_DOWN] != null) {
@@ -151,358 +133,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             ctx.renderNegativeXFacing(aTextures[SIDE_WEST]);
             ctx.renderPositiveXFacing(aTextures[SIDE_EAST]);
         }
-        return true;
-    }
-
-    final ITexture[][] tIcons = new ITexture[VALID_DIRECTIONS.length][];
-    final ITexture[][] tCovers = new ITexture[VALID_DIRECTIONS.length][];
-    final boolean[] tIsCovered = new boolean[VALID_DIRECTIONS.length];
-
-    public boolean renderPipeBlock(SBRWorldContext ctx, IPipeRenderedTileEntity aTileEntity) {
-        final byte aConnections = aTileEntity.getConnections();
-        final float thickness = aTileEntity.getThickNess();
-        if (thickness >= 0.99F) {
-            return renderStandardBlock(ctx);
-        }
-        // Range of block occupied by pipe
-        final float pipeMin = (blockMax - thickness) / 2.0F;
-        final float pipeMax = blockMax - pipeMin;
-
-        for (int i = 0; i < VALID_DIRECTIONS.length; i++) {
-            final ForgeDirection iSide = VALID_DIRECTIONS[i];
-            tIsCovered[i] = aTileEntity.hasCoverAtSide(iSide);
-            tCovers[i] = aTileEntity.getTexture(ctx.block, iSide);
-            tIcons[i] = aTileEntity.getTextureUncovered(iSide);
-        }
-
-        switch (aConnections) {
-            case NO_CONNECTION -> {
-                ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-                ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-            }
-            case CONNECTED_EAST | CONNECTED_WEST -> {
-                // EAST - WEST Pipe Sides
-                ctx.block.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
-                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-
-                // EAST - WEST Pipe Ends
-                ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-            }
-            case CONNECTED_DOWN | CONNECTED_UP -> {
-                // UP - DOWN Pipe Sides
-                ctx.block.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, blockMax, pipeMax);
-                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-                ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-
-                // UP - DOWN Pipe Ends
-                ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-            }
-            case CONNECTED_NORTH | CONNECTED_SOUTH -> {
-                // NORTH - SOUTH Pipe Sides
-                ctx.block.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, blockMax);
-                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-
-                // NORTH - SOUTH Pipe Ends
-                ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-            }
-            default -> {
-                if ((aConnections & CONNECTED_WEST) == 0) {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                } else {
-                    ctx.block.setBlockBounds(blockMin, pipeMin, pipeMin, pipeMin, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                    ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                    ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                    ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-                }
-                ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                if ((aConnections & CONNECTED_EAST) == 0) {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                } else {
-                    ctx.block.setBlockBounds(pipeMax, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                    ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                    ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                    ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-                }
-                ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-                if ((aConnections & CONNECTED_DOWN) == 0) {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                } else {
-                    ctx.block.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, pipeMin, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                    ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-                    ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                    ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-                }
-                ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                if ((aConnections & CONNECTED_UP) == 0) {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                } else {
-                    ctx.block.setBlockBounds(pipeMin, pipeMax, pipeMin, pipeMax, blockMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                    ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-                    ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                    ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-                }
-                ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                if ((aConnections & CONNECTED_NORTH) == 0) {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                } else {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, pipeMin);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                    ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                    ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                    ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-                }
-                ctx.renderNegativeZFacing(tIcons[SIDE_NORTH]);
-                if ((aConnections & CONNECTED_SOUTH) == 0) {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                } else {
-                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMax, pipeMax, pipeMax, blockMax);
-                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-                    ctx.renderNegativeYFacing(tIcons[SIDE_DOWN]);
-                    ctx.renderPositiveYFacing(tIcons[SIDE_UP]);
-                    ctx.renderNegativeXFacing(tIcons[SIDE_WEST]);
-                    ctx.renderPositiveXFacing(tIcons[SIDE_EAST]);
-                }
-                ctx.renderPositiveZFacing(tIcons[SIDE_SOUTH]);
-            }
-        }
-
-        // Render covers on pipes
-        if (tIsCovered[SIDE_DOWN]) {
-            ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, coverInnerMin, blockMax);
-            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-            if (!tIsCovered[SIDE_NORTH]) {
-                ctx.renderNegativeZFacing(tCovers[SIDE_DOWN]);
-            }
-            if (!tIsCovered[SIDE_SOUTH]) {
-                ctx.renderPositiveZFacing(tCovers[SIDE_DOWN]);
-            }
-            if (!tIsCovered[SIDE_WEST]) {
-                ctx.renderNegativeXFacing(tCovers[SIDE_DOWN]);
-            }
-            if (!tIsCovered[SIDE_EAST]) {
-                ctx.renderPositiveXFacing(tCovers[SIDE_DOWN]);
-            }
-            ctx.renderPositiveYFacing(tCovers[SIDE_DOWN]);
-            if ((aConnections & CONNECTED_DOWN) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, blockMin, pipeMin);
-                ctx.renderNegativeYFacing(tCovers[SIDE_DOWN]);
-                // Upper panel
-                ctx.renderer.setRenderBounds(blockMin, blockMin, pipeMax, blockMax, blockMin, blockMax);
-                ctx.renderNegativeYFacing(tCovers[SIDE_DOWN]);
-                // Middle left panel
-                ctx.renderer.setRenderBounds(blockMin, blockMin, pipeMin, pipeMin, blockMin, pipeMax);
-                ctx.renderNegativeYFacing(tCovers[SIDE_DOWN]);
-                // Middle right panel
-                ctx.renderer.setRenderBounds(pipeMax, blockMin, pipeMin, blockMax, blockMin, pipeMax);
-            }
-            ctx.renderNegativeYFacing(tCovers[SIDE_DOWN]);
-        }
-
-        if (tIsCovered[SIDE_UP]) {
-            ctx.block.setBlockBounds(blockMin, coverInnerMax, blockMin, blockMax, blockMax, blockMax);
-            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-            if (!tIsCovered[SIDE_NORTH]) {
-                ctx.renderNegativeZFacing(tCovers[SIDE_UP]);
-            }
-            if (!tIsCovered[SIDE_SOUTH]) {
-                ctx.renderPositiveZFacing(tCovers[SIDE_UP]);
-            }
-            if (!tIsCovered[SIDE_WEST]) {
-                ctx.renderNegativeXFacing(tCovers[SIDE_UP]);
-            }
-            if (!tIsCovered[SIDE_EAST]) {
-                ctx.renderPositiveXFacing(tCovers[SIDE_UP]);
-            }
-            ctx.renderNegativeYFacing(tCovers[SIDE_UP]);
-            if ((aConnections & CONNECTED_UP) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                ctx.renderer.setRenderBounds(blockMin, blockMax, blockMin, blockMax, blockMax, pipeMin);
-                ctx.renderPositiveYFacing(tCovers[SIDE_UP]);
-                // Upper panel
-                ctx.renderer.setRenderBounds(blockMin, blockMax, pipeMax, blockMax, blockMax, blockMax);
-                ctx.renderPositiveYFacing(tCovers[SIDE_UP]);
-                // Middle left panel
-                ctx.renderer.setRenderBounds(blockMin, blockMax, pipeMin, pipeMin, blockMax, pipeMax);
-                ctx.renderPositiveYFacing(tCovers[SIDE_UP]);
-                // Middle right panel
-                ctx.renderer.setRenderBounds(pipeMax, blockMax, pipeMin, blockMax, blockMax, pipeMax);
-            }
-            ctx.renderPositiveYFacing(tCovers[SIDE_UP]);
-        }
-
-        if (tIsCovered[SIDE_NORTH]) {
-            ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, coverInnerMin);
-            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-            if (!tIsCovered[SIDE_DOWN]) {
-                ctx.renderNegativeYFacing(tCovers[SIDE_NORTH]);
-            }
-            if (!tIsCovered[SIDE_UP]) {
-                ctx.renderPositiveYFacing(tCovers[SIDE_NORTH]);
-            }
-            if (!tIsCovered[SIDE_WEST]) {
-                ctx.renderNegativeXFacing(tCovers[SIDE_NORTH]);
-            }
-            if (!tIsCovered[SIDE_EAST]) {
-                ctx.renderPositiveXFacing(tCovers[SIDE_NORTH]);
-            }
-            ctx.renderPositiveZFacing(tCovers[SIDE_NORTH]);
-            if ((aConnections & CONNECTED_NORTH) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, pipeMin, blockMin);
-                ctx.renderNegativeZFacing(tCovers[SIDE_NORTH]);
-                // Upper panel
-                ctx.renderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMax, blockMax, blockMin);
-                ctx.renderNegativeZFacing(tCovers[SIDE_NORTH]);
-                // Middle left panel
-                ctx.renderer.setRenderBounds(blockMin, pipeMin, blockMin, pipeMin, pipeMax, blockMin);
-                ctx.renderNegativeZFacing(tCovers[SIDE_NORTH]);
-                // Middle right panel
-                ctx.renderer.setRenderBounds(pipeMax, pipeMin, blockMin, blockMax, pipeMax, blockMin);
-            }
-            ctx.renderNegativeZFacing(tCovers[SIDE_NORTH]);
-        }
-
-        if (tIsCovered[SIDE_SOUTH]) {
-            ctx.block.setBlockBounds(blockMin, blockMin, coverInnerMax, blockMax, blockMax, blockMax);
-            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-            if (!tIsCovered[SIDE_DOWN]) {
-                ctx.renderNegativeYFacing(tCovers[SIDE_SOUTH]);
-            }
-            if (!tIsCovered[SIDE_UP]) {
-                ctx.renderPositiveYFacing(tCovers[SIDE_SOUTH]);
-            }
-            if (!tIsCovered[SIDE_WEST]) {
-                ctx.renderNegativeXFacing(tCovers[SIDE_SOUTH]);
-            }
-            if (!tIsCovered[SIDE_EAST]) {
-                ctx.renderPositiveXFacing(tCovers[SIDE_SOUTH]);
-            }
-            ctx.renderNegativeZFacing(tCovers[SIDE_SOUTH]);
-            if ((aConnections & CONNECTED_SOUTH) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMax, blockMax, pipeMin, blockMax);
-                ctx.renderPositiveZFacing(tCovers[SIDE_SOUTH]);
-                // Upper panel
-                ctx.renderer.setRenderBounds(blockMin, pipeMax, blockMax, blockMax, blockMax, blockMax);
-                ctx.renderPositiveZFacing(tCovers[SIDE_SOUTH]);
-                // Middle left panel
-                ctx.renderer.setRenderBounds(blockMin, pipeMin, blockMax, pipeMin, pipeMax, blockMax);
-                ctx.renderPositiveZFacing(tCovers[SIDE_SOUTH]);
-                // Middle right panel
-                ctx.renderer.setRenderBounds(pipeMax, pipeMin, blockMax, blockMax, pipeMax, blockMax);
-            }
-            ctx.renderPositiveZFacing(tCovers[SIDE_SOUTH]);
-        }
-
-        if (tIsCovered[SIDE_WEST]) {
-            ctx.block.setBlockBounds(blockMin, blockMin, blockMin, coverInnerMin, blockMax, blockMax);
-            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-            if (!tIsCovered[SIDE_DOWN]) {
-                ctx.renderNegativeYFacing(tCovers[SIDE_WEST]);
-            }
-            if (!tIsCovered[SIDE_UP]) {
-                ctx.renderPositiveYFacing(tCovers[SIDE_WEST]);
-            }
-            if (!tIsCovered[SIDE_NORTH]) {
-                ctx.renderNegativeZFacing(tCovers[SIDE_WEST]);
-            }
-            if (!tIsCovered[SIDE_SOUTH]) {
-                ctx.renderPositiveZFacing(tCovers[SIDE_WEST]);
-            }
-            ctx.renderPositiveXFacing(tCovers[SIDE_WEST]);
-            if ((aConnections & CONNECTED_WEST) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMin, blockMin, pipeMin, blockMax);
-                ctx.renderNegativeXFacing(tCovers[SIDE_WEST]);
-                // Upper panel
-                ctx.renderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMin, blockMax, blockMax);
-                ctx.renderNegativeXFacing(tCovers[SIDE_WEST]);
-                // Middle left panel
-                ctx.renderer.setRenderBounds(blockMin, pipeMin, blockMin, blockMin, pipeMax, pipeMin);
-                ctx.renderNegativeXFacing(tCovers[SIDE_WEST]);
-                // Middle right panel
-                ctx.renderer.setRenderBounds(blockMin, pipeMin, pipeMax, blockMin, pipeMax, blockMax);
-            }
-            ctx.renderNegativeXFacing(tCovers[SIDE_WEST]);
-        }
-
-        if (tIsCovered[SIDE_EAST]) {
-            ctx.block.setBlockBounds(coverInnerMax, blockMin, blockMin, blockMax, blockMax, blockMax);
-            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-            if (!tIsCovered[SIDE_DOWN]) {
-                ctx.renderNegativeYFacing(tCovers[SIDE_EAST]);
-            }
-            if (!tIsCovered[SIDE_UP]) {
-                ctx.renderPositiveYFacing(tCovers[SIDE_EAST]);
-            }
-            if (!tIsCovered[SIDE_NORTH]) {
-                ctx.renderNegativeZFacing(tCovers[SIDE_EAST]);
-            }
-            if (!tIsCovered[SIDE_SOUTH]) {
-                ctx.renderPositiveZFacing(tCovers[SIDE_EAST]);
-            }
-            ctx.renderNegativeXFacing(tCovers[SIDE_EAST]);
-
-            if ((aConnections & CONNECTED_EAST) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                ctx.renderer.setRenderBounds(blockMax, blockMin, blockMin, blockMax, pipeMin, blockMax);
-                ctx.renderPositiveXFacing(tCovers[SIDE_EAST]);
-                // Upper panel
-                ctx.renderer.setRenderBounds(blockMax, pipeMax, blockMin, blockMax, blockMax, blockMax);
-                ctx.renderPositiveXFacing(tCovers[SIDE_EAST]);
-                // Middle left panel
-                ctx.renderer.setRenderBounds(blockMax, pipeMin, blockMin, blockMax, pipeMax, pipeMin);
-                ctx.renderPositiveXFacing(tCovers[SIDE_EAST]);
-                // Middle right panel
-                ctx.renderer.setRenderBounds(blockMax, pipeMin, pipeMax, blockMax, pipeMax, blockMax);
-            }
-            ctx.renderPositiveXFacing(tCovers[SIDE_EAST]);
-        }
-        ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-
         return true;
     }
 
@@ -571,7 +201,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final SBRInventoryContext ctx = new SBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
@@ -594,7 +224,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         } else if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length)
             && aBlock instanceof BlockMachines
             && (GregTechAPI.METATILEENTITIES[aMeta] != null)
-            && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
+            && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(ctx))) {
                 renderNormalInventoryMetaTileEntity(ctx);
             } else if (aBlock instanceof BlockFrameBox) {
                 ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
@@ -623,7 +253,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
                 // spotless:on
                 }
             }
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        aBlock.setBlockBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
@@ -631,58 +261,37 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
-    private static void renderNormalInventoryMetaTileEntity(SBRInventoryContext ctx) {
-        if ((ctx.meta <= 0) || (ctx.meta >= GregTechAPI.METATILEENTITIES.length)) {
-            return;
-        }
-        final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[ctx.meta];
-        if (tMetaTileEntity == null) {
-            return;
-        }
-        ctx.block.setBlockBoundsForItemRender();
-        ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+    private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx) {
+        final int meta = ctx.getMeta();
+        if ((meta <= 0) || (meta >= GregTechAPI.METATILEENTITIES.length)) return;
+        final IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[meta];
+        if (mte == null) return;
+        final Block block = ctx.getBlock();
+        block.setBlockBoundsForItemRender();
+        ctx.setRenderBoundsFromBlock();
 
-        final IGregTechTileEntity iGregTechTileEntity = tMetaTileEntity.getBaseMetaTileEntity();
-        // spotless:off
-        if ((iGregTechTileEntity instanceof IPipeRenderedTileEntity renderedPipe)
-            && (tMetaTileEntity instanceof MetaPipeEntity pipeEntity)) {
-            final float tThickness = renderedPipe.getThickNess();
-            final float pipeMin = (blockMax - tThickness) / 2.0F;
-            final float pipeMax = blockMax - pipeMin;
-
-            ctx.block.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
-            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
-            ctx.renderNegativeYFacing(pipeEntity.getTexture(iGregTechTileEntity, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false));
-            ctx.renderPositiveYFacing(pipeEntity.getTexture(iGregTechTileEntity, UP, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false));
-            ctx.renderNegativeZFacing(pipeEntity.getTexture(iGregTechTileEntity, NORTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false));
-            ctx.renderPositiveZFacing(pipeEntity.getTexture(iGregTechTileEntity, SOUTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false));
-            ctx.renderNegativeXFacing(pipeEntity.getTexture(iGregTechTileEntity, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false));
-            ctx.renderPositiveXFacing(pipeEntity.getTexture(iGregTechTileEntity, EAST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false));
-        } else {
-            ctx.renderNegativeYFacing(tMetaTileEntity.getTexture(iGregTechTileEntity, DOWN, WEST, -1, true, false));
-            ctx.renderPositiveYFacing(tMetaTileEntity.getTexture(iGregTechTileEntity, UP, WEST, -1, true, false));
-            ctx.renderNegativeZFacing(tMetaTileEntity.getTexture(iGregTechTileEntity, NORTH, WEST, -1, true, false));
-            ctx.renderPositiveZFacing(tMetaTileEntity.getTexture(iGregTechTileEntity, SOUTH, WEST, -1, true, false));
-            ctx.renderNegativeXFacing(tMetaTileEntity.getTexture(iGregTechTileEntity, WEST, WEST, -1, true, false));
-            ctx.renderPositiveXFacing(tMetaTileEntity.getTexture(iGregTechTileEntity, EAST, WEST, -1, true, false));
-        }
-        // spotless:on
+        final IGregTechTileEntity iGregTechTileEntity = mte.getBaseMetaTileEntity();
+        ctx.renderNegativeYFacing(mte.getTexture(iGregTechTileEntity, DOWN, WEST, -1, true, false));
+        ctx.renderPositiveYFacing(mte.getTexture(iGregTechTileEntity, UP, WEST, -1, true, false));
+        ctx.renderNegativeZFacing(mte.getTexture(iGregTechTileEntity, NORTH, WEST, -1, true, false));
+        ctx.renderPositiveZFacing(mte.getTexture(iGregTechTileEntity, SOUTH, WEST, -1, true, false));
+        ctx.renderNegativeXFacing(mte.getTexture(iGregTechTileEntity, WEST, WEST, -1, true, false));
+        ctx.renderPositiveXFacing(mte.getTexture(iGregTechTileEntity, EAST, WEST, -1, true, false));
     }
 
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
-        aRenderer.useInventoryTint = false;
+        final ISBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
-        final TileEntity tileEntity = aWorld.getTileEntity(ctx.x, ctx.y, ctx.z);
+        final TileEntity tileEntity = ctx.getTileEntity();
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
 
         // If this block does not have a TE, render it as a normal block.
         // Otherwise, render the TE instead.
-        if (tileEntity == null && ctx.block instanceof BlockFrameBox frameBlock) {
-            int meta = aWorld.getBlockMetadata(ctx.x, ctx.y, ctx.z);
+        final Block block = ctx.getBlock();
+        if (tileEntity == null && block instanceof BlockFrameBox frameBlock) {
+            int meta = aWorld.getBlockMetadata(ctx.getX(), ctx.getY(), ctx.getZ());
             ITexture[] texture = frameBlock.getTexture(meta);
             if (texture == null) return false;
             textureArray[0] = texture;
@@ -695,8 +304,8 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             return tessAccess.gt5u$hasVertices();
         }
 
-        if (ctx.block instanceof IBlockWithTextures texturedBlock) {
-            int meta = aWorld.getBlockMetadata(ctx.x, ctx.y, ctx.z);
+        if (block instanceof IBlockWithTextures texturedBlock) {
+            final int meta = aWorld.getBlockMetadata(ctx.getX(), ctx.getY(), ctx.getZ());
             ITexture[][] texture = texturedBlock.getTextures(meta);
             if (texture == null) return false;
             renderStandardBlock(ctx, texture);
@@ -708,18 +317,11 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         if (tileEntity instanceof IGregTechTileEntity) {
             final IMetaTileEntity metaTileEntity;
             if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null
-                && metaTileEntity.renderInWorld(aWorld, ctx.x, ctx.y, ctx.z, ctx.block, aRenderer)) {
-                aRenderer.enableAO = false;
+                && metaTileEntity.renderInWorld(ctx)) {
                 return tessAccess.gt5u$hasVertices();
             }
         }
-        if (tileEntity instanceof IPipeRenderedTileEntity
-            && renderPipeBlock(ctx, (IPipeRenderedTileEntity) tileEntity)) {
-            aRenderer.enableAO = false;
-            return tessAccess.gt5u$hasVertices();
-        }
         if (renderStandardBlock(ctx)) {
-            aRenderer.enableAO = false;
             return tessAccess.gt5u$hasVertices();
         }
         return false;
@@ -732,6 +334,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return mRenderID;
+        return RENDER_ID;
     }
 }
