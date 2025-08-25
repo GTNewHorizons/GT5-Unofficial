@@ -824,7 +824,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Brick;
     public static Materials Fireclay;
 
-    // Polybenzimidazole stuff
+    // Polybenzimidazole Line
     public static Materials ChromiumTrioxide;
     public static Materials Diaminobenzidin;
     public static Materials Dichlorobenzidine;

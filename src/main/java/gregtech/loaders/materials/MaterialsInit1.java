@@ -126,7 +126,7 @@ public class MaterialsInit1 {
         loadDegree3Compounds();
         loadDegree4Compounds();
         loadUnclassified11();
-        loadPolybenzimidazoleStuff();
+        loadPolybenzimidazoleLine();
 
         // spotless:off
         Materials.MTBEMixture        = loadMtbeMixture();
@@ -11236,7 +11236,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static void loadPolybenzimidazoleStuff() {
+    private static void loadPolybenzimidazoleLine() {
         Materials.ChromiumTrioxide = loadChromiumTrioxide();
         Materials.Diaminobenzidin = loadDiaminobenzidin();
         Materials.Dichlorobenzidine = loadDichlorobenzidine();
