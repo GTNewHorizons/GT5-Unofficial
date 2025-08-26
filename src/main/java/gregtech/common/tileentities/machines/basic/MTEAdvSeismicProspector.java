@@ -74,7 +74,7 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
     @Override
     public String[] getDescription() {
         return new String[] { "Place, activate with explosives",
-            "2 Powderbarrels, " + "4 Glyceryl Trinitrate, " + "16 TNT, or " + "8 ITNT",
+            "2 Powder Barrels, " + "4 Glyceryl Trinitrate, " + "16 TNT, or " + "8 ITNT",
             "Use Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book",
             "Ore prospecting area = " + radius * 2 + "x" + radius * 2 + " ONLY blocks below prospector",
             "Oil prospecting area 3x3 oilfields, each is 8x8 chunks" };
