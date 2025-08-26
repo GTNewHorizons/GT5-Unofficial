@@ -17,6 +17,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
@@ -194,6 +195,11 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         }
 
         return false;
+    }
+
+    @Override
+    public OutputBusType getBusType() {
+        return OutputBusType.Void;
     }
 
     @Override

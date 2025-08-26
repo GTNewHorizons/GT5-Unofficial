@@ -25,6 +25,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputBus;
@@ -341,8 +342,8 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     @Override
-    public boolean hasDiscreteSlots() {
-        return true;
+    public OutputBusType getBusType() {
+        return lockedItem == null ? OutputBusType.StandardUnfiltered : OutputBusType.StandardFiltered;
     }
 
     /**

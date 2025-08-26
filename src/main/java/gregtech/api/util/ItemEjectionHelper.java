@@ -3,6 +3,7 @@ package gregtech.api.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -11,10 +12,10 @@ import net.minecraft.item.ItemStack;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 
 /**
@@ -28,8 +29,9 @@ import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 public class ItemEjectionHelper {
 
     private final boolean itemProtectionEnabled;
-    private final List<IOutputBusTransaction> discreteTransactions, nonDiscreteTransactions, unfilteredStandard,
-        unfilteredME;
+
+    private final EnumMap<OutputBusType, List<IOutputBusTransaction>> transactionsByType = new EnumMap<>(
+        OutputBusType.class);
 
     private boolean active = true;
 
@@ -40,21 +42,12 @@ public class ItemEjectionHelper {
     public ItemEjectionHelper(List<IOutputBus> busses, boolean protectItems) {
         itemProtectionEnabled = protectItems;
 
-        discreteTransactions = new ArrayList<>();
-        nonDiscreteTransactions = new ArrayList<>();
-
         for (int i = 0, bussesSize = busses.size(); i < bussesSize; i++) {
             IOutputBus bus = busses.get(i);
 
-            if (bus.hasDiscreteSlots()) {
-                discreteTransactions.add(bus.createTransaction());
-            } else {
-                nonDiscreteTransactions.add(bus.createTransaction());
-            }
+            transactionsByType.computeIfAbsent(bus.getBusType(), x -> new ArrayList<>())
+                .add(bus.createTransaction());
         }
-
-        unfilteredStandard = GTDataUtils.filterList(discreteTransactions, t -> !t.isFiltered());
-        unfilteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> !t.isFiltered());
     }
 
     /**
@@ -107,26 +100,17 @@ public class ItemEjectionHelper {
 
             List<IOutputBusTransaction> transactions = new ArrayList<>(8);
 
-            // First: void busses
-            GTDataUtils.addAllFiltered(
-                discreteTransactions,
-                transactions,
-                t -> t.isFilteredToItem(parallelData.id) && t.getBus() instanceof MTEHatchVoidBus);
+            for (OutputBusType busType : OutputBusType.values()) {
+                List<IOutputBusTransaction> ofType = transactionsByType.get(busType);
 
-            // Second: filtered standard busses
-            GTDataUtils.addAllFiltered(
-                discreteTransactions,
-                transactions,
-                t -> t.isFilteredToItem(parallelData.id) && !(t.getBus() instanceof MTEHatchVoidBus));
+                if (ofType == null) continue;
 
-            // Third: filtered ME busses
-            GTDataUtils.addAllFiltered(nonDiscreteTransactions, transactions, t -> t.isFilteredToItem(parallelData.id));
-
-            // Fourth: unfiltered standard busses
-            transactions.addAll(unfilteredStandard);
-
-            // Fifth: unfiltered ME busses
-            transactions.addAll(unfilteredME);
+                if (busType.isFiltered()) {
+                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredToItem(parallelData.id));
+                } else {
+                    transactions.addAll(ofType);
+                }
+            }
 
             parallelData.outputs = Iterators.peekingIterator(transactions.iterator());
 
@@ -184,8 +168,7 @@ public class ItemEjectionHelper {
     }
 
     public void commit() {
-        discreteTransactions.forEach(IOutputBusTransaction::commit);
-        nonDiscreteTransactions.forEach(IOutputBusTransaction::commit);
+        transactionsByType.forEach((busType, list) -> list.forEach(IOutputBusTransaction::commit));
 
         active = false;
     }

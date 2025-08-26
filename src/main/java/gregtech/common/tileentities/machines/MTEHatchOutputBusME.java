@@ -53,6 +53,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
@@ -195,8 +196,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public boolean hasDiscreteSlots() {
-        return false;
+    public OutputBusType getBusType() {
+        return lockedItems.isEmpty() ? OutputBusType.MEUnfiltered : OutputBusType.MEFiltered;
     }
 
     @Override

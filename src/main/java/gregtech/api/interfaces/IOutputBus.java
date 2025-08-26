@@ -2,6 +2,7 @@ package gregtech.api.interfaces;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.util.GTUtility;
 
 public interface IOutputBus {
@@ -12,11 +13,8 @@ public interface IOutputBus {
     /** Returns true when the given item id matches this busses filter exactly. */
     boolean isFilteredToItem(GTUtility.ItemId id);
 
-    /**
-     * When true, this output bus has discrete slots with limited stack sizes. When false, this bus can accept any
-     * number of stacks so long as they match the filter (if set).
-     */
-    boolean hasDiscreteSlots();
+    /** Returns this bus's type. Used for output order sorting. */
+    OutputBusType getBusType();
 
     default boolean storePartial(ItemStack stack) {
         return storePartial(stack, false);
