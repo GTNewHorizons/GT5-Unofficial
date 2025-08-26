@@ -185,8 +185,8 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import ic2.core.IC2Potion;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
