@@ -63,6 +63,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -167,11 +168,33 @@ public class MTEMegaBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaB
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(EnumChatFormatting.WHITE + "Noble gases " + EnumChatFormatting.GRAY + "can be used to reduce recipe time.")
-            .addInfo(EnumChatFormatting.AQUA + "-5% " + EnumChatFormatting.GRAY + "EU usage multiplicatively for each " + EnumChatFormatting.RED + "900K " + EnumChatFormatting.GRAY + "over the required heat.")
-            .addInfo("Adds " + EnumChatFormatting.RED + "100K " + EnumChatFormatting.GRAY + "for every tier past " + EnumChatFormatting.AQUA + "MV")
-            .addInfo("Each " + EnumChatFormatting.RED + "900K " + EnumChatFormatting.GRAY + "over the required heat reduces power consumption by " + EnumChatFormatting.GOLD + "5%" + EnumChatFormatting.GRAY + " multiplicatively")
-            .addInfo(EnumChatFormatting.RED + "1800K " + EnumChatFormatting.GRAY + "over required heat grants " + EnumChatFormatting.GOLD + "perfect overclock" + EnumChatFormatting.GRAY + ", giving " + EnumChatFormatting.GOLD + "100% efficiency.")
+            .addInfo(
+                "Increases Heat by " + EnumChatFormatting.RED
+                    + "100K"
+                    + EnumChatFormatting.GRAY
+                    + " for every "
+                    + TooltipHelper.tierText("Voltage")
+                    + " tier past "
+                    + EnumChatFormatting.AQUA
+                    + "MV")
+            .addInfo(
+                "Reduces " + TooltipHelper.effText("EU Usage")
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "5%"
+                    + EnumChatFormatting.GRAY
+                    + " every "
+                    + EnumChatFormatting.RED
+                    + "900K"
+                    + EnumChatFormatting.GRAY
+                    + " above the recipe requirement")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "1800K"
+                    + EnumChatFormatting.GRAY
+                    + " over the recipe requirement grants 1 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " Perfect Overclock")
             .addTecTechHatchInfo()
             .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)

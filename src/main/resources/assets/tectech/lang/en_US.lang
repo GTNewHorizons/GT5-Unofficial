@@ -1021,7 +1021,7 @@ fog.upgrade.text.8=Unlocks a configuration window for maximum battery size and i
 fog.upgrade.text.9=Increases maximum fuel consumption by 1 Stellar Fuel Unit/sec for every purchased upgrade.
 fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
 fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
-fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
+fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log_1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
 fog.upgrade.text.13=Improves the formula of SA to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
 fog.upgrade.text.14=Improves the OC formula from 4/2 OCs to 4/2.3 OCs.
 fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
@@ -1119,7 +1119,7 @@ gt.blockmachines.multimachine.FOG.fuelinfo.0=The Stellar Fuel Consumption Factor
 gt.blockmachines.multimachine.FOG.fuelinfo.1=Dimensionally Transcendent Residue: factor*300*1.15^factor
 gt.blockmachines.multimachine.FOG.fuelinfo.2=Condensed Raw Stellar Plasma Mixture: factor*2*1.08^factor
 gt.blockmachines.multimachine.FOG.fuelinfo.3=Magnetohydrodynamically Constrained Star Matter: factor/25
-gt.blockmachines.multimachine.FOG.fuelinfo.4=This factor also determines the base heat of the multiblock: Heat=log1.5(factor)*1000+12601
+gt.blockmachines.multimachine.FOG.fuelinfo.4=This factor also determines the base heat of the multiblock: Heat=log_1.5(factor)*1000+12601
 gt.blockmachines.multimachine.FOG.fuelinfo.5=Upgrades can influence these formulas, the changes are listed in the respective upgrades' descriptions.
 gt.blockmachines.multimachine.FOG.fueltype=Click to Select Fuel Type
 gt.blockmachines.multimachine.FOG.fuelusage=Fuel Usage
