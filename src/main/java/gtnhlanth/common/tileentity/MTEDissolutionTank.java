@@ -228,7 +228,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Dissolution Tank")
             .addInfo("Input Water and Fluid, output Fluid")
-            .addInfo("You must input the Fluids at the correct Ratio")
+            .addInfo("Fluids must be input in the exact ratio as listed in NEI")
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)

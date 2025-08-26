@@ -52,6 +52,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -175,13 +176,18 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Uses 85% less energy in distillery mode")
-            .addInfo("250%/100% faster in DT/distillery mode")
+            .addInfo("Stats dictated by tower tier and mode")
             .addInfo("Right click the controller with screwdriver to change mode.")
-            .addInfo("Max parallel dictated by tower tier and mode")
-            .addInfo("DTower Mode: T1=4, T2=12")
-            .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
-            .addInfo("Distillery Mode require a full height tower")
+            .addSeparator()
+            .addInfo("Distillery Mode (requires full height tower)")
+            .addInfo(TooltipHelper.parallelText("Tower Tier * Voltage Tier * 4") + " Parallels")
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(0.85f)
+            .addSeparator()
+            .addInfo("Distillation Tower Mode")
+            .addInfo(TooltipHelper.parallelText("T1=4") + ", " + TooltipHelper.parallelText("T2=12") + " Parallels")
+            .addStaticSpeedInfo(3.5f)
+            .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom")
