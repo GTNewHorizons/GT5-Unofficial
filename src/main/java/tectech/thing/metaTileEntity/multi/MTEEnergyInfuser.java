@@ -3,7 +3,13 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.mEUtoRF;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -62,12 +68,11 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 7))
         .addElement(
             'C',
-            ofHatchAdderOptional(
-                MTEEnergyInfuser::addClassicToMachineList,
-                BlockGTCasingsTT.textureOffset,
-                1,
-                TTCasingsContainer.sBlockCasingsTT,
-                0))
+            buildHatchAdder(MTEEnergyInfuser.class)
+                .atLeast(Maintenance, Energy.or(ExoticEnergy), InputHatch, InputBus, OutputBus)
+                .casingIndex(BlockGTCasingsTT.textureOffset)
+                .dot(1)
+                .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
         .build();
     // endregion
 
