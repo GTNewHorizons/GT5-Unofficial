@@ -19,7 +19,7 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
 
     public static void setCableUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled) {
-            EXECUTOR_SERVICE.submit(new RunnableCableUpdate(aWorld, posX, posY, posZ));
+            postTaskToRun(new RunnableCableUpdate(aWorld, posX, posY, posZ));
         }
     }
 
