@@ -15,7 +15,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -25,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -54,8 +52,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialCuttingMachineGui;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable {
@@ -88,9 +84,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 75% of the EU/t normally required")
-            .addInfo("Processes four items per voltage tier")
+            .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front Center")
@@ -254,19 +248,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+        tag.setString("mode", getMachineModeName());
     }
 
     @SideOnly(Side.CLIENT)

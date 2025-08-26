@@ -293,7 +293,10 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
 
         // Distillus Chip
         GregtechItemList.Distillus_Upgrade_Chip.set(
-            this.addItem(Distillus_Upgrade_Chip.ID, "Distillus Upgrade Chip", "Used to upgrade Distillus to Tier 2"));
+            this.addItem(
+                Distillus_Upgrade_Chip.ID,
+                "Dangote Distillus Upgrade Chip",
+                "Used to upgrade Dangote Distillus to Tier 2"));
         GregtechItemList.Maceration_Upgrade_Chip.set(
             this.addItem(
                 Maceration_Upgrade_Chip.ID,

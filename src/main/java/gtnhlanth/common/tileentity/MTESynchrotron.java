@@ -27,7 +27,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -493,23 +492,35 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Particle Accelerator")
-            .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,")
-            .addInfo("in the form of photons")
-            .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve output rate and energy scaling")
-            .addInfo("Minimum input focus: " + MIN_INPUT_FOCUS)
+            .addInfo("Torus-shaped, uses an electromagnetic field to make beams of charged particles travel in a circle")
+            .addInfo("Electrically neutral particles are therefore unaffected")
+            .addInfo("Due to the relativistic Larmor effect, it produces then outputs a photon beam")
+            .addInfo("The " + createEnergyText("Beam Energy") + ", " + createFocusText("Beam Focus") + ", and " + createRateText("Beam Rate") + " are all determined by the formulae in this tooltip")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addInfo("Use a lower temperature coolant to improve output focus")
-            .addInfo("Valid Coolants:");
+            .addSeparator()
+            .addInfo(EnumChatFormatting.AQUA + "32 kL/s" + EnumChatFormatting.GRAY + " of "  + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " is required for operation, and " + EnumChatFormatting.RED + "hot coolant" + EnumChatFormatting.WHITE +" is returned")
+            .addInfo("The input beam must have a " + createFocusText("Focus") + " of at least 25")
+            .addInfo("The " + createFocusText("Output Beam Focus") + " can be improved by using lower temperature coolant")
+            .addInfo("Valid coolants:")
+            .addInfo(coolantLine("Coolant",300))
+            .addInfo(coolantLine("Liquid Nitrogen",90))
+            .addInfo(coolantLine("Liquid Oxygen",90))
+            .addInfo(coolantLine("Super Coolant",1))
+            .addInfo("There are two types of " + EnumChatFormatting.DARK_AQUA + "Antenna Casings" + EnumChatFormatting.GRAY + ", upgrade them to improve the machine")
+            .addInfo("All energies in the following formulae must be in keV")
+            .addSeparator()
+            .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.RED + "IR " + EnumChatFormatting.WHITE + "* "+EnumChatFormatting.DARK_GREEN + "Power Scale Factor")
+            .addInfo("where " + EnumChatFormatting.RED + "IR " + EnumChatFormatting.WHITE + " =  (" + EnumChatFormatting.YELLOW + "Input Beam Energy"+EnumChatFormatting.WHITE+")^(1.13*("+EnumChatFormatting.DARK_AQUA+"Antenna Tier"+EnumChatFormatting.WHITE+")^(4/9))/40,000,000")
+            .addInfo("and "+EnumChatFormatting.DARK_GREEN+"Power Scale Factor"+EnumChatFormatting.WHITE+" = 1 - 0.15^("+EnumChatFormatting.BLUE + "Total EU/t Provided" + EnumChatFormatting.WHITE + " / (30,384 * (" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ")^(5/2)))")
+            .addSeparator()
+            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + ")/2.5")
+            .addInfo(EnumChatFormatting.WHITE + "where " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + " = max(min(1.5^(12 - " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + "/40), 90), 10)")
+            .addSeparator()
+            .addInfo(createRateText("Output Beam Rate") + EnumChatFormatting.WHITE + " = floor(2.5^(" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ") * sqrt(" + EnumChatFormatting.BLUE + "Total EU/t Provided)" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.YELLOW + "Input Beam Rate" + EnumChatFormatting.WHITE + "/15,000)")
+            .addTecTechHatchInfo()
 
-        // Valid coolant list
-        for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
-            tt.addInfo(
-                "- " + FluidRegistry.getFluid(fluidName)
-                    .getLocalizedName(null));
-        }
-
-        tt.addInfo("Requires 32 kL/s of coolant")
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front middle")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 676, false)
@@ -528,6 +539,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
         return tt;
+        //spotless:on
     }
 
     private boolean addBeamlineInputHatch(IGregTechTileEntity te, int casingIndex) {
@@ -956,6 +968,28 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     @Override
     public boolean supportsPowerPanel() {
         return false;
+    }
+
+    private String createFocusText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
+    }
+
+    private String createEnergyText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.BLUE, text, EnumChatFormatting.GRAY);
+    }
+
+    private String createRateText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.GOLD, text, EnumChatFormatting.GRAY);
+    }
+
+    private String coolantLine(String coolant, int kelvin) {
+        return "  " + EnumChatFormatting.AQUA
+            + coolant
+            + EnumChatFormatting.GRAY
+            + " : "
+            + EnumChatFormatting.GOLD
+            + kelvin
+            + "K";
     }
 
 }

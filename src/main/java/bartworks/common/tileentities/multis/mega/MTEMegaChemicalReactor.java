@@ -71,7 +71,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
         tt.addMachineType("Chemical Reactor, MCR")
             .addInfo("What molecule do you want to synthesize ?")
             .addInfo("Or you want to replace something in this molecule ?")
-            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addGlassEnergyLimitInfo()
             .addPerfectOCInfo()
             .addTecTechHatchInfo()

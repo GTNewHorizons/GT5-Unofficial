@@ -60,6 +60,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
@@ -185,11 +186,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + "Solidifier Hatches"
                     + EnumChatFormatting.GRAY
                     + " to hold different molds")
-            .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
+            .addStaticParallelInfo(BASE_PARALLELS)
+            .addInfo(
+                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH) + " Parallels per tier per width expansion")
+            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
-            .addInfo("Only uses 80% of the EU/t normally required")
-            .addInfo("Processes " + BASE_PARALLELS + " items per voltage tier")
-            .addInfo("Processes an additional " + PARALLELS_PER_WIDTH + " items per voltage tier per width expansion")
+            .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
@@ -369,7 +371,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedup", speedup);
-        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
@@ -381,10 +382,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("parallels"));
     }
 
     @Override
