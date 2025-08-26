@@ -1614,59 +1614,20 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region adder methods
     @Override
     public final boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
+        if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
-        if (aMetaTileEntity instanceof MTEHatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof IDualInputHatch) {
-            return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInputBus) {
-            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
-            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMuffler) {
-            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchUncertainty) {
-            return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDataInput) {
-            return eInputData.add((MTEHatchDataInput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDataOutput) {
-            return eOutputData.add((MTEHatchDataOutput) aMetaTileEntity);
-        }
-        return false;
+        if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) return eUncertainHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) return eEnergyMulti.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) return eDynamoMulti.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDataInput hatch) return eInputData.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) return eOutputData.add(hatch);
+
+        return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     public final boolean addClassicToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

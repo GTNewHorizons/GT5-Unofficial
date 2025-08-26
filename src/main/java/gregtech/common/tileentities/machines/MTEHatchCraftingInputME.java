@@ -267,9 +267,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         /**
          * Try to refund the items and fluids back.
          * <p>
-         * Push all the items and fluids back to the AE network first.
-         * If shouldDrop is true, the remaining are dropped to the world (the fluids are dropped as AE2FC fluid drop).
-         * Otherwise, they are still left in the inventory.
+         * Push all the items and fluids back to the AE network first. If shouldDrop is true, the remaining are dropped
+         * to the world (the fluids are dropped as AE2FC fluid drop). Otherwise, they are still left in the inventory.
          */
         public void refund(AENetworkProxy proxy, BaseActionSource src, boolean shouldDrop) throws GridAccessException {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
@@ -730,7 +729,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
-        for (int i = 0; i < getSizeInventory(); i++) {
+        // Sync inventories to ensure that the real inventory matches what AE2 is seeing.
+        for (int i = 0; i < MAX_PATTERN_COUNT; i++) {
             if (internalInventory[i] == null) continue;
             mInventory[i] = internalInventory[i].pattern;
         }

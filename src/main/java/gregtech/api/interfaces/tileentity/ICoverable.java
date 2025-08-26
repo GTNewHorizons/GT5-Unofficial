@@ -19,8 +19,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     void dropCover(ForgeDirection side, ForgeDirection droppedSide);
 
     /**
-     * Actually removes the cover from the coverable and return the cover item.
-     * <br>
+     * Actually removes the cover from the coverable and return the cover item. <br>
      * Called by {@link #dropCover(ForgeDirection, ForgeDirection)}
      */
     ItemStack detachCover(ForgeDirection side);

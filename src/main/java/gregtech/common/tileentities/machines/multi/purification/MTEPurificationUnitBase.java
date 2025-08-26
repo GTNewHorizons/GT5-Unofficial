@@ -58,27 +58,24 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
- * Base class for purification units. This class handles all shared behaviour between units.
- * When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
- * if you override these methods, or linking will break.
+ * Base class for purification units. This class handles all shared behaviour between units. When inheriting from this,
+ * make sure to call super.loadNBTData() and super.saveNBTData() if you override these methods, or linking will break.
  */
 public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
     /**
-     * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost".
-     * Must be in [0, 1].
+     * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost". Must be in [0, 1].
      */
     public static final float WATER_BOOST_NEEDED_FLUID = 0.1f;
     /**
-     * Additive bonus to success chance when water boost is active.
-     * Must be in [0, 1]
+     * Additive bonus to success chance when water boost is active. Must be in [0, 1]
      */
     public static final float WATER_BOOST_BONUS_CHANCE = 0.15f;
 
     /**
-     * Small internal enum to report back the various error cases when linking purification units to the
-     * purification plant.
+     * Small internal enum to report back the various error cases when linking purification units to the purification
+     * plant.
      */
     private enum LinkResult {
         /**
@@ -96,8 +93,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Coordinates of the main purification plant controller. These can be used to find the controller again
-     * on world load.
+     * Coordinates of the main purification plant controller. These can be used to find the controller again on world
+     * load.
      */
     private int controllerX, controllerY, controllerZ;
 
@@ -112,9 +109,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private MTEPurificationPlant controller = null;
 
     /**
-     * The current recipe being run in the purification unit. Note that purification unit recipes are a bit special,
-     * so input and output in the recipe might not exactly match the required inputs and produced outputs.
-     * For more information, always look at the purification unit tooltip and implementation.
+     * The current recipe being run in the purification unit. Note that purification unit recipes are a bit special, so
+     * input and output in the recipe might not exactly match the required inputs and produced outputs. For more
+     * information, always look at the purification unit tooltip and implementation.
      */
     protected GTRecipe currentRecipe = null;
 
@@ -261,8 +258,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe()
-     * is protected.
+     * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe() is
+     * protected.
      *
      * @return True if successfully found a recipe and/or started processing/
      */
@@ -272,9 +269,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Get the success chance of the recipe, from 0 to 100. Never call this while a recipe is running, because items
-     * or modifiers used to boost might disappear by the time recipe check comes around,
-     * which would invalidate this result.
+     * Get the success chance of the recipe, from 0 to 100. Never call this while a recipe is running, because items or
+     * modifiers used to boost might disappear by the time recipe check comes around, which would invalidate this
+     * result.
      */
     public float calculateBoostedSuccessChance() {
         // If this.currentRecipe is null, there is a bug, so throwing a NPE is fine.
@@ -287,10 +284,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * By default, the final recipe success chance is simply the success chance calculated on recipe check.
-     * This applies water boosts when needed to the base chance. Purification units can override this to perform
-     * more complex success chance calculations, that even take into account what happened during the runtime of the
-     * recipe.
+     * By default, the final recipe success chance is simply the success chance calculated on recipe check. This applies
+     * water boosts when needed to the base chance. Purification units can override this to perform more complex success
+     * chance calculations, that even take into account what happened during the runtime of the recipe.
      *
      * @return The success chance of the recipe, at the point in time the outputs are to be produced.
      */
@@ -314,9 +310,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe.
-     * This should only be called during recipe check! Never call this while a recipe is running, because water used to
-     * boost might disappear by the time recipe check comes around, which would invalidate this result.
+     * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe. This
+     * should only be called during recipe check! Never call this while a recipe is running, because water used to boost
+     * might disappear by the time recipe check comes around, which would invalidate this result.
      *
      * @param recipe The recipe to check the water boost of
      */
@@ -327,8 +323,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Consumes all <b>fluid</b> inputs of the current recipe.
-     * Should only scale the first fluid input with water
+     * Consumes all <b>fluid</b> inputs of the current recipe. Should only scale the first fluid input with water
      */
     public void depleteRecipeInputs() {
         for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
@@ -452,8 +447,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * On recipe fail, water quality may degrade to the same or lower tier. This function returns the water to output
-     * in this case, or null if no water is produced at all.
+     * On recipe fail, water quality may degrade to the same or lower tier. This function returns the water to output in
+     * this case, or null if no water is produced at all.
      */
     private FluidStack getDegradedOutputWater() {
         ThreadLocalRandom random = ThreadLocalRandom.current();

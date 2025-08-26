@@ -99,6 +99,7 @@ import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
+import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
@@ -109,7 +110,6 @@ import gregtech.loaders.postload.BlockResistanceLoader;
 import gregtech.loaders.postload.BookAndLootLoader;
 import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.CropLoader;
-import gregtech.loaders.postload.FakeRecipeLoader;
 import gregtech.loaders.postload.GTPostLoad;
 import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
@@ -361,6 +361,7 @@ public class GTMod {
         new GTItemIterator().run();
         proxy.registerUnificationEntries();
         new FuelLoader().run();
+        new FissionFuelLoader().run();
 
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
@@ -414,7 +415,6 @@ public class GTMod {
         new ItemMaxStacksizeLoader().run();
         new BlockResistanceLoader().run();
         new RecyclerBlacklistLoader().run();
-        new FakeRecipeLoader().run();
         new MachineRecipeLoader().run();
         new ScrapboxDropLoader().run();
         new CropLoader().run();

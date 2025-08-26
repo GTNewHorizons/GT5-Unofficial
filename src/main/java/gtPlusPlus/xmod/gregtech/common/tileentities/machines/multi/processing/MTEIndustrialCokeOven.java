@@ -29,6 +29,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -66,9 +68,9 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo("Gain 4% energy discount per voltage tier")
-            .addInfo("Process 12x materials with Heat Resistant Casings")
-            .addInfo("Or 24x materials with Heat Proof Casings")
+            .addInfo(TooltipHelper.parallelText(12) + " Parallels with Heat Resistant Casings")
+            .addInfo(TooltipHelper.parallelText(24) + " Parallels with Heat Proof Casings")
+            .addDynamicEuEffInfo(0.04f, TooltipTier.VOLTAGE)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front middle at bottom")

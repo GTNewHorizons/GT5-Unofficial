@@ -56,6 +56,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -190,9 +191,9 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Lathe, IPL")
-            .addInfo("300% faster than using single block machines of the same voltage")
-            .addInfo("Gains 8 parallel per Pipe Casing Tier")
-            .addInfo("Only uses 80% of the EU/t normally required.")
+            .addDynamicParallelInfo(8, TooltipTier.PIPE_CASING)
+            .addStaticSpeedInfo(4f)
+            .addStaticEuEffInfo(0.8f)
             .beginStructureBlock(7, 5, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
@@ -272,7 +273,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("itemPipeTier", Math.max(0, getPipeTier()));
         tag.setFloat("speedBonus", 400);
-        tag.setFloat("getMaxParallelRecipes", Math.max(0, getMaxParallelRecipes()));
     }
 
     private static final DecimalFormat dfNone = new DecimalFormat("#");
@@ -286,10 +286,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("itemPipeTier")));
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE

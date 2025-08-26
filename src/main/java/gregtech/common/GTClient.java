@@ -45,6 +45,7 @@ import com.gtnewhorizons.navigator.api.NavigatorApi;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -296,8 +297,8 @@ public class GTClient extends GTProxy {
     public void onInitialization(FMLInitializationEvent event) {
         // spotless:off
         super.onInitialization(event);
-        GTRendererBlock.register();
-        GTRendererCasing.register();
+        RenderingRegistry.registerBlockHandler(new GTRendererBlock());
+        RenderingRegistry.registerBlockHandler(new GTRendererCasing());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, new DroneRender());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
@@ -558,7 +559,7 @@ public class GTClient extends GTProxy {
 
         // TreeSet so it's always the same order
         TreeSet<Hazard> protections = new TreeSet<>();
-        for (Hazard hazard : Hazard.values()) {
+        for (Hazard hazard : Hazard.VALUES) {
             if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
                 protections.add(hazard);
             }

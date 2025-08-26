@@ -69,14 +69,22 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
     @Override
     public int getRenderType() {
-        try {
-            if (CustomOreBlockRenderer.INSTANCE != null) {
-                return CustomOreBlockRenderer.INSTANCE.mRenderID;
-            }
-            return super.getRenderType();
-        } catch (NullPointerException n) {
-            return 0;
-        }
+        return CustomOreBlockRenderer.mRenderID;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
     }
 
     @Override

@@ -40,7 +40,8 @@ public enum DimensionBlockMetaDefinitionList {
         // Europa top layer turned off bc ores are too easy to spot
         new ModDBMDef("europagrunt", 1), // Europa Ice Layer ~55-65 without top layer
         new ModDBMDef(Blocks.water), new ModDBMDef(Blocks.flowing_water), new ModDBMDef(Blocks.ice), // Generates
-                                                                                                     // directly over
+                                                                                                     // directly
+                                                                                                     // over
                                                                                                      // bedrock
         new ModDBMDef(Blocks.packed_ice), // Generates directly over bedrock
         new ModDBMDef("europaunderwatergeyser") // Generates directly over bedrock

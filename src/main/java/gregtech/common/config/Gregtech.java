@@ -133,6 +133,10 @@ public class Gregtech {
     @Config.LangKey("GT5U.gui.config.gregtech.general")
     public static class General {
 
+        @Config.Comment("if true, batch mode will initially be enabled when multiblocks are placed in the world.")
+        @Config.DefaultBoolean(true)
+        public boolean batchModeInitialValue;
+
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
         @Config.RequiresMcRestart
