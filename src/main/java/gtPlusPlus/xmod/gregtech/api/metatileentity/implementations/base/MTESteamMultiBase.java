@@ -74,7 +74,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
-    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "Processing Speed & Steam Consumption is doubled under High Pressure";
+    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles Speed and Steam Usage";
 
     public MTESteamMultiBase(String aName) {
         super(aName);
