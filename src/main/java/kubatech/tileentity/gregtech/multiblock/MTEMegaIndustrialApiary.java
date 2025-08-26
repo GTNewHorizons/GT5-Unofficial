@@ -80,7 +80,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -133,6 +133,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import kubatech.Tags;
 import kubatech.api.DynamicInventory;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
@@ -784,9 +785,15 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
     }
 
+    final int mInventoryWidth = 128;
+    final int mInventoryHeight = 60;
+    final int mInventoryX = 10;
+    final int mInventoryY = 16;
+    final int mInventoryBorderWidth = 3;
+
     DynamicInventory<BeeSimulator> dynamicInventory = new DynamicInventory<>(
-        128,
-        60,
+        mInventoryWidth,
+        mInventoryHeight,
         () -> mMaxSlots,
         mStorage,
         s -> s.queenStack).allowInventoryInjection(input -> {
@@ -835,10 +842,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setPos(4, 4)
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
+
+        int tBackgroundPadding = mInventoryBorderWidth * 2;
+        builder.widget(
+            new DrawableWidget().setDrawable(UITexture.fullImage(Tags.MODID, "gui/apiary_inventory_background"))
+                .setPos(mInventoryX - mInventoryBorderWidth, mInventoryY - mInventoryBorderWidth)
+                .setSize(mInventoryWidth + tBackgroundPadding, mInventoryHeight + tBackgroundPadding)
+                .setEnabled(w -> isInInventory));
+
         builder.widget(
             dynamicInventory.asWidget(builder, buildContext)
-                .setPos(10, 16)
-                .setBackground(new Rectangle().setColor(Color.rgb(163, 163, 198)))
+                .setPos(mInventoryX, mInventoryY)
                 .setEnabled(w -> isInInventory));
 
         builder.widget(
