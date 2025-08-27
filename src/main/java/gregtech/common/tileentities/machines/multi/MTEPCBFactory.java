@@ -1006,7 +1006,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
+        return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 
     @Override

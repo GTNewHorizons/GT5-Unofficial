@@ -358,22 +358,22 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (GTUtility.isStackInList(aStack, GregTechAPI.sWrenchList) && !mWrench
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mWrench = true;
-            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sScrewdriverList) && !mScrewdriver
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mScrewdriver = true;
-            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sSoftMalletList) && !mSoftMallet
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mSoftMallet = true;
-            setMaintenanceSound(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mHardHammer = true;
-            setMaintenanceSound(SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sCrowbarList) && !mCrowbar
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
