@@ -144,11 +144,15 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner")
             .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
-            .addInfo(
-                "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+            .addInfo("Can be supplied with "+EnumChatFormatting.AQUA+"2 L/s"+EnumChatFormatting.GRAY+" of Noble gases to boost "+EnumChatFormatting.GOLD+"output")
+            .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE,"Neon",4))
+            .addInfo(createGasString(EnumChatFormatting.AQUA,"Krypton",8))
+            .addInfo(createGasString(EnumChatFormatting.DARK_AQUA,"Xenon",16))
+            .addInfo(createGasString(EnumChatFormatting.BLUE,"Oganesson",64))
             .addInfo(
                 "Will output " + 2 * this.TIER_MULTIPLIER
                     + " Ores per Second depending on the Dimension it is build in")
+
             .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
             .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
             .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
@@ -369,5 +373,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    private String createGasString(EnumChatFormatting color, String gas, int boost)
+    {
+        return String.format("%s%s%s : %s%dx%s",color,gas,EnumChatFormatting.GRAY,EnumChatFormatting.GOLD,boost,EnumChatFormatting.GRAY);
     }
 }
