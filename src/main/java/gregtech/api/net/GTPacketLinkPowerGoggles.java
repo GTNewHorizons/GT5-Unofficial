@@ -60,8 +60,8 @@ public class GTPacketLinkPowerGoggles extends GTPacket {
 
     @Override
     public void process(IBlockAccess world) {
-        EVENT_HANDLER.setLscLink(player, this.coords);
-        EVENT_HANDLER.forceUpdate = true;
-        EVENT_HANDLER.forceRefresh = true;
+        // EVENT_HANDLER.setLscLink(player, this.coords);
+        // EVENT_HANDLER.forceUpdate = true;
+        // EVENT_HANDLER.forceRefresh = true;
     }
 }

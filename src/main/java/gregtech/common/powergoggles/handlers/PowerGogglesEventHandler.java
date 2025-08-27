@@ -25,10 +25,8 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
 import gregtech.common.misc.WirelessNetworkManager;
-import gregtech.common.powergoggles.ItemPowerGoggles;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
@@ -37,11 +35,11 @@ public class PowerGogglesEventHandler {
     private static final PowerGogglesEventHandler INSTANCE = new PowerGogglesEventHandler();
 
     private Map<UUID, Integer> tickMap = new HashMap<>();
-    public Minecraft mc;
-    public Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
-    public boolean forceUpdate = false;
-    public boolean forceRefresh = false;
-    public boolean firstClientTick = true;
+    private Minecraft mc;
+    private Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
+    private boolean forceUpdate = false;
+    private boolean forceRefresh = false;
+    private boolean firstClientTick = true;
 
     private PowerGogglesEventHandler() {}
 
@@ -50,24 +48,24 @@ public class PowerGogglesEventHandler {
     }
 
     @SubscribeEvent
-    public void playerTickEnd(TickEvent.PlayerTickEvent event) {
+    private void playerTickEnd(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         if (event.side == Side.CLIENT) {
-            doClientStuff(event);
+            // doClientStuff(event);
         } else {
             doServerStuff(event);
         }
     }
 
-    private void doClientStuff(TickEvent.PlayerTickEvent event) {
-        if (firstClientTick) {
-            ItemStack bauble = ItemPowerGoggles.getEquippedPowerGoggles(event.player);
-            if (bauble != null) setLink(bauble);
-            firstClientTick = false;
-        }
-        if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
-        forceUpdate = false;
-    }
+    // private void doClientStuff(TickEvent.PlayerTickEvent event) {
+    // if (firstClientTick) {
+    // ItemStack bauble = ItemPowerGoggles.getEquippedPowerGoggles(event.player);
+    // if (bauble != null) setLink(bauble);
+    // firstClientTick = false;
+    // }
+    // if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
+    // forceUpdate = false;
+    // }
 
     private void doServerStuff(TickEvent.PlayerTickEvent event) {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
@@ -104,24 +102,24 @@ public class PowerGogglesEventHandler {
     }
 
     @SubscribeEvent
-    public void clientOnPlayerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+    private void clientOnPlayerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
 
     }
 
     @SubscribeEvent
-    public void clientOnPlayerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+    private void clientOnPlayerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         PowerGogglesHudHandler.clear();
         firstClientTick = true;
     }
 
     @SubscribeEvent
-    public void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
+    private void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
 
     }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
+    private void onKeyInput(InputEvent.KeyInputEvent event) {
 
         if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
             Minecraft screenInfo = Minecraft.getMinecraft();
@@ -137,21 +135,21 @@ public class PowerGogglesEventHandler {
         }
     }
 
-    private void setLink(ItemStack item) {
-        if (!item.hasTagCompound() || item.getTagCompound()
-            .hasNoTags()) NW.sendToServer(new GTPacketLinkPowerGoggles());
-        else {
-            NBTTagCompound tag = item.getTagCompound();
-            DimensionalCoord coords = new DimensionalCoord(
-                tag.getInteger("x"),
-                tag.getInteger("y"),
-                tag.getInteger("z"),
-                tag.getInteger("dim"));
-            NW.sendToServer(new GTPacketLinkPowerGoggles(coords));
-        }
-    }
+    // private void setLink(ItemStack item) {
+    // if (!item.hasTagCompound() || item.getTagCompound()
+    // .hasNoTags()) NW.sendToServer(new GTPacketLinkPowerGoggles());
+    // else {
+    // NBTTagCompound tag = item.getTagCompound();
+    // DimensionalCoord coords = new DimensionalCoord(
+    // tag.getInteger("x"),
+    // tag.getInteger("y"),
+    // tag.getInteger("z"),
+    // tag.getInteger("dim"));
+    // NW.sendToServer(new GTPacketLinkPowerGoggles(coords));
+    // }
+    // }
 
-    public boolean isValidLink(EntityPlayerMP player, DimensionalCoord coords) {
+    private boolean isValidLink(EntityPlayerMP player, DimensionalCoord coords) {
         if (coords == null) return false;
         WorldServer lscDim = player.mcServer.worldServerForDimension(coords.getDimension());
         TileEntity tileEntity = lscDim.getTileEntity(coords.x, coords.y, coords.z);
@@ -159,16 +157,16 @@ public class PowerGogglesEventHandler {
         return gte.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor;
     }
 
-    public void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
+    private void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
         lscLinkMap.put(player.getUniqueID(), coords);
     }
 
-    public DimensionalCoord getLscLink(UUID uuid) {
+    private DimensionalCoord getLscLink(UUID uuid) {
         return lscLinkMap.get(uuid);
     }
 
     @SubscribeEvent
-    public void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
+    private void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
         EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
         setLscLink(player, null);
     }
