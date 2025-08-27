@@ -23,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cofh.api.energy.IEnergyContainerItem;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -36,7 +37,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import tectech.loader.ConfigHandler;
-import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -70,8 +70,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                 .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, InputBus, OutputBus)
                 .casingIndex(Casings.HighPowerCasing.getTextureId())
                 .dot(1)
-                .buildAndChain(Casings.HighPowerCasing.asElement())
-
+                .buildAndChain(Casings.HighPowerCasing.asElement()))
         .build();
     // endregion
 
