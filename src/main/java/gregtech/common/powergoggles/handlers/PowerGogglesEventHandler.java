@@ -5,13 +5,11 @@ import static gregtech.api.enums.GTValues.NW;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;
@@ -27,6 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
 import gregtech.common.misc.WirelessNetworkManager;
+import gregtech.common.powergoggles.PowerGogglesClient;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
@@ -40,6 +39,8 @@ public class PowerGogglesEventHandler {
     private boolean forceUpdate = false;
     private boolean forceRefresh = false;
     private boolean firstClientTick = true;
+
+    private Map<UUID, PowerGogglesClient> clientMap = new HashMap<>();
 
     private PowerGogglesEventHandler() {}
 
@@ -172,21 +173,7 @@ public class PowerGogglesEventHandler {
     }
 
     public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP player) {
-        NBTTagCompound tag = itemstack.getTagCompound();
-        DimensionalCoord coords = null;
-        if (tag != null && !tag.hasNoTags()) {
-            coords = new DimensionalCoord(
-                tag.getInteger("x"),
-                tag.getInteger("y"),
-                tag.getInteger("z"),
-                tag.getInteger("dim"));
-        }
-
-        DimensionalCoord current = getLscLink(player.getUniqueID());
-        if (!Objects.equals(current, coords)) {
-            setLscLink(player, coords);
-            forceUpdate = true;
-            forceRefresh = true;
-        }
+        PowerGogglesClient client = clientMap.computeIfAbsent(player.getUniqueID(), uuid -> new PowerGogglesClient());
+        client.updateLscLink(itemstack);
     }
 }
