@@ -140,6 +140,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
+    public static final int MAX_LOOTING_LEVEL = 4;
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
@@ -280,7 +281,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
             .addInfo("Recipe time is based on mob health")
             .addInfo("You can additionally put a weapon inside the GUI")
-            .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels)")
+            .addInfo("It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
+                + " levels)")
+            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
+            .addInfo(
+                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
             .addSeparator()
             .addInfo(
@@ -304,10 +309,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("The Ritual must be built directly centered above the machine")
             .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
             .addSeparator()
-            .addInfo("You can disable mob animation with a soldering iron.")
+            .addInfo("You can disable mob animation with a soldering iron")
             .addInfo(
                 "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
-                    + " 16x Time 16x Output")
+                    + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
