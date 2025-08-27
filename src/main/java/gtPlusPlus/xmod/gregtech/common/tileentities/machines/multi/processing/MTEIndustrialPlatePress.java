@@ -81,10 +81,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("500% faster than using single block machines of the same voltage")
-            .addInfo("Processes four items per voltage tier")
-            .addInfo("Circuit for recipe goes in the Input Bus")
-            .addInfo("Each Input Bus can have a different Circuit/Shape!")
+            .addBulkMachineInfo(4, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
@@ -138,7 +135,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
+        return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override

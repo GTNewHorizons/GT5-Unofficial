@@ -48,6 +48,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
@@ -101,9 +102,9 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("60% faster than using single block machines of the same voltage")
-            .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
+            .addInfo(TooltipHelper.parallelText("Voltage Tier * n") + " parallels")
             .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
+            .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 3, true)
             .addController("Bottom center")
@@ -212,7 +213,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MACERATOR_OP;
+        return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
     @Override
