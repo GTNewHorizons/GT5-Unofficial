@@ -94,13 +94,13 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             side != facing
                 ? LASER
-                    ? (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[mTier])
-                    : (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])
+                    ? (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier])
+                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier])
                 : GENNY };
     }
 
