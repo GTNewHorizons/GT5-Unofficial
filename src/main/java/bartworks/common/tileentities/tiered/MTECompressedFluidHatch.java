@@ -26,9 +26,11 @@ import gregtech.api.util.GTUtility;
 
 public class MTECompressedFluidHatch extends MTEHatchInput {
 
+    final int CAPACITY = 100_000_000;
+
     public MTECompressedFluidHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
-        this.mDescriptionArray[1] = "Capacity: 100,000,000L";
+        setCustomCapacity(CAPACITY);
     }
 
     public MTECompressedFluidHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -37,7 +39,7 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
 
     @Override
     public int getCapacity() {
-        return 100_000_000;
+        return CAPACITY;
     }
 
     @Override
