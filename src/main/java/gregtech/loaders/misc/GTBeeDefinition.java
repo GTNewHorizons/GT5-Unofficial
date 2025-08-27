@@ -33,6 +33,7 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.CropsPlusPlus;
 import static gregtech.api.enums.Mods.EnderStorage;
 import static gregtech.api.enums.Mods.ExtraBees;
@@ -465,7 +466,15 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(CERTUS, getSpecies(EXTRABEES, "ocean"), 10);
         tMutation.restrictHumidity(DAMP);
-        tMutation.requireResource("blockPrismarine");
+        if (Botania.isModLoaded()) {
+            tMutation.requireResource(
+                Block.getBlockFromItem(
+                    GTModHandler.getModItem(Botania.ID, "prismarine", 1)
+                        .getItem()),
+                0);
+        } else {
+            tMutation.requireResource("blockPrismarine");
+        }
     }),
     // Metal Line
     COPPER(GTBranchDefinition.METAL, "Copper", true, new Color(0xFF6600), new Color(0xE65C00), beeSpecies -> {

@@ -192,9 +192,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     }
 
     /**
-     * MV (2) = 16
-     * HV (3) = 32
-     * EV (4) = 48
+     * MV (2) = 16 HV (3) = 32 EV (4) = 48
      */
     private static int getPylonRange(int tier, boolean powered) {
         return (int) ((powered ? 1 : 0.5) * (tier - 1) * BASE_PYLON_RANGE);

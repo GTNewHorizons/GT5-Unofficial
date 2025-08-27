@@ -82,8 +82,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     implements ISurvivalConstructable {
 
     /**
-     * Number of seconds to average the wormhole energy over.
-     * (controls the weights in a weighted average)
+     * Number of seconds to average the wormhole energy over. (controls the weights in a weighted average)
      */
     public static int WH_ENERGY_AVG_WINDOW = 5;
 

@@ -269,9 +269,9 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     }
 
     /**
-     * Automatically adds casing and hatch lines.
-     * If this doesn't do something you need, add it if it's simple. If it's something cursed or complex don't bother,
-     * just call the proper methods manually. This method should only cover normal use cases.
+     * Automatically adds casing and hatch lines. If this doesn't do something you need, add it if it's simple. If it's
+     * something cursed or complex don't bother, just call the proper methods manually. This method should only cover
+     * normal use cases.
      *
      * @see StructureWrapperTooltipBuilder#addCasingInfoAuto(ICasing)
      * @see StructureWrapperTooltipBuilder#addHatch(ICasing, IHatchElement, int...)

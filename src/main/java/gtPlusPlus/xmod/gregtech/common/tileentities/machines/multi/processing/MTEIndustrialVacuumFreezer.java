@@ -96,7 +96,9 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
+            .addStaticParallelInfo(4)
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(1f)
             .addInfo("Consumes 10L of " + CRYO_STACK.getLocalizedName() + "/s during operation")
             .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
             .addPollutionAmount(getPollutionPerSecond(null))

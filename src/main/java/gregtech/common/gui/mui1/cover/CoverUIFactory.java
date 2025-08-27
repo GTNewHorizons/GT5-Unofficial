@@ -72,8 +72,7 @@ public class CoverUIFactory<C> {
     }
 
     /**
-     * Can return null when the cover is invalid e.g. tile is broken or cover
-     * is removed
+     * Can return null when the cover is invalid e.g. tile is broken or cover is removed
      */
 
     protected @Nullable C getCover() {

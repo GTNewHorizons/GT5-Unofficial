@@ -1158,8 +1158,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
         }
 
         /**
-         * Manually sets MTE id to start for multi fluid pipes. Mostly for legacy reason.
-         * Default to {@link #startId} plus 5.
+         * Manually sets MTE id to start for multi fluid pipes. Mostly for legacy reason. Default to {@link #startId}
+         * plus 5.
          */
         private FluidPipeBuilder multiFluidStartId(int multiFluidStartId) {
             this.multiFluidStartId = multiFluidStartId;
@@ -1317,8 +1317,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
         }
 
         /**
-         * Sets sequence of MTE ids to use. Mostly for legacy reason. If your ids are sequential,
-         * use {@link #startId(int)} instead.
+         * Sets sequence of MTE ids to use. Mostly for legacy reason. If your ids are sequential, use
+         * {@link #startId(int)} instead.
          */
         private ItemPipeBuilder idList(int... idList) {
             this.idList = idList;

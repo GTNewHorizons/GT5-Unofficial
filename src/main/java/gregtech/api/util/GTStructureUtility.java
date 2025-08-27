@@ -622,9 +622,8 @@ public class GTStructureUtility {
      * Solenoid coil structure element.
      *
      * @param aSolenoidTierSetter Notify the controller of this new solenoid. Got called exactly once per solenoid.
-     *                            Might be
-     *                            called less times if structure test fails. If the setter returns false then it assumes
-     *                            the solenoid is rejected.
+     *                            Might be called less times if structure test fails. If the setter returns false then
+     *                            it assumes the solenoid is rejected.
      * @param aSolenoidTierGetter Get the solenoid voltage tier. Null means no tier recorded yet.
      */
     public static <T> IStructureElement<T> ofSolenoidCoil(BiPredicate<T, Byte> aSolenoidTierSetter,
@@ -1008,8 +1007,8 @@ public class GTStructureUtility {
     }
 
     /**
-     * Just a hatch element that proxies its operations to another one. Useful for overriding or hooking into
-     * specific operations while keeping the rest unchanged.
+     * Just a hatch element that proxies its operations to another one. Useful for overriding or hooking into specific
+     * operations while keeping the rest unchanged.
      */
     public static class ProxyHatchElement<T> implements IHatchElement<T> {
 
