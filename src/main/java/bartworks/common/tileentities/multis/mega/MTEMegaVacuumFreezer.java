@@ -16,6 +16,7 @@ package bartworks.common.tileentities.multis.mega;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static goodgenerator.main.GGConfigLoader.CoolantEfficiency;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
@@ -233,17 +234,29 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer, MVF")
-            .addInfo("Cools hot ingots and cells")
+            .addInfo("Handles all things cooling!")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .addSeparator()
-            .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
+            .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.DARK_AQUA + "Subspace Cooling.")
             .addInfo(
+                "Will gain " + EnumChatFormatting.GOLD
+                    + "perfect overclocks "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.GREEN
+                    + "consuming "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "coolants:")
+            .addInfo(getCoolantTextFormatted("Molten Spacetime", "7500", 1))
+            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "5000", 2))
+            .addInfo(getCoolantTextFormatted("Molten Eternity", "2500", 3))
+           /* .addInfo(
                 "To activate " + EnumChatFormatting.LIGHT_PURPLE
                     + "Subspace Cooling "
                     + EnumChatFormatting.GRAY
-                    + "supply a coolant while running recipes.")
+                    + "supply a "+EnumChatFormatting.AQUA+"coolant"+EnumChatFormatting.GRAY+" while running recipes")
             .addInfo(
                 EnumChatFormatting.RED + "7500 L/s "
                     + EnumChatFormatting.DARK_PURPLE
@@ -273,14 +286,14 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     + EnumChatFormatting.RED
                     + "3"
                     + EnumChatFormatting.GRAY
-                    + " perfect overclocks.")
+                    + " perfect overclocks.")*/
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "Reinforcing the structure allows the injection of exotic coolants,")
+                EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE
+                EnumChatFormatting.DARK_AQUA
                     + "enabling the capture of heat energy in miniature tears in spacetime,")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "massively increasing the efficiency of the cooling process.")
+            .addInfo(EnumChatFormatting.DARK_AQUA + "massively increasing the efficiency of the cooling process.")
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
             .addEnergyHatch("Any Frost Proof Machine Casing", 1)
@@ -542,5 +555,18 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP;
+    }
+
+    private String getCoolantTextFormatted(String fluidType, String litersConsumed, int ocboost) {
+        return String.format(
+            "%s%s L/s%s : %s%d %s: %s%s",
+            EnumChatFormatting.GREEN,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            ocboost,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            fluidType);
     }
 }
