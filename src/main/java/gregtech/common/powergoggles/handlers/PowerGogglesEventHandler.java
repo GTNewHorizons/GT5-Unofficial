@@ -7,14 +7,17 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.common.config.Configuration;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.powergoggles.PowerGogglesClient;
+import gregtech.common.powergoggles.PowerGogglesUtil;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
 
 public class PowerGogglesEventHandler {
@@ -74,6 +77,28 @@ public class PowerGogglesEventHandler {
         } else if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
             toggleChart();
         }
+    }
+
+    // Annoyingly, this method is called before the player's baubles are initialized
+    // when they join this world for the first time(At least in singleplayer)
+    @SubscribeEvent
+    public void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
+        NetHandlerPlayServer handler = (NetHandlerPlayServer) event.handler;
+        EntityPlayerMP player = handler.playerEntity;
+        UUID uuid = player.getUniqueID();
+
+        if (CLIENTS.containsKey(uuid)) {
+            return;
+        }
+        processNewClient(player);
+    }
+
+    private void processNewClient(EntityPlayerMP player) {
+        ItemStack goggles = PowerGogglesUtil.getPlayerGoggles(player);
+        if (goggles == null) {
+            return;
+        }
+        updatePlayerLink(goggles, player);
     }
 
     private void openConfig() {

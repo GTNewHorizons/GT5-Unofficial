@@ -30,7 +30,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.powergoggles.ItemPowerGoggles;
+import gregtech.common.powergoggles.PowerGogglesUtil;
 
 public class PowerGogglesHudHandler {
 
@@ -65,7 +65,7 @@ public class PowerGogglesHudHandler {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL || mc.gameSettings.showDebugInfo
             || (PowerGogglesConfigHandler.hideWhenChatOpen && mc.currentScreen instanceof GuiChat)) return;
 
-        if (ItemPowerGoggles.getEquippedPowerGoggles(mc.thePlayer) == null) return;
+        if (!PowerGogglesUtil.isPlayerWearingGoggles(mc.thePlayer)) return;
         ScaledResolution resolution = event.resolution;
         int screenHeight = resolution.getScaledHeight();
         int screenWidth = resolution.getScaledWidth();

@@ -23,7 +23,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
-import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
 
@@ -44,7 +43,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         }
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (!isLSC(tileEntity)) {
+        if (!PowerGogglesUtil.isLSC(tileEntity)) {
             player
                 .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
             return true;
@@ -67,11 +66,6 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
-    }
-
-    private boolean isLSC(TileEntity tileEntity) {
-        return tileEntity instanceof IGregTechTileEntity te
-            && te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor;
     }
 
     @Override
@@ -176,17 +170,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
-        return getEquippedPowerGoggles(player) == null;
-    }
-
-    public static ItemStack getEquippedPowerGoggles(EntityLivingBase player) {
-        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles((EntityPlayer) player);
-        for (ItemStack bauble : baubles.stackList) {
-            if (bauble != null && bauble.getItem() instanceof ItemPowerGoggles) {
-                return bauble;
-            }
-        }
-        return null;
+        return !PowerGogglesUtil.isPlayerWearingGoggles((EntityPlayer) player);
     }
 
     @Override
