@@ -663,8 +663,8 @@ public class MTEFluidPipe extends MetaPipeEntity {
                         : currentPipe.isConnectedAtSide(tSide);
 
                     /*
-                     * Making sure next pipe will have same action applied to it
-                     * e.g. Connecting pipe won`t trigger disconnect if next pipe is already connected
+                     * Making sure next pipe will have same action applied to it e.g. Connecting pipe won`t trigger
+                     * disconnect if next pipe is already connected
                      */
                     if (currentState != initialState) {
                         return wasActionPerformed;

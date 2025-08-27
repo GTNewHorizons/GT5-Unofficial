@@ -67,7 +67,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addController("Bottom Center")
             .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
             .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
-            .addCasingInfoMin("Zeron-100 Reactor Shielding", 4, false)
+            .addCasingInfoMin("Reactor Shield Casing", 4, false)
             .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false)
             .addInputHatch("Base platform", 1)
             .addOutputHatch("Base platform", 1)

@@ -113,8 +113,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
 
     /**
      * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
-     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its
-     * overloads.
+     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads.
      * <br>
      * This texture will be overlaid on top of the block's base texture for that face.
      */
@@ -131,8 +130,8 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     }
 
     /**
-     * This cover id should only be used to get the {@link CoverPlacer} from the {@link CoverRegistry}, or to
-     * compare 2 covers to see if they're of the same type.
+     * This cover id should only be used to get the {@link CoverPlacer} from the {@link CoverRegistry}, or to compare 2
+     * covers to see if they're of the same type.
      */
     public int getCoverID() {
         return coverID;
@@ -193,8 +192,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
 
     /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
-     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads.
-     * <br>
+     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads. <br>
      * This texture takes up the entire face on which it is rendered.
      */
     public ITexture getSpecialFaceTexture() {

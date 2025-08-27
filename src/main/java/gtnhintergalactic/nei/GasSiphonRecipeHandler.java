@@ -25,7 +25,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.util.GTUtility;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Recipe handler for the gas siphon recipes
@@ -216,7 +215,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
             false);
 
         CachedSiphonRecipe recipe = (CachedSiphonRecipe) this.arecipes.get(recipeIndex);
-        GuiDraw.drawStringC(GCCoreUtil.translate(recipe.planet), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(GTUtility.translate(recipe.planet), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(Integer.toString(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 

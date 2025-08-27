@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,7 +50,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.helpers.ICustomNameObject;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -79,6 +77,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -93,8 +92,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
     IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject {
 
-    private static final Field ENTITY_ITEM_HEALTH_FIELD = ReflectionHelper
-        .findField(EntityItem.class, "health", "field_70291_e");
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
     public long mLastSoundTick = 0;
@@ -634,7 +631,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             oldTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
                 | (mRedstone ? 16 : 0)
                 | (mLockUpgrade ? 32 : 0)
-                | (mWorks ? 64 : 0));
+                | (mWorks ? 64 : 0)
+                | (mMuffler ? 128 : 0));
 
             oldUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
 
@@ -1320,9 +1318,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D);
         tItemEntity.hurtResistantTime = 999999;
         tItemEntity.lifespan = 60000;
-        try {
-            ENTITY_ITEM_HEALTH_FIELD.setInt(tItemEntity, 99999999);
-        } catch (Exception ignored) {}
+        ((EntityItemAccessor) tItemEntity).gt5$setHealth(99999999);
         this.worldObj.spawnEntityInWorld(tItemEntity);
         tItem.stackSize = 0;
     }
@@ -1379,12 +1375,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine
                             && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
                             GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
                             cableUpdateDelay = 10;
                         } else if (mMetaTileEntity
                             .onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                                sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                                sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
                                 cableUpdateDelay = 10;
                             }
 
@@ -1396,7 +1392,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ);
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
-                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1);
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
@@ -1414,7 +1410,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                         : GTUtility.trans("088", "Enabled") + GTUtility.trans("089", "  Auto-Output: ")
                                             + (mOutputDisabled ? GTUtility.trans("087", "Disabled")
                                                 : GTUtility.trans("088", "Enabled"))));
-                            sendSoundToPlayers(SoundResource.RANDOM_ANVIL_USE, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
@@ -1433,7 +1429,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                     tChat = getMetaTileEntity().getAlternativeModeText();
                                 GTUtility.sendChatToPlayer(aPlayer, tChat);
                             }
-                            sendSoundToPlayers(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
@@ -1466,7 +1462,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         if (mMetaTileEntity
                             .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             // logic handled internally
-                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WIRECUTTER, 1.0F, 1);
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
@@ -1485,7 +1481,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                     .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                                sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                                sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
                                 sendClientData();
                             }
                             return true;
@@ -1531,7 +1527,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 if (isUpgradable() && tCurrentItem != null) {
                     if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
                         if (addMufflerUpgrade()) {
-                            sendSoundToPlayers(SoundResource.RANDOM_CLICK, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_CLICK, 1.0F, 1);
                             if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
                         }
                         return true;
@@ -1541,7 +1537,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             mLockUpgrade = true;
                             setOwnerName(aPlayer.getDisplayName());
                             setOwnerUuid(aPlayer.getUniqueID());
-                            sendSoundToPlayers(SoundResource.RANDOM_CLICK, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_CLICK, 1.0F, 1);
                             if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
                         }
                         return true;

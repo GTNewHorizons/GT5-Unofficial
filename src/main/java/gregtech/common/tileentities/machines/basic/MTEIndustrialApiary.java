@@ -25,7 +25,6 @@ import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,7 +124,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private static final int drone = 6;
     private static final int upgradeSlot = drone + 1;
     private static final int upgradeSlotCount = 4;
-    private static Field AlleleBeeEffectThrottledField;
 
     final IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
 
@@ -506,39 +504,31 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private void doAcceleratedEffects() {
         final IBeeGenome genome = usedQueenBee.getGenome();
         final IAlleleBeeEffect effect = genome.getEffect();
-        try {
-            if (AlleleBeeEffectThrottledField == null) {
-                AlleleBeeEffectThrottledField = AlleleEffectThrottled.class.getDeclaredField("throttle");
-                AlleleBeeEffectThrottledField.setAccessible(true);
-            }
-            if (effect instanceof IAlleleBeeAcceleratableEffect) {
-                effectData[0] = effect.validateStorage(effectData[0]);
-                effectData[0] = ((IAlleleBeeAcceleratableEffect) effect).doEffectAccelerated(
-                    genome,
-                    effectData[0],
-                    this,
-                    usedBeeLife / (effect instanceof AlleleEffectThrottled
-                        ? (float) AlleleBeeEffectThrottledField.getInt(effect)
+        if (effect instanceof IAlleleBeeAcceleratableEffect) {
+            effectData[0] = effect.validateStorage(effectData[0]);
+            effectData[0] = ((IAlleleBeeAcceleratableEffect) effect).doEffectAccelerated(
+                genome,
+                effectData[0],
+                this,
+                usedBeeLife
+                    / (effect instanceof AlleleEffectThrottled ? (float) ((AlleleEffectThrottled) effect).getThrottle()
                         : 1f));
-            }
+        }
 
-            if (!effect.isCombinable()) return;
+        if (!effect.isCombinable()) return;
 
-            final IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
-            if (!secondary.isCombinable()) return;
+        final IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
+        if (!secondary.isCombinable()) return;
 
-            if (secondary instanceof IAlleleBeeAcceleratableEffect) {
-                effectData[1] = secondary.validateStorage(effectData[1]);
-                effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
-                    genome,
-                    effectData[0],
-                    this,
-                    usedBeeLife / (secondary instanceof AlleleEffectThrottled
-                        ? (float) AlleleBeeEffectThrottledField.getInt(secondary)
-                        : 1f));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (secondary instanceof IAlleleBeeAcceleratableEffect) {
+            effectData[1] = secondary.validateStorage(effectData[1]);
+            effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
+                genome,
+                effectData[0],
+                this,
+                usedBeeLife / (secondary instanceof AlleleEffectThrottled
+                    ? (float) ((AlleleEffectThrottled) secondary).getThrottle()
+                    : 1f));
         }
     }
 

@@ -147,6 +147,15 @@ public class RecipesRareEarthProcessing {
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalBathRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
+            .itemOutputs(RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2))
+            .outputChances(9000, 8000, 7000)
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(chemicalBathRecipes);
+
         // IV Rare Earth
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
@@ -157,7 +166,6 @@ public class RecipesRareEarthProcessing {
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);
 
-        // IV Rare Earth
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
             .itemOutputs(RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2))

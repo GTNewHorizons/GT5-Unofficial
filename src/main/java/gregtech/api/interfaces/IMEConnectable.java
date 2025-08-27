@@ -1,8 +1,7 @@
 package gregtech.api.interfaces;
 
 /**
- * A hatch that has a connection to an ME cable.
- * Used by the matter manipulator to copy this setting.
+ * A hatch that has a connection to an ME cable. Used by the matter manipulator to copy this setting.
  */
 public interface IMEConnectable {
 

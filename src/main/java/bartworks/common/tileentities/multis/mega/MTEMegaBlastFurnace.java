@@ -64,6 +64,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -156,12 +157,34 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, MEBF, MBF")
-            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-            .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
-            .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
-            .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
-            .addInfo("Additionally gives +100K for every tier past MV")
+            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addInfo(
+                "Increases Heat by " + EnumChatFormatting.RED
+                    + "100K"
+                    + EnumChatFormatting.GRAY
+                    + " for every "
+                    + TooltipHelper.tierText("Voltage")
+                    + " tier past "
+                    + EnumChatFormatting.AQUA
+                    + "MV")
+            .addInfo(
+                "Reduces " + TooltipHelper.effText("EU Usage")
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "5%"
+                    + EnumChatFormatting.GRAY
+                    + " every "
+                    + EnumChatFormatting.RED
+                    + "900K"
+                    + EnumChatFormatting.GRAY
+                    + " above the recipe requirement")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "1800K"
+                    + EnumChatFormatting.GRAY
+                    + " over the recipe requirement grants 1 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " Perfect Overclock")
             .addTecTechHatchInfo()
             .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)

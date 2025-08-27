@@ -201,14 +201,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Ore Processor, IOF")
-            .addInfo("It is OP. I mean ore processor.")
-            .addInfo("Do all ore processing in one step.")
-            .addInfo("Can process up to 1024 ores at a time.")
+            .addInfo("Does all ore processing in one step.")
+            .addStaticParallelInfo(1024)
             .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
             .addInfo("Processing time is dependent on mode.")
             .addInfo("Use a screwdriver to switch mode.")
             .addInfo("Sneak click with screwdriver to void the stone dust.")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
@@ -753,7 +754,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         final String ARROW = " " + AQUA + "-> ";
 
         List<String> des = new ArrayList<>();
-        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1") + " ");
+        des.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.runningMode") + " ");
 
         switch (mode) {
             case 0 -> {

@@ -440,6 +440,7 @@ public class GTValues {
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
+    public static final long[] emptyLongArray = new long[0];
 
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];
@@ -451,9 +452,9 @@ public class GTValues {
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
-     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
-     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
-     * be ran.
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran. If the
+     * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
+     * ran.
      */
     public static boolean DEVENV = Launch.blackboard == null ? true
         : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");

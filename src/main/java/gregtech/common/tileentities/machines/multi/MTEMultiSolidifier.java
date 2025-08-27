@@ -16,8 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -62,6 +60,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
@@ -181,17 +180,18 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, Tool Casting Machine")
+        tt.addMachineType("Fluid Solidifier")
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
                     + EnumChatFormatting.GRAY
                     + " to hold different molds")
-            .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
+            .addStaticParallelInfo(BASE_PARALLELS)
+            .addInfo(
+                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH) + " Parallels per tier per width expansion")
+            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
-            .addInfo("Only uses 80% of the EU/t normally required")
-            .addInfo("Processes " + BASE_PARALLELS + " items per voltage tier")
-            .addInfo("Processes an additional " + PARALLELS_PER_WIDTH + " items per voltage tier per width expansion")
+            .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
@@ -281,28 +281,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            RecipeMap<?> currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
-
-            // Override is needed so that switching recipe maps does not stop recipe locking.
-            @Override
-            protected RecipeMap<?> getCurrentRecipeMap() {
-                lastRecipeMap = currentRecipeMap;
-                return currentRecipeMap;
-            }
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
-                CheckRecipeResult result = super.process();
-                if (result.wasSuccessful()) return result;
-
-                currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
-                return super.process();
-            }
-
             @Override
             public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+                if (!inv.shouldBeCached()) {
+                    return true;
+                }
+
                 if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
                     activeDualInv = inv;
                     return true;
@@ -313,6 +297,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 setInputFluids(inputs.inputFluid);
                 Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
                     .collect(Collectors.toSet());
+                // this might be able to be safely removed. Ill keep it in. REMOVE IN NEXT MAJOR UPDATE
                 if (recipes.isEmpty())
                     recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
                 if (!recipes.isEmpty()) {
@@ -360,11 +345,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
-    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.fluidSolidifierRecipes, GGFabRecipeMaps.toolCastRecipes);
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fluidSolidifierRecipes;
     }
@@ -391,7 +371,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedup", speedup);
-        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
@@ -403,10 +382,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("parallels"));
     }
 
     @Override

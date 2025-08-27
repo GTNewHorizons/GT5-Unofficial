@@ -139,11 +139,17 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Netherrack, new ItemStack(Blocks.netherrack, 1, 32767));
         GTOreDictUnificator
+            .registerOre(OrePrefixes.block, Materials.Netherrack, new ItemStack(Blocks.netherrack, 1, 32767));
+        GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.NetherBrick, new ItemStack(Blocks.nether_brick, 1, 32767));
         GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Endstone, new ItemStack(Blocks.end_stone, 1, 32767));
         GTOreDictUnificator
+            .registerOre(OrePrefixes.block, Materials.Endstone, new ItemStack(Blocks.end_stone, 1, 32767));
+        GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Glowstone, new ItemStack(Blocks.glowstone, 1, 32767));
+        GTOreDictUnificator
+            .registerOre(OrePrefixes.block, Materials.Glowstone, new ItemStack(Blocks.glowstone, 1, 32767));
 
         GTOreDictUnificator
             .registerOre("paperResearchFragment", GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 9));

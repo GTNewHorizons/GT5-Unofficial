@@ -11,11 +11,11 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -113,7 +113,7 @@ public class CI {
             if (material instanceof Materials) {
                 materialName = ((Materials) material).mDefaultLocalName;
             } else {
-                materialName = (Utils.sanitizeString(((Material) material).getLocalizedName()));
+                materialName = (StringUtils.sanitizeString(((Material) material).getLocalizedName()));
             }
             Logger.INFO("Searching for a component named " + type.name() + materialName);
             return (type.name() + materialName);

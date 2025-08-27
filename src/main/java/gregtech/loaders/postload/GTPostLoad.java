@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -320,14 +321,14 @@ public class GTPostLoad {
         massFabFakeRecipes.add(MTEMassfabricator.uuaRecipe);
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.top"))
                 .sideBlocks(Blocks.water)
                 .topBlock(Blocks.lava)
                 .outputItem(new ItemStack(Blocks.stone, 1))
                 .duration(16 * TICKS));
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.side"))
                 .sideBlocks(Blocks.water, Blocks.lava)
                 .outputItem(new ItemStack(Blocks.cobblestone, 1))
                 .duration(16 * TICKS));

@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.items;
 
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeModifier;
+import gregtech.api.util.StringUtils;
 
 public enum MBFrameType implements IBeeModifier {
 
@@ -71,7 +72,7 @@ public enum MBFrameType implements IBeeModifier {
     }
 
     public String getLocalizedName() {
-        return FRStringUtil.getLocalizedString("frame." + this.frameName);
+        return StringUtils.getLocalizedString("frame." + this.frameName);
     }
 
     @Override
