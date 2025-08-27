@@ -201,12 +201,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Ore Processor, IOF")
-            .addInfo("Does all ore processing in one step.")
+            .addInfo("Does all ore processing in one step")
             .addStaticParallelInfo(1024)
-            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
-            .addInfo("Processing time is dependent on mode.")
-            .addInfo("Use a screwdriver to switch mode.")
-            .addInfo("Sneak click with screwdriver to void the stone dust.")
+            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
+            .addInfo("Processing time is dependent on mode")
+            .addInfo("Use a screwdriver to switch mode")
+            .addInfo("Sneak click with screwdriver to void the stone dust")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")

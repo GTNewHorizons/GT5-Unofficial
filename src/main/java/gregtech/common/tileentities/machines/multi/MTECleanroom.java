@@ -127,16 +127,16 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cleanroom")
-            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency.")
-            .addInfo("Can accept 2A from an LV energy hatch.")
-            .addInfo("Will overclock and gain efficiency faster starting from HV.")
+            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency")
+            .addInfo("Can accept 2A from an LV energy hatch")
+            .addInfo("Will overclock and gain efficiency faster starting from HV")
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Warning:")
             .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
-            .addInfo("Each maintenance issue reduces maximum efficiency by 10%.")
-            .addInfo("Generating any pollution inside causes the cleanroom to shut down.")
+            .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
+            .addInfo("Generating any pollution inside causes the cleanroom to shut down")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
-            .addController("Top center.")
+            .addController("Top center")
             .addStructureInfo("  If width or length is even, it can be in either of the two middle positions.")
             .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges.")
             .addOtherStructurePart(

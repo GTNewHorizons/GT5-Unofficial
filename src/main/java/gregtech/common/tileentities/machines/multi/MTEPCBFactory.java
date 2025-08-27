@@ -844,22 +844,22 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo(
                 EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
                     + "IMPORTANT!"
-                    + " Check the configuration menu before building.")
-            .addInfo("Tier of the machine determines the available recipes.")
-            .addInfo("Machine tier (1-3) is set in the controller GUI.")
-            .addInfo("The configuration menu can be used to add upgrades.")
-            .addInfo("Each tier and upgrade requires additional structures.")
-            .addInfo("Power consumption is multiplied by Sqrt(structures).")
-            .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
-            .addInfo("Nanites have to be placed in a Nanite Containment Bus.")
+                    + " Check the configuration menu before building!")
+            .addInfo("Tier of the machine determines the available recipes")
+            .addInfo("Machine tier (1-3) is set in the controller GUI")
+            .addInfo("The configuration menu can be used to add upgrades")
+            .addInfo("Each tier and upgrade requires additional structures")
+            .addInfo("Power consumption is multiplied by Sqrt(structures)")
+            .addInfo("Tier 2 and 3 allow parallel by using extra nanites")
+            .addInfo("Nanites have to be placed in a Nanite Containment Bus")
             .addInfo(
                 "The formula for parallels is the " + TooltipHelper.parallelText("amount of nanites^0.75")
-                    + ", rounded up.")
-            .addInfo("Maximum parallel is 256.")
-            .addInfo("Recipes require a cooling upgrade to be overclocked.")
-            .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
-            .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
-            .addInfo("Trace size can be changed to modify the material usage and machine speed.")
+                    + ", rounded up")
+            .addInfo("Maximum parallel is "+TooltipHelper.parallelText("256"))
+            .addInfo("Recipes require a cooling upgrade to be overclocked")
+            .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks")
+            .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks")
+            .addInfo("Trace size can be changed to modify the material usage and machine speed")
             .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
@@ -874,7 +874,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " TT energy hatch.",
+                    + " TT energy hatch",
                 1)
             .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
