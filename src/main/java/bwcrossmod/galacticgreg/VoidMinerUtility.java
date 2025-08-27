@@ -129,11 +129,11 @@ public class VoidMinerUtility {
         }
 
         /**
-         * Method used to compute the ore distribution for the VM.
+         * Method used to compute the ore distribution for the VM if it doesn't exist.
          *
          * @param extraDropMap the extraDropMap that is related to this DropMap
          */
-        public void computeOreDistribution(@Nullable DropMap extraDropMap) {
+        public void isDistributionCached(@Nullable DropMap extraDropMap) {
             if (isAliasCached) return;
             if (internalMap == null || internalMap.isEmpty()) {
                 if (extraDropMap == null || extraDropMap.internalMap == null || extraDropMap.internalMap.isEmpty())

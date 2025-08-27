@@ -264,7 +264,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .getWorld().provider.dimensionId;
         this.handleModDimDef(id);
         this.handleExtraDrops(id);
-        this.dropMap.computeOreDistribution(this.extraDropMap);
+        this.dropMap.isDistributionCached(this.extraDropMap);
         this.totalWeight = dropMap.getTotalWeight();
     }
 
