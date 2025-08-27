@@ -85,9 +85,10 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Grind ores.")
+            .addInfo("G.O.G, Grinds Ores Good")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addInfo("It'sa mill!")
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("IsaMill Exterior Casing", 40, false)

@@ -83,7 +83,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         tt.addMachineType(getMachineType())
             .addInfo("Produces Elemental Material from UU Matter")
             .addBulkMachineInfo(8, 2f, 1f)
-            .addInfo("Maximum 1x of each bus/hatch.")
+            .addInfo("Maximum 1x of each bus/hatch")
             .addInfo("Requires circuit 1-16 in your Data Orb Repository")
             .addInfo("depending on what Data Orb you want to prioritize")
             .addPerfectOCInfo()
