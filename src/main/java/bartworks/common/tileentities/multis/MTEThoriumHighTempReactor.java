@@ -23,6 +23,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -133,11 +134,11 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor, THTR")
             .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
-            .addInfo("Needs a constant supply of coolant while running")
-            .addInfo("Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles)")
-            .addInfo("Consumes up to 0.5% of total Fuel Pellets per Operation depending on efficiency")
+            .addInfo("Needs a constant supply of "+EnumChatFormatting.AQUA+"coolant"+EnumChatFormatting.GRAY+" while running")
+            .addInfo("Needs at least "+EnumChatFormatting.GOLD+"100K"+EnumChatFormatting.GRAY+" Fuel pebbles to start operation (can hold up to 675k pebbles)")
+            .addInfo("Consumes up to "+ EnumChatFormatting.GOLD+"0.5%"+EnumChatFormatting.GRAY+" of total Fuel Pellets per Operation depending on efficiency")
             .addInfo("Efficiency decreases exponentially if the internal buffer is not completely filled")
-            .addInfo("Reactor will take 4 800L/t of coolant multiplied by efficiency")
+            .addInfo("Reactor will take "+EnumChatFormatting.AQUA+"4800L/t"+EnumChatFormatting.GRAY+" of coolant multiplied by efficiency")
             .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
             .beginStructureBlock(11, 12, 11, true)
