@@ -51,22 +51,10 @@ public class PowerGogglesEventHandler {
     @SubscribeEvent
     private void playerTickEnd(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-        if (event.side == Side.CLIENT) {
-            // doClientStuff(event);
-        } else {
+        if (event.side == Side.SERVER) {
             doServerStuff(event);
         }
     }
-
-    // private void doClientStuff(TickEvent.PlayerTickEvent event) {
-    // if (firstClientTick) {
-    // ItemStack bauble = ItemPowerGoggles.getEquippedPowerGoggles(event.player);
-    // if (bauble != null) setLink(bauble);
-    // firstClientTick = false;
-    // }
-    // if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
-    // forceUpdate = false;
-    // }
 
     private void doServerStuff(TickEvent.PlayerTickEvent event) {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
@@ -135,20 +123,6 @@ public class PowerGogglesEventHandler {
             PowerGogglesConfigHandler.config.save();
         }
     }
-
-    // private void setLink(ItemStack item) {
-    // if (!item.hasTagCompound() || item.getTagCompound()
-    // .hasNoTags()) NW.sendToServer(new GTPacketLinkPowerGoggles());
-    // else {
-    // NBTTagCompound tag = item.getTagCompound();
-    // DimensionalCoord coords = new DimensionalCoord(
-    // tag.getInteger("x"),
-    // tag.getInteger("y"),
-    // tag.getInteger("z"),
-    // tag.getInteger("dim"));
-    // NW.sendToServer(new GTPacketLinkPowerGoggles(coords));
-    // }
-    // }
 
     private boolean isValidLink(EntityPlayerMP player, DimensionalCoord coords) {
         if (coords == null) return false;
