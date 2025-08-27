@@ -15,10 +15,9 @@ public interface IStructureChannels {
     void registerAsIndicator(ItemStack indicator, int channelValue);
 
     /**
-     * Get channel data of this channel fitted to given range (both ends inclusive)
-     * ex1: if given a min of 1 and max of 10, it will map channel data of 1 to 1, 2 to 2, ... 10 and any greater value
-     * to 10
-     * ex2: if given a min of 4 and max of 6, it will map channel data of 1 to 4, 2 to 5, 3 and any bigger value to 6
+     * Get channel data of this channel fitted to given range (both ends inclusive) ex1: if given a min of 1 and max of
+     * 10, it will map channel data of 1 to 1, 2 to 2, ... 10 and any greater value to 10 ex2: if given a min of 4 and
+     * max of 6, it will map channel data of 1 to 4, 2 to 5, 3 and any bigger value to 6
      *
      * @param trigger channel data holder
      * @param min     minimal return value. inclusive

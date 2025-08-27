@@ -245,8 +245,8 @@ gt.interact.desc.need_maint_rotor_lo=Emit if rotor needs maintenance low accurac
 gt.interact.desc.need_maint_rotor_hi=Emit if rotor needs maintenance high accuracy mod
 gt.interact.desc.issue=1 Issue
 gt.interact.desc.issues=%s Issues
-gt.interact.desc.issue_rotor_low=Rotor < 20%%
-gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
+gt.interact.desc.issue_rotor_low=Rotor < 20%
+gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
@@ -745,7 +745,7 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
-GT5U.MBTT.Parallels=Processes up to %d recipes at once
+GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
@@ -773,12 +773,39 @@ GT5U.MBTT.Uncertainty=Uncertainty Hatch
 GT5U.MBTT.InputData=Data Reception Connector
 GT5U.MBTT.OutputData=Data Transmission Connector
 GT5U.MBTT.Causes=Causes
-GT5U.MBTT.PPS=pollution per second
+GT5U.MBTT.Produces=Produces
+GT5U.MBTT.PPS=Pollution per second
 GT5U.MBTT.Hold=Hold
 GT5U.MBTT.Display=to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
+GT5U.MBTT.ParallelBase=Processes %s items per %s Tier
+GT5U.MBTT.ParallelBase_Singular=Processes %s item per %s Tier
+GT5U.MBTT.SpeedBase=%s faster than single block machines of the same voltage
+GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, per %s Tier
+GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
+GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
+GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
+
+GT5U.MBTT.Parallel.Base=%s Parallels
+GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
+GT5U.MBTT.Parallel.Singular=%s Parallel
+GT5U.MBTT.Speed.Base=%s Speed
+GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.EuDiscount.Base=%s EU Usage
+GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
+GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
+GT5U.MBTT.Tiers.Voltage=Voltage
+GT5U.MBTT.Tiers.Machine=Machine
+GT5U.MBTT.Tiers.Coil=Heating Coil
+GT5U.MBTT.Tiers.MachineCasing=Machine Casing
+GT5U.MBTT.Tiers.MetalMachineCasing=Metal Machine Casing
+GT5U.MBTT.Tiers.ItemPipe=Item Pipe Casing
+GT5U.MBTT.Tiers.FluidPipe=Pipe Casing
+GT5U.MBTT.Tiers.Solenoid=Solenoid
+GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
+GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
 GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
@@ -981,6 +1008,8 @@ gt.recipe.replicator=Replicator
 gt.recipe.replicator.description=Producing Elemental Matter
 gt.recipe.rockbreaker=Rock Breaker
 gt.recipe.rockbreaker.description=Put Lava and Water adjacent, or Lava around and Soul Sand below
+gt.recipe.rockbreaker.fakeitem.side=IT'S FREE! Place Lava on Side
+gt.recipe.rockbreaker.fakeitem.top=IT'S FREE! Place Lava on Top
 gt.recipe.scanner=Scanner
 gt.recipe.scanner.description=Scans Crops and other things.
 gt.recipe.sifter=Sifter
@@ -1164,7 +1193,6 @@ GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
 GT5U.DEHP.mode.0=Direct Steam
 GT5U.DEHP.mode.1=Coolant Heating
-GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
 GT5U.machines.oreprocessor.Macerate=Macerate
@@ -1711,6 +1739,7 @@ GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
 GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
+GT5U.multiblock.runningMode=§eRunning Mode:
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -2925,7 +2954,7 @@ GTPP.tooltip.dust-decay-hint=Only decays in a %s or a %s
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
 GTPP.tooltip.structure.data_orb_repository=Data Orb Repository
-GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch
+GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Hatch, Energy Hatch
 GTPP.tooltip.structure.rotor_assembly=Rotor Assembly
 
 GT5U.tooltip.pollution.produces=Produces %d Pollution/Second

@@ -10,7 +10,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.ISBRWorldContext;
+import gregtech.api.render.SBRContextHolder;
 
 public interface IRenderedBlock {
 
@@ -57,6 +58,7 @@ public interface IRenderedBlock {
 
         public static final ErrorRenderer INSTANCE = new ErrorRenderer();
         public ITexture[] mErrorTexture = Textures.BlockIcons.ERROR_RENDERING;
+        private final SBRContextHolder contextHolder = new SBRContextHolder();
 
         @Override
         public ITexture[] getTexture(Block aBlock, ForgeDirection side, int aRenderPass,
@@ -102,14 +104,14 @@ public interface IRenderedBlock {
 
         @Override
         public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
-            final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, 0, aRenderer);
+            final ISBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, 0, aRenderer);
             aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F);
-            GTRendererBlock.renderNegativeYFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderPositiveYFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderNegativeZFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderPositiveZFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderNegativeXFacing(ctx, mErrorTexture, false);
-            GTRendererBlock.renderPositiveXFacing(ctx, mErrorTexture, false);
+            ctx.renderNegativeYFacing(mErrorTexture);
+            ctx.renderPositiveYFacing(mErrorTexture);
+            ctx.renderNegativeZFacing(mErrorTexture);
+            ctx.renderPositiveZFacing(mErrorTexture);
+            ctx.renderNegativeXFacing(mErrorTexture);
+            ctx.renderPositiveXFacing(mErrorTexture);
             return true;
         }
     }

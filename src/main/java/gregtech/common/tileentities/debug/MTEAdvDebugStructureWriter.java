@@ -416,7 +416,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
             tess.addVertex(x2, y1, z2);
             tess.addVertex(x1, y1, z2);
 
-            GL11.glEnd();
+            tess.draw();
         }
     }
 }
