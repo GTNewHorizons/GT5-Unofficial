@@ -10,7 +10,6 @@ import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
 import forestry.arboriculture.genetics.TreeDefinition;
 import forestry.plugins.PluginArboriculture;
-import gregtech.mixin.interfaces.accessors.TreeDefinitionAccessor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
 public class ForestryTreeHandler {
@@ -22,11 +21,11 @@ public class ForestryTreeHandler {
             ItemStack sapling = tree.getMemberStack(EnumGermlingType.SAPLING);
 
             ItemStack log;
-            EnumWoodType woodType = ((TreeDefinitionAccessor) tree).gt5u$getWoodType();
+            EnumWoodType woodType = tree.getWoodType();
             if (woodType != null) {
                 log = TreeManager.woodItemAccess.getLog(woodType, false);
             } else {
-                log = ((TreeDefinitionAccessor) tree).gt5u$getVanillaWood();
+                log = tree.getVanillaWood();
             }
 
             ItemStack leaves = new ItemStack(PluginArboriculture.blocks.leaves, 1, 0);

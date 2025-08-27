@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.common.configs.Configuration;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
@@ -50,6 +51,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -265,24 +267,17 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, MABS")
+            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                "Runs the same recipes as the normal ABS, except with up to " + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + MAX_PARALLELS
-                    + EnumChatFormatting.RESET
+                "Gains a " + EnumChatFormatting.AQUA
+                    + "5%"
                     + EnumChatFormatting.GRAY
-                    + " parallels.")
-            .addInfo(
-                "Every coil tier above TPV grants a speed bonus if the equivalent or better glass tier is present.")
-            .addInfo(
-                EnumChatFormatting.YELLOW + "Speed Bonus"
-                    + EnumChatFormatting.GRAY
-                    + ": 5% lower recipe time per tier (additive)")
-            .addInfo("Furthermore, an energy discount is granted for using coils above the recipe tier.")
-            .addInfo(
-                EnumChatFormatting.YELLOW + "Energy Discount"
-                    + EnumChatFormatting.GRAY
-                    + ": 5% lower energy consumption per tier (multiplicative)")
+                    + " Speed Bonus per "
+                    + EnumChatFormatting.WHITE
+                    + "Heating Coil Tier")
+            .addInfo("Speed bonus is only applicable if equivalent or better glass tier is present.")
+            .addInfo("Furthermore, a multiplicative energy discount is granted for using coils above the recipe tier.")
+            .addDynamicEuEffInfo(0.05f, TooltipTier.COIL)
             .addInfo(
                 EnumChatFormatting.ITALIC
                     + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"

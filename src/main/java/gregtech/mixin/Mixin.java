@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 import com.gtnewhorizon.gtnhmixins.builders.MixinBuilder;
 
-import bartworks.common.configs.Configuration;
 import gregtech.common.config.Gregtech;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -32,11 +31,6 @@ public enum Mixin implements IMixins {
     LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
         .addClientMixins("minecraft.LocaleMixin")
         .setPhase(Phase.EARLY)),
-    CacheCraftingManagerRecipes(
-        new MixinBuilder()
-            .addCommonMixins("minecraft.CraftingManagerMixin")
-            .setApplyIf(() -> Configuration.mixins.enableCraftingManagerRecipeCaching)
-            .setPhase(Phase.EARLY)),
     VANILLA_ACCESSORS(new MixinBuilder()
         .addCommonMixins(
             "minecraft.accessors.BlockStemMixin",
@@ -83,7 +77,10 @@ public enum Mixin implements IMixins {
             .addCommonMixins("ic2.MixinIc2ReinforcedGlass")
             .addRequiredMod(TargetedMod.IC2)
             .setPhase(Phase.LATE)),
-
+    IC2_REMOVE_FISSION_FUELS(new MixinBuilder()
+        .addCommonMixins("ic2.MixinIc2FissionFuelRemoval")
+        .addRequiredMod(TargetedMod.IC2)
+        .setPhase(Phase.LATE)),
     // Hazmat armors
     IC2_HAZMAT(new MixinBuilder()
         .setPhase(Phase.LATE)
@@ -151,14 +148,7 @@ public enum Mixin implements IMixins {
             .addCommonMixins("galacticraftcore.MixinGalacticraftRocketPollution")
             .setPhase(Phase.LATE)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)),
-    FORESTRY_ACCESSOR(new MixinBuilder()
-        .addCommonMixins(
-            "forestry.TreeDefinitionMixin",
-            "forestry.MutationMixin",
-            "forestry.AlleleEffectThrottledMixin")
-        .setPhase(Phase.LATE)
-        .addRequiredMod(TargetedMod.FORESTRY));
+            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE));
     // spotless:on
 
     private final MixinBuilder builder;

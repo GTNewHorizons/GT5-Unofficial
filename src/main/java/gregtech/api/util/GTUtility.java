@@ -1888,8 +1888,8 @@ public class GTUtility {
     }
 
     /**
-     * This is NOT meant for fluid manipulation! It's for getting item container, which is generally used for
-     * crafting recipes. While it also works for many of the fluid containers, some don't.
+     * This is NOT meant for fluid manipulation! It's for getting item container, which is generally used for crafting
+     * recipes. While it also works for many of the fluid containers, some don't.
      * <p>
      * Use {@link #getContainerForFilledItem} for getting empty fluid container.
      */
@@ -3679,10 +3679,24 @@ public class GTUtility {
         return getDecimalFormat().format(aNumber);
     }
 
+    public static String scientificFormat(long aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
+    }
+
+    public static String scientificFormat(BigInteger aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
+    }
+
     /**
-     * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
-     * Since it suppresses errors, it should be used only when inputs are unreliable,
-     * e.g. processing text input by player, or processing placeholders in localization entries.
+     * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}. Since it
+     * suppresses errors, it should be used only when inputs are unreliable, e.g. processing text input by player, or
+     * processing placeholders in localization entries.
      */
     @Nonnull
     public static String formatStringSafe(@Nonnull String format, Object... args) {
@@ -4472,8 +4486,8 @@ public class GTUtility {
     }
 
     /**
-     * Computes base raised to the power of an integer exponent.
-     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
+     * Computes base raised to the power of an integer exponent. Typically faster than
+     * {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
      */
     public static double powInt(double base, int exp) {
         if (exp > 0) return powBySquaring(base, exp);
@@ -4497,8 +4511,8 @@ public class GTUtility {
     }
 
     /**
-     * Computes base raised to the power of a long exponent.
-     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
+     * Computes base raised to the power of a long exponent. Typically faster than
+     * {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
      */
     public static double powInt(double base, long exp) {
         if (exp > 0) return powBySquaring(base, exp);
@@ -4522,8 +4536,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the floor of log base 2 for a positive integer.
-     * Uses bitwise operations for fast calculation.
+     * Computes the floor of log base 2 for a positive integer. Uses bitwise operations for fast calculation.
      */
     public static int log2(int a) {
         if (a <= 1) return 0;
@@ -4531,8 +4544,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the ceiling of log base 2 for a positive integer.
-     * Uses bitwise operations for fast calculation.
+     * Computes the ceiling of log base 2 for a positive integer. Uses bitwise operations for fast calculation.
      */
     public static int log2ceil(int a) {
         if (a <= 1) return 0;
@@ -4540,8 +4552,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the floor of log base 4 for a positive integer.
-     * Uses bitwise operations for fast calculation.
+     * Computes the floor of log base 4 for a positive integer. Uses bitwise operations for fast calculation.
      */
     public static int log4(int a) {
         if (a <= 1) return 0;
@@ -4549,8 +4560,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the ceil of log base 4 for a positive integer.
-     * Uses bitwise operations for fast calculation.
+     * Computes the ceil of log base 4 for a positive integer. Uses bitwise operations for fast calculation.
      */
     public static int log4ceil(int a) {
         if (a <= 1) return 0;
@@ -4558,8 +4568,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the floor of log base 2 for a positive long.
-     * Uses bitwise operations for fast calculation.
+     * Computes the floor of log base 2 for a positive long. Uses bitwise operations for fast calculation.
      */
     public static long log2(long a) {
         if (a <= 1) return 0;
@@ -4567,8 +4576,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the ceiling of log base 2 for a positive long.
-     * Uses bitwise operations for fast calculation.
+     * Computes the ceiling of log base 2 for a positive long. Uses bitwise operations for fast calculation.
      */
     public static long log2ceil(long a) {
         if (a <= 1) return 0;
@@ -4576,8 +4584,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the floor of log base 4 for a positive long.
-     * Uses bitwise operations for fast calculation.
+     * Computes the floor of log base 4 for a positive long. Uses bitwise operations for fast calculation.
      */
     public static long log4(long a) {
         if (a <= 1) return 0;
@@ -4585,8 +4592,7 @@ public class GTUtility {
     }
 
     /**
-     * Computes the ceil of log base 4 for a positive long.
-     * Uses bitwise operations for fast calculation.
+     * Computes the ceil of log base 4 for a positive long. Uses bitwise operations for fast calculation.
      */
     public static long log4ceil(long a) {
         if (a <= 1) return 0;
