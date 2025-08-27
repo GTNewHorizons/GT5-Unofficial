@@ -3,7 +3,6 @@ package gregtech.common.powergoggles;
 import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +14,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import appeng.api.util.DimensionalCoord;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import baubles.common.container.InventoryBaubles;
@@ -28,6 +26,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
+
     private final PowerGogglesEventHandler EVENT_HANDLER = PowerGogglesEventHandler.getInstance();
 
     public ItemPowerGoggles(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
@@ -169,23 +168,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
         if (player.worldObj.isRemote || !(player instanceof EntityPlayerMP playerMP)) return;
-//        EVENT_HANDLER.updatePlayerLink(itemstack, playerMP);
-        NBTTagCompound tag = itemstack.getTagCompound();
-        DimensionalCoord coords = null;
-        if (tag != null && !tag.hasNoTags()) {
-            coords = new DimensionalCoord(
-                tag.getInteger("x"),
-                tag.getInteger("y"),
-                tag.getInteger("z"),
-                tag.getInteger("dim"));
-        }
-
-        DimensionalCoord current = EVENT_HANDLER.getLscLink(player.getUniqueID());
-        if (!Objects.equals(current, coords)) {
-            EVENT_HANDLER.setLscLink(playerMP, coords);
-            EVENT_HANDLER.forceUpdate = true;
-            EVENT_HANDLER.forceRefresh = true;
-        }
+        EVENT_HANDLER.updatePlayerLink(itemstack, playerMP);
     }
 
     @Override

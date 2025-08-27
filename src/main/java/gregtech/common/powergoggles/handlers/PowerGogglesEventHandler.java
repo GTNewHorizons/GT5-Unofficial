@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.NW;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -26,12 +27,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
+import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.powergoggles.ItemPowerGoggles;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
-import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class PowerGogglesEventHandler {
+
     private static final PowerGogglesEventHandler INSTANCE = new PowerGogglesEventHandler();
 
     private Map<UUID, Integer> tickMap = new HashMap<>();
@@ -41,10 +43,9 @@ public class PowerGogglesEventHandler {
     public boolean forceRefresh = false;
     public boolean firstClientTick = true;
 
-    private PowerGogglesEventHandler() {
-    }
+    private PowerGogglesEventHandler() {}
 
-    public static PowerGogglesEventHandler getInstance(){
+    public static PowerGogglesEventHandler getInstance() {
         return INSTANCE;
     }
 
@@ -172,7 +173,22 @@ public class PowerGogglesEventHandler {
         setLscLink(player, null);
     }
 
-    public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP playerMP) {
+    public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP player) {
+        NBTTagCompound tag = itemstack.getTagCompound();
+        DimensionalCoord coords = null;
+        if (tag != null && !tag.hasNoTags()) {
+            coords = new DimensionalCoord(
+                tag.getInteger("x"),
+                tag.getInteger("y"),
+                tag.getInteger("z"),
+                tag.getInteger("dim"));
+        }
 
+        DimensionalCoord current = getLscLink(player.getUniqueID());
+        if (!Objects.equals(current, coords)) {
+            setLscLink(player, coords);
+            forceUpdate = true;
+            forceRefresh = true;
+        }
     }
 }
