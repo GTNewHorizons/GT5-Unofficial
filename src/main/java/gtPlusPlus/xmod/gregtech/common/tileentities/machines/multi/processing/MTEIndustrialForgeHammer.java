@@ -51,6 +51,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -88,7 +89,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Parallel: Tier x Anvil Tier x 8")
+            .addInfo(TooltipHelper.parallelText("Voltage Tier * Anvil Tier * 8") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addInfo("T1 - Vanilla Anvil");
@@ -198,7 +199,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.RANDOM_ANVIL_USE;
+        return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override

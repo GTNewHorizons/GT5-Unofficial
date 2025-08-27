@@ -14,9 +14,9 @@ import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GTMod;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.SBRContextHolder;
-import gregtech.api.render.SBRInventoryContext;
-import gregtech.api.render.SBRWorldContext;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 
@@ -28,7 +28,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final SBRInventoryContext ctx = contextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final ISBRInventoryContext ctx = contextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
@@ -60,8 +60,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
         }
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
-        ctx.setFullBlock(true);
+        final ISBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
