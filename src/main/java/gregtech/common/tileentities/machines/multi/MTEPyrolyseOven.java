@@ -48,6 +48,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 
 public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> implements ISurvivalConstructable {
 
@@ -92,7 +93,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
             .addInfo("Industrial Charcoal producer")
-            .addInfo("Processing speed scales linearly with Coil tier:")
+            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
