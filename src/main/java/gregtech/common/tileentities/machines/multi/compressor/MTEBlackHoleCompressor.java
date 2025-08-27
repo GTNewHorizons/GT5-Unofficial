@@ -156,10 +156,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private final ArrayList<MTEBlackHoleUtility> utilityHatches = new ArrayList<>();
 
     /**
-     * 1: Off
-     * 2: On, stable
-     * 3: On, unstable
-     * 4: On, superstable
+     * 1: Off 2: On, stable 3: On, unstable 4: On, superstable
      */
     private byte blackHoleStatus = 1;
 
@@ -401,9 +398,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
-            .addInfo("400% faster than singleblock machines of the same voltage")
-            .addInfo("Only uses 70% of the EU/t normally required")
-            .addInfo("Gains 8 parallels per voltage tier")
+            .addBulkMachineInfo(8, 5f, 0.7f)
             .addInfo(
                 EnumChatFormatting.RED + "2x/4x"
                     + EnumChatFormatting.GRAY

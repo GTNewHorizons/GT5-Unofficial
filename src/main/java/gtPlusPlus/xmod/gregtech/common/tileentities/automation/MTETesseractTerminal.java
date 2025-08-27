@@ -84,11 +84,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public long maxSteamStore() {
-        return this.maxEUStore();
-    }
-
-    @Override
     public boolean ownerControl() {
         return true;
     }

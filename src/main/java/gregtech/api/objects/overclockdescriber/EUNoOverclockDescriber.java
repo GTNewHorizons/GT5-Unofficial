@@ -46,8 +46,8 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     /**
-     * Override this to draw custom info about the energy this object can handle on NEI recipe GUI, minus total
-     * power usage.
+     * Override this to draw custom info about the energy this object can handle on NEI recipe GUI, minus total power
+     * usage.
      */
     protected void drawEnergyInfoImpl(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) {
