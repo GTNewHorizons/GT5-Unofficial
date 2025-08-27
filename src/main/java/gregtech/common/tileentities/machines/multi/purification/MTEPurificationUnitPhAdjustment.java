@@ -398,7 +398,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water")
+                    + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
             .beginStructureBlock(15, 6, 5, false)
             .addController("Front center")
             .addCasingInfoExactlyColored(

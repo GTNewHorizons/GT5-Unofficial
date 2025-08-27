@@ -750,7 +750,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Nanite Fabricator")
             .addInfo("Requires insane amounts of power to create nanites")
-            .addInfo("Each tier requires some structural changes. ")
+            .addInfo("Each tier requires some structural changes")
             .addInfo("Machine tier depends on Nanite in controller slot")
             .addInfo("Tier 4 has additional mechanics, check the controller")
             .addSeparator()
@@ -763,7 +763,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 "Performs " + EnumChatFormatting.LIGHT_PURPLE
                     + "perfect overclocks"
                     + EnumChatFormatting.GRAY
-                    + " on lower-tier recipes than the machine")
+                    + " on lower-tier recipes")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)

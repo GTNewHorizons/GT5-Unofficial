@@ -208,7 +208,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out")
+                    + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
             .beginStructureBlock(9, 10, 5, false)
             .addController("Front center")
             .addCasingInfoRangeColored(

@@ -779,7 +779,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * Energy Hatch limited by Glass tie
+     * Energy Hatch limited by Glass tier
      *
      * @return Instance this method was called on.
      */

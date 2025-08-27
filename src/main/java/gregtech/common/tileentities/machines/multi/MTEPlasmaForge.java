@@ -589,6 +589,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(100 * maximum_discount)
                     + "%")
+            .addInfo(
+                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
+                    + GTUtility.formatNumbers(efficiency_decay_rate)
+                    + EnumChatFormatting.GRAY
+                    + " as fast as it builds up, draining")
+            .addInfo("the total amount of stored runtime")
+            .addSeparator()
             .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
             .addInfo(
                 "allowing " + EnumChatFormatting.GOLD
@@ -610,12 +617,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GRAY
                     + ",")
             .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
-            .addInfo(
-                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(efficiency_decay_rate)
-                    + EnumChatFormatting.GRAY
-                    + " as fast as it builds up, draining")
-            .addInfo("the total amount of stored runtime")
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required")

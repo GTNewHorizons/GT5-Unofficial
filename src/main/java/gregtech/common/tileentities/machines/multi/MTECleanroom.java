@@ -137,27 +137,26 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addInfo("Generating any pollution inside causes the cleanroom to shut down")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
-            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions.")
-            .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges.")
+            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions")
+            .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges")
             .addOtherStructurePart(
                 "Plascrete Blocks",
                 "Edges of top layer, all walls and floor. Minimum " + EnumChatFormatting.GOLD
                     + MachineStats.cleanroom.minCasingCount
                     + EnumChatFormatting.GRAY
                     + ".")
-            .addEnergyHatch("Any Plascrete Block. Exactly one.")
-            .addMaintenanceHatch("Any Plascrete Block. Exactly one.")
+            .addEnergyHatch("Any Plascrete Block. Exactly one")
+            .addMaintenanceHatch("Any Plascrete Block. Exactly one")
             .addStructureInfo("")
             .addStructureInfo(
                 "Up to " + EnumChatFormatting.GOLD
                     + MachineStats.cleanroom.maxReplacementPercentage
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " of plascrete blocks can be replaced by other valid blocks.")
+                    + " of plascrete blocks can be replaced by other valid blocks")
             .addStructureInfo("Try some of the following:")
-            .addStructureInfo(
-                "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass.")
-            .addStructureInfo("- Machine hulls or diodes for item and power transfer.")
+            .addStructureInfo("- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass")
+            .addStructureInfo("- Machine hulls or diodes for item and power transfer")
             .addStructureInfo(
                 "- Reinforced Doors (" + EnumChatFormatting.ITALIC
                     + "IC2"
@@ -174,12 +173,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     + "EnderIO"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + ").")
+                    + ")")
             .addStructureInfo(
                 "See " + EnumChatFormatting.DARK_GRAY
                     + "config/GregTech/MachineStats.cfg"
                     + EnumChatFormatting.GRAY
-                    + " for more valid blocks.")
+                    + " for more valid blocks")
             .addStructureInfo(
                 EnumChatFormatting.YELLOW
                     + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")

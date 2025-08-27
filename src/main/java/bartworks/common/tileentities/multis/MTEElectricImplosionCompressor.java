@@ -519,6 +519,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             EnumChatFormatting.GRAY,
             EnumChatFormatting.GOLD,
             parallels,
-            EnumChatFormatting.GRAY, parallels == 1? "Parallel" : "Parallels");
+            EnumChatFormatting.GRAY,
+            parallels == 1 ? "Parallel" : "Parallels");
     }
 }

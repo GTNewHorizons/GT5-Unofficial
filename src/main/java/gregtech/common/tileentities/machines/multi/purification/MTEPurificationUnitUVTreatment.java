@@ -267,7 +267,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar")
+                    + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
             .beginStructureBlock(13, 9, 9, true)
             .addController("Front center")
             .addCasingInfoRangeColored(

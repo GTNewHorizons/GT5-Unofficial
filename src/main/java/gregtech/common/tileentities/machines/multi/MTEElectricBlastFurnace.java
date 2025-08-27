@@ -133,7 +133,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                     + EnumChatFormatting.GRAY
                     + " over the recipe requirement grants 1 "
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + " Perfect Overclock")
+                    + "Perfect Overclock")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)

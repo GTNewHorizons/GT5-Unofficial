@@ -204,7 +204,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "decreases so continual replacements must be supplied to maintain full function of the Clarifier")
+                    + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
             .beginStructureBlock(11, 4, 11, false)
             .addController("Front center")
             .addCasingInfoRangeColored(

@@ -294,7 +294,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 "Initial temperature is reset to " + EnumChatFormatting.RED
                     + "0K"
                     + EnumChatFormatting.GRAY
-                    + " on recipe start.")
+                    + " on recipe start")
             .addInfo(
                 // TODO: Refer to heating cycles in another way to avoid confusion
                 "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED

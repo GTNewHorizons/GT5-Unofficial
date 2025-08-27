@@ -319,7 +319,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration")
+                    + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
             .beginStructureBlock(9, 5, 8, false)
             .addController("Front center")
             .addCasingInfoRangeColored(

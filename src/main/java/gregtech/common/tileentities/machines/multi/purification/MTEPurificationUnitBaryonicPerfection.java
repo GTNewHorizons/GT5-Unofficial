@@ -348,7 +348,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water")
+                    + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center")
             .addCasingInfoMinColored(

@@ -165,9 +165,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
             .addInfo(
                 "The higher the amount of promoter, the higher the efficiency"
-                    + "It follows an exponential curve exp(-C/(p/x))*1.5 "
-                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters, "
-                    + "and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
+                    + "It follows an exponential curve exp(-C/(p/x))*1.5 ")
+            .addInfo("Where x is the amount of fuel in liters, p is the amount of promoter in liters")
+            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
             .addInfo("It creates sqrt(Current Output Power) pollution every second")
             .addInfo(
                 "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "

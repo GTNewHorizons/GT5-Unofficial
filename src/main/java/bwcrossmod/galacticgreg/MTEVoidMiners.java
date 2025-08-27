@@ -438,12 +438,12 @@ public class MTEVoidMiners {
             tt.addMachineType("Miner")
                 .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
                 .addInfo(
-                "Can be supplied with " + EnumChatFormatting.AQUA
-                    + "2 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of Noble gases to boost "
-                    + EnumChatFormatting.GOLD
-                    + "output")
+                    "Can be supplied with " + EnumChatFormatting.AQUA
+                        + "2 L/s"
+                        + EnumChatFormatting.GRAY
+                        + " of Noble gases to boost "
+                        + EnumChatFormatting.GOLD
+                        + "output")
                 .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
                 .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
                 .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
