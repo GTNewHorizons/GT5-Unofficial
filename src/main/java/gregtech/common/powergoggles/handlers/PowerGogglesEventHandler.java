@@ -119,4 +119,8 @@ public class PowerGogglesEventHandler {
         PowerGogglesClient client = CLIENTS.computeIfAbsent(player.getUniqueID(), uuid -> new PowerGogglesClient());
         client.updateLscLink(itemstack);
     }
+
+    public Map<UUID, PowerGogglesClient> getClients() {
+        return CLIENTS;
+    }
 }

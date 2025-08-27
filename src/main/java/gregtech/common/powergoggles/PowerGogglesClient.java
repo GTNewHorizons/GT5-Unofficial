@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.NW;
 
 import java.math.BigInteger;
 import java.util.Objects;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,12 @@ import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 public class PowerGogglesClient {
 
     private DimensionalCoord lscLink;
+
+    public PowerGogglesClient() {}
+
+    public PowerGogglesClient(DimensionalCoord lscLink) {
+        this.lscLink = lscLink;
+    }
 
     public void updateLscLink(ItemStack itemstack) {
         NBTTagCompound tag = itemstack.getTagCompound();
@@ -31,6 +38,8 @@ public class PowerGogglesClient {
         if (!Objects.equals(lscLink, newLink)) {
             setLscLink(newLink);
         }
+        // Persist data
+        PowerGogglesWorldSavedData.INSTANCE.markDirty();
     }
 
     public void setLscLink(DimensionalCoord lscLink) {
@@ -48,4 +57,18 @@ public class PowerGogglesClient {
             playerMP);
     }
 
+    public NBTTagCompound getNBT(UUID uuid) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("uuid", uuid.toString());
+
+        if (lscLink == null) {
+            return tag;
+        }
+
+        tag.setInteger("x", lscLink.x);
+        tag.setInteger("y", lscLink.y);
+        tag.setInteger("z", lscLink.z);
+        tag.setInteger("dim", lscLink.getDimension());
+        return tag;
+    }
 }
