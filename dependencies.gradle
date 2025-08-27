@@ -36,14 +36,14 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.18:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.7.76-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.7.77-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.6.39:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.2.16-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.2.17-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.12:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-676-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.108-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.110-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.1:dev')
     api("com.github.GTNewHorizons:Postea:1.1.3:dev")
 
@@ -58,14 +58,14 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.72:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta54:dev') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta55:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.44:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.22:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.17:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.3.11-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.11-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.32:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.12-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.33:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.13:dev") { transitive = false }
@@ -78,11 +78,11 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Chisel:2.16.11-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.3.1:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
-    compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.18:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.19:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.6.98:dev")
-    compileOnly('com.github.GTNewHorizons:Botania:1.12.21-GTNH:dev') { transitive = false }
-    compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.4-GTNH:dev') { transitive = false }
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.6.100:dev")
+    compileOnly('com.github.GTNewHorizons:Botania:1.12.22-GTNH:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.5-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.16-GTNH:dev") {transitive = false}
@@ -129,7 +129,7 @@ dependencies {
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.2:dev')
 
     // For testing ctm
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta54:dev') { transitive = false }
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta55:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))

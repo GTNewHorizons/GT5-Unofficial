@@ -25,7 +25,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLO
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -48,7 +47,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
@@ -181,22 +179,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @return the chosen ore
      */
     private ItemStack nextOre() {
-        float currentWeight = 0.f;
-        while (true) {
-            float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.dropMap.getInternalMap()
-                .entrySet()) {
-                currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
-            }
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.extraDropMap.getInternalMap()
-                .entrySet()) {
-                currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
-            }
-        }
+        return this.dropMap.nextOre()
+            .getItemStack();
     }
 
     /**
@@ -248,6 +232,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @param id the specified dim id
      */
     private void handleExtraDrops(int id) {
+        this.extraDropMap = new VoidMinerUtility.DropMap();
+
         if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
             extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
         }
@@ -261,6 +247,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     private void handleModDimDef(int id) {
         if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
             this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
+            return;
         } else {
             String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity()
                 .getWorld()
@@ -269,8 +256,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
             if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
                 this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
+                return;
             }
         }
+        // If this dimension doesn't have any default DropMap add it to dropMapsByDimId
+        // It is possible that another mod added ores to this dimension via extraDropMaps
+        this.dropMap = new VoidMinerUtility.DropMap();
+        VoidMinerUtility.dropMapsByDimId.put(id, this.dropMap);
     }
 
     /**
@@ -278,13 +270,12 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * totalWeight for normalisation
      */
     private void calculateDropMap() {
-        this.dropMap = new VoidMinerUtility.DropMap();
-        this.extraDropMap = new VoidMinerUtility.DropMap();
         int id = this.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
         this.handleModDimDef(id);
         this.handleExtraDrops(id);
-        this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
+        this.dropMap.isDistributionCached(this.extraDropMap);
+        this.totalWeight = dropMap.getTotalWeight();
     }
 
     /**

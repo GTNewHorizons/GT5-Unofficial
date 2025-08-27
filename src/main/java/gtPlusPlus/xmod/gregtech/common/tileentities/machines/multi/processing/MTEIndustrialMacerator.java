@@ -213,7 +213,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MACERATOR_OP;
+        return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
     @Override
