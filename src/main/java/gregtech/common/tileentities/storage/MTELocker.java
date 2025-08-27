@@ -142,7 +142,7 @@ public class MTELocker extends MTETieredMachineBlock {
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == 16) {
-            GTUtility.doSoundAtClient(SoundResource.RANDOM_CLICK, 1, 1.0F);
+            GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_CLICK, 1, 1.0F);
         }
     }
 
