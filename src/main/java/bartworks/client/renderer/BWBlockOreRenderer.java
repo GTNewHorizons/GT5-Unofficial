@@ -13,19 +13,11 @@
 
 package bartworks.client.renderer;
 
-import static gregtech.common.render.GTRendererBlock.renderNegativeXFacing;
-import static gregtech.common.render.GTRendererBlock.renderNegativeYFacing;
-import static gregtech.common.render.GTRendererBlock.renderNegativeZFacing;
-import static gregtech.common.render.GTRendererBlock.renderPositiveXFacing;
-import static gregtech.common.render.GTRendererBlock.renderPositiveYFacing;
-import static gregtech.common.render.GTRendererBlock.renderPositiveZFacing;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -37,26 +29,22 @@ import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GTMod;
-import gregtech.api.util.LightingHelper;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
+import gregtech.api.render.SBRContextHolder;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 @ThreadSafeISBRH(perThread = true)
 public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
 
-    public static BWBlockOreRenderer INSTANCE;
-    public static int renderID;
+    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
-
-    public static void register() {
-        renderID = RenderingRegistry.getNextAvailableRenderId();
-        INSTANCE = new BWBlockOreRenderer();
-        RenderingRegistry.registerBlockHandler(INSTANCE);
-    }
+    private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {
-        LightingHelper lightingHelper = new LightingHelper(aRenderer);
+        ISBRInventoryContext ctx = contextHolder.getSBRInventoryContext(aBlock, aMeta, modelId, aRenderer);
         TileEntityMetaGeneratedBlock tTileEntity = ((BWMetaGeneratedBlocks) aBlock).getProperTileEntityForRendering();
         tTileEntity.mMetaData = (short) aMeta;
         aRenderer.enableAO = false;
@@ -65,72 +53,12 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        renderNegativeYFacing(
-            null,
-            aRenderer,
-            lightingHelper,
-            aBlock,
-            0,
-            0,
-            0,
-            tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
-            true,
-            -1);
-        renderPositiveYFacing(
-            null,
-            aRenderer,
-            lightingHelper,
-            aBlock,
-            0,
-            0,
-            0,
-            tTileEntity.getTexture(aBlock, ForgeDirection.UP),
-            true,
-            -1);
-        renderNegativeZFacing(
-            null,
-            aRenderer,
-            lightingHelper,
-            aBlock,
-            0,
-            0,
-            0,
-            tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
-            true,
-            -1);
-        renderPositiveZFacing(
-            null,
-            aRenderer,
-            lightingHelper,
-            aBlock,
-            0,
-            0,
-            0,
-            tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
-            true,
-            -1);
-        renderNegativeXFacing(
-            null,
-            aRenderer,
-            lightingHelper,
-            aBlock,
-            0,
-            0,
-            0,
-            tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
-            true,
-            -1);
-        renderPositiveXFacing(
-            null,
-            aRenderer,
-            lightingHelper,
-            aBlock,
-            0,
-            0,
-            0,
-            tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
-            true,
-            -1);
+        ctx.renderNegativeYFacing(tTileEntity.getTexture(aBlock, ForgeDirection.DOWN));
+        ctx.renderPositiveYFacing(tTileEntity.getTexture(aBlock, ForgeDirection.UP));
+        ctx.renderNegativeZFacing(tTileEntity.getTexture(aBlock, ForgeDirection.NORTH));
+        ctx.renderPositiveZFacing(tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH));
+        ctx.renderNegativeXFacing(tTileEntity.getTexture(aBlock, ForgeDirection.WEST));
+        ctx.renderPositiveXFacing(tTileEntity.getTexture(aBlock, ForgeDirection.EAST));
         aRenderer.setRenderBoundsFromBlock(aBlock);
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -150,20 +78,19 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
         if(actualTileEntity == null) return false;
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final LightingHelper lightingHelper = new LightingHelper(aRenderer);
-        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        final ISBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, modelId, aRenderer);
 
         fakeTileEntity.mMetaData = actualTileEntity.mMetaData;
         aRenderer.useInventoryTint = false;
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.setRenderBoundsFromBlock(aBlock);
-        renderNegativeYFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.DOWN), true, worldRenderPass);
-        renderPositiveYFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.UP), true, worldRenderPass);
-        renderNegativeZFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.NORTH), true, worldRenderPass);
-        renderPositiveZFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.SOUTH), true, worldRenderPass);
-        renderNegativeXFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.WEST), true, worldRenderPass);
-        renderPositiveXFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.EAST), true, worldRenderPass);
+        ctx.renderNegativeYFacing(fakeTileEntity.getTexture(aBlock, ForgeDirection.DOWN));
+        ctx.renderPositiveYFacing(fakeTileEntity.getTexture(aBlock, ForgeDirection.UP));
+        ctx.renderNegativeZFacing(fakeTileEntity.getTexture(aBlock, ForgeDirection.NORTH));
+        ctx.renderPositiveZFacing(fakeTileEntity.getTexture(aBlock, ForgeDirection.SOUTH));
+        ctx.renderNegativeXFacing(fakeTileEntity.getTexture(aBlock, ForgeDirection.WEST));
+        ctx.renderPositiveXFacing(fakeTileEntity.getTexture(aBlock, ForgeDirection.EAST));
         return tessAccess.gt5u$hasVertices();
     }
     // spotless:on

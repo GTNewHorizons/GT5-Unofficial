@@ -140,7 +140,6 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }

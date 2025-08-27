@@ -97,15 +97,14 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public static final int CYCLE_TIME_TICKS = 120 * SECONDS;
 
     /**
-     * Stores all purification units linked to this controller.
-     * Normally all units in this list should be valid and unique, if not then there is a bug where they are not being
-     * unlinked properly on block destruction/relinking.
+     * Stores all purification units linked to this controller. Normally all units in this list should be valid and
+     * unique, if not then there is a bug where they are not being unlinked properly on block destruction/relinking.
      */
     private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
 
     /**
-     * Debug mode is an operational mode that does not produce output or consume input, but cuts down
-     * processing time for players to more easily debug their automation setups.
+     * Debug mode is an operational mode that does not produce output or consume input, but cuts down processing time
+     * for players to more easily debug their automation setups.
      */
     private boolean debugMode = false;
     public static final int CYCLE_TIME_IN_DEBUG = 30 * SECONDS;

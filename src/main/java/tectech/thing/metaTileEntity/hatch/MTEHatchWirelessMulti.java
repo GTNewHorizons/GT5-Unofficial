@@ -29,32 +29,32 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
-import tectech.thing.metaTileEntity.Textures;
 
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
-    private final long precisionMultiplier = LongMath.pow(10, 15);
-    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
+    public final long precisionMultiplier = LongMath.pow(10, 15);
+    public final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
         .multiply(BigInteger.valueOf(ticks_between_energy_addition));
 
-    private final double overflowDivisor = getOverflowDivisor(eu_transferred_per_operation);
+    public final double overflowDivisor = getOverflowDivisor(eu_transferred_per_operation);
 
-    private final long actualTicksBetweenEnergyAddition = overflowDivisor > 1
+    public final long actualTicksBetweenEnergyAddition = overflowDivisor > 1
         ? (long) (ticks_between_energy_addition / (overflowDivisor * 2))
         : ticks_between_energy_addition;
 
-    private final long eu_transferred_per_operation_long = overflowDivisor > 1
+    public final long eu_transferred_per_operation_long = overflowDivisor > 1
         ? eu_transferred_per_operation.divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier * 2)))
             .multiply(BigInteger.valueOf(precisionMultiplier))
             .longValue()
         : eu_transferred_per_operation.longValue();
 
-    private UUID owner_uuid;
+    public UUID owner_uuid;
 
     public MTEHatchWirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
@@ -85,51 +85,41 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
-    private double getOverflowDivisor(BigInteger euTransferredPerOperation) {
+    public double getOverflowDivisor(BigInteger euTransferredPerOperation) {
         if (euTransferredPerOperation.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
             return euTransferredPerOperation.doubleValue() / Long.MAX_VALUE;
         }
         return 1d;
     }
 
-    private ITexture[] TEXTURE_OVERLAY;
-
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        switch (Amperes) {
-            case 4:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_4A;
-                break;
-            case 16:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_16A;
-                break;
-            case 64:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
-                break;
-            default:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER;
-                break;
+        if (maxAmperes >= 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier] };
+        } else if (maxAmperes >= 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier] };
+        } else if (maxAmperes >= 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier] };
+        } else if (maxAmperes >= 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier] };
+        } else {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier] };
         }
-        return new ITexture[] { aBaseTexture, TEXTURE_OVERLAY[mTier] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        switch (Amperes) {
-            case 4:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_4A;
-                break;
-            case 16:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_16A;
-                break;
-            case 64:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
-                break;
-            default:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER;
-                break;
+        if (maxAmperes >= 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier] };
+        } else if (maxAmperes >= 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier] };
+        } else if (maxAmperes >= 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier] };
+        } else if (maxAmperes >= 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier] };
+        } else {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier] };
         }
-        return new ITexture[] { aBaseTexture, TEXTURE_OVERLAY[mTier] };
     }
 
     @Override
@@ -195,7 +185,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
         }
     }
 
-    private void tryFetchingEnergy() {
+    public void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);

@@ -328,11 +328,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
-    }
-
-    @Override
     public long maxAmperesIn() {
         return 3;
     }

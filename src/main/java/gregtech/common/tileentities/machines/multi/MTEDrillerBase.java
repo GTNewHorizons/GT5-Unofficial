@@ -567,8 +567,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     /**
-     * Allow drills to set a specific failure reason specific to their situation. E.g.: out of drilling fluid.
-     * Should be used when the machine doesn't turn off due to the failure.
+     * Allow drills to set a specific failure reason specific to their situation. E.g.: out of drilling fluid. Should be
+     * used when the machine doesn't turn off due to the failure.
      *
      * @param newFailureReason A new failure reason
      */
@@ -596,8 +596,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     /**
-     * Sets a line in the UI to explain why the drill shut down. E.g.: operation finished.
-     * Should be used when the machine has been turned off due to an operating issue or completion.
+     * Sets a line in the UI to explain why the drill shut down. E.g.: operation finished. Should be used when the
+     * machine has been turned off due to an operating issue or completion.
      *
      * @param newReason The reason for the machine shutdown
      */
