@@ -58,4 +58,12 @@ public class GTSoundLoop extends MovingSound {
 
         donePlaying = true;
     }
+
+    public void setDonePlaying(boolean value) {
+        donePlaying = value;
+    }
+
+    public void setFadeMe(boolean value) {
+        fadeMe = value;
+    }
 }
