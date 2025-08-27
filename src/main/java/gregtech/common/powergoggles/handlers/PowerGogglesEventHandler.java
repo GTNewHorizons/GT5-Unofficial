@@ -32,13 +32,21 @@ import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class PowerGogglesEventHandler {
+    private static final PowerGogglesEventHandler INSTANCE = new PowerGogglesEventHandler();
 
-    private static Map<UUID, Integer> tickMap = new HashMap<>();
-    public static Minecraft mc;
-    public static Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
-    public static boolean forceUpdate = false;
-    public static boolean forceRefresh = false;
-    public static boolean firstClientTick = true;
+    private Map<UUID, Integer> tickMap = new HashMap<>();
+    public Minecraft mc;
+    public Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
+    public boolean forceUpdate = false;
+    public boolean forceRefresh = false;
+    public boolean firstClientTick = true;
+
+    private PowerGogglesEventHandler() {
+    }
+
+    public static PowerGogglesEventHandler getInstance(){
+        return INSTANCE;
+    }
 
     @SubscribeEvent
     public void playerTickEnd(TickEvent.PlayerTickEvent event) {
@@ -142,7 +150,7 @@ public class PowerGogglesEventHandler {
         }
     }
 
-    public static boolean isValidLink(EntityPlayerMP player, DimensionalCoord coords) {
+    public boolean isValidLink(EntityPlayerMP player, DimensionalCoord coords) {
         if (coords == null) return false;
         WorldServer lscDim = player.mcServer.worldServerForDimension(coords.getDimension());
         TileEntity tileEntity = lscDim.getTileEntity(coords.x, coords.y, coords.z);
@@ -150,11 +158,11 @@ public class PowerGogglesEventHandler {
         return gte.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor;
     }
 
-    public static void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
+    public void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
         lscLinkMap.put(player.getUniqueID(), coords);
     }
 
-    public static DimensionalCoord getLscLink(UUID uuid) {
+    public DimensionalCoord getLscLink(UUID uuid) {
         return lscLinkMap.get(uuid);
     }
 
@@ -162,5 +170,9 @@ public class PowerGogglesEventHandler {
     public void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
         EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
         setLscLink(player, null);
+    }
+
+    public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP playerMP) {
+
     }
 }

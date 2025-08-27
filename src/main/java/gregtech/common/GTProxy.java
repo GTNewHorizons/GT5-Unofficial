@@ -39,6 +39,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
+import li.cil.oc.integration.util.Power;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1032,8 +1033,8 @@ public class GTProxy implements IFuelHandler {
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
         FMLCommonHandler.instance()
             .bus()
-            .register(new PowerGogglesEventHandler());
-        MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
+            .register(PowerGogglesEventHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(PowerGogglesEventHandler.getInstance());
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
             .registerGlobalListener(MetaGeneratedTool::switchToolMode);
