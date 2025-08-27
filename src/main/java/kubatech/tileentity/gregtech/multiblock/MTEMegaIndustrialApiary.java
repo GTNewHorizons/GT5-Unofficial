@@ -785,15 +785,15 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
     }
 
-    private final static int mInventoryWidth = 128;
-    private final static int mInventoryHeight = 60;
-    private final static int mInventoryX = 10;
-    private final static int mInventoryY = 16;
-    private final static int mInventoryBorderWidth = 3;
+    private static final int INVENTORY_WIDTH = 128;
+    private static final int INVENTORY_HEIGHT = 60;
+    private static final int INVENTORY_X = 10;
+    private static final int INVENTORY_Y = 16;
+    private static final int INVENTORY_BORDER_WIDTH = 3;
 
     DynamicInventory<BeeSimulator> dynamicInventory = new DynamicInventory<>(
-        mInventoryWidth,
-        mInventoryHeight,
+        INVENTORY_WIDTH,
+        INVENTORY_HEIGHT,
         () -> mMaxSlots,
         mStorage,
         s -> s.queenStack).allowInventoryInjection(input -> {
@@ -843,16 +843,16 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
 
-        int tBackgroundPadding = mInventoryBorderWidth * 2;
+        final int backgroundPadding = INVENTORY_BORDER_WIDTH * 2;
         builder.widget(
             new DrawableWidget().setDrawable(UITexture.fullImage(Tags.MODID, "gui/apiary_inventory_background"))
-                .setPos(mInventoryX - mInventoryBorderWidth, mInventoryY - mInventoryBorderWidth)
-                .setSize(mInventoryWidth + tBackgroundPadding, mInventoryHeight + tBackgroundPadding)
+                .setPos(INVENTORY_X - INVENTORY_BORDER_WIDTH, INVENTORY_Y - INVENTORY_BORDER_WIDTH)
+                .setSize(INVENTORY_WIDTH + backgroundPadding, INVENTORY_HEIGHT + backgroundPadding)
                 .setEnabled(w -> isInInventory));
 
         builder.widget(
             dynamicInventory.asWidget(builder, buildContext)
-                .setPos(mInventoryX, mInventoryY)
+                .setPos(INVENTORY_X, INVENTORY_Y)
                 .setEnabled(w -> isInInventory));
 
         builder.widget(
