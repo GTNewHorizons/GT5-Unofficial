@@ -513,12 +513,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     private String createParallelText(EnumChatFormatting blockColor, String block, int parallels) {
         return String.format(
-            "%s%s%s : %s%d%s Parallels",
+            "%s%s%s : %s%d%s %s",
             blockColor,
             block,
             EnumChatFormatting.GRAY,
             EnumChatFormatting.GOLD,
             parallels,
-            EnumChatFormatting.GRAY);
+            EnumChatFormatting.GRAY, parallels == 1? "Parallel" : "Parallels");
     }
 }

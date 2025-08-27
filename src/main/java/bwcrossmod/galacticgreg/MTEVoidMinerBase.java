@@ -372,7 +372,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return false;
     }
 
-    private String createGasString(EnumChatFormatting color, String gas, int boost) {
+    protected String createGasString(EnumChatFormatting color, String gas, int boost) {
         return String.format(
             "%s%s%s : %s%dx%s",
             color,
