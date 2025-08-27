@@ -93,6 +93,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -851,7 +852,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Power consumption is multiplied by Sqrt(structures).")
             .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
             .addInfo("Nanites have to be placed in a Nanite Containment Bus.")
-            .addInfo("The formula for parallels is the amount of nanites^0.75, rounded up.")
+            .addInfo(
+                "The formula for parallels is the " + TooltipHelper.parallelText("amount of nanites^0.75")
+                    + ", rounded up.")
             .addInfo("Maximum parallel is 256.")
             .addInfo("Recipes require a cooling upgrade to be overclocked.")
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
@@ -1003,7 +1006,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
+        return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 
     @Override
