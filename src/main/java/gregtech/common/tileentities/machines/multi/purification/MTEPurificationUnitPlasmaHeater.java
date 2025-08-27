@@ -281,7 +281,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
@@ -290,7 +290,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + ",")
             .addInfo(
-                "and then cooling it back down to " + EnumChatFormatting.RED + "0K" + EnumChatFormatting.GRAY + ".")
+                "and then cooling it back down to " + EnumChatFormatting.RED + "0K")
             .addInfo(
                 "Initial temperature is reset to " + EnumChatFormatting.RED
                     + "0K"
@@ -300,15 +300,13 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 // TODO: Refer to heating cycles in another way to avoid confusion
                 "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
                     + SUCCESS_PER_CYCLE
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "%")
             .addInfo(
                 "If the temperature ever reaches " + EnumChatFormatting.RED
                     + MAX_TEMP
                     + "K"
                     + EnumChatFormatting.GRAY
-                    + " the recipe will fail and output steam.")
+                    + " the recipe will fail and output steam")
             .addSeparator()
             .addInfo(
                 "Consumes up to " + EnumChatFormatting.RED
@@ -324,9 +322,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + "L/s "
                     + EnumChatFormatting.WHITE
                     + coolantMaterial.getFluid(1)
-                        .getLocalizedName()
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                        .getLocalizedName())
             .addInfo(
                 EnumChatFormatting.RED + "Raises "
                     + EnumChatFormatting.GRAY
@@ -335,7 +331,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + PLASMA_TEMP_PER_LITER
                     + "K"
                     + EnumChatFormatting.GRAY
-                    + " per liter of plasma consumed.")
+                    + " per liter of plasma consumed")
             .addInfo(
                 EnumChatFormatting.RED + "Lowers "
                     + EnumChatFormatting.GRAY
@@ -344,7 +340,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + -COOLANT_TEMP_PER_LITER
                     + "K"
                     + EnumChatFormatting.GRAY
-                    + " per liter of coolant consumed.")
+                    + " per liter of coolant consumed")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -361,7 +357,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "supercritical while evaporating any remaining contaminants, ready for filtration.")
+                    + "supercritical while evaporating any remaining contaminants, ready for filtration")
             .beginStructureBlock(23, 15, 15, false)
             .addController("Front center")
             .addCasingInfoExactlyColored(
