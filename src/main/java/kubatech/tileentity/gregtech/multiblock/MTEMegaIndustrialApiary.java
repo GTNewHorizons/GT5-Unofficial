@@ -785,11 +785,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
     }
 
-    final int mInventoryWidth = 128;
-    final int mInventoryHeight = 60;
-    final int mInventoryX = 10;
-    final int mInventoryY = 16;
-    final int mInventoryBorderWidth = 3;
+    private final static int mInventoryWidth = 128;
+    private final static int mInventoryHeight = 60;
+    private final static int mInventoryX = 10;
+    private final static int mInventoryY = 16;
+    private final static int mInventoryBorderWidth = 3;
 
     DynamicInventory<BeeSimulator> dynamicInventory = new DynamicInventory<>(
         mInventoryWidth,
