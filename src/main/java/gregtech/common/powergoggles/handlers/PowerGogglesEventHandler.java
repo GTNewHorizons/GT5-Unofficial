@@ -70,17 +70,24 @@ public class PowerGogglesEventHandler {
     public void onKeyInput(InputEvent.KeyInputEvent event) {
 
         if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
-            Minecraft screenInfo = Minecraft.getMinecraft();
-            Minecraft.getMinecraft()
-                .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
-
+            openConfig();
         } else if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
-            PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
-            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                .get("Show Power Chart")
-                .set(PowerGogglesConfigHandler.showPowerChart);
-            PowerGogglesConfigHandler.config.save();
+            toggleChart();
         }
+    }
+
+    private void openConfig() {
+        Minecraft screenInfo = Minecraft.getMinecraft();
+        Minecraft.getMinecraft()
+            .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
+    }
+
+    private void toggleChart() {
+        PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
+        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+            .get("Show Power Chart")
+            .set(PowerGogglesConfigHandler.showPowerChart);
+        PowerGogglesConfigHandler.config.save();
     }
 
     public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP player) {
