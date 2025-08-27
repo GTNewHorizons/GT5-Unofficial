@@ -1,8 +1,5 @@
 package gregtech.common.powergoggles.handlers;
 
-import static gregtech.api.enums.GTValues.NW;
-
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +7,6 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.config.Configuration;
@@ -23,8 +19,6 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GTPacketUpdatePowerGoggles;
-import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.powergoggles.PowerGogglesClient;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
@@ -32,15 +26,16 @@ import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 public class PowerGogglesEventHandler {
 
     private static final PowerGogglesEventHandler INSTANCE = new PowerGogglesEventHandler();
+    private final int TICKS_BETWEEN_UPDATES = 100;
+    // private Map<UUID, Integer> tickMap = new HashMap<>();
+    // private Minecraft mc;
+    // private Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
+    // private boolean forceUpdate = false;
+    // private boolean forceRefresh = false;
+    // private boolean firstClientTick = true;
 
-    private Map<UUID, Integer> tickMap = new HashMap<>();
-    private Minecraft mc;
-    private Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
-    private boolean forceUpdate = false;
-    private boolean forceRefresh = false;
-    private boolean firstClientTick = true;
-
-    private Map<UUID, PowerGogglesClient> clientMap = new HashMap<>();
+    private final Map<UUID, PowerGogglesClient> clientMap = new HashMap<>();
+    private int updateTicker = 0;
 
     private PowerGogglesEventHandler() {}
 
@@ -49,45 +44,37 @@ public class PowerGogglesEventHandler {
     }
 
     @SubscribeEvent
-    private void playerTickEnd(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        if (event.side == Side.SERVER) {
-            doServerStuff(event);
+    public void processServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
         }
+        updateTicker = (updateTicker + 1) % TICKS_BETWEEN_UPDATES;
     }
 
-    private void doServerStuff(TickEvent.PlayerTickEvent event) {
+    @SubscribeEvent
+    public void processPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+        if (event.side.isClient()) {
+            return;
+        }
+        if (updateTicker != 1) {
+            return;
+        }
+        updateClient(event);
+    }
+
+    private void updateClient(TickEvent.PlayerTickEvent event) {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
         UUID uuid = player.getUniqueID();
 
-        int playerTicks = forceUpdate ? 1
-            : (tickMap.getOrDefault(uuid, 0) + 1) % PowerGogglesHudHandler.ticksBetweenMeasurements;
-        tickMap.put(uuid, playerTicks);
-
-        if (playerTicks != 1) return;
-        if (isValidLink(player, lscLinkMap.get(uuid))) {
-            MTELapotronicSuperCapacitor lsc = getLsc(player);
-            NW.sendToPlayer(
-                new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), forceRefresh),
-                player);
-        } else {
-            if (lscLinkMap.get(uuid) != null) {
-                lscLinkMap.put(uuid, null);
-                forceRefresh = true;
-            }
-            NW.sendToPlayer(
-                new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((player).getUniqueID()), forceRefresh),
-                player);
+        if (!clientMap.containsKey(uuid)) {
+            return;
         }
-        forceUpdate = false;
-        forceRefresh = false;
-    }
 
-    private MTELapotronicSuperCapacitor getLsc(EntityPlayerMP player) {
-        DimensionalCoord coords = lscLinkMap.get(player.getUniqueID());
-        WorldServer lscDim = player.mcServer.worldServerForDimension(coords.getDimension());
-        TileEntity tileEntity = lscDim.getTileEntity(coords.x, coords.y, coords.z);
-        return ((MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity).getMetaTileEntity());
+        PowerGogglesClient client = clientMap.get(uuid);
+        client.updatePlayer(player);
     }
 
     @SubscribeEvent
@@ -95,11 +82,11 @@ public class PowerGogglesEventHandler {
 
     }
 
-    @SubscribeEvent
-    private void clientOnPlayerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-        PowerGogglesHudHandler.clear();
-        firstClientTick = true;
-    }
+    // @SubscribeEvent
+    // private void clientOnPlayerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+    // PowerGogglesHudHandler.clear();
+    // firstClientTick = true;
+    // }
 
     @SubscribeEvent
     private void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
@@ -108,7 +95,7 @@ public class PowerGogglesEventHandler {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    private void onKeyInput(InputEvent.KeyInputEvent event) {
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
 
         if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
             Minecraft screenInfo = Minecraft.getMinecraft();
@@ -132,19 +119,19 @@ public class PowerGogglesEventHandler {
         return gte.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor;
     }
 
-    private void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
-        lscLinkMap.put(player.getUniqueID(), coords);
-    }
-
-    private DimensionalCoord getLscLink(UUID uuid) {
-        return lscLinkMap.get(uuid);
-    }
-
-    @SubscribeEvent
-    private void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
-        EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
-        setLscLink(player, null);
-    }
+    // private void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
+    // lscLinkMap.put(player.getUniqueID(), coords);
+    // }
+    //
+    // private DimensionalCoord getLscLink(UUID uuid) {
+    // return lscLinkMap.get(uuid);
+    // }
+    //
+    // @SubscribeEvent
+    // private void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
+    // EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
+    // setLscLink(player, null);
+    // }
 
     public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP player) {
         PowerGogglesClient client = clientMap.computeIfAbsent(player.getUniqueID(), uuid -> new PowerGogglesClient());
