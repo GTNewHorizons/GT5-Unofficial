@@ -16,7 +16,6 @@ package bartworks.common.tileentities.multis.mega;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static goodgenerator.main.GGConfigLoader.CoolantEfficiency;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
@@ -252,47 +251,48 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addInfo(getCoolantTextFormatted("Molten Spacetime", "7500", 1))
             .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "5000", 2))
             .addInfo(getCoolantTextFormatted("Molten Eternity", "2500", 3))
-           /* .addInfo(
-                "To activate " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Subspace Cooling "
-                    + EnumChatFormatting.GRAY
-                    + "supply a "+EnumChatFormatting.AQUA+"coolant"+EnumChatFormatting.GRAY+" while running recipes")
-            .addInfo(
-                EnumChatFormatting.RED + "7500 L/s "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Molten SpaceTime"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.RED
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " perfect overclock.")
-            .addInfo(
-                EnumChatFormatting.RED + "5000 L/s "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Spatially Enlarged Fluid"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.RED
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " perfect overclocks.")
-            .addInfo(
-                EnumChatFormatting.RED + "2500 L/s "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Molten Eternity"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.RED
-                    + "3"
-                    + EnumChatFormatting.GRAY
-                    + " perfect overclocks.")*/
+            /*
+             * .addInfo(
+             * "To activate " + EnumChatFormatting.LIGHT_PURPLE
+             * + "Subspace Cooling "
+             * + EnumChatFormatting.GRAY
+             * + "supply a "+EnumChatFormatting.AQUA+"coolant"+EnumChatFormatting.GRAY+" while running recipes")
+             * .addInfo(
+             * EnumChatFormatting.RED + "7500 L/s "
+             * + EnumChatFormatting.DARK_PURPLE
+             * + "Molten SpaceTime"
+             * + EnumChatFormatting.GRAY
+             * + ": "
+             * + EnumChatFormatting.RED
+             * + "1"
+             * + EnumChatFormatting.GRAY
+             * + " perfect overclock.")
+             * .addInfo(
+             * EnumChatFormatting.RED + "5000 L/s "
+             * + EnumChatFormatting.DARK_PURPLE
+             * + "Spatially Enlarged Fluid"
+             * + EnumChatFormatting.GRAY
+             * + ": "
+             * + EnumChatFormatting.RED
+             * + "2"
+             * + EnumChatFormatting.GRAY
+             * + " perfect overclocks.")
+             * .addInfo(
+             * EnumChatFormatting.RED + "2500 L/s "
+             * + EnumChatFormatting.DARK_PURPLE
+             * + "Molten Eternity"
+             * + EnumChatFormatting.GRAY
+             * + ": "
+             * + EnumChatFormatting.RED
+             * + "3"
+             * + EnumChatFormatting.GRAY
+             * + " perfect overclocks.")
+             */
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
             .addInfo(
-                EnumChatFormatting.DARK_AQUA
-                    + "enabling the capture of heat energy in miniature tears in spacetime,")
+                EnumChatFormatting.DARK_AQUA + "enabling the capture of heat energy in miniature tears in spacetime,")
             .addInfo(EnumChatFormatting.DARK_AQUA + "massively increasing the efficiency of the cooling process.")
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")

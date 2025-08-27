@@ -235,11 +235,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus")
             .addInfo("Right click the controller with a plunger to empty it")
             .addInfo(
-                "The warehouse's contents are " + RED
-                    + UNDERLINE
-                    + "voided"
-                    + GRAY
-                    + " when the controller is broken");
+                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken");
 
         tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
 

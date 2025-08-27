@@ -144,11 +144,17 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner")
             .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
-            .addInfo("Can be supplied with "+EnumChatFormatting.AQUA+"2 L/s"+EnumChatFormatting.GRAY+" of Noble gases to boost "+EnumChatFormatting.GOLD+"output")
-            .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE,"Neon",4))
-            .addInfo(createGasString(EnumChatFormatting.AQUA,"Krypton",8))
-            .addInfo(createGasString(EnumChatFormatting.DARK_AQUA,"Xenon",16))
-            .addInfo(createGasString(EnumChatFormatting.BLUE,"Oganesson",64))
+            .addInfo(
+                "Can be supplied with " + EnumChatFormatting.AQUA
+                    + "2 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of Noble gases to boost "
+                    + EnumChatFormatting.GOLD
+                    + "output")
+            .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+            .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+            .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+            .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
             .addInfo(
                 "Will output " + 2 * this.TIER_MULTIPLIER
                     + " Ores per Second depending on the Dimension it is build in")
@@ -375,8 +381,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return false;
     }
 
-    private String createGasString(EnumChatFormatting color, String gas, int boost)
-    {
-        return String.format("%s%s%s : %s%dx%s",color,gas,EnumChatFormatting.GRAY,EnumChatFormatting.GOLD,boost,EnumChatFormatting.GRAY);
+    private String createGasString(EnumChatFormatting color, String gas, int boost) {
+        return String.format(
+            "%s%s%s : %s%dx%s",
+            color,
+            gas,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            boost,
+            EnumChatFormatting.GRAY);
     }
 }

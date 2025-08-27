@@ -139,7 +139,11 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Crafter, DEFC")
-            .addInfo("Gains 1 "+ EnumChatFormatting.LIGHT_PURPLE+"perfect overclock"+EnumChatFormatting.GRAY+" per casing tier above recipe")
+            .addInfo(
+                "Gains 1 " + EnumChatFormatting.LIGHT_PURPLE
+                    + "perfect overclock"
+                    + EnumChatFormatting.GRAY
+                    + " per casing tier above recipe")
             .addInfo("Normal EU OC still applies !")
             .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")

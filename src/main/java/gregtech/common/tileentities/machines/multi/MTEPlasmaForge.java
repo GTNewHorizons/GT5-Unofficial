@@ -622,9 +622,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "1,270"
-                    + EnumChatFormatting.GRAY
-                    + " Dimensional injection casings required")
+                EnumChatFormatting.GOLD + "1,270" + EnumChatFormatting.GRAY + " Dimensional injection casings required")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "2,121"
                     + EnumChatFormatting.GRAY

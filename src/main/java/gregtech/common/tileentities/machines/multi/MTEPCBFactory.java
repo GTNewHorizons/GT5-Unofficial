@@ -855,7 +855,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo(
                 "The formula for parallels is the " + TooltipHelper.parallelText("amount of nanites^0.75")
                     + ", rounded up")
-            .addInfo("Maximum parallel is "+TooltipHelper.parallelText("256"))
+            .addInfo("Maximum parallel is " + TooltipHelper.parallelText("256"))
             .addInfo("Recipes require a cooling upgrade to be overclocked")
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks")
             .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks")

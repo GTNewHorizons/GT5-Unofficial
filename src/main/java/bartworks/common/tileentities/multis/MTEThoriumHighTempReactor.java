@@ -134,11 +134,27 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor, THTR")
             .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
-            .addInfo("Needs a constant supply of "+EnumChatFormatting.AQUA+"coolant"+EnumChatFormatting.GRAY+" while running")
-            .addInfo("Needs at least "+EnumChatFormatting.GOLD+"100K"+EnumChatFormatting.GRAY+" Fuel pebbles to start operation (can hold up to 675k pebbles)")
-            .addInfo("Consumes up to "+ EnumChatFormatting.GOLD+"0.5%"+EnumChatFormatting.GRAY+" of total Fuel Pellets per Operation depending on efficiency")
+            .addInfo(
+                "Needs a constant supply of " + EnumChatFormatting.AQUA
+                    + "coolant"
+                    + EnumChatFormatting.GRAY
+                    + " while running")
+            .addInfo(
+                "Needs at least " + EnumChatFormatting.GOLD
+                    + "100K"
+                    + EnumChatFormatting.GRAY
+                    + " Fuel pebbles to start operation (can hold up to 675k pebbles)")
+            .addInfo(
+                "Consumes up to " + EnumChatFormatting.GOLD
+                    + "0.5%"
+                    + EnumChatFormatting.GRAY
+                    + " of total Fuel Pellets per Operation depending on efficiency")
             .addInfo("Efficiency decreases exponentially if the internal buffer is not completely filled")
-            .addInfo("Reactor will take "+EnumChatFormatting.AQUA+"4800L/t"+EnumChatFormatting.GRAY+" of coolant multiplied by efficiency")
+            .addInfo(
+                "Reactor will take " + EnumChatFormatting.AQUA
+                    + "4800L/t"
+                    + EnumChatFormatting.GRAY
+                    + " of coolant multiplied by efficiency")
             .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
             .beginStructureBlock(11, 12, 11, true)

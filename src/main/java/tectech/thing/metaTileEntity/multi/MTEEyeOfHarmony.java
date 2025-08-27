@@ -1055,8 +1055,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addInfo("This multiblock can only output to ME output buses/hatches")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus")
-            .addInfo(
-                "E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected")
+            .addInfo("E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected")
             .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
@@ -1101,8 +1100,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
             .addInfo("instead of helium and hydrogen. Overflow penalties still apply")
             .addInfo(
-                "The required amount of fluid to start a recipe is " + GREEN
-                    + "12.4 / 10^6 * Helium amount * Parallel")
+                "The required amount of fluid to start a recipe is " + GREEN + "12.4 / 10^6 * Helium amount * Parallel")
             .addInfo("The success or failure of each parallel is determined independently")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock")

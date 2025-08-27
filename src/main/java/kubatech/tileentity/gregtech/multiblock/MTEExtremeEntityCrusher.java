@@ -271,10 +271,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
             .addInfo("Spawns and kills monsters for you!")
-            .addInfo("Produces "+EnumChatFormatting.GREEN+"120 Liquid XP"+EnumChatFormatting.GRAY+" per operation.")
+            .addInfo(
+                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation.")
             .addInfo("Powered Spawner goes in Controller Slot")
-            .addInfo("Base energy usage: "+EnumChatFormatting.AQUA+"1920"+EnumChatFormatting.GRAY+" EU/t")
-            .addInfo("Supports "+EnumChatFormatting.LIGHT_PURPLE+"perfect OC!")
+            .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
+            .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
             .addSeparator()
             .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
             .addInfo("Recipe time is based on mob health")
@@ -282,9 +283,21 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels)")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
             .addSeparator()
-            .addInfo("If the mob spawns "+EnumChatFormatting.RED+"infernal"+EnumChatFormatting.GRAY+", it will drain 8 times more power!")
-            .addInfo("You can prevent "+EnumChatFormatting.RED+"infernal"+EnumChatFormatting.GRAY+" spawns by shift clicking with a screwdriver")
-            .addInfo("Mobs who are always "+EnumChatFormatting.RED+"infernal"+EnumChatFormatting.GRAY+" will ignore this factor")
+            .addInfo(
+                "If the mob spawns " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + ", it will drain 8 times more power!")
+            .addInfo(
+                "You can prevent " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " spawns by shift clicking with a screwdriver")
+            .addInfo(
+                "Mobs who are always " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " will ignore this factor")
             .addSeparator()
             .addInfo("You can enable ritual mode with a screwdriver")
             .addInfo("When in ritual mode, can link to above Well of Suffering rituals")
@@ -292,7 +305,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
             .addSeparator()
             .addInfo("You can disable mob animation with a soldering iron.")
-            .addInfo("You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE + " 16x Time 16x Output")
+            .addInfo(
+                "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
+                    + " 16x Time 16x Output")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")

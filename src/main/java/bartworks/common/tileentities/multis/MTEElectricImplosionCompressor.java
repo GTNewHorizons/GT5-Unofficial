@@ -87,7 +87,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
@@ -219,12 +218,19 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         tt.addMachineType("Implosion Compressor, EIC")
             .addInfo("Explosions are fun!")
             .addInfo("Uses electricity instead of Explosives")
-            .addInfo(EnumChatFormatting.GOLD+"Parallels"+EnumChatFormatting.GRAY+" are determined by "+EnumChatFormatting.WHITE+"Containment Block"+EnumChatFormatting.GRAY+" Tier")
-            .addInfo(createParallelText(EnumChatFormatting.WHITE,"Neutronium",1))
-            .addInfo(createParallelText(EnumChatFormatting.RED,"Infinity",4))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY,"Transcendent Metal",16))
-            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE,"Spacetime",64))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA,"Universium",256))
+            .addInfo(
+                EnumChatFormatting.GOLD + "Parallels"
+                    + EnumChatFormatting.GRAY
+                    + " are determined by "
+                    + EnumChatFormatting.WHITE
+                    + "Containment Block"
+                    + EnumChatFormatting.GRAY
+                    + " Tier")
+            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
+            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
+            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
             .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
@@ -504,8 +510,15 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
         resetPiston(this.mBlockTier);
     }
-    private String createParallelText(EnumChatFormatting blockColor, String block, int parallels)
-    {
-        return String.format("%s%s%s : %s%d%s Parallels",blockColor,block, EnumChatFormatting.GRAY,EnumChatFormatting.GOLD,parallels,EnumChatFormatting.GRAY);
+
+    private String createParallelText(EnumChatFormatting blockColor, String block, int parallels) {
+        return String.format(
+            "%s%s%s : %s%d%s Parallels",
+            blockColor,
+            block,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            parallels,
+            EnumChatFormatting.GRAY);
     }
 }

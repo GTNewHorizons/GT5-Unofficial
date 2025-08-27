@@ -759,7 +759,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
             .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4)
             .addSeparator()
-            .addInfo("Performs "+EnumChatFormatting.LIGHT_PURPLE+"perfect overclocks"+EnumChatFormatting.GRAY+" on lower-tier recipes than the machine")
+            .addInfo(
+                "Performs " + EnumChatFormatting.LIGHT_PURPLE
+                    + "perfect overclocks"
+                    + EnumChatFormatting.GRAY
+                    + " on lower-tier recipes than the machine")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
@@ -774,9 +778,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     + EnumChatFormatting.GRAY
                     + "requires a whole new set of blocks")
             .addStructureInfo("Check the NEI preview for specifics")
-            .addStructureInfo(
-                "Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN
-                    + "4")
+            .addStructureInfo("Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN + "4")
             .addStructureInfoSeparator()
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD

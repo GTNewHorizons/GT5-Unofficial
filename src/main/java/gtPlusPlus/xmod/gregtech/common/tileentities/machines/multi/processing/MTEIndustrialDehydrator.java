@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -52,6 +51,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;

@@ -21,7 +21,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -54,6 +53,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
@@ -107,9 +107,33 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, EBF")
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-            .addInfo("Increases Heat by " + EnumChatFormatting.RED + "100K" + EnumChatFormatting.GRAY + " for every " + TooltipHelper.tierText("Voltage") + " tier past " + EnumChatFormatting.AQUA + "MV")
-            .addInfo("Reduces " + TooltipHelper.effText("EU Usage") + " by " + EnumChatFormatting.WHITE + "5%" + EnumChatFormatting.GRAY + " every " + EnumChatFormatting.RED + "900K" + EnumChatFormatting.GRAY + " above the recipe requirement")
-            .addInfo("Every " + EnumChatFormatting.RED + "1800K" + EnumChatFormatting.GRAY + " over the recipe requirement grants 1 " + EnumChatFormatting.LIGHT_PURPLE + " Perfect Overclock")
+            .addInfo(
+                "Increases Heat by " + EnumChatFormatting.RED
+                    + "100K"
+                    + EnumChatFormatting.GRAY
+                    + " for every "
+                    + TooltipHelper.tierText("Voltage")
+                    + " tier past "
+                    + EnumChatFormatting.AQUA
+                    + "MV")
+            .addInfo(
+                "Reduces " + TooltipHelper.effText("EU Usage")
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "5%"
+                    + EnumChatFormatting.GRAY
+                    + " every "
+                    + EnumChatFormatting.RED
+                    + "900K"
+                    + EnumChatFormatting.GRAY
+                    + " above the recipe requirement")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "1800K"
+                    + EnumChatFormatting.GRAY
+                    + " over the recipe requirement grants 1 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " Perfect Overclock")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
