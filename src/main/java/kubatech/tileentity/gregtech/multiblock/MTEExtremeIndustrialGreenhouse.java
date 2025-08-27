@@ -133,22 +133,16 @@ import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse> {
 
     /***
-     * BALANCE OF THE IC2 MODE:
-     * (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER)
-     * All IC2 crops are simulated and all drops are generated based on the real crop drops.
-     * T is a tick accelerator tier for the IC2 crops,
-     * Each crop in the EIG is accelerated using T tier accelerator
-     * (Accelerators in the game are defined as 2^T acceleration, 8*(4^T) voltage, 6 amps)
-     * IC2 mode is unlocked at T+1 tier (glass and power)
-     * And each amp of T gives one crop slot, EIG only consumes 1 AMP of a tier that it is at
-     * (EIG starts at 4 crops (T+1 tier) and each tier quadruples the amount of slots)
-     * Each crop is accelerated 2^T times
-     * Summary:
-     * Accelerators in EIG are a bit cheaper than on the crop field (4 amps instead of 6 amps)
-     * There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
+     * BALANCE OF THE IC2 MODE: (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER) All IC2 crops are simulated and all drops are
+     * generated based on the real crop drops. T is a tick accelerator tier for the IC2 crops, Each crop in the EIG is
+     * accelerated using T tier accelerator (Accelerators in the game are defined as 2^T acceleration, 8*(4^T) voltage,
+     * 6 amps) IC2 mode is unlocked at T+1 tier (glass and power) And each amp of T gives one crop slot, EIG only
+     * consumes 1 AMP of a tier that it is at (EIG starts at 4 crops (T+1 tier) and each tier quadruples the amount of
+     * slots) Each crop is accelerated 2^T times Summary: Accelerators in EIG are a bit cheaper than on the crop field
+     * (4 amps instead of 6 amps) There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
      * <p>
-     * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice
-     * (That is because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
+     * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice (That is
+     * because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
      */
     public static final int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.IV;
     public static final int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
@@ -420,8 +414,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // region tool interactions
 
     /**
-     * Right click = change setup phase
-     * Shift+Right Click = change EIG Mode
+     * Right click = change setup phase Shift+Right Click = change EIG Mode
      */
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,

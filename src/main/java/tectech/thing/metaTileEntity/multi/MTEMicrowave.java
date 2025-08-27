@@ -234,7 +234,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
                                                                                             // Wither)
             .beginStructureBlock(5, 4, 5, true)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
+            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller:
+                                                                                 // Front
+                                                                                 // center
             .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false) // 60x
                                                                                                         // Stainless
                                                                                                         // Steel

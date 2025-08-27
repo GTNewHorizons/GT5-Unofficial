@@ -2,6 +2,7 @@ package gregtech.loaders.postload.chains;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -35,6 +36,8 @@ import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -59,11 +62,23 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
 
+            if (Forestry.isModLoaded()) {
+                GTValues.RA.stdBuilder() // Prismarine + Comb
+                    .itemInputs(
+                        GregtechItemList.RedAlgaeBiomass.get(32),
+                        GTBees.combs.getStackForType(CombType.PRISMATIC, 32))
+                    .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 16))
+                    .duration(15 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(autoclaveRecipes);
+            }
+
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 24))
                 .fluidInputs(
-                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000), // Hydrogen Peroxide
-                    FluidUtils.getHydrofluoricAcid(4000)) // Industrial Strength Hydrofluoric Acid
+                    FluidUtils.getHydrofluoricAcid(4000), // Industrial Strength Hydrofluoric Acid
+                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000)) // Hydrogen Peroxide
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 4))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
@@ -351,7 +366,7 @@ public class NetheriteRecipes {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
+            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Netherite_Nanoparticles.get(1))
             .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
             .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -359,6 +374,21 @@ public class NetheriteRecipes {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COIL_HEAT, 7500)
             .addTo(blastFurnaceRecipes);
+
+        if (Forestry.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(2),
+                    ItemList.Netherite_Nanoparticles.get(1),
+                    GTBees.combs.getStackForType(CombType.NETHERITE, 32))
+                .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
+                .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(2))
+                .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .metadata(COIL_HEAT, 7500)
+                .addTo(blastFurnaceRecipes);
+        }
 
         NetheriteRecipes.addNetheriteParts();
     }
@@ -445,7 +475,7 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
-            .duration(34 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(plasmaArcFurnaceRecipes);
 

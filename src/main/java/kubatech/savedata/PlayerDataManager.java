@@ -31,7 +31,6 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.event.world.WorldEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import kubatech.api.helpers.UUIDFinder;
 
 public class PlayerDataManager extends WorldSavedData {
 
@@ -70,7 +69,6 @@ public class PlayerDataManager extends WorldSavedData {
             UUID uuid = UUID.fromString(playerNBTData.getString("uuid"));
             PlayerData pData = new PlayerData(playerNBTData.getCompoundTag("data"));
             players.put(uuid, pData);
-            if (!pData.username.isEmpty()) UUIDFinder.updateMapping(pData.username, uuid);
         }
     }
 

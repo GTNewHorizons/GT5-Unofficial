@@ -20,10 +20,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenRecycling implements Runnable {
@@ -69,7 +69,7 @@ public class RecipeGenRecycling implements Runnable {
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].name() + Utils.sanitizeString(material.getLocalizedName()),
+                mValidPrefixesAsString[r].name() + StringUtils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -232,7 +232,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.name() + Utils.sanitizeString(aMaterial.getLocalizedName()),
+            aPrefix.name() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
             aReplacement,
             aAmount,
             false,
@@ -288,9 +288,9 @@ public class RecipeGenRecycling implements Runnable {
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
         if (oredictName.contains("-") || oredictName.contains("_")) {
-            oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
+            oredictName = StringUtils.sanitizeStringKeepDashes(oredictName);
         } else {
-            oredictName = Utils.sanitizeString(oredictName);
+            oredictName = StringUtils.sanitizeString(oredictName);
         }
 
         // Adds a check to grab dusts using GT methodology if possible.

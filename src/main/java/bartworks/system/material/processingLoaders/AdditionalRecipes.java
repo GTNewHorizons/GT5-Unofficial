@@ -25,10 +25,8 @@ import static gregtech.api.enums.OrePrefixes.gemChipped;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extremeNaquadahReactorFuels;
@@ -68,13 +66,11 @@ import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import bartworks.util.BioPlasmid;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -487,51 +483,5 @@ public class AdditionalRecipes {
             .eut(0)
             .metadata(FUEL_VALUE, 125_000)
             .addTo(ultraHugeNaquadahReactorFuels);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust, 3))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_1.get(1L))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(cannerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_1.get(2L),
-                GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_2.get(1L))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_1.get(4L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_4.get(1L))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_2.get(2L),
-                GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_4.get(1L))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.NaquadahCell_1.get(32L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                WerkstoffLoader.Tiberium.get(dust, 64),
-                WerkstoffLoader.Tiberium.get(dust, 64))
-            .itemOutputs(BWNonMetaMaterialItems.TheCoreCell.get(1L))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
-
-        GregTechAPI.sAfterGTPostload.add(new AddSomeRecipes());
     }
 }

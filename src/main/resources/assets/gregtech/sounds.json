@@ -381,5 +381,114 @@
         "stream": false
       }
     ]
+  },
+  "maintenance.MaintenanceAutoHatch": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceAutoHatch",
+        "stream": false,
+        "licensing": {
+          "author_name": "Kynake",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "license_name": "Attribution-ShareAlike 4.0",
+          "original_sound_url": "https://freesound.org/people/NinjaSharkStudios/sounds/566206/",
+          "original_sound_name": "DeWalt Drill_1.wav",
+          "original_author_url": "https://freesound.org/people/NinjaSharkStudios/",
+          "original_author_name": "NinjaSharkStudios",
+          "original_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "original_license_name": "CC0 1.0 Universal"
+        }
+      }
+    ]
+  },
+  "maintenance.MaintenanceCreativeHatch": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceCreativeHatch",
+        "stream": false,
+        "licensing": {
+          "author_names": ["nicksitnikov", "Kynake"],
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "license_name": "Attribution-ShareAlike 4.0",
+          "original_sound_url": "https://freesound.org/people/IENBA/sounds/697379/",
+          "original_sound_name": "697379__ienba__electric-scooter.wav",
+          "original_author_url": "https://freesound.org/people/IENBA/",
+          "original_author_name": "IENBA",
+          "original_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "original_license_name": "CC0 1.0 Universal"
+        }
+      }
+    ]
+  },
+  "maintenance.MaintenanceDroneDownLinkHatch": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceDroneDownLinkHatch",
+        "stream": false,
+        "licensing": {
+          "author_name": "Kynake",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "license_name": "Attribution-ShareAlike 4.0",
+          "original_sound_urls": [
+            "https://freesound.org/people/bruno.auzet/sounds/578270/",
+            "https://freesound.org/people/NinjaSharkStudios/sounds/566206/"
+          ],
+          "original_sound_names": [
+            "drone DJI.wav",
+            "DeWalt Drill_1.wav"
+          ],
+          "original_author_urls": [
+            "https://freesound.org/people/bruno.auzet/",
+            "https://freesound.org/people/NinjaSharkStudios/"
+          ],
+          "original_author_names": [
+            "bruno.auzet",
+            "NinjaSharkStudios"
+          ],
+          "original_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "original_license_name": "CC0 1.0 Universal"
+        }
+      }
+    ]
+  },
+  "maintenance.MaintenanceDuctTape": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceDuctTape",
+        "stream": false,
+        "licensing": {
+          "author_names": ["nicksitnikov", "Kynake"],
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "license_name": "Attribution-ShareAlike 4.0"
+        }
+      }
+    ]
+  },
+  "maintenance.MaintenanceToolbox": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceToolbox",
+        "stream": false,
+        "licensing": {
+          "author_name": "Kynake",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "license_name": "Attribution-ShareAlike 4.0",
+          "original_sound_url": "https://opengameart.org/content/68-workshop-sounds",
+          "original_sound_names": [
+            "workshop - rummaging through nails.wav",
+            "workshop - ratchet2.wav"
+          ],
+          "original_author_url": "https://opengameart.org/users/bart",
+          "original_author_name": "bart",
+          "original_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "original_license_name": "CC0 1.0 Universal"
+        }
+      }
+    ]
   }
 }

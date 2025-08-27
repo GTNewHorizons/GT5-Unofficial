@@ -52,11 +52,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -176,13 +176,18 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Uses 85% less energy in distillery mode")
-            .addInfo("250%/100% faster in DT/distillery mode")
+            .addInfo("Stats dictated by tower tier and mode")
             .addInfo("Right click the controller with screwdriver to change mode.")
-            .addInfo("Max parallel dictated by tower tier and mode")
-            .addInfo("DTower Mode: T1=4, T2=12")
-            .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
-            .addInfo("Distillery Mode require a full height tower")
+            .addSeparator()
+            .addInfo("Distillery Mode (requires full height tower)")
+            .addInfo(TooltipHelper.parallelText("Tower Tier * Voltage Tier * 4") + " Parallels")
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(0.85f)
+            .addSeparator()
+            .addInfo("Distillation Tower Mode")
+            .addInfo(TooltipHelper.parallelText("T1=4") + ", " + TooltipHelper.parallelText("T2=12") + " Parallels")
+            .addStaticSpeedInfo(3.5f)
+            .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom")
@@ -309,11 +314,11 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mHeight < 11) {
-            PlayerUtils.messagePlayer(aPlayer, "Cannot switch mode if not in full height.");
+            GTUtility.sendChatToPlayer(aPlayer, "Cannot switch mode if not in full height.");
             return;
         }
         mMode = mMode.next();
-        PlayerUtils.messagePlayer(aPlayer, "Now running in " + mMode + " Mode.");
+        GTUtility.sendChatToPlayer(aPlayer, "Now running in " + mMode + " Mode.");
         mLastRecipe = null;
     }
 
@@ -470,7 +475,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", mMode.ordinal());
+        tag.setString("mode", getMachineModeName());
+        tag.setInteger("tier", getTierOfTower());
     }
 
     @Override
@@ -479,10 +485,14 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + tag.getInteger("mode"))
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(tag.getInteger("tier"))
                 + EnumChatFormatting.RESET);
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + mMode.ordinal());
     }
 }

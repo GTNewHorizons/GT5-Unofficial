@@ -43,6 +43,7 @@ import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -277,8 +278,8 @@ public class GTClient extends GTProxy {
     public void onInitialization(FMLInitializationEvent event) {
         // spotless:off
         super.onInitialization(event);
-        GTRendererBlock.register();
-        GTRendererCasing.register();
+        RenderingRegistry.registerBlockHandler(new GTRendererBlock());
+        RenderingRegistry.registerBlockHandler(new GTRendererCasing());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, new DroneRender());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
@@ -445,13 +446,6 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
-    public void onRenderStart(TickEvent.RenderTickEvent aEvent) {
-        if (aEvent.phase == TickEvent.Phase.START) {
-            renderTickTime = aEvent.renderTickTime;
-        }
-    }
-
-    @SubscribeEvent
     public void onClientTickEvent(ClientTickEvent aEvent) {
         if (aEvent.phase == TickEvent.Phase.END) {
             mTicksUntilNextCraftSound--;
@@ -463,7 +457,7 @@ public class GTClient extends GTProxy {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
-            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBB();
+            heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
@@ -544,7 +538,7 @@ public class GTClient extends GTProxy {
 
         // TreeSet so it's always the same order
         TreeSet<Hazard> protections = new TreeSet<>();
-        for (Hazard hazard : Hazard.values()) {
+        for (Hazard hazard : Hazard.VALUES) {
             if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
                 protections.add(hazard);
             }
@@ -639,26 +633,42 @@ public class GTClient extends GTProxy {
         return false;
     }
 
-    private boolean forceFullBlockBoundingBoxes;
+    private boolean isRenderingWorld;
+    private boolean isComputingPickBlock;
+    private boolean heldItemForcesFullBlockBB;
+
+    public void setComputingPickBlock(boolean b) {
+        isComputingPickBlock = b;
+    }
+
+    @SubscribeEvent
+    public void onRenderStart(TickEvent.RenderTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            renderTickTime = event.renderTickTime;
+            isRenderingWorld = true;
+        } else if (event.phase == TickEvent.Phase.END) {
+            isRenderingWorld = false;
+        }
+    }
 
     public boolean forceFullBlockBB() {
-        return forceFullBlockBoundingBoxes;
+        return heldItemForcesFullBlockBB && (isRenderingWorld || isComputingPickBlock);
     }
 
     private static boolean shouldHeldItemForceFullBlockBB() {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return false;
-        final ItemStack tCurrentItem = player.getCurrentEquippedItem();
-        if (tCurrentItem == null) return false;
-        return GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
-            || CoverRegistry.isCover(tCurrentItem)
-            || (tCurrentItem.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
+        final ItemStack stack = player.getCurrentEquippedItem();
+        if (stack == null) return false;
+        return GTUtility.isStackInList(stack, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSoftMalletList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sWireCutterList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
+            || CoverRegistry.isCover(stack)
+            || (stack.getItem() instanceof ItemMachines
+                && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
                 && player.isSneaking());
     }
 
