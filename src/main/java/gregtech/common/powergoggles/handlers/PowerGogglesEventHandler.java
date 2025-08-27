@@ -1,4 +1,4 @@
-package gregtech.common.handlers;
+package gregtech.common.powergoggles.handlers;
 
 import static gregtech.api.enums.GTValues.NW;
 
@@ -26,8 +26,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
-import gregtech.common.items.ItemPowerGoggles;
-import gregtech.common.items.gui.PowerGogglesGuiHudConfig;
+import gregtech.common.powergoggles.ItemPowerGoggles;
+import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
 import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 

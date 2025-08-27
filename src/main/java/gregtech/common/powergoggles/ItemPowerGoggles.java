@@ -1,4 +1,4 @@
-package gregtech.common.items;
+package gregtech.common.powergoggles;
 
 import static gregtech.api.enums.GTValues.NW;
 
@@ -24,7 +24,7 @@ import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketUpdateItem;
-import gregtech.common.handlers.PowerGogglesEventHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {

@@ -1,4 +1,4 @@
-package gregtech.common.handlers;
+package gregtech.common.powergoggles.handlers;
 
 import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
@@ -30,7 +30,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.items.ItemPowerGoggles;
+import gregtech.common.powergoggles.ItemPowerGoggles;
 
 public class PowerGogglesHudHandler {
 

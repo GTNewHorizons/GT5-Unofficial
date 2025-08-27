@@ -10,7 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.io.ByteArrayDataInput;
 
 import appeng.api.util.DimensionalCoord;
-import gregtech.common.handlers.PowerGogglesEventHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketLinkPowerGoggles extends GTPacket {

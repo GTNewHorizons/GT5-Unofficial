@@ -264,6 +264,7 @@ import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Wire
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
+import gregtech.common.powergoggles.ItemPowerGoggles;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.Optional;

@@ -6,7 +6,7 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.common.handlers.PowerGogglesHudHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketUpdatePowerGoggles extends GTPacket {

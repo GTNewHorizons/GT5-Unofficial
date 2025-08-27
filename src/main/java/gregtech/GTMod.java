@@ -89,7 +89,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
-import gregtech.common.handlers.PowerGogglesConfigHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
