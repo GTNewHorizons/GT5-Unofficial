@@ -52,8 +52,8 @@ public class ParallelHelper {
      */
     protected int maxParallel = 1;
     /**
-     * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
-     * parallel, but also duration
+     * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible parallel, but also
+     * duration
      */
     protected int batchModifier = 1;
     /**
@@ -202,8 +202,8 @@ public class ParallelHelper {
     }
 
     /**
-     * Sets the multiplier that is applied on output chances. 1 does nothing. 0.9 is 10% less. 1.1 is 10% more.
-     * Only useful for item outputs for sure.
+     * Sets the multiplier that is applied on output chances. 1 does nothing. 0.9 is 10% less. 1.1 is 10% more. Only
+     * useful for item outputs for sure.
      */
     @Nonnull
     public ParallelHelper setChanceMultiplier(double chanceMultiplier) {

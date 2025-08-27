@@ -403,11 +403,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
          * (normal+glowstone+naquadah) EBF, normal silicon no EBF need anymore wafer(normal+glowstone+naquadah) cut mono
-         * silicon ingot in cutting machine
-         * Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes) SoCs(2 sizes, high tier cheap low
-         * tech component) Power IC/High Power IC/Ultra High power
-         * nanotube interconnected circuit (H-IC + nanotubes)
-         * quantum chips
+         * silicon ingot in cutting machine Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes)
+         * SoCs(2 sizes, high tier cheap low tech component) Power IC/High Power IC/Ultra High power nanotube
+         * interconnected circuit (H-IC + nanotubes) quantum chips
          */
 
         final String RAW = "Raw Circuit";

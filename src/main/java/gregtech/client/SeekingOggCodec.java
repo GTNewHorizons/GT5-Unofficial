@@ -12,8 +12,8 @@ import paulscode.sound.SoundBuffer;
 import paulscode.sound.codecs.CodecJOrbis;
 
 /**
- * A somewhat hacky codec that allows starting music playback from the middle of a Ogg Vorbis file.
- * Registers for URLs of the form: {@literal jar:blah/blah.jar!blah/music.ogg?seek_ms=5000&ext=.gt5oggseek}
+ * A somewhat hacky codec that allows starting music playback from the middle of a Ogg Vorbis file. Registers for URLs
+ * of the form: {@literal jar:blah/blah.jar!blah/music.ogg?seek_ms=5000&ext=.gt5oggseek}
  */
 public class SeekingOggCodec extends CodecJOrbis {
 
