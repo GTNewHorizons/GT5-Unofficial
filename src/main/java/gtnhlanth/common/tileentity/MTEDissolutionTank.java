@@ -71,7 +71,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
-        .addElement('g', ofBlockAdder(MTEDissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 0))
+        .addElement('g', chainAllGlasses())
         .build();
 
     public MTEDissolutionTank(String name) {
