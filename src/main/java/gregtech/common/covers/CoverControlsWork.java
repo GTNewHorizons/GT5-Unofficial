@@ -46,7 +46,6 @@ public class CoverControlsWork extends CoverLegacyData {
 
     private boolean handledShutdown = false;
     protected WeakReference<EntityPlayer> lastPlayer = null;
-    private boolean mPlayerNotified = false;
 
     public CoverControlsWork(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
@@ -87,7 +86,6 @@ public class CoverControlsWork extends CoverLegacyData {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
-            mPlayerNotified = false;
             return super.onCoverShiftRightClick(aPlayer);
         }
         return false;
@@ -115,22 +113,6 @@ public class CoverControlsWork extends CoverLegacyData {
                 case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
                     if (machine.wasShutdown() && machine.getLastShutDownReason()
                         .wasCritical() && !handledShutdown) {
-                        if (!mPlayerNotified) {
-                            EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
-                            if (player != null) {
-                                lastPlayer = null;
-                                mPlayerNotified = true;
-                                GTUtility.sendChatToPlayer(
-                                    player,
-                                    coverable.getInventoryName() + "at "
-                                        + String.format(
-                                            "(%d,%d,%d)",
-                                            coverable.getXCoord(),
-                                            coverable.getYCoord(),
-                                            coverable.getZCoord())
-                                        + " shut down.");
-                            }
-                        }
                         handledShutdown = true;
                         coverData = State.DISABLED.ordinal();
                     } else {

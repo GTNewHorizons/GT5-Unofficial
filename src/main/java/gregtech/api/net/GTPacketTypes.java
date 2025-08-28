@@ -43,6 +43,10 @@ public enum GTPacketTypes {
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
     LINK_GOGGLES(34, new GTPacketLinkPowerGoggles()),
     TETHER(35, new GTPacketTether()),
+    UPDATE_POWERFAILS(36, new GTPacketUpdatePowerfails()),
+    ON_POWERFAIL(37, new GTPacketOnPowerfail()),
+    CLEAR_POWERFAIL(38, new GTPacketClearPowerfail()),
+    CHAT(39, new GTPacketChat()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

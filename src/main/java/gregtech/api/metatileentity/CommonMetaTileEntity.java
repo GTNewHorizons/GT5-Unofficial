@@ -580,6 +580,12 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         } else {
             GTUIInfos.openGTTileEntityUI(getBaseMetaTileEntity(), player);
         }
+
+        onGuiOpened(player);
+    }
+
+    protected void onGuiOpened(EntityPlayer player) {
+
     }
 
     /**
