@@ -4,9 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.mEUtoRF;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -25,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cofh.api.energy.IEnergyContainerItem;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -38,7 +37,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import tectech.loader.ConfigHandler;
-import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -69,10 +67,10 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         .addElement(
             'C',
             buildHatchAdder(MTEEnergyInfuser.class)
-                .atLeast(Maintenance, Energy.or(ExoticEnergy), InputHatch, InputBus, OutputBus)
-                .casingIndex(BlockGTCasingsTT.textureOffset)
+                .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, InputBus, OutputBus)
+                .casingIndex(Casings.HighPowerCasing.getTextureId())
                 .dot(1)
-                .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
+                .buildAndChain(Casings.HighPowerCasing.asElement()))
         .build();
     // endregion
 
@@ -157,7 +155,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 1, 2, 0);
+        return structureCheck_EM("main", 1, 2, 0) && mInputBusses.size() > 0
+            && mOutputBusses.size() > 0
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -270,6 +270,10 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             // Maintenance Hatch: Any High Power Casing
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            // Input Bus: Any High Power Casing
+            .addInputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            // Output Bus: Any High Power Casing
+            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .toolTipFinisher();
         return tt;
     }

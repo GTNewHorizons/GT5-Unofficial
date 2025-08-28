@@ -184,7 +184,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     + EnumChatFormatting.GRAY
                     + " over the recipe requirement grants 1 "
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + " Perfect Overclock")
+                    + "Perfect Overclock")
             .addTecTechHatchInfo()
             .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
