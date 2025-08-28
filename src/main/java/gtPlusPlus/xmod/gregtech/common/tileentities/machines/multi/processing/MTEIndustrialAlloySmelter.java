@@ -43,7 +43,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.TooltipTier;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;

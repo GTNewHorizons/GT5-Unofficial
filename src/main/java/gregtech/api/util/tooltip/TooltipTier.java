@@ -1,11 +1,11 @@
-package gregtech.api.util;
+package gregtech.api.util.tooltip;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 /**
  * Contains a series of Lang-key / Tier Parings.
- * Assists in a few methods in {@link MultiblockTooltipBuilder}
+ * Assists in a few methods in {@link gregtech.api.util.MultiblockTooltipBuilder}
  *
  * Keys found under GT5U.MBTT.Tiers.* . Please add your own.
  */
