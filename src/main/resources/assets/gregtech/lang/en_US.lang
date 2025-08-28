@@ -3416,3 +3416,6 @@ item.gt.depletedRodNaquadah32.name=The Core (Depleted)
 item.gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
+
+# Entities
+entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
