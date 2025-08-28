@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 

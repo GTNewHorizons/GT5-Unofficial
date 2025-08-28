@@ -1,6 +1,5 @@
 package gregtech.api.util.tooltip;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 /**
@@ -20,7 +19,6 @@ public enum TooltipTier {
     PIPE_CASING("GT5U.MBTT.Tiers.FluidPipe"),
     SOLENOID("GT5U.MBTT.Tiers.Solenoid"),
     TURBINE("GT5U.MBTT.Tiers.Turbine");
-
 
     public final String key;
 
