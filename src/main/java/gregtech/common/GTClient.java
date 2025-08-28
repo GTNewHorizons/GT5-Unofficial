@@ -18,6 +18,7 @@ import java.util.TreeSet;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -82,8 +83,10 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.capes.GTCapesLoader;
+import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -319,6 +322,8 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
         shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
         ClientRegistry.registerKeyBinding(shakeLockKey);
+
+        RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
         // spotless:on
     }
 
