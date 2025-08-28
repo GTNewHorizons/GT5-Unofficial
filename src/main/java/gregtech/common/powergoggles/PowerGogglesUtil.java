@@ -34,14 +34,20 @@ public class PowerGogglesUtil {
     }
 
     public static MTELapotronicSuperCapacitor getLsc(EntityPlayerMP playerMP, DimensionalCoord lscLink) {
+        if (lscLink == null) {
+            return null;
+        }
+
         WorldServer lscDim = playerMP.mcServer.worldServerForDimension(lscLink.getDimension());
         TileEntity tileEntity = lscDim.getTileEntity(lscLink.x, lscLink.y, lscLink.z);
+
         if (tileEntity == null) {
             return null;
         }
         if (!isLSC(tileEntity)) {
             return null;
         }
+
         return ((MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity).getMetaTileEntity());
     }
 }
