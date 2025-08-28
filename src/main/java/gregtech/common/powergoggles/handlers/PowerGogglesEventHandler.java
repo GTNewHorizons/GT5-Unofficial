@@ -24,8 +24,8 @@ public class PowerGogglesEventHandler {
 
     private static final PowerGogglesEventHandler INSTANCE = new PowerGogglesEventHandler();
 
-    private final int TICKS_BETWEEN_UPDATES = 100;
-    private final Map<UUID, PowerGogglesClient> CLIENTS = new HashMap<>();
+    private final int ticksBetweenUpdates = 100;
+    private final Map<UUID, PowerGogglesClient> clients = new HashMap<>();
     private int updateTicker = 0;
 
     private PowerGogglesEventHandler() {}
@@ -39,7 +39,7 @@ public class PowerGogglesEventHandler {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        updateTicker = (updateTicker + 1) % TICKS_BETWEEN_UPDATES;
+        updateTicker = (updateTicker + 1) % ticksBetweenUpdates;
     }
 
     @SubscribeEvent
@@ -63,11 +63,11 @@ public class PowerGogglesEventHandler {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
         UUID uuid = player.getUniqueID();
 
-        if (!CLIENTS.containsKey(uuid)) {
+        if (!clients.containsKey(uuid)) {
             return;
         }
 
-        PowerGogglesClient client = CLIENTS.get(uuid);
+        PowerGogglesClient client = clients.get(uuid);
         client.updatePlayer(player);
     }
 
@@ -95,7 +95,7 @@ public class PowerGogglesEventHandler {
         EntityPlayerMP player = handler.playerEntity;
         UUID uuid = player.getUniqueID();
 
-        if (CLIENTS.containsKey(uuid)) {
+        if (clients.containsKey(uuid)) {
             return;
         }
         processNewClient(player);
@@ -126,11 +126,11 @@ public class PowerGogglesEventHandler {
     }
 
     public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP player) {
-        PowerGogglesClient client = CLIENTS.computeIfAbsent(player.getUniqueID(), uuid -> new PowerGogglesClient());
+        PowerGogglesClient client = clients.computeIfAbsent(player.getUniqueID(), uuid -> new PowerGogglesClient());
         client.updateLscLink(itemstack);
     }
 
     public Map<UUID, PowerGogglesClient> getClients() {
-        return CLIENTS;
+        return clients;
     }
 }
