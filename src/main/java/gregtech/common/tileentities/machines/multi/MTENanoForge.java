@@ -749,18 +749,21 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Nanite Fabricator")
-            .addInfo("Requires insane amounts of power to create nanites. Each tier")
-            .addInfo("requires some structural changes. The nanite in the")
-            .addInfo("controller slot controls the tier.")
-            .addInfo("Tier 4 has additional mechanics, check the controller.")
+            .addInfo("Requires insane amounts of power to create nanites")
+            .addInfo("Each tier requires some structural changes")
+            .addInfo("Machine tier depends on Nanite in controller slot")
+            .addInfo("Tier 4 has additional mechanics, check the controller")
             .addSeparator()
             .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_BLUE + 2)
             .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
             .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4)
             .addSeparator()
-            .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
-            .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
+            .addInfo(
+                "Performs " + EnumChatFormatting.LIGHT_PURPLE
+                    + "perfect overclocks"
+                    + EnumChatFormatting.GRAY
+                    + " on lower-tier recipes")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
@@ -773,13 +776,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 "Tier " + EnumChatFormatting.DARK_GREEN
                     + "4 "
                     + EnumChatFormatting.GRAY
-                    + "requires a whole new set of blocks.")
-            .addStructureInfo("Check the NEI preview for specifics.")
-            .addStructureInfo(
-                "Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN
-                    + "4"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "requires a whole new set of blocks")
+            .addStructureInfo("Check the NEI preview for specifics")
+            .addStructureInfo("Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN + "4")
             .addStructureInfoSeparator()
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
@@ -793,37 +792,37 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " TT energy hatch.")
+                    + " TT energy hatch")
             .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
+                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " input hatches.")
+                    + " input hatches")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 0
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " output hatches.")
+                    + " output hatches")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " input buses.")
+                    + " input buses")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " output buses.")
+                    + " output buses")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
