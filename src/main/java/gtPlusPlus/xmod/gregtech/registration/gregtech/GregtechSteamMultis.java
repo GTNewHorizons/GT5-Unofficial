@@ -22,7 +22,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamFurnace;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamFurnaceMulti;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWasher;
@@ -38,16 +38,19 @@ public class GregtechSteamMultis {
                 Controller_SteamMaceratorMulti.ID,
                 "gtpp.multimachine.steam.macerator",
                 "Steam Grinder").getStackForm(1L));
+
         GregtechItemList.Controller_SteamCompressorMulti.set(
             new MTESteamCompressor(
                 Controller_SteamCompressorMulti.ID,
                 "gtpp.multimachine.steam.compressor",
                 "Steam Squasher").getStackForm(1L));
+
         GregtechItemList.Controller_SteamCentrifugeMulti.set(
             new MTESteamCentrifuge(
                 Controller_SteamCentrifugeMulti.ID,
                 "gtpp.multimachine.steam.centrifuge",
                 "Steam Separator").getStackForm(1));
+
         GregtechItemList.Controller_SteamWasherMulti.set(
             new MTESteamWasher(Controller_SteamWasherMulti.ID, "gtpp.multimachine.steam.washer", "Steam Purifier")
                 .getStackForm(1));
@@ -65,7 +68,7 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.alloysmelter",
                 "Steam Fuser").getStackForm(1));
         GregtechItemList.Controller_SteamFurnaceMulti.set(
-            new MTESteamFurnace(Controller_SteamFurnaceMulti.ID, "gtpp.multimachine.steam.furnace", "Steam Hearth")
+            new MTESteamFurnaceMulti(Controller_SteamFurnaceMulti.ID, "gtpp.multimachine.steam.furnace", "Steam Hearth")
                 .getStackForm(1));
         addItemTooltip(
             GregtechItemList.Controller_SteamFurnaceMulti.get(1),

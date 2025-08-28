@@ -29,7 +29,7 @@ public class EFRSmokingBackend extends NonGTBackend {
     @Override
     protected GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         @Nullable GTRecipe cachedRecipe) {
-        if (items.length == 0 || items[0] == null || EtFuturumRequiem.isModLoaded()) {
+        if (items.length == 0 || items[0] == null || !EtFuturumRequiem.isModLoaded()) {
             return null;
         }
         if (cachedRecipe != null && cachedRecipe.isRecipeInputEqual(false, true, fluids, items)) {

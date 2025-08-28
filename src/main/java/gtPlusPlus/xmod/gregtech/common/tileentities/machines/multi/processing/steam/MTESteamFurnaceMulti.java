@@ -9,6 +9,7 @@ import static gregtech.api.GregTechAPI.sBlockCasings3;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,19 +62,19 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamFurnace extends MTESteamMultiBase<MTESteamFurnace> implements ISurvivalConstructable {
+public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti> implements ISurvivalConstructable {
 
-    public MTESteamFurnace(String aName) {
+    public MTESteamFurnaceMulti(String aName) {
         super(aName);
     }
 
-    public MTESteamFurnace(int aID, String aName, String aNameRegional) {
+    public MTESteamFurnaceMulti(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new MTESteamFurnace(this.mName);
+        return new MTESteamFurnaceMulti(this.mName);
     }
 
     private static final int HORIZONTAL_OFF_SET = 1;
@@ -95,12 +96,12 @@ public class MTESteamFurnace extends MTESteamMultiBase<MTESteamFurnace> implemen
 
     @Override
     public String getMachineType() {
-        return "Furnace";
+        return "Furnace, Blaster, Smoker";
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private IStructureDefinition<MTESteamFurnace> STRUCTURE_DEFINITION = null;
+    private IStructureDefinition<MTESteamFurnaceMulti> STRUCTURE_DEFINITION = null;
 
     // spotless:off
     private final String[][] shape =new String[][]{
@@ -111,17 +112,17 @@ public class MTESteamFurnace extends MTESteamMultiBase<MTESteamFurnace> implemen
     //spotless:on
 
     @Override
-    public IStructureDefinition<MTESteamFurnace> getStructureDefinition() {
+    public IStructureDefinition<MTESteamFurnaceMulti> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamFurnace>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamFurnaceMulti>builder()
                 .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'A',
                     ofChain(
-                        buildSteamInput(MTESteamFurnace.class).casingIndex(10)
+                        buildSteamInput(MTESteamFurnaceMulti.class).casingIndex(10)
                             .dot(1)
                             .build(),
-                        buildHatchAdder(MTESteamFurnace.class)
+                        buildHatchAdder(MTESteamFurnaceMulti.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
                             .dot(1)
@@ -336,32 +337,14 @@ public class MTESteamFurnace extends MTESteamMultiBase<MTESteamFurnace> implemen
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        if (EtFuturumRequiem.isModLoaded()) {
-            switch (machineMode) {
-                case MACHINEMODE_SMOKER -> {
-                    return RecipeMaps.efrSmokingRecipes;
-                }
-                case MACHINEMODE_BLASTING -> {
-                    return RecipeMaps.efrBlastingRecipes;
-                }
-                default -> {
-                    return RecipeMaps.furnaceRecipes;
-                }
-            }
-        }
-        return RecipeMaps.furnaceRecipes;
-    }
-
-    @Override
     public boolean supportsMachineModeSwitch() {
         return EtFuturumRequiem.isModLoaded();
     }
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_COMPRESSING);
     }
 
@@ -375,11 +358,25 @@ public class MTESteamFurnace extends MTESteamMultiBase<MTESteamFurnace> implemen
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        if (EtFuturumRequiem.isModLoaded()) {
-            return Arrays
-                .asList(RecipeMaps.furnaceRecipes, RecipeMaps.efrBlastingRecipes, RecipeMaps.efrSmokingRecipes);
-        }
-        return Arrays.asList(RecipeMaps.furnaceRecipes);
+        if (!EtFuturumRequiem.isModLoaded()) return Arrays.asList(RecipeMaps.furnaceRecipes);
+
+        return Arrays.asList(RecipeMaps.furnaceRecipes, RecipeMaps.efrBlastingRecipes, RecipeMaps.efrSmokingRecipes);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        if (!EtFuturumRequiem.isModLoaded()) return RecipeMaps.furnaceRecipes;
+        return switch (machineMode) {
+            case MACHINEMODE_SMOKER -> RecipeMaps.efrSmokingRecipes;
+            case MACHINEMODE_BLASTING -> RecipeMaps.efrBlastingRecipes;
+            default -> RecipeMaps.furnaceRecipes;
+        };
+
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return translateToLocal("GT5U.GTPP_MULTI_STEAM_FURNACE.mode." + machineMode);
     }
 
     // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these are bonuses.
@@ -431,12 +428,12 @@ public class MTESteamFurnace extends MTESteamMultiBase<MTESteamFurnace> implemen
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
+            translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
                 + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
+            translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
                 + EnumChatFormatting.RESET);
