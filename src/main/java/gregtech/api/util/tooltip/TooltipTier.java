@@ -5,7 +5,7 @@ import net.minecraft.util.StatCollector;
 
 /**
  * Contains a series of Lang-key / Tier Parings.
- * Assists in a few methods in {@link gregtech.api.util.MultiblockTooltipBuilder}
+ * Assists in a few methods in {@link gregtech.api.util.MultiblockTooltipBuilder}r
  *
  * Keys found under GT5U.MBTT.Tiers.* . Please add your own.
  */
@@ -21,6 +21,7 @@ public enum TooltipTier {
     SOLENOID("GT5U.MBTT.Tiers.Solenoid"),
     TURBINE("GT5U.MBTT.Tiers.Turbine");
 
+
     public final String key;
 
     TooltipTier(String key) {
@@ -28,6 +29,6 @@ public enum TooltipTier {
     }
 
     public String getValue() {
-        return EnumChatFormatting.WHITE + StatCollector.translateToLocal(this.key) + EnumChatFormatting.GRAY;
+        return TooltipHelper.tierText(StatCollector.translateToLocal(this.key));
     }
 }

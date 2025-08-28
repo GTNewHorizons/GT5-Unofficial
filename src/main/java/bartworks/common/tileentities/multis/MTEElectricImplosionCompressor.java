@@ -43,6 +43,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -215,12 +216,22 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor, EIC")
-            .addInfo("Explosions are fun")
+            .addInfo("Explosions are fun!")
             .addInfo("Uses electricity instead of Explosives")
-            .addInfo("Can parallel up to 4^(Tier - 1)")
-            .addInfo("Tier is determined by containment block")
-            .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
-            .addInfo("Minimum allowed energy hatch tier is one below recipe tier")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Parallels"
+                    + EnumChatFormatting.GRAY
+                    + " are determined by "
+                    + EnumChatFormatting.WHITE
+                    + "Containment Block"
+                    + EnumChatFormatting.GRAY
+                    + " Tier")
+            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
+            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
+            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+            .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
@@ -498,5 +509,17 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
         resetPiston(this.mBlockTier);
+    }
+
+    private String createParallelText(EnumChatFormatting blockColor, String block, int parallels) {
+        return String.format(
+            "%s%s%s : %s%d%s %s",
+            blockColor,
+            block,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            parallels,
+            EnumChatFormatting.GRAY,
+            parallels == 1 ? "Parallel" : "Parallels");
     }
 }

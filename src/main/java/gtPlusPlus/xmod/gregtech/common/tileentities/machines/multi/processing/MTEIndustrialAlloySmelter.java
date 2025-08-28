@@ -43,7 +43,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -118,15 +118,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(
-                "Processes " + EnumChatFormatting.WHITE
-                    + "Voltage Tier"
-                    + EnumChatFormatting.GRAY
-                    + " * "
-                    + EnumChatFormatting.WHITE
-                    + "Coil Tier"
-                    + EnumChatFormatting.GRAY
-                    + " items")
+            .addInfo("Processes " + TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " items")
             .addDynamicSpeedInfo(0.05f, TooltipTier.COIL)
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))

@@ -41,6 +41,8 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -146,7 +148,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public int getRenderType() {
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     @Override
@@ -178,6 +180,17 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
         return machineEntity instanceof BaseMetaTileEntity bmte
             && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both passes: cut-out and alpha-blended.<br>
+     *           Final choice on {@link ITexture} or {@link IIconContainer}.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
     }
 
     @Override
