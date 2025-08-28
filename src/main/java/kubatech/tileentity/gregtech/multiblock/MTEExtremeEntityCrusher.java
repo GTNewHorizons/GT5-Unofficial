@@ -161,7 +161,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public static final int MOB_SPAWN_INTERVAL = 55;
     public static final int MAX_LOOTING_LEVEL = 4;
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
-
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
@@ -302,33 +301,49 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Spawns and kills monsters for you.")
-            .addInfo("You have to insert the powered spawner in the controller.")
-            .addInfo("Base energy usage: 1,920 EU/t")
-            .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
-            .addInfo("Recipe time is based on mob health.")
-            .addInfo("You can additionally put a weapon inside the GUI.")
+            .addInfo("Spawns and kills monsters for you!")
+            .addInfo(
+                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation")
+            .addInfo("Powered Spawner goes in Controller Slot")
+            .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
+            .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
+            .addSeparator()
+            .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
+            .addInfo("Recipe time is based on mob health")
+            .addInfo("You can additionally put a weapon inside the GUI")
             .addInfo(
                 "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
-                    + " levels).")
+                    + " levels)")
+            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
             .addInfo(
-                "If the weapon has durability it will be damaged in each run. In batch mode the damage is multiplied "
-                    + EnumChatFormatting.BLUE
-                    + "16x")
-            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit.")
-            .addInfo(
-                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output.")
+                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
-            .addInfo("Produces 120L of Liquid XP per operation.")
-            .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
-            .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
-            .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
-            .addInfo("You can enable ritual mode with a screwdriver.")
+            .addSeparator()
             .addInfo(
-                "When in ritual mode and the Well Of Suffering ritual is activated directly centered on top of the machine,")
-            .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
-            .addInfo("You can disable mob animation with a soldering iron.")
-            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
+                "If the mob spawns " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + ", it will drain 8 times more power!")
+            .addInfo(
+                "You can prevent " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " spawns by shift clicking with a screwdriver")
+            .addInfo(
+                "Mobs who are always " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " will ignore this factor")
+            .addSeparator()
+            .addInfo("You can enable ritual mode with a screwdriver")
+            .addInfo("When in ritual mode, can link to above Well of Suffering rituals")
+            .addInfo("The Ritual must be built directly centered above the machine")
+            .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
+            .addSeparator()
+            .addInfo("You can disable mob animation with a soldering iron")
+            .addInfo(
+                "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
+                    + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")

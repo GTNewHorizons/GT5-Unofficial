@@ -94,7 +94,6 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
         tt.addMachineType("Coke Oven")
             .addInfo("Industrial Charcoal producer")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)

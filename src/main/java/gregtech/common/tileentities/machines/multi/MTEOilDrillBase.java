@@ -122,7 +122,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
-            .addInfo("If total circuit # is greater than output amount it will halt. If it worked right.") // doesn't
+            .addInfo("If total circuit # is greater than output amount it will halt. If it worked right") // doesn't
             // work
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(

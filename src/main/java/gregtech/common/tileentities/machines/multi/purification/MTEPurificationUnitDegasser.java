@@ -294,16 +294,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "At the start of the operation, the " + EnumChatFormatting.WHITE
                     + "Degasser Control Hatch"
                     + EnumChatFormatting.GRAY
-                    + " will output a redstone signal.")
-            .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal.")
-            .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15.")
-            .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
+                    + " will output a redstone signal")
+            .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal")
+            .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15")
+            .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -315,12 +315,12 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
                     + "inert gas"
                     + EnumChatFormatting.GRAY
-                    + " into the machine.")
+                    + " into the machine")
             .addInfo(
                 "To determine which gas to insert, interpret bits " + EnumChatFormatting.WHITE
                     + "2-3"
                     + EnumChatFormatting.GRAY
-                    + " as a 2-bit number.")
+                    + " as a 2-bit number")
             .addInfo(
                 EnumChatFormatting.GRAY + "0: "
                     + EnumChatFormatting.RED
@@ -360,7 +360,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "1440L "
                     + EnumChatFormatting.WHITE
                     + "Molten Superconductor Base.")
-            .addInfo("Using higher tier superconductor provides bonus output.")
+            .addInfo("Using higher tier superconductor provides bonus output")
             .addInfo(
                 "Output multiplier: " + EnumChatFormatting.DARK_GREEN
                     + "UV"
@@ -413,9 +413,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
                     + "4608L "
                     + EnumChatFormatting.WHITE
-                    + "Molten Neutronium"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Molten Neutronium")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -427,7 +425,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on," + EnumChatFormatting.RED
                     + " DISREGARD "
                     + EnumChatFormatting.GRAY
-                    + "all other bits and do not insert anything.")
+                    + "all other bits and do not insert anything")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -435,15 +433,15 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
                     + "Machine Overload")
-            .addInfo("In rare cases, the machine may overload and output no control signal at all.")
+            .addInfo("In rare cases, the machine may overload and output no control signal at all")
             .addInfo(
                 "To prevent machine damage, insert " + EnumChatFormatting.RED
                     + "10000L "
                     + EnumChatFormatting.WHITE
                     + "Super Coolant.")
             .addSeparator()
-            .addInfo("The recipe can only succeed if the entire signal is decoded correctly.")
-            .addInfo("Inserting any fluid not requested by the signal will always void the recipe.")
+            .addInfo("The recipe can only succeed if the entire signal is decoded correctly")
+            .addInfo("Inserting any fluid not requested by the signal will always void the recipe")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
