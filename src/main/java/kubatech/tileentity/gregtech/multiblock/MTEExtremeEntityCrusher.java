@@ -303,7 +303,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         tt.addMachineType("Powered Spawner, EEC")
             .addInfo("Spawns and kills monsters for you!")
             .addInfo(
-                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation.")
+                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation")
             .addInfo("Powered Spawner goes in Controller Slot")
             .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
             .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
