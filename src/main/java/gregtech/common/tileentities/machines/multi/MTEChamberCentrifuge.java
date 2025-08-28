@@ -755,7 +755,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     public String getSpeedStr() {
-        return (getSpeed() - 1) * 100 + "%";
+        return (getSpeed()) * 100 + "%";
     }
 
     public String modeToString() {
