@@ -48,8 +48,8 @@ public class PowerGogglesHudHandler {
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
     static long capacity = 0; // If this is higher than 0 there's a linked LSC
-    static int change5mColor;
-    static int change1hColor;
+    static int change5mColor = PowerGogglesConfigHandler.textOkColor;
+    static int change1hColor = PowerGogglesConfigHandler.textOkColor;
 
     static String storage = "";
     static String change5mString = "";

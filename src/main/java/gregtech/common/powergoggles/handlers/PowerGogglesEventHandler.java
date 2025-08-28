@@ -47,9 +47,6 @@ public class PowerGogglesEventHandler {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        if (event.side.isClient()) {
-            return;
-        }
         if (updateTicker != 1) {
             return;
         }
@@ -57,6 +54,12 @@ public class PowerGogglesEventHandler {
     }
 
     private void updateClient(TickEvent.PlayerTickEvent event) {
+
+        if (event.side.isClient()) {
+            PowerGogglesHudHandler.drawTick();
+            return;
+        }
+
         EntityPlayerMP player = (EntityPlayerMP) event.player;
         UUID uuid = player.getUniqueID();
 
