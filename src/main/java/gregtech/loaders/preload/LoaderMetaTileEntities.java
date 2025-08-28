@@ -566,7 +566,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         addItemTooltip(
             ItemList.Machine_Multi_ChamberCentrifuge.get(1),
             chain(
-                () -> "Author ",
+                () -> "Authors: ",
                 GTValues.fancyAuthorChrom,
                 () -> EnumChatFormatting.GRAY + " & ",
                 GTValues.AuthorNoc));

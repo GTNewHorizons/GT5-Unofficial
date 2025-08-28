@@ -445,7 +445,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addEnergyHatch("Any Vibration-Safe Casing", 1)
             .addMaintenanceHatch("Any Vibration-Safe Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(EnumChatFormatting.GRAY, 50);
+            .toolTipFinisher();
 
         return tt;
     }
