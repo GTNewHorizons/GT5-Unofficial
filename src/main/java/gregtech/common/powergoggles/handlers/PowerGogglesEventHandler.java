@@ -56,7 +56,7 @@ public class PowerGogglesEventHandler {
     private void updateClient(TickEvent.PlayerTickEvent event) {
 
         if (event.side.isClient()) {
-            PowerGogglesHudHandler.drawTick();
+            issueDrawTick();
             return;
         }
 
@@ -69,6 +69,11 @@ public class PowerGogglesEventHandler {
 
         PowerGogglesClient client = CLIENTS.get(uuid);
         client.updatePlayer(player);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void issueDrawTick() {
+        PowerGogglesHudHandler.drawTick();
     }
 
     @SideOnly(Side.CLIENT)
@@ -104,12 +109,14 @@ public class PowerGogglesEventHandler {
         updatePlayerLink(goggles, player);
     }
 
+    @SideOnly(Side.CLIENT)
     private void openConfig() {
         Minecraft screenInfo = Minecraft.getMinecraft();
         Minecraft.getMinecraft()
             .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
     }
 
+    @SideOnly(Side.CLIENT)
     private void toggleChart() {
         PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
         PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
