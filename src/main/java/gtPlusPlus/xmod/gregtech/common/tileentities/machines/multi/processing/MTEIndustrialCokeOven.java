@@ -41,7 +41,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeOven> implements ISurvivalConstructable {
 
-    private int mLevel = 0;
+    private int tier = 0;
     private int mCasing;
     private int mCasing1;
     private int mCasing2;
@@ -70,8 +70,8 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo(TooltipHelper.parallelText(12) + " Parallels with Heat Resistant Casings")
-            .addInfo(TooltipHelper.parallelText(24) + " Parallels with Heat Proof Casings")
+            .addInfo(TooltipHelper.parallelText(18) + " Parallels with Heat Resistant Casings")
+            .addInfo(TooltipHelper.parallelText(30) + " Parallels with Heat Proof Casings")
             .addDynamicEuEffInfo(0.04f, TooltipTier.VOLTAGE)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
@@ -143,11 +143,11 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         mCasing = 0;
         mCasing1 = 0;
         mCasing2 = 0;
-        mLevel = 0;
+        tier = 0;
         if (checkPiece(mName, 1, 2, 0)) {
-            if (mCasing1 == 8) mLevel = 1;
-            if (mCasing2 == 8) mLevel = 2;
-            return mLevel > 0 && mCasing >= 8 && checkHatch();
+            if (mCasing1 == 8) tier = 1;
+            if (mCasing2 == 8) tier = 2;
+            return tier > 0 && mCasing >= 8 && checkHatch();
         }
         return false;
     }
@@ -206,7 +206,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
 
     @Override
     public int getMaxParallelRecipes() {
-        return this.mLevel * 12;
+        return 6 + tier * 12;
     }
 
     @Override
