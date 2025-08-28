@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import gregtech.common.blocks.BlockCasings13;
 import net.minecraft.block.Block;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -142,6 +143,9 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings11, 6, gt(16, 4, 6)),
     BlackPlutoniumItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 7, gt(16, 4, 7)),
+
+    ResonanceMixerCasing
+        (() -> GregTechAPI.sBlockCasings13, 10, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10)),
 
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
