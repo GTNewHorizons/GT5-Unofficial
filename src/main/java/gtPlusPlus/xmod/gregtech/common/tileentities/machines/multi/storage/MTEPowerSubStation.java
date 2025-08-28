@@ -129,7 +129,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")
             .addInfo("Hatches can be placed nearly anywhere")
             .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
-            .addInfo("Supports voltages >= UHV using MAX tier components.")
+            .addInfo("Supports voltages >= UHV using MAX tier components")
             .addController("Bottom Center")
             .addCasingInfoMin("Sub-Station External Casings", 10, false)
             .addDynamoHatch("Any Casing", 1)
