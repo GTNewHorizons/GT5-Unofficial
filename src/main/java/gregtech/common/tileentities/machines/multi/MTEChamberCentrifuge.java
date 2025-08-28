@@ -365,7 +365,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GREEN
                     + "Heavy")
 
-            .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + " Hatch Tier + 1")
+            .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
@@ -374,7 +374,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GRAY
                     + " Turbine Slots per Structure Tier")
             .addDynamicParallelInfo(4, TooltipTier.TURBINE)
-            .addInfo("Non-Huge Turbines have reduced effectiveness")
+            .addInfo("Non-Huge Turbines have reduced effectiveness...")
             .addStaticSpeedInfo(3f)
             .addStaticEuEffInfo(0.7f)
             .addInfo(
@@ -394,7 +394,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.WHITE
                     + "1.25x "
                     + EnumChatFormatting.GRAY
-                    + "Parallel multiplier.")
+                    + "Parallel multiplier")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + "Light Mode"
@@ -420,9 +420,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GRAY
                     + ", Requires T3 Structure and "
                     + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid.")
+                    + "Biocatalyzed Propulsion Fluid")
             .addInfo(
-                "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GRAY + " Heavy Mode.")
+                "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
 
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
