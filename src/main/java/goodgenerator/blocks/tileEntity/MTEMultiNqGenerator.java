@@ -351,7 +351,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Reactor, LNR")
             .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids.")
+            .addInfo("Generate power from high-energy liquids")
             .addInfo(
                 String.format(
                     "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
@@ -366,7 +366,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     + " ONE"
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
+            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
             .addSeparator()
             .addInfo(
                 "Can increase " + EnumChatFormatting.LIGHT_PURPLE
