@@ -13,9 +13,7 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
@@ -31,7 +29,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -40,14 +37,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
@@ -55,6 +52,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -64,9 +62,92 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasingsAbstract;
 
-public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreezer> implements ISurvivalConstructable {
+public class MTEMegaVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEMegaVacuumFreezer>
+    implements ISurvivalConstructable {
+
+    private SubspaceCoolingFluid currentCoolingFluid = null;
+    private static final String STRUCTURE_PIECE_T1 = "t1";
+    private static final String STRUCTURE_PIECE_T2 = "t2";
+    private int mCasingAmount = 0;
+    private int mTier = 1;
+
+    private static class SubspaceCoolingFluid {
+
+        public Materials material;
+        public int perfectOverclocks;
+        public long consumptionPerSecond;
+
+        public SubspaceCoolingFluid(Materials material, int perfectOverclocks, long consumptionPerSecond) {
+            this.material = material;
+            this.perfectOverclocks = perfectOverclocks;
+            this.consumptionPerSecond = consumptionPerSecond;
+        }
+
+        public FluidStack getStack() {
+            FluidStack stack = material.getFluid(consumptionPerSecond);
+            // FUCK THIS FUCK THIS FUCK THIS
+            if (stack == null) return material.getMolten(consumptionPerSecond);
+            return stack;
+        }
+    }
+
+    private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
+        Arrays.asList(
+            new SubspaceCoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
+            new SubspaceCoolingFluid(MaterialsUEVplus.Space, 2, 5000),
+            new SubspaceCoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
+
+    private static final IStructureDefinition<MTEMegaVacuumFreezer> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMegaVacuumFreezer>builder()
+        // spotless:off
+        .addShape(
+            STRUCTURE_PIECE_T1,
+            new String[][] {
+                { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAA~AAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA"},
+                { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA"}})
+        .addShape(
+            STRUCTURE_PIECE_T2,
+            new String[][] {
+                { "AAAAAAAAAAAAAAA", "ABBBBBBBBBBBBBA", "ABAAAAAAAAAAABA", "ABABBBBBBBBBABA", "ABABAAAAAAABABA", "ABABABBBBBABABA", "ABABABAAABABABA", "ABABABA~ABABABA", "ABABABAAABABABA", "ABABABBBBBABABA", "ABABAAAAAAABABA", "ABABBBBBBBBBABA", "ABAAAAAAAAAAABA", "ABBBBBBBBBBBBBA", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A", "B             B", "B             B", "B             B", "B             B", "B             B", "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A", "B             B", "A             A", "A             A", "A             A", "B             B", "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A", "B             B", "A             A", "A             A", "A             A", "B             B", "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A", "B             B", "A             A", "A             A", "A             A", "B             B", "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A", "B             B", "B             B", "B             B", "B             B", "B             B", "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "B             B", "AAAAAAAAAAAAAAA" },
+                { "AAAAAAAAAAAAAAA", "ABBBBBBBBBBBBBA", "ABAAAAAAAAAAABA", "ABABBBBBBBBBABA", "ABABAAAAAAABABA", "ABABABBBBBABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABBBBBABABA", "ABABAAAAAAABABA", "ABABBBBBBBBBABA", "ABAAAAAAAAAAABA", "ABBBBBBBBBBBBBA", "AAAAAAAAAAAAAAA" } })
+        // spotless:on
+        .addElement(
+            'A',
+            buildHatchAdder(MTEMegaVacuumFreezer.class)
+                .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
+                .casingIndex(Casings.FrostProofCasing.textureId)
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(MTEMegaVacuumFreezer::onCasingAdded, Casings.FrostProofCasing.asElement())))
+        .addElement('B', Casings.InfinityCooledCasing.asElement())
+        .build();
 
     public MTEMegaVacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -78,157 +159,10 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMegaVacuumFreezer(this.mName);
+        return new MTEMegaVacuumFreezer(mName);
     }
 
-    private int mCasingFrostProof = 0;
-    private int mTier = 1;
-
-    private static class SubspaceCoolingFluid {
-
-        public Materials material;
-        public int perfectOverclocks;
-        // Consumption per second of runtime
-        public long amount;
-
-        public SubspaceCoolingFluid(Materials material, int perfectOverclocks, long amount) {
-            this.material = material;
-            this.perfectOverclocks = perfectOverclocks;
-            this.amount = amount;
-        }
-
-        public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
-            // FUCK THIS FUCK THIS FUCK THIS
-            if (stack == null) {
-                return material.getMolten(amount);
-            }
-            return stack;
-        }
-    }
-
-    private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
-        Arrays.asList(
-            new SubspaceCoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Space, 2, 5000),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
-
-    private SubspaceCoolingFluid currentCoolingFluid = null;
-
-    private static final int CASING_INDEX = 17;
-    private static final int CASING_INDEX_T2 = ((BlockCasingsAbstract) GregTechAPI.sBlockCasings8).getTextureIndex(14);
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_T2 = "main_t2";
-
-    private static final String[][] structure = transpose(
-        new String[][] {
-            { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAA~AAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "A             A",
-                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-            { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA" } });
-    private static final String[][] structure_tier2 = new String[][] {
-        { "AAAAAAAAAAAAAAA", "ABBBBBBBBBBBBBA", "ABAAAAAAAAAAABA", "ABABBBBBBBBBABA", "ABABAAAAAAABABA",
-            "ABABABBBBBABABA", "ABABABAAABABABA", "ABABABA~ABABABA", "ABABABAAABABABA", "ABABABBBBBABABA",
-            "ABABAAAAAAABABA", "ABABBBBBBBBBABA", "ABAAAAAAAAAAABA", "ABBBBBBBBBBBBBA", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "B             B", "B             B", "B             B",
-            "B             B", "B             B", "B             B", "B             B", "B             B",
-            "B             B", "B             B", "B             B", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "A             A", "A             A",
-            "A             A", "A             A", "A             A", "A             A", "A             A",
-            "A             A", "A             A", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "B             B",
-            "B             B", "B             B", "B             B", "B             B", "B             B",
-            "B             B", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
-            "A             A", "A             A", "A             A", "A             A", "A             A",
-            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
-            "B             B", "B             B", "B             B", "B             B", "B             B",
-            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
-            "B             B", "A             A", "A             A", "A             A", "B             B",
-            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
-            "B             B", "A             A", "A             A", "A             A", "B             B",
-            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
-            "B             B", "A             A", "A             A", "A             A", "B             B",
-            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
-            "B             B", "B             B", "B             B", "B             B", "B             B",
-            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
-            "A             A", "A             A", "A             A", "A             A", "A             A",
-            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "B             B",
-            "B             B", "B             B", "B             B", "B             B", "B             B",
-            "B             B", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "A             A", "A             A",
-            "A             A", "A             A", "A             A", "A             A", "A             A",
-            "A             A", "A             A", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "B             B", "B             B", "B             B", "B             B",
-            "B             B", "B             B", "B             B", "B             B", "B             B",
-            "B             B", "B             B", "B             B", "B             B", "AAAAAAAAAAAAAAA" },
-        { "AAAAAAAAAAAAAAA", "ABBBBBBBBBBBBBA", "ABAAAAAAAAAAABA", "ABABBBBBBBBBABA", "ABABAAAAAAABABA",
-            "ABABABBBBBABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABBBBBABABA",
-            "ABABAAAAAAABABA", "ABABBBBBBBBBABA", "ABAAAAAAAAAAABA", "ABBBBBBBBBBBBBA", "AAAAAAAAAAAAAAA" } };
-
-    private static final IStructureDefinition<MTEMegaVacuumFreezer> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMegaVacuumFreezer>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addShape(STRUCTURE_PIECE_MAIN_T2, structure_tier2)
-        .addElement(
-            'A',
-            buildHatchAdder(MTEMegaVacuumFreezer.class)
-                .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, ofBlock(GregTechAPI.sBlockCasings2, 1))))
-        // Infinity Cooled Casing
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        .build();
-
+    // spotless:off
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -239,47 +173,13 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
-            .addInfo(
-                "To activate " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Subspace Cooling "
-                    + EnumChatFormatting.GRAY
-                    + "supply a coolant while running recipes.")
-            .addInfo(
-                EnumChatFormatting.RED + "7500 L/s "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Molten SpaceTime"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.RED
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " perfect overclock.")
-            .addInfo(
-                EnumChatFormatting.RED + "5000 L/s "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Spatially Enlarged Fluid"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.RED
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " perfect overclocks.")
-            .addInfo(
-                EnumChatFormatting.RED + "2500 L/s "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Molten Eternity"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.RED
-                    + "3"
-                    + EnumChatFormatting.GRAY
-                    + " perfect overclocks.")
+            .addInfo("To activate " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling " + EnumChatFormatting.GRAY + "supply a coolant while running recipes.")
+            .addInfo(EnumChatFormatting.RED + "7500 L/s " + EnumChatFormatting.DARK_PURPLE + "Molten SpaceTime" + EnumChatFormatting.GRAY + ": " + EnumChatFormatting.RED + "1" + EnumChatFormatting.GRAY + " perfect overclock.")
+            .addInfo(EnumChatFormatting.RED + "5000 L/s " + EnumChatFormatting.DARK_PURPLE + "Spatially Enlarged Fluid" + EnumChatFormatting.GRAY + ": " + EnumChatFormatting.RED + "2" + EnumChatFormatting.GRAY + " perfect overclocks.")
+            .addInfo(EnumChatFormatting.RED + "2500 L/s " + EnumChatFormatting.DARK_PURPLE + "Molten Eternity" + EnumChatFormatting.GRAY + ": " + EnumChatFormatting.RED + "3" + EnumChatFormatting.GRAY + " perfect overclocks.")
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "Reinforcing the structure allows the injection of exotic coolants,")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE
-                    + "enabling the capture of heat energy in miniature tears in spacetime,")
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Reinforcing the structure allows the injection of exotic coolants,")
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "enabling the capture of heat energy in miniature tears in spacetime,")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "massively increasing the efficiency of the cooling process.")
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
@@ -289,43 +189,15 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addOutputHatch("Any Frost Proof Machine Casing", 1)
             .addInputBus("Any Frost Proof Machine Casing", 1)
             .addOutputBus("Any Frost Proof Machine Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Base Multi (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addCasingInfoMinColored(
-                "Frost Proof Machine Casing",
-                EnumChatFormatting.GRAY,
-                800,
-                EnumChatFormatting.GOLD,
-                false)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 2
-                    + EnumChatFormatting.BLUE
-                    + " (Upgrades from Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addCasingInfoMinColored(
-                "Frost Proof Machine Casing",
-                EnumChatFormatting.GRAY,
-                700,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Infinity Cooled Casing",
-                EnumChatFormatting.GRAY,
-                384,
-                EnumChatFormatting.GOLD,
-                false)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + "):")
+            .addCasingInfoMinColored("Frost Proof Machine Casing", EnumChatFormatting.GRAY, 800, EnumChatFormatting.GOLD, false)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + "2" + EnumChatFormatting.BLUE + " (Upgrades from Tier " + EnumChatFormatting.DARK_PURPLE + "1" + EnumChatFormatting.BLUE + "):")
+            .addCasingInfoMinColored("Frost Proof Machine Casing", EnumChatFormatting.GRAY, 700, EnumChatFormatting.GOLD, false)
+            .addCasingInfoExactlyColored("Infinity Cooled Casing", EnumChatFormatting.GRAY, 384, EnumChatFormatting.GOLD, false)
             .toolTipFinisher();
         return tt;
     }
+    // spotless:on
 
     @Override
     public IStructureDefinition<MTEMegaVacuumFreezer> getStructureDefinition() {
@@ -335,31 +207,20 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     @Override
     public void construct(ItemStack aStack, boolean aHintsOnly) {
         if (aStack.stackSize == 1) {
-            this.buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 7, 7, 0);
+            buildPiece(STRUCTURE_PIECE_T1, aStack, aHintsOnly, 7, 7, 0);
         } else {
-            this.buildPiece(STRUCTURE_PIECE_MAIN_T2, aStack, aHintsOnly, 7, 7, 0);
+            buildPiece(STRUCTURE_PIECE_T2, aStack, aHintsOnly, 7, 7, 0);
         }
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (this.mMachine) return -1;
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         if (stackSize.stackSize == 1) {
-            return this
-                .survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+            return this.survivalBuildPiece(STRUCTURE_PIECE_T1, stackSize, 7, 7, 0, realBudget, env, false, true);
         } else {
-            return this.survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN_T2,
-                stackSize,
-                7,
-                7,
-                0,
-                realBudget,
-                source,
-                actor,
-                false,
-                true);
+            return this.survivalBuildPiece(STRUCTURE_PIECE_T2, stackSize, 7, 7, 0, realBudget, env, false, true);
         }
     }
 
@@ -368,11 +229,15 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         return RecipeMaps.vacuumFreezerRecipes;
     }
 
+    private void onCasingAdded() {
+        mCasingAmount++;
+    }
+
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
-            this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
+            batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
     }
 
@@ -385,8 +250,8 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
-            this.batchMode = !this.batchMode;
-            if (this.batchMode) {
+            batchMode = !batchMode;
+            if (batchMode) {
                 GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
                 GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
@@ -443,8 +308,8 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             // Subspace cooling only allowed for T2 freezer
             if (mTier == 2) {
                 // Try to drain the coolant fluid if it exists. If failed, stop the machine with an error
-                if (this.currentCoolingFluid != null) {
-                    FluidStack fluid = this.currentCoolingFluid.getStack();
+                if (currentCoolingFluid != null) {
+                    FluidStack fluid = currentCoolingFluid.getStack();
                     for (MTEHatchInput hatch : mInputHatches) {
                         if (drain(hatch, fluid, false)) {
                             drain(hatch, fluid, true);
@@ -463,19 +328,19 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mCasingFrostProof = 0;
-        this.mTier = 1;
+        mCasingAmount = 0;
+        mTier = 1;
         // If check for T1 fails, also do a check for T2 structure
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) {
+        if (!checkPiece(STRUCTURE_PIECE_T1, 7, 7, 0)) {
             // Reset mCasing in between checks, so they don't count again
-            this.mCasingFrostProof = 0;
-            if (!this.checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0)) {
+            mCasingAmount = 0;
+            if (!checkPiece(STRUCTURE_PIECE_T2, 7, 7, 0)) {
                 return false;
             }
             // Structure is Tier 2
-            this.mTier = 2;
+            mTier = 2;
         }
-        return this.mMaintenanceHatches.size() == 1 && this.mCasingFrostProof >= 700;
+        return mMaintenanceHatches.size() == 1 && mCasingAmount >= 700;
     }
 
     @Override
