@@ -197,7 +197,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
                     + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
                     + EnumChatFormatting.GRAY)
-            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1.")
+            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
