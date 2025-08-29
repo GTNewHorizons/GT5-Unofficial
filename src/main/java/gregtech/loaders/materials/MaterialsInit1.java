@@ -93,15 +93,7 @@ public class MaterialsInit1 {
         Materials.Ozone = loadOzone();
         Materials.StableBaryonicMatter = loadStableBaryonicMatter();
 
-        Materials.RawRadox = loadRawRadox();
-        Materials.RadoxSuperLight = loadSuperLightRadox();
-        Materials.RadoxLight = loadLightRadox();
-        Materials.RadoxHeavy = loadHeavyRadox();
-        Materials.RadoxSuperHeavy = loadSuperHeavyRadox();
-        Materials.Xenoxene = loadXenoxene();
-        Materials.DilutedXenoxene = loadDilutedXenoxene();
-        Materials.RadoxCracked = loadCrackedRadox();
-        Materials.RadoxGas = loadRadoxGas();
+        loadRadoxLine();
 
         // Material ID was choosen randomly//
         Materials.RadoxPolymer = loadRadoxPolymer();
@@ -12853,6 +12845,18 @@ public class MaterialsInit1 {
             .setName("stablebaryonicmatter")
             .constructMaterial()
             .setHasCorrespondingFluid(true);
+    }
+
+    private static void loadRadoxLine() {
+        Materials.RawRadox = loadRawRadox();
+        Materials.RadoxSuperLight = loadSuperLightRadox();
+        Materials.RadoxLight = loadLightRadox();
+        Materials.RadoxHeavy = loadHeavyRadox();
+        Materials.RadoxSuperHeavy = loadSuperHeavyRadox();
+        Materials.Xenoxene = loadXenoxene();
+        Materials.DilutedXenoxene = loadDilutedXenoxene();
+        Materials.RadoxCracked = loadCrackedRadox();
+        Materials.RadoxGas = loadRadoxGas();
     }
 
     private static Materials loadRawRadox() {

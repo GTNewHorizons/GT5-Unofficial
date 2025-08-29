@@ -940,6 +940,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ozone;
     public static Materials StableBaryonicMatter;
 
+    // Radox Line
     public static Materials RawRadox;
     public static Materials RadoxSuperLight;
     public static Materials RadoxLight;
