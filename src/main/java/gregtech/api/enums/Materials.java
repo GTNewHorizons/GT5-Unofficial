@@ -830,6 +830,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CrystallineAlloy;
     public static Materials EnergeticAlloy;
     public static Materials EnergeticSilver;
+    public static Materials StellarAlloy;
 
     // Degree 6 Compounds
     public static Materials CrystallinePinkSlime;
@@ -884,7 +885,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials ShadowIron;
     public static Materials ShadowSteel;
     public static Materials Soularium;
-    public static Materials StellarAlloy;
 
     // Overpowered Materials (Draconic Evolution & above)
     public static Materials Bedrockium;
