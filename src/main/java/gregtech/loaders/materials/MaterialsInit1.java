@@ -81,9 +81,7 @@ public class MaterialsInit1 {
         loadRadoxLine();
         loadNetheriteLine();
         loadPrismaticAcidLine();
-
-        Materials.ComplexityCatalyst = loadComplexityCatalyst();
-        Materials.EntropicCatalyst = loadEntropicCatalyst();
+        loadMagicMaterials();
     }
 
     private static void loadElements() {
@@ -13108,15 +13106,20 @@ public class MaterialsInit1 {
             .setHasCorrespondingFluid(true);
     }
 
-    private static Materials loadEntropicCatalyst() {
-        return new MaterialBuilder(899, TextureSet.SET_DULL, "Entropic Catalyst").setRGB(0xa99da5)
+    private static void loadMagicMaterials() {
+        Materials.ComplexityCatalyst = loadComplexityCatalyst();
+        Materials.EntropicCatalyst = loadEntropicCatalyst();
+    }
+
+    private static Materials loadComplexityCatalyst() {
+        return new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst").setRGB(0x8b93a9)
             .addFluid()
             .addCell()
             .constructMaterial();
     }
 
-    private static Materials loadComplexityCatalyst() {
-        return new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst").setRGB(0x8b93a9)
+    private static Materials loadEntropicCatalyst() {
+        return new MaterialBuilder(899, TextureSet.SET_DULL, "Entropic Catalyst").setRGB(0xa99da5)
             .addFluid()
             .addCell()
             .constructMaterial();

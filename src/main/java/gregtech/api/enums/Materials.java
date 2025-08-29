@@ -971,7 +971,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
 
-    // Misc GT Magic Materials
+    // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
 
