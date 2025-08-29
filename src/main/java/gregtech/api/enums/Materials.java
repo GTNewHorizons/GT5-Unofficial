@@ -878,12 +878,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials VividAlloy;
 
     // Overpowered Materials (Draconic Evolution & above)
-    public static Materials InfinityCatalyst;
-    public static Materials Infinity;
     public static Materials Bedrockium;
-    public static Materials Trinium;
-    public static Materials Ichorium;
     public static Materials CosmicNeutronium;
+    public static Materials Ichorium;
+    public static Materials Infinity;
+    public static Materials InfinityCatalyst;
+    public static Materials Trinium;
 
     // Superconductor base.
     public static Materials Pentacadmiummagnesiumhexaoxid;
