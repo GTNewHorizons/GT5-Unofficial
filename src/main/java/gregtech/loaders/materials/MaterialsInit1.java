@@ -11696,6 +11696,7 @@ public class MaterialsInit1 {
 
     private static void loadDegree5Compounds() {
         Materials.EnergeticAlloy = loadEnergeticAlloy();
+        Materials.EnergeticSilver = loadEnergeticSilver();
     }
 
     private static Materials loadEnergeticAlloy() {
@@ -11718,6 +11719,30 @@ public class MaterialsInit1 {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.ConductiveIron, 1)
             .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.BlackSteel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnergeticSilver() {
+        return new MaterialBuilder().setName("EnergeticSilver")
+            .setDefaultLocalName("Energetic Silver")
+            .setMetaItemSubID(407)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x3887b5)
+            .setToolSpeed(8.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(2200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.ConductiveIron, 1)
             .addMaterial(Materials.BlackSteel, 1)
             .constructMaterial();
     }
@@ -12363,7 +12388,6 @@ public class MaterialsInit1 {
         Materials.CrystallinePinkSlime = loadCrystallinePinkSlime();
         Materials.EndSteel = loadEndSteel();
         Materials.Enderium = loadEnderium();
-        Materials.EnergeticSilver = loadEnergeticSilver();
         Materials.MelodicAlloy = loadMelodicAlloy();
         Materials.Mithril = loadMithril();
         Materials.ShadowIron = loadShadowIron();
@@ -12646,30 +12670,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.EnderPearl, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ALIENIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadEnergeticSilver() {
-        return new MaterialBuilder().setName("EnergeticSilver")
-            .setDefaultLocalName("Energetic Silver")
-            .setMetaItemSubID(407)
-            .setIconSet(TextureSet.SET_VIVID)
-            .setColor(Dyes.dyeLightBlue)
-            .setRGB(0x3887b5)
-            .setToolSpeed(8.0f)
-            .setDurability(512)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(2200)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Silver, 1)
-            .addMaterial(Materials.ConductiveIron, 1)
-            .addMaterial(Materials.BlackSteel, 1)
             .constructMaterial();
     }
 
