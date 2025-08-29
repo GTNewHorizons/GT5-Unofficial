@@ -6155,10 +6155,9 @@ public class MaterialsInit1 {
             .setToolQuality(2)
             .addDustItems()
             .addGemItems()
-            .setTransparent(true)
             .addOreItems()
             .addToolHeadItems()
-            .setRGBA(100, 200, 130, 127)
+            .setARGB(127, 100, 200, 130)
             .setColor(Dyes.dyeCyan)
             .setExtraData(0)
             .setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3))
@@ -6958,10 +6957,9 @@ public class MaterialsInit1 {
             .setToolQuality(2)
             .addDustItems()
             .addGemItems()
-            .setTransparent(true)
             .addOreItems()
             .addToolHeadItems()
-            .setRGBA(100, 100, 200, 127)
+            .setARGB(127, 100, 100, 200)
             .setColor(Dyes.dyeBlue)
             .setExtraData(0)
             .setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3))
@@ -12851,8 +12849,7 @@ public class MaterialsInit1 {
         return new MaterialBuilder(569, new TextureSet("stablebaryonicmatter", true), "Stabilised Baryonic Matter")
             .addFluid()
             .addCell()
-            .setRGBA(255, 255, 255, 0)
-            .setTransparent(true)
+            .setARGB(0, 255, 255, 255)
             .setName("stablebaryonicmatter")
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -13113,8 +13110,7 @@ public class MaterialsInit1 {
     private static Materials loadPrismaticAcid() {
         return new MaterialBuilder(162, new TextureSet("prismaticacid", true), "Prismatic Acid").addFluid()
             .addCell()
-            .setRGBA(255, 255, 255, 0)
-            .setTransparent(true)
+            .setARGB(0, 255, 255, 255)
             .setName("prismaticacid")
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -13123,8 +13119,7 @@ public class MaterialsInit1 {
     private static Materials loadPrismaticNaquadah() {
         return new MaterialBuilder(163, TextureSet.SET_METALLIC, "Prismatic Naquadah").setName("prismaticnaquadah")
             .setTypes(1 | 2)
-            .setRGBA(55, 55, 55, 0)
-            .setTransparent(false)
+            .setARGB(0, 55, 55, 55)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
@@ -13132,8 +13127,7 @@ public class MaterialsInit1 {
     private static Materials loadPrismaticNaquadahCompositeSlurry() {
         return new MaterialBuilder(164, TextureSet.SET_FLUID, "Prismatic Naquadah Composite Slurry").addFluid()
             .addCell()
-            .setRGBA(75, 75, 75, 0)
-            .setTransparent(true)
+            .setARGB(0, 75, 75, 75)
             .setName("prismaticnaquadahcompositeslurry")
             .constructMaterial()
             .setHasCorrespondingFluid(true);
