@@ -830,10 +830,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials EnergeticAlloy;
     public static Materials EnergeticSilver;
     public static Materials MelodicAlloy;
-    public static Materials StellarAlloy;
 
     // Degree 6 Compounds
     public static Materials CrystallinePinkSlime;
+    public static Materials StellarAlloy;
     public static Materials VibrantAlloy;
     public static Materials VividAlloy;
 
