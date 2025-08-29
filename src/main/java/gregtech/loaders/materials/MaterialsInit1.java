@@ -11273,7 +11273,6 @@ public class MaterialsInit1 {
         Materials.BlueSteel = loadBlueSteel();
         Materials.BorosilicateGlass = loadBorosilicateGlass();
         Materials.DarkSteel = loadDarkSteel();
-        Materials.EndSteel = loadEndSteel();
         Materials.EnderEye = loadEnderEye();
         Materials.Fireclay = loadFireclay();
         Materials.GarnetSand = loadGarnetSand();
@@ -11368,31 +11367,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.ElectricalSteel, 1)
             .addMaterial(Materials.Coal, 1)
             .addMaterial(Materials.Obsidian, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadEndSteel() {
-        return new MaterialBuilder().setName("EndSteel")
-            .setDefaultLocalName("End Steel")
-            .setMetaItemSubID(401)
-            .setIconSet(TextureSet.SET_VIVID)
-            .setColor(Dyes.dyeYellow)
-            .setRGB(0xdbce7d)
-            .setToolSpeed(12.0f)
-            .setDurability(2000)
-            .setToolQuality(4)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(940)
-            .setBlastFurnaceTemp(3600)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.DarkSteel, 1)
-            .addMaterial(Materials.Tungsten, 1)
-            .addMaterial(Materials.Endstone, 1)
             .constructMaterial();
     }
 
@@ -11597,6 +11571,7 @@ public class MaterialsInit1 {
     private static void loadDegree4Compounds() {
         Materials.BasalticMineralSand = loadBasalticMineralSand();
         Materials.ConductiveIron = loadConductiveIron();
+        Materials.EndSteel = loadEndSteel();
         Materials.HSSE = loadHSSE();
         Materials.HSSS = loadHSSS();
         Materials.MelodicAlloy = loadMelodicAlloy();
@@ -11641,6 +11616,31 @@ public class MaterialsInit1 {
             .addMaterial(Materials.RedstoneAlloy, 1)
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Silver, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEndSteel() {
+        return new MaterialBuilder().setName("EndSteel")
+            .setDefaultLocalName("End Steel")
+            .setMetaItemSubID(401)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xdbce7d)
+            .setToolSpeed(12.0f)
+            .setDurability(2000)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(940)
+            .setBlastFurnaceTemp(3600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.DarkSteel, 1)
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Endstone, 1)
             .constructMaterial();
     }
 
