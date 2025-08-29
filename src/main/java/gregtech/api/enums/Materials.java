@@ -493,7 +493,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials DeepIron;
     public static Materials Diamond;
     public static Materials DilutedHydrochloricAcid;
-    public static Materials ElectricalSteel;
     public static Materials Electrum;
     public static Materials Emerald;
     public static Materials Epoxid;
@@ -729,6 +728,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Diatomite;
     public static Materials DilutedSulfuricAcid;
     public static Materials Dolomite;
+    public static Materials ElectricalSteel;
     public static Materials EnderPearl;
     public static Materials EpoxidFiberReinforced;
     public static Materials Flint;
