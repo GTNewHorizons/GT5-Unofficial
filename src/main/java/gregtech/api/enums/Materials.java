@@ -569,6 +569,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials OilHeavy;
     public static Materials OilLight;
     public static Materials OilMedium;
+    public static Materials SuperCoolant;
 
     // Unclassified 02 materials
     public static Materials Gas;
@@ -910,8 +911,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUEV;
     public static Materials SuperconductorUIV;
     public static Materials SuperconductorUMV;
-
-    public static Materials SuperCoolant;
 
     public static Materials EnrichedHolmium;
 

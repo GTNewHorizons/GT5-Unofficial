@@ -78,8 +78,6 @@ public class MaterialsInit1 {
         loadSuperConductorBases();
         loadSuperconductors();
 
-        Materials.SuperCoolant = loadSuperCoolant();
-
         Materials.EnrichedHolmium = loadEnrichedHolmium();
 
         Materials.TengamPurified = loadTengamPurified();
@@ -7099,6 +7097,7 @@ public class MaterialsInit1 {
         Materials.OilHeavy = loadOilHeavy();
         Materials.OilLight = loadOilLight();
         Materials.OilMedium = loadOilMedium();
+        Materials.SuperCoolant = loadSuperCoolant();
     }
 
     private static Materials loadOilExtraHeavy() {
@@ -7151,6 +7150,14 @@ public class MaterialsInit1 {
             .setFuelType(3)
             .setFuelPower(30)
             .constructMaterial();
+    }
+
+    private static Materials loadSuperCoolant() {
+        return new MaterialBuilder(140, TextureSet.SET_DULL, "Super Coolant").setRGB(2, 91, 111)
+            .addCell()
+            .addFluid()
+            .constructMaterial()
+            .setLiquidTemperature(1);
     }
 
     private static void loadUnclassified02() {
@@ -12690,14 +12697,6 @@ public class MaterialsInit1 {
             .setRGB(0xb526cd)
             .addAspect(TCAspects.ELECTRUM, 66)
             .constructMaterial();
-    }
-
-    private static Materials loadSuperCoolant() {
-        return new MaterialBuilder(140, TextureSet.SET_DULL, "Super Coolant").setRGB(2, 91, 111)
-            .addCell()
-            .addFluid()
-            .constructMaterial()
-            .setLiquidTemperature(1);
     }
 
     private static Materials loadEnrichedHolmium() {
