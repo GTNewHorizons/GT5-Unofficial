@@ -819,6 +819,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // Degree 4 Compounds
     public static Materials BasalticMineralSand;
+    public static Materials ConductiveIron;
     public static Materials HSSE;
     public static Materials HSSS;
 
@@ -864,7 +865,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Unclassified 07 materials
     public static Materials AstralSilver;
     public static Materials BlueAlloy;
-    public static Materials ConductiveIron;
     public static Materials CrudeSteel;
     public static Materials CrystallineAlloy;
     public static Materials CrystallinePinkSlime;

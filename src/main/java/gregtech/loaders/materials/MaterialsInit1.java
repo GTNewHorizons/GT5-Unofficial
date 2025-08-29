@@ -11568,6 +11568,7 @@ public class MaterialsInit1 {
 
     private static void loadDegree4Compounds() {
         Materials.BasalticMineralSand = loadBasalticMineralSand();
+        Materials.ConductiveIron = loadConductiveIron();
         Materials.HSSE = loadHSSE();
         Materials.HSSS = loadHSSS();
     }
@@ -11586,6 +11587,30 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Basalt, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadConductiveIron() {
+        return new MaterialBuilder().setName("ConductiveIron")
+            .setDefaultLocalName("Conductive Iron")
+            .setMetaItemSubID(369)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xffbfc3)
+            .setToolSpeed(6.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.RedstoneAlloy, 1)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Silver, 1)
             .constructMaterial();
     }
 
@@ -12248,7 +12273,6 @@ public class MaterialsInit1 {
     private static void loadUnclassified07() {
         Materials.AstralSilver = loadAstralSilver();
         Materials.BlueAlloy = loadBlueAlloy();
-        Materials.ConductiveIron = loadConductiveIron();
         Materials.CrudeSteel = loadCrudeSteel();
         Materials.CrystallineAlloy = loadCrystallineAlloy();
         Materials.CrystallinePinkSlime = loadCrystallinePinkSlime();
@@ -12413,30 +12437,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Silver, 1)
             .addMaterial(Materials.Electrotine, 4)
             .addAspect(TCAspects.ELECTRUM, 3)
-            .constructMaterial();
-    }
-
-    private static Materials loadConductiveIron() {
-        return new MaterialBuilder().setName("ConductiveIron")
-            .setDefaultLocalName("Conductive Iron")
-            .setMetaItemSubID(369)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xffbfc3)
-            .setToolSpeed(6.0f)
-            .setDurability(256)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(1200)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.RedstoneAlloy, 1)
-            .addMaterial(Materials.Iron, 1)
-            .addMaterial(Materials.Silver, 1)
             .constructMaterial();
     }
 
