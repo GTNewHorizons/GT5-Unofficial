@@ -69,6 +69,7 @@ public class MaterialsInit1 {
         loadDegree2Compounds();
         loadDegree3Compounds();
         loadDegree4Compounds();
+        loadDegree5Compounds();
         loadPolybenzimidazoleLine();
         loadGasolineLine();
         loadAdded();
@@ -11667,6 +11668,34 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static void loadDegree5Compounds() {
+        Materials.EnergeticAlloy = loadEnergeticAlloy();
+    }
+
+    private static Materials loadEnergeticAlloy() {
+        return new MaterialBuilder().setName("EnergeticAlloy")
+            .setDefaultLocalName("Energetic Alloy")
+            .setMetaItemSubID(366)
+            .setIconSet(TextureSet.SET_ENERGETIC)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8c19)
+            .setToolSpeed(12.0f)
+            .setDurability(1024)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(2200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.ConductiveIron, 1)
+            .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.BlackSteel, 1)
+            .constructMaterial();
+    }
+
     private static void loadPolybenzimidazoleLine() {
         Materials.ChromiumTrioxide = loadChromiumTrioxide();
         Materials.Diaminobenzidin = loadDiaminobenzidin();
@@ -12278,7 +12307,6 @@ public class MaterialsInit1 {
         Materials.CrystallinePinkSlime = loadCrystallinePinkSlime();
         Materials.EndSteel = loadEndSteel();
         Materials.Enderium = loadEnderium();
-        Materials.EnergeticAlloy = loadEnergeticAlloy();
         Materials.EnergeticSilver = loadEnergeticSilver();
         Materials.MelodicAlloy = loadMelodicAlloy();
         Materials.Mithril = loadMithril();
@@ -12564,30 +12592,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.EnderPearl, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ALIENIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadEnergeticAlloy() {
-        return new MaterialBuilder().setName("EnergeticAlloy")
-            .setDefaultLocalName("Energetic Alloy")
-            .setMetaItemSubID(366)
-            .setIconSet(TextureSet.SET_ENERGETIC)
-            .setColor(Dyes.dyeOrange)
-            .setRGB(0xff8c19)
-            .setToolSpeed(12.0f)
-            .setDurability(1024)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(2200)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.ConductiveIron, 1)
-            .addMaterial(Materials.Gold, 1)
-            .addMaterial(Materials.BlackSteel, 1)
             .constructMaterial();
     }
 

@@ -823,6 +823,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HSSE;
     public static Materials HSSS;
 
+    // Degree 5 Compounds
+    public static Materials EnergeticAlloy;
+
     // Polybenzimidazole Line
     public static Materials ChromiumTrioxide;
     public static Materials Diaminobenzidin;
@@ -870,7 +873,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CrystallinePinkSlime;
     public static Materials EndSteel;
     public static Materials Enderium;
-    public static Materials EnergeticAlloy;
     public static Materials EnergeticSilver;
     public static Materials MelodicAlloy;
     public static Materials Mithril;
