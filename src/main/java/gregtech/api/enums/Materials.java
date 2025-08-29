@@ -122,6 +122,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Nickel;
     public static Materials Niobium;
     public static Materials Nitrogen;
+    public static Materials Oriharukon; // Not a real element
     public static Materials Osmium;
     public static Materials Oxygen;
     public static Materials Palladium;
@@ -873,7 +874,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ledox;
     public static Materials MysteriousCrystal;
     public static Materials Mytryl;
-    public static Materials Oriharukon;
     public static Materials Quantium;
 
     // Unclassified 07 materials
