@@ -658,7 +658,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 }
             }
         } else {
-            doActivitySound(getActivitySoundLoop());
+            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
+                doActivitySound(getActivitySoundLoop());
+            }
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
