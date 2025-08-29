@@ -95,15 +95,7 @@ public class MaterialsInit1 {
 
         loadRadoxLine();
         loadNetheriteLine();
-
-        Materials.PrismarineSolution = loadPrismarineSolution();
-        Materials.PrismarineContaminatedHydrogenPeroxide = loadPrismarinecontaminatedhydrogenperoxide();
-        Materials.PrismarineRichNitrobenzeneSolution = loadPrismarinerichnitrobenzenesolution();
-        Materials.PrismarineContaminatedNitrobenzeSolution = loadPrismarinecontaminatednitrobenzenesolution();
-        Materials.PrismaticGas = loadPrismaticGas();
-        Materials.PrismaticAcid = loadPrismaticAcid();
-        Materials.PrismaticNaquadah = loadPrismaticNaquadah();
-        Materials.PrismaticNaquadahCompositeSlurry = loadPrismaticNaquadahCompositeSlurry();
+        loadPrismaticAcidLine();
 
         Materials.ComplexityCatalyst = loadComplexityCatalyst();
         Materials.EntropicCatalyst = loadEntropicCatalyst();
@@ -13032,6 +13024,17 @@ public class MaterialsInit1 {
             .setRGB(156, 87, 90)
             .setName("activatednetherite")
             .constructMaterial();
+    }
+
+    private static void loadPrismaticAcidLine() {
+        Materials.PrismarineSolution = loadPrismarineSolution();
+        Materials.PrismarineContaminatedHydrogenPeroxide = loadPrismarinecontaminatedhydrogenperoxide();
+        Materials.PrismarineRichNitrobenzeneSolution = loadPrismarinerichnitrobenzenesolution();
+        Materials.PrismarineContaminatedNitrobenzeSolution = loadPrismarinecontaminatednitrobenzenesolution();
+        Materials.PrismaticGas = loadPrismaticGas();
+        Materials.PrismaticAcid = loadPrismaticAcid();
+        Materials.PrismaticNaquadah = loadPrismaticNaquadah();
+        Materials.PrismaticNaquadahCompositeSlurry = loadPrismaticNaquadahCompositeSlurry();
     }
 
     private static Materials loadPrismarineSolution() {

@@ -962,6 +962,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HellishMetal;
     public static Materials Netherite;
 
+    // Prismatic Acid Line
     public static Materials ActivatedNetherite;
     public static Materials PrismarineSolution;
     public static Materials PrismarineContaminatedHydrogenPeroxide;
