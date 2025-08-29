@@ -80,9 +80,9 @@ public class MaterialsInit1 {
         Materials.SuperconductorMV = loadSuperconductorMV();
         Materials.SuperconductorHV = loadSuperconductorHV();
         Materials.SuperconductorEV = loadSuperconductorEV();
+        Materials.SuperconductorIV = loadSuperconductorIV();
 
         // spotless:off
-        Materials.SuperconductorIV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  51,   0,  51,   0,   "SuperconductorIV"   ,   "Superconductor IV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeMagenta    , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 24)));
         Materials.SuperconductorLuV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 153,  76,   0,   0,   "SuperconductorLuV"  ,   "Superconductor LuV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeBrown      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 30)));
         Materials.SuperconductorZPM     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  10,  10,  10,   0,   "SuperconductorZPM"  ,   "Superconductor ZPM"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeBlack      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 36)));
         Materials.SuperconductorUV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 224, 210,   7,   0,   "SuperconductorUV"   ,   "Superconductor UV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeYellow     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 42)));
@@ -12646,6 +12646,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeLime)
             .setRGB(0x008700)
             .addAspect(TCAspects.ELECTRUM, 18)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorIV() {
+        return new MaterialBuilder().setName("SuperconductorIV")
+            .setDefaultLocalName("Superconductor IV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeMagenta)
+            .setRGB(0x330033)
+            .addAspect(TCAspects.ELECTRUM, 24)
             .constructMaterial();
     }
 
