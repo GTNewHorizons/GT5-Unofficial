@@ -885,7 +885,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials InfinityCatalyst;
     public static Materials Trinium;
 
-    // Superconductor base.
+    // Superconductor Bases
     public static Materials Pentacadmiummagnesiumhexaoxid;
     public static Materials Titaniumonabariumdecacoppereikosaoxid;
     public static Materials Uraniumtriplatinid;
