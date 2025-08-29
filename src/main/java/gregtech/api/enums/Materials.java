@@ -823,6 +823,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials ConductiveIron;
     public static Materials HSSE;
     public static Materials HSSS;
+    public static Materials MelodicAlloy;
     public static Materials PulsatingIron;
 
     // Degree 5 Compounds
@@ -879,7 +880,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BlueAlloy;
     public static Materials CrudeSteel;
     public static Materials Enderium;
-    public static Materials MelodicAlloy;
     public static Materials Mithril;
     public static Materials ShadowIron;
     public static Materials ShadowSteel;
