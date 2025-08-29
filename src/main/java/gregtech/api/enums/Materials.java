@@ -877,9 +877,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials VibrantAlloy;
     public static Materials VividAlloy;
 
-    /**
-     * Op materials (draconic evolution above)
-     */
+    // Overpowered Materials (Draconic Evolution & above)
     public static Materials InfinityCatalyst;
     public static Materials Infinity;
     public static Materials Bedrockium;
