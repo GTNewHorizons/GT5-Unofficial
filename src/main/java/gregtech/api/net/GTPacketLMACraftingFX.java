@@ -9,12 +9,15 @@ import com.google.common.io.ByteArrayDataInput;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLog;
 import gregtech.client.LMACraftingFX;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class GTPacketLMACraftingFX extends GTPacket {
 
@@ -23,6 +26,8 @@ public class GTPacketLMACraftingFX extends GTPacket {
     private int z;
     private int age;
     private IAEItemStack itemStack;
+
+    private static final Long2ObjectMap<LMACraftingFX> CRAFTING_FXS = new Long2ObjectOpenHashMap<>();
 
     public GTPacketLMACraftingFX() {
         super();
@@ -90,6 +95,8 @@ public class GTPacketLMACraftingFX extends GTPacket {
 
     @SideOnly(Side.CLIENT)
     private void spawnFX() {
+        long coord = CoordinatePacker.pack(x, y, z);
+
         LMACraftingFX fx = new LMACraftingFX(
             Minecraft.getMinecraft().theWorld,
             this.x,
@@ -97,6 +104,10 @@ public class GTPacketLMACraftingFX extends GTPacket {
             this.z,
             this.age,
             this.itemStack);
+
+        LMACraftingFX prev = CRAFTING_FXS.put(coord, fx);
+        if (prev != null) prev.setDead();
+
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     }
 }

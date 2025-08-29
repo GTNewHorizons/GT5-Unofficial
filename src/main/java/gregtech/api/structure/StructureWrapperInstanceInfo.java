@@ -9,11 +9,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
 import com.github.bsideup.jabel.Desugar;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
-
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.StructureError;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
@@ -135,5 +137,43 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
     @Override
     public void addTieredHatch(MTEHatch hatch, ICasing casing, ICasing.CasingElementContext<MTE> context) {
         pendingHatches.add(new PendingHatch<>(hatch, casing, context));
+    }
+
+    public BlockPos getSocket(MTE multi, char c) {
+        SocketInfo socket = structure.sockets.get(c);
+
+        if (socket == null || socket.coordinates.isEmpty()) return null;
+
+        return transform(multi, socket.coordinates.getPos(0));
+    }
+
+    public List<BlockPos> getAllSockets(MTE multi, char c) {
+        SocketInfo socket = structure.sockets.get(c);
+
+        if (socket == null || socket.coordinates.isEmpty()) return null;
+
+        List<BlockPos> sockets = new ArrayList<>(socket.coordinates.size());
+
+        for (BlockPos pos : socket.coordinates.posIterable()) {
+            sockets.add(transform(multi, pos));
+        }
+
+        return sockets;
+    }
+
+    private BlockPos transform(MTE multi, BlockPos pos) {
+        pos.x -= structure.controllerOffset.get0();
+        pos.y -= structure.controllerOffset.get1();
+        pos.z -= structure.controllerOffset.get2();
+
+        Vec3Impl temp = multi.getExtendedFacing().getOffsetABC(new Vec3Impl(pos.x, pos.y, pos.z));
+
+        IGregTechTileEntity igte = multi.getBaseMetaTileEntity();
+
+        pos.x = temp.get0() + igte.getXCoord();
+        pos.y = temp.get1() + igte.getYCoord();
+        pos.z = temp.get2() + igte.getZCoord();
+
+        return pos;
     }
 }

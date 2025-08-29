@@ -17,7 +17,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-
 import gregtech.GTMod;
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
@@ -52,11 +51,14 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     public Vec3Impl controllerOffset, minSize, maxSize;
     public Char2ObjectArrayMap<CasingInfo<MTE>> casings;
     public Char2IntArrayMap minCasingCounts, maxCasingCounts;
+    public Char2ObjectArrayMap<SocketInfo> sockets;
 
     public Function<MTE, IStructureInstance<MTE>> instanceExtractor;
 
     public StructureWrapper(IStructureProvider<MTE> provider) {
         this.provider = provider;
+
+        this.loadStructure();
     }
 
     public void loadStructure() {
@@ -65,6 +67,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         minCasingCounts = new Char2IntArrayMap();
         maxCasingCounts = new Char2IntArrayMap();
         controllerOffset = null;
+        sockets = new Char2ObjectArrayMap<>();
 
         try {
             String[][] definitionText = provider.getDefinition();
@@ -86,13 +89,13 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         int length = definitionText.length;
 
         int z = 0;
-        for (String[] a : definitionText) {
-            int y = 0;
-            height = Math.max(height, a.length);
-            for (String b : a) {
-                width = Math.max(width, b.length());
-                for (int x = 0; x < b.length(); x++) {
-                    char c = b.charAt(x);
+        for (String[] layer : definitionText) {
+            int y = layer.length - 1;
+            height = Math.max(height, layer.length);
+            for (String row : layer) {
+                width = Math.max(width, row.length());
+                for (int x = 0; x < row.length(); x++) {
+                    char c = row.charAt(x);
                     if (c == ' ' || c == '-' || c == '+') continue;
 
                     minCasingCounts.mergeInt(c, 1, Integer::sum);
@@ -106,7 +109,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
                         controllerOffset = new Vec3Impl(x, y, z);
                     }
                 }
-                y++;
+                y--;
             }
             z++;
         }
@@ -128,11 +131,11 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         int height = 0;
         int length = maxDefinitionText.length;
 
-        for (String[] a : maxDefinitionText) {
-            height = Math.max(height, a.length);
-            for (String b : a) {
-                width = Math.max(width, b.length());
-                for (char c : b.toCharArray()) {
+        for (String[] layer : maxDefinitionText) {
+            height = Math.max(height, layer.length);
+            for (String row : layer) {
+                width = Math.max(width, row.length());
+                for (char c : row.toCharArray()) {
                     if (c == ' ' || c == '-' || c == '+' || c == '~') continue;
 
                     maxCasingCounts.mergeInt(c, 1, Integer::sum);
@@ -218,6 +221,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
      * world space.
      */
     public void construct(MTE instance, ItemStack trigger, boolean hintsOnly, String piece, Vec3Impl pieceOffset) {
+        loadStructure();
         ensureStructureLoaded();
 
         if (!GTValues.DEVENV) {
@@ -431,6 +435,10 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         return new CasingBuilder(c, casingInfo);
     }
 
+    public void addSocket(char c, char replacement) {
+        sockets.put(c, new SocketInfo(c, replacement));
+    }
+
     /**
      * Sets up a builder but doesn't build it. Useful if you need to modify it in some non-standard way.
      */
@@ -452,7 +460,39 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
      * Creates a structure definition with a single shape called {@code main}.
      */
     public IStructureDefinition<MTE> buildStructure(String[][] definition) {
+        findSockets(definition);
+
         return getStructureBuilder(Arrays.asList(Pair.of(StructureWrapper.STRUCTURE_SHAPE_MAIN, definition))).build();
+    }
+
+    private void findSockets(String[][] definitionText) {
+        int z = 0;
+        for (String[] layer : definitionText) {
+            int y = 0;
+            for (String row : layer) {
+                for (int x = 0; x < row.length(); x++) {
+                    char c = row.charAt(x);
+
+                    if (c == ' ' || c == '-' || c == '+') continue;
+
+                    SocketInfo socket = sockets.get(c);
+
+                    if (socket == null) continue;
+
+                    socket.coordinates.add(x, y, z);
+                }
+                y++;
+            }
+            z++;
+        }
+
+        for (String[] a : definitionText) {
+            for (int i = 0; i < definitionText.length; i++) {
+                for (SocketInfo socket : sockets.values()) {
+                    a[i] = a[i].replace(socket.original, socket.replacement);
+                }
+            }
+        }
     }
 
     @SuppressWarnings("FieldCanBeLocal")

@@ -11,24 +11,24 @@ import net.minecraft.block.Block;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import appeng.api.AEApi;
+import bartworks.API.BorosilicateGlass;
+import bartworks.system.material.WerkstoffLoader;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-
-import bartworks.API.BorosilicateGlass;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
+import gregtech.api.interfaces.IHasIndexedTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
@@ -112,8 +112,36 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings3, 14, gt(0, 2, 14)),
     TungstensteelFireboxCasing
         (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 2, 15)),
+
+    RobustTungstensteelMachineCasing
+        (() -> GregTechAPI.sBlockCasings4, 0),
+    CleanStainlessSteelMachineCasing
+        (() -> GregTechAPI.sBlockCasings4, 1),
+    StableTitaniumMachineCasing
+        (() -> GregTechAPI.sBlockCasings4, 2),
+    TitaniumFireboxCasing
+        (() -> GregTechAPI.sBlockCasings4, 3),
+    FusionMachineCasing
+        (() -> GregTechAPI.sBlockCasings4, 6),
+    FusionCoilBlock
+        (() -> GregTechAPI.sBlockCasings4, 7),
+    FusionMachineCasingMKII
+        (() -> GregTechAPI.sBlockCasings4, 8),
+    TurbineCasing
+        (() -> GregTechAPI.sBlockCasings4, 9),
+    StainlessSteelTurbineCasing
+        (() -> GregTechAPI.sBlockCasings4, 10),
+    TitaniumTurbineCasing
+        (() -> GregTechAPI.sBlockCasings4, 11),
+    TungstensteelTurbineCasing
+        (() -> GregTechAPI.sBlockCasings4, 12),
+    EngineIntakeCasing
+        (() -> GregTechAPI.sBlockCasings4, 13),
     MiningOsmiridiumCasing
-        (() -> GregTechAPI.sBlockCasings4, 14, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14)),
+        (() -> GregTechAPI.sBlockCasings4, 14),
+    Firebricks
+        (() -> GregTechAPI.sBlockCasings4, 15),
+
     BoltedOsmiridiumCasing
         (() -> WerkstoffLoader.BWBlockCasings, 32083,32083),
     ReboltedOsmiridiumCasing
@@ -338,6 +366,8 @@ public enum Casings implements ICasing {
         }
     },
 
+    VibrantGlass(() -> AEApi.instance().definitions().blocks().quartzVibrantGlass().maybeBlock().get(), 0, -1),
+
     QuantumGlass
         (() -> BlockQuantumGlass.INSTANCE, 0, -1),
 
@@ -374,15 +404,21 @@ public enum Casings implements ICasing {
     ;
     // spotless:on
 
-    public final BlockSupplier blockGetter;
+    private final BlockSupplier blockGetter;
     private volatile Block block;
-    public final int meta;
-    public final int textureId;
+    private final int meta;
+    private int textureId;
 
     Casings(BlockSupplier blockGetter, int meta, int textureId) {
         this.blockGetter = blockGetter;
         this.meta = meta;
         this.textureId = textureId;
+    }
+
+    Casings(BlockSupplier blockGetter, int meta) {
+        this.blockGetter = blockGetter;
+        this.meta = meta;
+        this.textureId = -2;
     }
 
     @Override
@@ -401,6 +437,10 @@ public enum Casings implements ICasing {
 
     @Override
     public int getTextureId() {
+        if (textureId == -2) {
+            textureId = ((IHasIndexedTexture) getBlock()).getTextureIndex(meta);
+        }
+
         if (textureId == -1) {
             throw new UnsupportedOperationException(
                 "Casing " + name() + " does not have a casing texture; The result of getTextureId() is undefined.");

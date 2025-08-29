@@ -29,6 +29,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.AbstractCollection;
+import java.util.AbstractList;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2125,6 +2126,23 @@ public class GTUtility {
         }
 
         return histogram;
+    }
+
+    public static List<ItemStack> getStacksOfSize(Object2LongOpenHashMap<ItemId> map, int maxStackSize) {
+        ArrayList<ItemStack> list = new ArrayList<>();
+
+        map.forEach((item, amount) -> {
+            while (amount > 0) {
+                int toRemove = Math
+                    .min(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue(), maxStackSize);
+
+                list.add(item.getItemStack(toRemove));
+
+                amount -= toRemove;
+            }
+        });
+
+        return list;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -4657,6 +4675,21 @@ public class GTUtility {
             EntityItem dropItem = aPlayer.entityDropItem(aStack, 0);
             dropItem.delayBeforeCanPickup = 0;
         }
+    }
+
+    public static List<ItemStack> getInventoryList(IInventory inv) {
+        return new AbstractList<ItemStack>() {
+
+            @Override
+            public ItemStack get(int index) {
+                return inv.getStackInSlot(index);
+            }
+
+            @Override
+            public int size() {
+                return inv.getSizeInventory();
+            }
+        };
     }
 
     public static long getNonnullElementCount(Object[] tArray) {
