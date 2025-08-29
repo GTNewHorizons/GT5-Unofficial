@@ -587,11 +587,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials BioMediumSterilized;
     public static Materials ReinforceGlass;
 
-    // Unclassified 05 materials
+    // Unclassified 04 materials
     public static Materials GrowthMediumRaw;
     public static Materials GrowthMediumSterilized;
 
-    // Unclassified 09 materials
+    // Unclassified 05 materials
     public static Materials BioDiesel;
     public static Materials BisphenolA;
     public static Materials Butadiene;
@@ -670,7 +670,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SiliconTetrafluoride;
     public static Materials Trichlorosilane;
 
-    // Unclassified 10 materials
+    // Unclassified 06 materials
     public static Materials GalliumArsenide;
     public static Materials IndiumGalliumPhosphide;
     public static Materials SolderingAlloy;
@@ -853,6 +853,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Oriharukon;
     public static Materials Quantium;
 
+    // Unclassified 07 materials
     public static Materials RedstoneAlloy;
     public static Materials Soularium;
     public static Materials ConductiveIron;
