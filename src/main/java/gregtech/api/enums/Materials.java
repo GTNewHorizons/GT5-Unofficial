@@ -932,7 +932,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static Materials makeDenseSupercriticalSteam() {
         return new MaterialBuilder(234, TextureSet.SET_FLUID , "Dense Supercritical Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
     }
-    // Activated Carbon Line and waterline chemicals
+
+    // Waterline Chemicals
     public static Materials ActivatedCarbon;
     public static Materials PreActivatedCarbon;
     public static Materials DirtyActivatedCarbon;

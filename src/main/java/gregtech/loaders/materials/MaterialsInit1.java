@@ -86,13 +86,7 @@ public class MaterialsInit1 {
         Materials.TengamAttuned = loadTengamAttuned();
         Materials.TengamRaw = loadTengamRaw();
 
-        Materials.ActivatedCarbon = loadActivatedCarbon();
-        Materials.PreActivatedCarbon = loadPreActivatedCarbon();
-        Materials.DirtyActivatedCarbon = loadDirtyActivatedCarbon();
-        Materials.PolyAluminiumChloride = loadPolyAluminiumChloride();
-        Materials.Ozone = loadOzone();
-        Materials.StableBaryonicMatter = loadStableBaryonicMatter();
-
+        loadWaterLineChemicals();
         loadRadoxLine();
         loadNetheriteLine();
         loadPrismaticAcidLine();
@@ -12770,6 +12764,15 @@ public class MaterialsInit1 {
             .setRGB(160, 191, 96)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static void loadWaterLineChemicals() {
+        Materials.ActivatedCarbon = loadActivatedCarbon();
+        Materials.PreActivatedCarbon = loadPreActivatedCarbon();
+        Materials.DirtyActivatedCarbon = loadDirtyActivatedCarbon();
+        Materials.PolyAluminiumChloride = loadPolyAluminiumChloride();
+        Materials.Ozone = loadOzone();
+        Materials.StableBaryonicMatter = loadStableBaryonicMatter();
     }
 
     private static Materials loadActivatedCarbon() {
