@@ -75,7 +75,7 @@ public class MaterialsInit1 {
         loadGalaxySpace();
         loadUnclassified07();
         loadOverpoweredMaterials();
-        loadSuperConductorBases();
+        loadSuperconductorBases();
         loadSuperconductors();
         loadWaterLineChemicals();
         loadRadoxLine();
@@ -12382,7 +12382,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static void loadSuperConductorBases() {
+    private static void loadSuperconductorBases() {
         Materials.Pentacadmiummagnesiumhexaoxid = loadPentacadmiummagnesiumhexaoxid();
         Materials.Titaniumonabariumdecacoppereikosaoxid = loadTitaniumonabariumdecacoppereikosaoxid();
         Materials.Uraniumtriplatinid = loadUraniumtriplatinid();
