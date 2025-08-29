@@ -11303,6 +11303,7 @@ public class MaterialsInit1 {
         Materials.Pyrotheum = loadPyrotheum();
         Materials.GraniteRed = loadGraniteRed();
         Materials.RedSteel = loadRedSteel();
+        Materials.RedstoneAlloy = loadRedstoneAlloy();
     }
 
     private static Materials loadBasalt() {
@@ -11537,6 +11538,31 @@ public class MaterialsInit1 {
             .addMaterial(Materials.BismuthBronze, 1)
             .addMaterial(Materials.Steel, 2)
             .addMaterial(Materials.BlackSteel, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedstoneAlloy() {
+        return new MaterialBuilder().setName("RedstoneAlloy")
+            .setDefaultLocalName("Redstone Alloy")
+            .setMetaItemSubID(381)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff4332)
+            .setToolSpeed(3.0f)
+            .setDurability(128)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(671)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Redstone, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Coal, 1)
             .constructMaterial();
     }
 
@@ -12233,7 +12259,6 @@ public class MaterialsInit1 {
         Materials.MelodicAlloy = loadMelodicAlloy();
         Materials.Mithril = loadMithril();
         Materials.PulsatingIron = loadPulsatingIron();
-        Materials.RedstoneAlloy = loadRedstoneAlloy();
         Materials.ShadowIron = loadShadowIron();
         Materials.ShadowSteel = loadShadowSteel();
         Materials.Soularium = loadSoularium();
@@ -12662,31 +12687,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.EnderPearl, 1)
             .addMaterial(Materials.RedstoneAlloy, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadRedstoneAlloy() {
-        return new MaterialBuilder().setName("RedstoneAlloy")
-            .setDefaultLocalName("Redstone Alloy")
-            .setMetaItemSubID(381)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xff4332)
-            .setToolSpeed(3.0f)
-            .setDurability(128)
-            .setToolQuality(2)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(671)
-            .setBlastFurnaceTemp(1000)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Redstone, 1)
-            .addMaterial(Materials.Silicon, 1)
-            .addMaterial(Materials.Coal, 1)
             .constructMaterial();
     }
 

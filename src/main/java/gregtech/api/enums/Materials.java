@@ -815,6 +815,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Pyrotheum;
     public static Materials GraniteRed;
     public static Materials RedSteel;
+    public static Materials RedstoneAlloy;
 
     // Degree 4 Compounds
     public static Materials BasalticMineralSand;
@@ -874,7 +875,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials MelodicAlloy;
     public static Materials Mithril;
     public static Materials PulsatingIron;
-    public static Materials RedstoneAlloy;
     public static Materials ShadowIron;
     public static Materials ShadowSteel;
     public static Materials Soularium;
