@@ -82,9 +82,9 @@ public class MaterialsInit1 {
         Materials.SuperconductorEV = loadSuperconductorEV();
         Materials.SuperconductorIV = loadSuperconductorIV();
         Materials.SuperconductorLuV = loadSuperconductorLuV();
+        Materials.SuperconductorZPM = loadSuperconductorZPM();
 
         // spotless:off
-        Materials.SuperconductorZPM     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  10,  10,  10,   0,   "SuperconductorZPM"  ,   "Superconductor ZPM"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeBlack      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 36)));
         Materials.SuperconductorUV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 224, 210,   7,   0,   "SuperconductorUV"   ,   "Superconductor UV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeYellow     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 42)));
         Materials.SuperconductorUHV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  38, 129, 189,   0,   "Superconductor"     ,   "Superconductor UHV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 48)));
         Materials.SuperconductorUEV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 174,   8,   8,   0,   "SuperconductorUEV"  ,   "Superconductor UEV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 54)));
@@ -12666,6 +12666,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBrown)
             .setRGB(0x994c00)
             .addAspect(TCAspects.ELECTRUM, 30)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorZPM() {
+        return new MaterialBuilder().setName("SuperconductorZPM")
+            .setDefaultLocalName("Superconductor ZPM")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addAspect(TCAspects.ELECTRUM, 36)
             .constructMaterial();
     }
 
