@@ -11573,6 +11573,7 @@ public class MaterialsInit1 {
         Materials.ConductiveIron = loadConductiveIron();
         Materials.HSSE = loadHSSE();
         Materials.HSSS = loadHSSS();
+        Materials.PulsatingIron = loadPulsatingIron();
     }
 
     private static Materials loadBasalticMineralSand() {
@@ -11666,6 +11667,30 @@ public class MaterialsInit1 {
             .addMaterial(Materials.HSSG, 6)
             .addMaterial(Materials.Iridium, 2)
             .addMaterial(Materials.Osmium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPulsatingIron() {
+        return new MaterialBuilder().setName("PulsatingIron")
+            .setDefaultLocalName("Pulsating Iron")
+            .setMetaItemSubID(378)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x80f69b)
+            .setToolSpeed(6.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.EnderPearl, 1)
+            .addMaterial(Materials.RedstoneAlloy, 1)
             .constructMaterial();
     }
 
@@ -12341,7 +12366,6 @@ public class MaterialsInit1 {
         Materials.EnergeticSilver = loadEnergeticSilver();
         Materials.MelodicAlloy = loadMelodicAlloy();
         Materials.Mithril = loadMithril();
-        Materials.PulsatingIron = loadPulsatingIron();
         Materials.ShadowIron = loadShadowIron();
         Materials.ShadowSteel = loadShadowSteel();
         Materials.Soularium = loadSoularium();
@@ -12698,30 +12722,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.Thaumium, 1)
             .constructMaterial()
             .setTurbineMultipliers(22, 1, 1);
-    }
-
-    private static Materials loadPulsatingIron() {
-        return new MaterialBuilder().setName("PulsatingIron")
-            .setDefaultLocalName("Pulsating Iron")
-            .setMetaItemSubID(378)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeLime)
-            .setRGB(0x80f69b)
-            .setToolSpeed(6.0f)
-            .setDurability(256)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(1800)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Iron, 1)
-            .addMaterial(Materials.EnderPearl, 1)
-            .addMaterial(Materials.RedstoneAlloy, 1)
-            .constructMaterial();
     }
 
     private static Materials loadShadowIron() {
