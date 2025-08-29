@@ -400,12 +400,13 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public boolean supportsBatchMode() {
-        return false;
+        return true;
     }
 
     /*
      * With batch mode enabled (True by default from config), HP steam multi processing times get rounded and look weird
      * Setting them to false here will make it look normal again. (Steam multi's can't process every tick anyway)
+     * Batch mode is also now supported to account for players who wish to change this behavior
      */
 
     @Override
