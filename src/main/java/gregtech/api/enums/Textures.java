@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -1890,7 +1889,8 @@ public class Textures {
         NANITE_CORE,
         NANITE_SHIELDING_FRAME,
 
-        RESONANCE_MIXER_CASING
+        RESONANCE_MIXER_CASING,
+        SOUNDPROOF_CASING
 
         // semicolon after the comment to reduce merge conflicts
         ;

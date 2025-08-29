@@ -1,11 +1,27 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,64 +33,62 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN_GLOW;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonanceMixer>
     implements ISurvivalConstructable {
 
+    private Byte mSolenoidLevel = null;
+    private final static int STRUCTURE_OFFSET_X = 5;
+    private final static int STRUCTURE_OFFSET_Y = 13;
+    private final static int STRUCTURE_OFFSET_Z = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEResonanceMixer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEResonanceMixer>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
-            new String[][]{{
-                "BBB",
-                "BBB",
-                "B~B",
-                "BBB",
-                "C C"
-            },{
-                "BBB",
-                "A A",
-                "A A",
-                "BBB",
-                "   "
-            },{
-                "BBB",
-                "BAB",
-                "BAB",
-                "BBB",
-                "C C"
-            }})
+            new String[][]{
+                {"   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   "},
+                {"           ", " CCCCCCCCC ", " CCCCCCCCC ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", " CCCC~CCCC ", " CCCCCCCCC "},
+                {"   SSSSS   ", " CCCCCCCCC ", " CG     GC ", "  G     G  ", "  G     G  ", "  G  C  G  ", "  G  C  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  C  G  ", " CG  C  GC ", " CCSSCSSCC "},
+                {"S SS   SS S", "SCCCCCCCCCS", "SC       CS", "SC       CS", "SC       CS", "SC CCCCC CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   B   CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   C   CS", "SCSSCCCSSCS"},
+                {"  S     S  ", " CCCCCCCCC ", " C       C ", " C       C ", " C       C ", " C C   C C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " CSCCCCCSC "},
+                {"  S     S  ", " CCCCCCCCC ", " C       C ", " C       C ", " C       C ", " CCC   CCC ", " CCB   BCC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CCB   BCC ", " CCC   CCC ", " CCCCECCCC "},
+                {"  S     S  ", " CCCCCCCCC ", " C       C ", " C       C ", " C       C ", " C C   C C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " CSCCCCCSC "},
+                {"S SS   SS S", "SCCCCCCCCCS", "SC       CS", "SC       CS", "SC       CS", "SC CCCCC CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   B   CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   C   CS", "SCSSCCCSSCS"},
+                {"   SSSSS   ", " CCCCCCCCC ", " CG     GC ", "  G     G  ", "  G     G  ", "  G  C  G  ", "  G  C  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  C  G  ", " CG  C  GC ", " CCSSCSSCC "},
+                {"           ", " CCCCCCCCC ", " CCCCCCCCC ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", "   CCCCC   ", " CCCCCCCCC ", " CCCCCCCCC "},
+                {"   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   ", "   S   S   "}})
         //spotless:on
         .addElement(
-            'B',
-            buildHatchAdder(MTEResonanceMixer.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
+            'C',
+            buildHatchAdder(MTEResonanceMixer.class).atLeast(InputBus, OutputBus, InputHatch, OutputHatch, ExoticEnergy)
                 .casingIndex(Casings.ResonanceMixerCasing.textureId)
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEResonanceMixer::onCasingAdded, Casings.ResonanceMixerCasing.asElement())))
-        .addElement('A', chainAllGlasses())
-        .addElement('C', ofFrame(Materials.Steel))
+        .addElement('S', Casings.SoundProofCasing.asElement())
+        .addElement(
+            'E',
+            buildHatchAdder(MTEResonanceMixer.class).atLeast(ExoticEnergy)
+                .casingIndex(Casings.ResonanceMixerCasing.textureId)
+                .dot(2)
+                .buildAndChain(
+                    onElementPass(MTEResonanceMixer::onCasingAdded, Casings.ResonanceMixerCasing.asElement())))
+        .addElement(
+            'B',
+            GTStructureChannels.SOLENOID
+                .use(ofSolenoidCoil(MTEResonanceMixer::setSolenoidLevel, MTEResonanceMixer::getSolenoidLevel)))
+        .addElement('G', chainAllGlasses())
         .build();
+
+    private Byte getSolenoidLevel() {
+        return mSolenoidLevel;
+    }
+
+    private void setSolenoidLevel(byte level) {
+        mSolenoidLevel = level;
+    }
 
     public MTEResonanceMixer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,24 +114,20 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Casings.ResonanceMixerCasing.getCasingTexture(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_SCREEN)
-                        .extFacing()
-                        .build(),
+                rTexture = new ITexture[] { Casings.ResonanceMixerCasing.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_SCREEN)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_SCREEN_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Casings.ResonanceMixerCasing.getCasingTexture(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FUSION1)
-                        .extFacing()
-                        .build() };
+                rTexture = new ITexture[] { Casings.ResonanceMixerCasing.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FUSION1)
+                    .extFacing()
+                    .build() };
             }
         } else {
             rTexture = new ITexture[] { Casings.ResonanceMixerCasing.getCasingTexture() };
@@ -148,13 +158,28 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+        buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            STRUCTURE_OFFSET_X,
+            STRUCTURE_OFFSET_Y,
+            STRUCTURE_OFFSET_Z);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            STRUCTURE_OFFSET_X,
+            STRUCTURE_OFFSET_Y,
+            STRUCTURE_OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     private int mCasingAmount;
@@ -165,8 +190,10 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        fixAllIssues();
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 14;
+        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z)
+            && mCasingAmount >= 14;
     }
 
     @Override

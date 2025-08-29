@@ -1539,6 +1539,9 @@ public enum ItemList implements IItemContainer {
     Black_Hole_Stabilizer,
 
     Machine_Multi_IndustrialBrewery,
+
+    Soundproof_Casing,
+    ResonanceMixer_Casing,
     Machine_Multi_ResonanceMixer,
 
     Machine_Multi_IndustrialLaserEngraver,
@@ -2738,8 +2741,6 @@ public enum ItemList implements IItemContainer {
     LoadbearingDistributionCasing,
     NaniteFramework,
     NaniteShieldingGlass,
-
-    SoundProofCasing,
 
     PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,
