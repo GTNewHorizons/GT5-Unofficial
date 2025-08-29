@@ -11683,77 +11683,62 @@ public class MaterialsInit1 {
     }
 
     private static void loadUnclassified07() {
-        Materials.RedstoneAlloy = loadRedstoneAlloy();
-        Materials.Soularium = loadSoularium();
+        Materials.AstralSilver = loadAstralSilver();
+        Materials.BlueAlloy = loadBlueAlloy();
         Materials.ConductiveIron = loadConductiveIron();
-        Materials.ElectricalSteel = loadElectricalSteel();
-        Materials.EnergeticAlloy = loadEnergeticAlloy();
-        Materials.VibrantAlloy = loadVibrantAlloy();
-        Materials.PulsatingIron = loadPulsatingIron();
-        Materials.DarkSteel = loadDarkSteel();
-        Materials.EndSteel = loadEndSteel();
         Materials.CrudeSteel = loadCrudeSteel();
         Materials.CrystallineAlloy = loadCrystallineAlloy();
-        Materials.MelodicAlloy = loadMelodicAlloy();
-        Materials.StellarAlloy = loadStellarAlloy();
         Materials.CrystallinePinkSlime = loadCrystallinePinkSlime();
-        Materials.EnergeticSilver = loadEnergeticSilver();
-        Materials.VividAlloy = loadVividAlloy();
+        Materials.DarkSteel = loadDarkSteel();
+        Materials.ElectricalSteel = loadElectricalSteel();
+        Materials.EndSteel = loadEndSteel();
         Materials.Enderium = loadEnderium();
+        Materials.EnergeticAlloy = loadEnergeticAlloy();
+        Materials.EnergeticSilver = loadEnergeticSilver();
+        Materials.MelodicAlloy = loadMelodicAlloy();
         Materials.Mithril = loadMithril();
-        Materials.BlueAlloy = loadBlueAlloy();
+        Materials.PulsatingIron = loadPulsatingIron();
+        Materials.RedstoneAlloy = loadRedstoneAlloy();
         Materials.ShadowIron = loadShadowIron();
         Materials.ShadowSteel = loadShadowSteel();
-        Materials.AstralSilver = loadAstralSilver();
+        Materials.Soularium = loadSoularium();
+        Materials.StellarAlloy = loadStellarAlloy();
+        Materials.VibrantAlloy = loadVibrantAlloy();
+        Materials.VividAlloy = loadVividAlloy();
     }
 
-    private static Materials loadRedstoneAlloy() {
-        return new MaterialBuilder().setName("RedstoneAlloy")
-            .setDefaultLocalName("Redstone Alloy")
-            .setMetaItemSubID(381)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xff4332)
-            .setToolSpeed(3.0f)
-            .setDurability(128)
+    private static Materials loadAstralSilver() {
+        return new MaterialBuilder().setName("AstralSilver")
+            .setDefaultLocalName("Astral Silver")
+            .setMetaItemSubID(333)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6e6ff)
+            .setToolSpeed(10.0f)
+            .setDurability(64)
             .setToolQuality(2)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(671)
-            .setBlastFurnaceTemp(1000)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Redstone, 1)
-            .addMaterial(Materials.Silicon, 1)
-            .addMaterial(Materials.Coal, 1)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Silver, 2)
+            .addMaterial(Materials.Thaumium, 1)
             .constructMaterial();
     }
 
-    private static Materials loadSoularium() {
-        return new MaterialBuilder().setName("Soularium")
-            .setDefaultLocalName("Soularium")
-            .setMetaItemSubID(379)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeBrown)
-            .setRGB(0x916d3e)
-            .setToolSpeed(8.0f)
-            .setDurability(256)
-            .setToolQuality(2)
+    private static Materials loadBlueAlloy() {
+        return new MaterialBuilder().setName("BlueAlloy")
+            .setDefaultLocalName("Blue Alloy")
+            .setMetaItemSubID(309)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x64b4ff)
             .addDustItems()
             .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(800)
-            .setBlastFurnaceTemp(1000)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.SoulSand, 1)
-            .addMaterial(Materials.Gold, 1)
-            .addMaterial(Materials.Ash, 1)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.Electrotine, 4)
+            .addAspect(TCAspects.ELECTRUM, 3)
             .constructMaterial();
     }
 
@@ -11778,154 +11763,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.RedstoneAlloy, 1)
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Silver, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadElectricalSteel() {
-        return new MaterialBuilder().setName("ElectricalSteel")
-            .setDefaultLocalName("Electrical Steel")
-            .setMetaItemSubID(365)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeGray)
-            .setRGB(0xd8d8d8)
-            .setToolSpeed(6.0f)
-            .setDurability(512)
-            .setToolQuality(2)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(1811)
-            .setBlastFurnaceTemp(1000)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Steel, 1)
-            .addMaterial(Materials.Coal, 1)
-            .addMaterial(Materials.Silicon, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadEnergeticAlloy() {
-        return new MaterialBuilder().setName("EnergeticAlloy")
-            .setDefaultLocalName("Energetic Alloy")
-            .setMetaItemSubID(366)
-            .setIconSet(TextureSet.SET_ENERGETIC)
-            .setColor(Dyes.dyeOrange)
-            .setRGB(0xff8c19)
-            .setToolSpeed(12.0f)
-            .setDurability(1024)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(2200)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.ConductiveIron, 1)
-            .addMaterial(Materials.Gold, 1)
-            .addMaterial(Materials.BlackSteel, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadVibrantAlloy() {
-        return new MaterialBuilder().setName("VibrantAlloy")
-            .setDefaultLocalName("Vibrant Alloy")
-            .setMetaItemSubID(367)
-            .setIconSet(TextureSet.SET_VIBRANT)
-            .setColor(Dyes.dyeLime)
-            .setRGB(0x95e011)
-            .setToolSpeed(18.0f)
-            .setDurability(4048)
-            .setToolQuality(4)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(3300)
-            .setBlastFurnaceTemp(3300)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.EnergeticAlloy, 1)
-            .addMaterial(Materials.EnderEye, 1)
-            .addMaterial(Materials.Chrome, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadPulsatingIron() {
-        return new MaterialBuilder().setName("PulsatingIron")
-            .setDefaultLocalName("Pulsating Iron")
-            .setMetaItemSubID(378)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeLime)
-            .setRGB(0x80f69b)
-            .setToolSpeed(6.0f)
-            .setDurability(256)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(1800)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Iron, 1)
-            .addMaterial(Materials.EnderPearl, 1)
-            .addMaterial(Materials.RedstoneAlloy, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadDarkSteel() {
-        return new MaterialBuilder().setName("DarkSteel")
-            .setDefaultLocalName("Dark Steel")
-            .setMetaItemSubID(364)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyePurple)
-            .setRGB(0x504650)
-            .setToolSpeed(8.0f)
-            .setDurability(512)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(1800)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.ElectricalSteel, 1)
-            .addMaterial(Materials.Coal, 1)
-            .addMaterial(Materials.Obsidian, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadEndSteel() {
-        return new MaterialBuilder().setName("EndSteel")
-            .setDefaultLocalName("End Steel")
-            .setMetaItemSubID(401)
-            .setIconSet(TextureSet.SET_VIVID)
-            .setColor(Dyes.dyeYellow)
-            .setRGB(0xdbce7d)
-            .setToolSpeed(12.0f)
-            .setDurability(2000)
-            .setToolQuality(4)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(940)
-            .setBlastFurnaceTemp(3600)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.DarkSteel, 1)
-            .addMaterial(Materials.Tungsten, 1)
-            .addMaterial(Materials.Endstone, 1)
             .constructMaterial();
     }
 
@@ -11978,58 +11815,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadMelodicAlloy() {
-        return new MaterialBuilder().setName("MelodicAlloy")
-            .setDefaultLocalName("Melodic Alloy")
-            .setMetaItemSubID(404)
-            .setIconSet(TextureSet.SET_MELODIC)
-            .setColor(Dyes.dyeMagenta)
-            .setRGB(0xc155c1)
-            .setToolSpeed(24.0f)
-            .setDurability(1024)
-            .setToolQuality(5)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(5400)
-            .setBlastFurnaceTemp(5400)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.EndSteel, 1)
-            .addMaterial(Materials.EnderEye, 1)
-            .addMaterial(Materials.Oriharukon, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadStellarAlloy() {
-        return new MaterialBuilder().setName("StellarAlloy")
-            .setDefaultLocalName("Stellar Alloy")
-            .setMetaItemSubID(405)
-            .setIconSet(TextureSet.SET_STELLAR)
-            .setColor(Dyes.dyeWhite)
-            .setRGB(0xd3ffff)
-            .setToolSpeed(96.0f)
-            .setDurability(10240)
-            .setToolQuality(7)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(7200)
-            .setBlastFurnaceTemp(7200)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .setAutoGeneratedVacuumFreezerRecipe(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.NetherStar, 1)
-            .addMaterial(Materials.MelodicAlloy, 1)
-            .addMaterial(Materials.Naquadah, 1)
-            .constructMaterial();
-    }
-
     private static Materials loadCrystallinePinkSlime() {
         return new MaterialBuilder().setName("CrystallinePinkSlime")
             .setDefaultLocalName("Crystalline Pink Slime")
@@ -12055,13 +11840,13 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadEnergeticSilver() {
-        return new MaterialBuilder().setName("EnergeticSilver")
-            .setDefaultLocalName("Energetic Silver")
-            .setMetaItemSubID(407)
-            .setIconSet(TextureSet.SET_VIVID)
-            .setColor(Dyes.dyeLightBlue)
-            .setRGB(0x3887b5)
+    private static Materials loadDarkSteel() {
+        return new MaterialBuilder().setName("DarkSteel")
+            .setDefaultLocalName("Dark Steel")
+            .setMetaItemSubID(364)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x504650)
             .setToolSpeed(8.0f)
             .setDurability(512)
             .setToolQuality(3)
@@ -12069,39 +11854,63 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setBlastFurnaceTemp(2200)
+            .setBlastFurnaceTemp(1800)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addElectrolyzerRecipe()
-            .addMaterial(Materials.Silver, 1)
-            .addMaterial(Materials.ConductiveIron, 1)
-            .addMaterial(Materials.BlackSteel, 1)
+            .addMaterial(Materials.ElectricalSteel, 1)
+            .addMaterial(Materials.Coal, 1)
+            .addMaterial(Materials.Obsidian, 1)
             .constructMaterial();
     }
 
-    private static Materials loadVividAlloy() {
-        return new MaterialBuilder().setName("VividAlloy")
-            .setDefaultLocalName("Vivid Alloy")
-            .setMetaItemSubID(408)
+    private static Materials loadElectricalSteel() {
+        return new MaterialBuilder().setName("ElectricalSteel")
+            .setDefaultLocalName("Electrical Steel")
+            .setMetaItemSubID(365)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xd8d8d8)
+            .setToolSpeed(6.0f)
+            .setDurability(512)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1811)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addMaterial(Materials.Coal, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEndSteel() {
+        return new MaterialBuilder().setName("EndSteel")
+            .setDefaultLocalName("End Steel")
+            .setMetaItemSubID(401)
             .setIconSet(TextureSet.SET_VIVID)
-            .setColor(Dyes.dyeBlue)
-            .setRGB(0x46bcdb)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xdbce7d)
             .setToolSpeed(12.0f)
-            .setDurability(768)
+            .setDurability(2000)
             .setToolQuality(4)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setMeltingPoint(3300)
-            .setBlastFurnaceTemp(3300)
+            .setMeltingPoint(940)
+            .setBlastFurnaceTemp(3600)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setAutoGeneratedVacuumFreezerRecipe(false)
             .addElectrolyzerRecipe()
-            .addMaterial(Materials.EnergeticSilver, 1)
-            .addMaterial(Materials.EnderEye, 1)
-            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.DarkSteel, 1)
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Endstone, 1)
             .constructMaterial();
     }
 
@@ -12133,6 +11942,80 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
+    private static Materials loadEnergeticAlloy() {
+        return new MaterialBuilder().setName("EnergeticAlloy")
+            .setDefaultLocalName("Energetic Alloy")
+            .setMetaItemSubID(366)
+            .setIconSet(TextureSet.SET_ENERGETIC)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8c19)
+            .setToolSpeed(12.0f)
+            .setDurability(1024)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(2200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.ConductiveIron, 1)
+            .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.BlackSteel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnergeticSilver() {
+        return new MaterialBuilder().setName("EnergeticSilver")
+            .setDefaultLocalName("Energetic Silver")
+            .setMetaItemSubID(407)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x3887b5)
+            .setToolSpeed(8.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(2200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.ConductiveIron, 1)
+            .addMaterial(Materials.BlackSteel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMelodicAlloy() {
+        return new MaterialBuilder().setName("MelodicAlloy")
+            .setDefaultLocalName("Melodic Alloy")
+            .setMetaItemSubID(404)
+            .setIconSet(TextureSet.SET_MELODIC)
+            .setColor(Dyes.dyeMagenta)
+            .setRGB(0xc155c1)
+            .setToolSpeed(24.0f)
+            .setDurability(1024)
+            .setToolQuality(5)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5400)
+            .setBlastFurnaceTemp(5400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.EndSteel, 1)
+            .addMaterial(Materials.EnderEye, 1)
+            .addMaterial(Materials.Oriharukon, 1)
+            .constructMaterial();
+    }
+
     private static Materials loadMithril() {
         return new MaterialBuilder().setName("Mithril")
             .setDefaultLocalName("Mithril")
@@ -12158,19 +12041,52 @@ public class MaterialsInit1 {
             .setTurbineMultipliers(22, 1, 1);
     }
 
-    private static Materials loadBlueAlloy() {
-        return new MaterialBuilder().setName("BlueAlloy")
-            .setDefaultLocalName("Blue Alloy")
-            .setMetaItemSubID(309)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeLightBlue)
-            .setRGB(0x64b4ff)
+    private static Materials loadPulsatingIron() {
+        return new MaterialBuilder().setName("PulsatingIron")
+            .setDefaultLocalName("Pulsating Iron")
+            .setMetaItemSubID(378)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x80f69b)
+            .setToolSpeed(6.0f)
+            .setDurability(256)
+            .setToolQuality(3)
             .addDustItems()
             .addMetalItems()
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Silver, 1)
-            .addMaterial(Materials.Electrotine, 4)
-            .addAspect(TCAspects.ELECTRUM, 3)
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.EnderPearl, 1)
+            .addMaterial(Materials.RedstoneAlloy, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedstoneAlloy() {
+        return new MaterialBuilder().setName("RedstoneAlloy")
+            .setDefaultLocalName("Redstone Alloy")
+            .setMetaItemSubID(381)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff4332)
+            .setToolSpeed(3.0f)
+            .setDurability(128)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(671)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Redstone, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Coal, 1)
             .constructMaterial();
     }
 
@@ -12220,22 +12136,106 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadAstralSilver() {
-        return new MaterialBuilder().setName("AstralSilver")
-            .setDefaultLocalName("Astral Silver")
-            .setMetaItemSubID(333)
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeWhite)
-            .setRGB(0xe6e6ff)
-            .setToolSpeed(10.0f)
-            .setDurability(64)
+    private static Materials loadSoularium() {
+        return new MaterialBuilder().setName("Soularium")
+            .setDefaultLocalName("Soularium")
+            .setMetaItemSubID(379)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x916d3e)
+            .setToolSpeed(8.0f)
+            .setDurability(256)
             .setToolQuality(2)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Silver, 2)
-            .addMaterial(Materials.Thaumium, 1)
+            .addGearItems()
+            .setMeltingPoint(800)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SoulSand, 1)
+            .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.Ash, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadStellarAlloy() {
+        return new MaterialBuilder().setName("StellarAlloy")
+            .setDefaultLocalName("Stellar Alloy")
+            .setMetaItemSubID(405)
+            .setIconSet(TextureSet.SET_STELLAR)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xd3ffff)
+            .setToolSpeed(96.0f)
+            .setDurability(10240)
+            .setToolQuality(7)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(7200)
+            .setBlastFurnaceTemp(7200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.NetherStar, 1)
+            .addMaterial(Materials.MelodicAlloy, 1)
+            .addMaterial(Materials.Naquadah, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVibrantAlloy() {
+        return new MaterialBuilder().setName("VibrantAlloy")
+            .setDefaultLocalName("Vibrant Alloy")
+            .setMetaItemSubID(367)
+            .setIconSet(TextureSet.SET_VIBRANT)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x95e011)
+            .setToolSpeed(18.0f)
+            .setDurability(4048)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3300)
+            .setBlastFurnaceTemp(3300)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.EnergeticAlloy, 1)
+            .addMaterial(Materials.EnderEye, 1)
+            .addMaterial(Materials.Chrome, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVividAlloy() {
+        return new MaterialBuilder().setName("VividAlloy")
+            .setDefaultLocalName("Vivid Alloy")
+            .setMetaItemSubID(408)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x46bcdb)
+            .setToolSpeed(12.0f)
+            .setDurability(768)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3300)
+            .setBlastFurnaceTemp(3300)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.EnergeticSilver, 1)
+            .addMaterial(Materials.EnderEye, 1)
+            .addMaterial(Materials.Chrome, 1)
             .constructMaterial();
     }
 

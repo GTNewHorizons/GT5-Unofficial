@@ -854,28 +854,28 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Quantium;
 
     // Unclassified 07 materials
-    public static Materials RedstoneAlloy;
-    public static Materials Soularium;
+    public static Materials AstralSilver;
+    public static Materials BlueAlloy;
     public static Materials ConductiveIron;
-    public static Materials ElectricalSteel;
-    public static Materials EnergeticAlloy;
-    public static Materials VibrantAlloy;
-    public static Materials PulsatingIron;
-    public static Materials DarkSteel;
-    public static Materials EndSteel;
     public static Materials CrudeSteel;
     public static Materials CrystallineAlloy;
-    public static Materials MelodicAlloy;
-    public static Materials StellarAlloy;
     public static Materials CrystallinePinkSlime;
-    public static Materials EnergeticSilver;
-    public static Materials VividAlloy;
+    public static Materials DarkSteel;
+    public static Materials ElectricalSteel;
+    public static Materials EndSteel;
     public static Materials Enderium;
+    public static Materials EnergeticAlloy;
+    public static Materials EnergeticSilver;
+    public static Materials MelodicAlloy;
     public static Materials Mithril;
-    public static Materials BlueAlloy;
+    public static Materials PulsatingIron;
+    public static Materials RedstoneAlloy;
     public static Materials ShadowIron;
     public static Materials ShadowSteel;
-    public static Materials AstralSilver;
+    public static Materials Soularium;
+    public static Materials StellarAlloy;
+    public static Materials VibrantAlloy;
+    public static Materials VividAlloy;
 
     /**
      * Op materials (draconic evolution above)
