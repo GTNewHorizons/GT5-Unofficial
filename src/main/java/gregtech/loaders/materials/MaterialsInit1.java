@@ -95,9 +95,6 @@ public class MaterialsInit1 {
 
         loadRadoxLine();
 
-        // Material ID was choosen randomly//
-        Materials.RadoxPolymer = loadRadoxPolymer();
-
         Materials.NetherAir = loadNetherAir();
         Materials.NetherSemiFluid = loadNethersemifluid();
         Materials.NefariousGas = loadNefariousGas();
@@ -12848,51 +12845,16 @@ public class MaterialsInit1 {
     }
 
     private static void loadRadoxLine() {
-        Materials.RawRadox = loadRawRadox();
-        Materials.RadoxSuperLight = loadSuperLightRadox();
-        Materials.RadoxLight = loadLightRadox();
-        Materials.RadoxHeavy = loadHeavyRadox();
-        Materials.RadoxSuperHeavy = loadSuperHeavyRadox();
-        Materials.Xenoxene = loadXenoxene();
         Materials.DilutedXenoxene = loadDilutedXenoxene();
-        Materials.RadoxCracked = loadCrackedRadox();
+        Materials.RadoxCracked = loadRadoxCracked();
         Materials.RadoxGas = loadRadoxGas();
-    }
-
-    private static Materials loadRawRadox() {
-        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Raw Radox").setRGB(80, 30, 80)
-            .addFluid()
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperLightRadox() {
-        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Light Radox").setRGB(155, 0, 155)
-            .addGas()
-            .constructMaterial();
-    }
-
-    private static Materials loadLightRadox() {
-        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Light Radox").setRGB(140, 0, 140)
-            .addGas()
-            .constructMaterial();
-    }
-
-    private static Materials loadHeavyRadox() {
-        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Heavy Radox").setRGB(115, 0, 115)
-            .addFluid()
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperHeavyRadox() {
-        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Heavy Radox").setRGB(100, 0, 100)
-            .addFluid()
-            .constructMaterial();
-    }
-
-    private static Materials loadXenoxene() {
-        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Xenoxene").setRGB(133, 130, 128)
-            .addFluid()
-            .constructMaterial();
+        Materials.RadoxHeavy = loadRadoxHeavy();
+        Materials.RadoxLight = loadRadoxLight();
+        Materials.RadoxPolymer = loadRadoxPolymer();
+        Materials.RadoxSuperHeavy = loadRadoxSuperHeavy();
+        Materials.RadoxSuperLight = loadRadoxSuperLight();
+        Materials.RawRadox = loadRawRadox();
+        Materials.Xenoxene = loadXenoxene();
     }
 
     private static Materials loadDilutedXenoxene() {
@@ -12901,7 +12863,7 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadCrackedRadox() {
+    private static Materials loadRadoxCracked() {
         return new MaterialBuilder(-1, TextureSet.SET_DULL, "Cracked Radox").setRGB(180, 130, 180)
             .addGas()
             .constructMaterial();
@@ -12909,6 +12871,18 @@ public class MaterialsInit1 {
 
     private static Materials loadRadoxGas() {
         return new MaterialBuilder(-1, TextureSet.SET_DULL, "Radox Gas").setRGB(255, 130, 255)
+            .addGas()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxHeavy() {
+        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Heavy Radox").setRGB(115, 0, 115)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxLight() {
+        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Light Radox").setRGB(140, 0, 140)
             .addGas()
             .constructMaterial();
     }
@@ -12936,6 +12910,30 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingGas(true)
             .setGasTemperature(12406);
+    }
+
+    private static Materials loadRadoxSuperHeavy() {
+        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Heavy Radox").setRGB(100, 0, 100)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxSuperLight() {
+        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Light Radox").setRGB(155, 0, 155)
+            .addGas()
+            .constructMaterial();
+    }
+
+    private static Materials loadRawRadox() {
+        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Raw Radox").setRGB(80, 30, 80)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadXenoxene() {
+        return new MaterialBuilder(-1, TextureSet.SET_DULL, "Xenoxene").setRGB(133, 130, 128)
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadNetherAir() {
