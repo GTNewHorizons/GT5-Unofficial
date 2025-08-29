@@ -64,9 +64,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 75% of the EU/t normally required")
-            .addInfo("Processes four items per voltage tier")
+            .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front Center")
@@ -120,7 +118,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_RECYCLER_OP;
+        return SoundResource.GTCEU_LOOP_MOTOR;
     }
 
     @Override

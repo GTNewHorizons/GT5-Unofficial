@@ -185,20 +185,11 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
         if (!supportsMachineModeSwitch()) return null;
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (supportsMachineModeSwitch()) {
-                onMachineModeSwitchClick();
-                setMachineMode(nextMachineMode());
-            }
+            onMachineModeSwitchClick();
+            setMachineMode(nextMachineMode());
         })
-            .setPlayClickSound(supportsMachineModeSwitch())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (supportsMachineModeSwitch()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(getMachineModeIcon(getMachineMode()));
-                } else return null;
-                return ret.toArray(new IDrawable[0]);
-            })
+            .setPlayClickSound(true)
+            .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, getMachineModeIcon(getMachineMode()) })
             .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)

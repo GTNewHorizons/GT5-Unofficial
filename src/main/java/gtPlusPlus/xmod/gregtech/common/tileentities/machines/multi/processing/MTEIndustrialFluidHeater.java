@@ -62,9 +62,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("120% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 90% of the EU/t normally required")
-            .addInfo("Processes eight items per voltage tier")
+            .addBulkMachineInfo(8, 2.2f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 5, true)
             .addController("Front Center")

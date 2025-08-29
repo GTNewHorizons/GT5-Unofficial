@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemCasings;
@@ -44,8 +45,8 @@ public class ItemCasingSpaceElevatorMotor extends ItemCasings {
             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
                 + GTUtility.translate("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
         tooltip.add(
-            String.format(
-                GTUtility.translate("gt.blockcasings.ig.motor.desc2"),
+            StatCollector.translateToLocalFormatted(
+                "gt.blockcasings.ig.motor.desc2",
                 ElevatorUtil.getModuleSlotsUnlocked(stack.getItemDamage() + 1)));
     }
 }

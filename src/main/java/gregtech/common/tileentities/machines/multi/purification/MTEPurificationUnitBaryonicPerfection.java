@@ -271,13 +271,13 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Insert " + EnumChatFormatting.WHITE
                     + "Quark Releasing Catalysts "
                     + EnumChatFormatting.GRAY
-                    + "into the input bus while running.")
+                    + "into the input bus while running")
             .addInfo(
                 "Every recipe cycle, a different combination of " + EnumChatFormatting.RED
                     + "2"
@@ -285,7 +285,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     + " different "
                     + EnumChatFormatting.WHITE
                     + "Quark Releasing Catalysts")
-            .addInfo("will correctly identify the lone quark and succeed the recipe.")
+            .addInfo("will correctly identify the lone quark and succeed the recipe")
             .addInfo(
                 "The order of catalysts in the combination does not matter, so " + EnumChatFormatting.BLUE
                     + "Up"
@@ -300,35 +300,29 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.GRAY
                     + "/"
                     + EnumChatFormatting.BLUE
-                    + "Up"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Up")
             .addSeparator()
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "20"
                     + EnumChatFormatting.GRAY
-                    + " ticks, consumes ALL catalysts in the input bus.")
+                    + " ticks, consumes ALL catalysts in the input bus")
             .addInfo(
                 "The base cost of inserting a catalyst is " + EnumChatFormatting.RED
                     + CATALYST_BASE_COST
                     + "L"
                     + EnumChatFormatting.WHITE
-                    + " Molten Infinity"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled.")
+                    + " Molten Infinity")
+            .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled")
             .addSeparator()
-            .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
+            .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe")
             .addInfo(
                 "If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs "
                     + EnumChatFormatting.RED
                     + BARYONIC_MATTER_OUTPUT
                     + "L "
                     + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Stabilised Baryonic Matter")
             .addInfo(
                 "At the end of a successful recipe, outputs additional " + EnumChatFormatting.RED
                     + PurifiedWaterRecipes.extraBaryonicOutput
@@ -336,8 +330,8 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + "Stabilised Baryonic Matter"
                     + EnumChatFormatting.GRAY
-                    + " per parallel.")
-            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus.")
+                    + " per parallel")
+            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -350,7 +344,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles.")
+                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC

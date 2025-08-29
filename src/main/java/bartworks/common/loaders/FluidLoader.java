@@ -48,7 +48,7 @@ public class FluidLoader {
 
     public static IIcon autogenIIcon;
     public static Fluid ff;
-    public static int renderID;
+    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     public static Block bioFluidBlock;
     public static Fluid[] BioLabFluidMaterials;
     public static ItemStack[] BioLabFluidCells;
@@ -57,7 +57,6 @@ public class FluidLoader {
     public static Fluid fulvicAcid, heatedfulvicAcid, Kerogen;
 
     public static void run(FMLInitializationEvent event) {
-        renderID = RenderingRegistry.getNextAvailableRenderId();
         ff = new Fluid("BWfakeFluid");
         GregTechAPI.sGTBlockIconload.add(
             () -> ff.setIcons(
@@ -117,7 +116,7 @@ public class FluidLoader {
         if (event.getSide()
             .isClient()) {
             RendererSwitchingColorFluid.register();
-            RendererGlassBlock.register();
+            RenderingRegistry.registerBlockHandler(new RendererGlassBlock());
         }
     }
 

@@ -29,27 +29,22 @@ import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GTMod;
-import gregtech.api.render.SBRInventoryContext;
-import gregtech.api.render.SBRWorldContext;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
+import gregtech.api.render.SBRContextHolder;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 @ThreadSafeISBRH(perThread = true)
 public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
 
-    public static BWBlockOreRenderer INSTANCE;
-    public static int renderID;
+    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
-
-    public static void register() {
-        renderID = RenderingRegistry.getNextAvailableRenderId();
-        INSTANCE = new BWBlockOreRenderer();
-        RenderingRegistry.registerBlockHandler(INSTANCE);
-    }
+    private final SBRContextHolder contextHolder = new SBRContextHolder();
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {
-        SBRInventoryContext ctx = new SBRInventoryContext(aBlock, aMeta, modelId, aRenderer);
+        ISBRInventoryContext ctx = contextHolder.getSBRInventoryContext(aBlock, aMeta, modelId, aRenderer);
         TileEntityMetaGeneratedBlock tTileEntity = ((BWMetaGeneratedBlocks) aBlock).getProperTileEntityForRendering();
         tTileEntity.mMetaData = (short) aMeta;
         aRenderer.enableAO = false;
@@ -83,8 +78,7 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
         if(actualTileEntity == null) return false;
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, modelId, aRenderer);
-        ctx.fullBlock = true;
+        final ISBRWorldContext ctx = contextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, modelId, aRenderer);
 
         fakeTileEntity.mMetaData = actualTileEntity.mMetaData;
         aRenderer.useInventoryTint = false;
