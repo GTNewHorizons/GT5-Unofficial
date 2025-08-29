@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.util.DimensionalCoord;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
+import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class PowerGogglesClient {
@@ -49,12 +50,14 @@ public class PowerGogglesClient {
     public void updatePlayer(EntityPlayerMP playerMP) {
         MTELapotronicSuperCapacitor lsc = PowerGogglesUtil.getLsc(playerMP, lscLink);
         if (lsc == null) {
-            return;
+            NW.sendToPlayer(
+                new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((playerMP).getUniqueID()), false),
+                playerMP);
+        } else {
+            NW.sendToPlayer(
+                new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), false),
+                playerMP);
         }
-
-        NW.sendToPlayer(
-            new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), false),
-            playerMP);
     }
 
     public NBTTagCompound getNBT(UUID uuid) {
