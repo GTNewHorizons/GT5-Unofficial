@@ -725,6 +725,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Cryolite;
     public static Materials Cryotheum;
     public static Materials DamascusSteel;
+    public static Materials DarkSteel;
     public static Materials Diatomite;
     public static Materials DilutedSulfuricAcid;
     public static Materials Dolomite;
@@ -866,7 +867,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CrudeSteel;
     public static Materials CrystallineAlloy;
     public static Materials CrystallinePinkSlime;
-    public static Materials DarkSteel;
     public static Materials EndSteel;
     public static Materials Enderium;
     public static Materials EnergeticAlloy;

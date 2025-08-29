@@ -9292,6 +9292,7 @@ public class MaterialsInit1 {
         Materials.Cryolite = loadCryolite();
         Materials.Cryotheum = loadCryotheum();
         Materials.DamascusSteel = loadDamascusSteel();
+        Materials.DarkSteel = loadDarkSteel();
         Materials.Diatomite = loadDiatomite();
         Materials.DilutedSulfuricAcid = loadDilutedSulfuricAcid();
         Materials.Dolomite = loadDolomite();
@@ -9832,6 +9833,30 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Steel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDarkSteel() {
+        return new MaterialBuilder().setName("DarkSteel")
+            .setDefaultLocalName("Dark Steel")
+            .setMetaItemSubID(364)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x504650)
+            .setToolSpeed(8.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.ElectricalSteel, 1)
+            .addMaterial(Materials.Coal, 1)
+            .addMaterial(Materials.Obsidian, 1)
             .constructMaterial();
     }
 
@@ -12201,7 +12226,6 @@ public class MaterialsInit1 {
         Materials.CrudeSteel = loadCrudeSteel();
         Materials.CrystallineAlloy = loadCrystallineAlloy();
         Materials.CrystallinePinkSlime = loadCrystallinePinkSlime();
-        Materials.DarkSteel = loadDarkSteel();
         Materials.EndSteel = loadEndSteel();
         Materials.Enderium = loadEnderium();
         Materials.EnergeticAlloy = loadEnergeticAlloy();
@@ -12462,30 +12486,6 @@ public class MaterialsInit1 {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.CrystallineAlloy, 1)
             .addMaterial(Materials.Diamond, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadDarkSteel() {
-        return new MaterialBuilder().setName("DarkSteel")
-            .setDefaultLocalName("Dark Steel")
-            .setMetaItemSubID(364)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyePurple)
-            .setRGB(0x504650)
-            .setToolSpeed(8.0f)
-            .setDurability(512)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setBlastFurnaceTemp(1800)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.ElectricalSteel, 1)
-            .addMaterial(Materials.Coal, 1)
-            .addMaterial(Materials.Obsidian, 1)
             .constructMaterial();
     }
 
