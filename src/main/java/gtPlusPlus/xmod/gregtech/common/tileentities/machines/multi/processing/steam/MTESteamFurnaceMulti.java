@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -81,7 +82,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     private static final int VERTICAL_OFF_SET = 1;
     private static final int DEPTH_OFF_SET = 0;
 
-    private int mCountCasing = 0;
+    private int casingCount = 0;
 
     private int tierMachine = 1;
 
@@ -167,8 +168,39 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addSteamBulkMachineInfo(8, 1.25f, 0.625f);
+        if (EtFuturumRequiem.isModLoaded()) {
+            tt.addInfo(
+                "Can operate in " + EnumChatFormatting.RED
+                    + "Blasting"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Smoking"
+                    + EnumChatFormatting.GRAY
+                    + " modes, which double "
+                    + EnumChatFormatting.GREEN
+                    + "Speed"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.AQUA
+                    + "Steam Usage")
+                .addInfo(
+                    EnumChatFormatting.RED + "Blasting"
+                        + EnumChatFormatting.GRAY
+                        + " mode can only process "
+                        + EnumChatFormatting.RED
+                        + "Metals")
+                .addInfo(
+                    EnumChatFormatting.LIGHT_PURPLE + "Smoking"
+                        + EnumChatFormatting.GRAY
+                        + " can only process "
+                        + EnumChatFormatting.LIGHT_PURPLE
+                        + "Food Items")
+                .addSeparator();
+        }
+
+        tt.addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 3, 4, false)
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -180,15 +212,16 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
                     + " Any casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addCasingInfoExactly("Any Tiered Glass", 4, true)
+            .addStructureInfo(EnumChatFormatting.GOLD + "2-6" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Gearbox Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Bronze Firebox Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addCasingInfoExactly("Any Tiered Glass", 4, true)
+            .addStructureInfo(EnumChatFormatting.GOLD + "2-6" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Gearbox Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
             .toolTipFinisher();
         return tt;
     }
@@ -196,11 +229,11 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     @Nullable
     public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
-            mCountCasing++;
+            casingCount++;
             return 1;
         }
         if (block == sBlockCasings2 && 0 == meta) {
-            mCountCasing++;
+            casingCount++;
             return 2;
         }
         return null;
@@ -228,14 +261,14 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     }
 
     protected void updateHatchTexture() {
-        for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
+        int textureID = getCasingTextureID();
+        for (MTEHatch h : mSteamInputs) h.updateTexture(textureID);
+        for (MTEHatch h : mSteamOutputs) h.updateTexture(textureID);
+        for (MTEHatch h : mSteamInputFluids) h.updateTexture(textureID);
     }
 
     private int getCasingTextureID() {
-        if (tierMachineCasing == 2 || tierPipeCasing == 2 || tierGearboxCasing == 2 || tierFireboxCasing == 2)
-            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
+        if (tierMachineCasing == 2) return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
 
@@ -252,7 +285,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     @Override
     protected ITexture getFrontOverlay() {
         return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI)
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FURNACE_MULTI)
             .extFacing()
             .build();
     }
@@ -260,7 +293,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     @Override
     protected ITexture getFrontOverlayActive() {
         return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE)
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FURNACE_MULTI_ACTIVE)
             .extFacing()
             .build();
     }
@@ -296,7 +329,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
+        casingCount = 0;
         tierMachineCasing = -1;
         tierPipeCasing = -1;
         tierGearboxCasing = -1;
@@ -305,7 +338,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
         if (tierMachineCasing == 1 && tierPipeCasing == 1
             && tierFireboxCasing == 1
             && tierGearboxCasing == 1
-            && mCountCasing >= 2
+            && casingCount >= 2
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -314,7 +347,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
         if (tierMachineCasing == 2 && tierPipeCasing == 2
             && tierFireboxCasing == 2
             && tierGearboxCasing == 2
-            && mCountCasing >= 2
+            && casingCount >= 2
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
@@ -345,7 +378,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     public void setMachineModeIcons() {
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_COMPRESSING);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
     }
 
     @Override
@@ -397,7 +430,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.25 * tierMachine)
+                    .setEUtDiscount(1.25 * tierMachine * (machineMode == MACHINEMODE_FURNACE ? 1 : 2))
                     .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -448,15 +481,38 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     }
 
     @Override
+    public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+        if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+            final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
+            aBaseMetaTileEntity.getWorld()
+                .spawnParticle(
+                    "largesmoke",
+                    (aBaseMetaTileEntity.getXCoord() + (getExtendedFacing().getRelativeBackInWorld().offsetX) + 0.8F)
+                        - (tRandom.nextFloat() * 0.6F),
+                    (aBaseMetaTileEntity.getYCoord() + 0.3f) + (tRandom.nextFloat() * 0.2F),
+                    (aBaseMetaTileEntity.getZCoord() + (getExtendedFacing().getRelativeBackInWorld().offsetZ) + 1.2F)
+                        - (tRandom.nextFloat() * 1.6F),
+                    0.0D,
+                    0.0D,
+                    0.0D);
+        }
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
+        aNBT.setInteger("tierMachineCasing", tierMachineCasing);
+        aNBT.setInteger("machineMode", machineMode);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
+        tierMachineCasing = aNBT.getInteger("tierMachineCasing");
+        machineMode = aNBT.getInteger("machineMode");
     }
 
     @SideOnly(Side.CLIENT)

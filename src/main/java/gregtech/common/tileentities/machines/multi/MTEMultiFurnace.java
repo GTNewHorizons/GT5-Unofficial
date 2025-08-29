@@ -138,6 +138,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 .build() };
     }
 
+    /*
+     * NOTE: If you are wondering why your machine is not showing up in the NEIHandler for furnaces...
+     * it is handled in the NEI fork's catalysts.csv . so that multiple mods can show up in the same handler.
+     */
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.furnaceRecipes;

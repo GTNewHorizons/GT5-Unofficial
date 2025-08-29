@@ -20,6 +20,7 @@ import java.util.Optional;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -74,7 +75,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
-    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles Speed and Steam Usage";
+    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles " + EnumChatFormatting.GREEN
+        + "Speed"
+        + EnumChatFormatting.GRAY
+        + " and "
+        + EnumChatFormatting.AQUA
+        + "Steam Usage";
 
     public MTESteamMultiBase(String aName) {
         super(aName);
