@@ -843,9 +843,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Galgadorian;
     public static Materials Shadow;
 
-    /**
-     * Galaxy Space 1.10 compat from Version 2.6
-     */
+    // Galaxy Space 1.10 compat from Version 2.6
     public static Materials Ledox;
     public static Materials Quantium;
     public static Materials Mytryl;
