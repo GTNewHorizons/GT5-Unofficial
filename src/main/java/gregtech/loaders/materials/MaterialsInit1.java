@@ -78,8 +78,6 @@ public class MaterialsInit1 {
         loadSuperConductorBases();
         loadSuperconductors();
 
-        Materials.EnrichedHolmium = loadEnrichedHolmium();
-
         Materials.TengamPurified = loadTengamPurified();
         Materials.TengamAttuned = loadTengamAttuned();
         Materials.TengamRaw = loadTengamRaw();
@@ -7098,6 +7096,7 @@ public class MaterialsInit1 {
         Materials.OilLight = loadOilLight();
         Materials.OilMedium = loadOilMedium();
         Materials.SuperCoolant = loadSuperCoolant();
+        Materials.EnrichedHolmium = loadEnrichedHolmium();
     }
 
     private static Materials loadOilExtraHeavy() {
@@ -7158,6 +7157,27 @@ public class MaterialsInit1 {
             .addFluid()
             .constructMaterial()
             .setLiquidTemperature(1);
+    }
+
+    private static Materials loadEnrichedHolmium() {
+        return new MaterialBuilder().setName("EnrichedHolmium")
+            .setDefaultLocalName("Enriched Holmium")
+            .setMetaItemSubID(582)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setToolSpeed(1.0f)
+            .setDurability(0)
+            .setToolQuality(2)
+            .setTypes(2)
+            .setARGB(0, 18, 100, 255)
+            .setFuelType(-1)
+            .setFuelPower(-1)
+            .setMeltingPoint(0)
+            .setBlastFurnaceTemp(3000)
+            .setBlastFurnaceRequired(true)
+            .setDensityDivider(1)
+            .setDensityMultiplier(1)
+            .setColor(Dyes.dyePurple)
+            .constructMaterial();
     }
 
     private static void loadUnclassified02() {
@@ -12696,27 +12716,6 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setRGB(0xb526cd)
             .addAspect(TCAspects.ELECTRUM, 66)
-            .constructMaterial();
-    }
-
-    private static Materials loadEnrichedHolmium() {
-        return new MaterialBuilder().setName("EnrichedHolmium")
-            .setDefaultLocalName("Enriched Holmium")
-            .setMetaItemSubID(582)
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setToolSpeed(1.0f)
-            .setDurability(0)
-            .setToolQuality(2)
-            .setTypes(2)
-            .setARGB(0, 18, 100, 255)
-            .setFuelType(-1)
-            .setFuelPower(-1)
-            .setMeltingPoint(0)
-            .setBlastFurnaceTemp(3000)
-            .setBlastFurnaceRequired(true)
-            .setDensityDivider(1)
-            .setDensityMultiplier(1)
-            .setColor(Dyes.dyePurple)
             .constructMaterial();
     }
 
