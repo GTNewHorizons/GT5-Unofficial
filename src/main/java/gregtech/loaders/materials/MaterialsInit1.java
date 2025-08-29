@@ -94,16 +94,7 @@ public class MaterialsInit1 {
         Materials.StableBaryonicMatter = loadStableBaryonicMatter();
 
         loadRadoxLine();
-
-        Materials.NetherAir = loadNetherAir();
-        Materials.NetherSemiFluid = loadNethersemifluid();
-        Materials.NefariousGas = loadNefariousGas();
-        Materials.NefariousOil = loadNefariousOil();
-        Materials.PoorNetherWaste = loadPoorNetherWaste();
-        Materials.RichNetherWaste = loadRichNetherWaste();
-        Materials.HellishMetal = loadHellishMetal();
-        Materials.Netherite = loadNetherite();
-        Materials.ActivatedNetherite = loadActivatedNetherite();
+        loadNetheriteLine();
 
         Materials.PrismarineSolution = loadPrismarineSolution();
         Materials.PrismarineContaminatedHydrogenPeroxide = loadPrismarinecontaminatedhydrogenperoxide();
@@ -12934,6 +12925,18 @@ public class MaterialsInit1 {
         return new MaterialBuilder(-1, TextureSet.SET_DULL, "Xenoxene").setRGB(133, 130, 128)
             .addFluid()
             .constructMaterial();
+    }
+
+    private static void loadNetheriteLine() {
+        Materials.NetherAir = loadNetherAir();
+        Materials.NetherSemiFluid = loadNethersemifluid();
+        Materials.NefariousGas = loadNefariousGas();
+        Materials.NefariousOil = loadNefariousOil();
+        Materials.PoorNetherWaste = loadPoorNetherWaste();
+        Materials.RichNetherWaste = loadRichNetherWaste();
+        Materials.HellishMetal = loadHellishMetal();
+        Materials.Netherite = loadNetherite();
+        Materials.ActivatedNetherite = loadActivatedNetherite();
     }
 
     private static Materials loadNetherAir() {

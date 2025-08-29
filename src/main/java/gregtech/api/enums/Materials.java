@@ -952,6 +952,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RawRadox;
     public static Materials Xenoxene;
 
+    // Netherite Line
     public static Materials NetherAir;
     public static Materials NetherSemiFluid;
     public static Materials NefariousGas;
@@ -960,6 +961,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RichNetherWaste;
     public static Materials HellishMetal;
     public static Materials Netherite;
+
     public static Materials ActivatedNetherite;
     public static Materials PrismarineSolution;
     public static Materials PrismarineContaminatedHydrogenPeroxide;
