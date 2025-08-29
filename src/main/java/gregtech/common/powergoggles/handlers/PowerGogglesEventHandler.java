@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -47,20 +48,11 @@ public class PowerGogglesEventHandler {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        if (updateTicker != 1) {
-            return;
-        }
         updateClient(event);
     }
 
     private void updateClient(TickEvent.PlayerTickEvent event) {
-
-        if (event.side.isClient()) {
-            issueDrawTick();
-            return;
-        }
-
-        EntityPlayerMP player = (EntityPlayerMP) event.player;
+        EntityPlayer player = event.player;
         UUID uuid = player.getUniqueID();
 
         if (!clients.containsKey(uuid)) {
@@ -68,8 +60,28 @@ public class PowerGogglesEventHandler {
         }
 
         PowerGogglesClient client = clients.get(uuid);
-        client.measure(player);
-        client.updatePlayer(player);
+
+        if (client.isRequestingUpdate() && event.side.isServer()) {
+            int newDelay = client.getUpdateTickDelay() - 1;
+            if (newDelay == 0) {
+                client.overwriteMeasurements((EntityPlayerMP) player);
+                client.setRequestingUpdate(false);
+            }
+            client.setUpdateTickDelay(newDelay);
+
+        }
+
+        if (updateTicker != 1) {
+            return;
+        }
+        if (event.side.isClient()) {
+            issueDrawTick();
+            return;
+        }
+
+        EntityPlayerMP playerMP = (EntityPlayerMP) player;
+        client.measure(playerMP);
+        client.updatePlayer(playerMP);
     }
 
     @SideOnly(Side.CLIENT)
@@ -88,7 +100,7 @@ public class PowerGogglesEventHandler {
         }
     }
 
-    // Annoyingly, this method is called before the player's baubles are initialized
+    // Annoyingly, this method is called anything useful can be done
     // when they join the world for the first time(At least in singleplayer)
     @SubscribeEvent
     public void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
@@ -97,6 +109,8 @@ public class PowerGogglesEventHandler {
         UUID uuid = player.getUniqueID();
 
         if (clients.containsKey(uuid)) {
+            clients.get(player.getUniqueID())
+                .requestUpdate(5);
             return;
         }
         processNewClient(player);
@@ -107,6 +121,7 @@ public class PowerGogglesEventHandler {
         if (goggles == null) {
             return;
         }
+
         updatePlayerLink(goggles, player);
     }
 

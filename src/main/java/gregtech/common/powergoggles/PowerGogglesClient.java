@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import appeng.api.util.DimensionalCoord;
+import gregtech.api.net.GTPacketOverwritePowerGogglesMeasurements;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
 import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
@@ -21,6 +22,9 @@ public class PowerGogglesClient {
 
     private DimensionalCoord lscLink;
     private LinkedList<PowerGogglesMeasurement> measurements = new LinkedList<>();
+
+    private boolean requestingUpdate = false;
+    private int updateTickDelay;
 
     public PowerGogglesClient() {}
 
@@ -117,9 +121,36 @@ public class PowerGogglesClient {
         if (measurements.size() > PowerGogglesConstants.STORED_MEASUREMENTS) {
             measurements.removeFirst();
         }
+        PowerGogglesWorldSavedData.INSTANCE.markDirty();
+
     }
 
     public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
         this.measurements = measurements;
+    }
+
+    public void overwriteMeasurements(EntityPlayerMP player) {
+        NW.sendToPlayer(new GTPacketOverwritePowerGogglesMeasurements(measurements), player);
+    }
+
+    public void requestUpdate(int delay) {
+        this.requestingUpdate = true;
+        this.updateTickDelay = delay;
+    }
+
+    public boolean isRequestingUpdate() {
+        return requestingUpdate;
+    }
+
+    public void setRequestingUpdate(boolean requestingUpdate) {
+        this.requestingUpdate = requestingUpdate;
+    }
+
+    public int getUpdateTickDelay() {
+        return updateTickDelay;
+    }
+
+    public void setUpdateTickDelay(int updateTickDelay) {
+        this.updateTickDelay = updateTickDelay;
     }
 }

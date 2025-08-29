@@ -41,7 +41,7 @@ public enum GTPacketTypes {
     DEBUG_COVER(31, new PacketDebugRedstoneCover()),
     LMA_CRAFTING_FX(32, new GTPacketLMACraftingFX()),
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
-    // Free ID 34
+    OVERWRITE_POWER_GOGGLES_MEASUREMENTS(34, new GTPacketOverwritePowerGogglesMeasurements()),
     TETHER(35, new GTPacketTether()),
     // merge conflict prevention comment, keep a trailing comma above
     ;

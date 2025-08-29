@@ -39,7 +39,7 @@ public class PowerGogglesHudHandler {
     private final static int SECONDS = 20 * TICKS;
     private final static int MINUTES = 60 * SECONDS;
     static List<Text> hudList = new ArrayList<>();
-    static LinkedList<BigInteger> measurements = new LinkedList<>();
+    public static LinkedList<BigInteger> measurements = new LinkedList<>();
     static Minecraft mc = Minecraft.getMinecraft();
     public static final int ticksBetweenMeasurements = 100;
     static final int measurementCount5m = 5 * MINUTES / ticksBetweenMeasurements;
@@ -47,7 +47,7 @@ public class PowerGogglesHudHandler {
     static BigInteger currentEU = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
-    static long capacity = 0; // If this is higher than 0 there's a linked LSC
+    public static long capacity = 0; // If this is higher than 0 there's a linked LSC
     static int change5mColor = PowerGogglesConfigHandler.textOkColor;
     static int change1hColor = PowerGogglesConfigHandler.textOkColor;
 
