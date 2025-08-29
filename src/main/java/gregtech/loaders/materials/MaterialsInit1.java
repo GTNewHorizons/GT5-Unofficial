@@ -87,17 +87,15 @@ public class MaterialsInit1 {
         Materials.SuperconductorUHV = loadSuperconductorUHV();
         Materials.SuperconductorUEV = loadSuperconductorUEV();
         Materials.SuperconductorUIV = loadSuperconductorUIV();
-
-        // spotless:off
-        Materials.SuperconductorUMV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 181,  38, 205,   0,   "SuperconductorUMV"  ,   "Superconductor UMV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 66)));
+        Materials.SuperconductorUMV = loadSuperconductorUMV();
 
         Materials.SuperCoolant = loadSuperCoolant();
 
-        Materials.EnrichedHolmium       = loadEnrichedHolmium();
+        Materials.EnrichedHolmium = loadEnrichedHolmium();
 
         Materials.TengamPurified = loadTengamPurified();
-        Materials.TengamAttuned  = loadTengamAttuned();
-        Materials.TengamRaw      = loadTengamRaw();
+        Materials.TengamAttuned = loadTengamAttuned();
+        Materials.TengamRaw = loadTengamRaw();
 
         Materials.ActivatedCarbon = loadActivatedCarbon();
         Materials.PreActivatedCarbon = loadPreActivatedCarbon();
@@ -140,8 +138,6 @@ public class MaterialsInit1 {
 
         Materials.ComplexityCatalyst = loadComplexityCatalyst();
         Materials.EntropicCatalyst = loadEntropicCatalyst();
-
-        // spotless:on
     }
 
     private static void loadElements() {
@@ -12716,6 +12712,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setRGB(0xe558b1)
             .addAspect(TCAspects.ELECTRUM, 60)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorUMV() {
+        return new MaterialBuilder().setName("SuperconductorUMV")
+            .setDefaultLocalName("Superconductor UMV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xb526cd)
+            .addAspect(TCAspects.ELECTRUM, 66)
             .constructMaterial();
     }
 
