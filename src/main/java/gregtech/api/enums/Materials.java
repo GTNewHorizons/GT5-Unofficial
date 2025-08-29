@@ -826,6 +826,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PulsatingIron;
 
     // Degree 5 Compounds
+    public static Materials CrystallineAlloy;
     public static Materials EnergeticAlloy;
     public static Materials EnergeticSilver;
 
@@ -876,7 +877,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials AstralSilver;
     public static Materials BlueAlloy;
     public static Materials CrudeSteel;
-    public static Materials CrystallineAlloy;
     public static Materials CrystallinePinkSlime;
     public static Materials Enderium;
     public static Materials MelodicAlloy;
