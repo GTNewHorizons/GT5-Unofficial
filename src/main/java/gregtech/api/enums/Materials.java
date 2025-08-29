@@ -823,13 +823,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials EndSteel;
     public static Materials HSSE;
     public static Materials HSSS;
-    public static Materials MelodicAlloy;
     public static Materials PulsatingIron;
 
     // Degree 5 Compounds
     public static Materials CrystallineAlloy;
     public static Materials EnergeticAlloy;
     public static Materials EnergeticSilver;
+    public static Materials MelodicAlloy;
     public static Materials StellarAlloy;
 
     // Degree 6 Compounds
