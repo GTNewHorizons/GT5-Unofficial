@@ -807,6 +807,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Basalt;
     public static Materials BlueSteel;
     public static Materials BorosilicateGlass;
+    public static Materials EndSteel;
     public static Materials EnderEye;
     public static Materials Fireclay;
     public static Materials GarnetSand;
@@ -877,7 +878,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CrudeSteel;
     public static Materials CrystallineAlloy;
     public static Materials CrystallinePinkSlime;
-    public static Materials EndSteel;
     public static Materials Enderium;
     public static Materials MelodicAlloy;
     public static Materials Mithril;
