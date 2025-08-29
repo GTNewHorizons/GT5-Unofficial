@@ -898,7 +898,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUIVBase;
     public static Materials SuperconductorUMVBase;
 
-    // Superconductors.
+    // Superconductors
     public static Materials SuperconductorMV;
     public static Materials SuperconductorHV;
     public static Materials SuperconductorEV;

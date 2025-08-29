@@ -76,18 +76,7 @@ public class MaterialsInit1 {
         loadUnclassified07();
         loadOverpoweredMaterials();
         loadSuperConductorBases();
-
-        Materials.SuperconductorMV = loadSuperconductorMV();
-        Materials.SuperconductorHV = loadSuperconductorHV();
-        Materials.SuperconductorEV = loadSuperconductorEV();
-        Materials.SuperconductorIV = loadSuperconductorIV();
-        Materials.SuperconductorLuV = loadSuperconductorLuV();
-        Materials.SuperconductorZPM = loadSuperconductorZPM();
-        Materials.SuperconductorUV = loadSuperconductorUV();
-        Materials.SuperconductorUHV = loadSuperconductorUHV();
-        Materials.SuperconductorUEV = loadSuperconductorUEV();
-        Materials.SuperconductorUIV = loadSuperconductorUIV();
-        Materials.SuperconductorUMV = loadSuperconductorUMV();
+        loadSuperconductors();
 
         Materials.SuperCoolant = loadSuperCoolant();
 
@@ -12613,6 +12602,20 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.ELECTRUM, 40)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    }
+
+    private static void loadSuperconductors() {
+        Materials.SuperconductorMV = loadSuperconductorMV();
+        Materials.SuperconductorHV = loadSuperconductorHV();
+        Materials.SuperconductorEV = loadSuperconductorEV();
+        Materials.SuperconductorIV = loadSuperconductorIV();
+        Materials.SuperconductorLuV = loadSuperconductorLuV();
+        Materials.SuperconductorZPM = loadSuperconductorZPM();
+        Materials.SuperconductorUV = loadSuperconductorUV();
+        Materials.SuperconductorUHV = loadSuperconductorUHV();
+        Materials.SuperconductorUEV = loadSuperconductorUEV();
+        Materials.SuperconductorUIV = loadSuperconductorUIV();
+        Materials.SuperconductorUMV = loadSuperconductorUMV();
     }
 
     private static Materials loadSuperconductorMV() {
