@@ -83,9 +83,9 @@ public class MaterialsInit1 {
         Materials.SuperconductorIV = loadSuperconductorIV();
         Materials.SuperconductorLuV = loadSuperconductorLuV();
         Materials.SuperconductorZPM = loadSuperconductorZPM();
+        Materials.SuperconductorUV = loadSuperconductorUV();
 
         // spotless:off
-        Materials.SuperconductorUV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 224, 210,   7,   0,   "SuperconductorUV"   ,   "Superconductor UV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeYellow     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 42)));
         Materials.SuperconductorUHV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  38, 129, 189,   0,   "Superconductor"     ,   "Superconductor UHV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 48)));
         Materials.SuperconductorUEV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 174,   8,   8,   0,   "SuperconductorUEV"  ,   "Superconductor UEV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 54)));
         Materials.SuperconductorUIV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 229,  88, 177,   0,   "SuperconductorUIV"  ,   "Superconductor UIV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 60)));
@@ -12676,6 +12676,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBlack)
             .setRGB(0x0a0a0a)
             .addAspect(TCAspects.ELECTRUM, 36)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorUV() {
+        return new MaterialBuilder().setName("SuperconductorUV")
+            .setDefaultLocalName("Superconductor UV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xe0d207)
+            .addAspect(TCAspects.ELECTRUM, 42)
             .constructMaterial();
     }
 
