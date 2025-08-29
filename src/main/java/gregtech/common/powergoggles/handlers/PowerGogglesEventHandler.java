@@ -100,7 +100,7 @@ public class PowerGogglesEventHandler {
         }
     }
 
-    // Annoyingly, this method is called anything useful can be done
+    // Annoyingly, this method is called before anything useful can be done
     // when they join the world for the first time(At least in singleplayer)
     @SubscribeEvent
     public void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
