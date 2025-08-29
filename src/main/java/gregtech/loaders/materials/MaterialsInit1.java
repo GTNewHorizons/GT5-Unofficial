@@ -77,8 +77,9 @@ public class MaterialsInit1 {
         loadOverpoweredMaterials();
         loadSuperConductorBases();
 
+        Materials.SuperconductorMV = loadSuperconductorMV();
+
         // spotless:off
-        Materials.SuperconductorMV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  85,  85,  85,   0,   "SuperconductorMV"   ,   "Superconductor MV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeGray       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 6)));
         Materials.SuperconductorHV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  51,  25,   0,   0,   "SuperconductorHV"   ,   "Superconductor HV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeBrown      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 12)));
         Materials.SuperconductorEV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,   0, 135,   0,   0,   "SuperconductorEV"   ,   "Superconductor EV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeLime       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 18)));
         Materials.SuperconductorIV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  51,   0,  51,   0,   "SuperconductorIV"   ,   "Superconductor IV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeMagenta    , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 24)));
@@ -12616,6 +12617,16 @@ public class MaterialsInit1 {
             .addAspect(TCAspects.ELECTRUM, 40)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    }
+
+    private static Materials loadSuperconductorMV() {
+        return new MaterialBuilder().setName("SuperconductorMV")
+            .setDefaultLocalName("Superconductor MV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x555555)
+            .addAspect(TCAspects.ELECTRUM, 6)
+            .constructMaterial();
     }
 
     private static Materials loadSuperCoolant() {
