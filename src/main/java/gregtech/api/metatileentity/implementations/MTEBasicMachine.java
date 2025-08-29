@@ -658,9 +658,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 }
             }
         } else {
-            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
-                doActivitySound(getActivitySoundLoop());
-            }
+            doActivitySound(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -810,27 +808,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      * Called whenever the Machine successfully started a Process, useful for Sound Effects
      */
     public void startProcess() {
-        if (getBaseMetaTileEntity().getWorld().isRemote) {
-            doActivitySound(getActivitySoundLoop());
-        }
+        //
     }
 
     /**
      * Called whenever the Machine successfully finished a Process, useful for Sound Effects
      */
     public void endProcess() {
-        if (getBaseMetaTileEntity().getWorld().isRemote) {
-            stopActivitySound();
-        }
+        //
     }
 
     /**
      * Called whenever the Machine aborted a Process, useful for Sound Effects
      */
     public void abortProcess() {
-        if (getBaseMetaTileEntity().getWorld().isRemote) {
-            stopActivitySound();
-        }
+        //
     }
 
     /**
@@ -854,7 +846,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      */
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -876,6 +868,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @SideOnly(Side.CLIENT)
     protected void stopActivitySound() {
         if (activitySoundLoop != null) {
+            activitySoundLoop.setFadeMe(true);
             activitySoundLoop = null;
         }
     }
