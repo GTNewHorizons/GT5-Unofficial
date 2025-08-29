@@ -1,5 +1,7 @@
 package gregtech.common.powergoggles;
 
+import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,6 +20,8 @@ public class PowerGogglesWorldSavedData extends WorldSavedData {
 
     public static PowerGogglesWorldSavedData INSTANCE;
     private static final String DATA_NAME = "GregTech_PowerGogglesClientData";
+
+    private int nbtTagCompoundType = 10;
 
     private static void loadInstance(World world) {
 
@@ -63,7 +67,6 @@ public class PowerGogglesWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        int nbtTagCompoundType = 10;
         NBTTagList clientList = nbtTagCompound.getTagList("clientList", nbtTagCompoundType);
 
         processClientList(clientList);
@@ -79,17 +82,43 @@ public class PowerGogglesWorldSavedData extends WorldSavedData {
             NBTTagCompound tagCompound = (NBTTagCompound) tag;
 
             UUID uuid = UUID.fromString(tagCompound.getString("uuid"));
-            DimensionalCoord coords = !tagCompound.hasKey("x") ? null
-                : new DimensionalCoord(
-                    tagCompound.getInteger("x"),
-                    tagCompound.getInteger("y"),
-                    tagCompound.getInteger("z"),
-                    tagCompound.getInteger("dim"));
+            PowerGogglesClient client = processClient(tagCompound);
 
-            PowerGogglesClient client = new PowerGogglesClient(coords);
             clientMap.put(uuid, client);
+        }
+    }
+
+    private PowerGogglesClient processClient(NBTTagCompound tagCompound) {
+        DimensionalCoord coords = !tagCompound.hasKey("x") ? null
+            : new DimensionalCoord(
+                tagCompound.getInteger("x"),
+                tagCompound.getInteger("y"),
+                tagCompound.getInteger("z"),
+                tagCompound.getInteger("dim"));
+
+        PowerGogglesClient client = new PowerGogglesClient(coords);
+        client.setMeasurements(getMeasurementsFromTag(tagCompound));
+        return client;
+    }
+
+    private LinkedList<PowerGogglesMeasurement> getMeasurementsFromTag(NBTTagCompound tagCompound) {
+        LinkedList<PowerGogglesMeasurement> measurements = new LinkedList<>();
+
+        NBTTagList measurementsTagList = tagCompound.getTagList("measurements", nbtTagCompoundType);
+        for (Object tag : measurementsTagList.tagList) {
+
+            NBTTagCompound measurementTag = (NBTTagCompound) tag;
+
+            BigInteger measurement = new BigInteger(measurementTag.getByteArray("measurement"));
+            if (measurementTag.getBoolean("isWireless")) {
+                measurements.add(new PowerGogglesMeasurement(true, measurement));
+            } else {
+                long capacity = measurementTag.getLong("capacity");
+                measurements.add(new PowerGogglesMeasurement(false, measurement, capacity));
+            }
 
         }
+        return measurements;
     }
 
 }

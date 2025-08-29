@@ -10,6 +10,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import appeng.api.util.DimensionalCoord;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
@@ -79,7 +80,29 @@ public class PowerGogglesClient {
         tag.setInteger("y", lscLink.y);
         tag.setInteger("z", lscLink.z);
         tag.setInteger("dim", lscLink.getDimension());
+
+        NBTTagList measurementsTag = new NBTTagList();
+        for (PowerGogglesMeasurement measurement : measurements) {
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            addMeasurementToTag(tagCompound, measurement);
+
+            measurementsTag.appendTag(tagCompound);
+        }
+        tag.setTag("measurements", measurementsTag);
         return tag;
+    }
+
+    private void addMeasurementToTag(NBTTagCompound tagCompound, PowerGogglesMeasurement measurement) {
+        tagCompound.setBoolean("isWireless", measurement.isWireless());
+        tagCompound.setByteArray(
+            "measurement",
+            measurement.getMeasurement()
+                .toByteArray());
+
+        if (!measurement.isWireless()) {
+            tagCompound.setLong("capacity", measurement.getCapacity());
+        }
+
     }
 
     public void measure(EntityPlayerMP playerMP) {
@@ -94,5 +117,9 @@ public class PowerGogglesClient {
         if (measurements.size() > PowerGogglesConstants.STORED_MEASUREMENTS) {
             measurements.removeFirst();
         }
+    }
+
+    public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
+        this.measurements = measurements;
     }
 }
