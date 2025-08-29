@@ -42,6 +42,8 @@ public class MaterialBuilder {
 
     public MaterialBuilder() {}
 
+    /** @deprecated Use {@link gregtech.api.enums.MaterialBuilder#MaterialBuilder()} instead. */
+    @Deprecated
     public MaterialBuilder(int metaItemSubID, TextureSet iconSet, String defaultLocalName) {
         this.metaItemSubID = metaItemSubID;
         this.iconSet = iconSet;
