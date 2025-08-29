@@ -1,8 +1,8 @@
 package gregtech.common.powergoggles;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;
 
@@ -33,12 +33,13 @@ public class PowerGogglesUtil {
         return getPlayerGoggles(player) != null;
     }
 
-    public static MTELapotronicSuperCapacitor getLsc(EntityPlayerMP playerMP, DimensionalCoord lscLink) {
+    public static MTELapotronicSuperCapacitor getLsc(DimensionalCoord lscLink) {
         if (lscLink == null) {
             return null;
         }
 
-        WorldServer lscDim = playerMP.mcServer.worldServerForDimension(lscLink.getDimension());
+        WorldServer lscDim = MinecraftServer.getServer()
+            .worldServerForDimension(lscLink.getDimension());
         TileEntity tileEntity = lscDim.getTileEntity(lscLink.x, lscLink.y, lscLink.z);
 
         if (tileEntity == null) {

@@ -17,6 +17,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.powergoggles.PowerGogglesClient;
+import gregtech.common.powergoggles.PowerGogglesConstants;
 import gregtech.common.powergoggles.PowerGogglesUtil;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
 
@@ -24,7 +25,6 @@ public class PowerGogglesEventHandler {
 
     private static final PowerGogglesEventHandler INSTANCE = new PowerGogglesEventHandler();
 
-    private final int ticksBetweenUpdates = 100;
     private final Map<UUID, PowerGogglesClient> clients = new HashMap<>();
     private int updateTicker = 0;
 
@@ -39,7 +39,7 @@ public class PowerGogglesEventHandler {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        updateTicker = (updateTicker + 1) % ticksBetweenUpdates;
+        updateTicker = (updateTicker + 1) % PowerGogglesConstants.TICKS_BETWEEN_MEASUREMENTS;
     }
 
     @SubscribeEvent
@@ -68,6 +68,7 @@ public class PowerGogglesEventHandler {
         }
 
         PowerGogglesClient client = clients.get(uuid);
+        client.measure(player);
         client.updatePlayer(player);
     }
 

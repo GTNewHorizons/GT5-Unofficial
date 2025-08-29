@@ -3,6 +3,7 @@ package gregtech.common.powergoggles;
 import static gregtech.api.enums.GTValues.NW;
 
 import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 public class PowerGogglesClient {
 
     private DimensionalCoord lscLink;
+    private LinkedList<PowerGogglesMeasurement> measurements = new LinkedList<>();
 
     public PowerGogglesClient() {}
 
@@ -48,14 +50,19 @@ public class PowerGogglesClient {
     }
 
     public void updatePlayer(EntityPlayerMP playerMP) {
-        MTELapotronicSuperCapacitor lsc = PowerGogglesUtil.getLsc(playerMP, lscLink);
-        if (lsc == null) {
+        // Protection against calling with 0 measurements
+        if (measurements.isEmpty()) {
+            return;
+        }
+
+        PowerGogglesMeasurement lastMeasurement = measurements.getLast();
+        if (lastMeasurement.isWireless()) {
             NW.sendToPlayer(
                 new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((playerMP).getUniqueID()), false),
                 playerMP);
         } else {
             NW.sendToPlayer(
-                new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), false),
+                new GTPacketUpdatePowerGoggles(lastMeasurement.getMeasurement(), lastMeasurement.getCapacity(), false),
                 playerMP);
         }
     }
@@ -73,5 +80,19 @@ public class PowerGogglesClient {
         tag.setInteger("z", lscLink.z);
         tag.setInteger("dim", lscLink.getDimension());
         return tag;
+    }
+
+    public void measure(EntityPlayerMP playerMP) {
+        MTELapotronicSuperCapacitor lsc = PowerGogglesUtil.getLsc(lscLink);
+        if (lsc == null) {
+            measurements
+                .addLast(new PowerGogglesMeasurement(true, WirelessNetworkManager.getUserEU(playerMP.getUniqueID())));
+        } else {
+            measurements
+                .addLast(new PowerGogglesMeasurement(false, BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore()));
+        }
+        if (measurements.size() > PowerGogglesConstants.STORED_MEASUREMENTS) {
+            measurements.removeFirst();
+        }
     }
 }
