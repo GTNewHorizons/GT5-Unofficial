@@ -844,14 +844,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Shadow;
 
     // Galaxy Space 1.10 compat from Version 2.6
-    public static Materials Ledox;
-    public static Materials Quantium;
-    public static Materials Mytryl;
     public static Materials BlackPlutonium;
     public static Materials CallistoIce;
     public static Materials Duralumin;
-    public static Materials Oriharukon;
+    public static Materials Ledox;
     public static Materials MysteriousCrystal;
+    public static Materials Mytryl;
+    public static Materials Oriharukon;
+    public static Materials Quantium;
 
     public static Materials RedstoneAlloy;
     public static Materials Soularium;
