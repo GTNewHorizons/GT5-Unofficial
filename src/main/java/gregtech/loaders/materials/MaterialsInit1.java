@@ -12910,38 +12910,28 @@ public class MaterialsInit1 {
     }
 
     private static Materials loadRadoxPolymer() {
-        return new Materials(
-            979,
-            TextureSet.SET_DULL,
-            8.0F,
-            346,
-            3,
-            1 | 2 | 16,
-            133,
-            0,
-            128,
-            0,
-            "RadoxPoly",
-            "Radox Polymer",
-            0,
-            0,
-            6203,
-            0,
-            false,
-            false,
-            1,
-            1,
-            1,
-            Dyes.dyePurple,
-            0,
-            Arrays.asList(
-                new MaterialStack(Materials.Carbon, 14),
-                new MaterialStack(Materials.Osmium, 11),
-                new MaterialStack(Materials.Oxygen, 7),
-                new MaterialStack(Materials.Silver, 3),
-                new MaterialStack(Materials.CallistoIce, 1)),
-            Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HUMANUS, 2))).setHasCorrespondingGas(true)
-                .setGasTemperature(12406);
+        return new MaterialBuilder().setName("RadoxPoly")
+            .setDefaultLocalName("Radox Polymer")
+            .setMetaItemSubID(979)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x850080)
+            .setToolSpeed(8.0f)
+            .setDurability(346)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addCell()
+            .setMeltingPoint(6203)
+            .addMaterial(Materials.Carbon, 14)
+            .addMaterial(Materials.Osmium, 11)
+            .addMaterial(Materials.Oxygen, 7)
+            .addMaterial(Materials.Silver, 3)
+            .addMaterial(Materials.CallistoIce, 1)
+            .addAspect(TCAspects.HUMANUS, 2)
+            .constructMaterial()
+            .setHasCorrespondingGas(true)
+            .setGasTemperature(12406);
     }
 
     private static Materials loadNetherAir() {
