@@ -7,6 +7,7 @@ import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.GregTechAPI.sBlockCasings3;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -94,6 +95,8 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     private static final int MACHINEMODE_FURNACE = 0;
     private static final int MACHINEMODE_BLASTING = 1;
     private static final int MACHINEMODE_SMOKER = 2;
+    private static final SoundResource startSound = Railcraft.isModLoaded() ? SoundResource.RAILCRAFT_STEAM_BURST
+        : null;
 
     @Override
     public String getMachineType() {
@@ -410,6 +413,11 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     @Override
     public String getMachineModeName() {
         return translateToLocal("GT5U.GTPP_MULTI_STEAM_FURNACE.mode." + machineMode);
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return startSound;
     }
 
     // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these are bonuses.
