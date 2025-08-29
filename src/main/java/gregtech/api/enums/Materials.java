@@ -830,6 +830,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // Degree 6 Compounds
     public static Materials VibrantAlloy;
+    public static Materials VividAlloy;
 
     // Polybenzimidazole Line
     public static Materials ChromiumTrioxide;
@@ -884,7 +885,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials ShadowSteel;
     public static Materials Soularium;
     public static Materials StellarAlloy;
-    public static Materials VividAlloy;
 
     // Overpowered Materials (Draconic Evolution & above)
     public static Materials Bedrockium;
