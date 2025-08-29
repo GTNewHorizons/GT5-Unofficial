@@ -571,6 +571,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials OilMedium;
     public static Materials SuperCoolant;
     public static Materials EnrichedHolmium;
+    public static Materials TengamPurified;
+    public static Materials TengamAttuned;
+    public static Materials TengamRaw;
 
     // Unclassified 02 materials
     public static Materials Gas;
@@ -912,10 +915,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUEV;
     public static Materials SuperconductorUIV;
     public static Materials SuperconductorUMV;
-
-    public static Materials TengamPurified;
-    public static Materials TengamAttuned;
-    public static Materials TengamRaw;
 
     public static Materials DenseSteam = makeDenseSteam();
 
