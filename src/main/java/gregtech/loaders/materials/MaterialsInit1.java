@@ -5281,6 +5281,7 @@ public class MaterialsInit1 {
         Materials.DeepIron = loadDeepIron();
         Materials.Diamond = loadDiamond();
         Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
+        Materials.ElectricalSteel = loadElectricalSteel();
         Materials.Electrum = loadElectrum();
         Materials.Emerald = loadEmerald();
         Materials.Epoxid = loadEpoxid();
@@ -6032,6 +6033,31 @@ public class MaterialsInit1 {
             .setRGB(153, 167, 163)
             .setColor(Dyes.dyeLightGray)
             .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadElectricalSteel() {
+        return new MaterialBuilder().setName("ElectricalSteel")
+            .setDefaultLocalName("Electrical Steel")
+            .setMetaItemSubID(365)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xd8d8d8)
+            .setToolSpeed(6.0f)
+            .setDurability(512)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1811)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addMaterial(Materials.Coal, 1)
+            .addMaterial(Materials.Silicon, 1)
             .constructMaterial();
     }
 
@@ -12176,7 +12202,6 @@ public class MaterialsInit1 {
         Materials.CrystallineAlloy = loadCrystallineAlloy();
         Materials.CrystallinePinkSlime = loadCrystallinePinkSlime();
         Materials.DarkSteel = loadDarkSteel();
-        Materials.ElectricalSteel = loadElectricalSteel();
         Materials.EndSteel = loadEndSteel();
         Materials.Enderium = loadEnderium();
         Materials.EnergeticAlloy = loadEnergeticAlloy();
@@ -12461,31 +12486,6 @@ public class MaterialsInit1 {
             .addMaterial(Materials.ElectricalSteel, 1)
             .addMaterial(Materials.Coal, 1)
             .addMaterial(Materials.Obsidian, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadElectricalSteel() {
-        return new MaterialBuilder().setName("ElectricalSteel")
-            .setDefaultLocalName("Electrical Steel")
-            .setMetaItemSubID(365)
-            .setIconSet(TextureSet.SET_DARKSTEEL)
-            .setColor(Dyes.dyeGray)
-            .setRGB(0xd8d8d8)
-            .setToolSpeed(6.0f)
-            .setDurability(512)
-            .setToolQuality(2)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(1811)
-            .setBlastFurnaceTemp(1000)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Steel, 1)
-            .addMaterial(Materials.Coal, 1)
-            .addMaterial(Materials.Silicon, 1)
             .constructMaterial();
     }
 
