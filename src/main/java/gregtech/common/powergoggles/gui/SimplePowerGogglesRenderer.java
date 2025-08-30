@@ -280,7 +280,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private void renderBackground() {
 
-        org.lwjgl.util.Color bgColor = new org.lwjgl.util.Color(47, 20, 76, (int) (255 * 0.85));
+        int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
 
         double mainStringHeight = fontRenderer.FONT_HEIGHT * mainScale;
         double subStringHeight = fontRenderer.FONT_HEIGHT * subScale * 2;
@@ -303,7 +303,11 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             GlStateManager.DestFactor.ZERO);
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), bgColor.getAlpha());
+        tessellator.setColorRGBA(
+            Color.getRed(bgColor),
+            Color.getGreen(bgColor),
+            Color.getBlue(bgColor),
+            Color.getAlpha(bgColor));
 
         tessellator.addVertex(bgLeft, bgTop, -1);
         tessellator.addVertex(bgLeft, bgBottom, -1);
