@@ -44,6 +44,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.CustomGlyphs;
 
 public class MaterialsInit1 {
 
@@ -513,6 +514,7 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Desh")
             .setDefaultLocalName("Desh")
             .setElement(Element.De)
+            .setChemicalFormula("De")
             .setMetaItemSubID(884)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeBlack)
@@ -967,6 +969,7 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("MeteoricIron")
             .setDefaultLocalName("Meteoric Iron")
             .setElement(Element.SpFe)
+            .setChemicalFormula("SpFe")
             .setMetaItemSubID(340)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeGray)
@@ -1009,6 +1012,7 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Naquadah")
             .setDefaultLocalName("Naquadah")
             .setElement(Element.Nq)
+            .setChemicalFormula("Nq")
             .setMetaItemSubID(324)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
@@ -1139,6 +1143,7 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Oriharukon")
             .setDefaultLocalName("Oriharukon")
             .setElement(Element.Oh)
+            .setChemicalFormula("Oh")
             .setMetaItemSubID(393)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLime)
@@ -1651,6 +1656,7 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Tritanium")
             .setDefaultLocalName("Tritanium")
             .setElement(Element.Tn)
+            .setChemicalFormula("Tn")
             .setMetaItemSubID(329)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeWhite)
@@ -1834,6 +1840,8 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Plutonium241")
             .setDefaultLocalName("Plutonium 241")
             .setElement(Element.Pu_241)
+            .setChemicalFormula(
+                CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT4 + CustomGlyphs.SUPERSCRIPT1 + "Pu")
             .setMetaItemSubID(101)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLime)
@@ -1869,6 +1877,7 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Uranium235")
             .setDefaultLocalName("Uranium 235")
             .setElement(Element.U_235)
+            .setChemicalFormula(CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT3 + CustomGlyphs.SUPERSCRIPT5 + "U")
             .setMetaItemSubID(97)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeGreen)
@@ -1900,6 +1909,7 @@ public class MaterialsInit1 {
     private static Materials loadFlocculationWasteLiquid() {
         return new MaterialBuilder().setName("FlocculationWasteLiquid")
             .setDefaultLocalName("Flocculation Waste Liquid")
+            .setChemicalFormula("Al₂(OH)₃??Cl₃")
             .setMetaItemSubID(562)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -1914,6 +1924,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade1PurifiedWater() {
         return new MaterialBuilder().setName("Grade1PurifiedWater")
             .setDefaultLocalName("Filtered Water (Grade 1)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(554)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -1928,6 +1939,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade2PurifiedWater() {
         return new MaterialBuilder().setName("Grade2PurifiedWater")
             .setDefaultLocalName("Ozonated Water (Grade 2)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(555)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -1942,6 +1954,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade3PurifiedWater() {
         return new MaterialBuilder().setName("Grade3PurifiedWater")
             .setDefaultLocalName("Flocculated Water (Grade 3)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(556)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -1956,6 +1969,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade4PurifiedWater() {
         return new MaterialBuilder().setName("Grade4PurifiedWater")
             .setDefaultLocalName("pH Neutralized Water (Grade 4)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(557)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -1970,6 +1984,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade5PurifiedWater() {
         return new MaterialBuilder().setName("Grade5PurifiedWater")
             .setDefaultLocalName("Extreme-Temperature Treated Water (Grade 5)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(558)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -1984,6 +1999,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade6PurifiedWater() {
         return new MaterialBuilder().setName("Grade6PurifiedWater")
             .setDefaultLocalName("Ultraviolet Treated Electrically Neutral Water (Grade 6)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(559)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -1998,6 +2014,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade7PurifiedWater() {
         return new MaterialBuilder().setName("Grade7PurifiedWater")
             .setDefaultLocalName("Degassed Decontaminant-Free Water (Grade 7)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(560)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -2012,6 +2029,7 @@ public class MaterialsInit1 {
     private static Materials loadGrade8PurifiedWater() {
         return new MaterialBuilder().setName("Grade8PurifiedWater")
             .setDefaultLocalName("Subatomically Perfect Water (Grade 8)")
+            .setChemicalFormula("H₂O")
             .setMetaItemSubID(561)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
@@ -2048,6 +2066,7 @@ public class MaterialsInit1 {
     private static Materials loadAnyCopper() {
         return new MaterialBuilder().setName("AnyCopper")
             .setDefaultLocalName("AnyCopper")
+            .setChemicalFormula("Cu")
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2055,6 +2074,7 @@ public class MaterialsInit1 {
     private static Materials loadAnyIron() {
         return new MaterialBuilder().setName("AnyIron")
             .setDefaultLocalName("AnyIron")
+            .setChemicalFormula("Fe")
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2172,6 +2192,7 @@ public class MaterialsInit1 {
     private static Materials loadDraconium() {
         return new MaterialBuilder().setName("Draconium")
             .setDefaultLocalName("Draconium")
+            .setChemicalFormula("D")
             .setMetaItemSubID(975)
             .setIconSet(TextureSet.SET_DRACONIUM)
             .setColor(Dyes.dyePink)
@@ -2195,6 +2216,7 @@ public class MaterialsInit1 {
     private static Materials loadDraconiumAwakened() {
         return new MaterialBuilder().setName("DraconiumAwakened")
             .setDefaultLocalName("Awakened Draconium")
+            .setChemicalFormula("D*")
             .setMetaItemSubID(976)
             .setIconSet(TextureSet.SET_AWOKEN_DRACONIUM)
             .setColor(Dyes.dyeOrange)
@@ -2240,6 +2262,7 @@ public class MaterialsInit1 {
     private static Materials loadHeeEndium() {
         return new MaterialBuilder().setName("HeeEndium")
             .setDefaultLocalName("Endium")
+            .setChemicalFormula("Em")
             .setMetaItemSubID(770)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightBlue)
@@ -2305,6 +2328,15 @@ public class MaterialsInit1 {
     private static Materials loadPlatinumGroupSludge() {
         return new MaterialBuilder().setName("PlatinumGroupSludge")
             .setDefaultLocalName("Platinum Group Sludge")
+            .setChemicalFormula(
+                "(SiO₂)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "Au"
+                    + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "Pt"
+                    + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "Pd"
+                    + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "??")
             .setMetaItemSubID(241)
             .setIconSet(TextureSet.SET_POWDER)
             .setRGB(0x001e00)
@@ -2491,6 +2523,7 @@ public class MaterialsInit1 {
     private static Materials loadAdamantium() {
         return new MaterialBuilder().setName("Adamantium")
             .setDefaultLocalName("Adamantium")
+            .setChemicalFormula("Ad")
             .setMetaItemSubID(319)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightGray)
@@ -2539,6 +2572,7 @@ public class MaterialsInit1 {
     private static Materials loadAlduorite() {
         return new MaterialBuilder().setName("Alduorite")
             .setDefaultLocalName("Alduorite")
+            .setChemicalFormula("SpAl")
             .setMetaItemSubID(485)
             .setIconSet(TextureSet.SET_SHINY)
             .setRGB(0x9fb4b4)
@@ -2622,6 +2656,7 @@ public class MaterialsInit1 {
     private static Materials loadArdite() {
         return new MaterialBuilder().setName("Ardite")
             .setDefaultLocalName("Ardite")
+            .setChemicalFormula("Ai")
             .setMetaItemSubID(382)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeRed)
@@ -2686,6 +2721,7 @@ public class MaterialsInit1 {
     private static Materials loadBlizz() {
         return new MaterialBuilder().setName("Blizz")
             .setDefaultLocalName("Blizz")
+            .setChemicalFormula("❆Ma")
             .setMetaItemSubID(851)
             .setIconSet(TextureSet.SET_SHINY)
             .setRGB(0xdce9ff)
@@ -2765,6 +2801,7 @@ public class MaterialsInit1 {
     private static Materials loadCertusQuartz() {
         return new MaterialBuilder().setName("CertusQuartz")
             .setDefaultLocalName("Certus Quartz")
+            .setChemicalFormula("SiO₂")
             .setMetaItemSubID(516)
             .setIconSet(TextureSet.SET_QUARTZ)
             .setColor(Dyes.dyeLightGray)
@@ -2782,6 +2819,7 @@ public class MaterialsInit1 {
     private static Materials loadCertusQuartzCharged() {
         return new MaterialBuilder().setName("ChargedCertusQuartz")
             .setDefaultLocalName("Charged Certus Quartz")
+            .setChemicalFormula("SiO₂" + CustomGlyphs.HIGH_VOLTAGE)
             .setMetaItemSubID(517)
             .setIconSet(TextureSet.SET_QUARTZ)
             .setColor(Dyes.dyeLightGray)
@@ -2797,6 +2835,7 @@ public class MaterialsInit1 {
     private static Materials loadCeruclase() {
         return new MaterialBuilder().setName("Ceruclase")
             .setDefaultLocalName("Ceruclase")
+            .setChemicalFormula("SpAg")
             .setMetaItemSubID(952)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlue)
@@ -2921,6 +2960,7 @@ public class MaterialsInit1 {
     private static Materials loadDarkIron() {
         return new MaterialBuilder().setName("DarkIron")
             .setDefaultLocalName("Deep Dark Iron")
+            .setChemicalFormula("Sp₆Fe" + CustomGlyphs.PICKAXE)
             .setMetaItemSubID(342)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyePurple)
@@ -2963,6 +3003,7 @@ public class MaterialsInit1 {
     private static Materials loadDilithium() {
         return new MaterialBuilder().setName("Dilithium")
             .setDefaultLocalName("Dilithium")
+            .setChemicalFormula("∳Li∳Li∳")
             .setMetaItemSubID(515)
             .setIconSet(TextureSet.SET_DIAMOND)
             .setColor(Dyes.dyeWhite)
@@ -2994,6 +3035,7 @@ public class MaterialsInit1 {
     private static Materials loadDuranium() {
         return new MaterialBuilder().setName("Duranium")
             .setDefaultLocalName("Duranium")
+            .setChemicalFormula("Du")
             .setMetaItemSubID(328)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeLightGray)
@@ -3017,6 +3059,7 @@ public class MaterialsInit1 {
     private static Materials loadElectrumFlux() {
         return new MaterialBuilder().setName("ElectrumFlux")
             .setDefaultLocalName("Fluxed Electrum")
+            .setChemicalFormula("The formula is too long...")
             .setMetaItemSubID(320)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeYellow)
@@ -3103,6 +3146,7 @@ public class MaterialsInit1 {
     private static Materials loadFierySteel() {
         return new MaterialBuilder().setName("FierySteel")
             .setDefaultLocalName("Fiery Steel")
+            .setChemicalFormula(CustomGlyphs.BRIMSTONE + "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C")
             .setMetaItemSubID(346)
             .setIconSet(TextureSet.SET_FIERY)
             .setColor(Dyes.dyeRed)
@@ -3127,6 +3171,7 @@ public class MaterialsInit1 {
     private static Materials loadFirestone() {
         return new MaterialBuilder().setName("Firestone")
             .setDefaultLocalName("Firestone")
+            .setChemicalFormula("⽕")
             .setMetaItemSubID(347)
             .setIconSet(TextureSet.SET_QUARTZ)
             .setColor(Dyes.dyeRed)
@@ -3170,6 +3215,7 @@ public class MaterialsInit1 {
     private static Materials loadForce() {
         return new MaterialBuilder().setName("Force")
             .setDefaultLocalName("Force")
+            .setChemicalFormula("Fc⚙")
             .setMetaItemSubID(521)
             .setIconSet(TextureSet.SET_DIAMOND)
             .setColor(Dyes.dyeYellow)
@@ -3188,6 +3234,7 @@ public class MaterialsInit1 {
     private static Materials loadForcicium() {
         return new MaterialBuilder().setName("Forcicium")
             .setDefaultLocalName("Forcicium")
+            .setChemicalFormula("◃◁◀")
             .setMetaItemSubID(518)
             .setIconSet(TextureSet.SET_DIAMOND)
             .setColor(Dyes.dyeGreen)
@@ -3203,6 +3250,7 @@ public class MaterialsInit1 {
     private static Materials loadForcillium() {
         return new MaterialBuilder().setName("Forcillium")
             .setDefaultLocalName("Forcillium")
+            .setChemicalFormula("▶▷▹")
             .setMetaItemSubID(519)
             .setIconSet(TextureSet.SET_DIAMOND)
             .setColor(Dyes.dyeGreen)
@@ -3402,6 +3450,7 @@ public class MaterialsInit1 {
     private static Materials loadInfusedAir() {
         return new MaterialBuilder().setName("InfusedAir")
             .setDefaultLocalName("Aer")
+            .setChemicalFormula(CustomGlyphs.AIR)
             .setMetaItemSubID(540)
             .setIconSet(TextureSet.SET_SHARDS)
             .setColor(Dyes.dyeYellow)
@@ -3441,6 +3490,7 @@ public class MaterialsInit1 {
     private static Materials loadInfusedEarth() {
         return new MaterialBuilder().setName("InfusedEarth")
             .setDefaultLocalName("Terra")
+            .setChemicalFormula(CustomGlyphs.EARTH)
             .setMetaItemSubID(542)
             .setIconSet(TextureSet.SET_SHARDS)
             .setColor(Dyes.dyeGreen)
@@ -3461,6 +3511,7 @@ public class MaterialsInit1 {
     private static Materials loadInfusedEntropy() {
         return new MaterialBuilder().setName("InfusedEntropy")
             .setDefaultLocalName("Perditio")
+            .setChemicalFormula(CustomGlyphs.CHAOS)
             .setMetaItemSubID(544)
             .setIconSet(TextureSet.SET_SHARDS)
             .setColor(Dyes.dyeBlack)
@@ -3481,6 +3532,7 @@ public class MaterialsInit1 {
     private static Materials loadInfusedFire() {
         return new MaterialBuilder().setName("InfusedFire")
             .setDefaultLocalName("Ignis")
+            .setChemicalFormula(CustomGlyphs.FIRE)
             .setMetaItemSubID(541)
             .setIconSet(TextureSet.SET_SHARDS)
             .setColor(Dyes.dyeRed)
@@ -3501,6 +3553,7 @@ public class MaterialsInit1 {
     private static Materials loadInfusedGold() {
         return new MaterialBuilder().setName("InfusedGold")
             .setDefaultLocalName("Infused Gold")
+            .setChemicalFormula("AuMa*")
             .setMetaItemSubID(323)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeYellow)
@@ -3517,6 +3570,7 @@ public class MaterialsInit1 {
     private static Materials loadInfusedOrder() {
         return new MaterialBuilder().setName("InfusedOrder")
             .setDefaultLocalName("Ordo")
+            .setChemicalFormula(CustomGlyphs.ORDER)
             .setMetaItemSubID(545)
             .setIconSet(TextureSet.SET_SHARDS)
             .setColor(Dyes.dyeWhite)
@@ -3556,6 +3610,7 @@ public class MaterialsInit1 {
     private static Materials loadInfusedWater() {
         return new MaterialBuilder().setName("InfusedWater")
             .setDefaultLocalName("Aqua")
+            .setChemicalFormula(CustomGlyphs.WATER)
             .setMetaItemSubID(543)
             .setIconSet(TextureSet.SET_SHARDS)
             .setColor(Dyes.dyeBlue)
@@ -3694,6 +3749,7 @@ public class MaterialsInit1 {
     private static Materials loadMeteoricSteel() {
         return new MaterialBuilder().setName("MeteoricSteel")
             .setDefaultLocalName("Meteoric Steel")
+            .setChemicalFormula("SpFe₅" + CustomGlyphs.SUBSCRIPT0 + "C")
             .setMetaItemSubID(341)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeGray)
@@ -3770,6 +3826,7 @@ public class MaterialsInit1 {
     private static Materials loadNaquadahAlloy() {
         return new MaterialBuilder().setName("NaquadahAlloy")
             .setDefaultLocalName("Naquadah Alloy")
+            .setChemicalFormula("Nq₂KeC")
             .setMetaItemSubID(325)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
@@ -3792,6 +3849,7 @@ public class MaterialsInit1 {
     private static Materials loadNaquadahEnriched() {
         return new MaterialBuilder().setName("NaquadahEnriched")
             .setDefaultLocalName("Enriched Naquadah")
+            .setChemicalFormula("Nq+")
             .setMetaItemSubID(326)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
@@ -3815,6 +3873,7 @@ public class MaterialsInit1 {
     private static Materials loadNaquadria() {
         return new MaterialBuilder().setName("Naquadria")
             .setDefaultLocalName("Naquadria")
+            .setChemicalFormula("Nq*")
             .setMetaItemSubID(327)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeBlack)
@@ -3858,6 +3917,7 @@ public class MaterialsInit1 {
     private static Materials loadNetherQuartz() {
         return new MaterialBuilder().setName("NetherQuartz")
             .setDefaultLocalName("Nether Quartz")
+            .setChemicalFormula("SiO₂")
             .setMetaItemSubID(522)
             .setIconSet(TextureSet.SET_QUARTZ)
             .setColor(Dyes.dyeWhite)
@@ -3875,6 +3935,7 @@ public class MaterialsInit1 {
     private static Materials loadNetherStar() {
         return new MaterialBuilder().setName("NetherStar")
             .setDefaultLocalName("Nether Star")
+            .setChemicalFormula("(Nh₂Ma)₃" + CustomGlyphs.CIRCLE_CROSS + "C₆")
             .setMetaItemSubID(506)
             .setIconSet(TextureSet.SET_NETHERSTAR)
             .setColor(Dyes.dyeWhite)
@@ -3919,6 +3980,7 @@ public class MaterialsInit1 {
     private static Materials loadOrichalcum() {
         return new MaterialBuilder().setName("Orichalcum")
             .setDefaultLocalName("Orichalcum")
+            .setChemicalFormula("SpBi")
             .setMetaItemSubID(966)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0x547a38)
@@ -4016,6 +4078,7 @@ public class MaterialsInit1 {
     private static Materials loadQuartzite() {
         return new MaterialBuilder().setName("Quartzite")
             .setDefaultLocalName("Quartzite")
+            .setChemicalFormula("SiO₂")
             .setMetaItemSubID(523)
             .setIconSet(TextureSet.SET_QUARTZ)
             .setColor(Dyes.dyeWhite)
@@ -4046,6 +4109,7 @@ public class MaterialsInit1 {
     private static Materials loadRubracium() {
         return new MaterialBuilder().setName("Rubracium")
             .setDefaultLocalName("Rubracium")
+            .setChemicalFormula("SpRb")
             .setMetaItemSubID(488)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeRed)
@@ -4110,6 +4174,7 @@ public class MaterialsInit1 {
     private static Materials loadTartarite() {
         return new MaterialBuilder().setName("Tartarite")
             .setDefaultLocalName("Tartarite")
+            .setChemicalFormula("Tt")
             .setMetaItemSubID(956)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0xff763c)
@@ -4128,6 +4193,7 @@ public class MaterialsInit1 {
     private static Materials loadUUAmplifier() {
         return new MaterialBuilder().setName("UUAmplifier")
             .setDefaultLocalName("UU-Amplifier")
+            .setChemicalFormula("Accelerates the Mass Fabricator")
             .setMetaItemSubID(721)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePink)
@@ -4150,6 +4216,7 @@ public class MaterialsInit1 {
     private static Materials loadVoid() {
         return new MaterialBuilder().setName("Void")
             .setDefaultLocalName("Void")
+            .setChemicalFormula("ShFeMa₃")
             .setMetaItemSubID(970)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
@@ -4178,6 +4245,7 @@ public class MaterialsInit1 {
     private static Materials loadVulcanite() {
         return new MaterialBuilder().setName("Vulcanite")
             .setDefaultLocalName("Vulcanite")
+            .setChemicalFormula("SpCu")
             .setMetaItemSubID(489)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0xff8448)
@@ -4198,6 +4266,7 @@ public class MaterialsInit1 {
     private static Materials loadVyroxeres() {
         return new MaterialBuilder().setName("Vyroxeres")
             .setDefaultLocalName("Vyroxeres")
+            .setChemicalFormula("SpBe")
             .setMetaItemSubID(951)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0x55e001)
@@ -4424,6 +4493,7 @@ public class MaterialsInit1 {
     private static Materials loadAdvancedGlue() {
         return new MaterialBuilder().setName("AdvancedGlue")
             .setDefaultLocalName("Advanced Glue")
+            .setChemicalFormula("A chemically approved glue!")
             .setMetaItemSubID(567)
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
@@ -4629,6 +4699,7 @@ public class MaterialsInit1 {
     private static Materials loadGlue() {
         return new MaterialBuilder().setName("Glue")
             .setDefaultLocalName("Refined Glue")
+            .setChemicalFormula("No Horses were harmed in the the making of this substance")
             .setMetaItemSubID(726)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
@@ -4785,6 +4856,7 @@ public class MaterialsInit1 {
     private static Materials loadRareEarth() {
         return new MaterialBuilder().setName("RareEarth")
             .setDefaultLocalName("Rare Earth")
+            .setChemicalFormula("??????")
             .setMetaItemSubID(891)
             .setIconSet(TextureSet.SET_FINE)
             .setColor(Dyes.dyeGray)
@@ -4806,6 +4878,7 @@ public class MaterialsInit1 {
     private static Materials loadReinforced() {
         return new MaterialBuilder().setName("Reinforced")
             .setDefaultLocalName("Reinforced")
+            .setChemicalFormula("Fe₂(C(MgFeSi₂O₈)₈)")
             .setMetaItemSubID(383)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlue)
@@ -4890,6 +4963,7 @@ public class MaterialsInit1 {
     private static Materials loadUnstable() {
         return new MaterialBuilder().setName("Unstable")
             .setDefaultLocalName("Unstable")
+            .setChemicalFormula(CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C⌋")
             .setMetaItemSubID(396)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)
@@ -5055,6 +5129,7 @@ public class MaterialsInit1 {
     private static Materials loadSunnarium() {
         return new MaterialBuilder().setName("Sunnarium")
             .setDefaultLocalName("Sunnarium")
+            .setChemicalFormula("Su")
             .setMetaItemSubID(318)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeYellow)
@@ -5294,6 +5369,7 @@ public class MaterialsInit1 {
     private static Materials loadAnnealedCopper() {
         return new MaterialBuilder().setName("AnnealedCopper")
             .setDefaultLocalName("Annealed Copper")
+            .setChemicalFormula("Cu*")
             .setMetaItemSubID(345)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeOrange)
@@ -5353,6 +5429,7 @@ public class MaterialsInit1 {
     private static Materials loadAsh() {
         return new MaterialBuilder().setName("Ash")
             .setDefaultLocalName("Ashes")
+            .setChemicalFormula("??")
             .setMetaItemSubID(815)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
@@ -5782,6 +5859,7 @@ public class MaterialsInit1 {
     private static Materials loadDarkAsh() {
         return new MaterialBuilder().setName("DarkAsh")
             .setDefaultLocalName("Dark Ashes")
+            .setChemicalFormula("C" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
             .setMetaItemSubID(816)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGray)
@@ -5798,6 +5876,7 @@ public class MaterialsInit1 {
     private static Materials loadDeepIron() {
         return new MaterialBuilder().setName("DeepIron")
             .setDefaultLocalName("Deep Iron")
+            .setChemicalFormula("Sp₂Fe")
             .setMetaItemSubID(829)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
@@ -6487,6 +6566,7 @@ public class MaterialsInit1 {
     private static Materials loadPigIron() {
         return new MaterialBuilder().setName("PigIron")
             .setDefaultLocalName("Pig Iron")
+            .setChemicalFormula("¿Fe?")
             .setMetaItemSubID(307)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
@@ -7072,6 +7152,7 @@ public class MaterialsInit1 {
     private static Materials loadEnrichedHolmium() {
         return new MaterialBuilder().setName("EnrichedHolmium")
             .setDefaultLocalName("Enriched Holmium")
+            .setChemicalFormula("Nq+₄Ho₁")
             .setMetaItemSubID(582)
             .setIconSet(TextureSet.SET_METALLIC)
             .setTypes(2)
@@ -7088,6 +7169,7 @@ public class MaterialsInit1 {
     private static Materials loadTengamPurified() {
         return new MaterialBuilder().setName("PurifiedTengam")
             .setDefaultLocalName("Purified Tengam")
+            .setChemicalFormula("M")
             .setMetaItemSubID(111)
             .setIconSet(TextureSet.SET_METALLIC)
             .addDustItems()
@@ -7108,6 +7190,7 @@ public class MaterialsInit1 {
     private static Materials loadTengamAttuned() {
         return new MaterialBuilder().setName("AttunedTengam")
             .setDefaultLocalName("Attuned Tengam")
+            .setChemicalFormula(CustomGlyphs.HIGH_VOLTAGE + "M" + CustomGlyphs.MAGNET)
             .setMetaItemSubID(112)
             .setIconSet(TextureSet.SET_MAGNETIC)
             .addDustItems()
@@ -7128,6 +7211,7 @@ public class MaterialsInit1 {
     private static Materials loadTengamRaw() {
         return new MaterialBuilder().setName("RawTengam")
             .setDefaultLocalName("Raw Tengam")
+            .setChemicalFormula("M" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(110)
             .setIconSet(TextureSet.SET_ROUGH)
             .addOreItems()
@@ -7846,6 +7930,8 @@ public class MaterialsInit1 {
     private static Materials loadMetalMixture() {
         return new MaterialBuilder().setName("MetalMixture")
             .setDefaultLocalName("Metal Mixture")
+            .setChemicalFormula(
+                "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "O" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
             .setMetaItemSubID(676)
             .setIconSet(TextureSet.SET_METALLIC)
             .addDustItems()
@@ -8267,6 +8353,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedAntimony() {
         return new MaterialBuilder().setName("RoastedAntimony")
             .setDefaultLocalName("Roasted Antimony")
+            .setChemicalFormula("Sb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(547)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
@@ -8277,6 +8364,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedArsenic() {
         return new MaterialBuilder().setName("RoastedArsenic")
             .setDefaultLocalName("Roasted Arsenic")
+            .setChemicalFormula("As" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(552)
             .setIconSet(TextureSet.SET_SHINY)
             .addDustItems()
@@ -8287,6 +8375,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedCobalt() {
         return new MaterialBuilder().setName("RoastedCobalt")
             .setDefaultLocalName("Roasted Cobalt")
+            .setChemicalFormula("Co" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(551)
             .setIconSet(TextureSet.SET_METALLIC)
             .addDustItems()
@@ -8297,6 +8386,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedCopper() {
         return new MaterialBuilder().setName("RoastedCopper")
             .setDefaultLocalName("Roasted Copper")
+            .setChemicalFormula("Cu" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(546)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
@@ -8307,6 +8397,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedIron() {
         return new MaterialBuilder().setName("RoastedIron")
             .setDefaultLocalName("Roasted Iron")
+            .setChemicalFormula("Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(548)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
@@ -8318,6 +8409,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedLead() {
         return new MaterialBuilder().setName("RoastedLead")
             .setDefaultLocalName("Roasted Lead")
+            .setChemicalFormula("Pb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(553)
             .setIconSet(TextureSet.SET_SHINY)
             .addDustItems()
@@ -8328,6 +8420,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedNickel() {
         return new MaterialBuilder().setName("RoastedNickel")
             .setDefaultLocalName("Roasted Nickel")
+            .setChemicalFormula("Ni" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(549)
             .setIconSet(TextureSet.SET_METALLIC)
             .addDustItems()
@@ -8339,6 +8432,7 @@ public class MaterialsInit1 {
     private static Materials loadRoastedZinc() {
         return new MaterialBuilder().setName("RoastedZinc")
             .setDefaultLocalName("Roasted Zinc")
+            .setChemicalFormula("Zn" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
             .setMetaItemSubID(550)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
@@ -8474,6 +8568,7 @@ public class MaterialsInit1 {
     private static Materials loadSiliconSG() {
         return new MaterialBuilder().setName("SiliconSolarGrade")
             .setDefaultLocalName("Silicon Solar Grade (Poly SI)")
+            .setChemicalFormula("Si*")
             .setMetaItemSubID(856)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
@@ -8915,6 +9010,7 @@ public class MaterialsInit1 {
     private static Materials loadWood() {
         return new MaterialBuilder().setName("Wood")
             .setDefaultLocalName("Wood")
+            .setChemicalFormula("")
             .setMetaItemSubID(809)
             .setIconSet(TextureSet.SET_WOOD)
             .setColor(Dyes.dyeBrown)
@@ -8934,6 +9030,7 @@ public class MaterialsInit1 {
     private static Materials loadWroughtIron() {
         return new MaterialBuilder().setName("WroughtIron")
             .setDefaultLocalName("Wrought Iron")
+            .setChemicalFormula("Fe*")
             .setMetaItemSubID(304)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeLightGray)
@@ -9024,7 +9121,6 @@ public class MaterialsInit1 {
         Materials.CobaltBrass = loadCobaltBrass();
         Materials.Concrete = loadConcrete();
         Materials.Cryolite = loadCryolite();
-        Materials.Cryotheum = loadCryotheum();
         Materials.DamascusSteel = loadDamascusSteel();
         Materials.Diatomite = loadDiatomite();
         Materials.DilutedSulfuricAcid = loadDilutedSulfuricAcid();
@@ -9072,7 +9168,6 @@ public class MaterialsInit1 {
         Materials.QuartzSand = loadQuartzSand();
         Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
         Materials.Realgar = loadRealgar();
-        Materials.RedAlloy = loadRedAlloy();
         Materials.RedMud = loadRedMud();
         Materials.Redrock = loadRedrock();
         Materials.Redstone = loadRedstone();
@@ -9108,6 +9203,7 @@ public class MaterialsInit1 {
     private static Materials loadAluminiumHydroxide() {
         return new MaterialBuilder().setName("AluminiumHydroxide")
             .setDefaultLocalName("Aluminium Hydroxide")
+            .setChemicalFormula("Al(OH)₃")
             .setMetaItemSubID(698)
             .setIconSet(TextureSet.SET_QUARTZ)
             .setTool(64, 1, 1.0F)
@@ -9502,32 +9598,10 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadCryotheum() {
-        return new MaterialBuilder().setName("Cryotheum")
-            .setDefaultLocalName("Cryotheum")
-            .setMetaItemSubID(898)
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeLightBlue)
-            .setRGB(0x0094cb)
-            .addDustItems()
-            .setFuelType(2)
-            .setFuelPower(62)
-            .setDensityMultiplier(4)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Saltpeter, 1)
-            .addMaterial(Materials.Redstone, 1)
-            .addMaterial(Materials.Snow, 1)
-            .addMaterial(Materials.Blizz, 1)
-            .addAspect(TCAspects.PRAECANTATIO, 2)
-            .addAspect(TCAspects.ELECTRUM, 1)
-            .addAspect(TCAspects.GELUM, 1)
-            .constructMaterial()
-            .disableAutoGeneratedRecycleRecipes();
-    }
-
     private static Materials loadDamascusSteel() {
         return new MaterialBuilder().setName("DamascusSteel")
             .setDefaultLocalName("Damascus Steel")
+            .setChemicalFormula("(Fe₅" + CustomGlyphs.SUBSCRIPT0 + "C)₉Mn₄Cr₄CSiV")
             .setMetaItemSubID(335)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeGray)
@@ -9549,6 +9623,7 @@ public class MaterialsInit1 {
     private static Materials loadDiatomite() {
         return new MaterialBuilder().setName("Diatomite")
             .setDefaultLocalName("Diatomite")
+            .setChemicalFormula("(SiO₂)₈Fe₂O₃(Al₂O₃)")
             .setMetaItemSubID(948)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGray)
@@ -9854,6 +9929,7 @@ public class MaterialsInit1 {
     private static Materials loadIronMagnetic() {
         return new MaterialBuilder().setName("IronMagnetic")
             .setDefaultLocalName("Magnetic Iron")
+            .setChemicalFormula("Fe" + CustomGlyphs.MAGNET)
             .setMetaItemSubID(354)
             .setIconSet(TextureSet.SET_MAGNETIC)
             .setColor(Dyes.dyeGray)
@@ -9998,6 +10074,7 @@ public class MaterialsInit1 {
     private static Materials loadLiveRoot() {
         return new MaterialBuilder().setName("LiveRoot")
             .setDefaultLocalName("Liveroot")
+            .setChemicalFormula("(COH₃)Ma")
             .setMetaItemSubID(832)
             .setIconSet(TextureSet.SET_WOOD)
             .setColor(Dyes.dyeBrown)
@@ -10037,6 +10114,7 @@ public class MaterialsInit1 {
     private static Materials loadManyullyn() {
         return new MaterialBuilder().setName("Manyullyn")
             .setDefaultLocalName("Manyullyn")
+            .setChemicalFormula("AiCo")
             .setMetaItemSubID(386)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyePurple)
@@ -10134,6 +10212,7 @@ public class MaterialsInit1 {
     private static Materials loadNeodymiumMagnetic() {
         return new MaterialBuilder().setName("NeodymiumMagnetic")
             .setDefaultLocalName("Magnetic Neodymium")
+            .setChemicalFormula("Nd" + CustomGlyphs.MAGNET)
             .setMetaItemSubID(356)
             .setIconSet(TextureSet.SET_MAGNETIC)
             .setColor(Dyes.dyeGray)
@@ -10316,6 +10395,7 @@ public class MaterialsInit1 {
     private static Materials loadQuartzSand() {
         return new MaterialBuilder().setName("QuartzSand")
             .setDefaultLocalName("Quartz Sand")
+            .setChemicalFormula("(SiO₂)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
             .setMetaItemSubID(939)
             .setIconSet(TextureSet.SET_SAND)
             .setColor(Dyes.dyeWhite)
@@ -10355,24 +10435,6 @@ public class MaterialsInit1 {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Arsenic, 4)
             .addMaterial(Materials.Sulfur, 4)
-            .constructMaterial();
-    }
-
-    private static Materials loadRedAlloy() {
-        return new MaterialBuilder().setName("RedAlloy")
-            .setDefaultLocalName("Red Alloy")
-            .setMetaItemSubID(308)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeRed)
-            .setRGB(0xc80000)
-            .addDustItems()
-            .addMetalItems()
-            .setMeltingPoint(500)
-            .setDensityMultiplier(5)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Copper, 1)
-            .addMaterial(Materials.Redstone, 4)
-            .addAspect(TCAspects.MACHINA, 3)
             .constructMaterial();
     }
 
@@ -10446,6 +10508,7 @@ public class MaterialsInit1 {
     private static Materials loadSamariumMagnetic() {
         return new MaterialBuilder().setName("SamariumMagnetic")
             .setDefaultLocalName("Magnetic Samarium")
+            .setChemicalFormula("Sm" + CustomGlyphs.MAGNET)
             .setMetaItemSubID(399)
             .setIconSet(TextureSet.SET_MAGNETIC)
             .setColor(Dyes.dyeWhite)
@@ -10540,6 +10603,7 @@ public class MaterialsInit1 {
     private static Materials loadSteelMagnetic() {
         return new MaterialBuilder().setName("SteelMagnetic")
             .setDefaultLocalName("Magnetic Steel")
+            .setChemicalFormula("Fe₅" + CustomGlyphs.SUBSCRIPT0 + "C" + CustomGlyphs.MAGNET)
             .setMetaItemSubID(355)
             .setIconSet(TextureSet.SET_MAGNETIC)
             .setColor(Dyes.dyeGray)
@@ -10843,6 +10907,7 @@ public class MaterialsInit1 {
     private static Materials loadVinteum() {
         return new MaterialBuilder().setName("Vinteum")
             .setDefaultLocalName("Vinteum")
+            .setChemicalFormula("FeMa*")
             .setMetaItemSubID(529)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeLightBlue)
@@ -10912,6 +10977,7 @@ public class MaterialsInit1 {
     private static Materials loadWoodSealed() {
         return new MaterialBuilder().setName("WoodSealed")
             .setDefaultLocalName("Sealed Wood")
+            .setChemicalFormula("")
             .setMetaItemSubID(889)
             .setIconSet(TextureSet.SET_WOOD)
             .setColor(Dyes.dyeBrown)
@@ -10948,6 +11014,7 @@ public class MaterialsInit1 {
         Materials.Basalt = loadBasalt();
         Materials.BlueSteel = loadBlueSteel();
         Materials.BorosilicateGlass = loadBorosilicateGlass();
+        Materials.Cryotheum = loadCryotheum();
         Materials.DarkSteel = loadDarkSteel();
         Materials.EnderEye = loadEnderEye();
         Materials.Fireclay = loadFireclay();
@@ -10956,6 +11023,7 @@ public class MaterialsInit1 {
         Materials.IronWood = loadIronWood();
         Materials.Pyrotheum = loadPyrotheum();
         Materials.GraniteRed = loadGraniteRed();
+        Materials.RedAlloy = loadRedAlloy();
         Materials.RedSteel = loadRedSteel();
         Materials.RedstoneAlloy = loadRedstoneAlloy();
     }
@@ -11016,6 +11084,31 @@ public class MaterialsInit1 {
             .setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7))
             .addCentrifugeRecipe()
             .constructMaterial();
+    }
+
+    private static Materials loadCryotheum() {
+        return new MaterialBuilder().setName("Cryotheum")
+            .setDefaultLocalName("Cryotheum")
+            .setChemicalFormula(
+                "(KNO₃)(" + Materials.Redstone.mChemicalFormula + ")(H₂O)(" + Materials.Blizz.mChemicalFormula + ")")
+            .setMetaItemSubID(898)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x0094cb)
+            .addDustItems()
+            .setFuelType(2)
+            .setFuelPower(62)
+            .setDensityMultiplier(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Saltpeter, 1)
+            .addMaterial(Materials.Redstone, 1)
+            .addMaterial(Materials.Snow, 1)
+            .addMaterial(Materials.Blizz, 1)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .addAspect(TCAspects.GELUM, 1)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
     }
 
     private static Materials loadDarkSteel() {
@@ -11177,6 +11270,25 @@ public class MaterialsInit1 {
             .addMaterial(Materials.PotassiumFeldspar, 1)
             .addMaterial(Materials.Oxygen, 3)
             .addAspect(TCAspects.TUTAMEN, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedAlloy() {
+        return new MaterialBuilder().setName("RedAlloy")
+            .setDefaultLocalName("Red Alloy")
+            .setChemicalFormula("Cu(" + Materials.Redstone.mChemicalFormula + ")₄")
+            .setMetaItemSubID(308)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(500)
+            .setDensityMultiplier(5)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Redstone, 4)
+            .addAspect(TCAspects.MACHINA, 3)
             .constructMaterial();
     }
 
@@ -11882,6 +11994,7 @@ public class MaterialsInit1 {
     private static Materials loadBloodInfusedIron() {
         return new MaterialBuilder().setName("BloodInfusedIron")
             .setDefaultLocalName("Blood Infused Iron")
+            .setChemicalFormula(CustomGlyphs.BRIMSTONE + "Fe")
             .setMetaItemSubID(977)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeRed)
@@ -11900,6 +12013,7 @@ public class MaterialsInit1 {
     private static Materials loadElectrotine() {
         return new MaterialBuilder().setName("Electrotine")
             .setDefaultLocalName("Electrotine")
+            .setChemicalFormula("Rp")
             .setMetaItemSubID(812)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeCyan)
@@ -11915,6 +12029,7 @@ public class MaterialsInit1 {
     private static Materials loadEnhancedGalgadorian() {
         return new MaterialBuilder().setName("EnhancedGalgadorian")
             .setDefaultLocalName("Enhanced Galgadorian")
+            .setChemicalFormula("???Fe₂C₉Nh₃")
             .setMetaItemSubID(385)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
@@ -11934,6 +12049,7 @@ public class MaterialsInit1 {
     private static Materials loadGalgadorian() {
         return new MaterialBuilder().setName("Galgadorian")
             .setDefaultLocalName("Galgadorian")
+            .setChemicalFormula("???Fe₂C₉Nh₃")
             .setMetaItemSubID(384)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
@@ -11953,6 +12069,7 @@ public class MaterialsInit1 {
     private static Materials loadShadow() {
         return new MaterialBuilder().setName("Shadow")
             .setDefaultLocalName("Shadow Metal")
+            .setChemicalFormula("Sh₆(FeMa₃)₂")
             .setMetaItemSubID(368)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlue)
@@ -11984,6 +12101,7 @@ public class MaterialsInit1 {
     private static Materials loadBlackPlutonium() {
         return new MaterialBuilder().setName("BlackPlutonium")
             .setDefaultLocalName("Black Plutonium")
+            .setChemicalFormula("SpPu")
             .setMetaItemSubID(388)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeBlack)
@@ -12005,6 +12123,7 @@ public class MaterialsInit1 {
     private static Materials loadCallistoIce() {
         return new MaterialBuilder().setName("CallistoIce")
             .setDefaultLocalName("Callisto Ice")
+            .setChemicalFormula("SpH₂O")
             .setMetaItemSubID(389)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightBlue)
@@ -12045,6 +12164,7 @@ public class MaterialsInit1 {
     private static Materials loadLedox() {
         return new MaterialBuilder().setName("Ledox")
             .setDefaultLocalName("Ledox")
+            .setChemicalFormula("SpPb")
             .setMetaItemSubID(390)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeBlue)
@@ -12061,6 +12181,7 @@ public class MaterialsInit1 {
     private static Materials loadMysteriousCrystal() {
         return new MaterialBuilder().setName("MysteriousCrystal")
             .setDefaultLocalName("Mysterious Crystal")
+            .setChemicalFormula(CustomGlyphs.CIRCLE_STAR)
             .setMetaItemSubID(398)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeCyan)
@@ -12082,6 +12203,7 @@ public class MaterialsInit1 {
     private static Materials loadMytryl() {
         return new MaterialBuilder().setName("Mytryl")
             .setDefaultLocalName("Mytryl")
+            .setChemicalFormula("SpPt₂FeMa")
             .setMetaItemSubID(387)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeOrange)
@@ -12101,6 +12223,7 @@ public class MaterialsInit1 {
     private static Materials loadQuantium() {
         return new MaterialBuilder().setName("Quantium")
             .setDefaultLocalName("Quantium")
+            .setChemicalFormula("Qt")
             .setMetaItemSubID(391)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLime)
@@ -12166,6 +12289,7 @@ public class MaterialsInit1 {
     private static Materials loadCosmicNeutronium() {
         return new MaterialBuilder().setName("CosmicNeutronium")
             .setDefaultLocalName("Cosmic Neutronium")
+            .setChemicalFormula("SpNt")
             .setMetaItemSubID(982)
             .setIconSet(new TextureSet("cosmicneutronium", true))
             .setColor(Dyes.dyeBlack)
@@ -12191,6 +12315,7 @@ public class MaterialsInit1 {
     private static Materials loadIchorium() {
         return new MaterialBuilder().setName("Ichorium")
             .setDefaultLocalName("Ichorium")
+            .setChemicalFormula("IcMa")
             .setMetaItemSubID(978)
             .setIconSet(new TextureSet("ichorium", true))
             .setColor(Dyes.dyeOrange)
@@ -12215,6 +12340,7 @@ public class MaterialsInit1 {
     private static Materials loadInfinity() {
         return new MaterialBuilder().setName("Infinity")
             .setDefaultLocalName("Infinity")
+            .setChemicalFormula("If*")
             .setMetaItemSubID(397)
             .setIconSet(new TextureSet("infinity", true))
             .setColor(Dyes.dyeLightGray)
@@ -12256,6 +12382,7 @@ public class MaterialsInit1 {
     private static Materials loadBlueAlloy() {
         return new MaterialBuilder().setName("BlueAlloy")
             .setDefaultLocalName("Blue Alloy")
+            .setChemicalFormula("AgRp₄")
             .setMetaItemSubID(309)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightBlue)
@@ -12407,6 +12534,7 @@ public class MaterialsInit1 {
     private static Materials loadInfinityCatalyst() {
         return new MaterialBuilder().setName("InfinityCatalyst")
             .setDefaultLocalName("Infinity Catalyst")
+            .setChemicalFormula("If")
             .setMetaItemSubID(394)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightGray)
@@ -12430,6 +12558,7 @@ public class MaterialsInit1 {
     private static Materials loadTrinium() {
         return new MaterialBuilder().setName("Trinium")
             .setDefaultLocalName("Trinium")
+            .setChemicalFormula("Ke")
             .setMetaItemSubID(868)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightGray)
@@ -12600,6 +12729,7 @@ public class MaterialsInit1 {
     private static Materials loadLongasssuperconductornameforuvwire() {
         return new MaterialBuilder().setName("Longasssuperconductornameforuvwire")
             .setDefaultLocalName("Superconductor Base UV")
+            .setChemicalFormula("Nq*₄(Ir₃Os)₃EuSm")
             .setMetaItemSubID(986)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeYellow)
@@ -12624,6 +12754,7 @@ public class MaterialsInit1 {
     private static Materials loadLongasssuperconductornameforuhvwire() {
         return new MaterialBuilder().setName("Longasssuperconductornameforuhvwire")
             .setDefaultLocalName("Superconductor Base UHV")
+            .setChemicalFormula("D₆(SpNt)₇Tn₅Am₆")
             .setMetaItemSubID(985)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)
@@ -12648,6 +12779,7 @@ public class MaterialsInit1 {
     private static Materials loadSuperconductorUEVBase() {
         return new MaterialBuilder().setName("SuperconductorUEVBase")
             .setDefaultLocalName("Superconductor Base UEV")
+            .setChemicalFormula("D*₅If*₅(✦◆✦)(⚷⚙⚷Ni4Ti6)")
             .setMetaItemSubID(974)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)
@@ -12667,6 +12799,7 @@ public class MaterialsInit1 {
     private static Materials loadSuperconductorUIVBase() {
         return new MaterialBuilder().setName("SuperconductorUIVBase")
             .setDefaultLocalName("Superconductor Base UIV")
+            .setChemicalFormula("(C₁₄Os₁₁O₇Ag₃SpH₂O)₄?₁" + CustomGlyphs.SUBSCRIPT0 + "(Fs⚶)₆(⌘☯☯⌘)₅")
             .setMetaItemSubID(131)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)
@@ -12686,6 +12819,8 @@ public class MaterialsInit1 {
     private static Materials loadSuperconductorUMVBase() {
         return new MaterialBuilder().setName("SuperconductorUMVBase")
             .setDefaultLocalName("Superconductor Base UMV")
+            .setChemicalFormula(
+                "?₆Or₃(Hy⚶)₁₁(((CW)₇Ti₃)₃" + CustomGlyphs.FIRE + CustomGlyphs.EARTH + CustomGlyphs.CHAOS + ")₅۞₂")
             .setMetaItemSubID(134)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)
@@ -12876,6 +13011,7 @@ public class MaterialsInit1 {
     private static Materials loadPolyAluminiumChloride() {
         return new MaterialBuilder().setName("PolyaluminiumChloride")
             .setDefaultLocalName("Polyaluminium Chloride")
+            .setChemicalFormula("Al₂(OH)₃Cl₃")
             .setMetaItemSubID(566)
             .setIconSet(TextureSet.SET_FLUID)
             .addFluid()
@@ -13112,6 +13248,7 @@ public class MaterialsInit1 {
     private static Materials loadHellishMetal() {
         return new MaterialBuilder().setName("HellishMetal")
             .setDefaultLocalName("Hellish Metal")
+            .setChemicalFormula("RhMa")
             .setMetaItemSubID(125)
             .setIconSet(TextureSet.SET_FIERY)
             .setColor(Dyes.dyeLightGray)
@@ -13127,6 +13264,7 @@ public class MaterialsInit1 {
     private static Materials loadNetherite() {
         return new MaterialBuilder().setName("Netherite")
             .setDefaultLocalName("Netherite")
+            .setChemicalFormula("NrAuMa*")
             .setMetaItemSubID(132)
             .setIconSet(new TextureSet("netherite", true))
             .setColor(Dyes.dyeLightGray)

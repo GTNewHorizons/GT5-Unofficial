@@ -723,7 +723,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CobaltBrass;
     public static Materials Concrete;
     public static Materials Cryolite;
-    public static Materials Cryotheum;
     public static Materials DamascusSteel;
     public static Materials Diatomite;
     public static Materials DilutedSulfuricAcid;
@@ -771,7 +770,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials QuartzSand;
     public static Materials RawStyreneButadieneRubber;
     public static Materials Realgar;
-    public static Materials RedAlloy;
     public static Materials RedMud;
     public static Materials Redrock;
     public static Materials Redstone;
@@ -807,6 +805,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Basalt;
     public static Materials BlueSteel;
     public static Materials BorosilicateGlass;
+    public static Materials Cryotheum;
     public static Materials DarkSteel;
     public static Materials EnderEye;
     public static Materials Fireclay;
@@ -815,6 +814,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials IronWood;
     public static Materials Pyrotheum;
     public static Materials GraniteRed;
+    public static Materials RedAlloy;
     public static Materials RedSteel;
     public static Materials RedstoneAlloy;
 
@@ -1968,213 +1968,63 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void overrideChemicalFormulas() {
-        InfusedAir.mChemicalFormula = CustomGlyphs.AIR;
-        InfusedEarth.mChemicalFormula = CustomGlyphs.EARTH;
-        InfusedFire.mChemicalFormula = CustomGlyphs.FIRE;
-        InfusedWater.mChemicalFormula = CustomGlyphs.WATER;
-        Glue.mChemicalFormula = "No Horses were harmed in the the making of this substance";
-        AdvancedGlue.mChemicalFormula = "A chemically approved glue!";
-        UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
-        WoodSealed.mChemicalFormula = "";
-        Wood.mChemicalFormula = "";
-        HeeEndium.mChemicalFormula = "Em";
-        Alduorite.mChemicalFormula = "SpAl";
-        PlatinumGroupSludge.mChemicalFormula = "(SiO\u2082)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "Au"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "Pt"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "Pd"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "??";
-        Ceruclase.mChemicalFormula = "SpAg";
-        Orichalcum.mChemicalFormula = "SpBi";
-        Rubracium.mChemicalFormula = "SpRb";
-        Vulcanite.mChemicalFormula = "SpCu";
-        Vyroxeres.mChemicalFormula = "SpBe";
-        Force.mChemicalFormula = "Fc⚙";
-        DarkAsh.mChemicalFormula = "C" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??";
-        Ash.mChemicalFormula = "??";
-        FierySteel.mChemicalFormula = CustomGlyphs.BRIMSTONE + "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C";
-        RareEarth.mChemicalFormula = "??????";
-        WroughtIron.mChemicalFormula = "Fe*";
-        AnnealedCopper.mChemicalFormula = "Cu*";
-        PigIron.mChemicalFormula = "\u00bfFe?";
-        LiveRoot.mChemicalFormula = "(COH\u2083)Ma";
-        Vinteum.mChemicalFormula = "FeMa*";
-        Forcicium.mChemicalFormula = "\u25C3\u25C1\u25C0";
-        Forcillium.mChemicalFormula = "\u25B6\u25B7\u25B9";
-        DarkIron.mChemicalFormula = "Sp\u2086Fe" + CustomGlyphs.PICKAXE;
-        IronMagnetic.mChemicalFormula = "Fe" + CustomGlyphs.MAGNET;
-        SteelMagnetic.mChemicalFormula = "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C" + CustomGlyphs.MAGNET;
-        NeodymiumMagnetic.mChemicalFormula = "Nd" + CustomGlyphs.MAGNET;
-        SamariumMagnetic.mChemicalFormula = "Sm" + CustomGlyphs.MAGNET;
-        MetalMixture.mChemicalFormula = "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "O"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "??";
-        Void.mChemicalFormula = "ShFeMa\u2083";
-        Shadow.mChemicalFormula = "Sh\u2086(FeMa\u2083)\u2082";
-        BloodInfusedIron.mChemicalFormula = CustomGlyphs.BRIMSTONE + "Fe";
-        DamascusSteel.mChemicalFormula = "(Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C)\u2089Mn\u2084Cr\u2084CSiV";
-        Dilithium.mChemicalFormula = "\u2233Li\u2233Li\u2233";
-        NetherStar.mChemicalFormula = "(Nh\u2082Ma)\u2083" + CustomGlyphs.CIRCLE_CROSS + "C\u2086";
-        Unstable.mChemicalFormula = CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C\u230B";
-        RoastedAntimony.mChemicalFormula = "Sb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedArsenic.mChemicalFormula = "As" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedCobalt.mChemicalFormula = "Co" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedCopper.mChemicalFormula = "Cu" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedIron.mChemicalFormula = "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedLead.mChemicalFormula = "Pb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedNickel.mChemicalFormula = "Ni" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedZinc.mChemicalFormula = "Zn" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        Reinforced.mChemicalFormula = "Fe\u2082(C(MgFeSi\u2082O\u2088)\u2088)";
-        Galgadorian.mChemicalFormula = "???Fe\u2082C\u2089Nh\u2083";
-        EnhancedGalgadorian.mChemicalFormula = "???Fe\u2082C\u2089Nh\u2083";
-        QuartzSand.mChemicalFormula = "(SiO\u2082)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??";
-        Blizz.mChemicalFormula = "\u2746Ma";
-        Firestone.mChemicalFormula = "\u2f55";
-        InfusedOrder.mChemicalFormula = CustomGlyphs.ORDER;
-        InfusedEntropy.mChemicalFormula = CustomGlyphs.CHAOS;
-        MaterialsUEVplus.BlackDwarfMatter.mChemicalFormula = ">>\u2205<<";
-        MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "\u2205";
-        MysteriousCrystal.mChemicalFormula = CustomGlyphs.CIRCLE_STAR;
-        Cryotheum.mChemicalFormula = "(KNO\u2083)(" + Redstone.mChemicalFormula
-            + ")(H\u2082O)("
-            + Blizz.mChemicalFormula
-            + ")";
-        Uranium235.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT3
-            + CustomGlyphs.SUPERSCRIPT5
-            + "U";
-        Plutonium241.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT4
-            + CustomGlyphs.SUPERSCRIPT1
-            + "Pu";
-
-        Electrotine.mChemicalFormula = "Rp";
-        Trinium.mChemicalFormula = "Ke";
-        Naquadah.mChemicalFormula = "Nq";
-        NaquadahEnriched.mChemicalFormula = "Nq+";
-        Naquadria.mChemicalFormula = "Nq*";
-        NaquadahAlloy.mChemicalFormula = "Nq\u2082KeC";
-        Sunnarium.mChemicalFormula = "Su";
-        Adamantium.mChemicalFormula = "Ad";
-        InfusedGold.mChemicalFormula = "AuMa*";
-        MeteoricIron.mChemicalFormula = "SpFe";
-        MeteoricSteel.mChemicalFormula = "SpFe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C";
-        Duranium.mChemicalFormula = "Du";
-        Tritanium.mChemicalFormula = "Tn";
-        Ardite.mChemicalFormula = "Ai";
-        Manyullyn.mChemicalFormula = "AiCo";
-        Mytryl.mChemicalFormula = "SpPt\u2082FeMa";
-        BlackPlutonium.mChemicalFormula = "SpPu";
-        Ledox.mChemicalFormula = "SpPb";
-        CallistoIce.mChemicalFormula = "SpH\u2082O";
-        Quantium.mChemicalFormula = "Qt";
-        Desh.mChemicalFormula = "De";
-        Oriharukon.mChemicalFormula = "Oh";
-        Draconium.mChemicalFormula = "D";
-        DraconiumAwakened.mChemicalFormula = "D*";
-        BlueAlloy.mChemicalFormula = "AgRp\u2084";
-        RedAlloy.mChemicalFormula = "Cu(" + Redstone.mChemicalFormula + ")\u2084";
-        AnyIron.mChemicalFormula = "Fe";
-        AnyCopper.mChemicalFormula = "Cu";
-        ElectrumFlux.mChemicalFormula = "The formula is too long...";
-        DeepIron.mChemicalFormula = "Sp\u2082Fe";
-        Ichorium.mChemicalFormula = "IcMa";
-        Infinity.mChemicalFormula = "If*";
-        InfinityCatalyst.mChemicalFormula = "If";
-        CosmicNeutronium.mChemicalFormula = "SpNt";
-        Aluminiumhydroxide.mChemicalFormula = "Al\u0028OH\u0029\u2083";
-        MaterialsKevlar.LiquidCrystalKevlar.mChemicalFormula = "[-CO-C\u2086H\u2084-CO-NH-C\u2086H\u2084-NH-]n";
-        MaterialsKevlar.RhodiumChloride.mChemicalFormula = "RhCl\u2083";
-        MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C\u2086H\u2085)\u2083)\u2083";
-        MaterialsKevlar.CobaltIINitrate.mChemicalFormula = "Co(NO\u2083)\u2082";
-        MaterialsKevlar.CobaltIIHydroxide.mChemicalFormula = "Co(OH)\u2082";
-        SiliconSG.mChemicalFormula = "Si*";
-        NetherQuartz.mChemicalFormula = "SiO\u2082";
-        Quartzite.mChemicalFormula = "SiO\u2082";
-        CertusQuartz.mChemicalFormula = "SiO\u2082";
-        CertusQuartzCharged.mChemicalFormula = "SiO\u2082" + CustomGlyphs.HIGH_VOLTAGE;
+        MaterialsUEVplus.BlackDwarfMatter.mChemicalFormula = ">>∅<<";
+        MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "∅";
+        MaterialsKevlar.LiquidCrystalKevlar.mChemicalFormula = "[-CO-C₆H₄-CO-NH-C₆H₄-NH-]n";
+        MaterialsKevlar.RhodiumChloride.mChemicalFormula = "RhCl₃";
+        MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C₆H₅)₃)₃";
+        MaterialsKevlar.CobaltIINitrate.mChemicalFormula = "Co(NO₃)₂";
+        MaterialsKevlar.CobaltIIHydroxide.mChemicalFormula = "Co(OH)₂";
         MaterialsUEVplus.SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
         MaterialsUEVplus.Universium.mChemicalFormula = "A tear into the space beyond space";
-        MaterialsUEVplus.Eternity.mChemicalFormula = "En\u29BC";
-        MaterialsUEVplus.MagMatter.mChemicalFormula = "M\u238B";
+        MaterialsUEVplus.Eternity.mChemicalFormula = "En⦼";
+        MaterialsUEVplus.MagMatter.mChemicalFormula = "M⎋";
         MaterialsUEVplus.RawStarMatter.mChemicalFormula = CustomGlyphs.GALAXY;
-        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "\u21F2"
+        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "⇲"
             + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
             + CustomGlyphs.GALAXY
             + CustomGlyphs.ARROW_CORNER_NORTH_WEST
-            + "\u21F1";
-        Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
-        Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
-        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7Ni4Ti6)";
-        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
-            + CustomGlyphs.SUBSCRIPT0
-            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
-        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083"
-            + CustomGlyphs.FIRE
-            + CustomGlyphs.EARTH
-            + CustomGlyphs.CHAOS
-            + ")\u2085\u06DE\u2082";
-        Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
-        EnrichedHolmium.mChemicalFormula = "Nq+\u2084Ho\u2081";
-        Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade2PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade3PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade4PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade5PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
-        FlocculationWasteLiquid.mChemicalFormula = "Al\u2082(OH)\u2083??Cl\u2083";
-        TengamRaw.mChemicalFormula = "M" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        TengamPurified.mChemicalFormula = "M";
-        TengamAttuned.mChemicalFormula = CustomGlyphs.HIGH_VOLTAGE + "M" + CustomGlyphs.MAGNET;
+            + "⇱";
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
         MaterialsUEVplus.DimensionallyTranscendentResidue.mChemicalFormula = CustomGlyphs.SPARKLES + "-"
             + CustomGlyphs.EMPTY_SET;
-        PolyAluminiumChloride.mChemicalFormula = "Al\u2082(OH)\u2083Cl\u2083";
         MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
             + EnumChatFormatting.RESET
             + EnumChatFormatting.GRAY
             + "g"
             + EnumChatFormatting.OBFUSCATED
             + "X";
-        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
-        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081" + CustomGlyphs.SUBSCRIPT0
-            + "Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085"
+        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "〄";
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si₅O₁" + CustomGlyphs.SUBSCRIPT0
+            + "Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅"
             + CustomGlyphs.SUBSCRIPT0
-            + "C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
+            + "C)₅Og*Pr₁₅((C₁₄Os₁₁O₇Ag₃SpH₂O)₄?₁"
             + CustomGlyphs.SUBSCRIPT0
-            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
-        MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
-        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081("
-            + FierySteel.mChemicalFormula
-            + ")\u2087"
+            + "(Fs⚶)₆(⌘☯☯⌘)₅)₆〄₄";
+        MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "✢";
+        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn₁₁Or₈Rb₁₁(" + FierySteel.mChemicalFormula
+            + ")₇"
             + Firestone.mChemicalFormula
-            + "\u2081\u2083?\u2081\u2083";
-        MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
-        Tartarite.mChemicalFormula = "Tt";
+            + "₁₃?₁₃";
+        MaterialsUEVplus.Creon.mChemicalFormula = "⸎";
         MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
         // I hate this
         MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula = "("
             + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
-            + ")\u2082"
-            + "(W\u2088Nq*\u2087("
+            + ")₂"
+            + "(W₈Nq*₇("
             + Materials.Bedrockium.mChemicalFormula
-            + ")\u2084C\u2084V\u2083SpPu)\u2082"
+            + ")₄C₄V₃SpPu)₂"
             + Tartarite.mChemicalFormula
-            + "\u2082"
-            + "((CW)\u2087Ti\u2083)\u2083"
+            + "₂"
+            + "((CW)₇Ti₃)₃"
             + CustomGlyphs.FIRE
             + CustomGlyphs.EARTH
             + CustomGlyphs.CHAOS
             + "If*";
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
-        Materials.HellishMetal.mChemicalFormula = "RhMa";
-        Materials.Netherite.mChemicalFormula = "NrAuMa*";
     }
 
     private static void initSubTags() {
