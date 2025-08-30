@@ -195,7 +195,7 @@ public class MaterialsKevlar {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(208)
-            .setExtraData(1)
+            .addElectrolyzerRecipe()
             // C4H8O
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
@@ -460,7 +460,7 @@ public class MaterialsKevlar {
             .setRGB(0x414469)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(180)
-            .setExtraData(1)
+            .addElectrolyzerRecipe()
             // CH5N
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 5)
@@ -478,7 +478,7 @@ public class MaterialsKevlar {
             .setRGB(0x694469)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(156)
-            .setExtraData(1)
+            .addElectrolyzerRecipe()
             // C3H9N
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 9)
