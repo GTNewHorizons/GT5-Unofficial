@@ -1,7 +1,5 @@
 package gregtech.api.enums;
 
-import java.util.Arrays;
-
 public class MaterialsKevlar {
 
     public static Materials DiphenylmethaneDiisocyanate;
@@ -116,10 +114,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Hydrogen, 10)
             .addMaterial(Materials.Nitrogen, 2)
             .addMaterial(Materials.Oxygen, 2)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
             .constructMaterial();
     }
 
@@ -137,10 +133,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 13)
             .addMaterial(Materials.Hydrogen, 14)
             .addMaterial(Materials.Nitrogen, 2)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
             .constructMaterial();
     }
 
@@ -159,10 +153,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Hydrogen, 10)
             .addMaterial(Materials.Nitrogen, 2)
             .addMaterial(Materials.Oxygen, 2)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
             .constructMaterial();
     }
 
@@ -179,10 +171,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Oxygen, 1)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -200,10 +190,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Oxygen, 1)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -220,10 +208,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Oxygen, 4)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.METALLUM, 1)
             .constructMaterial();
     }
 
@@ -236,10 +222,8 @@ public class MaterialsKevlar {
             .setRGB(0x323232)
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(300)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.LUCRUM, 1)
             .constructMaterial();
     }
 
@@ -256,10 +240,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Oxygen, 1)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -272,10 +254,8 @@ public class MaterialsKevlar {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(473)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.MACHINA, 1)
             .constructMaterial();
     }
 
@@ -292,10 +272,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 2)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -312,10 +290,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Oxygen, 1)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -331,10 +307,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 5)
             .addMaterial(Materials.Hydrogen, 12)
             .addMaterial(Materials.Oxygen, 4)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)))
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.LUCRUM, 1)
             .constructMaterial();
     }
 
@@ -364,10 +338,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Hydrogen, 9)
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Oxygen, 1)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
             .constructMaterial();
     }
 
@@ -385,10 +357,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Chlorine, 2)
             .addMaterial(Materials.Oxygen, 2)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
@@ -423,10 +393,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Nitrogen, 2)
             .addMaterial(Materials.Oxygen, 2)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
@@ -443,10 +411,8 @@ public class MaterialsKevlar {
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Nitrogen, 2)
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
             .constructMaterial();
     }
 
