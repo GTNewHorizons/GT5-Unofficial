@@ -44,7 +44,7 @@ public class PowerGogglesEventHandler {
 
     @SubscribeEvent
     public void processPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
+        if (event.phase != TickEvent.Phase.END || event.side.isClient()) {
             return;
         }
         updateClient(event);
@@ -58,24 +58,14 @@ public class PowerGogglesEventHandler {
             return;
         }
 
-        PowerGogglesClient client = clients.get(uuid);
-
         if (updateTicker != 1) {
             return;
         }
-        if (event.side.isClient()) {
-            issueDrawTick();
-            return;
-        }
 
+        PowerGogglesClient client = clients.get(uuid);
         EntityPlayerMP playerMP = (EntityPlayerMP) player;
         client.measure(playerMP);
         client.updatePlayer(playerMP);
-    }
-
-    @SideOnly(Side.CLIENT)
-    private void issueDrawTick() {
-        PowerGogglesHudHandler.drawTick();
     }
 
     @SideOnly(Side.CLIENT)

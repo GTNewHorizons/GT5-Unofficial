@@ -67,6 +67,7 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
             PowerGogglesHudHandler.clear();
         }
         PowerGogglesHudHandler.setMeasurement(this.EU, lscCapacity);
+        PowerGogglesHudHandler.drawTick();
         PowerGogglesHudHandler.updateClient = true;
     }
 }
