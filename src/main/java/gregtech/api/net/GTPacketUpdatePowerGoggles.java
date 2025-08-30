@@ -15,24 +15,16 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
     private static final PowerGogglesHudHandler hudHandler = PowerGogglesHudHandler.getInstance();
     BigInteger EU;
     long lscCapacity;
-    boolean refresh;
 
     public GTPacketUpdatePowerGoggles() {}
 
-    public GTPacketUpdatePowerGoggles(BigInteger EU) {
+    public GTPacketUpdatePowerGoggles(BigInteger EU, long lscCapacity) {
         this.EU = EU;
-        this.refresh = false;
-        this.lscCapacity = 0;
-    }
-
-    public GTPacketUpdatePowerGoggles(BigInteger EU, long lscCapacity, boolean refresh) {
-        this(EU, refresh);
         this.lscCapacity = lscCapacity;
     }
 
-    public GTPacketUpdatePowerGoggles(BigInteger EU, boolean refresh) {
+    public GTPacketUpdatePowerGoggles(BigInteger EU) {
         this.EU = EU;
-        this.refresh = refresh;
         this.lscCapacity = 0;
     }
 
@@ -43,7 +35,6 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     @Override
     public void encode(ByteBuf buffer) {
-        buffer.writeBoolean(refresh);
         byte[] EUBytes = EU.toByteArray();
         buffer.writeInt(EUBytes.length);
         buffer.writeBytes(EUBytes);
@@ -52,7 +43,6 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buffer) {
-        boolean refresh = buffer.readBoolean();
         int length = buffer.readInt();
         byte[] eu = new byte[length];
         for (int i = 0; i < length; i++) {
@@ -60,17 +50,11 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
         }
         BigInteger EU = new BigInteger(eu);
         long lscCapacity = buffer.readLong();
-        return new GTPacketUpdatePowerGoggles(EU, lscCapacity, refresh);
+        return new GTPacketUpdatePowerGoggles(EU, lscCapacity);
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
-        if (this.refresh) {
-            hudHandler.getRenderer()
-                .clear();
-        }
-        hudHandler.getRenderer()
-            .setLegacyMeasurement(this.EU, lscCapacity);
 
         if (lscCapacity == 0) {
             hudHandler.getRenderer()
@@ -79,7 +63,5 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
             hudHandler.getRenderer()
                 .processMeasurement(new PowerGogglesMeasurement(false, this.EU, lscCapacity));
         }
-        hudHandler.getRenderer()
-            .drawTick();
     }
 }
