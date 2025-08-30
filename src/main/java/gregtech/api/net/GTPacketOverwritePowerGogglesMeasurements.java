@@ -53,10 +53,7 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
         for (int i = 0; i < measurementCount; i++) {
             boolean isWireless = buffer.readBoolean();
 
-            int byteCount = buffer.readInt();
-
-            byte[] measurementBytes = decodeMeasurement(buffer, byteCount);
-            BigInteger measurement = new BigInteger(measurementBytes);
+            BigInteger measurement = decodeMeasurement(buffer);
 
             if (isWireless) {
                 measurements.add(new PowerGogglesMeasurement(true, measurement));
@@ -69,12 +66,15 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
         return new GTPacketOverwritePowerGogglesMeasurements(measurements);
     }
 
-    private byte[] decodeMeasurement(ByteArrayDataInput buffer, int byteCount) {
+    private BigInteger decodeMeasurement(ByteArrayDataInput buffer) {
+        int byteCount = buffer.readInt();
         byte[] result = new byte[byteCount];
+
         for (int i = 0; i < byteCount; i++) {
             result[i] = buffer.readByte();
         }
-        return result;
+
+        return new BigInteger(result);
     }
 
     @Override
