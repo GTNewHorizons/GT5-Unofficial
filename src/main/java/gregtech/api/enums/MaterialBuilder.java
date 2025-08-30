@@ -337,10 +337,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    public int getLiquidTemperature() {
-        return liquidTemperature;
-    }
-
     public MaterialBuilder setLiquidTemperature(int liquidTemperature) {
         this.liquidTemperature = liquidTemperature;
         return this;
