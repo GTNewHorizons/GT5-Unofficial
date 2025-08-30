@@ -35,9 +35,15 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private int gradientRectangleHeight;
     private int gradientRectangleWidth;
+
+    private int chartWidth;
+    private int chartHeight;
+
     private int screenHeight;
+
     private int xOffset;
     private int yOffset;
+
     private double mainScale;
     private double subScale;
 
@@ -45,7 +51,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private BigInteger euDifference1h = BigInteger.ZERO;
 
     @Override
-    public void renderMainInfo(RenderGameOverlayEvent.Post event) {
+    public void render(RenderGameOverlayEvent.Post event) {
         updateRenderingProperties(event);
 
         int scaleOffsetX = xOffset - borderRadius;
@@ -65,7 +71,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         renderTimedDifferenceText();
 
         if (PowerGogglesConfigHandler.showPowerChart) {
-            renderPowerChart();
+            // renderPowerChart();
         }
         renderBackground();
 
@@ -80,6 +86,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         this.gradientRectangleHeight = PowerGogglesConfigHandler.rectangleHeight;
         this.gradientRectangleWidth = PowerGogglesConfigHandler.rectangleWidth;
 
+        this.chartWidth = PowerGogglesConfigHandler.rectangleWidth;
+        this.chartHeight = 100;
+
         ScaledResolution resolution = event.resolution;
         this.screenHeight = resolution.getScaledHeight();
 
@@ -92,8 +101,11 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private void renderGradientRectangle() {
 
-        int rectangleTop = screenHeight - yOffset - gradientRectangleHeight;
-        int rectangleBottom = screenHeight - yOffset;
+        int mainStringHeight = (int) (fontRenderer.FONT_HEIGHT * mainScale);
+        int heightAboveRectangle = mainStringHeight + gapBetweenLines + borderRadius;
+
+        int rectangleTop = screenHeight - yOffset + heightAboveRectangle;
+        int rectangleBottom = screenHeight - yOffset + heightAboveRectangle + gradientRectangleHeight;
         int rectangleLeft = xOffset;
         int rectangleRight = xOffset + gradientRectangleWidth;
 
@@ -164,9 +176,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void renderStorageText() {
-        int offsetFactor = yOffset + gradientRectangleHeight + gapBetweenLines;
-        int stringHeight = (int) (fontRenderer.FONT_HEIGHT * mainScale);
-        int stringY = screenHeight - offsetFactor - stringHeight;
+        int stringY = screenHeight - yOffset + borderRadius;
 
         BigInteger measurement = measurements.isEmpty() ? BigInteger.ZERO
             : measurements.getLast()
@@ -186,8 +196,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void renderTimedDifferenceText() {
-        int offsetFactor = yOffset - gapBetweenLines;
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * subScale);
+        int offsetFactor = yOffset - borderRadius - stringHeight - gapBetweenLines * 2 - gradientRectangleHeight;
 
         String timedDifference5m = PowerGogglesUtil.format(euDifference5m);
         int stringColor5m = getTextColor(euDifference5m);
@@ -195,7 +205,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         String timedDifference1h = PowerGogglesUtil.format(euDifference1h);
         int stringColor1h = getTextColor(euDifference1h);
 
-        int string5mY = screenHeight - offsetFactor;
+        int string5mY = screenHeight + gapBetweenLines - offsetFactor;
         int string1hY = string5mY + gapBetweenLines + stringHeight;
 
         drawScaledString(timedDifference5m, xOffset, string5mY, stringColor5m, subScale);
@@ -265,13 +275,15 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private void renderBackground() {
 
         org.lwjgl.util.Color bgColor = new org.lwjgl.util.Color(47, 20, 76, (int) (255 * 0.85));
-        int bgHeightAboveGradient = gapBetweenLines * 2 + (int) (fontRenderer.FONT_HEIGHT * mainScale)
-            + gradientRectangleHeight
-            + borderRadius;
-        int bgHeightBelowGradient = gapBetweenLines + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale) + borderRadius;
 
-        int bgTop = screenHeight - yOffset - bgHeightAboveGradient;
-        int bgBottom = screenHeight - yOffset + borderRadius + bgHeightBelowGradient;
+        double mainStringHeight = fontRenderer.FONT_HEIGHT * mainScale;
+        double subStringHeight = fontRenderer.FONT_HEIGHT * subScale * 2;
+        double gapHeight = gapBetweenLines * 4;
+
+        int bgHeight = (int) (mainStringHeight + gradientRectangleHeight + subStringHeight + gapHeight);
+
+        int bgTop = screenHeight - yOffset - borderRadius;
+        int bgBottom = screenHeight - yOffset + borderRadius + bgHeight;
         int bgLeft = xOffset - borderRadius;
         int bgRight = xOffset + gradientRectangleWidth + borderRadius;
 
@@ -296,11 +308,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GlStateManager.disableBlend();
         GlStateManager.enableTexture2D();
         GL11.glPopAttrib();
-
-    }
-
-    @Override
-    public void renderPowerChart() {
 
     }
 

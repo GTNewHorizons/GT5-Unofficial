@@ -41,9 +41,7 @@ public abstract class PowerGogglesRenderer {
 
     protected String storage = "";
 
-    public abstract void renderMainInfo(RenderGameOverlayEvent.Post event);
-
-    public abstract void renderPowerChart();
+    public abstract void render(RenderGameOverlayEvent.Post event);
 
     public abstract void drawTick();
 

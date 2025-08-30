@@ -32,11 +32,7 @@ public class PowerGogglesHudHandler {
             return;
         }
 
-        renderer.renderMainInfo(event);
-        if (PowerGogglesConfigHandler.showPowerChart) {
-            renderer.renderPowerChart();
-        }
-
+        renderer.render(event);
     }
 
     private boolean shouldDrawHud(RenderGameOverlayEvent.Post event) {
