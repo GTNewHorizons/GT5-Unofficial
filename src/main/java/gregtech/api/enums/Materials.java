@@ -988,7 +988,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     static {
-        MaterialsBotania.init();
+        MaterialsBotania.load();
     }
 
     static {

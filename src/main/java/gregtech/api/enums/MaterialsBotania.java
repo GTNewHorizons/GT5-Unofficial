@@ -19,7 +19,7 @@ public class MaterialsBotania {
     public static Materials ManaDiamond;
     public static Materials BotaniaDragonstone;
 
-    public static void init() {
+    public static void load() {
         MaterialsBotania.Manasteel = loadManasteel();
         MaterialsBotania.Terrasteel = loadTerrasteel();
         MaterialsBotania.ElvenElementium = loadElvenElementium();
