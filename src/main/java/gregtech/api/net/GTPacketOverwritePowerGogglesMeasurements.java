@@ -90,6 +90,8 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
                     measurements.stream()
                         .map(PowerGogglesMeasurement::getMeasurement)
                         .collect(Collectors.toList())));
+        hudHandler.getRenderer()
+            .setMeasurements(measurements);
         Collections.reverse(
             hudHandler.getRenderer()
                 .getLegacyMeasurements()); // TODO: REMOVE THIS IN HUD REFACTOR

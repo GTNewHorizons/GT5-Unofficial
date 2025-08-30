@@ -6,6 +6,7 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.common.powergoggles.PowerGogglesMeasurement;
 import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
 import io.netty.buffer.ByteBuf;
 
@@ -69,7 +70,15 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
                 .clear();
         }
         hudHandler.getRenderer()
-            .setMeasurement(this.EU, lscCapacity);
+            .setLegacyMeasurement(this.EU, lscCapacity);
+
+        if (lscCapacity == 0) {
+            hudHandler.getRenderer()
+                .processMeasurement(new PowerGogglesMeasurement(true, this.EU));
+        } else {
+            hudHandler.getRenderer()
+                .processMeasurement(new PowerGogglesMeasurement(false, this.EU, lscCapacity));
+        }
         hudHandler.getRenderer()
             .drawTick();
     }

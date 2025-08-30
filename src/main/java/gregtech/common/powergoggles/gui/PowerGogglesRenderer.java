@@ -3,11 +3,11 @@ package gregtech.common.powergoggles.gui;
 import java.math.BigInteger;
 import java.util.LinkedList;
 
-import gregtech.common.powergoggles.PowerGogglesMeasurement;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import gregtech.common.powergoggles.PowerGogglesConstants;
+import gregtech.common.powergoggles.PowerGogglesMeasurement;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 public abstract class PowerGogglesRenderer {
@@ -49,7 +49,9 @@ public abstract class PowerGogglesRenderer {
 
     public abstract void clear();
 
-    public abstract void setMeasurement(BigInteger eu, long lscCapacity);
+    public abstract void setLegacyMeasurement(BigInteger eu, long lscCapacity);
+
+    public abstract void processMeasurement(PowerGogglesMeasurement measurement);
 
     public LinkedList<BigInteger> getLegacyMeasurements() {
         return legacyMeasurements;
@@ -68,4 +70,9 @@ public abstract class PowerGogglesRenderer {
 
     }
 
+    public LinkedList<PowerGogglesMeasurement> getMeasurements() {
+        return measurements;
+    }
+
+    public abstract void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements);
 }
