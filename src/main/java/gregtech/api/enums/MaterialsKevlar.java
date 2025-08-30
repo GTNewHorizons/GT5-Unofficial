@@ -108,7 +108,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(796, TextureSet.SET_DULL, "4,4'-Diphenylmethane Diisocyanate")
             .setName("DiphenylmethaneDiisocyanate")
             .addDustItems()
-            .setRGB(255, 230, 50)
+            .setRGB(0xffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
             // C15H10N2O2
@@ -129,7 +129,7 @@ public class MaterialsKevlar {
             .setName("DiaminodiphenylmethanMixture")
             .addCell()
             .addFluid()
-            .setRGB(255, 243, 122)
+            .setRGB(0xfff37a)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(365)
             // C13H14N2
@@ -149,7 +149,7 @@ public class MaterialsKevlar {
             .setName("DiphenylmethaneDiisocyanateMixture")
             .addCell()
             .addFluid()
-            .setRGB(255, 230, 50)
+            .setRGB(0xffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
             // C15H10N2O2
@@ -169,7 +169,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(793, TextureSet.SET_FLUID, "Butyraldehyde").setName("Butyraldehyde")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(176)
             // C4H8O
@@ -188,7 +187,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(792, TextureSet.SET_FLUID, "Isobutyraldehyde").setName("Isobutyraldehyde")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(208)
             .setExtraData(1)
@@ -208,7 +206,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(791, TextureSet.SET_FLUID, "Nickel Tetracarbonyl").setName("NickelTetracarbonyl")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(256)
             // C4NiO4
@@ -227,7 +224,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(790, TextureSet.SET_DULL, "Polyurethane Catalyst A")
             .setName("PolyurethaneCatalystADust")
             .addDustItems()
-            .setRGB(50, 50, 50)
+            .setRGB(0x323232)
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(300)
             .setAspects(
@@ -241,7 +238,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(789, TextureSet.SET_FLUID, "Ethylene Oxide").setName("EthyleneOxide")
             .addCell()
             .addGas()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(160)
             // C2H4O
@@ -260,7 +256,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(788, TextureSet.SET_FLUID, "Silicon Oil").setName("SiliconOil")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(473)
             .setAspects(
@@ -274,7 +269,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(787, TextureSet.SET_FLUID, "Ethylene Glycol").setName("EthyleneGlycol")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(260)
             // C2H6O2
@@ -293,7 +287,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(786, TextureSet.SET_FLUID, "Acetaldehyde").setName("Acetaldehyde")
             .addCell()
             .addGas()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(150)
             // C2H4O
@@ -311,7 +304,6 @@ public class MaterialsKevlar {
     private static Materials loadPentaerythritol() {
         return new MaterialBuilder(785, TextureSet.SET_DULL, "Pentaerythritol").setName("Pentaerythritol")
             .addDustItems()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(533)
             // C5H12O4
@@ -330,7 +322,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(784, TextureSet.SET_FLUID, "Polyurethane Resin").setName("PolyurethaneResin")
             .addCell()
             .addFluid()
-            .setRGB(230, 230, 120)
+            .setRGB(0xe6e678)
             .setColor(Dyes.dyeYellow)
             .constructMaterial();
     }
@@ -339,7 +331,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(783, TextureSet.SET_FLUID, "N-Methyl-2-pyrrolidone").setName("NMethylpyrolidone")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(249)
             // C5H9NO
@@ -359,7 +350,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(782, TextureSet.SET_POWDER, "Terephthaloyl Chloride")
             .setName("TerephthaloylChloride")
             .addDustItems()
-            .setRGB(0, 255, 12)
+            .setRGB(0x00ff0c)
             .setColor(Dyes.dyeGreen)
             .setMeltingPoint(355)
             // C8H4Cl2O2
@@ -380,7 +371,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(781, TextureSet.SET_FLUID, "Acetylene").setName("Acetylene")
             .addCell()
             .addGas()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(192)
             // C2H2
@@ -392,7 +382,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(780, TextureSet.SET_FLUID, "4-Nitroaniline").setName("4Nitroaniline")
             .addCell()
             .addFluid()
-            .setRGB(255, 135, 51)
+            .setRGB(0xff8733)
             .setColor(Dyes.dyeOrange)
             .setMeltingPoint(420)
             // C6H6N2O2
@@ -411,7 +401,7 @@ public class MaterialsKevlar {
     private static Materials loadParaPhenylenediamine() {
         return new MaterialBuilder(779, TextureSet.SET_POWDER, "para-Phenylenediamine").setName("pPhenylenediamine")
             .addDustItems()
-            .setRGB(251, 236, 93)
+            .setRGB(0xfbec5d)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(293)
             // C6H6N2
@@ -430,7 +420,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(778, TextureSet.SET_FLUID, "Methylamine").setName("Methylamine")
             .addCell()
             .addGas()
-            .setRGB(65, 68, 105)
+            .setRGB(0x414469)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(180)
             .setExtraData(1)
@@ -446,7 +436,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(777, TextureSet.SET_FLUID, "Trimethylamine").setName("Trimethylamine")
             .addCell()
             .addGas()
-            .setRGB(105, 68, 105)
+            .setRGB(0x694469)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(156)
             .setExtraData(1)
@@ -462,7 +452,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(776, TextureSet.SET_FLUID, "gamma-Butyrolactone").setName("GammaButyrolactone")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 151)
+            .setRGB(0xffff97)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(229)
             // C4H6O2
@@ -476,7 +466,7 @@ public class MaterialsKevlar {
     private static Materials loadCalciumCarbide() {
         return new MaterialBuilder(775, TextureSet.SET_DULL, "Calcium Carbide").setName("CacliumCarbide")
             .addDustItems()
-            .setRGB(235, 235, 235)
+            .setRGB(0xebebeb)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(2430)
             // CaC2
@@ -489,7 +479,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(774, TextureSet.SET_FLUID, "Liquid Crystal Kevlar").setName("LiquidCrystalKevlar")
             .addCell()
             .addFluid()
-            .setRGB(240, 240, 120)
+            .setRGB(0xf0f078)
             .setColor(Dyes.dyeYellow)
             .constructMaterial();
     }
@@ -497,7 +487,7 @@ public class MaterialsKevlar {
     private static Materials loadIIButinIIVdiol() {
         return new MaterialBuilder(773, TextureSet.SET_POWDER, "2-Butin-1,4-diol").setName("2Butin14diol")
             .addDustItems()
-            .setRGB(247, 247, 180)
+            .setRGB(0xf7f7b4)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(331)
             // C4H6O2
@@ -512,7 +502,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(772, TextureSet.SET_METALLIC, "Nickel Aluminide").setName("NickelAluminide")
             .addDustItems()
             .addMetalItems()
-            .setRGB(230, 230, 230)
+            .setRGB(0xe6e6e6)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(1668)
             .setBlastFurnaceTemp(1668)
@@ -526,7 +516,7 @@ public class MaterialsKevlar {
     private static Materials loadRaneyNickelActivated() {
         return new MaterialBuilder(771, TextureSet.SET_POWDER, "Raney Nickel").setName("RaneyNickelActivated")
             .addDustItems()
-            .setRGB(230, 230, 230)
+            .setRGB(0xe6e6e6)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(1955)
             // NiAl
@@ -537,7 +527,7 @@ public class MaterialsKevlar {
     private static Materials loadBismuthIIIOxide() {
         return new MaterialBuilder(769, TextureSet.SET_POWDER, "Bismuth Oxide").setName("BismuthIIIOxide")
             .addDustItems()
-            .setRGB(50, 50, 50)
+            .setRGB(0x323232)
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(1090)
             // Bi2O3
@@ -550,7 +540,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(768, TextureSet.SET_FLUID, "Thionyl Chloride").setName("ThionylChloride")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .constructMaterial();
     }
@@ -560,7 +549,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(767, TextureSet.SET_FLUID, "Sulfur Dichloride").setName("SulfurDichloride")
             .addCell()
             .addFluid()
-            .setRGB(200, 0, 0)
+            .setRGB(0xc80000)
             .setColor(Dyes.dyeRed)
             .constructMaterial();
     }
@@ -569,7 +558,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(766, TextureSet.SET_FLUID, "Dimethyl Terephthalate").setName("DimethylTerephthalate")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(415)
             // C10H10O4
@@ -585,7 +573,7 @@ public class MaterialsKevlar {
             .addDustItems()
             .addMetalItems()
             .addGearItems()
-            .setRGB(240, 240, 120)
+            .setRGB(0xf0f078)
             .setColor(Dyes.dyeYellow)
             .constructMaterial();
     }
@@ -594,7 +582,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(764, TextureSet.SET_FLUID, "Terephthalic Acid").setName("TerephthalicAcid")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(480)
             // C9H6O6
@@ -608,7 +595,7 @@ public class MaterialsKevlar {
     private static Materials loadIIIDimethylbenzene() {
         return new MaterialBuilder(763, TextureSet.SET_FLUID, "1,3-Dimethylbenzene").addCell()
             .addFluid()
-            .setRGB(112, 146, 74)
+            .setRGB(0x70924a)
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(225)
             // C8H10
@@ -620,7 +607,7 @@ public class MaterialsKevlar {
     private static Materials loadIVDimethylbenzene() {
         return new MaterialBuilder(762, TextureSet.SET_FLUID, "1,4-Dimethylbenzene").addCell()
             .addFluid()
-            .setRGB(122, 136, 84)
+            .setRGB(0x7a8854)
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(286)
             // C8H10
@@ -632,7 +619,7 @@ public class MaterialsKevlar {
     private static Materials loadCobaltIINaphthenate() {
         return new MaterialBuilder(761, TextureSet.SET_DULL, "Cobalt II Naphthenate").setName("Cobalt(II)Naphthenate")
             .addDustItems()
-            .setRGB(143, 95, 39)
+            .setRGB(0x8f5f27)
             .setColor(Dyes.dyeBrown)
             .setMeltingPoint(413)
             // CoC22H14O4
@@ -648,7 +635,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(760, TextureSet.SET_FLUID, "Naphthenic Acid").setName("NaphthenicAcid")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 80)
             .constructMaterial();
@@ -657,7 +643,7 @@ public class MaterialsKevlar {
     private static Materials loadCobaltIIHydroxide() {
         return new MaterialBuilder(759, TextureSet.SET_POWDER, "Cobalt II Hydroxide").setName("CobaltIIHydroxide")
             .addDustItems()
-            .setRGB(229, 140, 239)
+            .setRGB(0xe58cef)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(441)
             // CoH2O2
@@ -671,7 +657,7 @@ public class MaterialsKevlar {
     private static Materials loadCobaltIIAcetate() {
         return new MaterialBuilder(758, TextureSet.SET_POWDER, "Cobalt II Acetate").setName("Cobalt(II)Acetate")
             .addDustItems()
-            .setRGB(219, 162, 229)
+            .setRGB(0xdba2e5)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(413)
             // C4H6CoO4
@@ -686,7 +672,7 @@ public class MaterialsKevlar {
     private static Materials loadCobaltIINitrate() {
         return new MaterialBuilder(757, TextureSet.SET_POWDER, "Cobalt II Nitrate").setName("Cobalt(II)Nitrate")
             .addDustItems()
-            .setRGB(170, 0, 0)
+            .setRGB(0xaa0000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
             // Co(NO3)2
@@ -701,7 +687,7 @@ public class MaterialsKevlar {
         return new MaterialBuilder(756, TextureSet.SET_POWDER, "Organorhodium Catalyst")
             .setName("OrganorhodiumCatalyst")
             .addDustItems()
-            .setRGB(170, 0, 0)
+            .setRGB(0xaa0000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
             // RhHCO(P(C6H5)3)3
@@ -712,7 +698,6 @@ public class MaterialsKevlar {
     private static Materials loadSodiumBorohydride() {
         return new MaterialBuilder(755, TextureSet.SET_POWDER, "Sodium Borohydride").setName("SodiumBorohydride")
             .addDustItems()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(673)
             // NaBH4
@@ -727,7 +712,7 @@ public class MaterialsKevlar {
         // RHCL3
         return new MaterialBuilder(754, TextureSet.SET_POWDER, "Rhodium Chloride").setName("RhodiumChloride")
             .addDustItems()
-            .setRGB(128, 0, 0)
+            .setRGB(0x800000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(723)
             .constructMaterial();
@@ -736,7 +721,6 @@ public class MaterialsKevlar {
     private static Materials loadTriphenylphosphene() {
         return new MaterialBuilder(753, TextureSet.SET_POWDER, "Triphenylphosphine").setName("Triphenylphosphene")
             .addDustItems()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(353)
             // C18H15P
@@ -751,7 +735,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(752, TextureSet.SET_FLUID, "Phosphorus Trichloride").setName("PhosphorusTrichloride")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(179)
             // PCL3
@@ -762,7 +745,7 @@ public class MaterialsKevlar {
     private static Materials loadSodiumHydride() {
         return new MaterialBuilder(751, TextureSet.SET_POWDER, "Sodium Hydride").setName("SodiumHydride")
             .addDustItems()
-            .setRGB(192, 192, 192)
+            .setRGB(0xc0c0c0)
             .setColor(Dyes.dyeLightGray)
             .setMeltingPoint(911)
             // NaH
@@ -774,7 +757,6 @@ public class MaterialsKevlar {
         return new MaterialBuilder(750, TextureSet.SET_FLUID, "Trimethyl Borate").setName("TrimethylBorate")
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(239)
             // C3H9BO3
@@ -789,7 +771,6 @@ public class MaterialsKevlar {
     private static Materials loadSodiumMethoxide() {
         return new MaterialBuilder(749, TextureSet.SET_POWDER, "Sodium Methoxide").setName("SodiumMethoxide")
             .addDustItems()
-            .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(400)
             // CH3NaO
