@@ -30,16 +30,6 @@ public class MaterialsBotania {
         MaterialsBotania.ManaDiamond = loadManaDiamond();
         MaterialsBotania.BotaniaDragonstone = loadBotaniaDragonstone();
 
-        GaiaSpirit.mChemicalFormula = "Gs";
-        Manasteel.mChemicalFormula = "Ms";
-        Livingwood.mChemicalFormula = "Lw";
-        Dreamwood.mChemicalFormula = "Dw";
-        BotaniaDragonstone.mChemicalFormula = "Dg";
-        Livingrock.mChemicalFormula = "Lv";
-        Terrasteel.mChemicalFormula = "Tr";
-        ElvenElementium.mChemicalFormula = "Ef";
-        ManaDiamond.mChemicalFormula = "Ma₄C";
-
         Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -73,6 +63,7 @@ public class MaterialsBotania {
     private static Materials loadManasteel() {
         return new MaterialBuilder().setName("Manasteel")
             .setDefaultLocalName("Manasteel")
+            .setChemicalFormula("Ms")
             .setMetaItemSubID(201)
             .setIconSet(new TextureSet("Manasteel", false))
             .setARGB(0xff46aae6)
@@ -92,6 +83,7 @@ public class MaterialsBotania {
     private static Materials loadTerrasteel() {
         return new MaterialBuilder().setName("Terrasteel")
             .setDefaultLocalName("Terrasteel")
+            .setChemicalFormula("Tr")
             .setMetaItemSubID(202)
             .setIconSet(new TextureSet("Manasteel", false))
             .setARGB(0xff46c800)
@@ -112,6 +104,7 @@ public class MaterialsBotania {
     private static Materials loadElvenElementium() {
         return new MaterialBuilder().setName("ElvenElementium")
             .setDefaultLocalName("Elven Elementium")
+            .setChemicalFormula("Ef")
             .setMetaItemSubID(203)
             .setIconSet(new TextureSet("Manasteel", false))
             .setARGB(0xffff2df0)
@@ -132,6 +125,7 @@ public class MaterialsBotania {
     private static Materials loadLivingrock() {
         return new MaterialBuilder().setName("Livingrock")
             .setDefaultLocalName("Livingrock")
+            .setChemicalFormula("Lv")
             .setMetaItemSubID(204)
             .setIconSet(new TextureSet("Livingrock", true))
             .addDustItems()
@@ -145,6 +139,7 @@ public class MaterialsBotania {
     private static Materials loadGaiaSpirit() {
         return new MaterialBuilder().setName("GaiaSpirit")
             .setDefaultLocalName("Gaia Spirit")
+            .setChemicalFormula("Gs")
             .setMetaItemSubID(205)
             .setIconSet(new TextureSet("GaiaSpirit", true))
             .setTool(850_000, 12, 32.0f)
@@ -158,6 +153,7 @@ public class MaterialsBotania {
     private static Materials loadLivingwood() {
         return new MaterialBuilder().setName("Livingwood")
             .setDefaultLocalName("Livingwood")
+            .setChemicalFormula("Lw")
             .setMetaItemSubID(206)
             .setIconSet(new TextureSet("Livingwood", true))
             .addDustItems()
@@ -172,6 +168,7 @@ public class MaterialsBotania {
     private static Materials loadDreamwood() {
         return new MaterialBuilder().setName("Dreamwood")
             .setDefaultLocalName("Dreamwood")
+            .setChemicalFormula("Dw")
             .setMetaItemSubID(207)
             .setIconSet(new TextureSet("Dreamwood", true))
             .addDustItems()
@@ -187,6 +184,7 @@ public class MaterialsBotania {
     private static Materials loadManaDiamond() {
         return new MaterialBuilder().setName("ManaDiamond")
             .setDefaultLocalName("Mana Diamond")
+            .setChemicalFormula("Ma₄C")
             .setMetaItemSubID(208)
             .setIconSet(new TextureSet("ManaDiamond", true))
             .setTool(2_560, 8, 16.0f)
@@ -198,6 +196,7 @@ public class MaterialsBotania {
     private static Materials loadBotaniaDragonstone() {
         return new MaterialBuilder().setName("BotaniaDragonstone")
             .setDefaultLocalName("Dragonstone")
+            .setChemicalFormula("Dg")
             .setMetaItemSubID(209)
             .setIconSet(new TextureSet("Dragonstone", true))
             .setTool(3_840, 12, 24.0f)
