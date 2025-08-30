@@ -8,9 +8,7 @@ import static org.lwjgl.opengl.GL11.GL_LINES;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -24,40 +22,51 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.math.BigIntegerMath;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
-import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.powergoggles.PowerGogglesConstants;
 import gregtech.common.powergoggles.PowerGogglesUtil;
 
 public class PowerGogglesHudHandler {
 
-    public static boolean updateClient = false;
+    private static final PowerGogglesHudHandler INSTANCE = new PowerGogglesHudHandler();
+
     private final static int TICKS = 1;
     private final static int SECONDS = 20 * TICKS;
     private final static int MINUTES = 60 * SECONDS;
-    static List<Text> hudList = new ArrayList<>();
+
     public static LinkedList<BigInteger> measurements = new LinkedList<>();
     static Minecraft mc = Minecraft.getMinecraft();
-    public static final int ticksBetweenMeasurements = 100;
-    static final int measurementCount5m = 5 * MINUTES / ticksBetweenMeasurements;
-    static final int measurementCount1h = 60 * MINUTES / ticksBetweenMeasurements;
+
+    public static final int ticksBetweenMeasurements = PowerGogglesConstants.TICKS_BETWEEN_MEASUREMENTS;
+    static final int measurementCount5m = PowerGogglesConstants.MEASUREMENT_COUNT_5M;
+    static final int measurementCount1h = PowerGogglesConstants.MEASUREMENT_COUNT_1H;
+
     static BigInteger currentEU = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
     public static long capacity = 0; // If this is higher than 0 there's a linked LSC
+
     static int change5mColor = PowerGogglesConfigHandler.textOkColor;
+    static String change5mString = "";
+    static BigInteger change5m = BigInteger.valueOf(0);
+    static int change5mDiff;
+
     static int change1hColor = PowerGogglesConfigHandler.textOkColor;
+    static String change1hString = "";
+    static BigInteger change1h = BigInteger.valueOf(0);
+    static int change1hDiff;
 
     static String storage = "";
-    static String change5mString = "";
-    static String change1hString = "";
-    static BigInteger change5m = BigInteger.valueOf(0);
-    static BigInteger change1h = BigInteger.valueOf(0);
-    static int change5mDiff;
-    static int change1hDiff;
+
+    private PowerGogglesHudHandler() {}
+
+    public static PowerGogglesHudHandler getInstance() {
+        return INSTANCE;
+    }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -403,7 +412,6 @@ public class PowerGogglesHudHandler {
 
     @SideOnly(Side.CLIENT)
     public static void drawTick() {
-        updateClient = false;
         if (Minecraft.getMinecraft()
             .isGamePaused()) return;
 
@@ -415,7 +423,6 @@ public class PowerGogglesHudHandler {
         change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
         change1hColor = getColor(change5mDiff);
 
-        hudList = new ArrayList<>();
         storage = toFormatted(currentEU) + " EU";
         change5mString = "5m: " + toFormatted(change5m)
             + " EU "
