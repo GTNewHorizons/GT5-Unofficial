@@ -210,16 +210,26 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder setTool(int durability, int quality, float speed) {
+        this.durability = durability;
+        this.toolQuality = quality;
+        this.toolSpeed = speed;
+        return this;
+    }
+
+    @Deprecated
     public MaterialBuilder setToolSpeed(float toolSpeed) {
         this.toolSpeed = toolSpeed;
         return this;
     }
 
+    @Deprecated
     public MaterialBuilder setDurability(int durability) {
         this.durability = durability;
         return this;
     }
 
+    @Deprecated
     public MaterialBuilder setToolQuality(int toolQuality) {
         this.toolQuality = toolQuality;
         return this;
