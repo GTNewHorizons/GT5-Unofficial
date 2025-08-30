@@ -781,7 +781,6 @@ public class MaterialsUEVplus {
         new TextureSet("hotprotohalkonite", true),
         "Hot Proto-Halkonite Steel").setName("hotprotohalkonite")
             .setTypes(1 | 2 | 64 | 128)
-            .setOreValue(2)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
             .constructMaterial()
@@ -819,7 +818,6 @@ public class MaterialsUEVplus {
         new TextureSet("hotexohalkonite", true),
         "Hot Exo-Halkonite Steel").setName("hotexohalkonite")
             .setTypes(1 | 2 | 64 | 128)
-            .setOreValue(2)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
             .constructMaterial()
