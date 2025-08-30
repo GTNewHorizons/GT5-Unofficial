@@ -23,9 +23,6 @@ public class PowerGogglesClient {
     private DimensionalCoord lscLink;
     private LinkedList<PowerGogglesMeasurement> measurements = new LinkedList<>();
 
-    private boolean requestingUpdate = false;
-    private int updateTickDelay;
-
     public PowerGogglesClient() {}
 
     public PowerGogglesClient(DimensionalCoord lscLink) {
@@ -133,24 +130,4 @@ public class PowerGogglesClient {
         NW.sendToPlayer(new GTPacketOverwritePowerGogglesMeasurements(measurements), player);
     }
 
-    public void requestUpdate(int delay) {
-        this.requestingUpdate = true;
-        this.updateTickDelay = delay;
-    }
-
-    public boolean isRequestingUpdate() {
-        return requestingUpdate;
-    }
-
-    public void setRequestingUpdate(boolean requestingUpdate) {
-        this.requestingUpdate = requestingUpdate;
-    }
-
-    public int getUpdateTickDelay() {
-        return updateTickDelay;
-    }
-
-    public void setUpdateTickDelay(int updateTickDelay) {
-        this.updateTickDelay = updateTickDelay;
-    }
 }

@@ -8,13 +8,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.common.config.Configuration;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.powergoggles.PowerGogglesClient;
@@ -61,16 +60,6 @@ public class PowerGogglesEventHandler {
 
         PowerGogglesClient client = clients.get(uuid);
 
-        if (client.isRequestingUpdate() && event.side.isServer()) {
-            int newDelay = client.getUpdateTickDelay() - 1;
-            if (newDelay == 0) {
-                client.overwriteMeasurements((EntityPlayerMP) player);
-                client.setRequestingUpdate(false);
-            }
-            client.setUpdateTickDelay(newDelay);
-
-        }
-
         if (updateTicker != 1) {
             return;
         }
@@ -100,17 +89,14 @@ public class PowerGogglesEventHandler {
         }
     }
 
-    // Annoyingly, this method is called before anything useful can be done
-    // when they join the world for the first time(At least in singleplayer)
     @SubscribeEvent
-    public void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
-        NetHandlerPlayServer handler = (NetHandlerPlayServer) event.handler;
-        EntityPlayerMP player = handler.playerEntity;
+    public void processPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        EntityPlayerMP player = (EntityPlayerMP) event.player;
         UUID uuid = player.getUniqueID();
 
         if (clients.containsKey(uuid)) {
             clients.get(player.getUniqueID())
-                .requestUpdate(5);
+                .overwriteMeasurements(player);
             return;
         }
         processNewClient(player);
