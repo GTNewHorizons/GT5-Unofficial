@@ -17,7 +17,6 @@ public class MaterialsOreAlum {
             .addCell()
             .addFluid()
             .setRGB(55, 92, 212)
-            .setLiquidTemperature(533)
             .setMeltingPoint(295)
             .setColor(Dyes.dyeBlue)
             .constructMaterial();
@@ -26,7 +25,6 @@ public class MaterialsOreAlum {
         .addCell()
         .addFluid()
         .setRGB(92, 60, 36)
-        .setLiquidTemperature(295)
         .setMeltingPoint(295)
         .setColor(Dyes.dyeGray)
         .constructMaterial();

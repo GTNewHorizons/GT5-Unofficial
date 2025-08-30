@@ -8257,7 +8257,6 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
-            .setGasTemperature(344)
             .setRGB(160, 160, 20)
             .setColor(Dyes.dyeYellow)
             .setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 3))
