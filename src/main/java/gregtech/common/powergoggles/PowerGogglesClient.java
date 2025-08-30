@@ -29,7 +29,7 @@ public class PowerGogglesClient {
         this.lscLink = lscLink;
     }
 
-    public void updateLscLink(ItemStack itemstack) {
+    public void updateLscLink(ItemStack itemstack, EntityPlayerMP player) {
         NBTTagCompound tag = itemstack.getTagCompound();
         DimensionalCoord newLink = null;
         if (tag != null && !tag.hasNoTags()) {
@@ -42,9 +42,11 @@ public class PowerGogglesClient {
 
         if (!Objects.equals(lscLink, newLink)) {
             setLscLink(newLink);
+            measurements.clear();
+            overwriteMeasurements(player);
+            // Persist data
+            PowerGogglesWorldSavedData.INSTANCE.markDirty();
         }
-        // Persist data
-        PowerGogglesWorldSavedData.INSTANCE.markDirty();
     }
 
     public void setLscLink(DimensionalCoord lscLink) {
@@ -108,6 +110,11 @@ public class PowerGogglesClient {
 
     public void measure(EntityPlayerMP playerMP) {
         MTELapotronicSuperCapacitor lsc = PowerGogglesUtil.getLsc(lscLink);
+
+        // LSC got destroyed, or something else happened to it
+        if (lsc == null && lscLink != null) {
+            return;
+        }
         if (lsc == null) {
             measurements
                 .addLast(new PowerGogglesMeasurement(true, WirelessNetworkManager.getUserEU(playerMP.getUniqueID())));

@@ -85,8 +85,12 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
             measurements.stream()
                 .map(PowerGogglesMeasurement::getMeasurement)
                 .collect(Collectors.toList()));
-        PowerGogglesHudHandler.capacity = measurements.getLast()
-            .getCapacity();
+
+        if (!measurements.isEmpty()) {
+            PowerGogglesHudHandler.capacity = measurements.getLast()
+                .getCapacity();
+        }
+
         PowerGogglesHudHandler.updateClient = true;
     }
 }
