@@ -28,13 +28,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int screenWidth = resolution.getScaledWidth();
 
         FontRenderer fontRenderer = mc.fontRenderer;
-        GL11.glPushMatrix();
-        GL11.glEnable(GL_CULL_FACE);
 
         int xOffset = PowerGogglesConfigHandler.mainOffsetX;
         int yOffset = PowerGogglesConfigHandler.mainOffsetY;
-        int w = PowerGogglesConfigHandler.rectangleWidth;
-        int h = PowerGogglesConfigHandler.rectangleHeight;
         int borderRadius = 3;
 
         double subScale = PowerGogglesConfigHandler.subTextScaling;
@@ -45,19 +41,72 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
             + borderRadius;
 
+        GL11.glPushMatrix();
+        GL11.glEnable(GL_CULL_FACE);
         GL11.glTranslated(scaleOffsetX, scaleOffsetY, 0);
         GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
         GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
 
-        drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
+        renderBackground(event);
+        renderGradientRectangle(event);
+        renderStorageText(event);
+        renderTimedDifferenceText(event);
+
+        if (PowerGogglesConfigHandler.showPowerChart) {
+            renderPowerChart();
+        }
+
         GL11.glPopMatrix();
+
     }
 
-    private void drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
-        int left = h + xOffset;
-        int up = screenHeight - h - yOffset;
-        int right = left + w;
-        int down = up + h;
+    private void renderBackground(RenderGameOverlayEvent.Post event) {
+        ScaledResolution resolution = event.resolution;
+        int screenHeight = resolution.getScaledHeight();
+
+        int xOffset = PowerGogglesConfigHandler.mainOffsetX;
+        int yOffset = PowerGogglesConfigHandler.mainOffsetY;
+        int w = PowerGogglesConfigHandler.rectangleWidth;
+        int h = PowerGogglesConfigHandler.rectangleHeight;
+        int borderRadius = 3;
+
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int gapBetweenLines = 2;
+        double mainScale = PowerGogglesConfigHandler.mainTextScaling;
+        double subScale = PowerGogglesConfigHandler.subTextScaling;
+        int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
+        int highestPoint = screenHeight - yOffset
+            - h
+            - gapBetweenLines
+            - (int) (fontRenderer.FONT_HEIGHT * mainScale)
+            - borderRadius;
+        GuiHelper.drawGradientRect(
+            -1,
+            xOffset - borderRadius,
+            highestPoint,
+            xOffset + w + borderRadius,
+            screenHeight - yOffset
+                + gapBetweenLines * 2
+                + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
+                + borderRadius,
+            bgColor,
+            bgColor);
+
+    }
+
+    private void renderGradientRectangle(RenderGameOverlayEvent.Post event) {
+        ScaledResolution resolution = event.resolution;
+        int screenHeight = resolution.getScaledHeight();
+
+        int xOffset = PowerGogglesConfigHandler.mainOffsetX;
+        int yOffset = PowerGogglesConfigHandler.mainOffsetY;
+        int w = PowerGogglesConfigHandler.rectangleWidth;
+        int h = PowerGogglesConfigHandler.rectangleHeight;
+
+        int left = w + xOffset;
+        int up = screenHeight - w - yOffset;
+        int right = left + h;
+        int down = up + w;
 
         GL11.glPushMatrix();
         GL11.glTranslated(left, down, 0);
@@ -83,29 +132,11 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         GL11.glDisable(GL_LIGHTING);
         GL11.glPopMatrix();
-
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int gapBetweenLines = 2;
-        double mainScale = PowerGogglesConfigHandler.mainTextScaling;
-        double subScale = PowerGogglesConfigHandler.subTextScaling;
-        int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
-        int highestPoint = screenHeight - yOffset
-            - w
-            - gapBetweenLines
-            - (int) (fontRenderer.FONT_HEIGHT * mainScale)
-            - borderRadius;
-        GuiHelper.drawGradientRect(
-            -1,
-            xOffset - borderRadius,
-            highestPoint,
-            xOffset + h + borderRadius,
-            screenHeight - yOffset
-                + gapBetweenLines * 2
-                + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
-                + borderRadius,
-            bgColor,
-            bgColor);
     }
+
+    private void renderStorageText(RenderGameOverlayEvent.Post event) {}
+
+    private void renderTimedDifferenceText(RenderGameOverlayEvent.Post event) {}
 
     private void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
         double scale) {
