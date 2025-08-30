@@ -347,10 +347,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    public boolean canBeCracked() {
-        return canBeCracked;
-    }
-
     public MaterialBuilder setCanBeCracked(boolean canBeCracked) {
         this.canBeCracked = canBeCracked;
         return this;
