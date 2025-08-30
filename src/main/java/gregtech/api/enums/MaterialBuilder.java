@@ -342,10 +342,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    public int getGasTemperature() {
-        return gasTemperature;
-    }
-
     public MaterialBuilder setGasTemperature(int gasTemperature) {
         this.gasTemperature = gasTemperature;
         return this;
