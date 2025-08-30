@@ -233,6 +233,8 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setRGB(int)} or {@link MaterialBuilder#setARGB(int)} instead. */
+    @Deprecated
     public MaterialBuilder setTransparent(boolean transparent) {
         this.transparent = transparent;
         return this;
@@ -250,21 +252,24 @@ public class MaterialBuilder {
         return this;
     }
 
-    @Deprecated
-    public MaterialBuilder setToolSpeed(float toolSpeed) {
-        this.toolSpeed = toolSpeed;
-        return this;
-    }
-
+    /** @deprecated Use {@link MaterialBuilder#setTool(int, int, float)} instead. */
     @Deprecated
     public MaterialBuilder setDurability(int durability) {
         this.durability = durability;
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setTool(int, int, float)} instead. */
     @Deprecated
     public MaterialBuilder setToolQuality(int toolQuality) {
         this.toolQuality = toolQuality;
+        return this;
+    }
+
+    /** @deprecated Use {@link MaterialBuilder#setTool(int, int, float)} instead. */
+    @Deprecated
+    public MaterialBuilder setToolSpeed(float toolSpeed) {
+        this.toolSpeed = toolSpeed;
         return this;
     }
 
@@ -274,12 +279,14 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setFuel(FuelType, int)} instead. */
     @Deprecated
     public MaterialBuilder setFuelType(int fuelType) {
         this.fuelType = FuelType.fromIndex(fuelType);
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setFuel(FuelType, int)} instead. */
     @Deprecated
     public MaterialBuilder setFuelPower(int fuelPower) {
         this.fuelPower = fuelPower;
@@ -311,6 +318,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** @deprecated Ore values are no longer used. Remove if encountered. */
     @Deprecated
     public MaterialBuilder setOreValue(int oreValue) {
         return this;
