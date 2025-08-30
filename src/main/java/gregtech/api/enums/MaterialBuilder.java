@@ -215,6 +215,8 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setRGB(int)} instead. */
+    @Deprecated
     public MaterialBuilder setRGB(int r, int g, int b) {
         this.transparent = false;
         this.r = r;
