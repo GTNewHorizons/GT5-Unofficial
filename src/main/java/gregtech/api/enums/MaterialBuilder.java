@@ -8,7 +8,37 @@ import gregtech.api.objects.MaterialStack;
 
 public class MaterialBuilder {
 
-    public static final int DIESEL = 0, GAS = 1, THERMAL = 2, SEMIFLUID = 3, PLASMA = 4, MAGIC = 5;
+    public enum FuelType {
+
+        Diesel(0),
+        Gas(1),
+        Thermal(2),
+        SemiFluid(3),
+        Plasma(4),
+        Magic(5);
+
+        final private int index;
+
+        FuelType(int index) {
+            this.index = index;
+        }
+
+        public static FuelType fromIndex(int index) {
+            return switch (index) {
+                case 0 -> Diesel;
+                case 1 -> Gas;
+                case 2 -> Thermal;
+                case 3 -> SemiFluid;
+                case 4 -> Plasma;
+                case 5 -> Magic;
+                default -> throw new IllegalStateException("Invalid FuelType: " + index);
+            };
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
 
     private int metaItemSubID = -1;
     private TextureSet iconSet = TextureSet.SET_NONE;
@@ -19,7 +49,7 @@ public class MaterialBuilder {
     private int r = 255, g = 255, b = 255, a = 0;
     private String name;
     private String defaultLocalName;
-    private int fuelType = 0;
+    private FuelType fuelType = FuelType.Diesel;
     private int fuelPower = 0;
     private int meltingPoint = 0;
     private int blastFurnaceTemp = 0;
@@ -41,7 +71,7 @@ public class MaterialBuilder {
 
     public MaterialBuilder() {}
 
-    /** @deprecated Use {@link gregtech.api.enums.MaterialBuilder#MaterialBuilder()} instead. */
+    /** @deprecated Use {@link MaterialBuilder#MaterialBuilder()} instead. */
     @Deprecated
     public MaterialBuilder(int metaItemSubID, TextureSet iconSet, String defaultLocalName) {
         this.metaItemSubID = metaItemSubID;
@@ -65,7 +95,7 @@ public class MaterialBuilder {
             a,
             name,
             defaultLocalName,
-            fuelType,
+            fuelType.getIndex(),
             fuelPower,
             meltingPoint,
             blastFurnaceTemp,
@@ -235,11 +265,19 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setFuelType(int fuelType) {
+    public MaterialBuilder setFuel(FuelType fuelType, int fuelPower) {
         this.fuelType = fuelType;
+        this.fuelPower = fuelPower;
         return this;
     }
 
+    @Deprecated
+    public MaterialBuilder setFuelType(int fuelType) {
+        this.fuelType = FuelType.fromIndex(fuelType);
+        return this;
+    }
+
+    @Deprecated
     public MaterialBuilder setFuelPower(int fuelPower) {
         this.fuelPower = fuelPower;
         return this;

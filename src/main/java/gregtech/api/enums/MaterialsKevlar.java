@@ -471,8 +471,7 @@ public class MaterialsKevlar {
         .addFluid()
         .setRGB(255, 255, 255)
         .setColor(Dyes.dyeWhite)
-        .setFuelType(MaterialBuilder.SEMIFLUID)
-        .setFuelPower(80)
+        .setFuel(MaterialBuilder.FuelType.SemiFluid, 80)
         .constructMaterial();
     public static Materials CobaltIIHydroxide = new MaterialBuilder(759, TextureSet.SET_POWDER, "Cobalt II Hydroxide")
         .setName("CobaltIIHydroxide")
