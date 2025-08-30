@@ -477,37 +477,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     @Override
-    public void drawTick() {
-
-    }
-
-    @Override
-    public void clear() {
-        legacyMeasurements.clear();
-        currentEU = BigInteger.valueOf(0);
-        measurement = BigInteger.valueOf(0);
-        highest = BigInteger.valueOf(0);
-        capacity = 0;
-        change5mDiff = 0;
-        change1hDiff = 0;
-    }
-
-    @Override
-    public void setLegacyMeasurement(BigInteger newEU, long lscCapacity) {
-        capacity = lscCapacity;
-        setMeasurement(newEU);
-    }
-
-    public void setMeasurement(BigInteger newEU) {
-        measurement = newEU;
-        if (highest.compareTo(measurement) < 0) highest = measurement;
-        currentEU = measurement;
-        legacyMeasurements.addFirst(measurement);
-        if (legacyMeasurements.size() > measurementCount1h) legacyMeasurements.removeLast();
-
-    }
-
-    @Override
     public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
         this.measurements = measurements;
         onNewMeasurement();
