@@ -65,9 +65,12 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
     @Override
     public void process(IBlockAccess aWorld) {
         if (this.refresh) {
-            hudHandler.clear();
+            hudHandler.getRenderer()
+                .clear();
         }
-        hudHandler.setMeasurement(this.EU, lscCapacity);
-        hudHandler.drawTick();
+        hudHandler.getRenderer()
+            .setMeasurement(this.EU, lscCapacity);
+        hudHandler.getRenderer()
+            .drawTick();
     }
 }
