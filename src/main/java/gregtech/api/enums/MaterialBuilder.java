@@ -39,6 +39,7 @@ public class MaterialBuilder {
     private int liquidTemperature = 300;
     private int gasTemperature = 300;
     private Element element;
+    private String chemicalFormula = "?";
 
     public MaterialBuilder() {}
 
@@ -78,8 +79,9 @@ public class MaterialBuilder {
             densityDivider,
             color,
             extraData,
-            materialList,
             element,
+            chemicalFormula,
+            materialList,
             aspects).setHasCorrespondingFluid(hasCorrespondingFluid)
                 .setHasCorrespondingGas(hasCorrespondingGas)
                 .setCanBeCracked(canBeCracked);
@@ -315,13 +317,18 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
-        this.aspects = aspects;
+    public MaterialBuilder setElement(Element element) {
+        this.element = element;
         return this;
     }
 
-    public MaterialBuilder setElement(Element element) {
-        this.element = element;
+    public MaterialBuilder setChemicalFormula(String chemicalFormula) {
+        this.chemicalFormula = chemicalFormula;
+        return this;
+    }
+
+    public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
+        this.aspects = aspects;
         return this;
     }
 

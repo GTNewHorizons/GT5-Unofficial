@@ -1433,8 +1433,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
         boolean aAutoGenerateBlastFurnaceRecipes, boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent,
-        int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList,
-        Element aElement, List<TCAspects.TC_AspectStack> aAspects) {
+        int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, Element aElement,
+        String chemicalFormula, List<MaterialStack> aMaterialList, List<TCAspects.TC_AspectStack> aAspects) {
         this(
             aMetaItemSubID,
             aIconSet,
@@ -1472,6 +1472,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 mChemicalFormula = aElement.toString();
                 mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
             }
+        } else {
+            mChemicalFormula = chemicalFormula;
         }
     }
 
