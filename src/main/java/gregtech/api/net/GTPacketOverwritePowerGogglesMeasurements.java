@@ -83,15 +83,17 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
     public void process(IBlockAccess world) {
 
         hudHandler.clear();
-        hudHandler.measurements = new LinkedList<>(
-            measurements.stream()
-                .map(PowerGogglesMeasurement::getMeasurement)
-                .collect(Collectors.toList()));
-        Collections.reverse(hudHandler.measurements); // TODO: REMOVE THIS IN HUD REFACTOR
+        hudHandler.setMeasurements(
+            new LinkedList<>(
+                measurements.stream()
+                    .map(PowerGogglesMeasurement::getMeasurement)
+                    .collect(Collectors.toList())));
+        Collections.reverse(hudHandler.getMeasurements()); // TODO: REMOVE THIS IN HUD REFACTOR
 
         if (!measurements.isEmpty()) {
-            hudHandler.capacity = measurements.getLast()
-                .getCapacity();
+            hudHandler.setCapacity(
+                measurements.getLast()
+                    .getCapacity());
         }
     }
 }
