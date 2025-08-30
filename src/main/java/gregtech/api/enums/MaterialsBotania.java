@@ -75,7 +75,10 @@ public class MaterialsBotania {
     }
 
     private static Materials loadManasteel() {
-        return new MaterialBuilder(201, new TextureSet("Manasteel", false), "Manasteel").setName("Manasteel")
+        return new MaterialBuilder().setName("Manasteel")
+            .setDefaultLocalName("Manasteel")
+            .setMetaItemSubID(201)
+            .setIconSet(new TextureSet("Manasteel", false))
             .setRGBA(70, 170, 230, 255)
             .addDustItems()
             .addMetalItems()
@@ -93,7 +96,10 @@ public class MaterialsBotania {
     }
 
     private static Materials loadTerrasteel() {
-        return new MaterialBuilder(202, new TextureSet("Manasteel", false), "Terrasteel").setName("Terrasteel")
+        return new MaterialBuilder().setName("Terrasteel")
+            .setDefaultLocalName("Terrasteel")
+            .setMetaItemSubID(202)
+            .setIconSet(new TextureSet("Manasteel", false))
             .setRGBA(70, 200, 0, 255)
             .addDustItems()
             .addMetalItems()
@@ -114,8 +120,10 @@ public class MaterialsBotania {
     }
 
     private static Materials loadElvenElementium() {
-        return new MaterialBuilder(203, new TextureSet("Manasteel", false), "Elven Elementium")
-            .setName("ElvenElementium")
+        return new MaterialBuilder().setName("ElvenElementium")
+            .setDefaultLocalName("Elven Elementium")
+            .setMetaItemSubID(203)
+            .setIconSet(new TextureSet("Manasteel", false))
             .setRGBA(255, 45, 240, 255)
             .addDustItems()
             .addMetalItems()
@@ -136,7 +144,10 @@ public class MaterialsBotania {
     }
 
     private static Materials loadLivingrock() {
-        return new MaterialBuilder(204, new TextureSet("Livingrock", true), "Livingrock").setName("Livingrock")
+        return new MaterialBuilder().setName("Livingrock")
+            .setDefaultLocalName("Livingrock")
+            .setMetaItemSubID(204)
+            .setIconSet(new TextureSet("Livingrock", true))
             .addDustItems()
             .addToolHeadItems()
             .addGearItems()
@@ -164,7 +175,10 @@ public class MaterialsBotania {
     }
 
     private static Materials loadLivingwood() {
-        return new MaterialBuilder(206, new TextureSet("Livingwood", true), "Livingwood").setName("Livingwood")
+        return new MaterialBuilder().setName("Livingwood")
+            .setDefaultLocalName("Livingwood")
+            .setMetaItemSubID(206)
+            .setIconSet(new TextureSet("Livingwood", true))
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -180,7 +194,10 @@ public class MaterialsBotania {
     }
 
     private static Materials loadDreamwood() {
-        return new MaterialBuilder(207, new TextureSet("Dreamwood", true), "Dreamwood").setName("Dreamwood")
+        return new MaterialBuilder().setName("Dreamwood")
+            .setDefaultLocalName("Dreamwood")
+            .setMetaItemSubID(207)
+            .setIconSet(new TextureSet("Dreamwood", true))
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
