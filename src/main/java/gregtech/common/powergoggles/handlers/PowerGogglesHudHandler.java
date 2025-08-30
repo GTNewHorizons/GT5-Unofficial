@@ -70,11 +70,11 @@ public class PowerGogglesHudHandler {
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void drawHUD(RenderGameOverlayEvent.Post event) {
-        if (event.type != RenderGameOverlayEvent.ElementType.ALL || mc.gameSettings.showDebugInfo
-            || (PowerGogglesConfigHandler.hideWhenChatOpen && mc.currentScreen instanceof GuiChat)) return;
+    public void drawHud(RenderGameOverlayEvent.Post event) {
+        if (!shouldDrawHud(event)) {
+            return;
+        }
 
-        if (!PowerGogglesUtil.isPlayerWearingGoggles(mc.thePlayer)) return;
         ScaledResolution resolution = event.resolution;
         int screenHeight = resolution.getScaledHeight();
         int screenWidth = resolution.getScaledWidth();
@@ -114,6 +114,22 @@ public class PowerGogglesHudHandler {
                 borderRadius);
         }
         GL11.glPopMatrix();
+    }
+
+    private boolean shouldDrawHud(RenderGameOverlayEvent.Post event) {
+
+        if (event.type != RenderGameOverlayEvent.ElementType.ALL) {
+            return false;
+        }
+        if (mc.gameSettings.showDebugInfo) {
+            return false;
+        }
+        if (PowerGogglesConfigHandler.hideWhenChatOpen && mc.currentScreen instanceof GuiChat) {
+            return false;
+        }
+
+        return PowerGogglesUtil.isPlayerWearingGoggles(mc.thePlayer);
+
     }
 
     private int drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
