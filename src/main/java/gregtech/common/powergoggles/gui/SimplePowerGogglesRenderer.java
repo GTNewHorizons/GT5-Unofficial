@@ -1,5 +1,6 @@
 package gregtech.common.powergoggles.gui;
 
+import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 
@@ -10,10 +11,12 @@ import java.math.RoundingMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.math.Color;
 
@@ -74,23 +77,48 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int gapBetweenLines = 2;
         double mainScale = PowerGogglesConfigHandler.mainTextScaling;
         double subScale = PowerGogglesConfigHandler.subTextScaling;
-        int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
+
+        org.lwjgl.util.Color bgColor = new org.lwjgl.util.Color(47, 20, 76, (int) (255 * 0.33));
+        int backgroundHeight = h + gapBetweenLines * 2 + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale) + borderRadius;
+
         int highestPoint = screenHeight - yOffset
             - h
             - gapBetweenLines
             - (int) (fontRenderer.FONT_HEIGHT * mainScale)
             - borderRadius;
-        GuiHelper.drawGradientRect(
-            -1,
-            xOffset - borderRadius,
-            highestPoint,
-            xOffset + w + borderRadius,
-            screenHeight - yOffset
-                + gapBetweenLines * 2
-                + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
-                + borderRadius,
-            bgColor,
-            bgColor);
+
+        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(
+            GlStateManager.SourceFactor.SRC_ALPHA,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), bgColor.getAlpha());
+
+        tessellator.addVertex(xOffset - borderRadius, screenHeight - yOffset - backgroundHeight, -1);
+        tessellator.addVertex(xOffset - borderRadius, screenHeight - yOffset + borderRadius, -1);
+        tessellator.addVertex(xOffset + w + borderRadius, screenHeight - yOffset + borderRadius, -1);
+        tessellator.addVertex(xOffset + w + borderRadius, screenHeight - yOffset - backgroundHeight, -1);
+
+        tessellator.draw();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GL11.glPopAttrib();
+        // GuiHelper.drawGradientRect(
+        // -1,
+        // xOffset - borderRadius,
+        // highestPoint,
+        // xOffset + w + borderRadius,
+        // screenHeight - yOffset
+        // + gapBetweenLines * 2
+        // + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
+        // + borderRadius,
+        // bgColor,
+        // bgColor);
 
     }
 
