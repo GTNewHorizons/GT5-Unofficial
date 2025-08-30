@@ -25,6 +25,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.powergoggles.PowerGogglesMeasurement;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
@@ -138,8 +139,8 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                     toFormatted(
                         change5m.divide(
                             legacyMeasurements.isEmpty() ? BigInteger.ONE
-                                : BigInteger
-                                    .valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                                : BigInteger.valueOf(
+                                    Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                 : "");
         change1hString = "1h: " + toFormatted(change1h)
             + " EU "
@@ -149,8 +150,8 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                     toFormatted(
                         change1h.divide(
                             legacyMeasurements.isEmpty() ? BigInteger.ONE
-                                : BigInteger
-                                    .valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                                : BigInteger.valueOf(
+                                    Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
 
         switch (PowerGogglesConfigHandler.readingIndex) {
@@ -159,19 +160,21 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                 change1hString = "1h: " + toFormatted(change1h) + " EU";
             }
             case 2 -> {
-                change5mString = "5m: " + (change5mDiff != 0 ? String.format(
-                    "(%s EU/t) ",
-                    toFormatted(
-                        change5m.divide(
-                            BigInteger.valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                change5mString = "5m: " + (change5mDiff != 0
+                    ? String.format(
+                        "(%s EU/t) ",
+                        toFormatted(
+                            change5m.divide(
+                                BigInteger.valueOf(
+                                    Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                     : "0 EU/t");
                 change1hString = "1h: " + (change1hDiff != 0
                     ? String.format(
                         "(%s EU/t)",
                         toFormatted(
                             change1h.divide(
-                                BigInteger
-                                    .valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                                BigInteger.valueOf(
+                                    Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                     : "0 EU/t");
             }
             default -> {}
@@ -327,9 +330,19 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     @Override
-    public void setMeasurement(BigInteger newEU, long lscCapacity) {
+    public void setLegacyMeasurement(BigInteger newEU, long lscCapacity) {
         capacity = lscCapacity;
         setMeasurement(newEU);
+    }
+
+    @Override
+    public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
+
+    }
+
+    @Override
+    public void processMeasurement(PowerGogglesMeasurement measurement) {
+
     }
 
     public void setMeasurement(BigInteger newEU) {
@@ -388,13 +401,12 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
         storage = toFormatted(currentEU) + " EU";
         change5mString = "5m: " + toFormatted(change5m)
             + " EU "
-            + (change5mDiff != 0
-                ? String.format(
-                    " (%s eu/t) ",
-                    toFormatted(
-                        change5m.divide(
-                            BigInteger.valueOf(
-                                Math.min(Math.min(1, legacyMeasurements.size() * ticksBetweenMeasurements), 5 * MINUTES)))))
+            + (change5mDiff != 0 ? String.format(
+                " (%s eu/t) ",
+                toFormatted(
+                    change5m.divide(
+                        BigInteger.valueOf(
+                            Math.min(Math.min(1, legacyMeasurements.size() * ticksBetweenMeasurements), 5 * MINUTES)))))
                 : "");
         change1hString = "1h: " + toFormatted(change1h)
             + " EU "
@@ -402,7 +414,8 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                 " (%s eu/t)",
                 toFormatted(
                     change1h.divide(
-                        BigInteger.valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                        BigInteger
+                            .valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
 
     }

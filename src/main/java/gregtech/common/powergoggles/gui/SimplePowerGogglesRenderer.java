@@ -7,6 +7,11 @@ import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -19,6 +24,8 @@ import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.math.Color;
 
+import gregtech.common.powergoggles.PowerGogglesConstants;
+import gregtech.common.powergoggles.PowerGogglesMeasurement;
 import gregtech.common.powergoggles.PowerGogglesUtil;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
@@ -123,7 +130,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * mainScale);
         int stringY = screenHeight - offsetFactor - stringHeight;
 
-        String currentStorage = legacyMeasurements.isEmpty() ? "0" : PowerGogglesUtil.format(legacyMeasurements.getFirst());;
+        String currentStorage = legacyMeasurements.isEmpty() ? "0"
+            : PowerGogglesUtil.format(legacyMeasurements.getFirst());;
 
         drawScaledString(currentStorage, xOffset, stringY, Color.rgb(255, 255, 255), mainScale);
     }
@@ -245,7 +253,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     @Override
-    public void setMeasurement(BigInteger newEU, long lscCapacity) {
+    public void setLegacyMeasurement(BigInteger newEU, long lscCapacity) {
         capacity = lscCapacity;
         setMeasurement(newEU);
     }
@@ -257,19 +265,61 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         legacyMeasurements.addFirst(measurement);
         if (legacyMeasurements.size() > measurementCount1h) legacyMeasurements.removeLast();
 
+    }
+
+    @Override
+    public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
+        this.measurements = measurements;
         onNewMeasurement();
     }
 
-    private void onNewMeasurement(){
+    @Override
+    public void processMeasurement(PowerGogglesMeasurement measurement) {
+        measurements.addLast(measurement);
+        if (measurements.size() > PowerGogglesConstants.STORED_MEASUREMENTS) {
+            measurements.removeFirst();
+        }
+        onNewMeasurement();
+    }
+
+    private void onNewMeasurement() {
+        if (measurements.isEmpty()) {
+            return;
+        }
         update5mDifference();
         update1hDifference();
     }
 
     private void update5mDifference() {
+        LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
+            PowerGogglesConstants.MEASUREMENT_COUNT_5M);
+        BigInteger first = lastMeasurements.getFirst()
+            .getMeasurement();
+        BigInteger last = lastMeasurements.getLast()
+            .getMeasurement();
 
+        this.euDifference5m = first.subtract(last);
     }
 
     private void update1hDifference() {
+        LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
+            PowerGogglesConstants.MEASUREMENT_COUNT_1H);
+        BigInteger first = lastMeasurements.getFirst()
+            .getMeasurement();
+        BigInteger last = lastMeasurements.getLast()
+            .getMeasurement();
 
+        this.euDifference1h = first.subtract(last);
     }
+
+    private LinkedList<PowerGogglesMeasurement> getLastMeasurements(int count) {
+        List<PowerGogglesMeasurement> lastMeasurements = new ArrayList<>(measurements);
+        Collections.reverse(lastMeasurements);
+
+        return new LinkedList<>(
+            lastMeasurements.stream()
+                .limit(count)
+                .collect(Collectors.toList()));
+    }
+
 }
