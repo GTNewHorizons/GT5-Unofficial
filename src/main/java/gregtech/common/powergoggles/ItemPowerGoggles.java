@@ -1,9 +1,8 @@
-package gregtech.common.items;
+package gregtech.common.powergoggles;
 
 import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +14,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import appeng.api.util.DimensionalCoord;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import baubles.common.container.InventoryBaubles;
@@ -24,10 +22,11 @@ import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketUpdateItem;
-import gregtech.common.handlers.PowerGogglesEventHandler;
-import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
+import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
+
+    private final PowerGogglesEventHandler EVENT_HANDLER = PowerGogglesEventHandler.getInstance();
 
     public ItemPowerGoggles(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -44,7 +43,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         }
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (!isLSC(tileEntity)) {
+        if (!PowerGogglesUtil.isLSC(tileEntity)) {
             player
                 .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
             return true;
@@ -67,11 +66,6 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
-    }
-
-    private boolean isLSC(TileEntity tileEntity) {
-        return tileEntity instanceof IGregTechTileEntity te
-            && te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor;
     }
 
     @Override
@@ -168,23 +162,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
         if (player.worldObj.isRemote || !(player instanceof EntityPlayerMP playerMP)) return;
-
-        NBTTagCompound tag = itemstack.getTagCompound();
-        DimensionalCoord coords = null;
-        if (tag != null && !tag.hasNoTags()) {
-            coords = new DimensionalCoord(
-                tag.getInteger("x"),
-                tag.getInteger("y"),
-                tag.getInteger("z"),
-                tag.getInteger("dim"));
-        }
-
-        DimensionalCoord current = PowerGogglesEventHandler.getLscLink(player.getUniqueID());
-        if (!Objects.equals(current, coords)) {
-            PowerGogglesEventHandler.setLscLink(playerMP, coords);
-            PowerGogglesEventHandler.forceUpdate = true;
-            PowerGogglesEventHandler.forceRefresh = true;
-        }
+        EVENT_HANDLER.updatePlayerLink(itemstack, playerMP);
     }
 
     @Override
@@ -192,17 +170,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
-        return getEquippedPowerGoggles(player) == null;
-    }
-
-    public static ItemStack getEquippedPowerGoggles(EntityLivingBase player) {
-        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles((EntityPlayer) player);
-        for (ItemStack bauble : baubles.stackList) {
-            if (bauble != null && bauble.getItem() instanceof ItemPowerGoggles) {
-                return bauble;
-            }
-        }
-        return null;
+        return !PowerGogglesUtil.isPlayerWearingGoggles((EntityPlayer) player);
     }
 
     @Override

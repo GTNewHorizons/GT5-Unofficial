@@ -1,4 +1,4 @@
-package gregtech.common.items.gui;
+package gregtech.common.powergoggles.gui;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -34,7 +34,7 @@ import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
-import gregtech.common.handlers.PowerGogglesConfigHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 public class PowerGogglesGuiOverlay {
 
