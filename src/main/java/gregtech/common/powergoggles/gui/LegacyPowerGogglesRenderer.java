@@ -31,7 +31,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
 
     @Override
-    public void renderMainInfo(RenderGameOverlayEvent.Post event) {
+    public void render(RenderGameOverlayEvent.Post event) {
         ScaledResolution resolution = event.resolution;
         int screenHeight = resolution.getScaledHeight();
         int screenWidth = resolution.getScaledWidth();
@@ -72,7 +72,6 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glPopMatrix();
     }
 
-    @Override
     public void renderPowerChart() {
 
     }
