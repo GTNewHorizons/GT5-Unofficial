@@ -97,28 +97,37 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int rectangleLeft = xOffset;
         int rectangleRight = xOffset + gradientRectangleWidth;
 
-        double scale = 3.3;
         BigInteger lastMeasurement = measurements.isEmpty() ? BigInteger.ZERO
             : measurements.getLast()
                 .getMeasurement();
 
-        double severity = lastMeasurement.compareTo(BigInteger.ZERO) == 0 ? 0
+        double differenceRatio = lastMeasurement.compareTo(BigInteger.ZERO) == 0 ? 0
             : new BigDecimal(euDifference5m.multiply(BigInteger.valueOf(100)))
                 .divide(new BigDecimal(lastMeasurement), RoundingMode.FLOOR)
                 .intValue() / 100f;
 
-        int[] gradientSet = new int[] { PowerGogglesConfigHandler.gradientBadColor,
-            PowerGogglesConfigHandler.gradientOkColor, PowerGogglesConfigHandler.gradientGoodColor };
-
         int[] gradients;
-        if (severity < 0) {
-            gradients = getGradient(-severity, scale, gradientSet[0], gradientSet[1]);
-        } else {
-            gradients = getGradient(severity, scale * 1.4f, gradientSet[2], gradientSet[1]);
-        }
+        int colorLeft;
+        int colorRight;
 
-        int colorLeft = gradients[0];
-        int colorRight = gradients[1];
+        double gradientChangeFactor = 3.3;
+        if (differenceRatio < 0) {
+            gradients = getGradient(
+                -differenceRatio,
+                gradientChangeFactor,
+                PowerGogglesConfigHandler.gradientBadColor,
+                PowerGogglesConfigHandler.gradientOkColor);
+            colorLeft = gradients[0];
+            colorRight = gradients[1];
+        } else {
+            gradients = getGradient(
+                differenceRatio,
+                gradientChangeFactor * 1.6f,
+                PowerGogglesConfigHandler.gradientGoodColor,
+                PowerGogglesConfigHandler.gradientOkColor);
+            colorLeft = gradients[1];
+            colorRight = gradients[0];
+        }
 
         GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
         GL11.glShadeModel(GL11.GL_SMOOTH); // enable color interpolation (gradients)
@@ -159,10 +168,21 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * mainScale);
         int stringY = screenHeight - offsetFactor - stringHeight;
 
-        String currentStorage = legacyMeasurements.isEmpty() ? "0"
-            : PowerGogglesUtil.format(legacyMeasurements.getFirst());;
+        BigInteger measurement = measurements.isEmpty() ? BigInteger.ZERO
+            : measurements.getLast()
+                .getMeasurement();
+        String currentStorage = PowerGogglesUtil.format(measurement);
+        int stringColor = getTextColor(euDifference5m);
 
-        drawScaledString(currentStorage, xOffset, stringY, Color.rgb(255, 255, 255), mainScale);
+        drawScaledString(currentStorage, xOffset, stringY, stringColor, mainScale);
+    }
+
+    private int getTextColor(BigInteger measurement) {
+        return switch (measurement.compareTo(BigInteger.ZERO)) {
+            case -1 -> PowerGogglesConfigHandler.textBadColor;
+            case 1 -> PowerGogglesConfigHandler.textGoodColor;
+            default -> PowerGogglesConfigHandler.textOkColor;
+        };
     }
 
     private void renderTimedDifferenceText() {
@@ -170,13 +190,16 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * subScale);
 
         String timedDifference5m = PowerGogglesUtil.format(euDifference5m);
+        int stringColor5m = getTextColor(euDifference5m);
+
         String timedDifference1h = PowerGogglesUtil.format(euDifference1h);
+        int stringColor1h = getTextColor(euDifference1h);
 
         int string5mY = screenHeight - offsetFactor;
         int string1hY = string5mY + gapBetweenLines + stringHeight;
 
-        drawScaledString(timedDifference5m, xOffset, string5mY, Color.rgb(255, 255, 255), subScale);
-        drawScaledString(timedDifference1h, xOffset, string1hY, Color.rgb(255, 255, 255), subScale);
+        drawScaledString(timedDifference5m, xOffset, string5mY, stringColor5m, subScale);
+        drawScaledString(timedDifference1h, xOffset, string1hY, stringColor1h, subScale);
 
     }
 
@@ -189,35 +212,54 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glPopMatrix();
     }
 
-    public int[] getGradient(double severity, double scale, int gradientLeft, int gradientRight) {
-        int newGradientLeft = gradientLeft;
-        int newGradientRight = gradientRight;
+    public int[] getGradient(double differenceRatio, double gradientChangeFactor, int gradientLeft, int gradientRight) {
 
         int diffRed = Color.getRed(gradientLeft) - Color.getRed(gradientRight);
         int diffGreen = Color.getGreen(gradientLeft) - Color.getGreen(gradientRight);
         int diffBlue = Color.getBlue(gradientLeft) - Color.getBlue(gradientRight);
 
-        int newLeftRed = Math
-            .min(255, Math.max(0, Color.getRed(gradientRight) + (int) (diffRed * Math.min(1, severity * scale))));
-        int newLeftGreen = Math
-            .min(255, Math.max(0, Color.getGreen(gradientRight) + (int) (diffGreen * Math.min(1, severity * scale))));
-        int newLeftBlue = Math
-            .min(255, Math.max(0, Color.getBlue(gradientRight) + (int) (diffBlue * Math.min(1, severity * scale))));
+        int newLeftRed = getGradientPart(gradientChangeFactor, Color.getRed(gradientRight), diffRed, differenceRatio);
+        int newLeftGreen = getGradientPart(
+            gradientChangeFactor,
+            Color.getGreen(gradientRight),
+            diffGreen,
+            differenceRatio);
+        int newLeftBlue = getGradientPart(
+            gradientChangeFactor,
+            Color.getBlue(gradientRight),
+            diffBlue,
+            differenceRatio);
 
-        int newRightRed = Math.min(
-            255,
-            Math.max(0, Color.getRed(gradientRight) + (int) (diffRed * Math.min(1, severity * scale * 0.75))));
-        int newRightGreen = Math.min(
-            255,
-            Math.max(0, Color.getGreen(gradientRight) + (int) (diffGreen * Math.min(1, severity * scale * 0.75))));
-        int newRightBlue = Math.min(
-            255,
-            Math.max(0, Color.getBlue(gradientRight) + (int) (diffBlue * Math.min(1, severity * scale * 0.75))));
+        int newRightRed = getGradientPart(
+            gradientChangeFactor,
+            Color.getRed(gradientRight),
+            diffRed,
+            differenceRatio * 0.75);
+        int newRightGreen = getGradientPart(
+            gradientChangeFactor,
+            Color.getGreen(gradientRight),
+            diffGreen,
+            differenceRatio * 0.75);
+        int newRightBlue = getGradientPart(
+            gradientChangeFactor,
+            Color.getBlue(gradientRight),
+            diffBlue,
+            differenceRatio * 0.75);
 
-        newGradientLeft = Color.rgb(newLeftRed, newLeftGreen, newLeftBlue);
-        newGradientRight = Color.rgb(newRightRed, newRightGreen, newRightBlue);
+        int newGradientLeft = Color.rgb(newLeftRed, newLeftGreen, newLeftBlue);
+        int newGradientRight = Color.rgb(newRightRed, newRightGreen, newRightBlue);
 
         return new int[] { newGradientLeft, newGradientRight };
+    }
+
+    private int getGradientPart(double gradientChangeFactor, int baseGradientPart, int partDifference,
+        double differenceRatio) {
+        double appliedPercentageOfDifference = Math.min(1, differenceRatio * gradientChangeFactor);
+        int newPart = baseGradientPart + (int) (partDifference * appliedPercentageOfDifference);
+
+        int clampBottom = Math.max(0, newPart);
+        int clampTop = Math.min(255, clampBottom);
+        return clampTop;
     }
 
     private void renderBackground() {
