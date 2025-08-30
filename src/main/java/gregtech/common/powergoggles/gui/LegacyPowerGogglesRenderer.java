@@ -137,9 +137,9 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                     "(%s eu/t) ",
                     toFormatted(
                         change5m.divide(
-                            measurements.isEmpty() ? BigInteger.ONE
+                            legacyMeasurements.isEmpty() ? BigInteger.ONE
                                 : BigInteger
-                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                                    .valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                 : "");
         change1hString = "1h: " + toFormatted(change1h)
             + " EU "
@@ -148,9 +148,9 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                     "(%s eu/t)",
                     toFormatted(
                         change1h.divide(
-                            measurements.isEmpty() ? BigInteger.ONE
+                            legacyMeasurements.isEmpty() ? BigInteger.ONE
                                 : BigInteger
-                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                                    .valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
 
         switch (PowerGogglesConfigHandler.readingIndex) {
@@ -163,7 +163,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                     "(%s EU/t) ",
                     toFormatted(
                         change5m.divide(
-                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                            BigInteger.valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                     : "0 EU/t");
                 change1hString = "1h: " + (change1hDiff != 0
                     ? String.format(
@@ -171,7 +171,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                         toFormatted(
                             change1h.divide(
                                 BigInteger
-                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                                    .valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                     : "0 EU/t");
             }
             default -> {}
@@ -213,7 +213,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
 
     public void drawPowerChart(int xOffset, int yOffset, int chartWidth, int chartHeight, int screenHeight,
         int screenWidth, int borderRadius) {
-        int readings = Math.min(measurements.size(), measurementCount5m);
+        int readings = Math.min(legacyMeasurements.size(), measurementCount5m);
         int left = xOffset;
         int right = xOffset + chartWidth;
         int top = yOffset - chartHeight;
@@ -229,11 +229,11 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
             bottom + borderRadius,
             borderColor,
             borderColor);
-        if (measurements.isEmpty()) return;
-        BigInteger minReading = measurements.get(0);
-        BigInteger maxReading = measurements.get(0);
+        if (legacyMeasurements.isEmpty()) return;
+        BigInteger minReading = legacyMeasurements.get(0);
+        BigInteger maxReading = legacyMeasurements.get(0);
         for (int i = 0; i < readings; i++) {
-            BigInteger temp = measurements.get(i);
+            BigInteger temp = legacyMeasurements.get(i);
             if (temp.compareTo(minReading) < 0) minReading = temp;
             if (maxReading.compareTo(temp) < 0) maxReading = temp;
         }
@@ -276,7 +276,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
 
         int negative = PowerGogglesConfigHandler.textBadColor;
         int positive = PowerGogglesConfigHandler.textGoodColor;
-        BigInteger lastReading = measurements.get(0);
+        BigInteger lastReading = legacyMeasurements.get(0);
         double pointsWidth = chartWidth * 0.8d;
         double lastX = xOffset + chartWidth;
         double lastY = (yOffset + (chartHeight * (-1 + Math.min(
@@ -286,7 +286,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                 / maxReading.subtract(minReading)
                     .floatValue()))));
         for (int i = 1; i < readings; i++) {
-            BigInteger reading = measurements.get(i);
+            BigInteger reading = legacyMeasurements.get(i);
             double x = xOffset + chartWidth - (pointsWidth / (readings)) * i;
             double y = (yOffset + (chartHeight * (-1 + Math.min(
                 1,
@@ -336,8 +336,8 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
         measurement = newEU;
         if (highest.compareTo(measurement) < 0) highest = measurement;
         currentEU = measurement;
-        measurements.addFirst(measurement);
-        if (measurements.size() > measurementCount1h) measurements.removeLast();
+        legacyMeasurements.addFirst(measurement);
+        if (legacyMeasurements.size() > measurementCount1h) legacyMeasurements.removeLast();
     }
 
     public int[] getGradient(double severity, double scale, int gradientLeft, int gradientRight) {
@@ -377,11 +377,11 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
         if (Minecraft.getMinecraft()
             .isGamePaused()) return;
 
-        change5m = getTotalChange(measurements, measurementCount5m);
+        change5m = getTotalChange(legacyMeasurements, measurementCount5m);
         change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
         change5mColor = getColor(change5mDiff);
 
-        change1h = getTotalChange(measurements, measurementCount1h);
+        change1h = getTotalChange(legacyMeasurements, measurementCount1h);
         change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
         change1hColor = getColor(change5mDiff);
 
@@ -394,7 +394,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                     toFormatted(
                         change5m.divide(
                             BigInteger.valueOf(
-                                Math.min(Math.min(1, measurements.size() * ticksBetweenMeasurements), 5 * MINUTES)))))
+                                Math.min(Math.min(1, legacyMeasurements.size() * ticksBetweenMeasurements), 5 * MINUTES)))))
                 : "");
         change1hString = "1h: " + toFormatted(change1h)
             + " EU "
@@ -402,7 +402,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
                 " (%s eu/t)",
                 toFormatted(
                     change1h.divide(
-                        BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                        BigInteger.valueOf(Math.min(legacyMeasurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
 
     }
@@ -460,7 +460,7 @@ public class LegacyPowerGogglesRenderer extends PowerGogglesRenderer {
 
     @Override
     public void clear() {
-        measurements.clear();
+        legacyMeasurements.clear();
         currentEU = BigInteger.valueOf(0);
         measurement = BigInteger.valueOf(0);
         highest = BigInteger.valueOf(0);

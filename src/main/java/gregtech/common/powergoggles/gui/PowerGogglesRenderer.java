@@ -3,6 +3,7 @@ package gregtech.common.powergoggles.gui;
 import java.math.BigInteger;
 import java.util.LinkedList;
 
+import gregtech.common.powergoggles.PowerGogglesMeasurement;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
@@ -12,7 +13,8 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 public abstract class PowerGogglesRenderer {
 
     protected final Minecraft mc = Minecraft.getMinecraft();
-    protected LinkedList<BigInteger> measurements = new LinkedList<>();
+    protected LinkedList<BigInteger> legacyMeasurements = new LinkedList<>();
+    protected LinkedList<PowerGogglesMeasurement> measurements = new LinkedList<>();
 
     protected final static int TICKS = 1;
     protected final static int SECONDS = 20 * TICKS;
@@ -49,8 +51,8 @@ public abstract class PowerGogglesRenderer {
 
     public abstract void setMeasurement(BigInteger eu, long lscCapacity);
 
-    public LinkedList<BigInteger> getMeasurements() {
-        return measurements;
+    public LinkedList<BigInteger> getLegacyMeasurements() {
+        return legacyMeasurements;
     }
 
     public long getCapacity() {
@@ -61,8 +63,8 @@ public abstract class PowerGogglesRenderer {
         this.capacity = capacity;
     }
 
-    public void setMeasurements(LinkedList<BigInteger> measurements) {
-        this.measurements = measurements;
+    public void setLegacyMeasurements(LinkedList<BigInteger> legacyMeasurements) {
+        this.legacyMeasurements = legacyMeasurements;
 
     }
 

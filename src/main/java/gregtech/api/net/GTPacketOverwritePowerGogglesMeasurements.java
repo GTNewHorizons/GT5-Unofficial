@@ -85,14 +85,14 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
         hudHandler.getRenderer()
             .clear();
         hudHandler.getRenderer()
-            .setMeasurements(
+            .setLegacyMeasurements(
                 new LinkedList<>(
                     measurements.stream()
                         .map(PowerGogglesMeasurement::getMeasurement)
                         .collect(Collectors.toList())));
         Collections.reverse(
             hudHandler.getRenderer()
-                .getMeasurements()); // TODO: REMOVE THIS IN HUD REFACTOR
+                .getLegacyMeasurements()); // TODO: REMOVE THIS IN HUD REFACTOR
 
         if (!measurements.isEmpty()) {
             hudHandler.getRenderer()
