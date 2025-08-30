@@ -1,30 +1,22 @@
 package gregtech.common.powergoggles.gui;
 
-import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.GL_LINES;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.LinkedList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.math.BigIntegerMath;
-import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.math.Color;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
@@ -57,26 +49,11 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
         GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
 
-        int chartOffsetY = drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
-        if (PowerGogglesConfigHandler.showPowerChart) {
-            drawPowerChart(
-                xOffset,
-                chartOffsetY - borderRadius,
-                PowerGogglesConfigHandler.rectangleWidth,
-                100,
-                screenHeight,
-                screenWidth,
-                borderRadius);
-        }
+        drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
         GL11.glPopMatrix();
     }
 
-    @Override
-    public void renderPowerChart() {
-
-    }
-
-    public int drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
+    private void drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
         int left = h + xOffset;
         int up = screenHeight - h - yOffset;
         int right = left + w;
@@ -128,192 +105,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
                 + borderRadius,
             bgColor,
             bgColor);
-
-        storage = toFormatted(currentEU) + " EU";
-        change5mString = "5m: " + toFormatted(change5m)
-            + " EU "
-            + (change5mDiff != 0
-                ? String.format(
-                    "(%s eu/t) ",
-                    toFormatted(
-                        change5m.divide(
-                            measurements.isEmpty() ? BigInteger.ONE
-                                : BigInteger
-                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
-                : "");
-        change1hString = "1h: " + toFormatted(change1h)
-            + " EU "
-            + (change1hDiff != 0
-                ? String.format(
-                    "(%s eu/t)",
-                    toFormatted(
-                        change1h.divide(
-                            measurements.isEmpty() ? BigInteger.ONE
-                                : BigInteger
-                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
-                : "");
-
-        switch (PowerGogglesConfigHandler.readingIndex) {
-            case 1 -> {
-                change5mString = "5m: " + toFormatted(change5m) + " EU";
-                change1hString = "1h: " + toFormatted(change1h) + " EU";
-            }
-            case 2 -> {
-                change5mString = "5m: " + (change5mDiff != 0 ? String.format(
-                    "(%s EU/t) ",
-                    toFormatted(
-                        change5m.divide(
-                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
-                    : "0 EU/t");
-                change1hString = "1h: " + (change1hDiff != 0
-                    ? String.format(
-                        "(%s EU/t)",
-                        toFormatted(
-                            change1h.divide(
-                                BigInteger
-                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
-                    : "0 EU/t");
-            }
-            default -> {}
-        }
-        String percentage = (measurement.compareTo(BigInteger.ZERO) == 0 || highest.compareTo(BigInteger.ZERO) == 0)
-            ? "0%"
-            : String
-                .format("%.2f%%", 100 * measurement.floatValue() / (capacity > 0 ? capacity : highest.floatValue()));
-        drawScaledString(
-            fontRenderer,
-            storage,
-            xOffset,
-            screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale),
-            change5mColor,
-            mainScale);
-        drawScaledString(
-            fontRenderer,
-            percentage,
-            xOffset + (int) ((h - fontRenderer.getStringWidth(percentage) * PowerGogglesConfigHandler.mainTextScaling)),
-            screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale),
-            change5mColor,
-            mainScale);
-        drawScaledString(
-            fontRenderer,
-            change5mString,
-            xOffset,
-            screenHeight - yOffset + gapBetweenLines,
-            change5mColor,
-            subScale);
-        drawScaledString(
-            fontRenderer,
-            change1hString,
-            xOffset,
-            screenHeight - yOffset + gapBetweenLines * 2 + (int) (fontRenderer.FONT_HEIGHT * subScale),
-            change1hColor,
-            subScale);
-        return highestPoint;
-    }
-
-    public void drawPowerChart(int xOffset, int yOffset, int chartWidth, int chartHeight, int screenHeight,
-        int screenWidth, int borderRadius) {
-        int readings = Math.min(measurements.size(), measurementCount5m);
-        int left = xOffset;
-        int right = xOffset + chartWidth;
-        int top = yOffset - chartHeight;
-        int bottom = yOffset;
-        int bgColor = Color.argb(19, 14, 91, (int) (255 * 0.75f));
-        GuiHelper.drawGradientRect(-1, left, top, right, bottom, bgColor, bgColor);
-        int borderColor = Color.rgb(81, 79, 104);
-        GuiHelper.drawGradientRect(
-            -2,
-            left - borderRadius,
-            top - borderRadius,
-            right + borderRadius,
-            bottom + borderRadius,
-            borderColor,
-            borderColor);
-        if (measurements.isEmpty()) return;
-        BigInteger minReading = measurements.get(0);
-        BigInteger maxReading = measurements.get(0);
-        for (int i = 0; i < readings; i++) {
-            BigInteger temp = measurements.get(i);
-            if (temp.compareTo(minReading) < 0) minReading = temp;
-            if (maxReading.compareTo(temp) < 0) maxReading = temp;
-        }
-        int exponent = minReading.compareTo(BigInteger.ZERO) == 0 ? 0
-            : BigIntegerMath.log10(minReading, RoundingMode.DOWN);
-        minReading = minReading.compareTo(BigInteger.ZERO) == 0 ? BigInteger.ZERO
-            : BigInteger.valueOf(10)
-                .pow(exponent);
-
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        double scale = 0.5f;
-        drawScaledString(
-            fontRenderer,
-            toFormatted(minReading),
-            xOffset,
-            yOffset - (int) (fontRenderer.FONT_HEIGHT * scale),
-            Color.rgb(237, 2, 158),
-            scale);
-        drawScaledString(
-            fontRenderer,
-            minReading.compareTo(maxReading) == 0 ? "" : toFormatted(maxReading),
-            xOffset,
-            yOffset - chartHeight,
-            Color.rgb(237, 2, 158),
-            scale);
-        if (readings < 2) return;
-        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(
-            GlStateManager.SourceFactor.SRC_ALPHA,
-            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-            GlStateManager.SourceFactor.ONE,
-            GlStateManager.DestFactor.ZERO);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawing(GL_LINES);
-
-        int negative = PowerGogglesConfigHandler.textBadColor;
-        int positive = PowerGogglesConfigHandler.textGoodColor;
-        BigInteger lastReading = measurements.get(0);
-        double pointsWidth = chartWidth * 0.8d;
-        double lastX = xOffset + chartWidth;
-        double lastY = (yOffset + (chartHeight * (-1 + Math.min(
-            1,
-            1 - lastReading.subtract(minReading)
-                .floatValue()
-                / maxReading.subtract(minReading)
-                    .floatValue()))));
-        for (int i = 1; i < readings; i++) {
-            BigInteger reading = measurements.get(i);
-            double x = xOffset + chartWidth - (pointsWidth / (readings)) * i;
-            double y = (yOffset + (chartHeight * (-1 + Math.min(
-                1,
-                1 - reading.subtract(minReading)
-                    .floatValue()
-                    / maxReading.subtract(minReading)
-                        .floatValue()))));
-            if (reading.compareTo(lastReading) > 0) {
-                tessellator
-                    .setColorRGBA_F(Color.getRed(negative), Color.getGreen(negative), Color.getBlue(negative), 255);
-            } else {
-                tessellator
-                    .setColorRGBA_F(Color.getRed(positive), Color.getGreen(positive), Color.getBlue(positive), 255);
-            }
-            lastReading = reading;
-            tessellator.addVertex(lastX, lastY, 0);
-            tessellator.addVertex(x, y, 0);
-            lastX = x;
-            lastY = y;
-        }
-        tessellator.draw();
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-        GL11.glPopAttrib();
-
     }
 
     private void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
@@ -324,20 +115,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glTranslated(-xOffset, -yOffset, 0);
         fontRenderer.drawStringWithShadow(string, xOffset, yOffset, color);
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void setMeasurement(BigInteger newEU, long lscCapacity) {
-        capacity = lscCapacity;
-        setMeasurement(newEU);
-    }
-
-    public void setMeasurement(BigInteger newEU) {
-        measurement = newEU;
-        if (highest.compareTo(measurement) < 0) highest = measurement;
-        currentEU = measurement;
-        measurements.addFirst(measurement);
-        if (measurements.size() > measurementCount1h) measurements.removeLast();
     }
 
     public int[] getGradient(double severity, double scale, int gradientLeft, int gradientRight) {
@@ -371,91 +148,14 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         return new int[] { newGradientLeft, newGradientRight };
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+    public void renderPowerChart() {
+
+    }
+
     @Override
     public void drawTick() {
-        if (Minecraft.getMinecraft()
-            .isGamePaused()) return;
 
-        change5m = getTotalChange(measurements, measurementCount5m);
-        change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
-        change5mColor = getColor(change5mDiff);
-
-        change1h = getTotalChange(measurements, measurementCount1h);
-        change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
-        change1hColor = getColor(change5mDiff);
-
-        storage = toFormatted(currentEU) + " EU";
-        change5mString = "5m: " + toFormatted(change5m)
-            + " EU "
-            + (change5mDiff != 0
-                ? String.format(
-                    " (%s eu/t) ",
-                    toFormatted(
-                        change5m.divide(
-                            BigInteger.valueOf(
-                                Math.min(Math.min(1, measurements.size() * ticksBetweenMeasurements), 5 * MINUTES)))))
-                : "");
-        change1hString = "1h: " + toFormatted(change1h)
-            + " EU "
-            + (change1hDiff != 0 ? String.format(
-                " (%s eu/t)",
-                toFormatted(
-                    change1h.divide(
-                        BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
-                : "");
-
-    }
-
-    private String toFormatted(BigInteger EU) {
-        switch (PowerGogglesConfigHandler.formatIndex) {
-            case 1:
-                return toCustom(EU);
-            case 2:
-                return toCustom(EU, true, 3);
-            default:
-                return toCustom(EU, false, 1);
-        }
-
-    }
-
-    private String toCustom(BigInteger EU) {
-        return toCustom(EU, false, 3);
-    }
-
-    private String toCustom(BigInteger EU, boolean useSI, int baseDigits) {
-        String[] suffixes = { "", "K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q" };
-        if (EU.abs()
-            .compareTo(BigInteger.valueOf(1)) < 0) {
-            return "0";
-        }
-        int exponent = BigIntegerMath.log10(EU.abs(), RoundingMode.FLOOR);
-        int remainder = exponent % baseDigits;
-
-        String euString = EU.toString();
-        if (EU.abs()
-            .compareTo(BigInteger.valueOf(1000)) < 0) {
-            return euString;
-        }
-        int negative = EU.compareTo(BigInteger.valueOf(1)) < 0 ? 1 : 0;
-        String base = euString.substring(0, remainder + 1 + negative);
-        String decimal = euString.substring(remainder + 1 + negative, Math.min(exponent, remainder + 4));
-        int E = exponent - remainder;
-
-        if (useSI && (E / 3) <= suffixes.length - 1) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
-        return String.format("%s.%sE%d", base, decimal, E);
-    }
-
-    private BigInteger getTotalChange(LinkedList<BigInteger> list, int count) {
-        if (list.isEmpty()) return BigInteger.valueOf(0);
-        return list.get(0)
-            .subtract(list.get(Math.min(count, list.size() - 1)));
-    }
-
-    private int getColor(int compareResult) {
-        if (compareResult == 0) return PowerGogglesConfigHandler.textOkColor;
-        if (compareResult < 0) return PowerGogglesConfigHandler.textBadColor;
-        return PowerGogglesConfigHandler.textGoodColor;
     }
 
     @Override
@@ -467,11 +167,19 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         capacity = 0;
         change5mDiff = 0;
         change1hDiff = 0;
-        updateColors();
     }
 
-    public void updateColors() {
-        change5mColor = getColor(change5mDiff);
-        change1hColor = getColor(change1hDiff);
+    @Override
+    public void setMeasurement(BigInteger newEU, long lscCapacity) {
+        capacity = lscCapacity;
+        setMeasurement(newEU);
+    }
+
+    public void setMeasurement(BigInteger newEU) {
+        measurement = newEU;
+        if (highest.compareTo(measurement) < 0) highest = measurement;
+        currentEU = measurement;
+        measurements.addFirst(measurement);
+        if (measurements.size() > measurementCount1h) measurements.removeLast();
     }
 }
