@@ -13,8 +13,12 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -22,26 +26,41 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonanceMixer>
     implements ISurvivalConstructable {
 
     private Byte mSolenoidLevel = null;
+    private MTEHatchInput mPlasmaInputHatch;
+    private int plasmaInputHatchAmount = 0;
     private final static int STRUCTURE_OFFSET_X = 5;
     private final static int STRUCTURE_OFFSET_Y = 13;
     private final static int STRUCTURE_OFFSET_Z = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final List<FluidStack> plasmaList;
+    static {
+        plasmaList = Arrays.asList(
+            MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(30),
+            MaterialsElements.getInstance().NEPTUNIUM.getFluidStack(15),
+            MaterialsUEVplus.QuarkGluonPlasma.getMolten(5));
+    }
+
     private static final IStructureDefinition<MTEResonanceMixer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEResonanceMixer>builder()
         .addShape(
@@ -53,7 +72,7 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
                 {"   SSSSS   ", " CCCCCCCCC ", " CG     GC ", "  G     G  ", "  G     G  ", "  G  C  G  ", "  G  C  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  C  G  ", " CG  C  GC ", " CCSSCSSCC "},
                 {"S SS   SS S", "SCCCCCCCCCS", "SC       CS", "SC       CS", "SC       CS", "SC CCCCC CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   B   CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   C   CS", "SCSSCCCSSCS"},
                 {"  S     S  ", " CCCCCCCCC ", " C       C ", " C       C ", " C       C ", " C C   C C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " CSCCCCCSC "},
-                {"  S     S  ", " CCCCCCCCC ", " C       C ", " C       C ", " C       C ", " CCC   CCC ", " CCB   BCC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CCB   BCC ", " CCC   CCC ", " CCCCECCCC "},
+                {"  S     S  ", " CCCCCCCCC ", " C       C ", " C       C ", " C       C ", " CCC   CCC ", " CCB   BCC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CSB   BSC ", " CCB   BCC ", " CCC   CCC ", " CCCCHCCCC "},
                 {"  S     S  ", " CCCCCCCCC ", " C       C ", " C       C ", " C       C ", " C C   C C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " C       C ", " C B   B C ", " C       C ", " C       C ", " CSCCCCCSC "},
                 {"S SS   SS S", "SCCCCCCCCCS", "SC       CS", "SC       CS", "SC       CS", "SC CCCCC CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   B   CS", "SC   B   CS", "SC BBBBB CS", "SC   B   CS", "SC   C   CS", "SCSSCCCSSCS"},
                 {"   SSSSS   ", " CCCCCCCCC ", " CG     GC ", "  G     G  ", "  G     G  ", "  G  C  G  ", "  G  C  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  S  G  ", "  G  C  G  ", " CG  C  GC ", " CCSSCSSCC "},
@@ -69,18 +88,32 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
                     onElementPass(MTEResonanceMixer::onCasingAdded, Casings.ResonanceMixerCasing.asElement())))
         .addElement('S', Casings.SoundProofCasing.asElement())
         .addElement(
-            'E',
-            buildHatchAdder(MTEResonanceMixer.class).atLeast(ExoticEnergy)
+            'H',
+            buildHatchAdder(MTEResonanceMixer.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEResonanceMixer::addPlasmaInputToMachineList)
                 .casingIndex(Casings.ResonanceMixerCasing.textureId)
                 .dot(2)
-                .buildAndChain(
-                    onElementPass(MTEResonanceMixer::onCasingAdded, Casings.ResonanceMixerCasing.asElement())))
+                .buildAndChain(Casings.ResonanceMixerCasing.asElement()))
         .addElement(
             'B',
             GTStructureChannels.SOLENOID
                 .use(ofSolenoidCoil(MTEResonanceMixer::setSolenoidLevel, MTEResonanceMixer::getSolenoidLevel)))
         .addElement('G', chainAllGlasses())
         .build();
+
+    public boolean addPlasmaInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
+            mPlasmaInputHatch = (MTEHatchInput) aMetaTileEntity;
+            plasmaInputHatchAmount++;
+            return true;
+        }
+        return false;
+    }
 
     private Byte getSolenoidLevel() {
         return mSolenoidLevel;
@@ -190,10 +223,19 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        fixAllIssues();
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z)
-            && mCasingAmount >= 14;
+        mSolenoidLevel = 0;
+        plasmaInputHatchAmount = 0;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z)) {
+            return false;
+        }
+
+        if (mCasingAmount < 14) return false;
+        if (plasmaInputHatchAmount != 1) return false;
+
+        fixAllIssues();
+        return true;
     }
 
     @Override
@@ -210,7 +252,25 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.brewingRecipes;
+        return RecipeMaps.mixerRecipes;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+        if (!mMachine) return;
+        boolean hasPlasma = false;
+        FluidStack fluid = mPlasmaInputHatch.getFluid();
+        for (FluidStack plasma : plasmaList) {
+            if (GTUtility.areFluidsEqual(fluid, plasma)) {
+                hasPlasma = true;
+                break;
+            }
+        }
+        if (!hasPlasma) {
+            stopMachine(ShutDownReasonRegistry.outOfFluid(plasmaList.get(0)));
+        }
     }
 
     @Override
