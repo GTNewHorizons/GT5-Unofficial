@@ -11,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 
 public class GTPacketUpdatePowerGoggles extends GTPacket {
 
+    private static final PowerGogglesHudHandler hudHandler = PowerGogglesHudHandler.getInstance();
     BigInteger EU;
     long lscCapacity;
     boolean refresh;
@@ -64,10 +65,9 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
     @Override
     public void process(IBlockAccess aWorld) {
         if (this.refresh) {
-            PowerGogglesHudHandler.clear();
+            hudHandler.clear();
         }
-        PowerGogglesHudHandler.setMeasurement(this.EU, lscCapacity);
-        PowerGogglesHudHandler.drawTick();
-        PowerGogglesHudHandler.updateClient = true;
+        hudHandler.setMeasurement(this.EU, lscCapacity);
+        hudHandler.drawTick();
     }
 }

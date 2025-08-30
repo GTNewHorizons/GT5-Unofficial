@@ -15,6 +15,7 @@ import io.netty.buffer.ByteBuf;
 
 public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
 
+    private static final PowerGogglesHudHandler hudHandler = PowerGogglesHudHandler.getInstance();
     LinkedList<PowerGogglesMeasurement> measurements;
 
     public GTPacketOverwritePowerGogglesMeasurements() {}
@@ -81,18 +82,16 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
     @Override
     public void process(IBlockAccess world) {
 
-        PowerGogglesHudHandler.clear();
-        PowerGogglesHudHandler.measurements = new LinkedList<>(
+        hudHandler.clear();
+        hudHandler.measurements = new LinkedList<>(
             measurements.stream()
                 .map(PowerGogglesMeasurement::getMeasurement)
                 .collect(Collectors.toList()));
-        Collections.reverse(PowerGogglesHudHandler.measurements); // TODO: REMOVE THIS IN HUD REFACTOR
+        Collections.reverse(hudHandler.measurements); // TODO: REMOVE THIS IN HUD REFACTOR
 
         if (!measurements.isEmpty()) {
-            PowerGogglesHudHandler.capacity = measurements.getLast()
+            hudHandler.capacity = measurements.getLast()
                 .getCapacity();
         }
-
-        PowerGogglesHudHandler.updateClient = true;
     }
 }
