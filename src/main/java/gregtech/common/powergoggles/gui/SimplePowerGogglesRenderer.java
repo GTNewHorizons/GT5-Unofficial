@@ -2,7 +2,6 @@ package gregtech.common.powergoggles.gui;
 
 import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,7 +20,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.modularui.api.GlStateManager;
-import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.math.Color;
 
 import gregtech.common.powergoggles.PowerGogglesConstants;
@@ -36,6 +34,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private final int gapBetweenLines = 2;
 
     private int gradientRectangleHeight;
+    private int gradientRectangleWidth;
     private int screenHeight;
     private int xOffset;
     private int yOffset;
@@ -79,6 +78,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             fontRenderer = mc.fontRenderer;
         }
         this.gradientRectangleHeight = PowerGogglesConfigHandler.rectangleHeight;
+        this.gradientRectangleWidth = PowerGogglesConfigHandler.rectangleWidth;
 
         ScaledResolution resolution = event.resolution;
         this.screenHeight = resolution.getScaledHeight();
@@ -91,38 +91,67 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void renderGradientRectangle() {
-        int w = PowerGogglesConfigHandler.rectangleWidth;
-        int h = PowerGogglesConfigHandler.rectangleHeight;
 
-        int left = w + xOffset;
-        int up = screenHeight - w - yOffset;
-        int right = left + h;
-        int down = up + w;
-
-        GL11.glPushMatrix();
-        GL11.glTranslated(left, down, 0);
-        GL11.glRotated(90, 0, 0, -1);
-        GL11.glTranslated(-left, -down, 0);
+        int rectangleTop = screenHeight - yOffset - gradientRectangleHeight;
+        int rectangleBottom = screenHeight - yOffset;
+        int rectangleLeft = xOffset;
+        int rectangleRight = xOffset + gradientRectangleWidth;
 
         double scale = 3.3;
-        double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 0
-            : new BigDecimal(change5m.multiply(BigInteger.valueOf(100)))
-                .divide(new BigDecimal(measurement), RoundingMode.FLOOR)
+        BigInteger lastMeasurement = measurements.isEmpty() ? BigInteger.ZERO
+            : measurements.getLast()
+                .getMeasurement();
+
+        double severity = lastMeasurement.compareTo(BigInteger.ZERO) == 0 ? 0
+            : new BigDecimal(euDifference5m.multiply(BigInteger.valueOf(100)))
+                .divide(new BigDecimal(lastMeasurement), RoundingMode.FLOOR)
                 .intValue() / 100f;
 
         int[] gradientSet = new int[] { PowerGogglesConfigHandler.gradientBadColor,
             PowerGogglesConfigHandler.gradientOkColor, PowerGogglesConfigHandler.gradientGoodColor };
+
         int[] gradients;
         if (severity < 0) {
             gradients = getGradient(-severity, scale, gradientSet[0], gradientSet[1]);
-            GuiHelper.drawGradientRect(300, left, up, right, down, gradients[0], gradients[1]);
         } else {
             gradients = getGradient(severity, scale * 1.4f, gradientSet[2], gradientSet[1]);
-            GuiHelper.drawGradientRect(300, left, up, right, down, gradients[1], gradients[0]);
         }
 
-        GL11.glDisable(GL_LIGHTING);
-        GL11.glPopMatrix();
+        int colorLeft = gradients[0];
+        int colorRight = gradients[1];
+
+        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
+        GL11.glShadeModel(GL11.GL_SMOOTH); // enable color interpolation (gradients)
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(
+            GlStateManager.SourceFactor.SRC_ALPHA,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+
+        tessellator.setColorRGBA(
+            Color.getRed(colorLeft),
+            Color.getGreen(colorLeft),
+            Color.getBlue(colorLeft),
+            Color.getAlpha(colorLeft));
+        tessellator.addVertex(rectangleLeft, rectangleTop, 300);
+        tessellator.addVertex(rectangleLeft, rectangleBottom, 300);
+
+        tessellator.setColorRGBA(
+            Color.getRed(colorRight),
+            Color.getGreen(colorRight),
+            Color.getBlue(colorRight),
+            Color.getAlpha(colorRight));
+        tessellator.addVertex(rectangleRight, rectangleBottom, 300);
+        tessellator.addVertex(rectangleRight, rectangleTop, 300);
+
+        tessellator.draw();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GL11.glPopAttrib();
     }
 
     private void renderStorageText() {
@@ -193,9 +222,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private void renderBackground() {
 
-        int w = PowerGogglesConfigHandler.rectangleWidth;
-        int h = PowerGogglesConfigHandler.rectangleHeight;
-
         org.lwjgl.util.Color bgColor = new org.lwjgl.util.Color(47, 20, 76, (int) (255 * 0.85));
         int bgHeightAboveGradient = gapBetweenLines * 2 + (int) (fontRenderer.FONT_HEIGHT * mainScale)
             + gradientRectangleHeight
@@ -205,7 +231,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int bgTop = screenHeight - yOffset - bgHeightAboveGradient;
         int bgBottom = screenHeight - yOffset + borderRadius + bgHeightBelowGradient;
         int bgLeft = xOffset - borderRadius;
-        int bgRight = xOffset + w + borderRadius;
+        int bgRight = xOffset + gradientRectangleWidth + borderRadius;
 
         GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
         GlStateManager.disableTexture2D();
