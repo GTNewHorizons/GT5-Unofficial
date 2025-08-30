@@ -42,7 +42,7 @@ public class MaterialsBotania {
         Livingrock.mChemicalFormula = "Lv";
         Terrasteel.mChemicalFormula = "Tr";
         ElvenElementium.mChemicalFormula = "Ef";
-        ManaDiamond.mChemicalFormula = "Ma\u2084C";
+        ManaDiamond.mChemicalFormula = "Ma₄C";
 
         Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -84,11 +84,9 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setToolSpeed(8.0F)
-            .setDurability(5120)
-            .setToolQuality(4)
-            .setMeltingPoint(1500)
-            .setBlastFurnaceTemp(1500)
+            .setTool(5_120, 4, 8.0f)
+            .setMeltingPoint(1_500)
+            .setBlastFurnaceTemp(1_500)
             .setBlastFurnaceRequired(true)
             .setAspects(
                 Arrays.asList(new TC_AspectStack(TCAspects.METALLUM, 3), new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
@@ -105,11 +103,9 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setToolSpeed(32.0F)
-            .setDurability(10240)
-            .setToolQuality(5)
-            .setMeltingPoint(5400)
-            .setBlastFurnaceTemp(5400)
+            .setTool(10_240, 5, 32.0f)
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
             .setBlastFurnaceRequired(true)
             .setAspects(
                 Arrays.asList(
@@ -129,11 +125,9 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setToolSpeed(20.0F)
-            .setDurability(32768)
-            .setToolQuality(7)
-            .setMeltingPoint(7200)
-            .setBlastFurnaceTemp(7200)
+            .setTool(32_768, 7, 20.0f)
+            .setMeltingPoint(7_200)
+            .setBlastFurnaceTemp(7_200)
             .setBlastFurnaceRequired(true)
             .setAspects(
                 Arrays.asList(
@@ -151,12 +145,6 @@ public class MaterialsBotania {
             .addDustItems()
             .addToolHeadItems()
             .addGearItems()
-            .setToolSpeed(1.0F)
-            .setDurability(0)
-            .setToolQuality(3)
-            .setOreValue(3)
-            .setDensityMultiplier(1)
-            .setDensityDivider(1)
             .setAspects(Arrays.asList(new TC_AspectStack(TCAspects.TERRA, 2), new TC_AspectStack(TCAspects.VICTUS, 2)))
             .constructMaterial();
     }
@@ -183,12 +171,6 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setToolSpeed(1.0F)
-            .setDurability(0)
-            .setToolQuality(3)
-            .setOreValue(3)
-            .setDensityMultiplier(1)
-            .setDensityDivider(1)
             .setAspects(Arrays.asList(new TC_AspectStack(TCAspects.ARBOR, 4), new TC_AspectStack(TCAspects.VICTUS, 2)))
             .constructMaterial();
     }
@@ -202,12 +184,6 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setToolSpeed(1.0F)
-            .setDurability(0)
-            .setToolQuality(3)
-            .setOreValue(3)
-            .setDensityMultiplier(1)
-            .setDensityDivider(1)
             .setAspects(
                 Arrays.asList(
                     new TC_AspectStack(TCAspects.ARBOR, 4),
