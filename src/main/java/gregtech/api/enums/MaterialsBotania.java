@@ -211,32 +211,13 @@ public class MaterialsBotania {
     }
 
     private static Materials loadBotaniaDragonstone() {
-        return new Materials(
-            209,
-            new TextureSet("Dragonstone", true),
-            24.0F,
-            3840,
-            12,
-            1 | 4,
-            255,
-            255,
-            255,
-            0,
-            "BotaniaDragonstone",
-            "Dragonstone",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            true,
-            2,
-            1,
-            1,
-            Dyes._NULL,
-            Arrays.asList(
-                new TC_AspectStack(TCAspects.PRAECANTATIO, 6),
-                new TC_AspectStack(TCAspects.VITREUS, 6),
-                new TC_AspectStack(TCAspects.AURAM, 4)));
+        return new MaterialBuilder().setName("BotaniaDragonstone")
+            .setDefaultLocalName("Dragonstone")
+            .setMetaItemSubID(209)
+            .setIconSet(new TextureSet("Dragonstone", true))
+            .setTool(3_840, 12, 24.0f)
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
     }
 }
