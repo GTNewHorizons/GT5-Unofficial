@@ -753,7 +753,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine is capable of Perfect Overclocks!
+     * Machine does not lose efficiency when overclocked
      *
      * @return Instance this method was called on.
      */
@@ -764,7 +764,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * t-tier Glass required for TecTech Laser Hatches.
+     * t-tier Glass required for TecTech Laser Hatches
      *
      * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
@@ -779,18 +779,18 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * Energy Hatch limited by Glass tier.
+     * Energy Hatch limited by Glass tier
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addGlassEnergyLimitInfo() {
-        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ".");
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit"));
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * Energy Hatch limited by Glass tier, t-tier Glass unlocks all.
+     * Energy Hatch limited by Glass tier, t-tier Glass unlocks all
      *
      * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
@@ -807,7 +807,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine can run recipes regardless of tier, if given enough energy.
+     * This machine can run recipes regardless of tier, if given enough energy
      *
      * @return Instance this method was called on.
      */
@@ -818,7 +818,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine can run recipes regardless of tier, if given enough energy.
+     * This machine can run recipes regardless of tier, if given enough energy
      *
      * @return Instance this method was called on.
      */
@@ -829,7 +829,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine can run recipes at most n tiers above the average energy hatch tier.
+     * This machine can run recipes at most n tiers above the average energy hatch tier
      *
      * @param n The max amount of tier skips allowed
      * @return Instance this method was called on.
