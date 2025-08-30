@@ -20,6 +20,9 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,6 +68,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -453,16 +457,23 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 drainedMagmatter = 0;
                 if (mSpecialTier >= 4) {
                     boolean foundNanite = false;
-                    boolean foundOtherNanite = false;
-                    ItemStack inputNanite = recipe.mOutputs[0];
+                    ItemStack outputNanite = recipe.mOutputs[0];
+                    List<MaterialStack> inputNaniteMats = new ArrayList<>();
+
+                    for (ItemStack input : recipe.mInputs) {
+                        ItemData data = GTOreDictUnificator.getAssociation(input);
+                        if (data == null) {
+                            continue;
+                        }
+                        if (data.mPrefix == OrePrefixes.nanite) {
+                            inputNaniteMats.add(data.mMaterial);
+                        }
+                    }
 
                     int busWithNaniteIndex = 0;
                     int slotWithNaniteIndex = 0;
 
-                    for (int i = 0; i < mInputBusses.size(); i++) {
-                        if (foundNanite) {
-                            break;
-                        }
+                    busScan: for (int i = 0; i < mInputBusses.size(); i++) {
                         MTEHatchInputBus inputBus = mInputBusses.get(i);
                         ItemStack[] busInventory = inputBus.getRealInventory();
                         for (int j = 0; j < busInventory.length; j++) {
@@ -481,12 +492,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                                     continue;
                                 }
                                 if (data.mPrefix == OrePrefixes.nanite) {
-                                    if (inputItem.isItemEqual(inputNanite)) {
+                                    if (inputItem.isItemEqual(outputNanite)) {
                                         busWithNaniteIndex = i;
                                         slotWithNaniteIndex = j;
                                         foundNanite = true;
                                     } else {
-                                        foundOtherNanite = true;
+                                        if (!inputNaniteMats
+                                            .contains(GTOreDictUnificator.getAssociation(inputItem).mMaterial)) {
+                                            foundNanite = false;
+                                            break busScan;
+                                        }
                                     }
                                 }
                             }
@@ -495,7 +510,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
                     if (renderActive) {
                         TileEntityNanoForgeRenderer tile = getRenderer();
-                        ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
+                        ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
                         if (data != null) {
                             Materials mat = data.mMaterial.mMaterial;
                             short[] color = mat.mRGBa;
@@ -505,7 +520,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         }
                     }
 
-                    if (foundNanite && !foundOtherNanite) {
+                    if (foundNanite) {
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,
@@ -520,7 +535,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         }
                     }
                 }
-                maxParallel = Math.max((int) (drainedMagmatter / (288 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
+                maxParallel = Math
+                    .max((int) (drainedMagmatter / (288 / GTUtility.powInt(2, 4 - recipe.mSpecialValue))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
             }
