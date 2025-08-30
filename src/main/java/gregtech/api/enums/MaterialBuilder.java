@@ -36,7 +36,6 @@ public class MaterialBuilder {
     private boolean hasCorrespondingFluid = false;
     private boolean hasCorrespondingGas = false;
     private boolean canBeCracked = false;
-    private int gasTemperature = 300;
     private Element element;
     private String chemicalFormula = "?";
 
@@ -333,11 +332,6 @@ public class MaterialBuilder {
 
     public MaterialBuilder addAspect(TCAspects aspect, int amount) {
         this.aspects.add(new TCAspects.TC_AspectStack(aspect, amount));
-        return this;
-    }
-
-    public MaterialBuilder setGasTemperature(int gasTemperature) {
-        this.gasTemperature = gasTemperature;
         return this;
     }
 
