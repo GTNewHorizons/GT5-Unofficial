@@ -200,33 +200,14 @@ public class MaterialsBotania {
     }
 
     private static Materials loadManaDiamond() {
-        return new Materials(
-            208,
-            new TextureSet("ManaDiamond", true),
-            16.0F,
-            2560,
-            8,
-            1 | 4,
-            255,
-            255,
-            255,
-            0,
-            "ManaDiamond",
-            "Mana Diamond",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            true,
-            2,
-            1,
-            1,
-            Dyes._NULL,
-            Arrays.asList(
-                new TC_AspectStack(TCAspects.PRAECANTATIO, 4),
-                new TC_AspectStack(TCAspects.VITREUS, 4),
-                new TC_AspectStack(TCAspects.LUCRUM, 4)));
+        return new MaterialBuilder().setName("ManaDiamond")
+            .setDefaultLocalName("Mana Diamond")
+            .setMetaItemSubID(208)
+            .setIconSet(new TextureSet("ManaDiamond", true))
+            .setTool(2_560, 8, 16.0f)
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
     }
 
     private static Materials loadBotaniaDragonstone() {
