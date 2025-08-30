@@ -338,11 +338,13 @@ public class MaterialBuilder {
         return this;
     }
 
+    @Deprecated
     public MaterialBuilder setMaterialList(List<MaterialStack> materialList) {
         this.materialList = materialList;
         return this;
     }
 
+    @Deprecated
     public MaterialBuilder setMaterialList(MaterialStack... materials) {
         this.materialList = Arrays.asList(materials);
         return this;

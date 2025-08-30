@@ -1,38 +1,5 @@
 package gregtech.loaders.materials;
 
-import static gregtech.api.enums.Materials.Aluminium;
-import static gregtech.api.enums.Materials.Antimony;
-import static gregtech.api.enums.Materials.Arsenic;
-import static gregtech.api.enums.Materials.Boron;
-import static gregtech.api.enums.Materials.Brick;
-import static gregtech.api.enums.Materials.Butadiene;
-import static gregtech.api.enums.Materials.Calcium;
-import static gregtech.api.enums.Materials.Carbon;
-import static gregtech.api.enums.Materials.Chlorine;
-import static gregtech.api.enums.Materials.Chrome;
-import static gregtech.api.enums.Materials.Clay;
-import static gregtech.api.enums.Materials.Cobalt;
-import static gregtech.api.enums.Materials.Copper;
-import static gregtech.api.enums.Materials.Fluorine;
-import static gregtech.api.enums.Materials.Glass;
-import static gregtech.api.enums.Materials.Hydrogen;
-import static gregtech.api.enums.Materials.Iron;
-import static gregtech.api.enums.Materials.Lead;
-import static gregtech.api.enums.Materials.Magnesium;
-import static gregtech.api.enums.Materials.Nickel;
-import static gregtech.api.enums.Materials.Niobium;
-import static gregtech.api.enums.Materials.Nitrogen;
-import static gregtech.api.enums.Materials.Oxygen;
-import static gregtech.api.enums.Materials.PhosphoricAcid;
-import static gregtech.api.enums.Materials.Phosphorus;
-import static gregtech.api.enums.Materials.Potassium;
-import static gregtech.api.enums.Materials.Silicon;
-import static gregtech.api.enums.Materials.Sodium;
-import static gregtech.api.enums.Materials.Styrene;
-import static gregtech.api.enums.Materials.Sulfur;
-import static gregtech.api.enums.Materials.SulfuricAcid;
-import static gregtech.api.enums.Materials.Zinc;
-
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -43,7 +10,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.CustomGlyphs;
 
 public class MaterialsInit1 {
@@ -5245,7 +5211,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(200, 180, 160)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 2)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5259,7 +5227,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(175, 175, 175)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5288,10 +5258,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(135, 222, 170)
             .setColor(Dyes.dyeCyan)
-            .setMaterialList(
-                new MaterialStack(Carbon, 3),
-                new MaterialStack(Hydrogen, 5),
-                new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Chlorine, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5321,7 +5290,8 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(63, 52, 128)
             .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3))
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Hydrogen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5367,7 +5337,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(230, 230, 240)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Antimony, 2)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5380,7 +5351,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 255, 255)
             .setColor(Dyes.dyeGreen)
-            .setMaterialList(new MaterialStack(Arsenic, 2), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Arsenic, 2)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5457,7 +5429,8 @@ public class MaterialsInit1 {
             .setRGB(26, 26, 26)
             .setColor(Dyes.dyeGray)
             .setFuel(MaterialBuilder.FuelType.Gas, 360)
-            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5527,10 +5500,9 @@ public class MaterialsInit1 {
             .setRGB(155, 86, 67)
             .setColor(Dyes.dyeBrown)
             .setExtraData(0)
-            .setMaterialList(
-                new MaterialStack(Aluminium, 2),
-                new MaterialStack(Silicon, 4),
-                new MaterialStack(Oxygen, 11))
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Oxygen, 11)
             .constructMaterial();
     }
 
@@ -5675,10 +5647,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(0, 50, 65)
             .setColor(Dyes.dyeGray)
-            .setMaterialList(
-                new MaterialStack(Carbon, 6),
-                new MaterialStack(Hydrogen, 5),
-                new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Chlorine, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5763,7 +5734,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(102, 128, 0)
             .setColor(Dyes.dyeGreen)
-            .setMaterialList(new MaterialStack(Cobalt, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5810,7 +5782,8 @@ public class MaterialsInit1 {
             .setRGB(15, 15, 15)
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(1_599)
-            .setMaterialList(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -5903,7 +5876,8 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(153, 167, 163)
             .setColor(Dyes.dyeLightGray)
-            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 1)
             .constructMaterial();
     }
 
@@ -5975,7 +5949,9 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(180, 180, 180)
             .setColor(Dyes.dyeGray)
-            .setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4))
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Iron, 4)
             .constructMaterial();
     }
 
@@ -5987,7 +5963,9 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(151, 99, 42)
             .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -6063,8 +6041,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .setARGB(127, 100, 200, 130)
             .setColor(Dyes.dyeCyan)
-            .setExtraData(0)
-            .setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 3)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5),
@@ -6281,7 +6259,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 225, 225)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .constructMaterial();
     }
 
@@ -6340,7 +6319,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 221, 85)
             .setColor(Dyes.dyeYellow)
-            .setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Lead, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -6411,11 +6391,10 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBlack)
             .setBlastFurnaceRequired(true)
             .setBlastFurnaceTemp(1_500)
-            .setMaterialList(
-                new MaterialStack(Nickel, 1),
-                new MaterialStack(Zinc, 1),
-                new MaterialStack(Iron, 4),
-                new MaterialStack(Oxygen, 8))
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Iron, 4)
+            .addMaterial(Materials.Oxygen, 8)
             .constructMaterial();
     }
 
@@ -6604,11 +6583,10 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(245, 245, 245)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 6),
-                new MaterialStack(Oxygen, 1),
-                new MaterialStack(Silicon, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Silicon, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -6640,7 +6618,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(120, 66, 55)
             .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Potassium, 2)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -6699,7 +6678,9 @@ public class MaterialsInit1 {
             .addOreItems()
             .setRGB(43, 17, 0)
             .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7))
+            .addMaterial(Materials.Calcium, 2)
+            .addMaterial(Materials.Niobium, 2)
+            .addMaterial(Materials.Oxygen, 7)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -6743,7 +6724,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(240, 240, 240)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -6874,8 +6856,8 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .setARGB(127, 100, 100, 200)
             .setColor(Dyes.dyeBlue)
-            .setExtraData(0)
-            .setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 3)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5),
@@ -6908,8 +6890,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 255, 255)
             .setColor(Dyes.dyeLightGray)
-            .setExtraData(0)
-            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -6957,7 +6939,9 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(220, 220, 255)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7043,7 +7027,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 255, 245)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7478,10 +7463,9 @@ public class MaterialsInit1 {
             .addCell()
             .setRGB(212, 170, 0)
             .setColor(Dyes.dyeBrown)
-            .setMaterialList(
-                new MaterialStack(Carbon, 15),
-                new MaterialStack(Hydrogen, 16),
-                new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 16)
+            .addMaterial(Materials.Oxygen, 2)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7496,7 +7480,8 @@ public class MaterialsInit1 {
             .setRGB(232, 105, 0)
             .setColor(Dyes.dyeOrange)
             .setFuel(MaterialBuilder.FuelType.Gas, 206)
-            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -7512,7 +7497,8 @@ public class MaterialsInit1 {
             .setRGB(182, 55, 30)
             .setColor(Dyes.dyeOrange)
             .setFuel(MaterialBuilder.FuelType.Gas, 296)
-            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 10))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -7528,7 +7514,8 @@ public class MaterialsInit1 {
             .setRGB(207, 80, 5)
             .setColor(Dyes.dyeOrange)
             .setFuel(MaterialBuilder.FuelType.Gas, 256)
-            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 8))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -7543,11 +7530,10 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(220, 200, 180)
             .setColor(Dyes.dyeCyan)
-            .setMaterialList(
-                new MaterialStack(Calcium, 1),
-                new MaterialStack(Carbon, 4),
-                new MaterialStack(Oxygen, 4),
-                new MaterialStack(Hydrogen, 6))
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Oxygen, 4)
+            .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7562,7 +7548,8 @@ public class MaterialsInit1 {
             .setRGB(14, 72, 128)
             .setColor(Dyes.dyeBrown)
             .setFuel(MaterialBuilder.FuelType.Gas, 24)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .constructMaterial();
     }
 
@@ -7575,10 +7562,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(63, 159, 128)
             .setColor(Dyes.dyeCyan)
-            .setMaterialList(
-                new MaterialStack(Nitrogen, 1),
-                new MaterialStack(Hydrogen, 2),
-                new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Chlorine, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7592,10 +7578,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(137, 44, 160)
             .setColor(Dyes.dyePurple)
-            .setMaterialList(
-                new MaterialStack(Carbon, 1),
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Chlorine, 3))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7609,10 +7594,9 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(200, 44, 160)
             .setColor(Dyes.dyeMagenta)
-            .setMaterialList(
-                new MaterialStack(Carbon, 1),
-                new MaterialStack(Hydrogen, 3),
-                new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Chlorine, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7626,7 +7610,8 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(85, 34, 0)
             .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Carbon, 9), new MaterialStack(Hydrogen, 12))
+            .addMaterial(Materials.Carbon, 9)
+            .addMaterial(Materials.Hydrogen, 12)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7640,10 +7625,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(0, 68, 85)
             .setColor(Dyes.dyeBlue)
-            .setMaterialList(
-                new MaterialStack(Carbon, 6),
-                new MaterialStack(Hydrogen, 4),
-                new MaterialStack(Chlorine, 2))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 2)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7657,10 +7641,9 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(85, 68, 105)
             .setColor(Dyes.dyeGray)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 7),
-                new MaterialStack(Nitrogen, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 7)
+            .addMaterial(Materials.Nitrogen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7674,11 +7657,10 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(68, 22, 80)
             .setColor(Dyes.dyePurple)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 6),
-                new MaterialStack(Chlorine, 2),
-                new MaterialStack(Silicon, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Chlorine, 2)
+            .addMaterial(Materials.Silicon, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7692,10 +7674,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(0, 0, 85)
             .setColor(Dyes.dyeBlue)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 8),
-                new MaterialStack(Nitrogen, 2))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Nitrogen, 2)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7709,7 +7690,8 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(0, 65, 132)
             .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 4))
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 4)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7722,11 +7704,10 @@ public class MaterialsInit1 {
             .addCell()
             .setRGB(80, 29, 5)
             .setColor(Dyes.dyeBrown)
-            .setMaterialList(
-                new MaterialStack(Carbon, 3),
-                new MaterialStack(Hydrogen, 5),
-                new MaterialStack(Chlorine, 1),
-                new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Chlorine, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7741,7 +7722,8 @@ public class MaterialsInit1 {
             .setRGB(200, 200, 255)
             .setColor(Dyes.dyeLightBlue)
             .setFuel(MaterialBuilder.FuelType.Gas, 168)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -7756,7 +7738,9 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(20, 20, 70)
             .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7771,7 +7755,8 @@ public class MaterialsInit1 {
             .setRGB(225, 225, 225)
             .setColor(Dyes.dyeWhite)
             .setFuel(MaterialBuilder.FuelType.Gas, 128)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -7787,7 +7772,9 @@ public class MaterialsInit1 {
             .setRGB(135, 222, 135)
             .setColor(Dyes.dyeLime)
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 164)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7801,7 +7788,8 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(183, 200, 196)
             .setColor(Dyes.dyeLightGray)
-            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 1)
             .constructMaterial();
     }
 
@@ -7814,7 +7802,8 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(0, 136, 170)
             .setColor(Dyes.dyeLightBlue)
-            .setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1))
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Fluorine, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7828,10 +7817,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(111, 138, 145)
             .setColor(Dyes.dyeGray)
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Chlorine, 1),
-                new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7845,7 +7833,8 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(22, 21, 14)
             .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Chlorine, 3))
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Chlorine, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7859,7 +7848,8 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(20, 20, 20)
             .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8))
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7874,7 +7864,6 @@ public class MaterialsInit1 {
             .setFuel(MaterialBuilder.FuelType.Magic, 100)
             .setRGB(110, 3, 3)
             .setColor(Dyes.dyeRed)
-            .setMaterialList()
             .constructMaterial();
     }
 
@@ -7901,7 +7890,9 @@ public class MaterialsInit1 {
             .setRGB(170, 136, 0)
             .setColor(Dyes.dyeBrown)
             .setFuel(MaterialBuilder.FuelType.Diesel, 84)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7915,7 +7906,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(238, 198, 175)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7939,10 +7932,9 @@ public class MaterialsInit1 {
             .addCell()
             .addFluid()
             .setRGB(230, 226, 171)
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Nitrogen, 1),
-                new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7956,7 +7948,8 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(125, 200, 240)
             .setColor(Dyes.dyeCyan)
-            .setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7971,7 +7964,9 @@ public class MaterialsInit1 {
             .setRGB(120, 68, 33)
             .setColor(Dyes.dyeBrown)
             .setFuel(MaterialBuilder.FuelType.Gas, 288)
-            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -7985,10 +7980,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(220, 220, 0)
             .setColor(Dyes.dyeYellow)
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 3),
-                new MaterialStack(Phosphorus, 1),
-                new MaterialStack(Oxygen, 4))
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -8001,7 +7995,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(220, 220, 0)
             .setColor(Dyes.dyeYellow)
-            .setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10))
+            .addMaterial(Materials.Phosphorus, 4)
+            .addMaterial(Materials.Oxygen, 10)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8018,7 +8013,9 @@ public class MaterialsInit1 {
             .setTool(32, 1, 3.0f)
             .setRGB(170, 136, 0)
             .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Sulfur, 1))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Sulfur, 1)
             .constructMaterial();
     }
 
@@ -8034,7 +8031,8 @@ public class MaterialsInit1 {
             .setTool(32, 1, 3.0f)
             .setRGB(190, 180, 170)
             .setColor(Dyes.dyeLightGray)
-            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 8)
             .constructMaterial();
     }
 
@@ -8047,7 +8045,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(255, 153, 85)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -8063,10 +8063,9 @@ public class MaterialsInit1 {
             .setTool(32, 1, 3.0f)
             .setRGB(215, 230, 230)
             .setColor(Dyes.dyeLightGray)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 3),
-                new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Chlorine, 1)
             .constructMaterial();
     }
 
@@ -8080,7 +8079,8 @@ public class MaterialsInit1 {
             .setRGB(250, 226, 80)
             .setColor(Dyes.dyeYellow)
             .setFuel(MaterialBuilder.FuelType.Gas, 232)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -8096,7 +8096,8 @@ public class MaterialsInit1 {
             .setRGB(255, 221, 85)
             .setColor(Dyes.dyeYellow)
             .setFuel(MaterialBuilder.FuelType.Gas, 192)
-            .setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
             .setCanBeCracked(true)
             .constructMaterial();
@@ -8122,11 +8123,10 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(0, 68, 85)
             .setColor(Dyes.dyeBlue)
-            .setMaterialList(
-                new MaterialStack(Sodium, 1),
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Sulfur, 1),
-                new MaterialStack(Oxygen, 4))
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -8138,7 +8138,9 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(0, 51, 128)
             .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1))
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
     }
 
@@ -8150,7 +8152,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 255, 235)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8164,7 +8167,8 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(210, 200, 190)
             .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8181,7 +8185,8 @@ public class MaterialsInit1 {
             .setTool(128, 1, 3.0f)
             .setRGB(33, 26, 24)
             .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
+            .addMaterial(Materials.Styrene, 1)
+            .addMaterial(Materials.Butadiene, 3)
             .constructMaterial();
     }
 
@@ -8194,7 +8199,8 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(200, 200, 25)
             .setColor(Dyes.dyeYellow)
-            .setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -8207,7 +8213,8 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(160, 160, 20)
             .setColor(Dyes.dyeYellow)
-            .setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8221,7 +8228,8 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(125, 125, 125)
             .setColor(Dyes.dyeGray)
-            .setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Fluorine, 4)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8235,7 +8243,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(15, 40, 40)
             .setColor(Dyes.dyeBlack)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Nitrogen, 4), new MaterialStack(Oxygen, 8))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Nitrogen, 4)
+            .addMaterial(Materials.Oxygen, 8)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8249,7 +8259,8 @@ public class MaterialsInit1 {
             .setRGB(80, 29, 5)
             .setColor(Dyes.dyeBrown)
             .setFuel(MaterialBuilder.FuelType.Gas, 328)
-            .setMaterialList(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8))
+            .addMaterial(Materials.Carbon, 7)
+            .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8263,7 +8274,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(255, 179, 128)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8277,10 +8290,9 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(225, 240, 240)
             .setColor(Dyes.dyeLightGray)
-            .setMaterialList(
-                new MaterialStack(Carbon, 2),
-                new MaterialStack(Hydrogen, 3),
-                new MaterialStack(Chlorine, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Chlorine, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -8467,10 +8479,9 @@ public class MaterialsInit1 {
             .setMeltingPoint(151)
             .setExtraData(1)
             // SIH2CL2
-            .setMaterialList(
-                new MaterialStack(Silicon, 1),
-                new MaterialStack(Hydrogen, 2),
-                new MaterialStack(Chlorine, 2))
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Chlorine, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -8490,7 +8501,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(272)
             .setExtraData(1)
             // SI2CL6
-            .setMaterialList(new MaterialStack(Silicon, 2), new MaterialStack(Chlorine, 6))
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Chlorine, 6)
             .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
             .constructMaterial();
     }
@@ -8506,7 +8518,8 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(88)
             // SIH4
-            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Hydrogen, 4))
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Hydrogen, 4)
             .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
             .constructMaterial();
     }
@@ -8543,7 +8556,8 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(204)
             // SICL4
-            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 4))
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Chlorine, 4)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -8562,7 +8576,8 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(178)
             // SIF4
-            .setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 4))
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Fluorine, 4)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -8581,10 +8596,9 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(139)
             // HSICL3
-            .setMaterialList(
-                new MaterialStack(Hydrogen, 1),
-                new MaterialStack(Silicon, 1),
-                new MaterialStack(Chlorine, 3))
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Chlorine, 3)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -9161,10 +9175,9 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setExtraData(0)
-            .setMaterialList(
-                new MaterialStack(Aluminium, 1),
-                new MaterialStack(Oxygen, 3),
-                new MaterialStack(Hydrogen, 3))
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addMaterial(Materials.Hydrogen, 3)
             .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2)))
             .constructMaterial();
     }
@@ -9182,8 +9195,8 @@ public class MaterialsInit1 {
             .setMeltingPoint(2_054)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setExtraData(0)
-            .setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 3)
             .setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2)))
             .constructMaterial();
     }
@@ -9536,11 +9549,9 @@ public class MaterialsInit1 {
             .setMeltingPoint(1_012)
             .setBlastFurnaceTemp(1_012)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setExtraData(0)
-            .setMaterialList(
-                new MaterialStack(Sodium, 3),
-                new MaterialStack(Aluminium, 1),
-                new MaterialStack(Fluorine, 6))
+            .addMaterial(Materials.Sodium, 3)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Fluorine, 6)
             .constructMaterial();
     }
 
@@ -9592,7 +9603,7 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(192, 120, 32)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(new MaterialStack(SulfuricAcid, 1))
+            .addMaterial(Materials.SulfuricAcid, 1)
             .constructMaterial();
     }
 
@@ -10359,7 +10370,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(84, 64, 61)
             .setColor(Dyes.dyeGray)
-            .setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3))
+            .addMaterial(Materials.Styrene, 1)
+            .addMaterial(Materials.Butadiene, 3)
             .constructMaterial();
     }
 
@@ -10502,11 +10514,9 @@ public class MaterialsInit1 {
             .setMeltingPoint(1_800)
             .setBlastFurnaceRequired(false)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setExtraData(0)
-            .setMaterialList(
-                new MaterialStack(Sodium, 1),
-                new MaterialStack(Aluminium, 1),
-                new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -10523,8 +10533,10 @@ public class MaterialsInit1 {
             .setMeltingPoint(851)
             .setBlastFurnaceRequired(false)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setExtraData(1)
-            .setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
@@ -11022,7 +11034,8 @@ public class MaterialsInit1 {
             .addMetalItems()
             .setRGB(230, 243, 230)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7))
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Glass, 7)
             .addCentrifugeRecipe()
             .constructMaterial();
     }
@@ -11105,7 +11118,8 @@ public class MaterialsInit1 {
             .setRGB(173, 160, 155)
             .setExtraData(2)
             .setColor(Dyes.dyeBrown)
-            .setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1))
+            .addMaterial(Materials.Brick, 1)
+            .addMaterial(Materials.Clay, 1)
             .constructMaterial();
     }
 
@@ -11639,7 +11653,8 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 228, 225)
             .setColor(Dyes.dyePink)
-            .setMaterialList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -11653,10 +11668,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(51, 125, 89)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(
-                new MaterialStack(Carbon, 12),
-                new MaterialStack(Hydrogen, 14),
-                new MaterialStack(Nitrogen, 4))
+            .addMaterial(Materials.Carbon, 12)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Nitrogen, 4)
             .constructMaterial();
     }
 
@@ -11669,11 +11683,10 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(161, 222, 166)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(
-                new MaterialStack(Carbon, 12),
-                new MaterialStack(Hydrogen, 10),
-                new MaterialStack(Nitrogen, 2),
-                new MaterialStack(Chlorine, 2))
+            .addMaterial(Materials.Carbon, 12)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Chlorine, 2)
             .constructMaterial();
     }
 
@@ -11687,7 +11700,8 @@ public class MaterialsInit1 {
             .setRGB(102, 156, 64)
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(248)
-            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -11701,10 +11715,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(36, 110, 87)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(
-                new MaterialStack(Carbon, 20),
-                new MaterialStack(Hydrogen, 14),
-                new MaterialStack(Oxygen, 4))
+            .addMaterial(Materials.Carbon, 20)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -11717,12 +11730,11 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(143, 181, 26)
             .setColor(Dyes.dyeLime)
-            .setMaterialList(
-                new MaterialStack(Carbon, 6),
-                new MaterialStack(Hydrogen, 4),
-                new MaterialStack(Chlorine, 1),
-                new MaterialStack(Nitrogen, 1),
-                new MaterialStack(Oxygen, 2))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -11735,7 +11747,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(54, 133, 71)
             .setColor(Dyes.dyeOrange)
-            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 4))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -11768,10 +11782,9 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(129, 34, 141)
             .setColor(Dyes.dyePurple)
-            .setMaterialList(
-                new MaterialStack(Potassium, 1),
-                new MaterialStack(Nitrogen, 1),
-                new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -11784,10 +11797,9 @@ public class MaterialsInit1 {
             .addDustItems()
             .setRGB(255, 8, 127)
             .setColor(Dyes.dyePink)
-            .setMaterialList(
-                new MaterialStack(Potassium, 2),
-                new MaterialStack(Chrome, 2),
-                new MaterialStack(Oxygen, 7))
+            .addMaterial(Materials.Potassium, 2)
+            .addMaterial(Materials.Chrome, 2)
+            .addMaterial(Materials.Oxygen, 7)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -11812,10 +11824,9 @@ public class MaterialsInit1 {
             .addFluid()
             .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(
-                new MaterialStack(Carbon, 6),
-                new MaterialStack(Hydrogen, 14),
-                new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 1)
             .constructMaterial();
     }
 
@@ -11866,10 +11877,9 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(
-                new MaterialStack(Carbon, 5),
-                new MaterialStack(Hydrogen, 12),
-                new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 12)
+            .addMaterial(Materials.Oxygen, 1)
             .constructMaterial();
     }
 
@@ -11882,10 +11892,9 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
-            .setMaterialList(
-                new MaterialStack(Carbon, 5),
-                new MaterialStack(Hydrogen, 14),
-                new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 1)
             .constructMaterial();
     }
 
@@ -11898,7 +11907,8 @@ public class MaterialsInit1 {
             .addGas()
             .setRGB(125, 200, 255)
             .setColor(Dyes.dyeBlue)
-            .setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 1))
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -11913,7 +11923,8 @@ public class MaterialsInit1 {
             .setRGB(255, 255, 255)
             .setColor(Dyes.dyeWhite)
             .setFuel(MaterialBuilder.FuelType.Diesel, 80)
-            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 18)
             .constructMaterial();
     }
 
@@ -12209,9 +12220,8 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setBlastFurnaceTemp(9_900)
             .setMeltingPoint(9_900)
-            .setMaterialList(
-                new MaterialStack(Materials.SiliconDioxide, 26_244),
-                new MaterialStack(Materials.Diamond, 9))
+            .addMaterial(Materials.SiliconDioxide, 26_244)
+            .addMaterial(Materials.Diamond, 9)
             .setColor(Dyes.dyeBlack)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_EV)
@@ -12908,7 +12918,7 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setRGB(20, 20, 20)
-            .setMaterialList(new MaterialStack(Carbon, 1))
+            .addMaterial(Materials.Carbon, 1)
             .constructMaterial()
             .disableAutoGeneratedRecycleRecipes();
     }
@@ -12920,7 +12930,8 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setRGB(15, 51, 65)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.PhosphoricAcid, 1)
             .constructMaterial()
             .disableAutoGeneratedRecycleRecipes();
     }
@@ -12934,7 +12945,8 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setRGB(110, 110, 110)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.PhosphoricAcid, 1)
             .constructMaterial()
             .disableAutoGeneratedRecycleRecipes();
     }
@@ -12959,7 +12971,7 @@ public class MaterialsInit1 {
             .addGas()
             .addCell()
             .setRGB(190, 244, 250)
-            .setMaterialList(new MaterialStack(Oxygen, 3))
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
