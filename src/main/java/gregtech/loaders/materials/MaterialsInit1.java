@@ -1,161 +1,5 @@
 package gregtech.loaders.materials;
 
-import static gregtech.api.enums.Materials.Almandine;
-import static gregtech.api.enums.Materials.Aluminium;
-import static gregtech.api.enums.Materials.Americium;
-import static gregtech.api.enums.Materials.Andradite;
-import static gregtech.api.enums.Materials.Antimony;
-import static gregtech.api.enums.Materials.Ardite;
-import static gregtech.api.enums.Materials.Argon;
-import static gregtech.api.enums.Materials.Arsenic;
-import static gregtech.api.enums.Materials.Asbestos;
-import static gregtech.api.enums.Materials.Ash;
-import static gregtech.api.enums.Materials.BandedIron;
-import static gregtech.api.enums.Materials.Barium;
-import static gregtech.api.enums.Materials.Basalt;
-import static gregtech.api.enums.Materials.Beryllium;
-import static gregtech.api.enums.Materials.Biotite;
-import static gregtech.api.enums.Materials.Bismuth;
-import static gregtech.api.enums.Materials.BismuthBronze;
-import static gregtech.api.enums.Materials.BlackBronze;
-import static gregtech.api.enums.Materials.BlackSteel;
-import static gregtech.api.enums.Materials.Blaze;
-import static gregtech.api.enums.Materials.Blizz;
-import static gregtech.api.enums.Materials.Boron;
-import static gregtech.api.enums.Materials.Brass;
-import static gregtech.api.enums.Materials.Brick;
-import static gregtech.api.enums.Materials.Butadiene;
-import static gregtech.api.enums.Materials.Cadmium;
-import static gregtech.api.enums.Materials.Caesium;
-import static gregtech.api.enums.Materials.Calcite;
-import static gregtech.api.enums.Materials.Calcium;
-import static gregtech.api.enums.Materials.Carbon;
-import static gregtech.api.enums.Materials.CarbonDioxide;
-import static gregtech.api.enums.Materials.Cerium;
-import static gregtech.api.enums.Materials.CertusQuartz;
-import static gregtech.api.enums.Materials.Chlorine;
-import static gregtech.api.enums.Materials.Chrome;
-import static gregtech.api.enums.Materials.Clay;
-import static gregtech.api.enums.Materials.Coal;
-import static gregtech.api.enums.Materials.CoalFuel;
-import static gregtech.api.enums.Materials.Cobalt;
-import static gregtech.api.enums.Materials.ConductiveIron;
-import static gregtech.api.enums.Materials.Copper;
-import static gregtech.api.enums.Materials.CosmicNeutronium;
-import static gregtech.api.enums.Materials.CrystallineAlloy;
-import static gregtech.api.enums.Materials.DarkAsh;
-import static gregtech.api.enums.Materials.DarkSteel;
-import static gregtech.api.enums.Materials.Deuterium;
-import static gregtech.api.enums.Materials.Diamond;
-import static gregtech.api.enums.Materials.Draconium;
-import static gregtech.api.enums.Materials.ElectricalSteel;
-import static gregtech.api.enums.Materials.Electrotine;
-import static gregtech.api.enums.Materials.Electrum;
-import static gregtech.api.enums.Materials.EndSteel;
-import static gregtech.api.enums.Materials.EnderEye;
-import static gregtech.api.enums.Materials.EnderPearl;
-import static gregtech.api.enums.Materials.EnderiumBase;
-import static gregtech.api.enums.Materials.Endstone;
-import static gregtech.api.enums.Materials.EnergeticAlloy;
-import static gregtech.api.enums.Materials.EnergeticSilver;
-import static gregtech.api.enums.Materials.Epoxid;
-import static gregtech.api.enums.Materials.Europium;
-import static gregtech.api.enums.Materials.Flint;
-import static gregtech.api.enums.Materials.Fluorine;
-import static gregtech.api.enums.Materials.Gallium;
-import static gregtech.api.enums.Materials.GarnetRed;
-import static gregtech.api.enums.Materials.GarnetYellow;
-import static gregtech.api.enums.Materials.Glass;
-import static gregtech.api.enums.Materials.Glyceryl;
-import static gregtech.api.enums.Materials.Gold;
-import static gregtech.api.enums.Materials.GraniteBlack;
-import static gregtech.api.enums.Materials.Grossular;
-import static gregtech.api.enums.Materials.HSSG;
-import static gregtech.api.enums.Materials.Helium;
-import static gregtech.api.enums.Materials.Hydrogen;
-import static gregtech.api.enums.Materials.Indium;
-import static gregtech.api.enums.Materials.Iridium;
-import static gregtech.api.enums.Materials.Iron;
-import static gregtech.api.enums.Materials.Lazurite;
-import static gregtech.api.enums.Materials.Lead;
-import static gregtech.api.enums.Materials.Lithium;
-import static gregtech.api.enums.Materials.LiveRoot;
-import static gregtech.api.enums.Materials.Magic;
-import static gregtech.api.enums.Materials.Magnesium;
-import static gregtech.api.enums.Materials.Magnetite;
-import static gregtech.api.enums.Materials.Manganese;
-import static gregtech.api.enums.Materials.MelodicAlloy;
-import static gregtech.api.enums.Materials.Mercury;
-import static gregtech.api.enums.Materials.Methane;
-import static gregtech.api.enums.Materials.Molybdenum;
-import static gregtech.api.enums.Materials.Naquadah;
-import static gregtech.api.enums.Materials.Naquadria;
-import static gregtech.api.enums.Materials.Neodymium;
-import static gregtech.api.enums.Materials.NetherStar;
-import static gregtech.api.enums.Materials.Nickel;
-import static gregtech.api.enums.Materials.Niobium;
-import static gregtech.api.enums.Materials.Nitrogen;
-import static gregtech.api.enums.Materials.NobleGases;
-import static gregtech.api.enums.Materials.Obsidian;
-import static gregtech.api.enums.Materials.Olivine;
-import static gregtech.api.enums.Materials.Oriharukon;
-import static gregtech.api.enums.Materials.Osmiridium;
-import static gregtech.api.enums.Materials.Osmium;
-import static gregtech.api.enums.Materials.Oxygen;
-import static gregtech.api.enums.Materials.Palladium;
-import static gregtech.api.enums.Materials.Phosphate;
-import static gregtech.api.enums.Materials.PhosphoricAcid;
-import static gregtech.api.enums.Materials.Phosphorus;
-import static gregtech.api.enums.Materials.Platinum;
-import static gregtech.api.enums.Materials.Potassium;
-import static gregtech.api.enums.Materials.PotassiumFeldspar;
-import static gregtech.api.enums.Materials.PulsatingIron;
-import static gregtech.api.enums.Materials.Pyrite;
-import static gregtech.api.enums.Materials.Pyrope;
-import static gregtech.api.enums.Materials.Quartzite;
-import static gregtech.api.enums.Materials.RareEarth;
-import static gregtech.api.enums.Materials.Redstone;
-import static gregtech.api.enums.Materials.RedstoneAlloy;
-import static gregtech.api.enums.Materials.RoseGold;
-import static gregtech.api.enums.Materials.Ruby;
-import static gregtech.api.enums.Materials.Rutile;
-import static gregtech.api.enums.Materials.Saltpeter;
-import static gregtech.api.enums.Materials.Samarium;
-import static gregtech.api.enums.Materials.Sapphire;
-import static gregtech.api.enums.Materials.Silicon;
-import static gregtech.api.enums.Materials.SiliconDioxide;
-import static gregtech.api.enums.Materials.Silver;
-import static gregtech.api.enums.Materials.Snow;
-import static gregtech.api.enums.Materials.Sodalite;
-import static gregtech.api.enums.Materials.Sodium;
-import static gregtech.api.enums.Materials.SoulSand;
-import static gregtech.api.enums.Materials.Spessartine;
-import static gregtech.api.enums.Materials.Steel;
-import static gregtech.api.enums.Materials.SterlingSilver;
-import static gregtech.api.enums.Materials.Stone;
-import static gregtech.api.enums.Materials.Styrene;
-import static gregtech.api.enums.Materials.Sulfur;
-import static gregtech.api.enums.Materials.SulfuricAcid;
-import static gregtech.api.enums.Materials.Tantalum;
-import static gregtech.api.enums.Materials.Thaumium;
-import static gregtech.api.enums.Materials.Thorium;
-import static gregtech.api.enums.Materials.Tin;
-import static gregtech.api.enums.Materials.Titanium;
-import static gregtech.api.enums.Materials.Tritanium;
-import static gregtech.api.enums.Materials.Tungsten;
-import static gregtech.api.enums.Materials.TungstenSteel;
-import static gregtech.api.enums.Materials.Uraninite;
-import static gregtech.api.enums.Materials.Uranium;
-import static gregtech.api.enums.Materials.Uvarovite;
-import static gregtech.api.enums.Materials.Vanadium;
-import static gregtech.api.enums.Materials.Water;
-import static gregtech.api.enums.Materials.Wood;
-import static gregtech.api.enums.Materials.Yttrium;
-import static gregtech.api.enums.Materials.Zinc;
-
-import java.util.Arrays;
-import java.util.Collections;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
@@ -163,1054 +7,13332 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
-import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.CustomGlyphs;
 
 public class MaterialsInit1 {
 
     public static void load() {
-        // spotless:off
-        Materials.Aluminium               = new Materials(  19, TextureSet.SET_DULL              ,  10.0F,    128,  2, 1|2  |8   |32|64|128      , 128, 200, 240,   0,   "Aluminium"               ,   "Aluminium"                     ,    0,       0,        933, 1700,  true, false,   3,   1,   1, Dyes.dyeLightBlue   , Element.Al        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VOLATUS, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Americium               = new Materials( 103, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1|2  |8   |32             , 200, 200, 200,   0,   "Americium"               ,   "Americium"                     ,    0,       0,       1449,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Am        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Antimony                = new Materials(  58, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 220, 220, 240,   0,   "Antimony"                ,   "Antimony"                      ,    0,       0,        903,    0, false, false,   2,   1,   1, Dyes.dyeLightGray   , Element.Sb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
-        Materials.Argon                   = new Materials(  24, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0, 255,   0, 240,   "Argon"                   ,   "Argon"                         ,    0,       0,         83,    0, false,  true,   5,   1,   1, Dyes.dyeGreen       , Element.Ar        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
-        Materials.Arsenic                 = new Materials(  39, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8|16|32             , 255, 255, 255,   0,   "Arsenic"                 ,   "Arsenic"                       ,    0,       0,       1090,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , Element.As        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 3)));
-        Materials.Barium                  = new Materials(  63, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 255,   0,   "Barium"                  ,   "Barium"                        ,    0,       0,       1000,    0, false, false,   1,   1,   1, Dyes._NULL          , Element.Ba        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 3)));
-        Materials.Beryllium               = new Materials(   8, TextureSet.SET_METALLIC          ,  14.0F,     64,  2, 1|2  |8   |32|64          , 100, 180, 100,   0,   "Beryllium"               ,   "Beryllium"                     ,    0,       0,       1560,    0, false, false,   6,   1,   1, Dyes.dyeGreen       , Element.Be        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
-        Materials.Bismuth                 = new Materials(  90, TextureSet.SET_METALLIC          ,   6.0F,     64,  1, 1|2  |8   |32|64|128      , 100, 160, 160,   0,   "Bismuth"                 ,   "Bismuth"                       ,    0,       0,        544,    0, false, false,   2,   1,   1, Dyes.dyeCyan        , Element.Bi        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
-        Materials.Boron                   = new Materials(   9, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1         |32             , 210, 250, 210,   0,   "Boron"                   ,   "Boron"                         ,    0,       0,       2349,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Element.B         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
-        Materials.Caesium                 = new Materials(  62, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 196, 222,   0,   "Caesium"                 ,   "Caesium"                       ,    0,       0,        301,    0, false, false,   4,   1,   1, Dyes._NULL          , Element.Cs        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Calcium                 = new Materials(  26, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1         |32             , 255, 245, 245,   0,   "Calcium"                 ,   "Calcium"                       ,    0,       0,       1115, 1115,  true, false,   4,   1,   1, Dyes.dyePink        , Element.Ca        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SANO, 1), new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
-        Materials.Carbon                  = new Materials(  10, TextureSet.SET_DULL              ,   1.0F,     64,  2, 1|2    |16|32|64|128      ,  20,  20,  20,   0,   "Carbon"                  ,   "Carbon"                        ,    0,       0,       3800,    0, false, false,   2,   1,   1, Dyes.dyeBlack       , Element.C         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
-        Materials.Cadmium                 = new Materials(  55, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1    |8   |32             ,  50,  50,  60,   0,   "Cadmium"                 ,   "Cadmium"                       ,    0,       0,        594,    0, false, false,   3,   1,   1, Dyes.dyeGray        , Element.Cd        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)));
-        Materials.Cerium                  = new Materials(  65, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 123, 212, 144,   0,   "Cerium"                  ,   "Cerium"                        ,    0,       0,       1068, 1068,  true, false,   4,   1,   1, Dyes._NULL          , Element.Ce        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Chlorine                = new Materials(  23, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255, 255,   0,   "Chlorine"                ,   "Chlorine"                      ,    0,       0,        171,    0, false, false,   2,   1,   1, Dyes.dyeCyan        , Element.Cl        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2), new TCAspects.TC_AspectStack(TCAspects.PANNUS, 1)));
-        Materials.Chrome                  = new Materials(  30, TextureSet.SET_SHINY             ,  11.0F,    256,  3, 1|2  |8   |32|64|128      , 255, 230, 230,   0,   "Chrome"                  ,   "Chrome"                        ,    0,       0,       2180, 1700,  true, false,   5,   1,   1, Dyes.dyePink        , Element.Cr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
-        Materials.Cobalt                  = new Materials(  33, TextureSet.SET_METALLIC          ,   8.0F,    512,  3, 1|2  |8   |32|64|128      ,  80,  80, 250,   0,   "Cobalt"                  ,   "Cobalt"                        ,    0,       0,       1768, 1700,  true, false,   3,   1,   1, Dyes.dyeBlue        , Element.Co        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Copper                  = new Materials(  35, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2  |8   |32   |128      , 255, 100,   0,   0,   "Copper"                  ,   "Copper"                        ,    0,       0,       1357,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , Element.Cu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1)));
-        Materials.Deuterium               = new Materials(   2, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255,   0, 240,   "Deuterium"               ,   "Deuterium"                     ,    0,       0,         14,    0, false,  true,  10,   1,   1, Dyes.dyeYellow      , Element.D         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 3)));
-        Materials.Dysprosium              = new Materials(  73, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 105, 209,  80,   0,   "Dysprosium"              ,   "Dysprosium"                    ,    0,       0,       1680, 1680,  true, false,   4,   1,   1, Dyes._NULL          , Element.Dy        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3)));
-        Materials.Empty                   = new Materials(   0, TextureSet.SET_NONE              ,   1.0F,      0,  2, 256/*Only when needed*/   , 255, 255, 255, 255,   "Empty"                   ,   "Empty"                         ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes._NULL          , Element._NULL     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2)));
-        Materials.Erbium                  = new Materials(  75, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 152,  81,   0,   "Erbium"                  ,   "Erbium"                        ,    0,       0,       1802, 1802,  true, false,   4,   1,   1, Dyes._NULL          , Element.Er        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Europium                = new Materials(  70, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 246, 181, 255,   0,   "Europium"                ,   "Europium"                      ,    0,       0,       1099, 1099,  true, false,   4,   1,   1, Dyes._NULL          , Element.Eu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Fluorine                = new Materials(  14, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255, 255, 127,   "Fluorine"                ,   "Fluorine"                      ,    0,       0,         53,    0, false,  true,   2,   1,   1, Dyes.dyeGreen       , Element.F         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2)));
-        Materials.Gadolinium              = new Materials(  71, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  59, 186,  28,   0,   "Gadolinium"              ,   "Gadolinium"                    ,    0,       0,       1585, 1585,  true, false,   4,   1,   1, Dyes._NULL          , Element.Gd        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Gallium                 = new Materials(  37, TextureSet.SET_SHINY             ,   1.0F,     64,  2, 1|2  |8   |32             , 220, 220, 255,   0,   "Gallium"                 ,   "Gallium"                       ,    0,       0,        302,    0, false, false,   5,   1,   1, Dyes.dyeLightGray   , Element.Ga        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
-        Materials.Gold                    = new Materials(  86, TextureSet.SET_SHINY             ,  12.0F,     64,  2, 1|2  |8   |32|64|128      , 255, 255,  30,   0,   "Gold"                    ,   "Gold"                          ,    0,       0,       1337,    0, false, false,   4,   1,   1, Dyes.dyeYellow      , Element.Au        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2)));
-        Materials.Holmium                 = new Materials(  74, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  22,   8, 166,   0,   "Holmium"                 ,   "Holmium"                       ,    0,       0,       1734, 1734,  true, false,   4,   1,   1, Dyes._NULL          , Element.Ho        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Hydrogen                = new Materials(   1, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0,   0, 255, 240,   "Hydrogen"                ,   "Hydrogen"                      ,    1,      20,         14,    0, false,  true,   2,   1,   1, Dyes.dyeBlue        , Element.H         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
-        Materials.Helium                  = new Materials(   4, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255,   0, 240,   "Helium"                  ,   "Helium"                        ,    0,       0,          1,    0, false,  true,   5,   1,   1, Dyes.dyeYellow      , Element.He        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
-        Materials.Helium_3                = new Materials(   5, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255,   0, 240,   "Helium_3"                ,   "Helium-3"                      ,    0,       0,          1,    0, false,  true,  10,   1,   1, Dyes.dyeYellow      , Element.He_3      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 3)));
-        Materials.Indium                  = new Materials(  56, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  64,   0, 128,   0,   "Indium"                  ,   "Indium"                        ,    0,       0,        429,    0, false, false,   4,   1,   1, Dyes.dyeGray        , Element.In        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Iridium                 = new Materials(  84, TextureSet.SET_DULL              ,   6.0F,   2560,  3, 1|2  |8   |32|64|128      , 240, 240, 245,   0,   "Iridium"                 ,   "Iridium"                       ,    0,       0,       2719, 4500,  true, false,  10,   1,   1, Dyes.dyeWhite       , Element.Ir        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Iron                    = new Materials(  32, TextureSet.SET_METALLIC          ,   6.0F,    256,  2, 1|2  |8   |32|64|128      , 200, 200, 200,   0,   "Iron"                    ,   "Iron"                          ,    0,       0,       1811,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Fe        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3)));
-        Materials.Lanthanum               = new Materials(  64, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 138, 138, 138,   0,   "Lanthanum"               ,   "Lanthanum"                     ,    0,       0,       1193, 1193,  true, false,   4,   1,   1, Dyes._NULL          , Element.La        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Lead                    = new Materials(  89, TextureSet.SET_DULL              ,   8.0F,     64,  1, 1|2  |8   |32|64|128      , 140, 100, 140,   0,   "Lead"                    ,   "Lead"                          ,    0,       0,        600,    0, false, false,   3,   1,   1, Dyes.dyePurple      , Element.Pb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
-        Materials.Lithium                 = new Materials(   6, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8   |32             , 225, 220, 255,   0,   "Lithium"                 ,   "Lithium"                       ,    0,       0,        454,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , Element.Li        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
-        Materials.Lutetium                = new Materials(  78, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 188,  62, 199,   0,   "Lutetium"                ,   "Lutetium"                      ,    0,       0,       1925, 1925,  true, false,   4,   1,   1, Dyes._NULL          , Element.Lu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Magic                   = new Materials(-128, TextureSet.SET_SHINY             ,   8.0F,   5120,  5, 1|2|4|8|16|32|64|128      , 100,   0, 200,   0,   "Magic"                   ,   "Magic"                         ,    5,      32,       5000,    0, false, false,   7,   1,   1, Dyes.dyePurple      , Element.Ma        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 4)));
-        Materials.Magnesium               = new Materials(  18, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 200, 200,   0,   "Magnesium"               ,   "Magnesium"                     ,    0,       0,        923,    0, false, false,   3,   1,   1, Dyes.dyePink        , Element.Mg        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.SANO, 1)));
-        Materials.Manganese               = new Materials(  31, TextureSet.SET_DULL              ,   7.0F,    512,  2, 1|2  |8   |32|64          , 250, 250, 250,   0,   "Manganese"               ,   "Manganese"                     ,    0,       0,       1519,    0, false, false,   3,   1,   1, Dyes.dyeWhite       , Element.Mn        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3)));
-        Materials.Mercury                 = new Materials(  87, TextureSet.SET_SHINY             ,   1.0F,      0,  0,         16|32             , 255, 220, 220,   0,   "Mercury"                 ,   "Mercury"                       ,    5,      32,        234,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Hg        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)));
-        Materials.Molybdenum              = new Materials(  48, TextureSet.SET_SHINY             ,   7.0F,    512,  2, 1|2  |8   |32|64          , 180, 180, 220,   0,   "Molybdenum"              ,   "Molybdenum"                    ,    0,       0,       2896,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , Element.Mo        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
-        Materials.Neodymium               = new Materials(  67, TextureSet.SET_METALLIC          ,   7.0F,    512,  2, 1|2  |8   |32|64|128      , 100, 100, 100,   0,   "Neodymium"               ,   "Neodymium"                     ,    0,       0,       1297, 1297,  true, false,   4,   1,   1, Dyes._NULL          , Element.Nd        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 2)));
-        Materials.Neutronium              = new Materials( 129, TextureSet.SET_DULL              ,  24.0F, 655360,  6, 1|2  |8   |32|64|128      , 250, 250, 250,   0,   "Neutronium"              ,   "Neutronium"                    ,    0,       0,      10000, 10000, true, false,  20,   1,   1, Dyes.dyeWhite       , Element.Nt        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 2))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setProcessingMaterialTierEU(TierEU.RECIPE_LuV);
-        Materials.Nickel                  = new Materials(  34, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8   |32|64|128      , 200, 200, 250,   0,   "Nickel"                  ,   "Nickel"                        ,    0,       0,       1728,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , Element.Ni        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
-        Materials.Niobium                 = new Materials(  47, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 190, 180, 200,   0,   "Niobium"                 ,   "Niobium"                       ,    0,       0,       2750, 2750,  true, false,   5,   1,   1, Dyes._NULL          , Element.Nb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
-        Materials.Nitrogen                = new Materials(  12, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0, 150, 200, 240,   "Nitrogen"                ,   "Nitrogen"                      ,    0,       0,         63,    0, false,  true,   2,   1,   1, Dyes.dyeCyan        , Element.N         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
-        Materials.Osmium                  = new Materials(  83, TextureSet.SET_METALLIC          ,  16.0F,   1280,  4, 1|2  |8   |32|64|128      ,  50,  50, 255,   0,   "Osmium"                  ,   "Osmium"                        ,    0,       0,       3306, 4500,  true, false,  10,   1,   1, Dyes.dyeBlue        , Element.Os        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Oxygen                  = new Materials(  13, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0, 100, 200, 240,   "Oxygen"                  ,   "Oxygen"                        ,    0,       0,         54,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Element.O         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 1)));
-        Materials.Palladium               = new Materials(  52, TextureSet.SET_SHINY             ,   8.0F,    512,  4, 1|2  |8   |32|64|128      , 128, 128, 128,   0,   "Palladium"               ,   "Palladium"                     ,    0,       0,       1828, 1828,  true, false,   4,   1,   1, Dyes.dyeGray        , Element.Pd        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))).disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Phosphorus              = new Materials(  21, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1         |32             , 255, 255,   0,   0,   "Phosphorus"              ,   "Phosphorus"                    ,    0,       0,        317,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , Element.P         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1)));
-        Materials.Platinum                = new Materials(  85, TextureSet.SET_SHINY             ,  12.0F,     64,  4, 1|2  |8   |32|64|128      , 255, 255, 200,   0,   "Platinum"                ,   "Platinum"                      ,    0,       0,       2041,    0, false, false,   6,   1,   1, Dyes.dyeOrange      , Element.Pt        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1)));
-        Materials.Plutonium               = new Materials( 100, TextureSet.SET_METALLIC          ,   6.0F,    512,  3, 1|2  |8   |32|64          , 240,  50,  50,   0,   "Plutonium"               ,   "Plutonium 239"                 ,    0,       0,        912,    0, false, false,   6,   1,   1, Dyes.dyeLime        , Element.Pu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 2)));
-        Materials.Plutonium241            = new Materials( 101, TextureSet.SET_SHINY             ,   6.0F,    512,  3, 1|2  |8   |32|64          , 250,  70,  70,   0,   "Plutonium241"            ,   "Plutonium 241"                 ,    0,       0,        912,    0, false, false,   6,   1,   1, Dyes.dyeLime        , Element.Pu_241    , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 3)));
-        Materials.Potassium               = new Materials(  25, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2       |32             , 154, 172, 223,   0,   "Potassium"               ,   "Potassium"                     ,    0,       0,        336,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.K         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1)));
-        Materials.Praseodymium            = new Materials(  66, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8   |32             , 117, 214, 129,   0,   "Praseodymium"            ,   "Praseodymium"                  ,    0,       0,       1208, 1208,  true, false,   4,   1,   1, Dyes._NULL          , Element.Pr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Promethium              = new Materials(  68, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  36, 181,  53,   0,   "Promethium"              ,   "Promethium"                    ,    0,       0,       1315, 1315,  true, false,   4,   1,   1, Dyes._NULL          , Element.Pm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Radon                   = new Materials(  93, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255,   0, 255, 240,   "Radon"                   ,   "Radon"                         ,    0,       0,        202,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , Element.Rn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AER, 1), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Rubidium                = new Materials(  43, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 240,  30,  30,   0,   "Rubidium"                ,   "Rubidium"                      ,    0,       0,        312,    0, false, false,   4,   1,   1, Dyes.dyeRed         , Element.Rb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
-        Materials.Samarium                = new Materials(  69, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 204,   0,   "Samarium"                ,   "Samarium"                      ,    0,       0,       1345, 1345,  true, false,   4,   1,   1, Dyes.dyeWhite       , Element.Sm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO,10)));
-        Materials.Scandium                = new Materials(  27, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 204, 204, 204,   0,   "Scandium"                ,   "Scandium"                      ,    0,       0,       1814, 1814,  true, false,   2,   1,   1, Dyes.dyeYellow      , Element.Sc        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Silicon                 = new Materials(  20, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  60,  60,  80,   0,   "Silicon"                 ,   "Raw Silicon"                   ,    0,       0,       2273, 2273,  true, false,   1,   1,   1, Dyes.dyeBlack       , Element.Si        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1)));
-        Materials.Silver                  = new Materials(  54, TextureSet.SET_SHINY             ,  10.0F,     64,  2, 1|2  |8   |32|64|128      , 220, 220, 255,   0,   "Silver"                  ,   "Silver"                        ,    0,       0,       1234,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Ag        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
-        Materials.Sodium                  = new Materials(  17, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1      |16|32             ,   0,   0, 150,   0,   "Sodium"                  ,   "Sodium"                        ,    0,       0,        370,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , Element.Na        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.LUX, 1)));
-        Materials.Strontium               = new Materials(  44, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32   |128      , 200, 200, 200,   0,   "Strontium"               ,   "Strontium"                     ,    0,       0,       1050,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Element.Sr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 1)));
-        Materials.Sulfur                  = new Materials(  22, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8   |32             , 200, 200,   0,   0,   "Sulfur"                  ,   "Sulfur"                        ,    0,       0,        388,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , Element.S         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
-        Materials.Tantalum                = new Materials(  80, TextureSet.SET_SHINY             ,   6.0F,   2560,  3, 1|2  |8   |32             , 105, 183, 255,   0,   "Tantalum"                ,   "Tantalum"                      ,    0,       0,       3290, 3290,  true, false,   4,   1,   1, Dyes._NULL          , Element.Ta        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Tellurium               = new Materials(  59, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8   |32             , 206, 255,  86,   0,   "Tellurium"               ,   "Tellurium"                     ,    0,       0,        722,    0, false, false,   4,   1,   1, Dyes.dyeGray        , Element.Te        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Terbium                 = new Materials(  72, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 255,   0,   "Terbium"                 ,   "Terbium"                       ,    0,       0,       1629, 1629,  true, false,   4,   1,   1, Dyes._NULL          , Element.Tb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Thorium                 = new Materials(  96, TextureSet.SET_SHINY             ,   6.0F,    512,  2, 1|2  |8   |32|64          ,   0,  30,   0,   0,   "Thorium"                 ,   "Thorium"                       ,    0,       0,       2115,    0, false, false,   4,   1,   1, Dyes.dyeBlack       , Element.Th        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Thulium                 = new Materials(  76, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  89, 107, 194,   0,   "Thulium"                 ,   "Thulium"                       ,    0,       0,       1818, 1818,  true, false,   4,   1,   1, Dyes._NULL          , Element.Tm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Tin                     = new Materials(  57, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1|2  |8   |32   |128      , 220, 220, 220,   0,   "Tin"                     ,   "Tin"                           ,    0,       0,        505,  505, false, false,   3,   1,   1, Dyes.dyeWhite       , Element.Sn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
-        Materials.Titanium                = new Materials(  28, TextureSet.SET_METALLIC          ,   7.0F,   1600,  3, 1|2  |8   |32|64|128      , 220, 160, 240,   0,   "Titanium"                ,   "Titanium"                      ,    0,       0,       1941, 1940,  true, false,   5,   1,   1, Dyes.dyePurple      , Element.Ti        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Tritanium               = new Materials( 329, TextureSet.SET_METALLIC          ,  20.0F,1435392,  6, 1|2  |8   |32|64          , 96,    0,   0,   0,   "Tritanium"               ,   "Tritanium"                     ,    0,       0,       9900, 9900,  true, false,   1,   1,   1, Dyes.dyeWhite       , Element.Tn  ,Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ORDO, 2))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Tritium                 = new Materials(   3, TextureSet.SET_METALLIC          ,   1.0F,      0,  2,         16|32             , 255,   0,   0, 240,   "Tritium"                 ,   "Tritium"                       ,    0,       0,         14,    0, false,  true,  10,   1,   1, Dyes.dyeRed         , Element.T         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4)));
-        Materials.Tungsten                = new Materials(  81, TextureSet.SET_METALLIC          ,   7.0F,   2560,  3, 1|2  |8   |32|64|128      ,  50,  50,  50,   0,   "Tungsten"                ,   "Tungsten"                      ,    0,       0,       3695, 3000,  true, false,   4,   1,   1, Dyes.dyeBlack       , Element.W         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3), new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Uranium                 = new Materials(  98, TextureSet.SET_METALLIC          ,   6.0F,    512,  3, 1|2  |8   |32|64          ,  50, 240,  50,   0,   "Uranium"                 ,   "Uranium 238"                   ,    0,       0,       1405,    0, false, false,   4,   1,   1, Dyes.dyeGreen       , Element.U         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Uranium235              = new Materials(  97, TextureSet.SET_SHINY             ,   6.0F,    512,  3, 1|2  |8   |32|64          ,  70, 250,  70,   0,   "Uranium235"              ,   "Uranium 235"                   ,    0,       0,       1405,    0, false, false,   4,   1,   1, Dyes.dyeGreen       , Element.U_235     , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 2)));
-        Materials.Vanadium                = new Materials(  29, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  50,  50,  50,   0,   "Vanadium"                ,   "Vanadium"                      ,    0,       0,       2183, 2183,  true, false,   2,   1,   1, Dyes.dyeBlack       , Element.V         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Ytterbium               = new Materials(  77, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  44, 199,  80,   0,   "Ytterbium"               ,   "Ytterbium"                     ,    0,       0,       1097, 1097,  true, false,   4,   1,   1, Dyes._NULL          , Element.Yb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Yttrium                 = new Materials(  45, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 220, 250, 220,   0,   "Yttrium"                 ,   "Yttrium"                       ,    0,       0,       1799, 1799,  true, false,   4,   1,   1, Dyes._NULL          , Element.Y         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
-        Materials.Zinc                    = new Materials(  36, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2  |8   |32             , 250, 240, 240,   0,   "Zinc"                    ,   "Zinc"                          ,    0,       0,        692,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.Zn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.SANO, 1)));
+        loadElements();
+        loadIsotopes();
+        loadWaterLine();
+        loadRandom();
+        loadDontCare();
+        loadUnknownComponents();
+        loadTiers();
+        loadNotExact();
+        loadTODOThis();
+        loadDegree1Compounds();
+        loadUnclassified01();
+        loadUnclassified02();
+        loadUnclassified03();
+        loadUnclassified04();
+        loadUnclassified05();
+        loadRoastedOres();
+        loadSiliconLine();
+        loadUnclassified06();
+        loadDegree2Compounds();
+        loadDegree3Compounds();
+        loadDegree4Compounds();
+        loadDegree5Compounds();
+        loadDegree6Compounds();
+        loadPolybenzimidazoleLine();
+        loadGasolineLine();
+        loadAdded();
+        loadGalaxySpace();
+        loadUnclassified07();
+        loadOverpoweredMaterials();
+        loadSuperconductorBases();
+        loadSuperconductors();
+        loadWaterLineChemicals();
+        loadRadoxLine();
+        loadNetheriteLine();
+        loadPrismaticAcidLine();
+        loadMagicMaterials();
+    }
 
-        Materials.Grade1PurifiedWater                = new Materials(   554, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   63,   76, 253, 0,   "Grade1PurifiedWater"                ,   "Filtered Water (Grade 1)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.Grade2PurifiedWater                = new Materials(   555, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   93,   93, 254, 0,   "Grade2PurifiedWater"                ,   "Ozonated Water (Grade 2)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.Grade3PurifiedWater                = new Materials(   556, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   115,   109, 254, 0,   "Grade3PurifiedWater"                ,   "Flocculated Water (Grade 3)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue             , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.Grade4PurifiedWater                = new Materials(   557, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   135,   126, 255, 0,   "Grade4PurifiedWater"                ,   "pH Neutralized Water (Grade 4)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.Grade5PurifiedWater                = new Materials(   558, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   152,   144, 255, 0,   "Grade5PurifiedWater"                ,   "Extreme-Temperature Treated Water (Grade 5)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.Grade6PurifiedWater                = new Materials(   559, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   168,   161, 255, 0,   "Grade6PurifiedWater"                ,   "Ultraviolet Treated Electrically Neutral Water (Grade 6)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.Grade7PurifiedWater                = new Materials(   560, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   183,   179, 255, 0,   "Grade7PurifiedWater"                ,   "Degassed Decontaminant-Free Water (Grade 7)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.Grade8PurifiedWater                = new Materials(   561, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   197,   197, 255, 0,   "Grade8PurifiedWater"                ,   "Subatomically Perfect Water (Grade 8)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
-        Materials.FlocculationWasteLiquid            = new Materials(562, TextureSet.SET_FLUID, 1.0f, 0, 2, 16, 61, 58, 82, 0, "FlocculationWasteLiquid", "Flocculation Waste Liquid", 0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    private static void loadElements() {
+        Materials.Aluminium = loadAluminium();
+        Materials.Americium = loadAmericium();
+        Materials.Antimony = loadAntimony();
+        Materials.Argon = loadArgon();
+        Materials.Arsenic = loadArsenic();
+        Materials.Barium = loadBarium();
+        Materials.Beryllium = loadBeryllium();
+        Materials.Bismuth = loadBismuth();
+        Materials.Boron = loadBoron();
+        Materials.Caesium = loadCaesium();
+        Materials.Calcium = loadCalcium();
+        Materials.Carbon = loadCarbon();
+        Materials.Cadmium = loadCadmium();
+        Materials.Cerium = loadCerium();
+        Materials.Chlorine = loadChlorine();
+        Materials.Chrome = loadChrome();
+        Materials.Cobalt = loadCobalt();
+        Materials.Copper = loadCopper();
+        Materials.Desh = loadDesh(); // Not a real element
+        Materials.Dysprosium = loadDysprosium();
+        Materials.Empty = loadEmpty(); // Not a real element
+        Materials.Erbium = loadErbium();
+        Materials.Europium = loadEuropium();
+        Materials.Flerovium = loadFlerovium();
+        Materials.Fluorine = loadFluorine();
+        Materials.Gadolinium = loadGadolinium();
+        Materials.Gallium = loadGallium();
+        Materials.Gold = loadGold();
+        Materials.Holmium = loadHolmium();
+        Materials.Hydrogen = loadHydrogen();
+        Materials.Helium = loadHelium();
+        Materials.Indium = loadIndium();
+        Materials.Iridium = loadIridium();
+        Materials.Iron = loadIron();
+        Materials.Lanthanum = loadLanthanum();
+        Materials.Lead = loadLead();
+        Materials.Lithium = loadLithium();
+        Materials.Lutetium = loadLutetium();
+        Materials.Magic = loadMagic(); // Not a real element
+        Materials.Magnesium = loadMagnesium();
+        Materials.Manganese = loadManganese();
+        Materials.Mercury = loadMercury();
+        Materials.MeteoricIron = loadMeteoricIron(); // Not a real element
+        Materials.Molybdenum = loadMolybdenum();
+        Materials.Naquadah = loadNaquadah(); // Not a real element
+        Materials.Neodymium = loadNeodymium();
+        Materials.Neutronium = loadNeutronium();
+        Materials.Nickel = loadNickel();
+        Materials.Niobium = loadNiobium();
+        Materials.Nitrogen = loadNitrogen();
+        Materials.Oriharukon = loadOriharukon();
+        Materials.Osmium = loadOsmium();
+        Materials.Oxygen = loadOxygen();
+        Materials.Palladium = loadPalladium();
+        Materials.Phosphorus = loadPhosphorus();
+        Materials.Platinum = loadPlatinum();
+        Materials.Plutonium = loadPlutonium();
+        Materials.Potassium = loadPotassium();
+        Materials.Praseodymium = loadPraseodymium();
+        Materials.Promethium = loadPromethium();
+        Materials.Radon = loadRadon();
+        Materials.Rubidium = loadRubidium();
+        Materials.Samarium = loadSamarium();
+        Materials.Scandium = loadScandium();
+        Materials.Silicon = loadSilicon();
+        Materials.Silver = loadSilver();
+        Materials.Sodium = loadSodium();
+        Materials.Strontium = loadStrontium();
+        Materials.Sulfur = loadSulfur();
+        Materials.Tantalum = loadTantalum();
+        Materials.Tellurium = loadTellurium();
+        Materials.Terbium = loadTerbium();
+        Materials.Thorium = loadThorium();
+        Materials.Thulium = loadThulium();
+        Materials.Tin = loadTin();
+        Materials.Titanium = loadTitanium();
+        Materials.Tritanium = loadTritanium(); // Not a real element
+        Materials.Tungsten = loadTungsten();
+        Materials.Uranium = loadUranium();
+        Materials.Vanadium = loadVanadium();
+        Materials.Ytterbium = loadYtterbium();
+        Materials.Yttrium = loadYttrium();
+        Materials.Zinc = loadZinc();
+    }
 
-        Materials.Flerovium                          = new Materials( 984, TextureSet.SET_SHINY             ,   1.0F,      0,  0, 1|2  |8   |32|64|128      , 255,255, 255,   0,   "Flerovium_GT5U"                ,    "Flerovium"                ,     0,       0,         0,    0, false,  false,  1 ,  1,   1, Dyes.dyeWhite      , Element.Fl         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Organic                            = new Materials(  -1, TextureSet.SET_LEAF              ,   1.0F,      0,  1,                                          false,   "Organic"                 ,   "Organic"                       );
-        Materials.AnyCopper                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyCopper"               ,   "AnyCopper"                     );
-        Materials.AnyBronze                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyBronze"               ,   "AnyBronze"                     );
-        Materials.AnyIron                            = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyIron"                 ,   "AnyIron"                       );
-        Materials.AnyRubber                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyRubber"               ,   "AnyRubber"                     );
-        Materials.AnySyntheticRubber                 = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnySyntheticRubber"      ,   "AnySyntheticRubber"            );
-        Materials.Crystal                            = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "Crystal"                 ,   "Crystal"                       );
-        Materials.Quartz                             = new Materials(  -1, TextureSet.SET_QUARTZ            ,   1.0F,      0,  2,                                          false,   "Quartz"                  ,   "Quartz"                        );
-        Materials.Metal                              = new Materials(  -1, TextureSet.SET_METALLIC          ,   1.0F,      0,  2,                                          false,   "Metal"                   ,   "Metal"                         );
-        Materials.Unknown                            = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  2,                                          false,   "Unknown"                 ,   "Unknown"                       );
-        Materials.Cobblestone                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "Cobblestone"             ,   "Cobblestone"                   );
-        Materials.BrickNether                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "BrickNether"             ,   "BrickNether"                   );
-
-        Materials.Serpentine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Serpentine"              ,   "Serpentine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Flux                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Flux"                    ,   "Flux"                          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.OsmiumTetroxide         = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "OsmiumTetroxide"         ,   "Osmium Tetroxide"              ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.RubberTreeSap           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "RubberTreeSap"           ,   "Rubber Tree Sap"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.PhasedIron              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedIron"              ,   "Phased Iron"                   ,    0,       0,       3300, 3300, true, false,   3,   1,   1, Dyes._NULL          );
-        Materials.PhasedGold              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedGold"              ,   "Phased Gold"                   ,    0,       0,         -1, 1800, true, false,   3,   1,   1, Dyes._NULL          );
-        Materials.HeeEndium               = new Materials( 770, TextureSet.SET_DULL              ,  16.0F,   1024,  4, 1|2  |8      |64|128      , 165, 220, 250,   0,   "HeeEndium"               ,   "Endium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightBlue   );
-        Materials.Teslatite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         ,  60, 180, 200,   0,   "Teslatite"               ,   "Teslatite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Fluix                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1  |4                     , 255, 255, 255,   0,   "Fluix"                   ,   "Fluix"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.DarkThaumium            = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "DarkThaumium"            ,   "Dark Thaumium"                 ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Alfium                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Alfium"                  ,   "Alfium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Mutation                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Mutation"                ,   "Mutation"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Aquamarine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1  |4                     , 255, 255, 255,   0,   "Aquamarine"              ,   "Aquamarine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Ender                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Ender"                   ,   "Ender"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.SodiumPeroxide          = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "SodiumPeroxide"          ,   "Sodium Peroxide"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.IridiumSodiumOxide      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "IridiumSodiumOxide"      ,   "Iridium Sodium Oxide"          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.PlatinumGroupSludge     = new Materials( 241, TextureSet.SET_POWDER            ,   1.0F,      0,  2, 1                         ,   0,  30,   0,   0,   "PlatinumGroupSludge"     ,   "Platinum Group Sludge"         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Draconium               = new Materials( 975, TextureSet.SET_DRACONIUM         ,  20.0F,  32768,  7, 1|2|  8|   32|64|128      , 122,  68, 176,   0,   "Draconium"               ,   "Draconium"                     ,    0,       0,       5000, 7200,  true, false,   3,   1,   1, Dyes.dyePink        ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
-        Materials.DraconiumAwakened       = new Materials( 976, TextureSet.SET_AWOKEN_DRACONIUM  ,  40.0F,  65536,  9, 1|2|  8|   32|64|128      , 244,  78,   0,   0,   "DraconiumAwakened"       ,   "Awakened Draconium"            ,    0,       0,       9900, 9900,  true, false,   3,   1,   1, Dyes.dyeOrange      ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
-        Materials.PurpleAlloy             = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 100, 180, 255,   0,   "PurpleAlloy"             ,   "Purple Alloy"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.InfusedTeslatite        = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 100, 180, 255,   0,   "InfusedTeslatite"        ,   "Infused Teslatite"             ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-
-        Materials.Adamantium              = new Materials( 319, TextureSet.SET_SHINY             ,  32.0F,   8192, 10, 1|2  |8      |64|128      , 255, 255, 255,   0,   "Adamantium"              ,   "Adamantium"                    ,    0,       0,      7200, 7200,  true, false,   1,   1,   1, Dyes.dyeLightGray   ).setTurbineMultipliers(1, 5, 1).disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Adamite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  3, 1    |8                   , 255, 255, 255,   0,   "Adamite"                 ,   "Adamite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   );
-        Materials.Adluorite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8      |64|128      , 255, 255, 255,   0,   "Adluorite"               ,   "Adluorite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue   );
-        Materials.Agate                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Agate"                   ,   "Agate"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Alduorite               = new Materials( 485, TextureSet.SET_SHINY             ,  32.0F,   8192,  1, 1|2  |8      |64|128      , 159, 180, 180,   0,   "Alduorite"               ,   "Alduorite"                     ,    0,       0,       6600, 6600,  true, false,   1,   1,   1, Dyes._NULL          ).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(6, 1, 1);
-        Materials.Amber                   = new Materials( 514, TextureSet.SET_RUBY              ,   4.0F,    128,  2, 1  |4|8      |64          , 255, 128,   0, 127,   "Amber"                   ,   "Amber"                         ,    5,       3,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeOrange      ,1,  Arrays.asList(new MaterialStack(Carbon, 10), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 16)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
-        Materials.Ammonium                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Ammonium"                ,   "Ammonium"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Amordrine               = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  2, 1|2  |8      |64          , 255, 255, 255,   0,   "Amordrine"               ,   "Amordrine"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Andesite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Andesite"                ,   "Andesite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Angmallen               = new Materials( 958, TextureSet.SET_METALLIC          ,  10.0F,    128,  2, 1|2  |8      |64          , 215, 225, 138,   0,   "Angmallen"               ,   "Angmallen"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Ardite                  = new Materials( 382, TextureSet.SET_METALLIC          ,  18.0F,   1024,  4, 1|2  |8   |32|64|128      , 250, 129,   0,   0,   "Ardite"                  ,   "Ardite"                        ,    0,       0,       1600, 1600,  true, false,   1,   1,   1, Dyes.dyeRed         ).disableAutoGeneratedBlastFurnaceRecipes().setHasCorrespondingPlasma(true);
-        Materials.Aredrite                = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  2, 1|2  |8      |64          , 255,   0,   0,   0,   "Aredrite"                ,   "Aredrite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.Atlarus                 = new Materials( 965, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8      |64          , 255, 255, 255,   0,   "Atlarus"                 ,   "Atlarus"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Bitumen                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Bitumen"                 ,   "Bitumen"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Black                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         ,   0,   0,   0,   0,   "Black"                   ,   "Black"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
-        Materials.Blizz                   = new Materials( 851, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1                         , 220, 233, 255,   0,   "Blizz"                   ,   "Blizz"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          ).disableAutoGeneratedRecycleRecipes();
-        Materials.Blueschist              = new Materials( 852, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Blueschist"              ,   "Blueschist"                    ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeLightBlue   );
-        Materials.Bluestone               = new Materials( 813, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Bluestone"               ,   "Bluestone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        );
-        Materials.Bloodstone              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Bloodstone"              ,   "Bloodstone"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         );
-        Materials.Blutonium               = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8                   ,   0,   0, 255,   0,   "Blutonium"               ,   "Blutonium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        );
-        Materials.Carmot                  = new Materials( 962, TextureSet.SET_METALLIC          ,  16.0F,    128,  1, 1|2  |8      |64          , 217, 205, 140,   0,   "Carmot"                  ,   "Carmot"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Celenegil               = new Materials( 964, TextureSet.SET_METALLIC          ,  10.0F,   4096,  2, 1|2  |8      |64          , 148, 204,  72,   0,   "Celenegil"               ,   "Celenegil"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.CertusQuartz            = new Materials( 516, TextureSet.SET_QUARTZ            ,   5.0F,     32,  1, 1  |4|8      |64          , 210, 210, 230,   0,   "CertusQuartz"            ,   "Certus Quartz"                 ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
-        Materials.CertusQuartzCharged     = new Materials( 517, TextureSet.SET_QUARTZ            ,   5.0F,     32,  1,       8                   , 221, 221, 236,   0,   "ChargedCertusQuartz"     ,   "Charged Certus Quartz"         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
-        Materials.Ceruclase               = new Materials( 952, TextureSet.SET_METALLIC          ,  32.0F,   1280,  2, 1|2  |8      |64|128      , 140, 189, 208,   0,   "Ceruclase"               ,   "Ceruclase"                     ,    0,       0,         6600,    6600, true, false,   1,   1,   1, Dyes.dyeBlue        ).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(1, 22, 1);
-        Materials.Citrine                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Citrine"                 ,   "Citrine"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.CobaltHexahydrate       = new Materials( 853, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1      |16                ,  80,  80, 250,   0,   "CobaltHexahydrate"       ,   "Cobalt Hexahydrate"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        );
-        Materials.ConstructionFoam        = new Materials( 854, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1      |16   |64|128      , 128, 128, 128,   0,   "ConstructionFoam"        ,   "Construction Foam"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        );
-        Materials.Chert                   = new Materials( 857, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chert"                   ,   "Chert"                         ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
-        Materials.Chimerite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chimerite"               ,   "Chimerite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Coral                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 128, 255,   0,   "Coral"                   ,   "Coral"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.CrudeOil                = new Materials( 858, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         ,  10,  10,  10,   0,   "CrudeOil"                ,   "Crude Oil"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.Chrysocolla             = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chrysocolla"             ,   "Chrysocolla"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.CrystalFlux             = new Materials(  -1, TextureSet.SET_QUARTZ            ,   1.0F,      0,  3, 1  |4                     , 100,  50, 100,   0,   "CrystalFlux"             ,   "Flux Crystal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Cyanite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Cyanite"                 ,   "Cyanite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeCyan        );
-        Materials.Dacite                  = new Materials( 859, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Dacite"                  ,   "Dacite"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeLightGray   );
-        Materials.DarkIron                = new Materials( 342, TextureSet.SET_DULL              ,   7.0F,    384,  3, 1|2  |8      |64          ,  55,  40,  60,   0,   "DarkIron"                ,   "Deep Dark Iron"                ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyePurple      );
-        Materials.DarkStone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "DarkStone"               ,   "Dark Stone"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
-        Materials.Demonite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Demonite"                ,   "Demonite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         );
-        Materials.Desh                    = new Materials( 884, TextureSet.SET_DULL              ,  20.0F,   1280,  4, 1|2  |8   |32|64|128      ,  40,  40,  40,   0,   "Desh"                    ,   "Desh"                          ,    0,       0,       2500, 2500,  true, false,   1,   1,   1, Dyes.dyeBlack       ,Element.De, Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Desichalkos             = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,   1280,  3, 1|2  |8      |64          , 255, 255, 255,   0,   "Desichalkos"             ,   "Desichalkos"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Dilithium               = new Materials( 515, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                , 255, 250, 250, 127,   "Dilithium"               ,   "Dilithium"                     ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       );
-        Materials.Draconic                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Draconic"                ,   "Draconic"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
-        Materials.Drulloy                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|16                      , 255, 255, 255,   0,   "Drulloy"                 ,   "Drulloy"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
-        Materials.Duranium                = new Materials( 328, TextureSet.SET_METALLIC          ,  32.0F,  40960, 11, 1|2          |64          , 255, 255, 255,   0,   "Duranium"                ,   "Duranium"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   ).setTurbineMultipliers(16, 16, 1);
-        Materials.Eclogite                = new Materials( 860, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Eclogite"                ,   "Eclogite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.ElectrumFlux            = new Materials( 320, TextureSet.SET_SHINY             ,  16.0F,    512,  3, 1|2  |8      |64|128      , 255, 255, 120,   0,   "ElectrumFlux"            ,   "Fluxed Electrum"               ,    0,       0,       9000, 9000,  true, false,   1,   1,   1, Dyes.dyeYellow      ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Emery                   = new Materials( 861, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Emery"                   ,   "Emery"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.EnderiumBase            = new Materials( 380, TextureSet.SET_DULL              ,  16.0F,    768,  4, 1|2          |64|128      ,  72, 119, 153,   0,   "EnderiumBase"            ,   "Enderium Base"                 ,    0,       0,       3600, 3600,  true, false,   1,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Tin, 2), new MaterialStack(Silver, 1), new MaterialStack(Platinum, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Energized               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "Energized"               ,   "Energized"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Epidote                 = new Materials( 862, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Epidote"                 ,   "Epidote"                       ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
-        Materials.Eximite                 = new Materials( 959, TextureSet.SET_METALLIC          ,   5.0F,   2560,  3, 1|2  |8      |64          , 124,  90, 150,   0,   "Eximite"                 ,   "Eximite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.FierySteel              = new Materials( 346, TextureSet.SET_FIERY             ,   8.0F,    256,  3, 1|2          |64|128      ,  64,   0,   0,   0,   "FierySteel"              ,   "Fiery Steel"                   ,    5,    2048,       1811, 1800,  true, false,   1,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3), new TCAspects.TC_AspectStack(TCAspects.CORPUS, 3))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Firestone               = new Materials( 347, TextureSet.SET_QUARTZ            ,   6.0F,   1280,  3, 1  |4|8      |64          , 200,  20,   0,   0,   "Firestone"               ,   "Firestone"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         );
-        Materials.Fluorite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Fluorite"                ,   "Fluorite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       );
-        Materials.FoolsRuby               = new Materials( 512, TextureSet.SET_RUBY              ,   1.0F,      0,  2, 1  |4|8                   , 255, 100, 100, 127,   "FoolsRuby"               ,   "Spinel"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 4)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
-        Materials.Force                   = new Materials( 521, TextureSet.SET_DIAMOND           ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 255, 255,   0,   0,   "Force"                   ,   "Force"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 5)));
-        Materials.Forcicium               = new Materials( 518, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                ,  50,  50,  70,   0,   "Forcicium"               ,   "Forcicium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
-        Materials.Forcillium              = new Materials( 519, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                ,  50,  50,  70,   0,   "Forcillium"              ,   "Forcillium"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
-        Materials.Gabbro                  = new Materials( 863, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Gabbro"                  ,   "Gabbro"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
-        Materials.Glowstone               = new Materials( 811, TextureSet.SET_SHINY             ,   1.0F,      0,  1, 1      |16                , 255, 255,   0,   0,   "Glowstone"               ,   "Glowstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUX, 2), new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1)));
-        Materials.Gneiss                  = new Materials( 864, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Gneiss"                  ,   "Gneiss"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
-        Materials.Graphite                = new Materials( 865, TextureSet.SET_DULL              ,   5.0F,     32,  2, 1    |8|16   |64          , 128, 128, 128,   0,   "Graphite"                ,   "Graphite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
-        Materials.Graphene                = new Materials( 819, TextureSet.SET_DULL              ,   6.0F,     32,  1, 1            |64          , 128, 128, 128,   0,   "Graphene"                ,   "Graphene"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
-        Materials.Greenschist             = new Materials( 866, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greenschist"             ,   "Green Schist"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
-        Materials.Greenstone              = new Materials( 867, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greenstone"              ,   "Greenstone"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
-        Materials.Greywacke               = new Materials( 897, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greywacke"               ,   "Greywacke"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        );
-        Materials.Haderoth                = new Materials( 963, TextureSet.SET_METALLIC          ,  10.0F,   3200,  3, 1|2  |8      |64          , 119,  52,  30,   0,   "Haderoth"                ,   "Haderoth"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Hematite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Hematite"                ,   "Hematite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Hepatizon               = new Materials( 957, TextureSet.SET_METALLIC          ,  12.0F,    128,  2, 1|2  |8      |64          , 117,  94, 117,   0,   "Hepatizon"               ,   "Hepatizon"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.HSLA                    = new Materials( 322, TextureSet.SET_METALLIC          ,   6.0F,    500,  3, 1|2          |64|128      , 128, 128, 128,   0,   "HSLA"                    ,   "HSLA Steel"                    ,    0,       0,       1811, 1000,  true, false,   3,   1,   1, Dyes._NULL          , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
-        Materials.Ignatius                = new Materials( 950, TextureSet.SET_METALLIC          ,  12.0F,    512,  2, 1|2                       , 255, 169,  83,   0,   "Ignatius"                ,   "Ignatius"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Infernal                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "Infernal"                ,   "Infernal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Infuscolium             = new Materials( 490, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8      |64          , 146,  33,  86,   0,   "Infuscolium"             ,   "Infuscolium"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.InfusedGold             = new Materials( 323, TextureSet.SET_SHINY             ,  12.0F,     64,  3, 1|2  |8      |64|128      , 255, 200,  60,   0,   "InfusedGold"             ,   "Infused Gold"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
-        Materials.InfusedAir              = new Materials( 540, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255, 255,   0,   0,   "InfusedAir"              ,   "Aer"                           ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
-        Materials.InfusedFire             = new Materials( 541, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255,   0,   0,   0,   "InfusedFire"             ,   "Ignis"                         ,    5,     320,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
-        Materials.InfusedEarth            = new Materials( 542, TextureSet.SET_SHARDS            ,   8.0F,    256,  3, 1  |4|8      |64|128      ,   0, 255,   0,   0,   "InfusedEarth"            ,   "Terra"                         ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeGreen       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.TERRA, 2)));
-        Materials.InfusedWater            = new Materials( 543, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      ,   0,   0, 255,   0,   "InfusedWater"            ,   "Aqua"                          ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
-        Materials.InfusedEntropy          = new Materials( 544, TextureSet.SET_SHARDS            ,  32.0F,     64,  4, 1  |4|8      |64|128      ,  62,  62,  62,   0,   "InfusedEntropy"          ,   "Perditio"                      ,    5,     320,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2)));
-        Materials.InfusedOrder            = new Materials( 545, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 252, 252, 252,   0,   "InfusedOrder"            ,   "Ordo"                          ,    5,     240,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeWhite       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 2)));
-        Materials.InfusedVis              = new Materials(  -1, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255,   0, 255,   0,   "InfusedVis"              ,   "Auram"                         ,    5,     240,         -1,    0, false,  true,   3,   1,   1, Dyes.dyePurple      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.AURAM, 2)));
-        Materials.InfusedDull             = new Materials(  -1, TextureSet.SET_SHARDS            ,  32.0F,     64,  3, 1  |4|8      |64|128      , 100, 100, 100,   0,   "InfusedDull"             ,   "Vacuus"                        ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2)));
-        Materials.Inolashite              = new Materials( 954, TextureSet.SET_NONE              ,   8.0F,   2304,  3, 1|2  |8      |64          , 148, 216, 187,   0,   "Inolashite"              ,   "Inolashite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
-        Materials.Invisium                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Invisium"                ,   "Invisium"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Jade                    = new Materials( 537, TextureSet.SET_SHINY             ,   1.0F,     16,  2, 1  |4|8      |64          ,   0, 100,   0,   0,   "Jade"                    ,   "Jade"                          ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeGreen       ,0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
-        Materials.Kalendrite              = new Materials( 953, TextureSet.SET_METALLIC          ,   5.0F,   2560,  3, 1|2                       , 170,  91, 189,   0,   "Kalendrite"              ,   "Kalendrite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Komatiite               = new Materials( 869, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Komatiite"               ,   "Komatiite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.Lava                    = new Materials( 700, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255,  64,   0,   0,   "Lava"                    ,   "Lava"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
-        Materials.Lemurite                = new Materials( 486, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1                         , 219, 219, 219,   0,   "Lemurite"                ,   "Lemurite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Limestone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Limestone"               ,   "Limestone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Magma                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255,  64,   0,   0,   "Magma"                   ,   "Magma"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
-        Materials.Mawsitsit               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Mawsitsit"               ,   "Mawsitsit"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Mercassium              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Mercassium"              ,   "Mercassium"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.MeteoricIron            = new Materials( 340, TextureSet.SET_METALLIC          ,   6.0F,    384,  3, 1|2  |8   |32|64          , 100,  50,  80,   0,   "MeteoricIron"            ,   "Meteoric Iron"                 ,    0,       0,       1811, 1000,  true, false,   1,   1,   1, Dyes.dyeGray        ,Element.SpFe, Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
-        Materials.MeteoricSteel           = new Materials( 341, TextureSet.SET_METALLIC          ,   6.0F,    768,  4, 1|2          |64          ,  50,  25,  40,   0,   "MeteoricSteel"           ,   "Meteoric Steel"                ,    0,       0,       1811, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Materials.MeteoricIron, 50), new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
-        Materials.Meteorite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   ,  80,  35,  60,   0,   "Meteorite"               ,   "Meteorite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      );
-        Materials.Meutoite                = new Materials( 487, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  95,  82, 105,   0,   "Meutoite"                ,   "Meutoite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Migmatite               = new Materials( 872, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Migmatite"               ,   "Migmatite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Mimichite               = new Materials(  -1, TextureSet.SET_GEM_VERTICAL      ,   1.0F,      0,  1, 1  |4|8                   , 255, 255, 255,   0,   "Mimichite"               ,   "Mimichite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Moonstone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Moonstone"               ,   "Moonstone"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1)));
-        Materials.Naquadah                = new Materials( 324, TextureSet.SET_METALLIC          ,   6.0F,   1280,  4, 1|2  |8   |32|64|128      ,  50,  50,  50,   0,   "Naquadah"                ,   "Naquadah"                      ,    0,       0,       5400, 5400,  true, false,  10,   1,   1, Dyes.dyeBlack       , Element.Nq, Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.NaquadahAlloy           = new Materials( 325, TextureSet.SET_METALLIC          ,   8.0F,   5120,  5, 1|2          |64|128      ,  40,  40,  40,   0,   "NaquadahAlloy"           ,   "Naquadah Alloy"                ,    0,       0,       7200, 7200,  true, false,  10,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.NaquadahEnriched        = new Materials( 326, TextureSet.SET_METALLIC          ,   6.0F,   1280,  4, 1|2  |8      |64          ,  50,  50,  50,   0,   "NaquadahEnriched"        ,   "Enriched Naquadah"             ,    0,       0,       4500, 4500,  true, false,  15,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3), new TCAspects.TC_AspectStack(TCAspects.RADIO, 2), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 2))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Naquadria               = new Materials( 327, TextureSet.SET_SHINY             ,   1.0F,    512,  4, 1|2  |8   |32|64          ,  30,  30,  30,   0,   "Naquadria"               ,   "Naquadria"                     ,    0,       0,       9000, 9000,  true, false,  20,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4), new TCAspects.TC_AspectStack(TCAspects.RADIO, 3), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 3))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
-        Materials.Nether                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Nether"                  ,   "Nether"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.NetherBrick             = new Materials( 814, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 100,   0,   0,   0,   "NetherBrick"             ,   "Nether Brick"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
-        Materials.NetherQuartz            = new Materials( 522, TextureSet.SET_QUARTZ            ,   1.0F,     32,  1, 1  |4|8      |64          , 230, 210, 210,   0,   "NetherQuartz"            ,   "Nether Quartz"                 ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
-        Materials.NetherStar              = new Materials( 506, TextureSet.SET_NETHERSTAR        ,   6.0F,   5120,  4, 1|  4|8      |64          , 255, 255, 255,   0,   "NetherStar"              ,   "Nether Star"                   ,    5,   50000,         -1,    0, false, false,  15,   1,   1, Dyes.dyeWhite       );
-        Materials.ObsidianFlux            = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       ,  80,  50, 100,   0,   "ObsidianFlux"            ,   "Fluxed Obsidian"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      );
-        Materials.Oilsands                = new Materials( 878, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   ,  10,  10,  10,   0,   "Oilsands"                ,   "Oilsands"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Onyx                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Onyx"                    ,   "Onyx"                          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Orichalcum              = new Materials( 966, TextureSet.SET_METALLIC          ,  32.0F,  20480,  1, 1|2  |8      |64|128      ,  84, 122,  56,   0,   "Orichalcum"              ,   "Orichalcum"                    ,    0,       0,       6000, 6000,  true, false,   1,   1,   1, Dyes._NULL          ).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(1, 6, 1);
-        Materials.Osmonium                = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Osmonium"                ,   "Osmonium"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        );
-        Materials.Oureclase               = new Materials( 961, TextureSet.SET_METALLIC          ,   6.0F,   1920,  3, 1|2  |8      |64          , 183,  98,  21,   0,   "Oureclase"               ,   "Oureclase"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Painite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Painite"                 ,   "Painite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Peanutwood              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Peanutwood"              ,   "Peanut Wood"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Petroleum               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Petroleum"               ,   "Petroleum"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Pewter                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Pewter"                  ,   "Pewter"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Phoenixite              = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  1, 1|2  |8      |64          , 255, 255, 255,   0,   "Phoenixite"              ,   "Phoenixite"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-        Materials.Prometheum              = new Materials( 960, TextureSet.SET_METALLIC          ,   8.0F,    512,  1, 1|2  |8      |64          ,  90, 129,  86,   0,   "Prometheum"              ,   "Prometheum"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Quartzite               = new Materials( 523, TextureSet.SET_QUARTZ            ,   1.0F,      0,  1, 1  |4|8                   , 210, 230, 210,   0,   "Quartzite"               ,   "Quartzite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
-        Materials.Randomite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Randomite"               ,   "Randomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Rhyolite                = new Materials( 875, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Rhyolite"                ,   "Rhyolite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Rubracium               = new Materials( 488, TextureSet.SET_METALLIC          ,   1.0F,    128,  1, 1|2  |8      |64|128      , 151,  45,  45,   0,   "Rubracium"               ,   "Rubracium"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
-        Materials.Sand                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Sand"                    ,   "Sand"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.Sanguinite              = new Materials( 955, TextureSet.SET_METALLIC          ,   3.0F,   4480,  4, 1|2  |8                   , 185,   0,   0,   0,   "Sanguinite"              ,   "Sanguinite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Siltstone               = new Materials( 876, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Siltstone"               ,   "Siltstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-        Materials.Sunstone                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Sunstone"                ,   "Sunstone"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1)));
-        Materials.Tar                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         ,  10,  10,  10,   0,   "Tar"                     ,   "Tar"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.Tartarite               = new Materials( 956, TextureSet.SET_METALLIC          ,  32.0F,  20480,  3, 1|2  |8                   , 255, 118,  60,   0,   "Tartarite"               ,   "Tartarite"                     ,    0,       0,      10400,10400,  true, false,   1,   1,   1, Dyes._NULL          ).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(1120, 1120, 1);
-        Materials.UUAmplifier             = new Materials( 721, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                ,  96,   0, 128,   0,   "UUAmplifier"             ,   "UU-Amplifier"                  ,    0,       0,         -1,    0, false, false,  10,   1,   1, Dyes.dyePink        );
-        Materials.UUMatter                = new Materials( 703, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 128,   0, 196,   0,   "UUMatter"                ,   "UU-Matter"                     ,    0,       0,         -1,    0, false, false,  10,   1,   1, Dyes.dyePink        );
-        Materials.Void                    = new Materials( 970, TextureSet.SET_METALLIC          ,  32.0F,    512,  4, 1|2          |64|128      ,  28,   6,  57,   0,   "Void"                    ,   "Void"                          ,    5,    1500,         -1,    0, false,  true,   5,   2,   1, Dyes.dyeBlack       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1)));
-        Materials.Voidstone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255, 200,   "Voidstone"               ,   "Voidstone"                     ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes._NULL          , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1)));
-        Materials.Vulcanite               = new Materials( 489, TextureSet.SET_METALLIC          ,  32.0F,  20480,  2, 1|2  |8      |64|128      , 255, 132,  72,   0,   "Vulcanite"               ,   "Vulcanite"                     ,    0,       0,       8400, 8400, true,  false,   1,   1,   1, Dyes._NULL          ).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(40, 1, 1);
-        Materials.Vyroxeres               = new Materials( 951, TextureSet.SET_METALLIC          ,  32.0F,   7680,  1, 1|2  |8      |64          ,  85, 224,   1,   0,   "Vyroxeres"               ,   "Vyroxeres"                     ,    0,       0,       5400, 5400, true,  false,   1,   1,   1, Dyes._NULL          ).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(1, 3, 1);
-        Materials.Yellorium               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "Yellorium"               ,   "Yellorium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
-        Materials.Zectium                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Zectium"                 ,   "Zectium"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
-
-        Materials.Antimatter              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Antimatter"              ,   "Antimatter"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 9), new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 8)));
-        Materials.AdvancedGlue            = new MaterialBuilder(567, TextureSet.SET_FLUID         ,                                                                                                         "Advanced Glue").setName("AdvancedGlue").addCell().addFluid().setRGB(255, 255, 185).setColor(Dyes.dyeYellow).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 5))).constructMaterial();
-        Materials.Biomass                 = new Materials( 704, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0, 255,   0,   0,   "Biomass"        	     ,   "Forestry Biomass"                ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
-        Materials.CharcoalByproducts      = new MaterialBuilder(675, TextureSet.SET_FLUID             ,                                                                                                     "Charcoal Byproducts").addCell().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).constructMaterial();
-        Materials.Cheese                  = new Materials( 894, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1    |8                   , 255, 255,   0,   0,   "Cheese"                  ,   "Cheese"                        ,    0,       0,        320,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.Chili                   = new Materials( 895, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Chili"                   ,   "Chili"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
-        Materials.Chocolate               = new Materials( 886, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Chocolate"               ,   "Chocolate"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
-        Materials.Cluster                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255, 127,   "Cluster"                 ,   "Cluster"                       ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       );
-        Materials.CoalFuel                = new Materials( 710, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  50,  50,  70,   0,   "CoalFuel"                ,   "Coalfuel"                      ,    0,      16,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.Cocoa                   = new Materials( 887, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 190,  95,   0,   0,   "Cocoa"                   ,   "Cocoa"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
-        Materials.Coffee                  = new Materials( 888, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 150,  75,   0,   0,   "Coffee"                  ,   "Coffee"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
-        Materials.Creosote                = new Materials( 712, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 128,  64,   0,   0,   "Creosote"                ,   "Creosote"                      ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
-        Materials.Ethanol                 = new Materials( 706, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 128,   0,   0,   "Ethanol"                 ,   "Ethanol"                       ,    0,     192,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
-        Materials.FishOil                 = new Materials( 711, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 196,   0,   0,   "FishOil"                 ,   "Fish Oil"                      ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2)));
-        Materials.FermentedBiomass        = new MaterialBuilder(691, TextureSet.SET_FLUID             ,                                                                                                     "Fermented Biomass").addCell().addFluid().setRGB(68, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
-        Materials.Fuel                    = new Materials( 708, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Fuel"                    ,   "Diesel"                        ,    0,     480,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.Glue                    = new Materials( 726, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "Glue"                    ,   "Refined Glue"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.LIMUS, 2)));
-        Materials.Gunpowder               = new Materials( 800, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 128, 128, 128,   0,   "Gunpowder"               ,   "Gunpowder"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
-        Materials.FryingOilHot            = new Materials( 727, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "FryingOilHot"            ,   "Hot Frying Oil"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
-        Materials.Honey                   = new Materials( 725, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 210, 200,   0,   0,   "Honey"                   ,   "Honey"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.Leather                 = new Materials(  -1, TextureSet.SET_ROUGH             ,   1.0F,      0,  0, 1                         , 150, 150,  80, 127,   "Leather"                 ,   "Leather"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
-        Materials.Lubricant               = new Materials( 724, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 196,   0,   0,   "Lubricant"               ,   "Lubricant"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
-        Materials.McGuffium239            = new Materials( 999, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200,  50, 150,   0,   "McGuffium239"            ,   "Mc Guffium 239"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 8), new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 8), new TCAspects.TC_AspectStack(TCAspects.SPIRITUS, 8), new TCAspects.TC_AspectStack(TCAspects.AURAM, 8), new TCAspects.TC_AspectStack(TCAspects.VITIUM, 8), new TCAspects.TC_AspectStack(TCAspects.RADIO, 8), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 8), new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8)));
-        Materials.MeatRaw                 = new Materials( 892, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 255, 100, 100,   0,   "MeatRaw"                 ,   "Raw Meat"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        );
-        Materials.MeatCooked              = new Materials( 893, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 150,  60,  20,   0,   "MeatCooked"              ,   "Cooked Meat"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        );
-        Materials.Milk                    = new Materials( 885, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1      |16                , 254, 254, 254,   0,   "Milk"                    ,   "Milk"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SANO, 2)));
-        Materials.Mud                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Mud"                     ,   "Mud"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       );
-        Materials.Oil                     = new Materials( 707, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "Oil"                     ,   "Oil"                           ,    3,      20,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.Paper                   = new Materials( 879, TextureSet.SET_PAPER             ,   1.0F,      0,  0, 1                         , 250, 250, 250,   0,   "Paper"                   ,   "Paper"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1)));
-        Materials.Peat                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Peat"                    ,   "Peat"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
-        Materials.RareEarth               = new Materials( 891, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1                         , 128, 128, 100,   0,   "RareEarth"               ,   "Rare Earth"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
-        Materials.Red                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255,   0,   0,   0,   "Red"                     ,   "Red"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
-        Materials.Reinforced              = new Materials( 383, TextureSet.SET_METALLIC          ,   7.0F,    480,  4, 1|2          |64|128      , 105, 141, 165,   0,   "Reinforced"              ,   "Reinforced"                    ,    0,       0,         -1, 1700,  true, false,   1,   1,   1, Dyes.dyeBlue        ).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.SeedOil                 = new Materials( 713, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOil"                 ,   "Seed Oil"                      ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
-        Materials.SeedOilHemp             = new Materials( 722, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOilHemp"             ,   "Hemp Seed Oil"                 ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
-        Materials.SeedOilLin              = new Materials( 723, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 196, 255,   0,   0,   "SeedOilLin"              ,   "Lin Seed Oil"                  ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GRANUM, 2)));
-        Materials.Stone                   = new Materials( 299, TextureSet.SET_ROUGH             ,   4.0F,     32,  1, 1            |64|128      , 205, 205, 205,   0,   "Stone"                   ,   "Stone"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
-        Materials.TNT                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "TNT"                     ,   "TNT"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 7), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
-        Materials.Unstable                = new Materials( 396, TextureSet.SET_SHINY             ,   1.0F,      0,  4, 1                         , 220, 220, 220, 127,   "Unstable"                ,   "Unstable"                      ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4)));
-        Materials.Unstableingot           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  4, 0                         , 255, 255, 255, 127,   "Unstableingot"           ,   "Unstable"                      ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4)));
-        Materials.Vinegar                 = new MaterialBuilder(690, TextureSet.SET_FLUID             ,                                                                                                     "Vinegar").setColor(Dyes.dyeBrown).constructMaterial();
-        Materials.Wheat                   = new Materials( 881, TextureSet.SET_POWDER            ,   1.0F,      0,  0, 1                         , 255, 255, 196,   0,   "Wheat"                   ,   "Wheat"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MESSIS, 2)));
-        Materials.WoodGas                 = new MaterialBuilder(660, TextureSet.SET_FLUID             ,                                                                                                     "Wood Gas").addCell().addGas().setRGB(222, 205, 135).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).constructMaterial();
-        Materials.WoodTar                 = new MaterialBuilder(662, TextureSet.SET_FLUID             ,                                                                                                     "Wood Tar").addCell().addFluid().setRGB(40, 23, 11).setColor(Dyes.dyeBrown).constructMaterial();
-        Materials.WoodVinegar             = new MaterialBuilder(661, TextureSet.SET_FLUID             ,                                                                                                     "Wood Vinegar").addCell().addFluid().setRGB(212, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
-        Materials.WeedEX9000              = new MaterialBuilder(242, TextureSet.SET_FLUID             ,                                                                                                     "Weed-EX 9000").addFluid().setRGB(64, 224, 86).setColor(Dyes.dyeGreen).constructMaterial();
-
-        Materials.AluminiumBrass          = new Materials(  -1, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2          |64          , 255, 255, 255,   0,   "AluminiumBrass"          ,   "Aluminium Brass"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.Osmiridium              = new Materials( 317, TextureSet.SET_METALLIC          ,   7.0F,   1600,  3, 1|2          |64|128      , 100, 100, 255,   0,   "Osmiridium"              ,   "Osmiridium"                    ,    0,       0,       3500, 4500,  true, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Iridium, 3), new MaterialStack(Osmium, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Sunnarium               = new Materials( 318, TextureSet.SET_SHINY             ,   1.0F,      0,  1, 1|2          |64|128      , 255, 255,   0,   0,   "Sunnarium"               ,   "Sunnarium"                     ,    0,       0,       4200, 4200,  true, false,   1,   1,   1, Dyes.dyeYellow      ).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Endstone                = new Materials( 808, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Endstone"                ,   "Endstone"                      ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeYellow      );
-        Materials.Netherrack              = new Materials( 807, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 200,   0,   0,   0,   "Netherrack"              ,   "Netherrack"                    ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeRed         );
-        Materials.SoulSand                = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 255, 255, 255,   0,   "SoulSand"                ,   "Soulsand"                      ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeBrown       );
-
-        Materials.Methane                 = new Materials( 715, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "Methane"                 ,   "Methane"                       ,    1,     104,         -1,    0, false, false,   3,   1,   1, Dyes.dyeMagenta     , 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4)));
-        Materials.CarbonDioxide           = new Materials( 497, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "CarbonDioxide"           ,   "Carbon Dioxide"                ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 2))).setHasCorrespondingGas(true);
-        Materials.NobleGases              = new Materials( 496, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "NobleGases"              ,   "Noble Gases"                   ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(CarbonDioxide,21),new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1))).setHasCorrespondingGas(true);
-        Materials.Air                     = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "Air"                     ,   "Air"                           ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
-        Materials.LiquidAir               = new Materials( 495, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidAir"               ,   "Liquid Air"                    ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
-        Materials.LiquidNitrogen          = new Materials( 494, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidNitrogen"          ,   "Liquid Nitrogen"               ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Collections.singletonList(new MaterialStack(Nitrogen, 1)));
-        Materials.LiquidOxygen            = new Materials( 493, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidOxygen"            ,   "Liquid Oxygen"                 ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Collections.singletonList(new MaterialStack(Oxygen, 1)));
-        Materials.SiliconDioxide          = new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F).setDurability(0).setToolQuality(1).addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeLightGray).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
-        Materials.Jasper                  = new Materials( 511, TextureSet.SET_EMERALD           ,   1.0F,      0,  2, 1  |4|8      |64          , 200,  80,  80, 100,   "Jasper"                  ,   "Jasper"                        ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
-        Materials.Almandine               = new Materials( 820, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 255,   0,   0,   0,   "Almandine"               ,   "Almandine"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
-        Materials.Andradite               = new Materials( 821, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,   0,   0,   "Andradite"               ,   "Andradite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
-        Materials.AnnealedCopper          = new Materials( 345, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2             |128      , 255, 120,  20,   0,   "AnnealedCopper"          ,   "Annealed Copper"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Collections.singletonList(new MaterialStack(Copper, 1)));
-        Materials.Asbestos                = new Materials( 946, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 230,   0,   "Asbestos"                ,   "Asbestos"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Mg3Si2O5(OH)4
-        Materials.Ash                     = new Materials( 815, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 150, 150, 150,   0,   "Ash"                     ,   "Ashes"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1)));
-        Materials.BandedIron              = new Materials( 917, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 145,  90,  90,   0,   "BandedIron"              ,   "Banded Iron"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Iron, 2), new MaterialStack(Oxygen, 3)));
-        Materials.BatteryAlloy            = new Materials( 315, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 156, 124, 160,   0,   "BatteryAlloy"            ,   "Battery Alloy"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Lead, 4), new MaterialStack(Antimony, 1)));
-        Materials.BlueTopaz               = new Materials( 513, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          ,   0,   0, 255, 127,   "BlueTopaz"               ,   "Blue Topaz"                    ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
-        Materials.Bone                    = new Materials( 806, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 250, 250, 250,   0,   "Bone"                    ,   "Bone"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Collections.singletonList(new MaterialStack(Calcium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MORTUUS, 2), new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1)));
-        Materials.Brass                   = new Materials( 301, TextureSet.SET_METALLIC          ,   7.0F,     96,  1, 1|2          |64|128      , 255, 180,   0,   0,   "Brass"                   ,   "Brass"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
-        Materials.Bronze                  = new Materials( 300, TextureSet.SET_METALLIC          ,   6.0F,    192,  2, 1|2          |64|128      , 255, 128,   0,   0,   "Bronze"                  ,   "Bronze"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Copper, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
-        Materials.BrownLimonite           = new Materials( 930, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "BrownLimonite"           ,   "Brown Limonite"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2))); // FeO(OH)
-        Materials.Calcite                 = new Materials( 823, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 250, 230, 220,   0,   "Calcite"                 ,   "Calcite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)));
-        Materials.Cassiterite             = new Materials( 824, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 220, 220, 220,   0,   "Cassiterite"             ,   "Cassiterite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
-        Materials.CassiteriteSand         = new Materials( 937, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 220, 220, 220,   0,   "CassiteriteSand"         ,   "Cassiterite Sand"              ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)));
-        Materials.Chalcopyrite            = new Materials( 855, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 160, 120,  40,   0,   "Chalcopyrite"            ,   "Chalcopyrite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)));
-        Materials.Charcoal                = new Materials( 536, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1  |4                     , 100,  70,  70,   0,   "Charcoal"                ,   "Charcoal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
-        Materials.Chromite                = new Materials( 825, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  35,  20,  15,   0,   "Chromite"                ,   "Chromite"                      ,    0,       0,       1700, 1700,  true, false,   6,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 4)));
-        Materials.ChromiumDioxide         = new Materials( 361, TextureSet.SET_DULL              ,  11.0F,    256,  3, 1|2                       , 230, 200, 200,   0,   "ChromiumDioxide"         ,   "Chromium Dioxide"              ,    0,       0,        650,  650, false, false,   5,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
-        Materials.Cinnabar                = new Materials( 826, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150,   0,   0,   0,   "Cinnabar"                ,   "Cinnabar"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Mercury, 1), new MaterialStack(Sulfur, 1)));
-        Materials.Water                   = new Materials( 701, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "Water"                   ,   "Water"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
-        Materials.Steam = Materials.Water;
-        Materials.Clay                    = new Materials( 805, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 200, 200, 220,   0,   "Clay"                    ,   "Clay"                          ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2),new MaterialStack(Oxygen,7),new MaterialStack(Water,2)));
-        Materials.Coal                    = new Materials( 535, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1  |4|8                   ,  70,  70,  70,   0,   "Coal"                    ,   "Coal"                          ,    0,       0,         -1,    0, false, false,   2,   2,   1, Dyes.dyeBlack       , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
-        Materials.Cobaltite               = new Materials( 827, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   ,  80,  80, 250,   0,   "Cobaltite"               ,   "Cobaltite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(Cobalt, 1), new MaterialStack(Arsenic, 1), new MaterialStack(Sulfur, 1)));
-        Materials.Cooperite               = new Materials( 828, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 255, 255, 200,   0,   "Cooperite"               ,   "Sheldonite"                    ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Platinum, 3), new MaterialStack(Nickel, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Palladium, 1)));
-        Materials.Cupronickel             = new Materials( 310, TextureSet.SET_METALLIC          ,   6.0F,     64,  1, 1|2          |64          , 227, 150, 128,   0,   "Cupronickel"             ,   "Cupronickel"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Nickel, 1)));
-        Materials.DarkAsh                 = new Materials( 816, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         ,  50,  50,  50,   0,   "DarkAsh"                 ,   "Dark Ashes"                    ,    0,       0,         -1,    0, false, false,   1,   2,   1, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1), new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1)));
-        Materials.DeepIron                = new Materials( 829, TextureSet.SET_METALLIC          ,   6.0F,    384,  2, 1|2  |8      |64          , 150, 140, 140,   0,   "DeepIron"                ,   "Deep Iron"                     ,    0,       0,       7500, 7500,  true, false,   3,   1,   1, Dyes.dyePink        , 0, Collections.singletonList(new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Diamond                 = new Materials( 500, TextureSet.SET_DIAMOND           ,   8.0F,   1280,  4, 1  |4|8      |64|128      , 200, 255, 255, 127,   "Diamond"                 ,   "Diamond"                       ,    0,       0,         -1,    0, false,  true,   5,  64,   1, Dyes.dyeWhite       , 1, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4)));
-        Materials.Electrum                = new Materials( 303, TextureSet.SET_SHINY             ,  12.0F,     64,  2, 1|2  |8      |64|128      , 255, 255, 100,   0,   "Electrum"                ,   "Electrum"                      ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Silver, 1), new MaterialStack(Gold, 1)));
-        Materials.Emerald                 = new Materials( 501, TextureSet.SET_EMERALD           ,   7.0F,    256,  4, 1  |4|8      |64          ,  80, 255,  80, 127,   "Emerald"                 ,   "Emerald"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeGreen       , 0, Arrays.asList(new MaterialStack(Beryllium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 6), new MaterialStack(Oxygen, 18)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5)));
-        Materials.FreshWater              = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "FreshWater"              ,   "Fresh Water"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
-        Materials.Galena                  = new Materials( 830, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1 |8                      , 100,  60, 100,   0,   "Galena"                  ,   "Galena"                        ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyePurple      , 1, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Sulfur, 1)));
-        Materials.Garnierite              = new Materials( 906, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  50, 200,  70,   0,   "Garnierite"              ,   "Garnierite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Nickel, 1), new MaterialStack(Oxygen, 1)));
-        Materials.Glyceryl                = new Materials( 714, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                ,   0, 150, 150,   0,   "Glyceryl"                ,   "Glyceryl Trinitrate"           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Nitrogen, 3), new MaterialStack(Oxygen, 9)));
-        Materials.GreenSapphire           = new MaterialBuilder(504, TextureSet.SET_GEM_HORIZONTAL, "Green Sapphire").setToolSpeed(7.0F).setDurability(256).setToolQuality(2).addDustItems().addGemItems().setTransparent(true).addOreItems().addToolHeadItems().setRGBA(100, 200, 130, 127).setColor(Dyes.dyeCyan).setOreValue(5).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Grossular               = new Materials( 831, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "Grossular"               ,   "Grossular"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
-        Materials.HolyWater               = new Materials( 729, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "HolyWater"               ,   "Holy Water"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2), new TCAspects.TC_AspectStack(TCAspects.AURAM, 1)));
-        Materials.Ice                     = new Materials( 702, TextureSet.SET_SHINY             ,   1.0F,      0,  0, 1|      16                , 200, 200, 255,   0,   "Ice"                     ,   "Ice"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2)));
-        Materials.Ilmenite                = new Materials( 918, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  70,  55,  50,   0,   "Ilmenite"                ,   "Ilmenite"                      ,    0,       0,         -1,    0, false, false,   1,   2,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 3)));
-        Materials.Rutile                  = new Materials( 375, TextureSet.SET_GEM_HORIZONTAL    ,   1.0F,      0,  2, 1    |8                   , 212,  13,  92,   0,   "Rutile"                  ,   "Rutile"                        ,    0,       0,         -1,    0, false, false,   1,   2,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 2)));
-        Materials.Bauxite                 = new Materials( 822, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "Bauxite"                 ,   "Bauxite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(Rutile, 2), new MaterialStack(Aluminium, 16), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 11)));
-        Materials.Titaniumtetrachloride   = new Materials( 376, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 212,  13,  92,   0,   "Titaniumtetrachloride"   ,   "Titaniumtetrachloride"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Chlorine, 4)));
-        Materials.Magnesiumchloride       = new Materials( 377, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|16                      , 212,  13,  92,   0,   "Magnesiumchloride"       ,   "Magnesiumchloride"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Chlorine, 2)));
-        Materials.Invar                   = new Materials( 302, TextureSet.SET_METALLIC          ,   6.0F,    256,  2, 1|2          |64|128      , 180, 180, 120,   0,   "Invar"                   ,   "Invar"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 2), new MaterialStack(Nickel, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.GELUM, 1)));
-        Materials.Kanthal                 = new Materials( 312, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2          |64          , 194, 210, 223,   0,   "Kanthal"                 ,   "Kanthal"                       ,    0,       0,       1800, 1800,  true, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Chrome, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Lazurite                = new Materials( 524, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   , 100, 120, 255,   0,   "Lazurite"                ,   "Lazurite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Aluminium, 6), new MaterialStack(Silicon, 6), new MaterialStack(Calcium, 8), new MaterialStack(Sodium, 8)));
-        Materials.Magnalium               = new Materials( 313, TextureSet.SET_DULL              ,   6.0F,    256,  2, 1|2          |64|128      , 200, 190, 255,   0,   "Magnalium"               ,   "Magnalium"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Aluminium, 2)));
-        Materials.Magnesite               = new Materials( 908, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 250, 250, 180,   0,   "Magnesite"               ,   "Magnesite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)));
-        Materials.Magnetite               = new Materials( 870, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   ,  30,  30,  30,   0,   "Magnetite"               ,   "Magnetite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Iron, 3), new MaterialStack(Oxygen, 4)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
-        Materials.Molybdenite             = new Materials( 942, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   ,  25,  25,  25,   0,   "Molybdenite"             ,   "Molybdenite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(Molybdenum, 1), new MaterialStack(Sulfur, 2))); // MoS2 (also source of Re)
-        Materials.Nichrome                = new Materials( 311, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2          |64          , 205, 206, 246,   0,   "Nichrome"                ,   "Nichrome"                      ,    0,       0,       2700, 2700,  true, false,   1,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Nickel, 4), new MaterialStack(Chrome, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.NiobiumNitride          = new Materials( 359, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2                       ,  29,  41,  29,   0,   "NiobiumNitride"          ,   "Niobium Nitride"               ,    0,       0,       2573, 2573,  true, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Niobium, 1), new MaterialStack(Nitrogen, 1))); // Anti-Reflective Material
-        Materials.NiobiumTitanium         = new Materials( 360, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2                       ,  29,  29,  41,   0,   "NiobiumTitanium"         ,   "Niobium-Titanium"              ,    0,       0,       4500, 4500,  true, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Niobium, 1), new MaterialStack(Titanium, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.NitroCarbon             = new Materials( 716, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                ,   0,  75, 100,   0,   "NitroCarbon"             ,   "Nitro-Carbon"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Nitrogen, 1), new MaterialStack(Carbon, 1)));
-        Materials.NitrogenDioxide         = new Materials( 717, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 100, 175, 255,   0,   "NitrogenDioxide"         ,   "Nitrogen Dioxide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2)));
-        Materials.Obsidian                = new Materials( 804, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1|2                       ,  80,  50, 100,   0,   "Obsidian"                ,   "Obsidian"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Iron, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 8)));
-        Materials.Phosphate               = new Materials( 833, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8|16                , 255, 255,   0,   0,   "Phosphate"               ,   "Phosphate"                     ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Phosphorus, 1), new MaterialStack(Oxygen, 4)));
-        Materials.PigIron                 = new Materials( 307, TextureSet.SET_METALLIC          ,   6.0F,    384,  2, 1|2  |8      |64          , 200, 180, 180,   0,   "PigIron"                 ,   "Pig Iron"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyePink        , 2, Collections.singletonList(new MaterialStack(Iron, 1)));
-        Materials.Plastic                 = new Materials( 874, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 200, 200, 200,   0,   "Plastic"                 ,   "Polyethylene"                  ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.Epoxid                  = new Materials( 470, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 200, 140,  20,   0,   "Epoxid"                  ,   "Epoxid"                        ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 21), new MaterialStack(Hydrogen, 24), new MaterialStack(Oxygen, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.Polydimethylsiloxane    = new MaterialBuilder(633, TextureSet.SET_FLUID         ,                                                                                                     "Polydimethylsiloxane").addDustItems().setRGB(245, 245, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Silicone                = new Materials( 471, TextureSet.SET_DULL              ,   3.0F,    128,  1, 1|2          |64|128      , 220, 220, 220,   0,   "Silicone"                ,   "Silicone Rubber"               ,    0,       0,        900,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1), new MaterialStack(Silicon, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.Polycaprolactam         = new Materials( 472, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      ,  50,  50,  50,   0,   "Polycaprolactam"         ,   "Polycaprolactam"               ,    0,       0,        500,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 11), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.Polytetrafluoroethylene = new Materials( 473, TextureSet.SET_DULL              ,   3.0F,     32,  1, 1|2          |64|128      , 100, 100, 100,   0,   "Polytetrafluoroethylene" ,   "Polytetrafluoroethylene"       ,    0,       0,        600,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.Powellite               = new Materials( 883, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 255, 255,   0,   0,   "Powellite"               ,   "Powellite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4)));
-        Materials.Pumice                  = new Materials( 926, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 230, 185, 185,   0,   "Pumice"                  ,   "Pumice"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(Stone, 1)));
-        Materials.Pyrite                  = new Materials( 834, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,  40,   0,   "Pyrite"                  ,   "Pyrite"                        ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)));
-        Materials.Pyrolusite              = new Materials( 943, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 150, 150, 170,   0,   "Pyrolusite"              ,   "Pyrolusite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Oxygen, 2)));
-        Materials.Pyrope                  = new Materials( 835, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 120,  50, 100,   0,   "Pyrope"                  ,   "Pyrope"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
-        Materials.RockSalt                = new Materials( 944, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 240, 200, 200,   0,   "RockSalt"                ,   "Rock Salt"                     ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Chlorine, 1)));
-        Materials.Rubber                  = new Materials( 880, TextureSet.SET_SHINY             ,   1.5F,     32,  0, 1|2          |64|128      ,   0,   0,   0,   0,   "Rubber"                  ,   "Rubber"                        ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.RawRubber               = new Materials( 896, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 204, 199, 137,   0,   "RawRubber"               ,   "Raw Rubber"                    ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.Ruby                    = new Materials( 502, TextureSet.SET_RUBY              ,   7.0F,    256,  2, 1  |4|8      |64          , 255, 100, 100, 127,   "Ruby"                    ,   "Ruby"                          ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Chrome, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Salt                    = new Materials( 817, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 250, 250, 250,   0,   "Salt"                    ,   "Salt"                          ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Chlorine, 1)));
-        Materials.Saltpeter               = new Materials( 836, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 230,   0,   "Saltpeter"               ,   "Saltpeter"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)));
-        Materials.Sapphire                = new MaterialBuilder(503, TextureSet.SET_GEM_VERTICAL, "Sapphire").setToolSpeed(7.0F).setDurability(256).setToolQuality(2).addDustItems().addGemItems().setTransparent(true).addOreItems().addToolHeadItems().setRGBA(100, 100, 200, 127).setColor(Dyes.dyeBlue).setOreValue(5).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-
-        Materials.Scheelite               = new Materials( 910, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 200, 140,  20,   0,   "Scheelite"               ,   "Scheelite"                     ,    0,       0,       2500, 2500, false, false,   4,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 4)));
-        Materials.Snow                    = new Materials( 728, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1|      16                , 250, 250, 250,   0,   "Snow"                    ,   "Snow"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 1)));
-        Materials.Sodalite                = new Materials( 525, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  20,  20, 255,   0,   "Sodalite"                ,   "Sodalite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Sodium, 4), new MaterialStack(Chlorine, 1)));
-        Materials.SodiumPersulfate        = new Materials( 718, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "SodiumPersulfate"        ,   "Sodium Persulfate"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 2), new MaterialStack(Oxygen, 8)));
-        Materials.SodiumSulfide           = new Materials( 719, TextureSet.SET_FLUID             ,   1.0F,      0,  2, 1                         , 255, 230, 128,   0,   "SodiumSulfide"           ,   "Sodium Sulfide"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)));
-        Materials.HydricSulfide           = new Materials( 460, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "HydricSulfide"           ,   "Hydrogen Sulfide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)));
-
-        Materials.OilExtraHeavy           = new Materials( 570, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilExtraHeavy"           ,   "Very Heavy Oil"                ,    3,      45,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.OilHeavy                = new Materials( 730, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilHeavy"                ,   "Heavy Oil"                     ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.OilMedium               = new Materials( 731, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilMedium"               ,   "Raw Oil"                       ,    3,      30,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.OilLight                = new Materials( 732, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilLight"                ,   "Light Oil"                     ,    3,      20,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.NatruralGas             = new Materials( 733, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "NatruralGas"             ,   "Natural Gas"                   ,    1,      20,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
-        Materials.SulfuricGas             = new Materials( 734, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "SulfuricGas"             ,   "Sulfuric Gas"                  ,    1,      25,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
-        Materials.Gas                     = new Materials( 735, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "Gas"                     ,   "Refinery Gas"                  ,    1,     160,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite).setCanBeCracked(true);
-        Materials.SulfuricNaphtha         = new Materials( 736, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricNaphtha"         ,   "Sulfuric Naphtha"              ,    1,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.SulfuricLightFuel       = new Materials( 737, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricLightFuel"       ,   "Sulfuric Light Fuel"           ,    0,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.SulfuricHeavyFuel       = new Materials( 738, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "SulfuricHeavyFuel"       ,   "Sulfuric Heavy Fuel"           ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
-        Materials.Naphtha                 = new Materials( 739, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Naphtha"                 ,   "Naphtha"                       ,    1,     220,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
-        Materials.LightFuel               = new Materials( 740, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "LightFuel"               ,   "Light Fuel"                    ,    0,     305,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow).setCanBeCracked(true);
-        Materials.HeavyFuel               = new Materials( 741, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "HeavyFuel"               ,   "Heavy Fuel"                    ,    3,     240,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack).setCanBeCracked(true);
-        Materials.LPG                     = new Materials( 742, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "LPG"                     ,   "LPG"                           ,    1,     320,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
-        Materials.ReinforceGlass          = new MaterialBuilder(602, TextureSet.SET_FLUID      ,                                                                                                     "Reinforced Glass").setName("ReinforcedGlass").setRGB(192, 245, 254).setColor(Dyes.dyeWhite).setMeltingPoint(2000).constructMaterial().disableAutoGeneratedRecycleRecipes();
-        Materials.BioMediumRaw            = new MaterialBuilder(603, TextureSet.SET_FLUID      ,                                                                                                     "Raw Bio Catalyst Medium").setName("BioMediumRaw").addCell().addFluid().setRGB(97, 147, 46).setColor(Dyes.dyeLime).constructMaterial();
-        Materials.BioMediumSterilized     = new MaterialBuilder(604, TextureSet.SET_FLUID      ,                                                                                                     "Sterilized Bio Catalyst Medium").setName("BiohMediumSterilized").addCell().addFluid().setRGB(162, 253, 53).setColor(Dyes.dyeLime).constructMaterial();
-        Materials.Chlorobenzene             = new MaterialBuilder(605, TextureSet.SET_FLUID      ,                                                                                                     "Chlorobenzene").addCell().addFluid().setRGB(0, 50, 65).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.DilutedHydrochloricAcid   = new MaterialBuilder(606, TextureSet.SET_FLUID      ,                                                                                                     "Diluted Hydrochloric Acid").setName("DilutedHydrochloricAcid_GT5U").addCell().addFluid().setRGB(153, 167, 163).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1)).constructMaterial();
-        Materials.Pyrochlore                = new MaterialBuilder(607, TextureSet.SET_METALLIC   ,                                                                                                     "Pyrochlore").addDustItems().addOreItems().setRGB(43, 17, 0).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Calcium, 2), new MaterialStack(Niobium, 2), new MaterialStack(Oxygen, 7)).addElectrolyzerRecipe().constructMaterial();
-        Materials.GrowthMediumRaw           = new MaterialBuilder(608, TextureSet.SET_FLUID      ,                                                                                                     "Raw Growth Catalyst Medium").setName("GrowthMediumRaw").addCell().addFluid().setRGB(211, 141, 95).setColor(Dyes.dyeOrange).constructMaterial();
-        Materials.GrowthMediumSterilized    = new MaterialBuilder(609, TextureSet.SET_FLUID      ,                                                                                                     "Growth Catalyst Medium").setName("GrowthMediumSterilized").addCell().addFluid().setRGB(222, 170, 135).setColor(Dyes.dyeOrange).constructMaterial();
-        Materials.FerriteMixture            = new MaterialBuilder(612, TextureSet.SET_METALLIC   ,                                                                                                     "Ferrite Mixture").addDustItems().setRGB(180, 180, 180).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4)).constructMaterial();
-        Materials.NickelZincFerrite         = new MaterialBuilder(613, TextureSet.SET_ROUGH      ,                                                                                                     "Nickel-Zinc Ferrite").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setRGB(60, 60, 60).setColor(Dyes.dyeBlack).setBlastFurnaceRequired(true).setBlastFurnaceTemp(1500).setMaterialList(new MaterialStack(Nickel, 1), new MaterialStack(Zinc, 1), new MaterialStack(Iron, 4), new MaterialStack(Oxygen, 8)).constructMaterial();
-        Materials.Massicot                  = new MaterialBuilder(614, TextureSet.SET_DULL       ,                                                                                                     "Massicot").addDustItems().setRGB(255, 221, 85).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.ArsenicTrioxide           = new MaterialBuilder(615, TextureSet.SET_SHINY      ,                                                                                                     "Arsenic Trioxide").addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeGreen).setMaterialList(new MaterialStack(Arsenic, 2), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.CobaltOxide               = new MaterialBuilder(616, TextureSet.SET_DULL       ,                                                                                                     "Cobalt Oxide").addDustItems().setRGB(102, 128, 0).setColor(Dyes.dyeGreen).setMaterialList(new MaterialStack(Cobalt, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Zincite                   = new MaterialBuilder(617, TextureSet.SET_DULL       ,                                                                                                     "Zincite").addDustItems().setRGB(255, 255, 245).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Zinc, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.AntimonyTrioxide          = new MaterialBuilder(618, TextureSet.SET_DULL       ,                                                                                                     "Antimony Trioxide").addDustItems().setRGB(230, 230, 240).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Antimony, 2), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.CupricOxide               = new MaterialBuilder(619, TextureSet.SET_DULL       ,                                                                                                     "Cupric Oxide").addDustItems().setRGB(15, 15, 15).setColor(Dyes.dyeBlack).setMeltingPoint(1599).setMaterialList(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Ferrosilite               = new MaterialBuilder(620, TextureSet.SET_DULL       ,                                                                                                     "Ferrosilite").addDustItems().setRGB(151, 99, 42).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Magnesia                  = new MaterialBuilder(621, TextureSet.SET_DULL       ,                                                                                                     "Magnesia").addDustItems().setRGB(255, 225, 225).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 1)).constructMaterial();
-        Materials.Quicklime                 = new MaterialBuilder(622, TextureSet.SET_DULL       ,                                                                                                     "Quicklime").addDustItems().setRGB(240, 240, 240).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Potash                    = new MaterialBuilder(623, TextureSet.SET_DULL       ,                                                                                                     "Potash").addDustItems().setRGB(120, 66, 55).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.SodaAsh                   = new MaterialBuilder(624, TextureSet.SET_DULL       ,                                                                                                     "Soda Ash").addDustItems().setRGB(220, 220, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.BioDiesel                 = new MaterialBuilder(627, TextureSet.SET_FLUID      ,                                                                                                     "Bio Diesel").addCell().addFluid().setRGB(255, 128, 0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(320).constructMaterial();
-        Materials.NitrationMixture          = new MaterialBuilder(628, TextureSet.SET_FLUID      ,                                                                                                     "Nitration Mixture").addCell().setRGB(230, 226, 171).setColor(Dyes.dyeBrown).constructMaterial();
-        Materials.Glycerol                  = new MaterialBuilder(629, TextureSet.SET_FLUID      ,                                                                                                     "Glycerol").addCell().addFluid().setRGB(135, 222, 135).setColor(Dyes.dyeLime).setFuelType(MaterialBuilder.SEMIFLUID).setFuelPower(164).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.SodiumBisulfate           = new MaterialBuilder(630, TextureSet.SET_FLUID      ,                                                                                                     "Sodium Bisulfate").addDustItems().setRGB(0, 68, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)).constructMaterial();
-        Materials.PolyphenyleneSulfide      = new MaterialBuilder(631, TextureSet.SET_DULL       ,                                                                                                     "Polyphenylene Sulfide").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(170, 136, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Sulfur, 1)).constructMaterial();
-        Materials.Dichlorobenzene           = new MaterialBuilder(632, TextureSet.SET_FLUID      ,                                                                                                     "Dichlorobenzene").addCell().addFluid().setRGB(0, 68, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Chlorine, 2)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Polystyrene               = new MaterialBuilder(636, TextureSet.SET_DULL       ,                                                                                                     "Polystyrene").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(190, 180, 170).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8)).constructMaterial();
-        Materials.Styrene                   = new MaterialBuilder(637, TextureSet.SET_FLUID      ,                                                                                                     "Styrene").addCell().addFluid().setRGB(210, 200, 190).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Isoprene                  = new MaterialBuilder(638, TextureSet.SET_FLUID      ,                                                                                                     "Isoprene").addCell().addFluid().setRGB(20, 20, 20).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Tetranitromethane         = new MaterialBuilder(639, TextureSet.SET_FLUID      ,                                                                                                     "Tetranitromethane").addCell().addFluid().setRGB(15, 40, 40).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Nitrogen, 4), new MaterialStack(Oxygen, 8)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Ethenone                  = new MaterialBuilder(641, TextureSet.SET_FLUID      ,                                                                                                     "Ethenone").addCell().addGas().setRGB(20, 20, 70).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Ethane                    = new MaterialBuilder(642, TextureSet.SET_FLUID      ,                                                                                                     "Ethane").addCell().addGas().setRGB(200, 200, 255).setColor(Dyes.dyeLightBlue).setFuelType(MaterialBuilder.GAS).setFuelPower(168).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
-        Materials.Propane                   = new MaterialBuilder(643, TextureSet.SET_FLUID      ,                                                                                                     "Propane").addCell().addGas().setRGB(250, 226, 80).setColor(Dyes.dyeYellow).setFuelType(MaterialBuilder.GAS).setFuelPower(232).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
-        Materials.Butane                    = new MaterialBuilder(644, TextureSet.SET_FLUID      ,                                                                                                     "Butane").addCell().addGas().setRGB(182, 55, 30).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.GAS).setFuelPower(296).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 10)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
-        Materials.Butene                    = new MaterialBuilder(645, TextureSet.SET_FLUID      ,                                                                                                     "Butene").addCell().addGas().setRGB(207, 80, 5).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.GAS).setFuelPower(256).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
-        Materials.Butadiene                 = new MaterialBuilder(646, TextureSet.SET_FLUID      ,                                                                                                     "Butadiene").addCell().addGas().setRGB(232, 105, 0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.GAS).setFuelPower(206).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
-        Materials.RawStyreneButadieneRubber = new MaterialBuilder(634, TextureSet.SET_SHINY      ,                                                                                                     "Raw Styrene-Butadiene Rubber").addDustItems().setRGB(84, 64, 61).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3)).constructMaterial();
-        Materials.StyreneButadieneRubber    = new MaterialBuilder(635, TextureSet.SET_SHINY      ,                                                                                                     "Styrene-Butadiene Rubber").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(128).setToolQuality(1).setRGB(33, 26, 24).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Styrene, 1), new MaterialStack(Butadiene, 3)).constructMaterial();
-        Materials.Toluene                   = new MaterialBuilder(647, TextureSet.SET_FLUID      ,                                                                                                     "Toluene").addCell().setRGB(80, 29, 5).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(328).setMaterialList(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Epichlorohydrin           = new MaterialBuilder(648, TextureSet.SET_FLUID      ,                                                                                                     "Epichlorohydrin").addCell().setRGB(80, 29, 5).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.PolyvinylChloride         = new MaterialBuilder(649, TextureSet.SET_DULL       ,                                                                                                     "Polyvinyl Chloride").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(215, 230, 230).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).constructMaterial();
-        Materials.VinylChloride             = new MaterialBuilder(650, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Chloride").addCell().addGas().setRGB(225, 240, 240).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.SulfurDioxide             = new MaterialBuilder(651, TextureSet.SET_FLUID      ,                                                                                                     "Sulfur Dioxide").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
-        Materials.SulfurTrioxide            = new MaterialBuilder(652, TextureSet.SET_FLUID      ,                                                                                                     "Sulfur Trioxide").addCell().addGas().setGasTemperature(344).setRGB(160, 160, 20).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.NitricAcid                = new MaterialBuilder(653, TextureSet.SET_FLUID      ,                                                                                                     "Nitric Acid").addCell().addFluid().setRGB(230, 226, 171).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Dimethylhydrazine         = new MaterialBuilder(654, TextureSet.SET_FLUID      ,                                                                                                     "1,1-Dimethylhydrazine").addCell().addFluid().setRGB(0, 0, 85).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 8), new MaterialStack(Nitrogen, 2)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Chloramine                = new MaterialBuilder(655, TextureSet.SET_FLUID      ,                                                                                                     "Chloramine").addCell().addFluid().setRGB(63, 159, 128).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Dimethylamine             = new MaterialBuilder(656, TextureSet.SET_FLUID      ,                                                                                                     "Dimethylamine").addCell().addGas().setRGB(85, 68, 105).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 7), new MaterialStack(Nitrogen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.DinitrogenTetroxide       = new MaterialBuilder(657, TextureSet.SET_FLUID      ,                                                                                                     "Dinitrogen Tetroxide").addCell().addGas().setRGB(0, 65, 132).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 4)).addElectrolyzerRecipe().constructMaterial();
-        Materials.NitricOxide               = new MaterialBuilder(658, TextureSet.SET_FLUID      ,                                                                                                     "Nitric Oxide").addCell().addGas().setRGB(125, 200, 240).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Ammonia                   = new MaterialBuilder(659, TextureSet.SET_FLUID      ,                                                                                                     "Ammonia").addCell().addGas().setRGB(63, 52, 128).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 1), new MaterialStack(Hydrogen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Dimethyldichlorosilane    = new MaterialBuilder(663, TextureSet.SET_FLUID      ,                                                                                                     "Dimethyldichlorosilane").addCell().addFluid().setRGB(68, 22, 80).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Chlorine, 2), new MaterialStack(Silicon, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Chloromethane             = new MaterialBuilder(664, TextureSet.SET_FLUID      ,                                                                                                     "Chloromethane").addCell().addGas().setRGB(200, 44, 160).setColor(Dyes.dyeMagenta).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 3), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.PhosphorousPentoxide      = new MaterialBuilder(665, TextureSet.SET_FLUID      ,                                                                                                     "Phosphorous Pentoxide").addCell().addDustItems().setRGB(220, 220, 0).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Phosphorus, 4), new MaterialStack(Oxygen, 10)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Tetrafluoroethylene       = new MaterialBuilder(666, TextureSet.SET_FLUID      ,                                                                                                     "Tetrafluoroethylene").addCell().addGas().setRGB(125, 125, 125).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)).addElectrolyzerRecipe().constructMaterial();
-        Materials.HydrofluoricAcid          = new MaterialBuilder(667, TextureSet.SET_FLUID      ,                                                                                                     "Hydrofluoric Acid").setName("HydrofluoricAcid_GT5U").addCell().addFluid().setRGB(0, 136, 170).setColor(Dyes.dyeLightBlue).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Fluorine, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Chloroform                = new MaterialBuilder(668, TextureSet.SET_FLUID      ,                                                                                                     "Chloroform").addCell().addFluid().setRGB(137, 44, 160).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.BisphenolA                = new MaterialBuilder(669, TextureSet.SET_FLUID      ,                                                                                                     "Bisphenol A").addCell().setRGB(212, 170, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 15), new MaterialStack(Hydrogen, 16), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
-        Materials.AceticAcid                = new MaterialBuilder(670, TextureSet.SET_FLUID      ,                                                                                                     "Acetic Acid").addCell().addFluid().setRGB(200, 180, 160).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
-        Materials.CalciumAcetateSolution    = new MaterialBuilder(671, TextureSet.SET_RUBY       ,                                                                                                     "Calcium Acetate Solution").addCell().addFluid().setRGB(220, 200, 180).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 4), new MaterialStack(Oxygen, 4), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Acetone                   = new MaterialBuilder(672, TextureSet.SET_FLUID      ,                                                                                                     "Acetone").addCell().addFluid().setRGB(175, 175, 175).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Methanol                  = new MaterialBuilder(673, TextureSet.SET_FLUID      ,                                                                                                     "Methanol").addCell().addFluid().setRGB(170, 136, 0).setColor(Dyes.dyeBrown).setFuelPower(84).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.CarbonMonoxide            = new MaterialBuilder(674, TextureSet.SET_FLUID      ,                                                                                                     "Carbon Monoxide").addCell().addGas().setRGB(14, 72, 128).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1)).constructMaterial();
-        Materials.MetalMixture              = new MaterialBuilder(676, TextureSet.SET_METALLIC   ,                                                                                                     "Metal Mixture").addDustItems().setRGB(80, 45, 22).setColor(Dyes.dyeBrown).constructMaterial();
-        Materials.Ethylene                  = new MaterialBuilder(677, TextureSet.SET_FLUID      ,                                                                                                     "Ethylene").addCell().addGas().setRGB(225, 225, 225).setColor(Dyes.dyeWhite).setFuelType(MaterialBuilder.GAS).setFuelPower(128).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
-        Materials.Propene                   = new MaterialBuilder(678, TextureSet.SET_FLUID      ,                                                                                                     "Propene").addCell().addGas().setRGB(255, 221, 85).setColor(Dyes.dyeYellow).setFuelType(MaterialBuilder.GAS).setFuelPower(192).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
-        Materials.VinylAcetate              = new MaterialBuilder(679, TextureSet.SET_FLUID      ,                                                                                                     "Vinyl Acetate").addCell().addFluid().setRGB(255, 179, 128).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
-        Materials.PolyvinylAcetate          = new MaterialBuilder(680, TextureSet.SET_FLUID      ,                                                                                                     "Polyvinyl Acetate").addCell().addFluid().setRGB(255, 153, 85).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 4), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).constructMaterial();
-        Materials.MethylAcetate             = new MaterialBuilder(681, TextureSet.SET_FLUID      ,                                                                                                     "Methyl Acetate").addCell().addFluid().setRGB(238, 198, 175).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 2)).addElectrolyzerRecipe().constructMaterial();
-        Materials.AllylChloride             = new MaterialBuilder(682, TextureSet.SET_FLUID      ,                                                                                                     "Allyl Chloride").addCell().addFluid().setRGB(135, 222, 170).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.HydrochloricAcid          = new MaterialBuilder(683, TextureSet.SET_FLUID      ,                                                                                                     "Hydrochloric Acid").setName("HydrochloricAcid_GT5U").addCell().addFluid().setRGB(183, 200, 196).setColor(Dyes.dyeLightGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1)).constructMaterial();
-        Materials.HypochlorousAcid          = new MaterialBuilder(684, TextureSet.SET_FLUID      ,                                                                                                     "Hypochlorous Acid").addCell().addFluid().setRGB(111, 138, 145).setColor(Dyes.dyeGray).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.SodiumOxide               = new MaterialBuilder(744, TextureSet.SET_DULL       ,                                                                                                     "Sodium Oxide").setName("SodiumOxide").addDustItems().setRGB(255, 255, 235).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.SodiumHydroxide           = new MaterialBuilder(685, TextureSet.SET_DULL       ,                                                                                                     "Sodium Hydroxide").setName("SodiumHydroxide_GT5U").addDustItems().setRGB(0, 51, 128).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)).constructMaterial();
-        Materials.Benzene                   = new MaterialBuilder(686, TextureSet.SET_FLUID      ,                                                                                                     "Benzene").addCell().addFluid().setRGB(26, 26, 26).setColor(Dyes.dyeGray).setFuelType(MaterialBuilder.GAS).setFuelPower(360).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Phenol                    = new MaterialBuilder(687, TextureSet.SET_FLUID      ,                                                                                                     "Phenol").addCell().addFluid().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(288).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Cumene                    = new MaterialBuilder(688, TextureSet.SET_FLUID      ,                                                                                                     "Isopropylbenzene").addCell().addFluid().setRGB(85, 34, 0).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Carbon, 9), new MaterialStack(Hydrogen, 12)).addElectrolyzerRecipe().constructMaterial();
-        Materials.PhosphoricAcid            = new MaterialBuilder(689, TextureSet.SET_FLUID      ,                                                                                                     "Phosphoric Acid").setName("PhosphoricAcid_GT5U").addCell().addFluid().setRGB(220, 220, 0).setColor(Dyes.dyeYellow).setMaterialList(new MaterialStack(Hydrogen, 3), new MaterialStack(Phosphorus, 1), new MaterialStack(Oxygen, 4)).constructMaterial();
-        Materials.SaltWater                 = new MaterialBuilder(692, TextureSet.SET_FLUID      ,                                                                                                     "Salt Water").addCell().addFluid().setRGB(0, 0, 200).setColor(Dyes.dyeBlue).constructMaterial();
-        Materials.IronIIIChloride           = new MaterialBuilder(693, TextureSet.SET_FLUID      ,                                                                                                     "Iron III Chloride").setName("IronIIIChloride").addCell().addFluid().setRGB(22, 21, 14).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Iron, 1), new MaterialStack(Chlorine, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.LifeEssence               = new MaterialBuilder(694, TextureSet.SET_FLUID      ,                                                                                                     "Life").setName("lifeessence").addCell().addFluid().setFuelPower(100).setFuelType(5).setRGB(110, 3, 3).setColor(Dyes.dyeRed).setMaterialList().constructMaterial();
-
-        Materials.RoastedCopper             = new MaterialBuilder(546, TextureSet.SET_DULL    , "Roasted Copper").setName("RoastedCopper").addDustItems().setRGB(77, 18, 18).constructMaterial();
-        Materials.RoastedAntimony           = new MaterialBuilder(547, TextureSet.SET_DULL    , "Roasted Antimony").setName("RoastedAntimony").addDustItems().setRGB(196, 178, 194).constructMaterial();
-        Materials.RoastedIron               = new MaterialBuilder(548, TextureSet.SET_DULL    , "Roasted Iron").setName("RoastedIron").addDustItems().setRGB(148, 98, 98).addOreItems().constructMaterial();
-        Materials.RoastedNickel             = new MaterialBuilder(549, TextureSet.SET_METALLIC, "Roasted Nickel").setName("RoastedNickel").addDustItems().setRGB(70, 140, 45).addOreItems().constructMaterial();
-        Materials.RoastedZinc               = new MaterialBuilder(550, TextureSet.SET_DULL    , "Roasted Zinc").setName("RoastedZinc").addDustItems().setRGB(209, 209, 209).constructMaterial();
-        Materials.RoastedCobalt             = new MaterialBuilder(551, TextureSet.SET_METALLIC, "Roasted Cobalt").setName("RoastedCobalt").addDustItems().setRGB(8, 64, 9).constructMaterial();
-        Materials.RoastedArsenic            = new MaterialBuilder(552, TextureSet.SET_SHINY   , "Roasted Arsenic").setName("RoastedArsenic").addDustItems().setRGB(240, 240, 240).constructMaterial();
-        Materials.RoastedLead               = new MaterialBuilder(553, TextureSet.SET_SHINY   , "Roasted Lead").setName("RoastedLead").addDustItems().setRGB(168, 149, 43).constructMaterial();
-
-        Materials.SiliconSG               = new Materials(  856, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1|2  |8   |32             ,  80,  80, 100,   0,   "SiliconSolarGrade"       ,   "Silicon Solar Grade (Poly SI)" ,    0,       0,       2273, 2273,  true, false,   1,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4), new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 2))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.CalciumDisilicide       = new Materials(  971, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 180, 180, 180,   0,   "CalciumDisilicide"       ,   "Calcium Disilicide"            ,    0,       0,       1313,   -1, false, false,   1,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//CaSi2
-        Materials.SiliconTetrafluoride    = new MaterialBuilder(  967, TextureSet.SET_FLUID            , "Silicon Tetrafluoride" ).setName("SiliconTetrafluoride").addCell().addGas().setTransparent(true).setRGB(200, 200, 200).setColor(Dyes.dyeWhite).setMeltingPoint(178).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 4)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//SIF4
-        Materials.SiliconTetrachloride    = new MaterialBuilder(  968, TextureSet.SET_FLUID            ,  "Silicon Tetrachloride").setName("SiliconTetrachloride").addCell().addFluid().setRGB(220, 220, 220).setColor(Dyes.dyeWhite).setMeltingPoint(204).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 4)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//SICL4
-        Materials.Trichlorosilane         = new MaterialBuilder(  972, TextureSet.SET_FLUID            ,   "Trichlorosilane" ).setName("Trichlorosilane" ).addCell().addFluid().setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(139).setMaterialList(new MaterialStack(Hydrogen, 1), new MaterialStack(Silicon, 1), new MaterialStack(Chlorine, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//HSICL3
-        Materials.Hexachlorodisilane      = new MaterialBuilder(  973, TextureSet.SET_FLUID            ,  "Hexachlorodisilane").setName("Hexachlorodisilane" ).addCell().addFluid().setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(272).setExtraData(1).setMaterialList(new MaterialStack(Silicon, 2), new MaterialStack(Chlorine, 6)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).constructMaterial();//SI2CL6
-        Materials.Dichlorosilane          = new MaterialBuilder(  799, TextureSet.SET_FLUID            ,   "Dichlorosilane").setName("Dichlorosilane").addCell().addGas().setTransparent(true).setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(151).setExtraData(1).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Chlorine, 2)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))).constructMaterial();//SIH2CL2
-        Materials.Silane                  = new MaterialBuilder(  798, TextureSet.SET_FLUID            ,   "Silane").setName( "Silane").addCell().addGas().setRGB( 255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(88).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Hydrogen, 4)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).constructMaterial();//SIH4
-        Materials.Calciumhydride          = new Materials(  797, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 220, 220, 220,   0,   "CalciumHydride"          ,   "Calcium Hydride"               ,    0,       0,       1089,   -1, false, false,   1,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Hydrogen, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//CaH2
-        Materials.AluminiumFluoride       = new Materials(  969, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Aluminiumfluoride"       ,   "Aluminium Fluoride"            ,    0,       0,       1533,   -1, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Aluminium, 1), new MaterialStack(Fluorine, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));//ALF3
-
-        Materials.SolderingAlloy          = new Materials( 314, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 220, 220, 230,   0,   "SolderingAlloy"          ,   "Soldering Alloy"               ,    0,       0,        400,  400, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 9), new MaterialStack(Antimony, 1)));
-        Materials.GalliumArsenide         = new Materials( 980, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 160, 160, 160,   0,   "GalliumArsenide"         ,   "Gallium Arsenide"              ,    0,       0,         -1, 1200,  true, false,   1,   1,   1, Dyes.dyeGray        , 2, Arrays.asList(new MaterialStack(Arsenic, 1), new MaterialStack(Gallium, 1)));
-        Materials.IndiumGalliumPhosphide  = new Materials( 981, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2                       , 160, 140, 190,   0,   "IndiumGalliumPhosphide"  ,   "Indium Gallium Phosphide"      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , 2, Arrays.asList(new MaterialStack(Indium, 1), new MaterialStack(Gallium, 1), new MaterialStack(Phosphorus, 1)));
-        Materials.Spessartine             = new Materials( 838, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 255, 100, 100,   0,   "Spessartine"             ,   "Spessartine"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Manganese, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
-        Materials.Sphalerite              = new Materials( 839, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Sphalerite"              ,   "Sphalerite"                    ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , 0, Arrays.asList(new MaterialStack(Zinc, 1), new MaterialStack(Sulfur, 1)));
-        Materials.StainlessSteel          = new Materials( 306, TextureSet.SET_SHINY             ,   7.0F,    480,  4, 1|2          |64|128      , 200, 200, 220,   0,   "StainlessSteel"          ,   "Stainless Steel"               ,    0,       0,         -1, 1700,  true, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Iron, 6), new MaterialStack(Chrome, 1), new MaterialStack(Manganese, 1), new MaterialStack(Nickel, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Steel                   = new Materials( 305, TextureSet.SET_METALLIC          ,   6.0F,    512,  3, 1|2          |64|128      , 128, 128, 128,   0,   "Steel"                   ,   "Steel"                         ,    0,       0,       1811, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Iron, 50), new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
-        Materials.Stibnite                = new Materials( 945, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   ,  70,  70,  70,   0,   "Stibnite"                ,   "Stibnite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Antimony, 2), new MaterialStack(Sulfur, 3)));
-        Materials.SulfuricAcid            = new Materials( 720, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 128,   0,   0,   "SulfuricAcid"            ,   "Sulfuric Acid"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)));
-        Materials.Tanzanite               = new Materials( 508, TextureSet.SET_GEM_VERTICAL      ,   7.0F,    256,  2, 1  |4|8      |64          ,  64,   0, 200, 127,   "Tanzanite"               ,   "Tanzanite"                     ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Calcium, 2), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 13)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
-        Materials.Tetrahedrite            = new Materials( 840, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 200,  32,   0,   0,   "Tetrahedrite"            ,   "Tetrahedrite"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Copper, 3), new MaterialStack(Antimony, 1), new MaterialStack(Sulfur, 3), new MaterialStack(Iron, 1))); //Cu3SbS3 + x(Fe,Zn)6Sb2S9
-        Materials.TinAlloy                = new Materials( 363, TextureSet.SET_METALLIC          ,   6.5F,     96,  2, 1|2          |64|128      , 200, 200, 200,   0,   "TinAlloy"                ,   "Tin Alloy"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Tin, 1), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
-        Materials.Topaz                   = new Materials( 507, TextureSet.SET_GEM_HORIZONTAL    ,   7.0F,    256,  3, 1  |4|8      |64          , 255, 128,   0, 127,   "Topaz"                   ,   "Topaz"                         ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
-        Materials.Tungstate               = new Materials( 841, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   ,  55,  50,  35,   0,   "Tungstate"               ,   "Tungstate"                     ,    0,       0,       2500, 2500,  true, false,   4,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Lithium, 2), new MaterialStack(Oxygen, 4)));
-        Materials.Ultimet                 = new Materials( 344, TextureSet.SET_SHINY             ,   9.0F,   2048,  4, 1|2          |64|128      , 180, 180, 230,   0,   "Ultimet"                 ,   "Ultimet"                       ,    0,       0,       2700, 2700,  true, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Cobalt, 5), new MaterialStack(Chrome, 2), new MaterialStack(Nickel, 1), new MaterialStack(Molybdenum, 1))); // 54% Cobalt, 26% Chromium, 9% Nickel, 5% Molybdenum, 3% Iron, 2% Tungsten, 0.8% Manganese, 0.3% Silicon, 0.08% Nitrogen and 0.06% Carbon
-        Materials.Uraninite               = new Materials( 922, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  35,  35,  35,   0,   "Uraninite"               ,   "Uraninite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        , 2, Arrays.asList(new MaterialStack(Uranium, 1), new MaterialStack(Oxygen, 2)));
-        Materials.Uvarovite               = new Materials( 842, TextureSet.SET_DIAMOND           ,   1.0F,      0,  2, 1    |8                   , 180, 255, 180,   0,   "Uvarovite"               ,   "Uvarovite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Chrome, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
-        Materials.VanadiumGallium         = new Materials( 357, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2             |128      , 128, 128, 140,   0,   "VanadiumGallium"         ,   "Vanadium-Gallium"              ,    0,       0,       4500, 4500,  true, false,   1,   1,   1, Dyes.dyeGray        , 2, Arrays.asList(new MaterialStack(Vanadium, 3), new MaterialStack(Gallium, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Wood                    = new Materials( 809, TextureSet.SET_WOOD              ,   2.0F,     16,  0, 1|2          |64|128      , 100,  50,   0,   0,   "Wood"                    ,   "Wood"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2)));
-        Materials.WroughtIron             = new Materials( 304, TextureSet.SET_METALLIC          ,   6.0F,    384,  2, 1|2          |64|128      , 200, 180, 180,   0,   "WroughtIron"             ,   "Wrought Iron"                  ,    0,       0,       1811,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , 2, Collections.singletonList(new MaterialStack(Iron, 1)));
-        Materials.Wulfenite               = new Materials( 882, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 255, 128,   0,   0,   "Wulfenite"               ,   "Wulfenite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4)));
-        Materials.YellowLimonite          = new Materials( 931, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 200, 200,   0,   0,   "YellowLimonite"          ,   "Yellow Limonite"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2))); // FeO(OH) + a bit of Ni and Co
-        Materials.YttriumBariumCuprate    = new Materials( 358, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2                       ,  80,  64,  70,   0,   "YttriumBariumCuprate"    ,   "Yttrium Barium Cuprate"        ,    0,       0,       4500, 4500,  true, false,   1,   1,   1, Dyes.dyeGray        , 0, Arrays.asList(new MaterialStack(Yttrium, 1), new MaterialStack(Barium, 2), new MaterialStack(Copper, 3), new MaterialStack(Oxygen, 7))).disableAutoGeneratedVacuumFreezerRecipe();
-
-        Materials.WoodSealed              = new Materials( 889, TextureSet.SET_WOOD              ,   3.0F,     24,  0, 1|2          |64|128      ,  80,  40,   0,   0,   "WoodSealed"              ,   "Sealed Wood"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 0, Collections.singletonList(new MaterialStack(Wood, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2), new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1)));
-        Materials.LiveRoot                = new Materials( 832, TextureSet.SET_WOOD              ,   1.0F,      0,  1, 1                         , 220, 200,   0,   0,   "LiveRoot"                ,   "Liveroot"                      ,    5,      16,         -1,    0, false, false,   2,   4,   3, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Wood, 3), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2), new TCAspects.TC_AspectStack(TCAspects.VICTUS, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
-        Materials.IronWood                = new Materials( 338, TextureSet.SET_WOOD              ,   6.0F,    384,  2, 1|2          |64|128      , 150, 140, 110,   0,   "IronWood"                ,   "Ironwood"                      ,    5,       8,         -1,    0, false, false,   2,  19,  18, Dyes.dyeBrown       , 2, Arrays.asList(new MaterialStack(Iron, 9), new MaterialStack(LiveRoot, 9), new MaterialStack(Gold, 1)));
-        Materials.Glass                   = new Materials( 890, TextureSet.SET_GLASS             ,   1.0F,      4,  0, 1  |4                     , 250, 250, 250, 220,   "Glass"                   ,   "Glass"                         ,    0,       0,       1500,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
-        Materials.BorosilicateGlass  = new MaterialBuilder(611, TextureSet.SET_GLASS             ,                                                                                                     "Borosilicate Glass").addDustItems().addMetalItems().setRGB(230, 243, 230).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Boron, 1), new MaterialStack(Glass, 7)).addCentrifugeRecipe().constructMaterial();
-        Materials.Perlite                 = new Materials( 925, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  30,  20,  30,   0,   "Perlite"                 ,   "Perlite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)));
-        Materials.Borax                   = new Materials( 941, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 250, 250, 250,   0,   "Borax"                   ,   "Borax"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Oxygen, 7), new MaterialStack(Water, 10)));
-        Materials.Lignite                 = new Materials( 538, TextureSet.SET_LIGNITE           ,   1.0F,      0,  0, 1  |4|8                   , 100,  70,  70,   0,   "Lignite"                 ,   "Lignite Coal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 1, Arrays.asList(new MaterialStack(Carbon, 3), new MaterialStack(Water, 1)));
-        Materials.Olivine                 = new Materials( 505, TextureSet.SET_RUBY              ,   7.0F,    256,  2, 1  |4|8      |64          , 150, 255, 150, 127,   "Olivine"                 ,   "Olivine"                       ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeLime        , 1, Arrays.asList(new MaterialStack(Magnesium, 2), new MaterialStack(Iron, 1), new MaterialStack(SiliconDioxide, 2)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
-        Materials.Opal                    = new Materials( 510, TextureSet.SET_OPAL              ,   7.0F,    256,  2, 1  |4|8      |64          ,   0,   0, 255,   0,   "Opal"                    ,   "Opal"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
-        Materials.Amethyst                = new Materials( 509, TextureSet.SET_FLINT             ,   7.0F,    256,  3, 1  |4|8      |64          , 210,  50, 210, 127,   "Amethyst"                ,   "Amethyst"                      ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4)));
-        Materials.Redstone                = new Materials( 810, TextureSet.SET_ROUGH             ,   1.0F,      0,  2, 1    |8                   , 200,   0,   0,   0,   "Redstone"                ,   "Redstone"                      ,    0,       0,        500,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Silicon, 1), new MaterialStack(Pyrite, 5), new MaterialStack(Ruby, 1), new MaterialStack(Mercury, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
-        Materials.Lapis                   = new Materials( 526, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  70,  70, 220,   0,   "Lapis"                   ,   "Lapis"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 2, Arrays.asList(new MaterialStack(Lazurite, 12), new MaterialStack(Sodalite, 2), new MaterialStack(Pyrite, 1), new MaterialStack(Calcite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1)));
-        Materials.Blaze                   = new Materials( 801, TextureSet.SET_POWDER            ,   2.0F,     16,  1, 1            |64          , 255, 200,   0,   0,   "Blaze"                   ,   "Blaze"                         ,    0,       0,       6400,    0, false, false,   2,   3,   2, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(DarkAsh, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4)));
-        Materials.EnderPearl              = new Materials( 532, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 108, 220, 200,   0,   "EnderPearl"              ,   "Enderpearl"                    ,    0,       0,         -1,    0, false, false,   1,  16,  10, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Beryllium, 1), new MaterialStack(Potassium, 4), new MaterialStack(Nitrogen, 5), new MaterialStack(Magic, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2)));
-        Materials.EnderEye                = new Materials( 533, TextureSet.SET_SHINY             ,   1.0F,     16,  1, 1  |4                     , 160, 250, 230,   0,   "EnderEye"                ,   "Endereye"                      ,    5,      10,         -1,    0, false, false,   1,   2,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(EnderPearl, 1), new MaterialStack(Blaze, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 4), new TCAspects.TC_AspectStack(TCAspects.ITER, 4), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
-        Materials.Flint                   = new Materials( 802, TextureSet.SET_FLINT             ,   2.5F,    128,  1, 1            |64          ,   0,  32,  64,   0,   "Flint"                   ,   "Flint"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
-        Materials.Diatomite               = new Materials( 948, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 225, 225, 225,   0,   "Diatomite"               ,   "Diatomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 2, Arrays.asList(new MaterialStack(Flint, 8), new MaterialStack(BandedIron, 1), new MaterialStack(Sapphire, 1)));
-        Materials.VolcanicAsh             = new Materials( 940, TextureSet.SET_FLINT             ,   1.0F,      0,  0, 1                         ,  60,  50,  50,   0,   "VolcanicAsh"             ,   "Volcanic Ashes"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Flint, 6), new MaterialStack(Iron, 1), new MaterialStack(Magnesium, 1)));
-        Materials.Niter                   = new Materials( 531, TextureSet.SET_FLINT             ,   1.0F,      0,  1, 1  |4|8                   , 255, 200, 200,   0,   "Niter"                   ,   "Niter"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 2, Collections.singletonList(new MaterialStack(Saltpeter, 1)));
-        Materials.Pyrotheum               = new Materials( 843, TextureSet.SET_FIERY             ,   1.0F,      0,  1, 1                         , 255, 128,   0,   0,   "Pyrotheum"               ,   "Pyrotheum"                     ,    2,      62,         -1,    0, false, false,   2,   4,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Coal, 1), new MaterialStack(Redstone, 1), new MaterialStack(Blaze, 1), new MaterialStack(Sulfur, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))).disableAutoGeneratedRecycleRecipes();;
-        Materials.Cryotheum               = new Materials( 898, TextureSet.SET_SHINY             ,   1.0F,      0,  1, 1                         ,   0, 148, 203,   0,   "Cryotheum"               ,   "Cryotheum"                     ,    2,      62,         -1,    0, false, false,   2,   4,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Saltpeter, 1), new MaterialStack(Redstone, 1), new MaterialStack(Snow, 1), new MaterialStack(Blizz, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1),  new TCAspects.TC_AspectStack(TCAspects.GELUM, 1))).disableAutoGeneratedRecycleRecipes();;
-        Materials.HydratedCoal            = new Materials( 818, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         ,  70,  70, 100,   0,   "HydratedCoal"            ,   "Hydrated Coal"                 ,    0,       0,         -1,    0, false, false,   1,   9,   8, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Coal, 8), new MaterialStack(Water, 1)));
-        Materials.Apatite                 = new Materials( 530, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8                   , 200, 200, 255,   0,   "Apatite"                 ,   "Apatite"                       ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Calcium, 5), new MaterialStack(Phosphate, 3), new MaterialStack(Chlorine, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MESSIS, 2)));
-        Materials.Alumite                 = new Materials( 400, TextureSet.SET_METALLIC          ,   5.0F,    768,  2, 1|2          |64|128      , 255, 105, 180,   0,   "Alumite"                 ,   "Obzinite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 2, Arrays.asList(new MaterialStack(Zinc, 5), new MaterialStack(Steel, 2), new MaterialStack(Obsidian, 2)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2)));
-        Materials.Manyullyn               = new Materials( 386, TextureSet.SET_SHINY             ,  25.0F,   2048,  5, 1|2  |8      |64|128      , 154,  76, 185,   0,   "Manyullyn"               ,   "Manyullyn"                     ,    0,       0,       3600, 3600,  true, false,   1,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Cobalt, 1), new MaterialStack(Ardite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Steeleaf                = new Materials( 339, TextureSet.SET_LEAF              ,   8.0F,    768,  3, 1|2          |64|128      ,  50, 127,  50,   0,   "Steeleaf"                ,   "Steeleaf"                      ,    5,      24,         -1,    0, false, false,   4,   1,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(Steel, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HERBA, 2), new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
-        Materials.Knightmetal             = new Materials( 362, TextureSet.SET_METALLIC          ,   8.0F,   1024,  3, 1|2          |64|128      , 210, 240, 200,   0,   "Knightmetal"             ,   "Knightmetal"                   ,    5,      24,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLime        , 2, Arrays.asList(new MaterialStack(Steel, 2), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1), new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2)));
-        Materials.SterlingSilver          = new Materials( 350, TextureSet.SET_SHINY             ,  13.0F,    128,  2, 1|2          |64|128      , 250, 220, 225,   0,   "SterlingSilver"          ,   "Sterling Silver"               ,    0,       0,         -1, 1700,  true, false,   4,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Silver, 4)));
-        Materials.RoseGold                = new Materials( 351, TextureSet.SET_SHINY             ,  14.0F,    128,  2, 1|2          |64|128      , 255, 230,  30,   0,   "RoseGold"                ,   "Rose Gold"                     ,    0,       0,         -1, 1600,  true, false,   4,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Gold, 4)));
-        Materials.BlackBronze             = new Materials( 352, TextureSet.SET_DULL              ,  12.0F,    256,  2, 1|2          |64|128      , 100,  50, 125,   0,   "BlackBronze"             ,   "Black Bronze"                  ,    0,       0,         -1, 2000,  true, false,   4,   1,   1, Dyes.dyePurple      , 2, Arrays.asList(new MaterialStack(Gold, 1), new MaterialStack(Silver, 1), new MaterialStack(Copper, 3)));
-        Materials.BismuthBronze           = new Materials( 353, TextureSet.SET_DULL              ,   8.0F,    256,  2, 1|2          |64|128      , 100, 125, 125,   0,   "BismuthBronze"           ,   "Bismuth Bronze"                ,    0,       0,         -1, 1100,  true, false,   4,   1,   1, Dyes.dyeCyan        , 2, Arrays.asList(new MaterialStack(Bismuth, 1), new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)));
-        Materials.BlackSteel              = new Materials( 334, TextureSet.SET_METALLIC          ,   6.5F,    768,  3, 1|2          |64|128      , 100, 100, 100,   0,   "BlackSteel"              ,   "Black Steel"                   ,    0,       0,         -1, 1200,  true, false,   4,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Nickel, 1), new MaterialStack(BlackBronze, 1), new MaterialStack(Steel, 3))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.RedSteel                = new Materials( 348, TextureSet.SET_METALLIC          ,   7.0F,    896,  4, 1|2          |64|128      , 140, 100, 100,   0,   "RedSteel"                ,   "Red Steel"                     ,    0,       0,         -1, 1300,  true, false,   4,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(SterlingSilver, 1), new MaterialStack(BismuthBronze, 1), new MaterialStack(Steel, 2), new MaterialStack(BlackSteel, 4))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.BlueSteel               = new Materials( 349, TextureSet.SET_METALLIC          ,   7.5F,   1024,  4, 1|2          |64|128      , 100, 100, 140,   0,   "BlueSteel"               ,   "Blue Steel"                    ,    0,       0,         -1, 1400,  true, false,   4,   1,   1, Dyes.dyeBlue        , 2, Arrays.asList(new MaterialStack(RoseGold, 1), new MaterialStack(Brass, 1), new MaterialStack(Steel, 2), new MaterialStack(BlackSteel, 4))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.DamascusSteel           = new Materials( 335, TextureSet.SET_METALLIC          ,   8.0F,   1280,  3, 1|2          |64|128      , 110, 110, 110,   0,   "DamascusSteel"           ,   "Damascus Steel"                ,    0,       0,       2000, 1500,  true, false,   4,   1,   1, Dyes.dyeGray        , 2, Collections.singletonList(new MaterialStack(Steel, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.TungstenSteel           = new Materials( 316, TextureSet.SET_METALLIC          ,   8.0F,   2560,  4, 1|2          |64|128      , 100, 100, 160,   0,   "TungstenSteel"           ,   "Tungstensteel"                 ,    0,       0,       4000, 4000,  true, false,   4,   1,   1, Dyes.dyeBlue        , 2, Arrays.asList(new MaterialStack(Steel, 1), new MaterialStack(Tungsten, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.NitroCoalFuel           = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                ,  50,  70,  50,   0,   "NitroCoalFuel"           ,   "Nitro-Coalfuel"                ,    0,      48,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Glyceryl, 1), new MaterialStack(CoalFuel, 4)));
-        Materials.NitroFuel               = new Materials( 709, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 200, 255,   0,   0,   "NitroFuel"               ,   "Cetane-Boosted Diesel"         ,    0,    1000,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime        );
-        Materials.RedAlloy                = new Materials( 308, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1|2                       , 200,   0,   0,   0,   "RedAlloy"                ,   "Red Alloy"                     ,    0,       0,        500,    0, false, false,   3,   5,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Copper, 1), new MaterialStack(Redstone, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 3)));
-        Materials.CobaltBrass             = new Materials( 343, TextureSet.SET_METALLIC          ,   8.0F,    256,  2, 1|2          |64|128      , 180, 180, 160,   0,   "CobaltBrass"             ,   "Cobalt Brass"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Brass, 7), new MaterialStack(Tin, 1), new MaterialStack(Cobalt, 1)));
-        Materials.TricalciumPhosphate     = new Materials( 534, TextureSet.SET_FLINT             ,   1.0F,      0, 2,  1|4|8|16                  , 255, 255,   0,   0,   "TricalciumPhosphate"     ,   "Tricalcium Phosphate"          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Phosphate, 2)));
-        Materials.Basalt                  = new Materials( 844, TextureSet.SET_ROUGH             ,   1.0F,     64,  1, 1            |64|128      ,  30,  20,  20,   0,   "Basalt"                  ,   "Basalt"                        ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Olivine, 1), new MaterialStack(Calcite, 3), new MaterialStack(Flint, 8), new MaterialStack(DarkAsh, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1))).disableAutoGeneratedRecycleRecipes();
-        Materials.GarnetRed               = new Materials( 527, TextureSet.SET_RUBY              ,   7.0F,    128,  2, 1  |4|8      |64          , 200,  80,  80, 127,   "GarnetRed"               ,   "Red Garnet"                    ,    0,       0,         -1,    0, false,  true,   4,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Pyrope, 3), new MaterialStack(Almandine, 5), new MaterialStack(Spessartine, 8)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
-        Materials.GarnetYellow            = new Materials( 528, TextureSet.SET_RUBY              ,   7.0F,    128,  2, 1  |4|8      |64          , 200, 200,  80, 127,   "GarnetYellow"            ,   "Yellow Garnet"                 ,    0,       0,         -1,    0, false,  true,   4,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Andradite, 5), new MaterialStack(Grossular, 8), new MaterialStack(Uvarovite, 3)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
-        Materials.Marble                  = new Materials( 845, TextureSet.SET_FINE              ,   1.0F,     16,  1, 1            |64|128      , 200, 200, 200,   0,   "Marble"                  ,   "Marble"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Calcite, 7)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1)));
-        Materials.Sugar                   = new Materials( 803, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 250, 250, 250,   0,   "Sugar"                   ,   "Sugar"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 25)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HERBA, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 1)));
-        Materials.Thaumium                = new Materials( 330, TextureSet.SET_METALLIC          ,  12.0F,    256,  3, 1|2          |64|128      , 150, 100, 200,   0,   "Thaumium"                ,   "Thaumium"                      ,    0,       0,         -1,    0, false, false,   5,   2,   1, Dyes.dyePurple      , 0, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
-        Materials.Vinteum                 = new Materials( 529, TextureSet.SET_METALLIC          ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 100, 200, 255,   0,   "Vinteum"                 ,   "Vinteum"                       ,    5,      32,         -1,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , 2, Collections.singletonList(new MaterialStack(Thaumium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
-        Materials.Vis                     = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3, 0                         , 128,   0, 255,   0,   "Vis"                     ,   "Vis"                           ,    5,      32,         -1,    0, false, false,   1,   1,   1, Dyes.dyePurple      , 2, Collections.singletonList(new MaterialStack(Magic, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AURAM, 2), new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
-        Materials.Redrock                 = new Materials( 846, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 255,  80,  50,   0,   "Redrock"                 ,   "Redrock"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Calcite, 2), new MaterialStack(Flint, 1), new MaterialStack(Clay, 1)));
-        Materials.PotassiumFeldspar       = new Materials( 847, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1                         , 120,  40,  40,   0,   "PotassiumFeldspar"       ,   "Potassium Feldspar"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 8)));
-        Materials.Biotite                 = new Materials( 848, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1                         ,  20,  30,  20,   0,   "Biotite"                 ,   "Biotite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 3), new MaterialStack(Aluminium, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 10)));
-        Materials.GraniteBlack            = new Materials( 849, TextureSet.SET_ROUGH             ,   4.0F,     64,  3, 1            |64|128      ,  10,  10,  10,   0,   "GraniteBlack"            ,   "Black Granite"                 ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Biotite, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
-        Materials.GraniteRed              = new Materials( 850, TextureSet.SET_ROUGH             ,   4.0F,     64,  3, 1            |64|128      , 255,   0, 128,   0,   "GraniteRed"              ,   "Red Granite"                   ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeMagenta     , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(PotassiumFeldspar, 1), new MaterialStack(Oxygen, 3)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
-        Materials.Chrysotile              = new Materials( 912, TextureSet.SET_DULL              ,  32.0F,  10240,  3, 1|2  |8      |64|128      , 110, 140, 110,   0,   "Chrysotile"              ,   "Chrysotile"                    ,    0,       0,       9400, 9400,  true, false,   1,   1,   1, Dyes.dyeWhite       , 2, Collections.singletonList(new MaterialStack(Asbestos, 1))).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(280, 280, 1);
-        Materials.Realgar                 = new Materials( 913, TextureSet.SET_DULL              ,   1.0F,     32,  1, 1|2  |8      |64|128      , 140, 100, 100,   0,   "Realgar"                 ,   "Realgar"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Arsenic, 4), new MaterialStack(Sulfur,4)));
-        Materials.VanadiumMagnetite       = new Materials( 923, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   ,  35,  35,  60,   0,   "VanadiumMagnetite"       ,   "Vanadium Magnetite"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Magnetite, 1), new MaterialStack(Vanadium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1))); // Mixture of Fe3O4 and V2O5
-        Materials.BasalticMineralSand     = new Materials( 935, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   ,  40,  50,  40,   0,   "BasalticMineralSand"     ,   "Basaltic Mineral Sand"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Magnetite, 1), new MaterialStack(Basalt, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
-        Materials.GraniticMineralSand     = new Materials( 936, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   ,  40,  60,  60,   0,   "GraniticMineralSand"     ,   "Granitic Mineral Sand"         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Magnetite, 1), new MaterialStack(GraniteBlack, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
-        Materials.GarnetSand              = new Materials( 938, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "GarnetSand"              ,   "Garnet Sand"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(GarnetRed, 1), new MaterialStack(GarnetYellow, 1)));
-        Materials.QuartzSand              = new Materials( 939, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 194, 178, 128,   0,   "QuartzSand"              ,   "Quartz Sand"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(CertusQuartz, 1), new MaterialStack(Quartzite, 1)));
-        Materials.Bastnasite              = new Materials( 905, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 200, 110,  45,   0,   "Bastnasite"              ,   "Bastnasite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Cerium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Fluorine, 1), new MaterialStack(Oxygen, 3))); // (Ce, La, Y)CO3F
-        Materials.Pentlandite             = new Materials( 909, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 165, 150,   5,   0,   "Pentlandite"             ,   "Pentlandite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Nickel, 9), new MaterialStack(Sulfur, 8))); // (Fe,Ni)9S8
-        Materials.Spodumene               = new Materials( 920, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 190, 170, 170,   0,   "Spodumene"               ,   "Spodumene"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6))); // LiAl(SiO3)2
-        Materials.Pollucite               = new Materials( 919, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 210, 210,   0,   "Pollucite"               ,   "Pollucite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Caesium, 2), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 12))); // (Cs,Na)2Al2Si4O12 2H2O (also a source of Rb)
-        Materials.Tantalite               = new Materials( 921, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 145,  80,  40,   0,   "Tantalite"               ,   "Tantalite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Tantalum, 2), new MaterialStack(Oxygen, 6))); // (Fe, Mn)Ta2O6 (also source of Nb)
-        Materials.Lepidolite              = new Materials( 907, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 240,  50, 140,   0,   "Lepidolite"              ,   "Lepidolite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Lithium, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // K(Li,Al,Rb)3(Al,Si)4O10(F,OH)2
-        Materials.Glauconite              = new Materials( 933, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 130, 180,  60,   0,   "Glauconite"              ,   "Glauconite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 2), new MaterialStack(Aluminium, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
-        Materials.GlauconiteSand          = new Materials( 949, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 130, 180,  60,   0,   "GlauconiteSand"          ,   "Glauconite Sand"               ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Magnesium, 2), new MaterialStack(Aluminium, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
-        Materials.Vermiculite             = new Materials( 932, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 200, 180,  15,   0,   "Vermiculite"             ,   "Vermiculite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Iron, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 12))); // (Mg+2, Fe+2, Fe+3)3 [(AlSi)4O10] (OH)2 4H2O)
-        Materials.Bentonite               = new Materials( 927, TextureSet.SET_ROUGH             ,   1.0F,      0,  2, 1    |8                   , 245, 215, 210,   0,   "Bentonite"               ,   "Bentonite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Magnesium, 6), new MaterialStack(Silicon, 12), new MaterialStack(Hydrogen, 6), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 36))); // (Na,Ca)0.33(Al,Mg)2(Si4O10)(OH)2 nH2O
-        Materials.FullersEarth            = new Materials( 928, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 160, 160, 120,   0,   "FullersEarth"            ,   "Fullers Earth"                 ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 11))); // (Mg,Al)2Si4O10(OH) 4(H2O)
-        Materials.Pitchblende             = new Materials( 873, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 200, 210,   0,   0,   "Pitchblende"             ,   "Pitchblende"                   ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(Uraninite, 3), new MaterialStack(Thorium, 1), new MaterialStack(Lead, 1)));
-        Materials.Monazite                = new Materials( 520, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8                   ,  50,  70,  50,   0,   "Monazite"                ,   "Monazite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(RareEarth, 1), new MaterialStack(Phosphate, 1))); // Wikipedia: (Ce, La, Nd, Th, Sm, Gd)PO4 Monazite also smelt-extract to Helium, it is brown like the rare earth Item Monazite sand deposits are inevitably of the monazite-(Ce) composition. Typically, the lanthanides in such monazites contain about 45.8% cerium, about 24% lanthanum, about 17% neodymium, about 5% praseodymium, and minor quantities of samarium, gadolinium, and yttrium. Europium concentrations tend to be low, about 0.05% Thorium content of monazite is variable.
-        Materials.Malachite               = new Materials( 871, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,   5,  95,   5,   0,   "Malachite"               ,   "Malachite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(Copper, 2), new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 5))); // Cu2CO3(OH)2
-        Materials.Mirabilite              = new Materials( 900, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 250, 210,   0,   "Mirabilite"              ,   "Mirabilite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 4))); // Na2SO4 10H2O
-        Materials.Mica                    = new Materials( 901, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 195, 195, 205,   0,   "Mica"                    ,   "Mica"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // KAl2(AlSi3O10)(F,OH)2
-        Materials.Trona                   = new Materials( 903, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1    |8                   , 135, 135,  95,   0,   "Trona"                   ,   "Trona"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Sodium, 3), new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 6))); // Na3(CO3)(HCO3) 2H2O
-        Materials.Barite                  = new Materials( 904, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 230, 235, 255,   0,   "Barite"                  ,   "Barite"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Barium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)));
-        Materials.Gypsum                  = new Materials( 934, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 250,   0,   "Gypsum"                  ,   "Gypsum"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4), new MaterialStack(Water, 2))); // CaSO4 2H2O
-        Materials.Alunite                 = new Materials( 911, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1    |8                   , 225, 180,  65,   0,   "Alunite"                 ,   "Alunite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 14))); // KAl3(SO4)2(OH)6
-        Materials.Dolomite                = new Materials( 914, TextureSet.SET_FLINT             ,   1.0F,      0,  1, 1    |8                   , 225, 205, 205,   0,   "Dolomite"                ,   "Dolomite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Oxygen, 6))); // CaMg(CO3)2
-        Materials.Wollastonite            = new Materials( 915, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 240, 240,   0,   "Wollastonite"            ,   "Wollastonite"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3))); // CaSiO3
-        Materials.Zeolite                 = new Materials( 916, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 230, 230,   0,   "Zeolite"                 ,   "Zeolite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Calcium, 4), new MaterialStack(Silicon, 27), new MaterialStack(Aluminium, 9), new MaterialStack(Oxygen, 72))); // NaCa4(Si27Al9)O72
-        Materials.Kyanite                 = new Materials( 924, TextureSet.SET_FLINT             ,   1.0F,      0,  2, 1    |8                   , 110, 110, 250,   0,   "Kyanite"                 ,   "Kyanite"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 5))); // Al2SiO5
-        Materials.Kaolinite               = new Materials( 929, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 245, 235, 235,   0,   "Kaolinite"               ,   "Kaolinite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9))); // Al2Si2O5(OH)4
-        Materials.Talc                    = new Materials( 902, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   ,  90, 180,  90,   0,   "Talc"                    ,   "Talc"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
-        Materials.Soapstone               = new Materials( 877, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1    |8                   ,  95, 145,  95,   0,   "Soapstone"               ,   "Soapstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 12))); // H2Mg3(SiO3)4
-        Materials.Concrete                = new Materials( 947, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1                         , 100, 100, 100,   0,   "Concrete"                ,   "Concrete"                      ,    0,       0,        300,    0, false, false,   0,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Stone, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.TERRA, 1)));
-        Materials.IronMagnetic            = new Materials( 354, TextureSet.SET_MAGNETIC          ,   6.0F,    256,  2, 1|2          |64|128      , 200, 200, 200,   0,   "IronMagnetic"            ,   "Magnetic Iron"                 ,    0,       0,         -1,    0, false, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Iron, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
-        Materials.SteelMagnetic           = new Materials( 355, TextureSet.SET_MAGNETIC          ,   6.0F,    512,  3, 1|2          |64|128      , 128, 128, 128,   0,   "SteelMagnetic"           ,   "Magnetic Steel"                ,    0,       0,       1000, 1000,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Steel, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1)));
-        Materials.NeodymiumMagnetic       = new Materials( 356, TextureSet.SET_MAGNETIC          ,   7.0F,    512,  2, 1|2          |64|128      , 100, 100, 100,   0,   "NeodymiumMagnetic"       ,   "Magnetic Neodymium"            ,    0,       0,       1297, 1297,  true, false,   4,  51,  50, Dyes.dyeGray        , 1, Collections.singletonList(new MaterialStack(Neodymium, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 3)));
-        Materials.SamariumMagnetic        = new Materials( 399, TextureSet.SET_MAGNETIC          ,   1.0F,      0,  2, 1|2          |64|128      , 255, 255, 204,   0,   "SamariumMagnetic"        ,   "Magnetic Samarium"             ,    0,       0,       1345, 1345,  true, false,   4,   1,   1, Dyes.dyeWhite       , 1, Collections.singletonList(new MaterialStack(Samarium, 1)),Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO,10)));
-        Materials.TungstenCarbide         = new Materials( 370, TextureSet.SET_METALLIC          ,  14.0F,   1280,  4, 1|2          |64|128      ,  51,   0, 102,   0,   "TungstenCarbide"         ,   "Tungstencarbide"               ,    0,       0,       2460, 2460,  true, false,   4,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Carbon, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.VanadiumSteel           = new Materials( 371, TextureSet.SET_METALLIC          ,   3.0F,   1920,  3, 1|2          |64|128      , 192, 192, 192,   0,   "VanadiumSteel"           ,   "Vanadiumsteel"                 ,    0,       0,       1453, 1453,  true, false,   4,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Vanadium, 1), new MaterialStack(Chrome, 1), new MaterialStack(Steel, 7))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.HSSG                    = new Materials( 372, TextureSet.SET_METALLIC          ,  10.0F,   4000,  3, 1|2          |64|128      , 153, 153,   0,   0,   "HSSG"                    ,   "HSS-G"                         ,    0,       0,       4500, 4500,  true, false,   4,   1,   1, Dyes.dyeYellow      , 2, Arrays.asList(new MaterialStack(TungstenSteel, 5), new MaterialStack(Chrome, 1), new MaterialStack(Molybdenum, 2), new MaterialStack(Vanadium, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.HSSE                    = new Materials( 373, TextureSet.SET_METALLIC          ,  32.0F,  10240,  7, 1|2          |64|128      ,  51, 102,   0,   0,   "HSSE"                    ,   "HSS-E"                         ,    0,       0,       5400, 5400,  true, false,   4,   1,   1, Dyes.dyeGreen       , 2, Arrays.asList(new MaterialStack(HSSG, 6), new MaterialStack(Cobalt, 1),new MaterialStack(Manganese, 1), new MaterialStack(Silicon, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.HSSS                    = new Materials( 374, TextureSet.SET_METALLIC          ,  32.0F,  10240,  8, 1|2          |64|128      , 102,   0,  51,   0,   "HSSS"                    ,   "HSS-S"                         ,    0,       0,       5400, 5400,  true, false,   4,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(HSSG, 6), new MaterialStack(Iridium, 2), new MaterialStack(Osmium, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.TPV                     = new Materials( 576, TextureSet.SET_METALLIC          ,  16.0F,   4000,  5, 1|2          |64|128      , 250,  170,250,   0,   "TPVAlloy"                ,   "TPV-Alloy"                     ,    0,       0,       3000, 3000,  true, false,   4,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Titanium, 3), new MaterialStack(Platinum, 3), new MaterialStack(Vanadium, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.DilutedSulfuricAcid     = new MaterialBuilder(640, TextureSet.SET_FLUID             ,                                                                                                     "Diluted Sulfuric Acid").addCell().addFluid().setRGB(192, 120, 32).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(SulfuricAcid, 1)).constructMaterial();
-        Materials.EpoxidFiberReinforced   = new Materials( 610, TextureSet.SET_DULL                 ,3.0F,     64,  1, 1|2          |64|128      , 160, 112,  16,   0,   "EpoxidFiberReinforced"   ,   "Fiber-Reinforced Epoxy Resin"  ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Collections.singletonList(new MaterialStack(Epoxid, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.SodiumCarbonate         = new MaterialBuilder(695, TextureSet.SET_QUARTZ, "Sodium Carbonate").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(255, 255, 235).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(851 ).setMeltingPoint(851 ).setBlastFurnaceRequired(false).setOreValue(1).setExtraData(1).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.SodiumAluminate         = new MaterialBuilder(696, TextureSet.SET_QUARTZ, "Sodium Aluminate").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(255, 235, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(1800).setMeltingPoint(1800).setBlastFurnaceRequired(false).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Oxygen, 2)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Aluminiumoxide          = new MaterialBuilder(697, TextureSet.SET_QUARTZ, "Alumina").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(235, 255, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(2054).setMeltingPoint(2054).setBlastFurnaceRequired(true).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Aluminiumhydroxide      = new MaterialBuilder(698, TextureSet.SET_QUARTZ, "Aluminium Hydroxide").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(235, 235, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(1200).setMeltingPoint(1200).setBlastFurnaceRequired(true).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 1), new MaterialStack(Oxygen, 3),  new MaterialStack(Hydrogen, 3)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Cryolite                = new MaterialBuilder(699, TextureSet.SET_QUARTZ, "Cryolite").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addOreItems().setRGB(191, 239, 255).setColor(Dyes.dyeLightBlue).setMeltingPoint(1012).setBlastFurnaceTemp(1012).setExtraData(0).setMaterialList(new MaterialStack(Sodium, 3), new MaterialStack(Aluminium, 1), new MaterialStack(Fluorine, 6)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.RedMud                  = new MaterialBuilder(743, TextureSet.SET_FLUID, "Red Mud").addCell().addFluid().setRGB(140, 22, 22).setColor(Dyes.dyeRed).constructMaterial();
-
-        Materials.Brick                   = new MaterialBuilder(625, TextureSet.SET_ROUGH      ,                                                                                                     "Brick").addDustItems().setRGB(155, 86, 67).setColor(Dyes.dyeBrown).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Oxygen, 11)).constructMaterial();
-        Materials.Fireclay                = new MaterialBuilder(626, TextureSet.SET_ROUGH      ,                                                                                                     "Fireclay").addDustItems().setRGB(173, 160, 155).setExtraData(2).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Brick, 1), new MaterialStack(Clay, 1)).constructMaterial();
-
-        Materials.PotassiumNitrade     = new MaterialBuilder(590, TextureSet.SET_DULL       ,                                                                                                     "Potassium Nitrate").setName("PotassiumNitrate").addDustItems().setRGB(129, 34, 141).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Potassium, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.ChromiumTrioxide = new MaterialBuilder(591, TextureSet.SET_DULL       ,                                                                                                     "Chromium Trioxide").setName("Chromiumtrioxide").addDustItems().setRGB(255, 228, 225).setColor(Dyes.dyePink).setMaterialList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Nitrochlorobenzene = new MaterialBuilder(592, TextureSet.SET_FLUID             ,                                                                                                     "2-Nitrochlorobenzene").addCell().addFluid().setRGB(143, 181, 26).setColor(Dyes.dyeLime).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Chlorine, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
-        Materials.Dimethylbenzene = new MaterialBuilder(593, TextureSet.SET_FLUID             ,                                                                                                     "1,2-Dimethylbenzene").setName("Dimethylbenzene").addCell().addFluid().setRGB(102, 156, 64).setColor(Dyes.dyeLime).setMeltingPoint(248).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10)).addElectrolyzerRecipe().constructMaterial();
-        Materials.Potassiumdichromate = new MaterialBuilder(594, TextureSet.SET_DULL       ,                                                                                                     "Potassium Dichromate").setName("PotassiumDichromate").addDustItems().setRGB(255, 8, 127).setColor(Dyes.dyePink).setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 7)).addElectrolyzerRecipe().constructMaterial();
-        Materials.PhthalicAcid = new MaterialBuilder(595, TextureSet.SET_FLUID             ,                                                                                                     "Phthalic Acid").setName("phtalicacid").addCell().addFluid().setRGB(54, 133, 71).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 4)).constructMaterial();
-        Materials.Dichlorobenzidine = new MaterialBuilder(596, TextureSet.SET_FLUID             ,                                                                                                     "3,3-Dichlorobenzidine").addCell().addFluid().setRGB(161, 222, 166).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 12),new MaterialStack(Hydrogen, 10), new MaterialStack(Nitrogen, 2), new MaterialStack(Chlorine, 2)).constructMaterial();
-        Materials.Diaminobenzidin = new MaterialBuilder(597, TextureSet.SET_FLUID             ,                                                                                                     "3,3-Diaminobenzidine").addCell().addFluid().setRGB(51, 125, 89).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 12),new MaterialStack(Hydrogen, 14),new MaterialStack(Nitrogen, 4)).constructMaterial();
-        Materials.Diphenylisophthalate = new MaterialBuilder(598, TextureSet.SET_FLUID,"Diphenyl Isophthalate").setName("DiphenylIsophtalate").addCell().addFluid().setRGB(36, 110, 87).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 20),new MaterialStack(Hydrogen, 14),new MaterialStack(Oxygen, 4)).constructMaterial();
-        Materials.Polybenzimidazole   = new Materials(599, TextureSet.SET_DULL                 ,3.0F,     64,  1, 1|2          |64|128      , 45, 45,  45,   0,   "Polybenzimidazole"   ,   "Polybenzimidazole"  ,    0,       0,        1450,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Carbon, 20), new MaterialStack(Nitrogen, 4), new MaterialStack(Hydrogen, 12)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.ORDO, 2),new TCAspects.TC_AspectStack(TCAspects.VOLATUS, 1)));
-
-        Materials.MTBEMixture        = new MaterialBuilder(983, TextureSet.SET_FLUID             ,                                                                                                      "MTBE Reaction Mixture (Butene)").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 12), new MaterialStack(Oxygen, 1)).constructMaterial();
-        Materials.MTBEMixtureAlt = new MaterialBuilder(425, TextureSet.SET_FLUID , "MTBE Reaction Mixture (Butane)").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)).constructMaterial();
-        Materials.NitrousOxide       = new MaterialBuilder(993, TextureSet.SET_FLUID             ,                                                                                                      "Nitrous Oxide").addCell().addGas().setRGB(125, 200, 255).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-        Materials.AntiKnock          = new MaterialBuilder(994, TextureSet.SET_FLUID             ,                                                                                                      "Anti-Knock Agent").setName("EthylTertButylEther").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)).constructMaterial();
-        Materials.Octane             = new MaterialBuilder(995, TextureSet.SET_FLUID             ,                                                                                                      "Octane").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setFuelType(MaterialBuilder.DIESEL).setFuelPower(80).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18)).constructMaterial();
-        Materials.GasolineRaw        = new MaterialBuilder(996, TextureSet.SET_FLUID             ,                                                                                                      "Raw Gasoline").addCell().addFluid().setRGB(255,100,0).setColor(Dyes.dyeOrange).constructMaterial();
-        Materials.GasolineRegular    = new MaterialBuilder(997, TextureSet.SET_FLUID             ,                                                                                                      "Gasoline").addCell().addFluid().setRGB(255,165,0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(576).constructMaterial();
-        Materials.GasolinePremium    = new MaterialBuilder(998, TextureSet.SET_FLUID             ,                                                                                                      "High Octane Gasoline").addCell().addFluid().setRGB(255,165,0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(2500).constructMaterial();
-
-        Materials.Electrotine             = new Materials( 812, TextureSet.SET_SHINY             ,   1.0F,      0,  1, 1    |8                   ,  60, 180, 200,   0,   "Electrotine"             ,   "Electrotine"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeCyan        , 0, Arrays.asList(new MaterialStack(Redstone, 1), new MaterialStack(Electrum, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2)));
-        Materials.Galgadorian             = new Materials( 384, TextureSet.SET_METALLIC          ,  16.0F,   3600,  3, 1|2          |64|128      , 154, 105, 119,   0,   "Galgadorian"             ,   "Galgadorian"                   ,    0,       0,       3000, 3000,  true, false,   1,   1,   1, Dyes.dyePink        ).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.EnhancedGalgadorian     = new Materials( 385, TextureSet.SET_METALLIC          ,  32.0F,   7200,  5, 1|2|          64|128      , 152, 93, 133,    0,   "EnhancedGalgadorian"     ,   "Enhanced Galgadorian"          ,    0,       0,       4500, 4500,  true, false,   1,   1,   1, Dyes.dyePink        ).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.BloodInfusedIron        = new Materials( 977, TextureSet.SET_METALLIC          ,  10.0F,    384,  2, 1|2          |64|128      ,  69,   9,  10,   0,   "BloodInfusedIron"        ,   "Blood Infused Iron"            ,    0,       0,       2400,    0, false, false,   3,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3),  new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1)));
-        Materials.Shadow                  = new Materials( 368, TextureSet.SET_METALLIC          ,  32.0F,   8192,  4, 1|2  |8      |64|128      ,  16,   3,  66,   0,   "Shadow"                  ,   "Shadow Metal"                  ,    0,       0,       1800, 1800,  true, false,   3,   4,   3, Dyes.dyeBlue        );
-
-        Materials.Ledox                   = new Materials( 390, TextureSet.SET_SHINY             ,  15.0F,   1024,  4, 1|2  |8      |64|128      ,   0, 116, 255,   0,   "Ledox"                   ,   "Ledox"                         ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeBlue        );
-        Materials.Quantium                = new Materials( 391, TextureSet.SET_SHINY             ,  18.0F,   2048,  4, 1|2  |8      |64|128      ,   0, 209,  11,   0,   "Quantium"                ,   "Quantium"                      ,    0,       0,      9900,  9900,  true, false,   4,   1,   1, Dyes.dyeLime        ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Mytryl                  = new Materials( 387, TextureSet.SET_SHINY             ,   8.0F,    512,  4, 1|2  |8      |64|128      , 242, 100,   4,   0,   "Mytryl"                  ,   "Mytryl"                        ,    0,       0,      3600,  3600,  true, false,   4,   1,   1, Dyes.dyeOrange      );
-        Materials.BlackPlutonium          = new Materials( 388, TextureSet.SET_DULL              ,  36.0F,   8192,  8, 1|2  |8      |64|128      ,  50,  50,  50,   0,   "BlackPlutonium"          ,   "Black Plutonium"               ,    0,       0,      9000,  9000,  true, false,   4,   1,   1, Dyes.dyeBlack       ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.CallistoIce             = new Materials( 389, TextureSet.SET_SHINY             ,   9.0F,   1024,  4, 1|2  |8      |64|128      ,  30, 177, 255,   0,   "CallistoIce"             ,   "Callisto Ice"                  ,    0,       0,        -1,     0, false, false,   4,   1,   1, Dyes.dyeLightBlue   );
-        Materials.Duralumin               = new Materials( 392, TextureSet.SET_SHINY             ,  16.0F,    512,  3, 1|2  |8      |64|128      , 235, 209, 160,   0,   "Duralumin"               ,   "Duralumin"                     ,    0,       0,      1600,  1600,  true, false,   4,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Aluminium, 6), new MaterialStack(Copper, 1), new MaterialStack(Manganese, 1), new MaterialStack(Magnesium, 1)));
-        Materials.Oriharukon              = new Materials( 393, TextureSet.SET_SHINY             ,  32.0F,  10240,  5, 1|2  |8   |32|64|128      , 103, 125, 104,   0,   "Oriharukon"              ,   "Oriharukon"                    ,    0,       0,      5400,  5400,  true, false,   4,   1,   1, Dyes.dyeLime        , Element.Oh, Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2),new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.MysteriousCrystal       = new Materials( 398, TextureSet.SET_SHINY             ,   8.0F,    256,  6, 1|2  |8      |64|128      ,  22, 133, 108,   0,   "MysteriousCrystal"       ,   "Mysterious Crystal"            ,    0,       0,      7200,  7200,  true, false,   4,   1,   1, Dyes.dyeCyan        ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-
-        Materials.RedstoneAlloy           = new Materials( 381, TextureSet.SET_DARKSTEEL         ,   3.0F,    128,  2, 1|2          |64|128      , 255,  67,  50,   0,   "RedstoneAlloy"           ,   "Redstone Alloy"                ,    0,       0,        671, 1000,  true, false,   1,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(Redstone, 1), new MaterialStack(Silicon, 1), new MaterialStack(Coal, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Soularium               = new Materials( 379, TextureSet.SET_DARKSTEEL         ,   8.0F,    256,  2, 1|2          |64|128      , 145,  109, 62,   0,   "Soularium"               ,   "Soularium"                     ,    0,       0,        800, 1000,  true, false,   3,   1,   1, Dyes.dyeBrown       , 1, Arrays.asList(new MaterialStack(SoulSand, 1), new MaterialStack(Gold, 1), new MaterialStack(Ash, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.ConductiveIron          = new Materials( 369, TextureSet.SET_DARKSTEEL         ,   6.0F,    256,  3, 1|2          |64|128      , 255, 191, 195,   0,   "ConductiveIron"          ,   "Conductive Iron"               ,    0,       0,         -1, 1200,  true, false,   4,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(RedstoneAlloy, 1), new MaterialStack(Iron, 1), new MaterialStack(Silver, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.ElectricalSteel         = new Materials( 365, TextureSet.SET_DARKSTEEL         ,   6.0F,    512,  2, 1|2          |64|128      , 216, 216, 216,   0,   "ElectricalSteel"         ,   "Electrical Steel"              ,    0,       0,       1811, 1000,  true, false,   4,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Steel, 1), new MaterialStack(Coal, 1), new MaterialStack(Silicon, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.EnergeticAlloy          = new Materials( 366, TextureSet.SET_ENERGETIC         ,  12.0F,   1024,  3, 1|2          |64|128      , 255, 140,  25,   0,   "EnergeticAlloy"          ,   "Energetic Alloy"               ,    0,       0,         -1, 2200,  true, false,   3,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(ConductiveIron, 1), new MaterialStack(Gold, 1), new MaterialStack(BlackSteel, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.VibrantAlloy            = new Materials( 367, TextureSet.SET_VIBRANT           ,  18.0F,   4048,  4, 1|2          |64|128      , 149, 224,  17,   0,   "VibrantAlloy"            ,   "Vibrant Alloy"                 ,    0,       0,       3300, 3300,  true, false,   4,   1,   1, Dyes.dyeLime        , 1, Arrays.asList(new MaterialStack(EnergeticAlloy, 1), new MaterialStack(EnderEye, 1), new MaterialStack(Chrome, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.PulsatingIron           = new Materials( 378, TextureSet.SET_DARKSTEEL         ,   6.0F,    256,  3, 1|2          |64|128      , 128, 246, 155,   0,   "PulsatingIron"           ,   "Pulsating Iron"                ,    0,       0,         -1, 1800,  true, false,   4,   1,   1, Dyes.dyeLime        , 1, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(EnderPearl, 1), new MaterialStack(RedstoneAlloy, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.DarkSteel               = new Materials( 364, TextureSet.SET_DARKSTEEL         ,   8.0F,    512,  3, 1|2          |64|128      ,  80,  70,  80,   0,   "DarkSteel"               ,   "Dark Steel"                    ,    0,       0,         -1, 1800,  true, false,   3,   1,   1, Dyes.dyePurple      , 1, Arrays.asList(new MaterialStack(ElectricalSteel, 1), new MaterialStack(Coal, 1), new MaterialStack(Obsidian, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.EndSteel                = new Materials( 401, TextureSet.SET_VIVID             ,  12.0F,   2000,  4, 1|2          |64|128      , 219, 206, 125,   0,   "EndSteel"                ,   "End Steel"                     ,    0,       0,        940, 3600,  true, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(DarkSteel, 1), new MaterialStack(Tungsten, 1), new MaterialStack(Endstone, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.CrudeSteel              = new Materials( 402, TextureSet.SET_VIVID             ,   2.0F,     64,  2, 1|2          |64|128      , 158, 144, 135,   0,   "CrudeSteel"              ,   "Clay Compound"                 ,    0,       0,         -1, 1000, false, false,   4,   1,   1, Dyes.dyeGray        , 1, Arrays.asList(new MaterialStack(Stone, 1), new MaterialStack(Clay, 1), new MaterialStack(Flint, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.CrystallineAlloy        = new Materials( 403, TextureSet.SET_CRYSTALLINE       ,  18.0F,    768,  4, 1|2          |64|128      ,  74, 219, 219,   0,   "CrystallineAlloy"        ,   "Crystalline Alloy"             ,    0,       0,       4500, 4500,  true, false,   4,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Gold, 1), new MaterialStack(Diamond, 1), new MaterialStack(PulsatingIron, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.MelodicAlloy            = new Materials( 404, TextureSet.SET_MELODIC           ,  24.0F,   1024,  5, 1|2          |64|128      , 193,  85, 193,   0,   "MelodicAlloy"            ,   "Melodic Alloy"                 ,    0,       0,       5400, 5400,  true, false,   4,   1,   1, Dyes.dyeMagenta     , 1, Arrays.asList(new MaterialStack(EndSteel, 1), new MaterialStack(EnderEye, 1), new MaterialStack(Oriharukon, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.StellarAlloy            = new Materials( 405, TextureSet.SET_STELLAR           ,  96.0F,  10240,  7, 1|2          |64|128      , 211, 255, 255,   0,   "StellarAlloy"            ,   "Stellar Alloy"                 ,    0,       0,       7200, 7200,  true, false,   4,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(NetherStar, 1), new MaterialStack(MelodicAlloy, 1), new MaterialStack(Naquadah, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.CrystallinePinkSlime    = new Materials( 406, TextureSet.SET_CRYSTALLINE       ,   6.0F,    128,  3, 1|2          |64|128      , 226,  54, 203,   0,   "CrystallinePinkSlime"    ,   "Crystalline Pink Slime"        ,    0,       0,       5000, 5000,  true, false,   4,   1,   1, Dyes.dyePink        , 1, Arrays.asList(new MaterialStack(CrystallineAlloy, 1), new MaterialStack(Diamond, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.EnergeticSilver         = new Materials( 407, TextureSet.SET_VIVID             ,   8.0F,    512,  3, 1|2          |64|128      ,  56, 135, 181,   0,   "EnergeticSilver"         ,   "Energetic Silver"              ,    0,       0,         -1, 2200,  true, false,   4,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Silver, 1), new MaterialStack(ConductiveIron, 1), new MaterialStack(BlackSteel, 1))).disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.VividAlloy              = new Materials( 408, TextureSet.SET_VIVID             ,  12.0F,    768,  4, 1|2          |64|128      ,  70, 188, 219,   0,   "VividAlloy"              ,   "Vivid Alloy"                   ,    0,       0,       3300, 3300,  true, false,   4,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(EnergeticSilver, 1), new MaterialStack(EnderEye, 1), new MaterialStack(Chrome, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Enderium                = new Materials( 321, TextureSet.SET_DULL              ,   8.0F,   1500,  3, 1|2          |64|128      ,  89, 145, 135,   0,   "Enderium"                ,   "Enderium"                      ,    0,       0,       4500, 4500,  true, false,   1,   1,   1, Dyes.dyeGreen       , 1, Arrays.asList(new MaterialStack(EnderiumBase, 2), new MaterialStack(Thaumium, 1), new MaterialStack(EnderPearl, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Mithril                 = new Materials( 331, TextureSet.SET_SHINY             ,  32.0F,     64,  2, 1|2  |8      |64          , 255, 255, 210,   0,   "Mithril"                 ,   "Mithril"                       ,    0,       0,       6600, 6600,  true, false,   4,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Platinum, 2), new MaterialStack(Thaumium, 1))).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(22, 1, 1);
-        Materials.BlueAlloy               = new Materials( 309, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1|2                       , 100, 180, 255,   0,   "BlueAlloy"               ,   "Blue Alloy"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Silver, 1), new MaterialStack(Electrotine, 4)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 3)));
-        Materials.ShadowIron              = new Materials( 336, TextureSet.SET_METALLIC          ,  32.0F,  10240,  2, 1|2  |8      |64          , 120, 120, 120,   0,   "ShadowIron"              ,   "Shadow Iron"                   ,    0,       0,       8400, 8400,  true, false,   3,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Thaumium, 3))).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(1, 76, 1);
-        Materials.ShadowSteel             = new Materials( 337, TextureSet.SET_METALLIC          ,   6.0F,    768,  4, 1|2          |64          ,  90,  90,  90,   0,   "ShadowSteel"             ,   "Shadow Steel"                  ,    0,       0,         -1, 1700,  true, false,   4,   1,   1, Dyes.dyeBlack       , 2, Arrays.asList(new MaterialStack(Steel, 1), new MaterialStack(Thaumium, 3)));
-        Materials.AstralSilver            = new Materials( 333, TextureSet.SET_SHINY             ,  10.0F,     64,  2, 1|2          |64          , 230, 230, 255,   0,   "AstralSilver"            ,   "Astral Silver"                 ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(Silver, 2), new MaterialStack(Thaumium, 1)));
-
-        Materials.InfinityCatalyst        = new Materials( 394, TextureSet.SET_SHINY             ,  64.0F,1310720, 10, 1|2  |8      |64|128      , 255, 255, 255,   0,   "InfinityCatalyst"        ,   "Infinity Catalyst"             ,    5,  500000,      10800,10800,  true, false,  20,   1,   1, Dyes.dyeLightGray    ).setProcessingMaterialTierEU(TierEU.RECIPE_UV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Infinity                = new Materials( 397, new TextureSet("infinity", true) , 256.0F,2621440, 17, 1|2       |32|64|128      , 255, 255, 255,   0,   "Infinity"                ,   "Infinity"                      ,    5, 5000000,      10800,10800,  true, false,  40,   1,   1, Dyes.dyeLightGray    ).setProcessingMaterialTierEU(TierEU.RECIPE_UV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
-        Materials.Bedrockium              = new MaterialBuilder(395, new TextureSet("bedrockium", true), "Bedrockium").addOreItems().addDustItems().addPlasma().addMetalItems().setDurability(327680).setToolSpeed(8f).setToolQuality(9).setName("Bedrockium").setBlastFurnaceRequired(true).setBlastFurnaceTemp(9900).setMeltingPoint(9900).setMaterialList(new MaterialStack(Materials.SiliconDioxide, 26244), new MaterialStack(Materials.Diamond, 9)).setColor(Dyes.dyeBlack).setOreValue(4).setDensityDivider(1).setDensityMultiplier(1).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_EV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
-        Materials.Trinium                 = new Materials( 868, TextureSet.SET_SHINY             , 128.0F,  51200,  8, 1|2  |8      |64|128      , 200, 200, 210,   0,   "Trinium"                 ,   "Trinium"                       ,    0,       0,       7200, 7200,  true, false,   4,   1,   1, Dyes.dyeLightGray    ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Ichorium                = new Materials( 978, new TextureSet("ichorium", true) ,  32.0F, 850000, 12, 1|2  |8   |32|64|128      , 211, 120,   6,   0,   "Ichorium"                ,   "Ichorium"                      ,    5,  250000,       9000, 9000,  true, false,   4,   1,   1, Dyes.dyeOrange       ).setTurbineMultipliers(6, 6, 3).setHasCorrespondingPlasma(true);
-        Materials.CosmicNeutronium        = new Materials( 982, new TextureSet("cosmicneutronium", true),96.0F,163840,12,1|2|8   |32|64|128      ,  50,  50,  55,   0,   "CosmicNeutronium"        ,   "Cosmic Neutronium"             ,    0,       0,       9900, 9900,  true, false,   4,   1,   1, Dyes.dyeBlack        ).setProcessingMaterialTierEU(TierEU.RECIPE_ZPM).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
-
-        Materials.Pentacadmiummagnesiumhexaoxid                                   = new Materials( 987, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  85,  85,  85,   0,   "Pentacadmiummagnesiumhexaoxid"                                 ,   "Superconductor Base MV"       ,     0,       0,     2500,  2500,  true,  false,  1,   1,   1, Dyes.dyeGray       , 1, Arrays.asList(new MaterialStack(Cadmium, 5), new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 6)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 3))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Titaniumonabariumdecacoppereikosaoxid                           = new Materials( 988, TextureSet.SET_METALLIC       ,   1.0F,      0,  3, 1|2                ,  51,  25,   0,   0,   "Titaniumonabariumdecacoppereikosaoxid"                         ,   "Superconductor Base HV"       ,     0,       0,     3300,  3300,  true,  false,  1,   1,   1, Dyes.dyeBrown      , 1, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Barium, 9),  new MaterialStack(Copper, 10), new MaterialStack(Oxygen, 20)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 6))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Uraniumtriplatinid                                              = new Materials( 989, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,   0, 135,   0,   0,   "Uraniumtriplatinid"                                            ,   "Superconductor Base EV"       ,     0,       0,     4400,  4400,  true,  false,  1,   1,   1, Dyes.dyeLime       , 1, Arrays.asList(new MaterialStack(Uranium, 1), new MaterialStack(Platinum, 3)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 9))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Vanadiumtriindinid                                              = new Materials( 990, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  51,   0,  51,   0,   "Vanadiumtriindinid"                                            ,   "Superconductor Base IV"       ,     0,       0,     5200,  5200,  true,  false,  1,   1,   1, Dyes.dyeMagenta    , 1, Arrays.asList(new MaterialStack(Vanadium , 1), new MaterialStack(Indium, 3)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 12))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid     = new Materials( 991, TextureSet.SET_METALLIC       ,   1.0F,      0,  3, 1|2                , 153,  76,   0,   0,   "Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid"   ,   "Superconductor Base LuV"      ,     0,       0,     6000,  6000,  true,  false,  1,   1,   1, Dyes.dyeBrown      , 1, Arrays.asList(new MaterialStack(Indium, 4), new MaterialStack(Tin, 2), new MaterialStack(Barium, 2), new MaterialStack(Titanium, 1), new MaterialStack(Copper, 7), new MaterialStack(Oxygen, 14)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 15))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Tetranaquadahdiindiumhexaplatiumosminid                         = new Materials( 992, TextureSet.SET_METALLIC       ,   1.0F,      0,  3, 1|2                ,  10,  10,  10,   0,   "Tetranaquadahdiindiumhexaplatiumosminid"                       ,   "Superconductor Base ZPM"      ,     0,       0,     8100,  8100,  true,  false,  1,   1,   1, Dyes.dyeBlack      , 1, Arrays.asList(new MaterialStack(Naquadah, 4), new MaterialStack(Indium, 2), new MaterialStack(Palladium, 6), new MaterialStack(Osmium, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 18))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Longasssuperconductornameforuvwire                              = new Materials( 986, TextureSet.SET_METALLIC       ,   1.0F,      0,  3, 1|2                , 224, 210,   7,   0,   "Longasssuperconductornameforuvwire"                            ,   "Superconductor Base UV"       ,     0,       0,     9900,  9900,  true,  false,  1,   1,   1, Dyes.dyeYellow     , 1, Arrays.asList(new MaterialStack(Naquadria, 4), new MaterialStack(Osmiridium, 3), new MaterialStack(Europium, 1), new MaterialStack(Samarium, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 21))).setProcessingMaterialTierEU(TierEU.RECIPE_LuV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.Longasssuperconductornameforuhvwire                             = new Materials( 985, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  38, 129, 189,   0,   "Longasssuperconductornameforuhvwire"                           ,   "Superconductor Base UHV"      ,     0,       0,    10800, 10800,  true,  false,  1,   1,   1, Dyes.dyeWhite      , 1, Arrays.asList(new MaterialStack(Draconium, 6), new MaterialStack(CosmicNeutronium, 7), new MaterialStack(Tritanium, 5), new MaterialStack(Americium, 6)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 24))).setProcessingMaterialTierEU(TierEU.RECIPE_ZPM).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.SuperconductorUEVBase                                           = new Materials( 974, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                , 174,   8,   8,   0,   "SuperconductorUEVBase"                                         ,   "Superconductor Base UEV"      ,     0,       0,    11700, 11800,  true,  false,  1,   1,   1, Dyes.dyeWhite, Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 27))).setProcessingMaterialTierEU(TierEU.RECIPE_UV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.SuperconductorUIVBase                                           = new Materials( 131, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                , 229,  88, 177,   0,   "SuperconductorUIVBase"                                         ,   "Superconductor Base UIV"      ,     0,       0,    12700, 12700,  true,  false,  1,   1,   1, Dyes.dyeWhite, Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 34))).setProcessingMaterialTierEU(TierEU.RECIPE_UHV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-        Materials.SuperconductorUMVBase                                           = new Materials( 134, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                , 181,  38, 205,   0,   "SuperconductorUMVBase"                                         ,   "Superconductor Base UMV"      ,     0,       0,    13600, 13600,  true,  false,  1,   1,   1, Dyes.dyeWhite, Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 40))).setProcessingMaterialTierEU(TierEU.RECIPE_UEV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-
-        Materials.SuperconductorMV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  85,  85,  85,   0,   "SuperconductorMV"   ,   "Superconductor MV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeGray       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 6)));
-        Materials.SuperconductorHV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  51,  25,   0,   0,   "SuperconductorHV"   ,   "Superconductor HV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeBrown      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 12)));
-        Materials.SuperconductorEV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,   0, 135,   0,   0,   "SuperconductorEV"   ,   "Superconductor EV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeLime       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 18)));
-        Materials.SuperconductorIV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  51,   0,  51,   0,   "SuperconductorIV"   ,   "Superconductor IV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeMagenta    , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 24)));
-        Materials.SuperconductorLuV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 153,  76,   0,   0,   "SuperconductorLuV"  ,   "Superconductor LuV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeBrown      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 30)));
-        Materials.SuperconductorZPM     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  10,  10,  10,   0,   "SuperconductorZPM"  ,   "Superconductor ZPM"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeBlack      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 36)));
-        Materials.SuperconductorUV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 224, 210,   7,   0,   "SuperconductorUV"   ,   "Superconductor UV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeYellow     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 42)));
-        Materials.SuperconductorUHV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  38, 129, 189,   0,   "Superconductor"     ,   "Superconductor UHV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 48)));
-        Materials.SuperconductorUEV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 174,   8,   8,   0,   "SuperconductorUEV"  ,   "Superconductor UEV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 54)));
-        Materials.SuperconductorUIV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 229,  88, 177,   0,   "SuperconductorUIV"  ,   "Superconductor UIV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 60)));
-        Materials.SuperconductorUMV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 181,  38, 205,   0,   "SuperconductorUMV"  ,   "Superconductor UMV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 66)));
-
-        Materials.SuperCoolant = new MaterialBuilder( 140, TextureSet.SET_DULL,"Super Coolant").setRGB(2, 91, 111).addCell().addFluid().constructMaterial().setLiquidTemperature(1);
-
-        Materials.EnrichedHolmium       = new Materials(582, TextureSet.SET_METALLIC    ,   1.0F,      0,  2, 2                ,  18, 100, 255,   0,   "EnrichedHolmium"    ,   "Enriched Holmium"        ,    -1,      -1,      0, 3000,  true,  false,200,   1,   1, Dyes.dyePurple);
-
-        Materials.TengamPurified = new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
-        Materials.TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 4), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
-        Materials.TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
-
-        Materials.ActivatedCarbon = new MaterialBuilder(563, TextureSet.SET_DULL, "Activated Carbon")
+    private static Materials loadAluminium() {
+        return new MaterialBuilder().setName("Aluminium")
+            .setDefaultLocalName("Aluminium")
+            .setElement(Element.Al)
+            .setMetaItemSubID(19)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x80c8f0)
+            .setTool(128, 2, 10.0f)
             .addDustItems()
-            .setRGB(20, 20, 20)
-            .setName("ActivatedCarbon")
-            .setOreValue(0)
-            .setMaterialList(new MaterialStack(Carbon, 1))
-            .constructMaterial()
-            .disableAutoGeneratedRecycleRecipes();
-        Materials.PreActivatedCarbon = new MaterialBuilder(564, TextureSet.SET_DULL, "Pre-Activated Carbon")
-            .addDustItems()
-            .setRGB(15, 51, 65)
-            .setName("PreActivatedCarbon")
-            .setOreValue(0)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
-            .constructMaterial()
-            .disableAutoGeneratedRecycleRecipes();
-        Materials.DirtyActivatedCarbon = new MaterialBuilder(565, TextureSet.SET_DULL, "Dirty Activated Carbon")
-            .addDustItems()
-            .setRGB(110, 110, 110)
-            .setName("carbonactivateddirty") // don't change this to the more sensible name or a centrifuge recipe appears
-            .setOreValue(0)
-            .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
-            .constructMaterial()
-            .disableAutoGeneratedRecycleRecipes();
-
-        // Advanced glue uses id 567?? ok
-        Materials.PolyAluminiumChloride = new MaterialBuilder(566, TextureSet.SET_FLUID, "Polyaluminium Chloride")
-            .addFluid()
-            .addCell()
-            .setRGB(252, 236, 5)
-            .setName("PolyaluminiumChloride")
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(933)
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VOLATUS, 1)
             .constructMaterial();
+    }
 
-        Materials.Ozone = new MaterialBuilder(568, TextureSet.SET_FLUID, "Ozone")
+    private static Materials loadAmericium() {
+        return new MaterialBuilder().setName("Americium")
+            .setDefaultLocalName("Americium")
+            .setElement(Element.Am)
+            .setMetaItemSubID(103)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xc8c8c8)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_449)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAntimony() {
+        return new MaterialBuilder().setName("Antimony")
+            .setDefaultLocalName("Antimony")
+            .setElement(Element.Sb)
+            .setMetaItemSubID(58)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xdcdcf0)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(903)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadArgon() {
+        return new MaterialBuilder().setName("Argon")
+            .setDefaultLocalName("Argon")
+            .setElement(Element.Ar)
+            .setMetaItemSubID(24)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0xf000ff00)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(83)
+            .addAspect(TCAspects.AER, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadArsenic() {
+        return new MaterialBuilder().setName("Arsenic")
+            .setDefaultLocalName("Arsenic")
+            .setElement(Element.As)
+            .setMetaItemSubID(39)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeOrange)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(1_090)
+            .addAspect(TCAspects.VENENUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBarium() {
+        return new MaterialBuilder().setName("Barium")
+            .setDefaultLocalName("Barium")
+            .setElement(Element.Ba)
+            .setMetaItemSubID(63)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_000)
+            .addAspect(TCAspects.VINCULUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBeryllium() {
+        return new MaterialBuilder().setName("Beryllium")
+            .setDefaultLocalName("Beryllium")
+            .setElement(Element.Be)
+            .setMetaItemSubID(8)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x64b464)
+            .setTool(64, 2, 14.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1_560)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.LUCRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBismuth() {
+        return new MaterialBuilder().setName("Bismuth")
+            .setDefaultLocalName("Bismuth")
+            .setElement(Element.Bi)
+            .setMetaItemSubID(90)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x64a0a0)
+            .setTool(64, 1, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(544)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBoron() {
+        return new MaterialBuilder().setName("Boron")
+            .setDefaultLocalName("Boron")
+            .setElement(Element.B)
+            .setMetaItemSubID(9)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xd2fad2)
+            .addDustItems()
+            .addPlasma()
+            .setMeltingPoint(2_349)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadCaesium() {
+        return new MaterialBuilder().setName("Caesium")
+            .setDefaultLocalName("Caesium")
+            .setElement(Element.Cs)
+            .setMetaItemSubID(62)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xb0c4de)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(301)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalcium() {
+        return new MaterialBuilder().setName("Calcium")
+            .setDefaultLocalName("Calcium")
+            .setElement(Element.Ca)
+            .setMetaItemSubID(26)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xfff5f5)
+            .addDustItems()
+            .addPlasma()
+            .setMeltingPoint(1_115)
+            .setBlastFurnaceTemp(1_115)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.SANO, 1)
+            .addAspect(TCAspects.TUTAMEN, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCarbon() {
+        return new MaterialBuilder().setName("Carbon")
+            .setDefaultLocalName("Carbon")
+            .setElement(Element.C)
+            .setMetaItemSubID(10)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x141414)
+            .setTool(64, 2, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addCell()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_800)
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCadmium() {
+        return new MaterialBuilder().setName("Cadmium")
+            .setDefaultLocalName("Cadmium")
+            .setElement(Element.Cd)
+            .setMetaItemSubID(55)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x32323c)
+            .addDustItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(594)
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCerium() {
+        return new MaterialBuilder().setName("Cerium")
+            .setDefaultLocalName("Cerium")
+            .setElement(Element.Ce)
+            .setMetaItemSubID(65)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x7bd490)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_068)
+            .setBlastFurnaceTemp(1_068)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadChlorine() {
+        return new MaterialBuilder().setName("Chlorine")
+            .setDefaultLocalName("Chlorine")
+            .setElement(Element.Cl)
+            .setMetaItemSubID(23)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(171)
+            .addAspect(TCAspects.AQUA, 2)
+            .addAspect(TCAspects.PANNUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadChrome() {
+        return new MaterialBuilder().setName("Chrome")
+            .setDefaultLocalName("Chrome")
+            .setElement(Element.Cr)
+            .setMetaItemSubID(30)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xffe6e6)
+            .setTool(256, 3, 11.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_180)
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobalt() {
+        return new MaterialBuilder().setName("Cobalt")
+            .setDefaultLocalName("Cobalt")
+            .setElement(Element.Co)
+            .setMetaItemSubID(33)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x5050fa)
+            .setTool(512, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_768)
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCopper() {
+        return new MaterialBuilder().setName("Copper")
+            .setDefaultLocalName("Copper")
+            .setElement(Element.Cu)
+            .setMetaItemSubID(35)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff6400)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addGearItems()
+            .setMeltingPoint(1_357)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.PERMUTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDesh() {
+        return new MaterialBuilder().setName("Desh")
+            .setDefaultLocalName("Desh")
+            .setElement(Element.De)
+            .setChemicalFormula("De")
+            .setMetaItemSubID(884)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x282828)
+            .setTool(1_280, 4, 20.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_500)
+            .setBlastFurnaceTemp(2_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ALIENIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDysprosium() {
+        return new MaterialBuilder().setName("Dysprosium")
+            .setDefaultLocalName("Dysprosium")
+            .setElement(Element.Dy)
+            .setMetaItemSubID(73)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x69d150)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_680)
+            .setBlastFurnaceTemp(1_680)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadEmpty() {
+        return new MaterialBuilder().setName("Empty")
+            .setDefaultLocalName("Empty")
+            .setElement(Element._NULL)
+            .setMetaItemSubID(0)
+            .setARGB(0xffffffff)
+            .setTypes(256) // Only when needed
+            .addAspect(TCAspects.VACUOS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadErbium() {
+        return new MaterialBuilder().setName("Erbium")
+            .setDefaultLocalName("Erbium")
+            .setElement(Element.Er)
+            .setMetaItemSubID(75)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0xb09851)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_802)
+            .setBlastFurnaceTemp(1_802)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEuropium() {
+        return new MaterialBuilder().setName("Europium")
+            .setDefaultLocalName("Europium")
+            .setElement(Element.Eu)
+            .setMetaItemSubID(70)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0xf6b5ff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_099)
+            .setBlastFurnaceTemp(1_099)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadFlerovium() {
+        return new MaterialBuilder().setName("Flerovium_GT5U")
+            .setDefaultLocalName("Flerovium")
+            .setElement(Element.Fl)
+            .setMetaItemSubID(984)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadFluorine() {
+        return new MaterialBuilder().setName("Fluorine")
+            .setDefaultLocalName("Fluorine")
+            .setElement(Element.F)
+            .setMetaItemSubID(14)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x7fffffff)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(53)
+            .addAspect(TCAspects.PERDITIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGadolinium() {
+        return new MaterialBuilder().setName("Gadolinium")
+            .setDefaultLocalName("Gadolinium")
+            .setElement(Element.Gd)
+            .setMetaItemSubID(71)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x3bba1c)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_585)
+            .setBlastFurnaceTemp(1_585)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGallium() {
+        return new MaterialBuilder().setName("Gallium")
+            .setDefaultLocalName("Gallium")
+            .setElement(Element.Ga)
+            .setMetaItemSubID(37)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xdcdcff)
+            .setTool(64, 2, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(302)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGold() {
+        return new MaterialBuilder().setName("Gold")
+            .setDefaultLocalName("Gold")
+            .setElement(Element.Au)
+            .setMetaItemSubID(86)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff1e)
+            .setTool(64, 2, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_337)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.LUCRUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadHolmium() {
+        return new MaterialBuilder().setName("Holmium")
+            .setDefaultLocalName("Holmium")
+            .setElement(Element.Ho)
+            .setMetaItemSubID(74)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0x1608a6)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_734)
+            .setBlastFurnaceTemp(1_734)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHydrogen() {
+        return new MaterialBuilder().setName("Hydrogen")
+            .setDefaultLocalName("Hydrogen")
+            .setElement(Element.H)
+            .setMetaItemSubID(1)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0xf00000ff)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(14)
+            .setFuel(MaterialBuilder.FuelType.Gas, 20)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHelium() {
+        return new MaterialBuilder().setName("Helium")
+            .setDefaultLocalName("Helium")
+            .setElement(Element.He)
+            .setMetaItemSubID(4)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0xf0ffff00)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(1)
+            .addAspect(TCAspects.AER, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadIndium() {
+        return new MaterialBuilder().setName("Indium")
+            .setDefaultLocalName("Indium")
+            .setElement(Element.In)
+            .setMetaItemSubID(56)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x400080)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(429)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIridium() {
+        return new MaterialBuilder().setName("Iridium")
+            .setDefaultLocalName("Iridium")
+            .setElement(Element.Ir)
+            .setMetaItemSubID(84)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xf0f0f5)
+            .setTool(2_560, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_719)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIron() {
+        return new MaterialBuilder().setName("Iron")
+            .setDefaultLocalName("Iron")
+            .setElement(Element.Fe)
+            .setMetaItemSubID(32)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xc8c8c8)
+            .setTool(256, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_811)
+            .addAspect(TCAspects.METALLUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadLanthanum() {
+        return new MaterialBuilder().setName("Lanthanum")
+            .setDefaultLocalName("Lanthanum")
+            .setElement(Element.La)
+            .setMetaItemSubID(64)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x8a8a8a)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_193)
+            .setBlastFurnaceTemp(1_193)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLead() {
+        return new MaterialBuilder().setName("Lead")
+            .setDefaultLocalName("Lead")
+            .setElement(Element.Pb)
+            .setMetaItemSubID(89)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x8c648c)
+            .setTool(64, 1, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(600)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLithium() {
+        return new MaterialBuilder().setName("Lithium")
+            .setDefaultLocalName("Lithium")
+            .setElement(Element.Li)
+            .setMetaItemSubID(6)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xe1dcff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(454)
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.POTENTIA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadLutetium() {
+        return new MaterialBuilder().setName("Lutetium")
+            .setDefaultLocalName("Lutetium")
+            .setElement(Element.Lu)
+            .setMetaItemSubID(78)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0xbc3ec7)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_925)
+            .setBlastFurnaceTemp(1_925)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagic() {
+        return new MaterialBuilder().setName("Magic")
+            .setDefaultLocalName("Magic")
+            .setElement(Element.Ma)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x6400c8)
+            .setTool(5_120, 5, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_000)
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
+            .addAspect(TCAspects.PRAECANTATIO, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnesium() {
+        return new MaterialBuilder().setName("Magnesium")
+            .setDefaultLocalName("Magnesium")
+            .setElement(Element.Mg)
+            .setMetaItemSubID(18)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xffc8c8)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(923)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.SANO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadManganese() {
+        return new MaterialBuilder().setName("Manganese")
+            .setDefaultLocalName("Manganese")
+            .setElement(Element.Mn)
+            .setMetaItemSubID(31)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .setTool(512, 2, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1_519)
+            .addAspect(TCAspects.METALLUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadMercury() {
+        return new MaterialBuilder().setName("Mercury")
+            .setDefaultLocalName("Mercury")
+            .setElement(Element.Hg)
+            .setMetaItemSubID(87)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xffdcdc)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(234)
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMeteoricIron() {
+        return new MaterialBuilder().setName("MeteoricIron")
+            .setDefaultLocalName("Meteoric Iron")
+            .setElement(Element.SpFe)
+            .setChemicalFormula("SpFe")
+            .setMetaItemSubID(340)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x643250)
+            .setTool(384, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1_811)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMolybdenum() {
+        return new MaterialBuilder().setName("Molybdenum")
+            .setDefaultLocalName("Molybdenum")
+            .setElement(Element.Mo)
+            .setMetaItemSubID(48)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0xb4b4dc)
+            .setTool(512, 2, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(2_896)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNaquadah() {
+        return new MaterialBuilder().setName("Naquadah")
+            .setDefaultLocalName("Naquadah")
+            .setElement(Element.Nq)
+            .setChemicalFormula("Nq")
+            .setMetaItemSubID(324)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323232)
+            .setTool(1_280, 4, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.RADIO, 1)
+            .addAspect(TCAspects.NEBRISUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNeodymium() {
+        return new MaterialBuilder().setName("Neodymium")
+            .setDefaultLocalName("Neodymium")
+            .setElement(Element.Nd)
+            .setMetaItemSubID(67)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x646464)
+            .setTool(512, 2, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_297)
+            .setBlastFurnaceTemp(1_297)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadNeutronium() {
+        return new MaterialBuilder().setName("Neutronium")
+            .setDefaultLocalName("Neutronium")
+            .setElement(Element.Nt)
+            .setMetaItemSubID(129)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .setTool(655_360, 6, 24.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(10_000)
+            .setBlastFurnaceTemp(10_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 4)
+            .addAspect(TCAspects.VITREUS, 3)
+            .addAspect(TCAspects.ALIENIS, 2)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_LuV);
+    }
+
+    private static Materials loadNickel() {
+        return new MaterialBuilder().setName("Nickel")
+            .setDefaultLocalName("Nickel")
+            .setElement(Element.Ni)
+            .setMetaItemSubID(34)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xc8c8fa)
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_728)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNiobium() {
+        return new MaterialBuilder().setName("Niobium")
+            .setDefaultLocalName("Niobium")
+            .setElement(Element.Nb)
+            .setMetaItemSubID(47)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xbeb4c8)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(2_750)
+            .setBlastFurnaceTemp(2_750)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitrogen() {
+        return new MaterialBuilder().setName("Nitrogen")
+            .setDefaultLocalName("Nitrogen")
+            .setElement(Element.N)
+            .setMetaItemSubID(12)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0xf00096c8)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(63)
+            .addAspect(TCAspects.AER, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadOriharukon() {
+        return new MaterialBuilder().setName("Oriharukon")
+            .setDefaultLocalName("Oriharukon")
+            .setElement(Element.Oh)
+            .setChemicalFormula("Oh")
+            .setMetaItemSubID(393)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x677d68)
+            .setTool(10_240, 5, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.LUCRUM, 2)
+            .addAspect(TCAspects.ALIENIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadOsmium() {
+        return new MaterialBuilder().setName("Osmium")
+            .setDefaultLocalName("Osmium")
+            .setElement(Element.Os)
+            .setMetaItemSubID(83)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x3232ff)
+            .setTool(1_280, 4, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_306)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
+            .addAspect(TCAspects.NEBRISUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadOxygen() {
+        return new MaterialBuilder().setName("Oxygen")
+            .setDefaultLocalName("Oxygen")
+            .setElement(Element.O)
+            .setMetaItemSubID(13)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0xf00064c8)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(54)
+            .addAspect(TCAspects.AER, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPalladium() {
+        return new MaterialBuilder().setName("Palladium")
+            .setDefaultLocalName("Palladium")
+            .setElement(Element.Pd)
+            .setMetaItemSubID(52)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .setTool(512, 4, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_828)
+            .setBlastFurnaceTemp(1_828)
+            .setBlastFurnaceRequired(true)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphorus() {
+        return new MaterialBuilder().setName("Phosphorus")
+            .setDefaultLocalName("Phosphorus")
+            .setElement(Element.P)
+            .setMetaItemSubID(21)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addPlasma()
+            .setMeltingPoint(317)
+            .addAspect(TCAspects.IGNIS, 2)
+            .addAspect(TCAspects.POTENTIA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPlatinum() {
+        return new MaterialBuilder().setName("Platinum")
+            .setDefaultLocalName("Platinum")
+            .setElement(Element.Pt)
+            .setMetaItemSubID(85)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xffffc8)
+            .setTool(64, 4, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_041)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.NEBRISUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPlutonium() {
+        return new MaterialBuilder().setName("Plutonium")
+            .setDefaultLocalName("Plutonium 239")
+            .setElement(Element.Pu)
+            .setMetaItemSubID(100)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xf03232)
+            .setTool(512, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(912)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassium() {
+        return new MaterialBuilder().setName("Potassium")
+            .setDefaultLocalName("Potassium")
+            .setElement(Element.K)
+            .setMetaItemSubID(25)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x9aacdf)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .setMeltingPoint(336)
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.POTENTIA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPraseodymium() {
+        return new MaterialBuilder().setName("Praseodymium")
+            .setDefaultLocalName("Praseodymium")
+            .setElement(Element.Pr)
+            .setMetaItemSubID(66)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x75d681)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_208)
+            .setBlastFurnaceTemp(1_208)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPromethium() {
+        return new MaterialBuilder().setName("Promethium")
+            .setDefaultLocalName("Promethium")
+            .setElement(Element.Pm)
+            .setMetaItemSubID(68)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0x24b535)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_315)
+            .setBlastFurnaceTemp(1_315)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRadon() {
+        return new MaterialBuilder().setName("Radon")
+            .setDefaultLocalName("Radon")
+            .setElement(Element.Rn)
+            .setMetaItemSubID(93)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0xf0ff00ff)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(202)
+            .addAspect(TCAspects.AER, 1)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRubidium() {
+        return new MaterialBuilder().setName("Rubidium")
+            .setDefaultLocalName("Rubidium")
+            .setElement(Element.Rb)
+            .setMetaItemSubID(43)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xf01e1e)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(312)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSamarium() {
+        return new MaterialBuilder().setName("Samarium")
+            .setDefaultLocalName("Samarium")
+            .setElement(Element.Sm)
+            .setMetaItemSubID(69)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xffffcc)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_345)
+            .setBlastFurnaceTemp(1_345)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .addAspect(TCAspects.MAGNETO, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadScandium() {
+        return new MaterialBuilder().setName("Scandium")
+            .setDefaultLocalName("Scandium")
+            .setElement(Element.Sc)
+            .setMetaItemSubID(27)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xcccccc)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_814)
+            .setBlastFurnaceTemp(1_814)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSilicon() {
+        return new MaterialBuilder().setName("Silicon")
+            .setDefaultLocalName("Raw Silicon")
+            .setElement(Element.Si)
+            .setMetaItemSubID(20)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x3c3c50)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(2_273)
+            .setBlastFurnaceTemp(2_273)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.TENEBRAE, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSilver() {
+        return new MaterialBuilder().setName("Silver")
+            .setDefaultLocalName("Silver")
+            .setElement(Element.Ag)
+            .setMetaItemSubID(54)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xdcdcff)
+            .setTool(64, 2, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_234)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.LUCRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodium() {
+        return new MaterialBuilder().setName("Sodium")
+            .setDefaultLocalName("Sodium")
+            .setElement(Element.Na)
+            .setMetaItemSubID(17)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x000096)
+            .addDustItems()
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(370)
+            .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.LUX, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadStrontium() {
+        return new MaterialBuilder().setName("Strontium")
+            .setDefaultLocalName("Strontium")
+            .setElement(Element.Sr)
+            .setMetaItemSubID(44)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xc8c8c8)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addGearItems()
+            .setMeltingPoint(1_050)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.STRONTIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfur() {
+        return new MaterialBuilder().setName("Sulfur")
+            .setDefaultLocalName("Sulfur")
+            .setElement(Element.S)
+            .setMetaItemSubID(22)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xc8c800)
+            .addDustItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(388)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTantalum() {
+        return new MaterialBuilder().setName("Tantalum")
+            .setDefaultLocalName("Tantalum")
+            .setElement(Element.Ta)
+            .setMetaItemSubID(80)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0x69b7ff)
+            .setTool(2_560, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(3_290)
+            .setBlastFurnaceTemp(3_290)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VINCULUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTellurium() {
+        return new MaterialBuilder().setName("Tellurium")
+            .setDefaultLocalName("Tellurium")
+            .setElement(Element.Te)
+            .setMetaItemSubID(59)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xceff56)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(722)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTerbium() {
+        return new MaterialBuilder().setName("Terbium")
+            .setDefaultLocalName("Terbium")
+            .setElement(Element.Tb)
+            .setMetaItemSubID(72)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_629)
+            .setBlastFurnaceTemp(1_629)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadThorium() {
+        return new MaterialBuilder().setName("Thorium")
+            .setDefaultLocalName("Thorium")
+            .setElement(Element.Th)
+            .setMetaItemSubID(96)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x001e00)
+            .setTool(512, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(2_115)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadThulium() {
+        return new MaterialBuilder().setName("Thulium")
+            .setDefaultLocalName("Thulium")
+            .setElement(Element.Tm)
+            .setMetaItemSubID(76)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0x596bc2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_818)
+            .setBlastFurnaceTemp(1_818)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTin() {
+        return new MaterialBuilder().setName("Tin")
+            .setDefaultLocalName("Tin")
+            .setElement(Element.Sn)
+            .setMetaItemSubID(57)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcdc)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addGearItems()
+            .setMeltingPoint(505)
+            .setBlastFurnaceTemp(505)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTitanium() {
+        return new MaterialBuilder().setName("Titanium")
+            .setDefaultLocalName("Titanium")
+            .setElement(Element.Ti)
+            .setMetaItemSubID(28)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0xdca0f0)
+            .setTool(1_600, 3, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_941)
+            .setBlastFurnaceTemp(1_940)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.TUTAMEN, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTritanium() {
+        return new MaterialBuilder().setName("Tritanium")
+            .setDefaultLocalName("Tritanium")
+            .setElement(Element.Tn)
+            .setChemicalFormula("Tn")
+            .setMetaItemSubID(329)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x600000)
+            .setTool(1_435_392, 6, 20.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(9_900)
+            .setBlastFurnaceTemp(9_900)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ORDO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadTungsten() {
+        return new MaterialBuilder().setName("Tungsten")
+            .setDefaultLocalName("Tungsten")
+            .setElement(Element.W)
+            .setMetaItemSubID(81)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323232)
+            .setTool(2_560, 3, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_695)
+            .setBlastFurnaceTemp(3_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.TUTAMEN, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadUranium() {
+        return new MaterialBuilder().setName("Uranium")
+            .setDefaultLocalName("Uranium 238")
+            .setElement(Element.U)
+            .setMetaItemSubID(98)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x32f032)
+            .setTool(512, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1_405)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVanadium() {
+        return new MaterialBuilder().setName("Vanadium")
+            .setDefaultLocalName("Vanadium")
+            .setElement(Element.V)
+            .setMetaItemSubID(29)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323232)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(2_183)
+            .setBlastFurnaceTemp(2_183)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadYtterbium() {
+        return new MaterialBuilder().setName("Ytterbium")
+            .setDefaultLocalName("Ytterbium")
+            .setElement(Element.Yb)
+            .setMetaItemSubID(77)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0x2cc750)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_097)
+            .setBlastFurnaceTemp(1_097)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadYttrium() {
+        return new MaterialBuilder().setName("Yttrium")
+            .setDefaultLocalName("Yttrium")
+            .setElement(Element.Y)
+            .setMetaItemSubID(45)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xdcfadc)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1_799)
+            .setBlastFurnaceTemp(1_799)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadZinc() {
+        return new MaterialBuilder().setName("Zinc")
+            .setDefaultLocalName("Zinc")
+            .setElement(Element.Zn)
+            .setMetaItemSubID(36)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfaf0f0)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(692)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.SANO, 1)
+            .constructMaterial();
+    }
+
+    private static void loadIsotopes() {
+        Materials.Deuterium = loadDeuterium();
+        Materials.Helium_3 = loadHelium3();
+        Materials.Plutonium241 = loadPlutonium241();
+        Materials.Tritium = loadTritium();
+        Materials.Uranium235 = loadUranium235();
+    }
+
+    private static Materials loadDeuterium() {
+        return new MaterialBuilder().setName("Deuterium")
+            .setDefaultLocalName("Deuterium")
+            .setElement(Element.D)
+            .setMetaItemSubID(2)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0xf0ffff00)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(14)
+            .addAspect(TCAspects.AQUA, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadHelium3() {
+        return new MaterialBuilder().setName("Helium_3")
+            .setDefaultLocalName("Helium-3")
+            .setElement(Element.He_3)
+            .setMetaItemSubID(5)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0xf0ffff00)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(1)
+            .addAspect(TCAspects.AER, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadPlutonium241() {
+        return new MaterialBuilder().setName("Plutonium241")
+            .setDefaultLocalName("Plutonium 241")
+            .setElement(Element.Pu_241)
+            .setChemicalFormula(
+                CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT4 + CustomGlyphs.SUPERSCRIPT1 + "Pu")
+            .setMetaItemSubID(101)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xfa4646)
+            .setTool(512, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(912)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadTritium() {
+        return new MaterialBuilder().setName("Tritium")
+            .setDefaultLocalName("Tritium")
+            .setElement(Element.T)
+            .setMetaItemSubID(3)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0xf0ff0000)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(14)
+            .addAspect(TCAspects.AQUA, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadUranium235() {
+        return new MaterialBuilder().setName("Uranium235")
+            .setDefaultLocalName("Uranium 235")
+            .setElement(Element.U_235)
+            .setChemicalFormula(CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT3 + CustomGlyphs.SUPERSCRIPT5 + "U")
+            .setMetaItemSubID(97)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x46fa46)
+            .setTool(512, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1_405)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 2)
+            .constructMaterial();
+    }
+
+    private static void loadWaterLine() {
+        Materials.FlocculationWasteLiquid = loadFlocculationWasteLiquid();
+        Materials.Grade1PurifiedWater = loadGrade1PurifiedWater();
+        Materials.Grade2PurifiedWater = loadGrade2PurifiedWater();
+        Materials.Grade3PurifiedWater = loadGrade3PurifiedWater();
+        Materials.Grade4PurifiedWater = loadGrade4PurifiedWater();
+        Materials.Grade5PurifiedWater = loadGrade5PurifiedWater();
+        Materials.Grade6PurifiedWater = loadGrade6PurifiedWater();
+        Materials.Grade7PurifiedWater = loadGrade7PurifiedWater();
+        Materials.Grade8PurifiedWater = loadGrade8PurifiedWater();
+    }
+
+    private static Materials loadFlocculationWasteLiquid() {
+        return new MaterialBuilder().setName("FlocculationWasteLiquid")
+            .setDefaultLocalName("Flocculation Waste Liquid")
+            .setChemicalFormula("Al₂(OH)₃??Cl₃")
+            .setMetaItemSubID(562)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x003d3a52)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade1PurifiedWater() {
+        return new MaterialBuilder().setName("Grade1PurifiedWater")
+            .setDefaultLocalName("Filtered Water (Grade 1)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(554)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x003f4cfd)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade2PurifiedWater() {
+        return new MaterialBuilder().setName("Grade2PurifiedWater")
+            .setDefaultLocalName("Ozonated Water (Grade 2)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(555)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x005d5dfe)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade3PurifiedWater() {
+        return new MaterialBuilder().setName("Grade3PurifiedWater")
+            .setDefaultLocalName("Flocculated Water (Grade 3)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(556)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x00736dfe)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade4PurifiedWater() {
+        return new MaterialBuilder().setName("Grade4PurifiedWater")
+            .setDefaultLocalName("pH Neutralized Water (Grade 4)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(557)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x00877eff)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade5PurifiedWater() {
+        return new MaterialBuilder().setName("Grade5PurifiedWater")
+            .setDefaultLocalName("Extreme-Temperature Treated Water (Grade 5)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(558)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x009890ff)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade6PurifiedWater() {
+        return new MaterialBuilder().setName("Grade6PurifiedWater")
+            .setDefaultLocalName("Ultraviolet Treated Electrically Neutral Water (Grade 6)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(559)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x00a8a1ff)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade7PurifiedWater() {
+        return new MaterialBuilder().setName("Grade7PurifiedWater")
+            .setDefaultLocalName("Degassed Decontaminant-Free Water (Grade 7)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(560)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x00b7b3ff)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade8PurifiedWater() {
+        return new MaterialBuilder().setName("Grade8PurifiedWater")
+            .setDefaultLocalName("Subatomically Perfect Water (Grade 8)")
+            .setChemicalFormula("H₂O")
+            .setMetaItemSubID(561)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x00c5c5ff)
+            .addCell()
+            .setMeltingPoint(273)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static void loadRandom() {
+        Materials.AnyBronze = loadAnyBronze();
+        Materials.AnyCopper = loadAnyCopper();
+        Materials.AnyIron = loadAnyIron();
+        Materials.AnyRubber = loadAnyRubber();
+        Materials.AnySyntheticRubber = loadAnySyntheticRubber();
+        Materials.BrickNether = loadBrickNether();
+        Materials.Cobblestone = loadCobblestone();
+        Materials.Crystal = loadCrystal();
+        Materials.Metal = loadMetal();
+        Materials.Organic = loadOrganic();
+        Materials.Quartz = loadQuartz();
+        Materials.Unknown = loadUnknown();
+    }
+
+    private static Materials loadAnyBronze() {
+        return new MaterialBuilder().setName("AnyBronze")
+            .setDefaultLocalName("AnyBronze")
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnyCopper() {
+        return new MaterialBuilder().setName("AnyCopper")
+            .setDefaultLocalName("AnyCopper")
+            .setChemicalFormula("Cu")
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnyIron() {
+        return new MaterialBuilder().setName("AnyIron")
+            .setDefaultLocalName("AnyIron")
+            .setChemicalFormula("Fe")
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnyRubber() {
+        return new MaterialBuilder().setName("AnyRubber")
+            .setDefaultLocalName("AnyRubber")
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnySyntheticRubber() {
+        return new MaterialBuilder().setName("AnySyntheticRubber")
+            .setDefaultLocalName("AnySyntheticRubber")
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrickNether() {
+        return new MaterialBuilder().setName("BrickNether")
+            .setDefaultLocalName("BrickNether")
+            .setIconSet(TextureSet.SET_DULL)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobblestone() {
+        return new MaterialBuilder().setName("Cobblestone")
+            .setDefaultLocalName("Cobblestone")
+            .setIconSet(TextureSet.SET_DULL)
+            .constructMaterial();
+    }
+
+    private static Materials loadCrystal() {
+        return new MaterialBuilder().setName("Crystal")
+            .setDefaultLocalName("Crystal")
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadMetal() {
+        return new MaterialBuilder().setName("Metal")
+            .setDefaultLocalName("Metal")
+            .setIconSet(TextureSet.SET_METALLIC)
+            .constructMaterial();
+    }
+
+    private static Materials loadOrganic() {
+        return new MaterialBuilder().setName("Organic")
+            .setDefaultLocalName("Organic")
+            .setIconSet(TextureSet.SET_LEAF)
+            .constructMaterial();
+    }
+
+    private static Materials loadQuartz() {
+        return new MaterialBuilder().setName("Quartz")
+            .setDefaultLocalName("Quartz")
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .constructMaterial();
+    }
+
+    private static Materials loadUnknown() {
+        return new MaterialBuilder().setName("Unknown")
+            .setDefaultLocalName("Unknown")
+            .setIconSet(TextureSet.SET_DULL)
+            .constructMaterial();
+    }
+
+    private static void loadDontCare() {
+        Materials.Alfium = loadAlfium();
+        Materials.Aquamarine = loadAquamarine();
+        Materials.DarkThaumium = loadDarkThaumium();
+        Materials.Draconium = loadDraconium();
+        Materials.DraconiumAwakened = loadDraconiumAwakened();
+        Materials.Ender = loadEnder();
+        Materials.Fluix = loadFluix();
+        Materials.Flux = loadFlux();
+        Materials.HeeEndium = loadHeeEndium();
+        Materials.InfusedTeslatite = loadInfusedTeslatite();
+        Materials.IridiumSodiumOxide = loadIridiumSodiumOxide();
+        Materials.Mutation = loadMutation();
+        Materials.OsmiumTetroxide = loadOsmiumTetroxide();
+        Materials.PhasedGold = loadPhasedGold();
+        Materials.PhasedIron = loadPhasedIron();
+        Materials.PlatinumGroupSludge = loadPlatinumGroupSludge();
+        Materials.PurpleAlloy = loadPurpleAlloy();
+        Materials.RubberTreeSap = loadRubberTreeSap();
+        Materials.Serpentine = loadSerpentine();
+        Materials.SodiumPeroxide = loadSodiumPeroxide();
+        Materials.Teslatite = loadTeslatite();
+    }
+
+    private static Materials loadAlfium() {
+        return new MaterialBuilder().setName("Alfium")
+            .setDefaultLocalName("Alfium")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAquamarine() {
+        return new MaterialBuilder().setName("Aquamarine")
+            .setDefaultLocalName("Aquamarine")
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDarkThaumium() {
+        return new MaterialBuilder().setName("DarkThaumium")
+            .setDefaultLocalName("Dark Thaumium")
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDraconium() {
+        return new MaterialBuilder().setName("Draconium")
+            .setDefaultLocalName("Draconium")
+            .setChemicalFormula("D")
+            .setMetaItemSubID(975)
+            .setIconSet(TextureSet.SET_DRACONIUM)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x7a44b0)
+            .setTool(32_768, 7, 20.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_000)
+            .setBlastFurnaceTemp(7_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial()
+            .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadDraconiumAwakened() {
+        return new MaterialBuilder().setName("DraconiumAwakened")
+            .setDefaultLocalName("Awakened Draconium")
+            .setChemicalFormula("D*")
+            .setMetaItemSubID(976)
+            .setIconSet(TextureSet.SET_AWOKEN_DRACONIUM)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xf44e00)
+            .setTool(65_536, 9, 40.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(9_900)
+            .setBlastFurnaceTemp(9_900)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial()
+            .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadEnder() {
+        return new MaterialBuilder().setName("Ender")
+            .setDefaultLocalName("Ender")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFluix() {
+        return new MaterialBuilder().setName("Fluix")
+            .setDefaultLocalName("Fluix")
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFlux() {
+        return new MaterialBuilder().setName("Flux")
+            .setDefaultLocalName("Flux")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHeeEndium() {
+        return new MaterialBuilder().setName("HeeEndium")
+            .setDefaultLocalName("Endium")
+            .setChemicalFormula("Em")
+            .setMetaItemSubID(770)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xa5dcfa)
+            .setTool(1_024, 4, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedTeslatite() {
+        return new MaterialBuilder().setName("InfusedTeslatite")
+            .setDefaultLocalName("Infused Teslatite")
+            .setRGB(0x64b4ff)
+            .constructMaterial();
+    }
+
+    private static Materials loadIridiumSodiumOxide() {
+        return new MaterialBuilder().setName("IridiumSodiumOxide")
+            .setDefaultLocalName("Iridium Sodium Oxide")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMutation() {
+        return new MaterialBuilder().setName("Mutation")
+            .setDefaultLocalName("Mutation")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOsmiumTetroxide() {
+        return new MaterialBuilder().setName("OsmiumTetroxide")
+            .setDefaultLocalName("Osmium Tetroxide")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPhasedGold() {
+        return new MaterialBuilder().setName("PhasedGold")
+            .setDefaultLocalName("Phased Gold")
+            .addDustItems()
+            .addMetalItems()
+            .setBlastFurnaceTemp(1_800)
+            .setBlastFurnaceRequired(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhasedIron() {
+        return new MaterialBuilder().setName("PhasedIron")
+            .setDefaultLocalName("Phased Iron")
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(3_300)
+            .setBlastFurnaceTemp(3_300)
+            .setBlastFurnaceRequired(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadPlatinumGroupSludge() {
+        return new MaterialBuilder().setName("PlatinumGroupSludge")
+            .setDefaultLocalName("Platinum Group Sludge")
+            .setChemicalFormula(
+                "(SiO₂)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "Au"
+                    + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "Pt"
+                    + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "Pd"
+                    + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+                    + "??")
+            .setMetaItemSubID(241)
+            .setIconSet(TextureSet.SET_POWDER)
+            .setRGB(0x001e00)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPurpleAlloy() {
+        return new MaterialBuilder().setName("PurpleAlloy")
+            .setDefaultLocalName("Purple Alloy")
+            .setRGB(0x64b4ff)
+            .constructMaterial();
+    }
+
+    private static Materials loadRubberTreeSap() {
+        return new MaterialBuilder().setName("RubberTreeSap")
+            .setDefaultLocalName("Rubber Tree Sap")
+            .constructMaterial();
+    }
+
+    private static Materials loadSerpentine() {
+        return new MaterialBuilder().setName("Serpentine")
+            .setDefaultLocalName("Serpentine")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumPeroxide() {
+        return new MaterialBuilder().setName("SodiumPeroxide")
+            .setDefaultLocalName("Sodium Peroxide")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadTeslatite() {
+        return new MaterialBuilder().setName("Teslatite")
+            .setDefaultLocalName("Teslatite")
+            .setRGB(0x3cb4c8)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static void loadUnknownComponents() {
+        Materials.Adamantium = loadAdamantium();
+        Materials.Adamite = loadAdamite();
+        Materials.Adluorite = loadAdluorite();
+        Materials.Agate = loadAgate();
+        Materials.Alduorite = loadAlduorite();
+        Materials.Amber = loadAmber();
+        Materials.Ammonium = loadAmmonium();
+        Materials.Amordrine = loadAmordrine();
+        Materials.Andesite = loadAndesite();
+        Materials.Angmallen = loadAngmallen();
+        Materials.Ardite = loadArdite();
+        Materials.Aredrite = loadAredrite();
+        Materials.Atlarus = loadAtlarus();
+        Materials.Bitumen = loadBitumen();
+        Materials.Black = loadBlack();
+        Materials.Blizz = loadBlizz();
+        Materials.Bloodstone = loadBloodstone();
+        Materials.Blueschist = loadBlueschist();
+        Materials.Bluestone = loadBluestone();
+        Materials.Blutonium = loadBlutonium();
+        Materials.Carmot = loadCarmot();
+        Materials.Celenegil = loadCelenegil();
+        Materials.CertusQuartz = loadCertusQuartz();
+        Materials.CertusQuartzCharged = loadCertusQuartzCharged();
+        Materials.Ceruclase = loadCeruclase();
+        Materials.Chert = loadChert();
+        Materials.Chimerite = loadChimerite();
+        Materials.Chrysocolla = loadChrysocolla();
+        Materials.Citrine = loadCitrine();
+        Materials.CobaltHexahydrate = loadCobaltHexahydrate();
+        Materials.ConstructionFoam = loadConstructionFoam();
+        Materials.Coral = loadCoral();
+        Materials.CrudeOil = loadCrudeOil();
+        Materials.CrystalFlux = loadCrystalFlux();
+        Materials.Cyanite = loadCyanite();
+        Materials.Dacite = loadDacite();
+        Materials.DarkIron = loadDarkIron();
+        Materials.DarkStone = loadDarkStone();
+        Materials.Demonite = loadDemonite();
+        Materials.Desichalkos = loadDesichalkos();
+        Materials.Dilithium = loadDilithium();
+        Materials.Draconic = loadDraconic();
+        Materials.Drulloy = loadDrulloy();
+        Materials.Duranium = loadDuranium();
+        Materials.Eclogite = loadEclogite();
+        Materials.ElectrumFlux = loadElectrumFlux();
+        Materials.Emery = loadEmery();
+        Materials.EnderiumBase = loadEnderiumBase();
+        Materials.Energized = loadEnergized();
+        Materials.Epidote = loadEpidote();
+        Materials.Eximite = loadEximite();
+        Materials.FierySteel = loadFierySteel();
+        Materials.Firestone = loadFirestone();
+        Materials.Fluorite = loadFluorite();
+        Materials.FoolsRuby = loadFoolsRuby();
+        Materials.Force = loadForce();
+        Materials.Forcicium = loadForcicium();
+        Materials.Forcillium = loadForcillium();
+        Materials.Gabbro = loadGabbro();
+        Materials.Glowstone = loadGlowstone();
+        Materials.Gneiss = loadGneiss();
+        Materials.Graphene = loadGraphene();
+        Materials.Graphite = loadGraphite();
+        Materials.Greenschist = loadGreenschist();
+        Materials.Greenstone = loadGreenstone();
+        Materials.Greywacke = loadGreywacke();
+        Materials.Haderoth = loadHaderoth();
+        Materials.Hematite = loadHematite();
+        Materials.Hepatizon = loadHepatizon();
+        Materials.HSLA = loadHSLA();
+        Materials.Ignatius = loadIgnatius();
+        Materials.Infernal = loadInfernal();
+        Materials.Infuscolium = loadInfuscolium();
+        Materials.InfusedAir = loadInfusedAir();
+        Materials.InfusedDull = loadInfusedDull();
+        Materials.InfusedEarth = loadInfusedEarth();
+        Materials.InfusedEntropy = loadInfusedEntropy();
+        Materials.InfusedFire = loadInfusedFire();
+        Materials.InfusedGold = loadInfusedGold();
+        Materials.InfusedOrder = loadInfusedOrder();
+        Materials.InfusedVis = loadInfusedVis();
+        Materials.InfusedWater = loadInfusedWater();
+        Materials.Inolashite = loadInolashite();
+        Materials.Invisium = loadInvisium();
+        Materials.Jade = loadJade();
+        Materials.Kalendrite = loadKalendrite();
+        Materials.Komatiite = loadKomatiite();
+        Materials.Lava = loadLava();
+        Materials.Lemurite = loadLemurite();
+        Materials.Limestone = loadLimestone();
+        Materials.Magma = loadMagma();
+        Materials.Mawsitsit = loadMawsitsit();
+        Materials.Mercassium = loadMercassium();
+        Materials.MeteoricSteel = loadMeteoricSteel();
+        Materials.Meteorite = loadMeteorite();
+        Materials.Meutoite = loadMeutoite();
+        Materials.Migmatite = loadMigmatite();
+        Materials.Mimichite = loadMimichite();
+        Materials.Moonstone = loadMoonstone();
+        Materials.NaquadahAlloy = loadNaquadahAlloy();
+        Materials.NaquadahEnriched = loadNaquadahEnriched();
+        Materials.Naquadria = loadNaquadria();
+        Materials.Nether = loadNether();
+        Materials.NetherBrick = loadNetherBrick();
+        Materials.NetherQuartz = loadNetherQuartz();
+        Materials.NetherStar = loadNetherStar();
+        Materials.ObsidianFlux = loadObsidianFlux();
+        Materials.Oilsands = loadOilsands();
+        Materials.Onyx = loadOnyx();
+        Materials.Orichalcum = loadOrichalcum();
+        Materials.Osmonium = loadOsmonium();
+        Materials.Oureclase = loadOureclase();
+        Materials.Painite = loadPainite();
+        Materials.Peanutwood = loadPeanutwood();
+        Materials.Petroleum = loadPetroleum();
+        Materials.Pewter = loadPewter();
+        Materials.Phoenixite = loadPhoenixite();
+        Materials.Prometheum = loadPrometheum();
+        Materials.Quartzite = loadQuartzite();
+        Materials.Randomite = loadRandomite();
+        Materials.Rhyolite = loadRhyolite();
+        Materials.Rubracium = loadRubracium();
+        Materials.Sand = loadSand();
+        Materials.Sanguinite = loadSanguinite();
+        Materials.Siltstone = loadSiltstone();
+        Materials.Sunstone = loadSunstone();
+        Materials.Tar = loadTar();
+        Materials.Tartarite = loadTartarite();
+        Materials.UUAmplifier = loadUUAmplifier();
+        Materials.UUMatter = loadUUMatter();
+        Materials.Void = loadVoid();
+        Materials.Voidstone = loadVoidstone();
+        Materials.Vulcanite = loadVulcanite();
+        Materials.Vyroxeres = loadVyroxeres();
+        Materials.Yellorium = loadYellorium();
+        Materials.Zectium = loadZectium();
+    }
+
+    private static Materials loadAdamantium() {
+        return new MaterialBuilder().setName("Adamantium")
+            .setDefaultLocalName("Adamantium")
+            .setChemicalFormula("Ad")
+            .setMetaItemSubID(319)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setTool(8_192, 10, 32.0f)
+            .setTurbine(1.0f, 5.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(7_200)
+            .setBlastFurnaceTemp(7_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadAdamite() {
+        return new MaterialBuilder().setName("Adamite")
+            .setDefaultLocalName("Adamite")
+            .setColor(Dyes.dyeLightGray)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAdluorite() {
+        return new MaterialBuilder().setName("Adluorite")
+            .setDefaultLocalName("Adluorite")
+            .setColor(Dyes.dyeLightBlue)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAgate() {
+        return new MaterialBuilder().setName("Agate")
+            .setDefaultLocalName("Agate")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAlduorite() {
+        return new MaterialBuilder().setName("Alduorite")
+            .setDefaultLocalName("Alduorite")
+            .setChemicalFormula("SpAl")
+            .setMetaItemSubID(485)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0x9fb4b4)
+            .setTool(8_192, 1, 32.0f)
+            .setTurbine(6.0f, 1.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(6_600)
+            .setBlastFurnaceTemp(6_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadAmber() {
+        return new MaterialBuilder().setName("Amber")
+            .setDefaultLocalName("Amber")
+            .setMetaItemSubID(514)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x7fff8000)
+            .setTool(128, 2, 4.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 10)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Oxygen, 16)
+            .addAspect(TCAspects.VINCULUM, 2)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAmmonium() {
+        return new MaterialBuilder().setName("Ammonium")
+            .setDefaultLocalName("Ammonium")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAmordrine() {
+        return new MaterialBuilder().setName("Amordrine")
+            .setDefaultLocalName("Amordrine")
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAndesite() {
+        return new MaterialBuilder().setName("Andesite")
+            .setDefaultLocalName("Andesite")
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAngmallen() {
+        return new MaterialBuilder().setName("Angmallen")
+            .setDefaultLocalName("Angmallen")
+            .setMetaItemSubID(958)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xd7e18a)
+            .setTool(128, 2, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadArdite() {
+        return new MaterialBuilder().setName("Ardite")
+            .setDefaultLocalName("Ardite")
+            .setChemicalFormula("Ai")
+            .setMetaItemSubID(382)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xfa8100)
+            .setTool(1_024, 4, 18.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_600)
+            .setBlastFurnaceTemp(1_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial()
+            .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadAredrite() {
+        return new MaterialBuilder().setName("Aredrite")
+            .setDefaultLocalName("Aredrite")
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xff0000)
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAtlarus() {
+        return new MaterialBuilder().setName("Atlarus")
+            .setDefaultLocalName("Atlarus")
+            .setMetaItemSubID(965)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadBitumen() {
+        return new MaterialBuilder().setName("Bitumen")
+            .setDefaultLocalName("Bitumen")
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadBlack() {
+        return new MaterialBuilder().setName("Black")
+            .setDefaultLocalName("Black")
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x000000)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlizz() {
+        return new MaterialBuilder().setName("Blizz")
+            .setDefaultLocalName("Blizz")
+            .setChemicalFormula("❆Ma")
+            .setMetaItemSubID(851)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0xdce9ff)
+            .addDustItems()
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static Materials loadBloodstone() {
+        return new MaterialBuilder().setName("Bloodstone")
+            .setDefaultLocalName("Bloodstone")
+            .setColor(Dyes.dyeRed)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadBlueschist() {
+        return new MaterialBuilder().setName("Blueschist")
+            .setDefaultLocalName("Blueschist")
+            .setMetaItemSubID(852)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadBluestone() {
+        return new MaterialBuilder().setName("Bluestone")
+            .setDefaultLocalName("Bluestone")
+            .setMetaItemSubID(813)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlue)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadBlutonium() {
+        return new MaterialBuilder().setName("Blutonium")
+            .setDefaultLocalName("Blutonium")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCarmot() {
+        return new MaterialBuilder().setName("Carmot")
+            .setDefaultLocalName("Carmot")
+            .setMetaItemSubID(962)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xd9cd8c)
+            .setTool(128, 1, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCelenegil() {
+        return new MaterialBuilder().setName("Celenegil")
+            .setDefaultLocalName("Celenegil")
+            .setMetaItemSubID(964)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x94cc48)
+            .setTool(4_096, 2, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCertusQuartz() {
+        return new MaterialBuilder().setName("CertusQuartz")
+            .setDefaultLocalName("Certus Quartz")
+            .setChemicalFormula("SiO₂")
+            .setMetaItemSubID(516)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xd2d2e6)
+            .setTool(32, 1, 5.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCertusQuartzCharged() {
+        return new MaterialBuilder().setName("ChargedCertusQuartz")
+            .setDefaultLocalName("Charged Certus Quartz")
+            .setChemicalFormula("SiO₂" + CustomGlyphs.HIGH_VOLTAGE)
+            .setMetaItemSubID(517)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xddddec)
+            .setTool(32, 1, 5.0f)
+            .addOreItems()
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCeruclase() {
+        return new MaterialBuilder().setName("Ceruclase")
+            .setDefaultLocalName("Ceruclase")
+            .setChemicalFormula("SpAg")
+            .setMetaItemSubID(952)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x8cbdd0)
+            .setTool(1_280, 2, 32.0f)
+            .setTurbine(1.0f, 22.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(6_600)
+            .setBlastFurnaceTemp(6_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadChert() {
+        return new MaterialBuilder().setName("Chert")
+            .setDefaultLocalName("Chert")
+            .setMetaItemSubID(857)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadChimerite() {
+        return new MaterialBuilder().setName("Chimerite")
+            .setDefaultLocalName("Chimerite")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadChrysocolla() {
+        return new MaterialBuilder().setName("Chrysocolla")
+            .setDefaultLocalName("Chrysocolla")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCitrine() {
+        return new MaterialBuilder().setName("Citrine")
+            .setDefaultLocalName("Citrine")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltHexahydrate() {
+        return new MaterialBuilder().setName("CobaltHexahydrate")
+            .setDefaultLocalName("Cobalt Hexahydrate")
+            .setMetaItemSubID(853)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x5050fa)
+            .addDustItems()
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadConstructionFoam() {
+        return new MaterialBuilder().setName("ConstructionFoam")
+            .setDefaultLocalName("Construction Foam")
+            .setMetaItemSubID(854)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .addDustItems()
+            .addCell()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCoral() {
+        return new MaterialBuilder().setName("Coral")
+            .setDefaultLocalName("Coral")
+            .setRGB(0xff80ff)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCrudeOil() {
+        return new MaterialBuilder().setName("CrudeOil")
+            .setDefaultLocalName("Crude Oil")
+            .setMetaItemSubID(858)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCrystalFlux() {
+        return new MaterialBuilder().setName("CrystalFlux")
+            .setDefaultLocalName("Flux Crystal")
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setRGB(0x643264)
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCyanite() {
+        return new MaterialBuilder().setName("Cyanite")
+            .setDefaultLocalName("Cyanite")
+            .setColor(Dyes.dyeCyan)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDacite() {
+        return new MaterialBuilder().setName("Dacite")
+            .setDefaultLocalName("Dacite")
+            .setMetaItemSubID(859)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDarkIron() {
+        return new MaterialBuilder().setName("DarkIron")
+            .setDefaultLocalName("Deep Dark Iron")
+            .setChemicalFormula("Sp₆Fe" + CustomGlyphs.PICKAXE)
+            .setMetaItemSubID(342)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x37283c)
+            .setTool(384, 3, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDarkStone() {
+        return new MaterialBuilder().setName("DarkStone")
+            .setDefaultLocalName("Dark Stone")
+            .setColor(Dyes.dyeBlack)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDemonite() {
+        return new MaterialBuilder().setName("Demonite")
+            .setDefaultLocalName("Demonite")
+            .setColor(Dyes.dyeRed)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDesichalkos() {
+        return new MaterialBuilder().setName("Desichalkos")
+            .setDefaultLocalName("Desichalkos")
+            .setTool(1_280, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDilithium() {
+        return new MaterialBuilder().setName("Dilithium")
+            .setDefaultLocalName("Dilithium")
+            .setChemicalFormula("∳Li∳Li∳")
+            .setMetaItemSubID(515)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7ffffafa)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadDraconic() {
+        return new MaterialBuilder().setName("Draconic")
+            .setDefaultLocalName("Draconic")
+            .setColor(Dyes.dyeRed)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDrulloy() {
+        return new MaterialBuilder().setName("Drulloy")
+            .setDefaultLocalName("Drulloy")
+            .setColor(Dyes.dyeRed)
+            .addDustItems()
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadDuranium() {
+        return new MaterialBuilder().setName("Duranium")
+            .setDefaultLocalName("Duranium")
+            .setChemicalFormula("Du")
+            .setMetaItemSubID(328)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightGray)
+            .setTool(40_960, 11, 32.0f)
+            .setTurbine(16.0f, 16.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadEclogite() {
+        return new MaterialBuilder().setName("Eclogite")
+            .setDefaultLocalName("Eclogite")
+            .setMetaItemSubID(860)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadElectrumFlux() {
+        return new MaterialBuilder().setName("ElectrumFlux")
+            .setDefaultLocalName("Fluxed Electrum")
+            .setChemicalFormula("The formula is too long...")
+            .setMetaItemSubID(320)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff78)
+            .setTool(512, 3, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(9_000)
+            .setBlastFurnaceTemp(9_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadEmery() {
+        return new MaterialBuilder().setName("Emery")
+            .setDefaultLocalName("Emery")
+            .setMetaItemSubID(861)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadEnderiumBase() {
+        return new MaterialBuilder().setName("EnderiumBase")
+            .setDefaultLocalName("Enderium Base")
+            .setMetaItemSubID(380)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x487799)
+            .setTool(768, 4, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_600)
+            .setBlastFurnaceTemp(3_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Tin, 2)
+            .addMaterial(Materials.Silver, 2)
+            .addMaterial(Materials.Platinum, 2)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ALIENIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnergized() {
+        return new MaterialBuilder().setName("Energized")
+            .setDefaultLocalName("Energized")
+            .constructMaterial();
+    }
+
+    private static Materials loadEpidote() {
+        return new MaterialBuilder().setName("Epidote")
+            .setDefaultLocalName("Epidote")
+            .setMetaItemSubID(862)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadEximite() {
+        return new MaterialBuilder().setName("Eximite")
+            .setDefaultLocalName("Eximite")
+            .setMetaItemSubID(959)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x7c5a96)
+            .setTool(2_560, 3, 5.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFierySteel() {
+        return new MaterialBuilder().setName("FierySteel")
+            .setDefaultLocalName("Fiery Steel")
+            .setChemicalFormula(CustomGlyphs.BRIMSTONE + "Fe₅" + CustomGlyphs.SUBSCRIPT0 + "C")
+            .setMetaItemSubID(346)
+            .setIconSet(TextureSet.SET_FIERY)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x400000)
+            .setTool(256, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_811)
+            .setBlastFurnaceTemp(1_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setFuel(MaterialBuilder.FuelType.Magic, 2_048)
+            .addAspect(TCAspects.PRAECANTATIO, 3)
+            .addAspect(TCAspects.IGNIS, 3)
+            .addAspect(TCAspects.CORPUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadFirestone() {
+        return new MaterialBuilder().setName("Firestone")
+            .setDefaultLocalName("Firestone")
+            .setChemicalFormula("⽕")
+            .setMetaItemSubID(347)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc81400)
+            .setTool(1_280, 3, 6.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFluorite() {
+        return new MaterialBuilder().setName("Fluorite")
+            .setDefaultLocalName("Fluorite")
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFoolsRuby() {
+        return new MaterialBuilder().setName("FoolsRuby")
+            .setDefaultLocalName("Spinel")
+            .setMetaItemSubID(512)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x7fff6464)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 4)
+            .addAspect(TCAspects.LUCRUM, 2)
+            .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadForce() {
+        return new MaterialBuilder().setName("Force")
+            .setDefaultLocalName("Force")
+            .setChemicalFormula("Fc⚙")
+            .setMetaItemSubID(521)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .setTool(128, 3, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.POTENTIA, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadForcicium() {
+        return new MaterialBuilder().setName("Forcicium")
+            .setDefaultLocalName("Forcicium")
+            .setChemicalFormula("◃◁◀")
+            .setMetaItemSubID(518)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x323246)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
+            .addAspect(TCAspects.POTENTIA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadForcillium() {
+        return new MaterialBuilder().setName("Forcillium")
+            .setDefaultLocalName("Forcillium")
+            .setChemicalFormula("▶▷▹")
+            .setMetaItemSubID(519)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x323246)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
+            .addAspect(TCAspects.POTENTIA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGabbro() {
+        return new MaterialBuilder().setName("Gabbro")
+            .setDefaultLocalName("Gabbro")
+            .setMetaItemSubID(863)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadGlowstone() {
+        return new MaterialBuilder().setName("Glowstone")
+            .setDefaultLocalName("Glowstone")
+            .setMetaItemSubID(811)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addCell()
+            .addAspect(TCAspects.LUX, 2)
+            .addAspect(TCAspects.SENSUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGneiss() {
+        return new MaterialBuilder().setName("Gneiss")
+            .setDefaultLocalName("Gneiss")
+            .setMetaItemSubID(864)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadGraphene() {
+        return new MaterialBuilder().setName("Graphene")
+            .setDefaultLocalName("Graphene")
+            .setMetaItemSubID(819)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .setTool(32, 1, 6.0f)
+            .addDustItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGraphite() {
+        return new MaterialBuilder().setName("Graphite")
+            .setDefaultLocalName("Graphite")
+            .setMetaItemSubID(865)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .setTool(32, 2, 5.0f)
+            .addDustItems()
+            .addOreItems()
+            .addCell()
+            .addToolHeadItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGreenschist() {
+        return new MaterialBuilder().setName("Greenschist")
+            .setDefaultLocalName("Green Schist")
+            .setMetaItemSubID(866)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadGreenstone() {
+        return new MaterialBuilder().setName("Greenstone")
+            .setDefaultLocalName("Greenstone")
+            .setMetaItemSubID(867)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadGreywacke() {
+        return new MaterialBuilder().setName("Greywacke")
+            .setDefaultLocalName("Greywacke")
+            .setMetaItemSubID(897)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHaderoth() {
+        return new MaterialBuilder().setName("Haderoth")
+            .setDefaultLocalName("Haderoth")
+            .setMetaItemSubID(963)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x77341e)
+            .setTool(3_200, 3, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHematite() {
+        return new MaterialBuilder().setName("Hematite")
+            .setDefaultLocalName("Hematite")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHepatizon() {
+        return new MaterialBuilder().setName("Hepatizon")
+            .setDefaultLocalName("Hepatizon")
+            .setMetaItemSubID(957)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x755e75)
+            .setTool(128, 2, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHSLA() {
+        return new MaterialBuilder().setName("HSLA")
+            .setDefaultLocalName("HSLA Steel")
+            .setMetaItemSubID(322)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x808080)
+            .setTool(500, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_811)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIgnatius() {
+        return new MaterialBuilder().setName("Ignatius")
+            .setDefaultLocalName("Ignatius")
+            .setMetaItemSubID(950)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xffa953)
+            .setTool(512, 2, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadInfernal() {
+        return new MaterialBuilder().setName("Infernal")
+            .setDefaultLocalName("Infernal")
+            .constructMaterial();
+    }
+
+    private static Materials loadInfuscolium() {
+        return new MaterialBuilder().setName("Infuscolium")
+            .setDefaultLocalName("Infuscolium")
+            .setMetaItemSubID(490)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x922156)
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedAir() {
+        return new MaterialBuilder().setName("InfusedAir")
+            .setDefaultLocalName("Aer")
+            .setChemicalFormula(CustomGlyphs.AIR)
+            .setMetaItemSubID(540)
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x00ffff00)
+            .setTool(64, 3, 8.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.AER, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedDull() {
+        return new MaterialBuilder().setName("InfusedDull")
+            .setDefaultLocalName("Vacuus")
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0x00646464)
+            .setTool(64, 3, 32.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.VACUOS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedEarth() {
+        return new MaterialBuilder().setName("InfusedEarth")
+            .setDefaultLocalName("Terra")
+            .setChemicalFormula(CustomGlyphs.EARTH)
+            .setMetaItemSubID(542)
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x0000ff00)
+            .setTool(256, 3, 8.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.TERRA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedEntropy() {
+        return new MaterialBuilder().setName("InfusedEntropy")
+            .setDefaultLocalName("Perditio")
+            .setChemicalFormula(CustomGlyphs.CHAOS)
+            .setMetaItemSubID(544)
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeBlack)
+            .setARGB(0x003e3e3e)
+            .setTool(64, 4, 32.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 320)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.PERDITIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedFire() {
+        return new MaterialBuilder().setName("InfusedFire")
+            .setDefaultLocalName("Ignis")
+            .setChemicalFormula(CustomGlyphs.FIRE)
+            .setMetaItemSubID(541)
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x00ff0000)
+            .setTool(64, 3, 8.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 320)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedGold() {
+        return new MaterialBuilder().setName("InfusedGold")
+            .setDefaultLocalName("Infused Gold")
+            .setChemicalFormula("AuMa*")
+            .setMetaItemSubID(323)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffc83c)
+            .setTool(64, 3, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedOrder() {
+        return new MaterialBuilder().setName("InfusedOrder")
+            .setDefaultLocalName("Ordo")
+            .setChemicalFormula(CustomGlyphs.ORDER)
+            .setMetaItemSubID(545)
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00fcfcfc)
+            .setTool(64, 3, 8.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 240)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.ORDO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedVis() {
+        return new MaterialBuilder().setName("InfusedVis")
+            .setDefaultLocalName("Auram")
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0x00ff00ff)
+            .setTool(64, 3, 8.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 240)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.AURAM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedWater() {
+        return new MaterialBuilder().setName("InfusedWater")
+            .setDefaultLocalName("Aqua")
+            .setChemicalFormula(CustomGlyphs.WATER)
+            .setMetaItemSubID(543)
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x000000ff)
+            .setTool(64, 3, 8.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addAspect(TCAspects.AQUA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadInolashite() {
+        return new MaterialBuilder().setName("Inolashite")
+            .setDefaultLocalName("Inolashite")
+            .setMetaItemSubID(954)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x94d8bb)
+            .setTool(2_304, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadInvisium() {
+        return new MaterialBuilder().setName("Invisium")
+            .setDefaultLocalName("Invisium")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadJade() {
+        return new MaterialBuilder().setName("Jade")
+            .setDefaultLocalName("Jade")
+            .setMetaItemSubID(537)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x006400)
+            .setTool(16, 2, 1.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadKalendrite() {
+        return new MaterialBuilder().setName("Kalendrite")
+            .setDefaultLocalName("Kalendrite")
+            .setMetaItemSubID(953)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xaa5bbd)
+            .setTool(2_560, 3, 5.0f)
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadKomatiite() {
+        return new MaterialBuilder().setName("Komatiite")
+            .setDefaultLocalName("Komatiite")
+            .setMetaItemSubID(869)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadLava() {
+        return new MaterialBuilder().setName("Lava")
+            .setDefaultLocalName("Lava")
+            .setMetaItemSubID(700)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff4000)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadLemurite() {
+        return new MaterialBuilder().setName("Lemurite")
+            .setDefaultLocalName("Lemurite")
+            .setMetaItemSubID(486)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xdbdbdb)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadLimestone() {
+        return new MaterialBuilder().setName("Limestone")
+            .setDefaultLocalName("Limestone")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMagma() {
+        return new MaterialBuilder().setName("Magma")
+            .setDefaultLocalName("Magma")
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff4000)
+            .constructMaterial();
+    }
+
+    private static Materials loadMawsitsit() {
+        return new MaterialBuilder().setName("Mawsitsit")
+            .setDefaultLocalName("Mawsitsit")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMercassium() {
+        return new MaterialBuilder().setName("Mercassium")
+            .setDefaultLocalName("Mercassium")
+            .setTool(64, 1, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMeteoricSteel() {
+        return new MaterialBuilder().setName("MeteoricSteel")
+            .setDefaultLocalName("Meteoric Steel")
+            .setChemicalFormula("SpFe₅" + CustomGlyphs.SUBSCRIPT0 + "C")
+            .setMetaItemSubID(341)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x321928)
+            .setTool(768, 4, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .setMeltingPoint(1_811)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.MeteoricIron, 50)
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMeteorite() {
+        return new MaterialBuilder().setName("Meteorite")
+            .setDefaultLocalName("Meteorite")
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x50233c)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMeutoite() {
+        return new MaterialBuilder().setName("Meutoite")
+            .setDefaultLocalName("Meutoite")
+            .setMetaItemSubID(487)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x5f5269)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMigmatite() {
+        return new MaterialBuilder().setName("Migmatite")
+            .setDefaultLocalName("Migmatite")
+            .setMetaItemSubID(872)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMimichite() {
+        return new MaterialBuilder().setName("Mimichite")
+            .setDefaultLocalName("Mimichite")
+            .setIconSet(TextureSet.SET_GEM_VERTICAL)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMoonstone() {
+        return new MaterialBuilder().setName("Moonstone")
+            .setDefaultLocalName("Moonstone")
+            .setColor(Dyes.dyeWhite)
+            .addDustItems()
+            .addOreItems()
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.ALIENIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNaquadahAlloy() {
+        return new MaterialBuilder().setName("NaquadahAlloy")
+            .setDefaultLocalName("Naquadah Alloy")
+            .setChemicalFormula("Nq₂KeC")
+            .setMetaItemSubID(325)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x282828)
+            .setTool(5_120, 5, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(7_200)
+            .setBlastFurnaceTemp(7_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 4)
+            .addAspect(TCAspects.NEBRISUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNaquadahEnriched() {
+        return new MaterialBuilder().setName("NaquadahEnriched")
+            .setDefaultLocalName("Enriched Naquadah")
+            .setChemicalFormula("Nq+")
+            .setMetaItemSubID(326)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323232)
+            .setTool(1_280, 4, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.RADIO, 2)
+            .addAspect(TCAspects.NEBRISUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadNaquadria() {
+        return new MaterialBuilder().setName("Naquadria")
+            .setDefaultLocalName("Naquadria")
+            .setChemicalFormula("Nq*")
+            .setMetaItemSubID(327)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x1e1e1e)
+            .setTool(512, 4, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(9_000)
+            .setBlastFurnaceTemp(9_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.METALLUM, 4)
+            .addAspect(TCAspects.RADIO, 3)
+            .addAspect(TCAspects.NEBRISUM, 3)
+            .constructMaterial()
+            .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadNether() {
+        return new MaterialBuilder().setName("Nether")
+            .setDefaultLocalName("Nether")
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherBrick() {
+        return new MaterialBuilder().setName("NetherBrick")
+            .setDefaultLocalName("Nether Brick")
+            .setMetaItemSubID(814)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x640000)
+            .addDustItems()
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherQuartz() {
+        return new MaterialBuilder().setName("NetherQuartz")
+            .setDefaultLocalName("Nether Quartz")
+            .setChemicalFormula("SiO₂")
+            .setMetaItemSubID(522)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6d2d2)
+            .setTool(32, 1, 1.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addAspect(TCAspects.POTENTIA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherStar() {
+        return new MaterialBuilder().setName("NetherStar")
+            .setDefaultLocalName("Nether Star")
+            .setChemicalFormula("(Nh₂Ma)₃" + CustomGlyphs.CIRCLE_CROSS + "C₆")
+            .setMetaItemSubID(506)
+            .setIconSet(TextureSet.SET_NETHERSTAR)
+            .setColor(Dyes.dyeWhite)
+            .setTool(5_120, 4, 6.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 50_000)
+            .constructMaterial();
+    }
+
+    private static Materials loadObsidianFlux() {
+        return new MaterialBuilder().setName("ObsidianFlux")
+            .setDefaultLocalName("Fluxed Obsidian")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x503264)
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOilsands() {
+        return new MaterialBuilder().setName("Oilsands")
+            .setDefaultLocalName("Oilsands")
+            .setMetaItemSubID(878)
+            .setRGB(0x0a0a0a)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOnyx() {
+        return new MaterialBuilder().setName("Onyx")
+            .setDefaultLocalName("Onyx")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOrichalcum() {
+        return new MaterialBuilder().setName("Orichalcum")
+            .setDefaultLocalName("Orichalcum")
+            .setChemicalFormula("SpBi")
+            .setMetaItemSubID(966)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x547a38)
+            .setTool(20_480, 1, 32.0f)
+            .setTurbine(1.0f, 6.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(6_000)
+            .setBlastFurnaceTemp(6_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadOsmonium() {
+        return new MaterialBuilder().setName("Osmonium")
+            .setDefaultLocalName("Osmonium")
+            .setColor(Dyes.dyeBlue)
+            .setTool(64, 1, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOureclase() {
+        return new MaterialBuilder().setName("Oureclase")
+            .setDefaultLocalName("Oureclase")
+            .setMetaItemSubID(961)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xb76215)
+            .setTool(1_920, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPainite() {
+        return new MaterialBuilder().setName("Painite")
+            .setDefaultLocalName("Painite")
+            .constructMaterial();
+    }
+
+    private static Materials loadPeanutwood() {
+        return new MaterialBuilder().setName("Peanutwood")
+            .setDefaultLocalName("Peanut Wood")
+            .constructMaterial();
+    }
+
+    private static Materials loadPetroleum() {
+        return new MaterialBuilder().setName("Petroleum")
+            .setDefaultLocalName("Petroleum")
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPewter() {
+        return new MaterialBuilder().setName("Pewter")
+            .setDefaultLocalName("Pewter")
+            .constructMaterial();
+    }
+
+    private static Materials loadPhoenixite() {
+        return new MaterialBuilder().setName("Phoenixite")
+            .setDefaultLocalName("Phoenixite")
+            .setTool(64, 1, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPrometheum() {
+        return new MaterialBuilder().setName("Prometheum")
+            .setDefaultLocalName("Prometheum")
+            .setMetaItemSubID(960)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x5a8156)
+            .setTool(512, 1, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadQuartzite() {
+        return new MaterialBuilder().setName("Quartzite")
+            .setDefaultLocalName("Quartzite")
+            .setChemicalFormula("SiO₂")
+            .setMetaItemSubID(523)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xd2e6d2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRandomite() {
+        return new MaterialBuilder().setName("Randomite")
+            .setDefaultLocalName("Randomite")
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRhyolite() {
+        return new MaterialBuilder().setName("Rhyolite")
+            .setDefaultLocalName("Rhyolite")
+            .setMetaItemSubID(875)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRubracium() {
+        return new MaterialBuilder().setName("Rubracium")
+            .setDefaultLocalName("Rubracium")
+            .setChemicalFormula("SpRb")
+            .setMetaItemSubID(488)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x972d2d)
+            .setTool(128, 1, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSand() {
+        return new MaterialBuilder().setName("Sand")
+            .setDefaultLocalName("Sand")
+            .setColor(Dyes.dyeYellow)
+            .constructMaterial();
+    }
+
+    private static Materials loadSanguinite() {
+        return new MaterialBuilder().setName("Sanguinite")
+            .setDefaultLocalName("Sanguinite")
+            .setMetaItemSubID(955)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xb90000)
+            .setTool(4_480, 4, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSiltstone() {
+        return new MaterialBuilder().setName("Siltstone")
+            .setDefaultLocalName("Siltstone")
+            .setMetaItemSubID(876)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSunstone() {
+        return new MaterialBuilder().setName("Sunstone")
+            .setDefaultLocalName("Sunstone")
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .addOreItems()
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.ALIENIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTar() {
+        return new MaterialBuilder().setName("Tar")
+            .setDefaultLocalName("Tar")
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .constructMaterial();
+    }
+
+    private static Materials loadTartarite() {
+        return new MaterialBuilder().setName("Tartarite")
+            .setDefaultLocalName("Tartarite")
+            .setChemicalFormula("Tt")
+            .setMetaItemSubID(956)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xff763c)
+            .setTool(20_480, 3, 32.0f)
+            .setTurbine(1_120.0f, 1_120.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .setMeltingPoint(10_400)
+            .setBlastFurnaceTemp(10_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadUUAmplifier() {
+        return new MaterialBuilder().setName("UUAmplifier")
+            .setDefaultLocalName("UU-Amplifier")
+            .setChemicalFormula("Accelerates the Mass Fabricator")
+            .setMetaItemSubID(721)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x600080)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadUUMatter() {
+        return new MaterialBuilder().setName("UUMatter")
+            .setDefaultLocalName("UU-Matter")
+            .setMetaItemSubID(703)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x8000c4)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadVoid() {
+        return new MaterialBuilder().setName("Void")
+            .setDefaultLocalName("Void")
+            .setChemicalFormula("ShFeMa₃")
+            .setMetaItemSubID(970)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setARGB(0x001c0639)
+            .setTool(512, 4, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 1_500)
+            .setDensityMultiplier(2)
+            .addAspect(TCAspects.VACUOS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVoidstone() {
+        return new MaterialBuilder().setName("Voidstone")
+            .setDefaultLocalName("Voidstone")
+            .setARGB(0xc8ffffff)
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.VACUOS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVulcanite() {
+        return new MaterialBuilder().setName("Vulcanite")
+            .setDefaultLocalName("Vulcanite")
+            .setChemicalFormula("SpCu")
+            .setMetaItemSubID(489)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xff8448)
+            .setTool(20_480, 2, 32.0f)
+            .setTurbine(40.0f, 1.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(8_400)
+            .setBlastFurnaceTemp(8_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadVyroxeres() {
+        return new MaterialBuilder().setName("Vyroxeres")
+            .setDefaultLocalName("Vyroxeres")
+            .setChemicalFormula("SpBe")
+            .setMetaItemSubID(951)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x55e001)
+            .setTool(7_680, 1, 32.0f)
+            .setTurbine(1.0f, 3.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadYellorium() {
+        return new MaterialBuilder().setName("Yellorium")
+            .setDefaultLocalName("Yellorium")
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadZectium() {
+        return new MaterialBuilder().setName("Zectium")
+            .setDefaultLocalName("Zectium")
+            .setColor(Dyes.dyeBlack)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static void loadTiers() {
+        Materials.ULV = Materials.Primitive = loadULV();
+        Materials.LV = Materials.Basic = loadLV();
+        Materials.MV = Materials.Good = loadMV();
+        Materials.HV = Materials.Advanced = loadHV();
+        Materials.EV = Materials.Data = loadEV();
+        Materials.IV = Materials.Elite = loadIV();
+        Materials.LuV = Materials.Master = loadLuV();
+        Materials.ZPM = Materials.Ultimate = loadZPM();
+        Materials.UV = /* Materials.Superconductor = */ loadUV();
+        Materials.UHV = Materials.Infinite = loadUHV();
+        Materials.UEV = Materials.Bio = loadUEV();
+        Materials.UIV = Materials.Optical = loadUIV();
+        Materials.UMV = Materials.Exotic = loadUMV();
+        Materials.UXV = Materials.Cosmic = loadUXV();
+        Materials.MAX = Materials.Transcendent = loadMAX();
+    }
+
+    private static Materials loadULV() {
+        return new MaterialBuilder().setName("Primitive")
+            .setDefaultLocalName("Primitive")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLV() {
+        return new MaterialBuilder().setName("Basic")
+            .setDefaultLocalName("Basic")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMV() {
+        return new MaterialBuilder().setName("Good")
+            .setDefaultLocalName("Good")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadHV() {
+        return new MaterialBuilder().setName("Advanced")
+            .setDefaultLocalName("Advanced")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadEV() {
+        return new MaterialBuilder().setName("Data")
+            .setDefaultLocalName("Data")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadIV() {
+        return new MaterialBuilder().setName("Elite")
+            .setDefaultLocalName("Elite")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadLuV() {
+        return new MaterialBuilder().setName("Master")
+            .setDefaultLocalName("Master")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 7)
+            .constructMaterial();
+    }
+
+    private static Materials loadZPM() {
+        return new MaterialBuilder().setName("Ultimate")
+            .setDefaultLocalName("Ultimate")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadUV() {
+        return new MaterialBuilder().setName("Superconductor")
+            .setDefaultLocalName("Superconductor")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.MACHINA, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadUHV() {
+        return new MaterialBuilder().setName("Infinite")
+            .setDefaultLocalName("Infinite")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadUEV() {
+        return new MaterialBuilder().setName("Bio")
+            .setDefaultLocalName("Bio")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 11)
+            .constructMaterial();
+    }
+
+    private static Materials loadUIV() {
+        return new MaterialBuilder().setName("Optical")
+            .setDefaultLocalName("Optical")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadUMV() {
+        return new MaterialBuilder().setName("Exotic")
+            .setDefaultLocalName("Exotic")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 13)
+            .constructMaterial();
+    }
+
+    private static Materials loadUXV() {
+        return new MaterialBuilder().setName("Cosmic")
+            .setDefaultLocalName("Cosmic")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 14)
+            .constructMaterial();
+    }
+
+    private static Materials loadMAX() {
+        return new MaterialBuilder().setName("Transcendent")
+            .setDefaultLocalName("Transcendent")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 15)
+            .constructMaterial();
+    }
+
+    private static void loadNotExact() {
+        Materials.AdvancedGlue = loadAdvancedGlue();
+        Materials.Antimatter = loadAntimatter();
+        Materials.Biomass = loadBiomass();
+        Materials.CharcoalByproducts = loadCharcoalByproducts();
+        Materials.Cheese = loadCheese();
+        Materials.Chili = loadChili();
+        Materials.Chocolate = loadChocolate();
+        Materials.Cluster = loadCluster();
+        Materials.CoalFuel = loadCoalFuel();
+        Materials.Cocoa = loadCocoa();
+        Materials.Coffee = loadCoffee();
+        Materials.Creosote = loadCreosote();
+        Materials.Ethanol = loadEthanol();
+        Materials.FermentedBiomass = loadFermentedBiomass();
+        Materials.FishOil = loadFishOil();
+        Materials.FryingOilHot = loadFryingOilHot();
+        Materials.Fuel = loadFuel();
+        Materials.Glue = loadGlue();
+        Materials.Gunpowder = loadGunpowder();
+        Materials.Honey = loadHoney();
+        Materials.Leather = loadLeather();
+        Materials.Lubricant = loadLubricant();
+        Materials.McGuffium239 = loadMcGuffium239();
+        Materials.MeatCooked = loadMeatCooked();
+        Materials.MeatRaw = loadMeatRaw();
+        Materials.Milk = loadMilk();
+        Materials.Mud = loadMud();
+        Materials.Oil = loadOil();
+        Materials.Paper = loadPaper();
+        Materials.Peat = loadPeat();
+        // Materials.Protomatter = loadProtomatter();
+        Materials.RareEarth = loadRareEarth();
+        Materials.Red = loadRed();
+        Materials.Reinforced = loadReinforced();
+        Materials.SeedOil = loadSeedOil();
+        Materials.SeedOilHemp = loadSeedOilHemp();
+        Materials.SeedOilLin = loadSeedOilLin();
+        Materials.Stone = loadStone();
+        Materials.TNT = loadTNT();
+        Materials.Unstable = loadUnstable();
+        Materials.Unstableingot = loadUnstableingot();
+        Materials.Vinegar = loadVinegar();
+        Materials.WeedEX9000 = loadWeedEX9000();
+        Materials.Wheat = loadWheat();
+        Materials.WoodGas = loadWoodGas();
+        Materials.WoodTar = loadWoodTar();
+        Materials.WoodVinegar = loadWoodVinegar();
+    }
+
+    private static Materials loadAdvancedGlue() {
+        return new MaterialBuilder().setName("AdvancedGlue")
+            .setDefaultLocalName("Advanced Glue")
+            .setChemicalFormula("A chemically approved glue!")
+            .setMetaItemSubID(567)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffffb9)
+            .addCell()
+            .addFluid()
+            .addAspect(TCAspects.LIMUS, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadAntimatter() {
+        return new MaterialBuilder().setName("Antimatter")
+            .setDefaultLocalName("Antimatter")
+            .setColor(Dyes.dyePink)
+            .addAspect(TCAspects.POTENTIA, 9)
+            .addAspect(TCAspects.PERFODIO, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadBiomass() {
+        return new MaterialBuilder().setName("Biomass")
+            .setDefaultLocalName("Forestry Biomass")
+            .setMetaItemSubID(704)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x00ff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadCharcoalByproducts() {
+        return new MaterialBuilder().setName("CharcoalByproducts")
+            .setDefaultLocalName("Charcoal Byproducts")
+            .setMetaItemSubID(675)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x784421)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadCheese() {
+        return new MaterialBuilder().setName("Cheese")
+            .setDefaultLocalName("Cheese")
+            .setMetaItemSubID(894)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(320)
+            .constructMaterial();
+    }
+
+    private static Materials loadChili() {
+        return new MaterialBuilder().setName("Chili")
+            .setDefaultLocalName("Chili")
+            .setMetaItemSubID(895)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadChocolate() {
+        return new MaterialBuilder().setName("Chocolate")
+            .setDefaultLocalName("Chocolate")
+            .setMetaItemSubID(886)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xbe5f00)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCluster() {
+        return new MaterialBuilder().setName("Cluster")
+            .setDefaultLocalName("Cluster")
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7fffffff)
+            .constructMaterial();
+    }
+
+    private static Materials loadCoalFuel() {
+        return new MaterialBuilder().setName("CoalFuel")
+            .setDefaultLocalName("Coalfuel")
+            .setMetaItemSubID(710)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323246)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 16)
+            .constructMaterial();
+    }
+
+    private static Materials loadCocoa() {
+        return new MaterialBuilder().setName("Cocoa")
+            .setDefaultLocalName("Cocoa")
+            .setMetaItemSubID(887)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xbe5f00)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCoffee() {
+        return new MaterialBuilder().setName("Coffee")
+            .setDefaultLocalName("Coffee")
+            .setMetaItemSubID(888)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x964b00)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCreosote() {
+        return new MaterialBuilder().setName("Creosote")
+            .setDefaultLocalName("Creosote")
+            .setMetaItemSubID(712)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x804000)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadEthanol() {
+        return new MaterialBuilder().setName("Ethanol")
+            .setDefaultLocalName("Ethanol")
+            .setMetaItemSubID(706)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 192)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadFermentedBiomass() {
+        return new MaterialBuilder().setName("FermentedBiomass")
+            .setDefaultLocalName("Fermented Biomass")
+            .setMetaItemSubID(691)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x445500)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadFishOil() {
+        return new MaterialBuilder().setName("FishOil")
+            .setDefaultLocalName("Fish Oil")
+            .setMetaItemSubID(711)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffc400)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addAspect(TCAspects.CORPUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadFryingOilHot() {
+        return new MaterialBuilder().setName("FryingOilHot")
+            .setDefaultLocalName("Hot Frying Oil")
+            .setMetaItemSubID(727)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc8c400)
+            .addCell()
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadFuel() {
+        return new MaterialBuilder().setName("Fuel")
+            .setDefaultLocalName("Diesel")
+            .setMetaItemSubID(708)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 480)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlue() {
+        return new MaterialBuilder().setName("Glue")
+            .setDefaultLocalName("Refined Glue")
+            .setChemicalFormula("No Horses were harmed in the the making of this substance")
+            .setMetaItemSubID(726)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc8c400)
+            .addCell()
+            .addAspect(TCAspects.LIMUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGunpowder() {
+        return new MaterialBuilder().setName("Gunpowder")
+            .setDefaultLocalName("Gunpowder")
+            .setMetaItemSubID(800)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .addDustItems()
+            .addAspect(TCAspects.PERDITIO, 3)
+            .addAspect(TCAspects.IGNIS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadHoney() {
+        return new MaterialBuilder().setName("Honey")
+            .setDefaultLocalName("Honey")
+            .setMetaItemSubID(725)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xd2c800)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadLeather() {
+        return new MaterialBuilder().setName("Leather")
+            .setDefaultLocalName("Leather")
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x7f969650)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadLubricant() {
+        return new MaterialBuilder().setName("Lubricant")
+            .setDefaultLocalName("Lubricant")
+            .setMetaItemSubID(724)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xffc400)
+            .addCell()
+            .addAspect(TCAspects.AQUA, 2)
+            .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMcGuffium239() {
+        return new MaterialBuilder().setName("McGuffium239")
+            .setDefaultLocalName("Mc Guffium 239")
+            .setMetaItemSubID(999)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xc83296)
+            .addCell()
+            .addAspect(TCAspects.ALIENIS, 8)
+            .addAspect(TCAspects.PERMUTATIO, 8)
+            .addAspect(TCAspects.SPIRITUS, 8)
+            .addAspect(TCAspects.AURAM, 8)
+            .addAspect(TCAspects.VITIUM, 8)
+            .addAspect(TCAspects.RADIO, 8)
+            .addAspect(TCAspects.MAGNETO, 8)
+            .addAspect(TCAspects.ELECTRUM, 8)
+            .addAspect(TCAspects.NEBRISUM, 8)
+            .addAspect(TCAspects.STRONTIO, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadMeatCooked() {
+        return new MaterialBuilder().setName("MeatCooked")
+            .setDefaultLocalName("Cooked Meat")
+            .setMetaItemSubID(893)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x963c14)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMeatRaw() {
+        return new MaterialBuilder().setName("MeatRaw")
+            .setDefaultLocalName("Raw Meat")
+            .setMetaItemSubID(892)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xff6464)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMilk() {
+        return new MaterialBuilder().setName("Milk")
+            .setDefaultLocalName("Milk")
+            .setMetaItemSubID(885)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfefefe)
+            .addDustItems()
+            .addCell()
+            .addAspect(TCAspects.SANO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMud() {
+        return new MaterialBuilder().setName("Mud")
+            .setDefaultLocalName("Mud")
+            .setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
+    private static Materials loadOil() {
+        return new MaterialBuilder().setName("Oil")
+            .setDefaultLocalName("Oil")
+            .setMetaItemSubID(707)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 20)
+            .constructMaterial();
+    }
+
+    private static Materials loadPaper() {
+        return new MaterialBuilder().setName("Paper")
+            .setDefaultLocalName("Paper")
+            .setMetaItemSubID(879)
+            .setIconSet(TextureSet.SET_PAPER)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addAspect(TCAspects.COGNITIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPeat() {
+        return new MaterialBuilder().setName("Peat")
+            .setDefaultLocalName("Peat")
+            .setColor(Dyes.dyeBrown)
+            .addAspect(TCAspects.POTENTIA, 2)
+            .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadRareEarth() {
+        return new MaterialBuilder().setName("RareEarth")
+            .setDefaultLocalName("Rare Earth")
+            .setChemicalFormula("??????")
+            .setMetaItemSubID(891)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808064)
+            .addDustItems()
+            .addAspect(TCAspects.VITREUS, 1)
+            .addAspect(TCAspects.LUCRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRed() {
+        return new MaterialBuilder().setName("Red")
+            .setDefaultLocalName("Red")
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff0000)
+            .constructMaterial();
+    }
+
+    private static Materials loadReinforced() {
+        return new MaterialBuilder().setName("Reinforced")
+            .setDefaultLocalName("Reinforced")
+            .setChemicalFormula("Fe₂(C(MgFeSi₂O₈)₈)")
+            .setMetaItemSubID(383)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x698da5)
+            .setTool(480, 4, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadSeedOil() {
+        return new MaterialBuilder().setName("SeedOil")
+            .setDefaultLocalName("Seed Oil")
+            .setMetaItemSubID(713)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xc4ff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addAspect(TCAspects.GRANUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSeedOilHemp() {
+        return new MaterialBuilder().setName("SeedOilHemp")
+            .setDefaultLocalName("Hemp Seed Oil")
+            .setMetaItemSubID(722)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xc4ff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addAspect(TCAspects.GRANUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSeedOilLin() {
+        return new MaterialBuilder().setName("SeedOilLin")
+            .setDefaultLocalName("Lin Seed Oil")
+            .setMetaItemSubID(723)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xc4ff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addAspect(TCAspects.GRANUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadStone() {
+        return new MaterialBuilder().setName("Stone")
+            .setDefaultLocalName("Stone")
+            .setMetaItemSubID(299)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xcdcdcd)
+            .setTool(32, 1, 4.0f)
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.TERRA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTNT() {
+        return new MaterialBuilder().setName("TNT")
+            .setDefaultLocalName("TNT")
+            .setColor(Dyes.dyeRed)
+            .addAspect(TCAspects.PERDITIO, 7)
+            .addAspect(TCAspects.IGNIS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadUnstable() {
+        return new MaterialBuilder().setName("Unstable")
+            .setDefaultLocalName("Unstable")
+            .setChemicalFormula(CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C⌋")
+            .setMetaItemSubID(396)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7fdcdcdc)
+            .addDustItems()
+            .addAspect(TCAspects.PERDITIO, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadUnstableingot() {
+        return new MaterialBuilder().setName("Unstableingot")
+            .setDefaultLocalName("Unstable")
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7fffffff)
+            .addAspect(TCAspects.PERDITIO, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadVinegar() {
+        return new MaterialBuilder().setName("Vinegar")
+            .setDefaultLocalName("Vinegar")
+            .setMetaItemSubID(690)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .constructMaterial();
+    }
+
+    private static Materials loadWeedEX9000() {
+        return new MaterialBuilder().setName("WeedEX9000")
+            .setDefaultLocalName("Weed-EX 9000")
+            .setMetaItemSubID(242)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x40e056)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadWheat() {
+        return new MaterialBuilder().setName("Wheat")
+            .setDefaultLocalName("Wheat")
+            .setMetaItemSubID(881)
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffffc4)
+            .addDustItems()
+            .addAspect(TCAspects.MESSIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadWoodGas() {
+        return new MaterialBuilder().setName("WoodGas")
+            .setDefaultLocalName("Wood Gas")
+            .setMetaItemSubID(660)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xdecd87)
+            .addCell()
             .addGas()
-            .addCell()
-            .setRGB(190, 244, 250)
-            .setName("Ozone")
-            .setMaterialList(new MaterialStack(Oxygen, 3))
+            .setFuel(MaterialBuilder.FuelType.Gas, 24)
             .constructMaterial();
+    }
 
-        Materials.StableBaryonicMatter = new MaterialBuilder(569,  new TextureSet("stablebaryonicmatter", true), "Stabilised Baryonic Matter")
-            .addFluid()
+    private static Materials loadWoodTar() {
+        return new MaterialBuilder().setName("WoodTar")
+            .setDefaultLocalName("Wood Tar")
+            .setMetaItemSubID(662)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x28170b)
             .addCell()
-            .setRGBA(255, 255, 255, 0)
-            .setTransparent(true)
-            .setName("stablebaryonicmatter")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.RawRadox = new MaterialBuilder(-1, TextureSet.SET_DULL, "Raw Radox").setRGB(80, 30, 80)
-            .addFluid().constructMaterial();
-        Materials.RadoxSuperLight = new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Light Radox")
-            .setRGB(155, 0, 155).addGas().constructMaterial();
-        Materials.RadoxLight = new MaterialBuilder(-1, TextureSet.SET_DULL, "Light Radox").setRGB(140, 0, 140)
-            .addGas().constructMaterial();
-        Materials.RadoxHeavy = new MaterialBuilder(-1, TextureSet.SET_DULL, "Heavy Radox").setRGB(115, 0, 115)
-            .addFluid().constructMaterial();
-        Materials.RadoxSuperHeavy = new MaterialBuilder(-1, TextureSet.SET_DULL, "Super Heavy Radox")
-            .setRGB(100, 0, 100).addFluid().constructMaterial();
-        Materials.Xenoxene = new MaterialBuilder(-1, TextureSet.SET_DULL, "Xenoxene").setRGB(133, 130, 128)
-            .addFluid().constructMaterial();
-        Materials.DilutedXenoxene = new MaterialBuilder(-1, TextureSet.SET_DULL, "Diluted Xenoxene")
-            .setRGB(206, 200, 196).addFluid().constructMaterial();
-        Materials.RadoxCracked = new MaterialBuilder(-1, TextureSet.SET_DULL, "Cracked Radox")
-            .setRGB(180, 130, 180).addGas().constructMaterial();
-        Materials.RadoxGas = new MaterialBuilder(-1, TextureSet.SET_DULL, "Radox Gas").setRGB(255, 130, 255)
-            .addGas().constructMaterial();
-
-        // Material ID was choosen randomly//
-        Materials.RadoxPolymer = new Materials(979, TextureSet.SET_DULL, 8.0F, 346, 3, 1 | 2 | 16, 133, 0, 128, 0, "RadoxPoly", "Radox Polymer", 0, 0, 6203, 0, false, false, 1, 1, 1, Dyes.dyePurple, 0,Arrays.asList(new MaterialStack(Materials.Carbon, 14), new MaterialStack(Materials.Osmium, 11), new MaterialStack(Materials.Oxygen, 7), new MaterialStack(Materials.Silver, 3), new MaterialStack(Materials.CallistoIce, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HUMANUS, 2))).setHasCorrespondingGas(true).setGasTemperature(12406);
-
-        Materials.NetherAir = new MaterialBuilder( 118, TextureSet.SET_FLUID, "Nether Air")
             .addFluid()
-            .addCell()
-            .setRGB(238, 163, 154)
-            .setName("netherair")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
+    }
 
-        Materials.NetherSemiFluid = new MaterialBuilder( 119, TextureSet.SET_FLUID, "Nether Semi-Fluid")
+    private static Materials loadWoodVinegar() {
+        return new MaterialBuilder().setName("WoodVinegar")
+            .setDefaultLocalName("Wood Vinegar")
+            .setMetaItemSubID(661)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xd45500)
+            .addCell()
             .addFluid()
-            .addCell()
-            .setRGB(218, 193, 114)
-            .setName("nethersemifluid")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
+    }
 
-        Materials.NefariousGas = new MaterialBuilder( 120, TextureSet.SET_FLUID, "Nefarious Gas")
+    private static void loadTODOThis() {
+        Materials.AluminiumBrass = loadAluminiumBrass();
+        Materials.Endstone = loadEndstone();
+        Materials.Netherrack = loadNetherrack();
+        Materials.Osmiridium = loadOsmiridium();
+        Materials.SoulSand = loadSoulSand();
+        Materials.Sunnarium = loadSunnarium();
+    }
+
+    private static Materials loadAluminiumBrass() {
+        return new MaterialBuilder().setName("AluminiumBrass")
+            .setDefaultLocalName("Aluminium Brass")
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadEndstone() {
+        return new MaterialBuilder().setName("Endstone")
+            .setDefaultLocalName("Endstone")
+            .setMetaItemSubID(808)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherrack() {
+        return new MaterialBuilder().setName("Netherrack")
+            .setDefaultLocalName("Netherrack")
+            .setMetaItemSubID(807)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadOsmiridium() {
+        return new MaterialBuilder().setName("Osmiridium")
+            .setDefaultLocalName("Osmiridium")
+            .setMetaItemSubID(317)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x6464ff)
+            .setTool(1_600, 3, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iridium, 3)
+            .addMaterial(Materials.Osmium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSoulSand() {
+        return new MaterialBuilder().setName("SoulSand")
+            .setDefaultLocalName("Soulsand")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSunnarium() {
+        return new MaterialBuilder().setName("Sunnarium")
+            .setDefaultLocalName("Sunnarium")
+            .setChemicalFormula("Su")
+            .setMetaItemSubID(318)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(4_200)
+            .setBlastFurnaceTemp(4_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static void loadDegree1Compounds() {
+        Materials.AceticAcid = loadAceticAcid();
+        Materials.Acetone = loadAcetone();
+        Materials.Air = loadAir();
+        Materials.AllylChloride = loadAllylChloride();
+        Materials.Almandine = loadAlmandine();
+        Materials.Ammonia = loadAmmonia();
+        Materials.Andradite = loadAndradite();
+        Materials.AnnealedCopper = loadAnnealedCopper();
+        Materials.AntimonyTrioxide = loadAntimonyTrioxide();
+        Materials.ArsenicTrioxide = loadArsenicTrioxide();
+        Materials.Asbestos = loadAsbestos();
+        Materials.Ash = loadAsh();
+        Materials.BandedIron = loadBandedIron();
+        Materials.BatteryAlloy = loadBatteryAlloy();
+        Materials.Benzene = loadBenzene();
+        Materials.BlueTopaz = loadBlueTopaz();
+        Materials.Bone = loadBone();
+        Materials.Brass = loadBrass();
+        Materials.Brick = loadBrick();
+        Materials.Bronze = loadBronze();
+        Materials.BrownLimonite = loadBrownLimonite();
+        Materials.Calcite = loadCalcite();
+        Materials.CarbonDioxide = loadCarbonDioxide();
+        Materials.Cassiterite = loadCassiterite();
+        Materials.CassiteriteSand = loadCassiteriteSand();
+        Materials.Chalcopyrite = loadChalcopyrite();
+        Materials.Charcoal = loadCharcoal();
+        Materials.Chlorobenzene = loadChlorobenzene();
+        Materials.Chromite = loadChromite();
+        Materials.ChromiumDioxide = loadChromiumDioxide();
+        Materials.Cinnabar = loadCinnabar();
+        Materials.Coal = loadCoal();
+        Materials.CobaltOxide = loadCobaltOxide();
+        Materials.Cobaltite = loadCobaltite();
+        Materials.Cooperite = loadCooperite();
+        Materials.CupricOxide = loadCupricOxide();
+        Materials.Cupronickel = loadCupronickel();
+        Materials.DarkAsh = loadDarkAsh();
+        Materials.DeepIron = loadDeepIron();
+        Materials.Diamond = loadDiamond();
+        Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
+        Materials.Electrum = loadElectrum();
+        Materials.Emerald = loadEmerald();
+        Materials.Epoxid = loadEpoxid();
+        Materials.FerriteMixture = loadFerriteMixture();
+        Materials.Ferrosilite = loadFerrosilite();
+        Materials.FreshWater = loadFreshWater();
+        Materials.Galena = loadGalena();
+        Materials.Garnierite = loadGarnierite();
+        Materials.Glyceryl = loadGlyceryl();
+        Materials.GreenSapphire = loadGreenSapphire();
+        Materials.Grossular = loadGrossular();
+        Materials.HolyWater = loadHolyWater();
+        Materials.HydricSulfide = loadHydricSulfide();
+        Materials.Ice = loadIce();
+        Materials.Ilmenite = loadIlmenite();
+        Materials.Invar = loadInvar();
+        Materials.Kanthal = loadKanthal();
+        Materials.Lazurite = loadLazurite();
+        Materials.LiquidAir = loadLiquidAir();
+        Materials.LiquidNitrogen = loadLiquidNitrogen();
+        Materials.LiquidOxygen = loadLiquidOxygen();
+        Materials.Magnalium = loadMagnalium();
+        Materials.Magnesia = loadMagnesia();
+        Materials.Magnesite = loadMagnesite();
+        Materials.Magnesiumchloride = loadMagnesiumchloride();
+        Materials.Magnetite = loadMagnetite();
+        Materials.Massicot = loadMassicot();
+        Materials.Methane = loadMethane();
+        Materials.Molybdenite = loadMolybdenite();
+        Materials.Nichrome = loadNichrome();
+        Materials.NickelZincFerrite = loadNickelZincFerrite();
+        Materials.NiobiumNitride = loadNiobiumNitride();
+        Materials.NiobiumTitanium = loadNiobiumTitanium();
+        Materials.NitroCarbon = loadNitroCarbon();
+        Materials.NitrogenDioxide = loadNitrogenDioxide();
+        Materials.NobleGases = loadNobleGases();
+        Materials.Obsidian = loadObsidian();
+        Materials.Phosphate = loadPhosphate();
+        Materials.PigIron = loadPigIron();
+        Materials.Plastic = loadPlastic();
+        Materials.Polycaprolactam = loadPolycaprolactam();
+        Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
+        Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
+        Materials.Potash = loadPotash();
+        Materials.Powellite = loadPowellite();
+        Materials.Pumice = loadPumice();
+        Materials.Pyrite = loadPyrite();
+        Materials.Pyrochlore = loadPyrochlore();
+        Materials.Pyrolusite = loadPyrolusite();
+        Materials.Pyrope = loadPyrope();
+        Materials.Quicklime = loadQuicklime();
+        Materials.RawRubber = loadRawRubber();
+        Materials.RockSalt = loadRockSalt();
+        Materials.Rubber = loadRubber();
+        Materials.Ruby = loadRuby();
+        Materials.Rutile = loadRutile();
+        Materials.Salt = loadSalt();
+        Materials.Saltpeter = loadSaltpeter();
+        Materials.Sapphire = loadSapphire();
+        Materials.Scheelite = loadScheelite();
+        Materials.SiliconDioxide = loadSiliconDioxide();
+        Materials.Silicone = loadSilicone();
+        Materials.Snow = loadSnow();
+        Materials.SodaAsh = loadSodaAsh();
+        Materials.Sodalite = loadSodalite();
+        Materials.SodiumPersulfate = loadSodiumPersulfate();
+        Materials.SodiumSulfide = loadSodiumSulfide();
+        Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
+        Materials.Water = Materials.Steam = loadWater();
+        Materials.Zincite = loadZincite();
+    }
+
+    private static Materials loadAceticAcid() {
+        return new MaterialBuilder().setName("AceticAcid")
+            .setDefaultLocalName("Acetic Acid")
+            .setMetaItemSubID(670)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc8b4a0)
+            .addCell()
             .addFluid()
-            .addCell()
-            .setRGB(48, 10, 5)
-            .setName("nefariousgas")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
 
-        Materials.NefariousOil = new MaterialBuilder( 122, TextureSet.SET_FLUID, "Nefarious Oil")
+    private static Materials loadAcetone() {
+        return new MaterialBuilder().setName("Acetone")
+            .setDefaultLocalName("Acetone")
+            .setMetaItemSubID(672)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xafafaf)
+            .addCell()
             .addFluid()
-            .addCell()
-            .setRGB(57, 22, 22)
-            .setName("nefariousoil")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
 
-        Materials.PoorNetherWaste = new MaterialBuilder( 123, TextureSet.SET_FLUID, "Poor Nether Waste")
+    private static Materials loadAir() {
+        return new MaterialBuilder().setName("Air")
+            .setDefaultLocalName("Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .addMaterial(Materials.Nitrogen, 40)
+            .addMaterial(Materials.Oxygen, 11)
+            .addMaterial(Materials.Argon, 1)
+            .addMaterial(Materials.NobleGases, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAllylChloride() {
+        return new MaterialBuilder().setName("AllylChloride")
+            .setDefaultLocalName("Allyl Chloride")
+            .setMetaItemSubID(682)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x87deaa)
+            .addCell()
             .addFluid()
-            .addCell()
-            .setRGB(160, 130, 126)
-            .setName("poornetherwaste")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Chlorine, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
 
-        Materials.RichNetherWaste = new MaterialBuilder( 124, TextureSet.SET_FLUID, "Rich Nether Waste")
+    private static Materials loadAlmandine() {
+        return new MaterialBuilder().setName("Almandine")
+            .setDefaultLocalName("Almandine")
+            .setMetaItemSubID(820)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff0000)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Iron, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadAmmonia() {
+        return new MaterialBuilder().setName("Ammonia")
+            .setDefaultLocalName("Ammonia")
+            .setMetaItemSubID(659)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x3f3480)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAndradite() {
+        return new MaterialBuilder().setName("Andradite")
+            .setDefaultLocalName("Andradite")
+            .setMetaItemSubID(821)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0x967800)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Calcium, 3)
+            .addMaterial(Materials.Iron, 2)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnnealedCopper() {
+        return new MaterialBuilder().setName("AnnealedCopper")
+            .setDefaultLocalName("Annealed Copper")
+            .setChemicalFormula("Cu*")
+            .setMetaItemSubID(345)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff7814)
+            .addDustItems()
+            .addMetalItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAntimonyTrioxide() {
+        return new MaterialBuilder().setName("AntimonyTrioxide")
+            .setDefaultLocalName("Antimony Trioxide")
+            .setMetaItemSubID(618)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6e6f0)
+            .addDustItems()
+            .addMaterial(Materials.Antimony, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadArsenicTrioxide() {
+        return new MaterialBuilder().setName("ArsenicTrioxide")
+            .setDefaultLocalName("Arsenic Trioxide")
+            .setMetaItemSubID(615)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .addMaterial(Materials.Arsenic, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadAsbestos() {
+        return new MaterialBuilder().setName("Asbestos")
+            .setDefaultLocalName("Asbestos")
+            .setMetaItemSubID(946)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6e6e6)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Mg3Si2O5(OH)4
+            .addMaterial(Materials.Magnesium, 3)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadAsh() {
+        return new MaterialBuilder().setName("Ash")
+            .setDefaultLocalName("Ashes")
+            .setChemicalFormula("??")
+            .setMetaItemSubID(815)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0x969696)
+            .addDustItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.PERDITIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBandedIron() {
+        return new MaterialBuilder().setName("BandedIron")
+            .setDefaultLocalName("Banded Iron")
+            .setMetaItemSubID(917)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x915a5a)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBatteryAlloy() {
+        return new MaterialBuilder().setName("BatteryAlloy")
+            .setDefaultLocalName("Battery Alloy")
+            .setMetaItemSubID(315)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x9c7ca0)
+            .addDustItems()
+            .addMetalItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Lead, 4)
+            .addMaterial(Materials.Antimony, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBenzene() {
+        return new MaterialBuilder().setName("Benzene")
+            .setDefaultLocalName("Benzene")
+            .setMetaItemSubID(686)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x1a1a1a)
+            .addCell()
             .addFluid()
-            .addCell()
-            .setRGB(2490, 130, 126)
-            .setName("richnetherwaste")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .setFuel(MaterialBuilder.FuelType.Gas, 360)
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
 
-        Materials.HellishMetal = new Materials(125,
-            TextureSet.SET_FIERY,
-            1.0F,
-            0,
-            2,
-            2,
-            170,
-            170,
-            170,
-            255,
-            "HellishMetal",
-            "Hellish Metal",
-            -1,
-            -1,
-            1200,
-            1900,
-            false,
-            false,
-            200,
-            1,
-            1,
-            Dyes.dyeLightGray)
-            .disableAutoGeneratedVacuumFreezerRecipe()
+    private static Materials loadBlueTopaz() {
+        return new MaterialBuilder().setName("BlueTopaz")
+            .setDefaultLocalName("Blue Topaz")
+            .setMetaItemSubID(513)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x7f0000ff)
+            .setTool(256, 3, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadBone() {
+        return new MaterialBuilder().setName("Bone")
+            .setDefaultLocalName("Bone")
+            .setMetaItemSubID(806)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addMaterial(Materials.Calcium, 1)
+            .addAspect(TCAspects.MORTUUS, 2)
+            .addAspect(TCAspects.CORPUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrass() {
+        return new MaterialBuilder().setName("Brass")
+            .setDefaultLocalName("Brass")
+            .setMetaItemSubID(301)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffb400)
+            .setTool(96, 1, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Copper, 3)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrick() {
+        return new MaterialBuilder().setName("Brick")
+            .setDefaultLocalName("Brick")
+            .setMetaItemSubID(625)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x9b5643)
+            .addDustItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Oxygen, 11)
+            .constructMaterial();
+    }
+
+    private static Materials loadBronze() {
+        return new MaterialBuilder().setName("Bronze")
+            .setDefaultLocalName("Bronze")
+            .setMetaItemSubID(300)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .setTool(192, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Tin, 1)
+            .addMaterial(Materials.Copper, 3)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrownLimonite() {
+        return new MaterialBuilder().setName("BrownLimonite")
+            .setDefaultLocalName("Brown Limonite")
+            .setMetaItemSubID(930)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            // FeO(OH)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalcite() {
+        return new MaterialBuilder().setName("Calcite")
+            .setDefaultLocalName("Calcite")
+            .setMetaItemSubID(823)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xfae6dc)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadCarbonDioxide() {
+        return new MaterialBuilder().setName("CarbonDioxide")
+            .setDefaultLocalName("Carbon Dioxide")
+            .setMetaItemSubID(497)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(25)
+            .setBlastFurnaceTemp(1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial()
+            .setHasCorrespondingGas(true);
+    }
+
+    private static Materials loadCassiterite() {
+        return new MaterialBuilder().setName("Cassiterite")
+            .setDefaultLocalName("Cassiterite")
+            .setMetaItemSubID(824)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcdc)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Tin, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCassiteriteSand() {
+        return new MaterialBuilder().setName("CassiteriteSand")
+            .setDefaultLocalName("Cassiterite Sand")
+            .setMetaItemSubID(937)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcdc)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Tin, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadChalcopyrite() {
+        return new MaterialBuilder().setName("Chalcopyrite")
+            .setDefaultLocalName("Chalcopyrite")
+            .setMetaItemSubID(855)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xa07828)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Sulfur, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCharcoal() {
+        return new MaterialBuilder().setName("Charcoal")
+            .setDefaultLocalName("Charcoal")
+            .setMetaItemSubID(536)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x644646)
+            .addDustItems()
+            .addGemItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.POTENTIA, 2)
+            .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadChlorobenzene() {
+        return new MaterialBuilder().setName("Chlorobenzene")
+            .setDefaultLocalName("Chlorobenzene")
+            .setMetaItemSubID(605)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x003241)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Chlorine, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChromite() {
+        return new MaterialBuilder().setName("Chromite")
+            .setDefaultLocalName("Chromite")
+            .setMetaItemSubID(825)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x23140f)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1_700)
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Chrome, 2)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadChromiumDioxide() {
+        return new MaterialBuilder().setName("ChromiumDioxide")
+            .setDefaultLocalName("Chromium Dioxide")
+            .setMetaItemSubID(361)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xe6c8c8)
+            .setTool(256, 3, 11.0f)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(650)
+            .setBlastFurnaceTemp(650)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCinnabar() {
+        return new MaterialBuilder().setName("Cinnabar")
+            .setDefaultLocalName("Cinnabar")
+            .setMetaItemSubID(826)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x960000)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Mercury, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCoal() {
+        return new MaterialBuilder().setName("Coal")
+            .setDefaultLocalName("Coal")
+            .setMetaItemSubID(535)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x464646)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .setDensityMultiplier(2)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.POTENTIA, 2)
+            .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltOxide() {
+        return new MaterialBuilder().setName("CobaltOxide")
+            .setDefaultLocalName("Cobalt Oxide")
+            .setMetaItemSubID(616)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x668000)
+            .addDustItems()
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltite() {
+        return new MaterialBuilder().setName("Cobaltite")
+            .setDefaultLocalName("Cobaltite")
+            .setMetaItemSubID(827)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x5050fa)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Arsenic, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCooperite() {
+        return new MaterialBuilder().setName("Cooperite")
+            .setDefaultLocalName("Sheldonite")
+            .setMetaItemSubID(828)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffffc8)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Platinum, 3)
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Palladium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCupricOxide() {
+        return new MaterialBuilder().setName("CupricOxide")
+            .setDefaultLocalName("Cupric Oxide")
+            .setMetaItemSubID(619)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0f0f0f)
+            .addDustItems()
+            .setMeltingPoint(1_599)
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCupronickel() {
+        return new MaterialBuilder().setName("Cupronickel")
+            .setDefaultLocalName("Cupronickel")
+            .setMetaItemSubID(310)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xe39680)
+            .setTool(64, 1, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Nickel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDarkAsh() {
+        return new MaterialBuilder().setName("DarkAsh")
+            .setDefaultLocalName("Dark Ashes")
+            .setChemicalFormula("C" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
+            .setMetaItemSubID(816)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x323232)
+            .addDustItems()
+            .setDensityMultiplier(2)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .addAspect(TCAspects.PERDITIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDeepIron() {
+        return new MaterialBuilder().setName("DeepIron")
+            .setDefaultLocalName("Deep Iron")
+            .setChemicalFormula("Sp₂Fe")
+            .setMetaItemSubID(829)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x968c8c)
+            .setTool(384, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setMeltingPoint(7_500)
+            .setBlastFurnaceTemp(7_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addMaterial(Materials.Iron, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiamond() {
+        return new MaterialBuilder().setName("Diamond")
+            .setDefaultLocalName("Diamond")
+            .setMetaItemSubID(500)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7fc8ffff)
+            .setTool(1_280, 4, 8.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setDensityMultiplier(64)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.VITREUS, 3)
+            .addAspect(TCAspects.LUCRUM, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadDilutedHydrochloricAcid() {
+        return new MaterialBuilder().setName("DilutedHydrochloricAcid_GT5U")
+            .setDefaultLocalName("Diluted Hydrochloric Acid")
+            .setMetaItemSubID(606)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0x99a7a3)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadElectrum() {
+        return new MaterialBuilder().setName("Electrum")
+            .setDefaultLocalName("Electrum")
+            .setMetaItemSubID(303)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff64)
+            .setTool(64, 2, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.Gold, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEmerald() {
+        return new MaterialBuilder().setName("Emerald")
+            .setDefaultLocalName("Emerald")
+            .setMetaItemSubID(501)
+            .setIconSet(TextureSet.SET_EMERALD)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x7f50ff50)
+            .setTool(256, 4, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Beryllium, 3)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 6)
+            .addMaterial(Materials.Oxygen, 18)
+            .addAspect(TCAspects.VITREUS, 3)
+            .addAspect(TCAspects.LUCRUM, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadEpoxid() {
+        return new MaterialBuilder().setName("Epoxid")
+            .setDefaultLocalName("Epoxid")
+            .setMetaItemSubID(470)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc88c14)
+            .setTool(32, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 21)
+            .addMaterial(Materials.Hydrogen, 24)
+            .addMaterial(Materials.Oxygen, 4)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadFerriteMixture() {
+        return new MaterialBuilder().setName("FerriteMixture")
+            .setDefaultLocalName("Ferrite Mixture")
+            .setMetaItemSubID(612)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xb4b4b4)
+            .addDustItems()
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Iron, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadFerrosilite() {
+        return new MaterialBuilder().setName("Ferrosilite")
+            .setDefaultLocalName("Ferrosilite")
+            .setMetaItemSubID(620)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x97632a)
+            .addDustItems()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadFreshWater() {
+        return new MaterialBuilder().setName("FreshWater")
+            .setDefaultLocalName("Fresh Water")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGalena() {
+        return new MaterialBuilder().setName("Galena")
+            .setDefaultLocalName("Galena")
+            .setMetaItemSubID(830)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x643c64)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Lead, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGarnierite() {
+        return new MaterialBuilder().setName("Garnierite")
+            .setDefaultLocalName("Garnierite")
+            .setMetaItemSubID(906)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x32c846)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlyceryl() {
+        return new MaterialBuilder().setName("Glyceryl")
+            .setDefaultLocalName("Glyceryl Trinitrate")
+            .setMetaItemSubID(714)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x009696)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Nitrogen, 3)
+            .addMaterial(Materials.Oxygen, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadGreenSapphire() {
+        return new MaterialBuilder().setName("GreenSapphire")
+            .setDefaultLocalName("Green Sapphire")
+            .setMetaItemSubID(504)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0x7f64c882)
+            .setTool(256, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .addAspect(TCAspects.LUCRUM, 5)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial()
             .disableAutoGeneratedBlastFurnaceRecipes();
+    }
 
-        Materials.Netherite = new Materials(132,
-            new TextureSet("netherite", true),
-            1.0F,
-            0,
-            16,
-            2 | 128,
-            255,
-            255,
-            255,
-            255,
-            "Netherite",
-            "Netherite",
-            -1,
-            -1,
-            1200,
-            1900,
-            true,
-            false,
-            200,
-            1,
-            1,
-            Dyes.dyeLightGray)
+    private static Materials loadGrossular() {
+        return new MaterialBuilder().setName("Grossular")
+            .setDefaultLocalName("Grossular")
+            .setMetaItemSubID(831)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Calcium, 3)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadHolyWater() {
+        return new MaterialBuilder().setName("HolyWater")
+            .setDefaultLocalName("Holy Water")
+            .setMetaItemSubID(729)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 2)
+            .addAspect(TCAspects.AURAM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHydricSulfide() {
+        return new MaterialBuilder().setName("HydricSulfide")
+            .setDefaultLocalName("Hydrogen Sulfide")
+            .setMetaItemSubID(460)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIce() {
+        return new MaterialBuilder().setName("Ice")
+            .setDefaultLocalName("Ice")
+            .setMetaItemSubID(702)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0xc8c8ff)
+            .addDustItems()
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.GELUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadIlmenite() {
+        return new MaterialBuilder().setName("Ilmenite")
+            .setDefaultLocalName("Ilmenite")
+            .setMetaItemSubID(918)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x463732)
+            .addDustItems()
+            .addOreItems()
+            .setDensityMultiplier(2)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadInvar() {
+        return new MaterialBuilder().setName("Invar")
+            .setDefaultLocalName("Invar")
+            .setMetaItemSubID(302)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xb4b478)
+            .setTool(256, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 2)
+            .addMaterial(Materials.Nickel, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.GELUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadKanthal() {
+        return new MaterialBuilder().setName("Kanthal")
+            .setDefaultLocalName("Kanthal")
+            .setMetaItemSubID(312)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xc2d2df)
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .setMeltingPoint(1_800)
+            .setBlastFurnaceTemp(1_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Chrome, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLazurite() {
+        return new MaterialBuilder().setName("Lazurite")
+            .setDefaultLocalName("Lazurite")
+            .setMetaItemSubID(524)
+            .setIconSet(TextureSet.SET_LAPIS)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x6478ff)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Aluminium, 6)
+            .addMaterial(Materials.Silicon, 6)
+            .addMaterial(Materials.Calcium, 8)
+            .addMaterial(Materials.Sodium, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidAir() {
+        return new MaterialBuilder().setName("LiquidAir")
+            .setDefaultLocalName("Liquid Air")
+            .setMetaItemSubID(495)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Nitrogen, 40)
+            .addMaterial(Materials.Oxygen, 11)
+            .addMaterial(Materials.Argon, 1)
+            .addMaterial(Materials.NobleGases, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidNitrogen() {
+        return new MaterialBuilder().setName("LiquidNitrogen")
+            .setDefaultLocalName("Liquid Nitrogen")
+            .setMetaItemSubID(494)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Nitrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidOxygen() {
+        return new MaterialBuilder().setName("LiquidOxygen")
+            .setDefaultLocalName("Liquid Oxygen")
+            .setMetaItemSubID(493)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnalium() {
+        return new MaterialBuilder().setName("Magnalium")
+            .setDefaultLocalName("Magnalium")
+            .setMetaItemSubID(313)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xc8beff)
+            .setTool(256, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Aluminium, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnesia() {
+        return new MaterialBuilder().setName("Magnesia")
+            .setDefaultLocalName("Magnesia")
+            .setMetaItemSubID(621)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xffe1e1)
+            .addDustItems()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnesite() {
+        return new MaterialBuilder().setName("Magnesite")
+            .setDefaultLocalName("Magnesite")
+            .setMetaItemSubID(908)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xfafab4)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnesiumchloride() {
+        return new MaterialBuilder().setName("Magnesiumchloride")
+            .setDefaultLocalName("Magnesiumchloride")
+            .setMetaItemSubID(377)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xd40d5c)
+            .addDustItems()
+            .addCell()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Chlorine, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMagnetite() {
+        return new MaterialBuilder().setName("Magnetite")
+            .setDefaultLocalName("Magnetite")
+            .setMetaItemSubID(870)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x1e1e1e)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 3)
+            .addMaterial(Materials.Oxygen, 4)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMassicot() {
+        return new MaterialBuilder().setName("Massicot")
+            .setDefaultLocalName("Massicot")
+            .setMetaItemSubID(614)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffdd55)
+            .addDustItems()
+            .addMaterial(Materials.Lead, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadMethane() {
+        return new MaterialBuilder().setName("Methane")
+            .setDefaultLocalName("Methane")
+            .setMetaItemSubID(715)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeMagenta)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 104)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadMolybdenite() {
+        return new MaterialBuilder().setName("Molybdenite")
+            .setDefaultLocalName("Molybdenite")
+            .setMetaItemSubID(942)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x191919)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // MoS2 (also source of Re)
+            .addMaterial(Materials.Molybdenum, 1)
+            .addMaterial(Materials.Sulfur, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadNichrome() {
+        return new MaterialBuilder().setName("Nichrome")
+            .setDefaultLocalName("Nichrome")
+            .setMetaItemSubID(311)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xcdcef6)
+            .setTool(64, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .setMeltingPoint(2_700)
+            .setBlastFurnaceTemp(2_700)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Nickel, 4)
+            .addMaterial(Materials.Chrome, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNickelZincFerrite() {
+        return new MaterialBuilder().setName("NickelZincFerrite")
+            .setDefaultLocalName("Nickel-Zinc Ferrite")
+            .setMetaItemSubID(613)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x3c3c3c)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(32, 0, 3.0f)
+            .setBlastFurnaceRequired(true)
+            .setBlastFurnaceTemp(1_500)
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Iron, 4)
+            .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadNiobiumNitride() {
+        // Anti-Reflective Material
+        return new MaterialBuilder().setName("NiobiumNitride")
+            .setDefaultLocalName("Niobium Nitride")
+            .setMetaItemSubID(359)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x1d291d)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(2_573)
+            .setBlastFurnaceTemp(2_573)
+            .setBlastFurnaceRequired(true)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Niobium, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNiobiumTitanium() {
+        return new MaterialBuilder().setName("NiobiumTitanium")
+            .setDefaultLocalName("Niobium-Titanium")
+            .setMetaItemSubID(360)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x1d1d29)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Niobium, 1)
+            .addMaterial(Materials.Titanium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitroCarbon() {
+        return new MaterialBuilder().setName("NitroCarbon")
+            .setDefaultLocalName("Nitro-Carbon")
+            .setMetaItemSubID(716)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x004b64)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Carbon, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitrogenDioxide() {
+        return new MaterialBuilder().setName("NitrogenDioxide")
+            .setDefaultLocalName("Nitrogen Dioxide")
+            .setMetaItemSubID(717)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x64afff)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadNobleGases() {
+        return new MaterialBuilder().setName("NobleGases")
+            .setDefaultLocalName("Noble Gases")
+            .setMetaItemSubID(496)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.CarbonDioxide, 21)
+            .addMaterial(Materials.Helium, 9)
+            .addMaterial(Materials.Methane, 3)
+            .addMaterial(Materials.Deuterium, 1)
+            .constructMaterial()
+            .setHasCorrespondingGas(true);
+    }
+
+    private static Materials loadObsidian() {
+        return new MaterialBuilder().setName("Obsidian")
+            .setDefaultLocalName("Obsidian")
+            .setMetaItemSubID(804)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x503264)
+            .addDustItems()
+            .addMetalItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphate() {
+        return new MaterialBuilder().setName("Phosphate")
+            .setDefaultLocalName("Phosphate")
+            .setMetaItemSubID(833)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addOreItems()
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadPigIron() {
+        return new MaterialBuilder().setName("PigIron")
+            .setDefaultLocalName("Pig Iron")
+            .setChemicalFormula("¿Fe?")
+            .setMetaItemSubID(307)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xc8b4b4)
+            .setTool(384, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPlastic() {
+        return new MaterialBuilder().setName("Plastic")
+            .setDefaultLocalName("Polyethylene")
+            .setMetaItemSubID(874)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc8c8c8)
+            .setTool(32, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolycaprolactam() {
+        return new MaterialBuilder().setName("Polycaprolactam")
+            .setDefaultLocalName("Polycaprolactam")
+            .setMetaItemSubID(472)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x323232)
+            .setTool(32, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(500)
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 11)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolydimethylsiloxane() {
+        return new MaterialBuilder().setName("Polydimethylsiloxane")
+            .setDefaultLocalName("Polydimethylsiloxane")
+            .setMetaItemSubID(633)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xf5f5f5)
+            .addDustItems()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPolytetrafluoroethylene() {
+        return new MaterialBuilder().setName("Polytetrafluoroethylene")
+            .setDefaultLocalName("Polytetrafluoroethylene")
+            .setMetaItemSubID(473)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x646464)
+            .setTool(32, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(600)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Fluorine, 4)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPotash() {
+        return new MaterialBuilder().setName("Potash")
+            .setDefaultLocalName("Potash")
+            .setMetaItemSubID(623)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x784237)
+            .addDustItems()
+            .addMaterial(Materials.Potassium, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPowellite() {
+        return new MaterialBuilder().setName("Powellite")
+            .setDefaultLocalName("Powellite")
+            .setMetaItemSubID(883)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Molybdenum, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadPumice() {
+        return new MaterialBuilder().setName("Pumice")
+            .setDefaultLocalName("Pumice")
+            .setMetaItemSubID(926)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xe6b9b9)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Stone, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrite() {
+        return new MaterialBuilder().setName("Pyrite")
+            .setDefaultLocalName("Pyrite")
+            .setMetaItemSubID(834)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0x967828)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Sulfur, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrochlore() {
+        return new MaterialBuilder().setName("Pyrochlore")
+            .setDefaultLocalName("Pyrochlore")
+            .setMetaItemSubID(607)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x2b1100)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Calcium, 2)
+            .addMaterial(Materials.Niobium, 2)
+            .addMaterial(Materials.Oxygen, 7)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrolusite() {
+        return new MaterialBuilder().setName("Pyrolusite")
+            .setDefaultLocalName("Pyrolusite")
+            .setMetaItemSubID(943)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0x9696aa)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Manganese, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrope() {
+        return new MaterialBuilder().setName("Pyrope")
+            .setDefaultLocalName("Pyrope")
+            .setMetaItemSubID(835)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x783264)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Magnesium, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadQuicklime() {
+        return new MaterialBuilder().setName("Quicklime")
+            .setDefaultLocalName("Quicklime")
+            .setMetaItemSubID(622)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xf0f0f0)
+            .addDustItems()
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadRawRubber() {
+        return new MaterialBuilder().setName("RawRubber")
+            .setDefaultLocalName("Raw Rubber")
+            .setMetaItemSubID(896)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xccc789)
+            .addDustItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadRockSalt() {
+        return new MaterialBuilder().setName("RockSalt")
+            .setDefaultLocalName("Rock Salt")
+            .setMetaItemSubID(944)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xf0c8c8)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Chlorine, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRubber() {
+        return new MaterialBuilder().setName("Rubber")
+            .setDefaultLocalName("Rubber")
+            .setMetaItemSubID(880)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x000000)
+            .setTool(32, 0, 1.5f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadRuby() {
+        return new MaterialBuilder().setName("Ruby")
+            .setDefaultLocalName("Ruby")
+            .setMetaItemSubID(502)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x7fff6464)
+            .setTool(256, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadRutile() {
+        return new MaterialBuilder().setName("Rutile")
+            .setDefaultLocalName("Rutile")
+            .setMetaItemSubID(375)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xd40d5c)
+            .addDustItems()
+            .addOreItems()
+            .setDensityMultiplier(2)
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSalt() {
+        return new MaterialBuilder().setName("Salt")
+            .setDefaultLocalName("Salt")
+            .setMetaItemSubID(817)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Chlorine, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSaltpeter() {
+        return new MaterialBuilder().setName("Saltpeter")
+            .setDefaultLocalName("Saltpeter")
+            .setMetaItemSubID(836)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6e6e6)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSapphire() {
+        return new MaterialBuilder().setName("Sapphire")
+            .setDefaultLocalName("Sapphire")
+            .setMetaItemSubID(503)
+            .setIconSet(TextureSet.SET_GEM_VERTICAL)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x7f6464c8)
+            .setTool(256, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .addAspect(TCAspects.LUCRUM, 5)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadScheelite() {
+        return new MaterialBuilder().setName("Scheelite")
+            .setDefaultLocalName("Scheelite")
+            .setMetaItemSubID(910)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0xc88c14)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(2_500)
+            .setBlastFurnaceTemp(2_500)
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconDioxide() {
+        return new MaterialBuilder().setName("SiliconDioxide")
+            .setDefaultLocalName("Silicon Dioxide")
+            .setMetaItemSubID(837)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeLightGray)
+            .addDustItems()
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSilicone() {
+        return new MaterialBuilder().setName("Silicone")
+            .setDefaultLocalName("Silicone Rubber")
+            .setMetaItemSubID(471)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcdc)
+            .setTool(128, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(900)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSnow() {
+        return new MaterialBuilder().setName("Snow")
+            .setDefaultLocalName("Snow")
+            .setMetaItemSubID(728)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.GELUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodaAsh() {
+        return new MaterialBuilder().setName("SodaAsh")
+            .setDefaultLocalName("Soda Ash")
+            .setMetaItemSubID(624)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcff)
+            .addDustItems()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadSodalite() {
+        return new MaterialBuilder().setName("Sodalite")
+            .setDefaultLocalName("Sodalite")
+            .setMetaItemSubID(525)
+            .setIconSet(TextureSet.SET_LAPIS)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x1414ff)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Sodium, 4)
+            .addMaterial(Materials.Chlorine, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumPersulfate() {
+        return new MaterialBuilder().setName("SodiumPersulfate")
+            .setDefaultLocalName("Sodium Persulfate")
+            .setMetaItemSubID(718)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Sulfur, 2)
+            .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumSulfide() {
+        return new MaterialBuilder().setName("SodiumSulfide")
+            .setDefaultLocalName("Sodium Sulfide")
+            .setMetaItemSubID(719)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xffe680)
+            .addDustItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTitaniumtetrachloride() {
+        return new MaterialBuilder().setName("Titaniumtetrachloride")
+            .setDefaultLocalName("Titaniumtetrachloride")
+            .setMetaItemSubID(376)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xd40d5c)
+            .addCell()
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Chlorine, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadWater() {
+        return new MaterialBuilder().setName("Water")
+            .setDefaultLocalName("Water")
+            .setMetaItemSubID(701)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadZincite() {
+        return new MaterialBuilder().setName("Zincite")
+            .setDefaultLocalName("Zincite")
+            .setMetaItemSubID(617)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfffff5)
+            .addDustItems()
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static void loadUnclassified01() {
+        Materials.OilExtraHeavy = loadOilExtraHeavy();
+        Materials.OilHeavy = loadOilHeavy();
+        Materials.OilLight = loadOilLight();
+        Materials.OilMedium = loadOilMedium();
+        Materials.SuperCoolant = loadSuperCoolant();
+        Materials.EnrichedHolmium = loadEnrichedHolmium();
+        Materials.TengamPurified = loadTengamPurified();
+        Materials.TengamAttuned = loadTengamAttuned();
+        Materials.TengamRaw = loadTengamRaw();
+    }
+
+    private static Materials loadOilExtraHeavy() {
+        return new MaterialBuilder().setName("OilExtraHeavy")
+            .setDefaultLocalName("Very Heavy Oil")
+            .setMetaItemSubID(570)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 45)
+            .constructMaterial();
+    }
+
+    private static Materials loadOilHeavy() {
+        return new MaterialBuilder().setName("OilHeavy")
+            .setDefaultLocalName("Heavy Oil")
+            .setMetaItemSubID(730)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 40)
+            .constructMaterial();
+    }
+
+    private static Materials loadOilLight() {
+        return new MaterialBuilder().setName("OilLight")
+            .setDefaultLocalName("Light Oil")
+            .setMetaItemSubID(732)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 20)
+            .constructMaterial();
+    }
+
+    private static Materials loadOilMedium() {
+        return new MaterialBuilder().setName("OilMedium")
+            .setDefaultLocalName("Raw Oil")
+            .setMetaItemSubID(731)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 30)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperCoolant() {
+        return new MaterialBuilder().setName("SuperCoolant")
+            .setDefaultLocalName("Super Coolant")
+            .setMetaItemSubID(140)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x025b6f)
+            .addCell()
+            .addFluid()
+            .constructMaterial()
+            .setLiquidTemperature(1);
+    }
+
+    private static Materials loadEnrichedHolmium() {
+        return new MaterialBuilder().setName("EnrichedHolmium")
+            .setDefaultLocalName("Enriched Holmium")
+            .setChemicalFormula("Nq+₄Ho₁")
+            .setMetaItemSubID(582)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0x001264ff)
+            .addMetalItems()
+            .setBlastFurnaceTemp(3_000)
+            .setBlastFurnaceRequired(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadTengamPurified() {
+        return new MaterialBuilder().setName("PurifiedTengam")
+            .setDefaultLocalName("Purified Tengam")
+            .setChemicalFormula("M")
+            .setMetaItemSubID(111)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xbadf70)
+            .addDustItems()
+            .addGearItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addAspect(TCAspects.MAGNETO, 2)
+            .addAspect(TCAspects.ELECTRUM, 2)
+            .setName("TengamPurified")
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static Materials loadTengamAttuned() {
+        return new MaterialBuilder().setName("AttunedTengam")
+            .setDefaultLocalName("Attuned Tengam")
+            .setChemicalFormula(CustomGlyphs.HIGH_VOLTAGE + "M" + CustomGlyphs.MAGNET)
+            .setMetaItemSubID(112)
+            .setIconSet(TextureSet.SET_MAGNETIC)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xd5ff80)
+            .addDustItems()
+            .addGearItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addAspect(TCAspects.MAGNETO, 4)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .setName("TengamAttuned")
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static Materials loadTengamRaw() {
+        return new MaterialBuilder().setName("RawTengam")
+            .setDefaultLocalName("Raw Tengam")
+            .setChemicalFormula("M" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(110)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xa0bf60)
+            .addOreItems()
+            .addAspect(TCAspects.MAGNETO, 1)
+            .addAspect(TCAspects.ELECTRUM, 4)
+            .setName("TengamRaw")
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static void loadUnclassified02() {
+        Materials.Gas = loadGas();
+        Materials.HeavyFuel = loadHeavyFuel();
+        Materials.LightFuel = loadLightFuel();
+        Materials.LPG = loadLPG();
+        Materials.Naphtha = loadNaphtha();
+        Materials.NatruralGas = loadNatruralGas(); // Nat"r"uralGas lol
+        Materials.SulfuricGas = loadSulfuricGas();
+        Materials.SulfuricHeavyFuel = loadSulfuricHeavyFuel();
+        Materials.SulfuricLightFuel = loadSulfuricLightFuel();
+        Materials.SulfuricNaphtha = loadSulfuricNaphtha();
+    }
+
+    private static Materials loadGas() {
+        return new MaterialBuilder().setName("Gas")
+            .setDefaultLocalName("Refinery Gas")
+            .setMetaItemSubID(735)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 160)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
+    private static Materials loadHeavyFuel() {
+        return new MaterialBuilder().setName("HeavyFuel")
+            .setDefaultLocalName("Heavy Fuel")
+            .setMetaItemSubID(741)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 240)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
+    private static Materials loadLightFuel() {
+        return new MaterialBuilder().setName("LightFuel")
+            .setDefaultLocalName("Light Fuel")
+            .setMetaItemSubID(740)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 305)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
+    private static Materials loadLPG() {
+        return new MaterialBuilder().setName("LPG")
+            .setDefaultLocalName("LPG")
+            .setMetaItemSubID(742)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 320)
+            .constructMaterial();
+    }
+
+    private static Materials loadNaphtha() {
+        return new MaterialBuilder().setName("Naphtha")
+            .setDefaultLocalName("Naphtha")
+            .setMetaItemSubID(739)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 220)
+            .constructMaterial()
+            .setCanBeCracked(true);
+    }
+
+    private static Materials loadNatruralGas() {
+        return new MaterialBuilder().setName("NatruralGas")
+            .setDefaultLocalName("Natural Gas")
+            .setMetaItemSubID(733)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 20)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricGas() {
+        return new MaterialBuilder().setName("SulfuricGas")
+            .setDefaultLocalName("Sulfuric Gas")
+            .setMetaItemSubID(734)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 25)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricHeavyFuel() {
+        return new MaterialBuilder().setName("SulfuricHeavyFuel")
+            .setDefaultLocalName("Sulfuric Heavy Fuel")
+            .setMetaItemSubID(738)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 40)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricLightFuel() {
+        return new MaterialBuilder().setName("SulfuricLightFuel")
+            .setDefaultLocalName("Sulfuric Light Fuel")
+            .setMetaItemSubID(737)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 40)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricNaphtha() {
+        return new MaterialBuilder().setName("SulfuricNaphtha")
+            .setDefaultLocalName("Sulfuric Naphtha")
+            .setMetaItemSubID(736)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 40)
+            .constructMaterial();
+    }
+
+    private static void loadUnclassified03() {
+        Materials.BioMediumRaw = loadBioMediumRaw();
+        Materials.BioMediumSterilized = loadBioMediumSterilized();
+        Materials.ReinforceGlass = loadReinforceGlass();
+    }
+
+    private static Materials loadBioMediumRaw() {
+        return new MaterialBuilder().setName("BioMediumRaw")
+            .setDefaultLocalName("Raw Bio Catalyst Medium")
+            .setMetaItemSubID(603)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x61932e)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadBioMediumSterilized() {
+        return new MaterialBuilder().setName("BiohMediumSterilized")
+            .setDefaultLocalName("Sterilized Bio Catalyst Medium")
+            .setMetaItemSubID(604)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xa2fd35)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadReinforceGlass() {
+        return new MaterialBuilder().setName("ReinforcedGlass")
+            .setDefaultLocalName("Reinforced Glass")
+            .setMetaItemSubID(602)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc0f5fe)
+            .setMeltingPoint(2_000)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static void loadUnclassified04() {
+        Materials.GrowthMediumRaw = loadGrowthMediumRaw();
+        Materials.GrowthMediumSterilized = loadGrowthMediumSterilized();
+    }
+
+    private static Materials loadGrowthMediumRaw() {
+        return new MaterialBuilder().setName("GrowthMediumRaw")
+            .setDefaultLocalName("Raw Growth Catalyst Medium")
+            .setMetaItemSubID(608)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xd38d5f)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadGrowthMediumSterilized() {
+        return new MaterialBuilder().setName("GrowthMediumSterilized")
+            .setDefaultLocalName("Growth Catalyst Medium")
+            .setMetaItemSubID(609)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xdeaa87)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static void loadUnclassified05() {
+        Materials.BioDiesel = loadBioDiesel();
+        Materials.BisphenolA = loadBisphenolA();
+        Materials.Butadiene = loadButadiene();
+        Materials.Butane = loadButane();
+        Materials.Butene = loadButene();
+        Materials.CalciumAcetateSolution = loadCalciumAcetateSolution();
+        Materials.CarbonMonoxide = loadCarbonMonoxide();
+        Materials.Chloramine = loadChloramine();
+        Materials.Chloroform = loadChloroform();
+        Materials.Chloromethane = loadChloromethane();
+        Materials.Cumene = loadCumene();
+        Materials.Dichlorobenzene = loadDichlorobenzene();
+        Materials.Dimethylamine = loadDimethylamine();
+        Materials.Dimethyldichlorosilane = loadDimethyldichlorosilane();
+        Materials.Dimethylhydrazine = loadDimethylhydrazine();
+        Materials.DinitrogenTetroxide = loadDinitrogenTetroxide();
+        Materials.Epichlorohydrin = loadEpichlorohydrin();
+        Materials.Ethane = loadEthane();
+        Materials.Ethenone = loadEthenone();
+        Materials.Ethylene = loadEthylene();
+        Materials.Glycerol = loadGlycerol();
+        Materials.HydrochloricAcid = loadHydrochloricAcid();
+        Materials.HydrofluoricAcid = loadHydrofluoricAcid();
+        Materials.HypochlorousAcid = loadHypochlorousAcid();
+        Materials.IronIIIChloride = loadIronIIIChloride();
+        Materials.Isoprene = loadIsoprene();
+        Materials.LifeEssence = loadLifeEssence();
+        Materials.MetalMixture = loadMetalMixture();
+        Materials.Methanol = loadMethanol();
+        Materials.MethylAcetate = loadMethylAcetate();
+        Materials.NitrationMixture = loadNitrationMixture();
+        Materials.NitricAcid = loadNitricAcid();
+        Materials.NitricOxide = loadNitricOxide();
+        Materials.Phenol = loadPhenol();
+        Materials.PhosphoricAcid = loadPhosphoricAcid();
+        Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
+        Materials.PolyphenyleneSulfide = loadPolyphenyleneSulfide();
+        Materials.Polystyrene = loadPolystyrene();
+        Materials.PolyvinylAcetate = loadPolyvinylAcetate();
+        Materials.PolyvinylChloride = loadPolyvinylChloride();
+        Materials.Propane = loadPropane();
+        Materials.Propene = loadPropene();
+        Materials.SaltWater = loadSaltWater();
+        Materials.SodiumBisulfate = loadSodiumBisulfate();
+        Materials.SodiumHydroxide = loadSodiumHydroxide();
+        Materials.SodiumOxide = loadSodiumOxide();
+        Materials.Styrene = loadStyrene();
+        Materials.StyreneButadieneRubber = loadStyreneButadieneRubber();
+        Materials.SulfurDioxide = loadSulfurDioxide();
+        Materials.SulfurTrioxide = loadSulfurTrioxide();
+        Materials.Tetrafluoroethylene = loadTetrafluoroethylene();
+        Materials.Tetranitromethane = loadTetranitromethane();
+        Materials.Toluene = loadToluene();
+        Materials.VinylAcetate = loadVinylAcetate();
+        Materials.VinylChloride = loadVinylChloride();
+    }
+
+    private static Materials loadBioDiesel() {
+        return new MaterialBuilder().setName("BioDiesel")
+            .setDefaultLocalName("Bio Diesel")
+            .setMetaItemSubID(627)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 320)
+            .constructMaterial();
+    }
+
+    private static Materials loadBisphenolA() {
+        return new MaterialBuilder().setName("BisphenolA")
+            .setDefaultLocalName("Bisphenol A")
+            .setMetaItemSubID(669)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xd4aa00)
+            .addCell()
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 16)
+            .addMaterial(Materials.Oxygen, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadButadiene() {
+        return new MaterialBuilder().setName("Butadiene")
+            .setDefaultLocalName("Butadiene")
+            .setMetaItemSubID(646)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xe86900)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 206)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadButane() {
+        return new MaterialBuilder().setName("Butane")
+            .setDefaultLocalName("Butane")
+            .setMetaItemSubID(644)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xb6371e)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 296)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadButene() {
+        return new MaterialBuilder().setName("Butene")
+            .setDefaultLocalName("Butene")
+            .setMetaItemSubID(645)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xcf5005)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 256)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalciumAcetateSolution() {
+        return new MaterialBuilder().setName("CalciumAcetateSolution")
+            .setDefaultLocalName("Calcium Acetate Solution")
+            .setMetaItemSubID(671)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0xdcc8b4)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Oxygen, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCarbonMonoxide() {
+        return new MaterialBuilder().setName("CarbonMonoxide")
+            .setDefaultLocalName("Carbon Monoxide")
+            .setMetaItemSubID(674)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x0e4880)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 24)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadChloramine() {
+        return new MaterialBuilder().setName("Chloramine")
+            .setDefaultLocalName("Chloramine")
+            .setMetaItemSubID(655)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x3f9f80)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Chlorine, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChloroform() {
+        return new MaterialBuilder().setName("Chloroform")
+            .setDefaultLocalName("Chloroform")
+            .setMetaItemSubID(668)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x892ca0)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadChloromethane() {
+        return new MaterialBuilder().setName("Chloromethane")
+            .setDefaultLocalName("Chloromethane")
+            .setMetaItemSubID(664)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeMagenta)
+            .setRGB(0xc82ca0)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Chlorine, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCumene() {
+        return new MaterialBuilder().setName("Isopropylbenzene")
+            .setDefaultLocalName("Isopropylbenzene")
+            .setMetaItemSubID(688)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x552200)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 9)
+            .addMaterial(Materials.Hydrogen, 12)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDichlorobenzene() {
+        return new MaterialBuilder().setName("Dichlorobenzene")
+            .setDefaultLocalName("Dichlorobenzene")
+            .setMetaItemSubID(632)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x004455)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethylamine() {
+        return new MaterialBuilder().setName("Dimethylamine")
+            .setDefaultLocalName("Dimethylamine")
+            .setMetaItemSubID(656)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x554469)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 7)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethyldichlorosilane() {
+        return new MaterialBuilder().setName("Dimethyldichlorosilane")
+            .setDefaultLocalName("Dimethyldichlorosilane")
+            .setMetaItemSubID(663)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x441650)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Chlorine, 2)
+            .addMaterial(Materials.Silicon, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethylhydrazine() {
+        return new MaterialBuilder().setName("1,1Dimethylhydrazine")
+            .setDefaultLocalName("1,1-Dimethylhydrazine")
+            .setMetaItemSubID(654)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x000055)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDinitrogenTetroxide() {
+        return new MaterialBuilder().setName("DinitrogenTetroxide")
+            .setDefaultLocalName("Dinitrogen Tetroxide")
+            .setMetaItemSubID(657)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x004184)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 4)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadEpichlorohydrin() {
+        return new MaterialBuilder().setName("Epichlorohydrin")
+            .setDefaultLocalName("Epichlorohydrin")
+            .setMetaItemSubID(648)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x501d05)
+            .addCell()
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Chlorine, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadEthane() {
+        return new MaterialBuilder().setName("Ethane")
+            .setDefaultLocalName("Ethane")
+            .setMetaItemSubID(642)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xc8c8ff)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 168)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadEthenone() {
+        return new MaterialBuilder().setName("Ethenone")
+            .setDefaultLocalName("Ethenone")
+            .setMetaItemSubID(641)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x141446)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadEthylene() {
+        return new MaterialBuilder().setName("Ethylene")
+            .setDefaultLocalName("Ethylene")
+            .setMetaItemSubID(677)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe1e1e1)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 128)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlycerol() {
+        return new MaterialBuilder().setName("Glycerol")
+            .setDefaultLocalName("Glycerol")
+            .setMetaItemSubID(629)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x87de87)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 164)
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadHydrochloricAcid() {
+        return new MaterialBuilder().setName("HydrochloricAcid_GT5U")
+            .setDefaultLocalName("Hydrochloric Acid")
+            .setMetaItemSubID(683)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xb7c8c4)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHydrofluoricAcid() {
+        return new MaterialBuilder().setName("HydrofluoricAcid_GT5U")
+            .setDefaultLocalName("Hydrofluoric Acid")
+            .setMetaItemSubID(667)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x0088aa)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Fluorine, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadHypochlorousAcid() {
+        return new MaterialBuilder().setName("HypochlorousAcid")
+            .setDefaultLocalName("Hypochlorous Acid")
+            .setMetaItemSubID(684)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x6f8a91)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadIronIIIChloride() {
+        return new MaterialBuilder().setName("IronIIIChloride")
+            .setDefaultLocalName("Iron III Chloride")
+            .setMetaItemSubID(693)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x16150e)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Chlorine, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadIsoprene() {
+        return new MaterialBuilder().setName("Isoprene")
+            .setDefaultLocalName("Isoprene")
+            .setMetaItemSubID(638)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x141414)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadLifeEssence() {
+        return new MaterialBuilder().setName("lifeessence")
+            .setDefaultLocalName("Life")
+            .setMetaItemSubID(694)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x6e0303)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Magic, 100)
+            .constructMaterial();
+    }
+
+    private static Materials loadMetalMixture() {
+        return new MaterialBuilder().setName("MetalMixture")
+            .setDefaultLocalName("Metal Mixture")
+            .setChemicalFormula(
+                "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "O" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
+            .setMetaItemSubID(676)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x502d16)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMethanol() {
+        return new MaterialBuilder().setName("Methanol")
+            .setDefaultLocalName("Methanol")
+            .setMetaItemSubID(673)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xaa8800)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 84)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadMethylAcetate() {
+        return new MaterialBuilder().setName("MethylAcetate")
+            .setDefaultLocalName("Methyl Acetate")
+            .setMetaItemSubID(681)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xeec6af)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadNitrationMixture() {
+        return new MaterialBuilder().setName("NitrationMixture")
+            .setDefaultLocalName("Nitration Mixture")
+            .setMetaItemSubID(628)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xe6e2ab)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadNitricAcid() {
+        return new MaterialBuilder().setName("NitricAcid")
+            .setDefaultLocalName("Nitric Acid")
+            .setMetaItemSubID(653)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0xe6e2ab)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadNitricOxide() {
+        return new MaterialBuilder().setName("NitricOxide")
+            .setDefaultLocalName("Nitric Oxide")
+            .setMetaItemSubID(658)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x7dc8f0)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPhenol() {
+        return new MaterialBuilder().setName("Phenol")
+            .setDefaultLocalName("Phenol")
+            .setMetaItemSubID(687)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x784421)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Gas, 288)
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphoricAcid() {
+        return new MaterialBuilder().setName("PhosphoricAcid_GT5U")
+            .setDefaultLocalName("Phosphoric Acid")
+            .setMetaItemSubID(689)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xdcdc00)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphorousPentoxide() {
+        return new MaterialBuilder().setName("PhosphorousPentoxide")
+            .setDefaultLocalName("Phosphorous Pentoxide")
+            .setMetaItemSubID(665)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xdcdc00)
+            .addCell()
+            .addDustItems()
+            .addMaterial(Materials.Phosphorus, 4)
+            .addMaterial(Materials.Oxygen, 10)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyphenyleneSulfide() {
+        return new MaterialBuilder().setName("PolyphenyleneSulfide")
+            .setDefaultLocalName("Polyphenylene Sulfide")
+            .setMetaItemSubID(631)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xaa8800)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(32, 1, 3.0f)
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolystyrene() {
+        return new MaterialBuilder().setName("Polystyrene")
+            .setDefaultLocalName("Polystyrene")
+            .setMetaItemSubID(636)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xbeb4aa)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(32, 1, 3.0f)
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyvinylAcetate() {
+        return new MaterialBuilder().setName("PolyvinylAcetate")
+            .setDefaultLocalName("Polyvinyl Acetate")
+            .setMetaItemSubID(680)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff9955)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyvinylChloride() {
+        return new MaterialBuilder().setName("PolyvinylChloride")
+            .setDefaultLocalName("Polyvinyl Chloride")
+            .setMetaItemSubID(649)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xd7e6e6)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(32, 1, 3.0f)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Chlorine, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPropane() {
+        return new MaterialBuilder().setName("Propane")
+            .setDefaultLocalName("Propane")
+            .setMetaItemSubID(643)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xfae250)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 232)
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadPropene() {
+        return new MaterialBuilder().setName("Propene")
+            .setDefaultLocalName("Propene")
+            .setMetaItemSubID(678)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffdd55)
+            .addCell()
+            .addGas()
+            .setFuel(MaterialBuilder.FuelType.Gas, 192)
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addElectrolyzerRecipe()
+            .setCanBeCracked(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadSaltWater() {
+        return new MaterialBuilder().setName("SaltWater")
+            .setDefaultLocalName("Salt Water")
+            .setMetaItemSubID(692)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000c8)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumBisulfate() {
+        return new MaterialBuilder().setName("SodiumBisulfate")
+            .setDefaultLocalName("Sodium Bisulfate")
+            .setMetaItemSubID(630)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x004455)
+            .addDustItems()
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumHydroxide() {
+        return new MaterialBuilder().setName("SodiumHydroxide_GT5U")
+            .setDefaultLocalName("Sodium Hydroxide")
+            .setMetaItemSubID(685)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x003380)
+            .addDustItems()
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumOxide() {
+        return new MaterialBuilder().setName("SodiumOxide")
+            .setDefaultLocalName("Sodium Oxide")
+            .setMetaItemSubID(744)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xffffeb)
+            .addDustItems()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadStyrene() {
+        return new MaterialBuilder().setName("Styrene")
+            .setDefaultLocalName("Styrene")
+            .setMetaItemSubID(637)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0xd2c8be)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadStyreneButadieneRubber() {
+        return new MaterialBuilder().setName("StyreneButadieneRubber")
+            .setDefaultLocalName("Styrene-Butadiene Rubber")
+            .setMetaItemSubID(635)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x211a18)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(128, 1, 3.0f)
+            .addMaterial(Materials.Styrene, 1)
+            .addMaterial(Materials.Butadiene, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfurDioxide() {
+        return new MaterialBuilder().setName("SulfurDioxide")
+            .setDefaultLocalName("Sulfur Dioxide")
+            .setMetaItemSubID(651)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xc8c819)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfurTrioxide() {
+        return new MaterialBuilder().setName("SulfurTrioxide")
+            .setDefaultLocalName("Sulfur Trioxide")
+            .setMetaItemSubID(652)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xa0a014)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadTetrafluoroethylene() {
+        return new MaterialBuilder().setName("Tetrafluoroethylene")
+            .setDefaultLocalName("Tetrafluoroethylene")
+            .setMetaItemSubID(666)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x7d7d7d)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Fluorine, 4)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadTetranitromethane() {
+        return new MaterialBuilder().setName("Tetranitromethane")
+            .setDefaultLocalName("Tetranitromethane")
+            .setMetaItemSubID(639)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0f2828)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Nitrogen, 4)
+            .addMaterial(Materials.Oxygen, 8)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadToluene() {
+        return new MaterialBuilder().setName("Toluene")
+            .setDefaultLocalName("Toluene")
+            .setMetaItemSubID(647)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x501d05)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Gas, 328)
+            .addMaterial(Materials.Carbon, 7)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadVinylAcetate() {
+        return new MaterialBuilder().setName("VinylAcetate")
+            .setDefaultLocalName("Vinyl Acetate")
+            .setMetaItemSubID(679)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xffb380)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadVinylChloride() {
+        return new MaterialBuilder().setName("VinylChloride")
+            .setDefaultLocalName("Vinyl Chloride")
+            .setMetaItemSubID(650)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xe1f0f0)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Chlorine, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static void loadRoastedOres() {
+        Materials.RoastedAntimony = loadRoastedAntimony();
+        Materials.RoastedArsenic = loadRoastedArsenic();
+        Materials.RoastedCobalt = loadRoastedCobalt();
+        Materials.RoastedCopper = loadRoastedCopper();
+        Materials.RoastedIron = loadRoastedIron();
+        Materials.RoastedLead = loadRoastedLead();
+        Materials.RoastedNickel = loadRoastedNickel();
+        Materials.RoastedZinc = loadRoastedZinc();
+    }
+
+    private static Materials loadRoastedAntimony() {
+        return new MaterialBuilder().setName("RoastedAntimony")
+            .setDefaultLocalName("Roasted Antimony")
+            .setChemicalFormula("Sb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(547)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xc4b2c2)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedArsenic() {
+        return new MaterialBuilder().setName("RoastedArsenic")
+            .setDefaultLocalName("Roasted Arsenic")
+            .setChemicalFormula("As" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(552)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0xf0f0f0)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedCobalt() {
+        return new MaterialBuilder().setName("RoastedCobalt")
+            .setDefaultLocalName("Roasted Cobalt")
+            .setChemicalFormula("Co" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(551)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x084009)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedCopper() {
+        return new MaterialBuilder().setName("RoastedCopper")
+            .setDefaultLocalName("Roasted Copper")
+            .setChemicalFormula("Cu" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(546)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x4d1212)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedIron() {
+        return new MaterialBuilder().setName("RoastedIron")
+            .setDefaultLocalName("Roasted Iron")
+            .setChemicalFormula("Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(548)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x946262)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedLead() {
+        return new MaterialBuilder().setName("RoastedLead")
+            .setDefaultLocalName("Roasted Lead")
+            .setChemicalFormula("Pb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(553)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setRGB(0xa8952b)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedNickel() {
+        return new MaterialBuilder().setName("RoastedNickel")
+            .setDefaultLocalName("Roasted Nickel")
+            .setChemicalFormula("Ni" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(549)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x468c2d)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadRoastedZinc() {
+        return new MaterialBuilder().setName("RoastedZinc")
+            .setDefaultLocalName("Roasted Zinc")
+            .setChemicalFormula("Zn" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK)
+            .setMetaItemSubID(550)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xd1d1d1)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static void loadSiliconLine() {
+        Materials.AluminiumFluoride = loadAluminiumFluoride();
+        Materials.CalciumDisilicide = loadCalciumDisilicide();
+        Materials.Calciumhydride = loadCalciumhydride();
+        Materials.Dichlorosilane = loadDichlorosilane();
+        Materials.Hexachlorodisilane = loadHexachlorodisilane();
+        Materials.Silane = loadSilane();
+        Materials.SiliconSG = loadSiliconSG();
+        Materials.SiliconTetrachloride = loadSiliconTetrachloride();
+        Materials.SiliconTetrafluoride = loadSiliconTetrafluoride();
+        Materials.Trichlorosilane = loadTrichlorosilane();
+    }
+
+    private static Materials loadAluminiumFluoride() {
+        return new MaterialBuilder().setName("Aluminiumfluoride")
+            .setDefaultLocalName("Aluminium Fluoride")
+            .setMetaItemSubID(969)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1_533)
+            .addElectrolyzerRecipe()
+            // ALF3
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Fluorine, 3)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalciumDisilicide() {
+        return new MaterialBuilder().setName("CalciumDisilicide")
+            .setDefaultLocalName("Calcium Disilicide")
+            .setMetaItemSubID(971)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xb4b4b4)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1_313)
+            .addElectrolyzerRecipe()
+            // CaSi2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Silicon, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalciumhydride() {
+        return new MaterialBuilder().setName("CalciumHydride")
+            .setDefaultLocalName("Calcium Hydride")
+            .setMetaItemSubID(797)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xdcdcdc)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(1_089)
+            .addElectrolyzerRecipe()
+            // CaH2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDichlorosilane() {
+        return new MaterialBuilder().setName("Dichlorosilane")
+            .setDefaultLocalName("Dichlorosilane")
+            .setMetaItemSubID(799)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00ffffff)
+            .addCell()
+            .addGas()
+            .setMeltingPoint(151)
+            .addElectrolyzerRecipe()
+            // SIH2CL2
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Chlorine, 2)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHexachlorodisilane() {
+        return new MaterialBuilder().setName("Hexachlorodisilane")
+            .setDefaultLocalName("Hexachlorodisilane")
+            .setMetaItemSubID(973)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(272)
+            .addElectrolyzerRecipe()
+            // SI2CL6
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Chlorine, 6)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSilane() {
+        return new MaterialBuilder().setName("Silane")
+            .setDefaultLocalName("Silane")
+            .setMetaItemSubID(798)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addGas()
+            .setMeltingPoint(88)
+            // SIH4
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconSG() {
+        return new MaterialBuilder().setName("SiliconSolarGrade")
+            .setDefaultLocalName("Silicon Solar Grade (Poly SI)")
+            .setChemicalFormula("Si*")
+            .setMetaItemSubID(856)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x505064)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(2_273)
+            .setBlastFurnaceTemp(2_273)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addAspect(TCAspects.METALLUM, 4)
+            .addAspect(TCAspects.TENEBRAE, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconTetrachloride() {
+        return new MaterialBuilder().setName("SiliconTetrachloride")
+            .setDefaultLocalName("Silicon Tetrachloride")
+            .setMetaItemSubID(968)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdcdc)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(204)
+            // SICL4
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Chlorine, 4)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconTetrafluoride() {
+        return new MaterialBuilder().setName("SiliconTetrafluoride")
+            .setDefaultLocalName("Silicon Tetrafluoride")
+            .setMetaItemSubID(967)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00c8c8c8)
+            .addCell()
+            .addGas()
+            .setMeltingPoint(178)
+            // SIF4
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Fluorine, 4)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTrichlorosilane() {
+        return new MaterialBuilder().setName("Trichlorosilane")
+            .setDefaultLocalName("Trichlorosilane")
+            .setMetaItemSubID(972)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(139)
+            // HSICL3
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Chlorine, 3)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static void loadUnclassified06() {
+        Materials.GalliumArsenide = loadGalliumArsenide();
+        Materials.IndiumGalliumPhosphide = loadIndiumGalliumPhosphide();
+        Materials.SolderingAlloy = loadSolderingAlloy();
+        Materials.Spessartine = loadSpessartine();
+        Materials.Sphalerite = loadSphalerite();
+        Materials.StainlessSteel = loadStainlessSteel();
+        Materials.Steel = loadSteel();
+        Materials.Stibnite = loadStibnite();
+        Materials.SulfuricAcid = loadSulfuricAcid();
+        Materials.Tanzanite = loadTanzanite();
+        Materials.Tetrahedrite = loadTetrahedrite();
+        Materials.TinAlloy = loadTinAlloy();
+        Materials.Topaz = loadTopaz();
+        Materials.Tungstate = loadTungstate();
+        Materials.Ultimet = loadUltimet();
+        Materials.Uraninite = loadeUraninite();
+        Materials.Uvarovite = loadUvarovite();
+        Materials.VanadiumGallium = loadVanadiumGallium();
+        Materials.Wood = loadWood();
+        Materials.WroughtIron = loadWroughtIron();
+        Materials.Wulfenite = loadWulfenite();
+        Materials.YellowLimonite = loadYellowLimonite();
+        Materials.YttriumBariumCuprate = loadYttriumBariumCuprate();
+    }
+
+    private static Materials loadGalliumArsenide() {
+        return new MaterialBuilder().setName("GalliumArsenide")
+            .setDefaultLocalName("Gallium Arsenide")
+            .setMetaItemSubID(980)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xa0a0a0)
+            .addDustItems()
+            .addMetalItems()
+            .setBlastFurnaceTemp(1_200)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Arsenic, 1)
+            .addMaterial(Materials.Gallium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIndiumGalliumPhosphide() {
+        return new MaterialBuilder().setName("IndiumGalliumPhosphide")
+            .setDefaultLocalName("Indium Gallium Phosphide")
+            .setMetaItemSubID(981)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xa08cbe)
+            .addDustItems()
+            .addMetalItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Indium, 1)
+            .addMaterial(Materials.Gallium, 1)
+            .addMaterial(Materials.Phosphorus, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSolderingAlloy() {
+        return new MaterialBuilder().setName("SolderingAlloy")
+            .setDefaultLocalName("Soldering Alloy")
+            .setMetaItemSubID(314)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xdcdce6)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(400)
+            .setBlastFurnaceTemp(400)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Tin, 9)
+            .addMaterial(Materials.Antimony, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSpessartine() {
+        return new MaterialBuilder().setName("Spessartine")
+            .setDefaultLocalName("Spessartine")
+            .setMetaItemSubID(838)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff6464)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Manganese, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadSphalerite() {
+        return new MaterialBuilder().setName("Sphalerite")
+            .setDefaultLocalName("Sphalerite")
+            .setMetaItemSubID(839)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadStainlessSteel() {
+        return new MaterialBuilder().setName("StainlessSteel")
+            .setDefaultLocalName("Stainless Steel")
+            .setMetaItemSubID(306)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc8c8dc)
+            .setTool(480, 4, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 6)
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Manganese, 1)
+            .addMaterial(Materials.Nickel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSteel() {
+        return new MaterialBuilder().setName("Steel")
+            .setDefaultLocalName("Steel")
+            .setMetaItemSubID(305)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .setTool(512, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_811)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 50)
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ORDO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadStibnite() {
+        return new MaterialBuilder().setName("Stibnite")
+            .setDefaultLocalName("Stibnite")
+            .setMetaItemSubID(945)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x464646)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Antimony, 2)
+            .addMaterial(Materials.Sulfur, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricAcid() {
+        return new MaterialBuilder().setName("SulfuricAcid")
+            .setDefaultLocalName("Sulfuric Acid")
+            .setMetaItemSubID(720)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .addCell()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadTanzanite() {
+        return new MaterialBuilder().setName("Tanzanite")
+            .setDefaultLocalName("Tanzanite")
+            .setMetaItemSubID(508)
+            .setIconSet(TextureSet.SET_GEM_VERTICAL)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0x7f4000c8)
+            .setTool(256, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Calcium, 2)
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Oxygen, 13)
+            .addAspect(TCAspects.LUCRUM, 5)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadTetrahedrite() {
+        return new MaterialBuilder().setName("Tetrahedrite")
+            .setDefaultLocalName("Tetrahedrite")
+            .setMetaItemSubID(840)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc82000)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            // Cu3SbS3 + x(Fe,Zn)6Sb2S9
+            .addMaterial(Materials.Copper, 3)
+            .addMaterial(Materials.Antimony, 1)
+            .addMaterial(Materials.Sulfur, 3)
+            .addMaterial(Materials.Iron, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTinAlloy() {
+        return new MaterialBuilder().setName("TinAlloy")
+            .setDefaultLocalName("Tin Alloy")
+            .setMetaItemSubID(363)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc8c8c8)
+            .setTool(96, 2, 6.5f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Tin, 1)
+            .addMaterial(Materials.Iron, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTopaz() {
+        return new MaterialBuilder().setName("Topaz")
+            .setDefaultLocalName("Topaz")
+            .setMetaItemSubID(507)
+            .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x7fff8000)
+            .setTool(256, 3, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadTungstate() {
+        return new MaterialBuilder().setName("Tungstate")
+            .setDefaultLocalName("Tungstate")
+            .setMetaItemSubID(841)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x373223)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(2_500)
+            .setBlastFurnaceTemp(2_500)
+            .setBlastFurnaceRequired(true)
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Lithium, 2)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadUltimet() {
+        return new MaterialBuilder().setName("Ultimet")
+            .setDefaultLocalName("Ultimet")
+            .setMetaItemSubID(344)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xb4b4e6)
+            .setTool(2_048, 4, 9.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_700)
+            .setBlastFurnaceTemp(2_700)
+            .setBlastFurnaceRequired(true)
+            .addElectrolyzerRecipe()
+            // 54% Cobalt, 26% Chromium, 9% Nickel, 5% Molybdenum, 3% Iron, 2% Tungsten, 0.8% Manganese, 0.3% Silicon,
+            // 0.08% Nitrogen and 0.06% Carbon
+            .addMaterial(Materials.Cobalt, 5)
+            .addMaterial(Materials.Chrome, 2)
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Molybdenum, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadeUraninite() {
+        return new MaterialBuilder().setName("Uraninite")
+            .setDefaultLocalName("Uraninite")
+            .setMetaItemSubID(922)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x232323)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Uranium, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadUvarovite() {
+        return new MaterialBuilder().setName("Uvarovite")
+            .setDefaultLocalName("Uvarovite")
+            .setMetaItemSubID(842)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0xb4ffb4)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Calcium, 3)
+            .addMaterial(Materials.Chrome, 2)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadVanadiumGallium() {
+        return new MaterialBuilder().setName("VanadiumGallium")
+            .setDefaultLocalName("Vanadium-Gallium")
+            .setMetaItemSubID(357)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x80808c)
+            .addDustItems()
+            .addMetalItems()
+            .addGearItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Vanadium, 3)
+            .addMaterial(Materials.Gallium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadWood() {
+        return new MaterialBuilder().setName("Wood")
+            .setDefaultLocalName("Wood")
+            .setChemicalFormula("")
+            .setMetaItemSubID(809)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x643200)
+            .setTool(16, 0, 2.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addAspect(TCAspects.ARBOR, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadWroughtIron() {
+        return new MaterialBuilder().setName("WroughtIron")
+            .setDefaultLocalName("Wrought Iron")
+            .setChemicalFormula("Fe*")
+            .setMetaItemSubID(304)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xc8b4b4)
+            .setTool(384, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_811)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadWulfenite() {
+        return new MaterialBuilder().setName("Wulfenite")
+            .setDefaultLocalName("Wulfenite")
+            .setMetaItemSubID(882)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8000)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Lead, 1)
+            .addMaterial(Materials.Molybdenum, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadYellowLimonite() {
+        return new MaterialBuilder().setName("YellowLimonite")
+            .setDefaultLocalName("Yellow Limonite")
+            .setMetaItemSubID(931)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xc8c800)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            // FeO(OH) + a bit of Ni and Co
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadYttriumBariumCuprate() {
+        return new MaterialBuilder().setName("YttriumBariumCuprate")
+            .setDefaultLocalName("Yttrium Barium Cuprate")
+            .setMetaItemSubID(358)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x504046)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addMaterial(Materials.Yttrium, 1)
+            .addMaterial(Materials.Barium, 2)
+            .addMaterial(Materials.Copper, 3)
+            .addMaterial(Materials.Oxygen, 7)
+            .constructMaterial();
+    }
+
+    private static void loadDegree2Compounds() {
+        Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
+        Materials.Aluminiumoxide = loadAluminiumoxide();
+        Materials.Alumite = loadAlumite();
+        Materials.Alunite = loadAlunite();
+        Materials.Amethyst = loadAmethyst();
+        Materials.Apatite = loadApatite();
+        Materials.Barite = loadBarite();
+        Materials.Bastnasite = loadBastnasite();
+        Materials.Bauxite = loadBauxite();
+        Materials.Bentonite = loadBentonite();
+        Materials.Biotite = loadBiotite();
+        Materials.BismuthBronze = loadBismuthBronze();
+        Materials.BlackBronze = loadBlackBronze();
+        Materials.BlackSteel = loadBlackSteel();
+        Materials.Blaze = loadBlaze();
+        Materials.Borax = loadBorax();
+        Materials.Chrysotile = loadChrysotile();
+        Materials.Clay = loadClay();
+        Materials.CobaltBrass = loadCobaltBrass();
+        Materials.Concrete = loadConcrete();
+        Materials.Cryolite = loadCryolite();
+        Materials.DamascusSteel = loadDamascusSteel();
+        Materials.Diatomite = loadDiatomite();
+        Materials.DilutedSulfuricAcid = loadDilutedSulfuricAcid();
+        Materials.Dolomite = loadDolomite();
+        Materials.ElectricalSteel = loadElectricalSteel();
+        Materials.EnderPearl = loadEnderPearl();
+        Materials.EpoxidFiberReinforced = loadEpoxidFiberReinforced();
+        Materials.Flint = loadFlint();
+        Materials.FullersEarth = loadFullersEarth();
+        Materials.GarnetRed = loadGarnetRed();
+        Materials.GarnetYellow = loadGarnetYellow();
+        Materials.Glass = loadGlass();
+        Materials.Glauconite = loadGlauconite();
+        Materials.GlauconiteSand = loadGlauconiteSand();
+        Materials.GraniteBlack = loadGraniteBlack();
+        Materials.GraniticMineralSand = loadGraniticMineralSand();
+        Materials.Gypsum = loadGypsum();
+        Materials.HydratedCoal = loadHydratedCoal();
+        Materials.IronMagnetic = loadIronMagnetic();
+        Materials.Jasper = loadJasper();
+        Materials.Kaolinite = loadKaolinite();
+        Materials.Knightmetal = loadKnightmetal();
+        Materials.Kyanite = loadKyanite();
+        Materials.Lapis = loadLapis();
+        Materials.Lepidolite = loadLepidolite();
+        Materials.Lignite = loadLignite();
+        Materials.LiveRoot = loadLiveRoot();
+        Materials.Malachite = loadMalachite();
+        Materials.Manyullyn = loadManyullyn();
+        Materials.Marble = loadMarble();
+        Materials.Mica = loadMica();
+        Materials.Mirabilite = loadMirabilite();
+        Materials.Monazite = loadMonazite();
+        Materials.NeodymiumMagnetic = loadNeodymiumMagnetic();
+        Materials.Niter = loadNiter();
+        Materials.NitroCoalFuel = loadNitroCoalFuel();
+        Materials.NitroFuel = loadNitroFuel();
+        Materials.Olivine = loadOlivine();
+        Materials.Opal = loadOpal();
+        Materials.Pentlandite = loadPentlandite();
+        Materials.Perlite = loadPerlite();
+        Materials.Pitchblende = loadPitchblende();
+        Materials.Pollucite = loadPollucite();
+        Materials.PotassiumFeldspar = loadPotassiumFeldspar();
+        Materials.QuartzSand = loadQuartzSand();
+        Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
+        Materials.Realgar = loadRealgar();
+        Materials.RedMud = loadRedMud();
+        Materials.Redrock = loadRedrock();
+        Materials.Redstone = loadRedstone();
+        Materials.RoseGold = loadRoseGold();
+        Materials.SamariumMagnetic = loadSamariumMagnetic();
+        Materials.Soapstone = loadSoapstone();
+        Materials.SodiumAluminate = loadSodiumAluminate();
+        Materials.SodiumCarbonate = loadSodiumCarbonate();
+        Materials.Spodumene = loadSpodumene();
+        Materials.SteelMagnetic = loadSteelMagnetic();
+        Materials.Steeleaf = loadSteeleaf();
+        Materials.SterlingSilver = loadSterlingSilver();
+        Materials.Sugar = loadSugar();
+        Materials.Talc = loadTalc();
+        Materials.Tantalite = loadTantalite();
+        Materials.Thaumium = loadThaumium();
+        Materials.TPV = loadTPV();
+        Materials.TricalciumPhosphate = loadTricalciumPhosphate();
+        Materials.Trona = loadTrona();
+        Materials.TungstenCarbide = loadTungstenCarbide();
+        Materials.TungstenSteel = loadTungstenSteel();
+        Materials.VanadiumMagnetite = loadVanadiumMagnetite();
+        Materials.VanadiumSteel = loadVanadiumSteel();
+        Materials.Vermiculite = loadVermiculite();
+        Materials.Vinteum = loadVinteum();
+        Materials.Vis = loadVis();
+        Materials.VolcanicAsh = loadVolcanicAsh();
+        Materials.Wollastonite = loadWollastonite();
+        Materials.WoodSealed = loadWoodSealed();
+        Materials.Zeolite = loadZeolite();
+    }
+
+    private static Materials loadAluminiumHydroxide() {
+        return new MaterialBuilder().setName("AluminiumHydroxide")
+            .setDefaultLocalName("Aluminium Hydroxide")
+            .setChemicalFormula("Al(OH)₃")
+            .setMetaItemSubID(698)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xebebff)
+            .setTool(64, 1, 1.0f)
+            .addDustItems()
+            .setBlastFurnaceTemp(1_200)
+            .setMeltingPoint(1_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addAspect(TCAspects.GELUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadAluminiumoxide() {
+        return new MaterialBuilder().setName("Alumina")
+            .setDefaultLocalName("Alumina")
+            .setMetaItemSubID(697)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xebffff)
+            .setTool(64, 1, 1.0f)
+            .addDustItems()
+            .setBlastFurnaceTemp(2_054)
+            .setMeltingPoint(2_054)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .addAspect(TCAspects.GELUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadAlumite() {
+        return new MaterialBuilder().setName("Alumite")
+            .setDefaultLocalName("Obzinite")
+            .setMetaItemSubID(400)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xff69b4)
+            .setTool(768, 2, 5.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Zinc, 5)
+            .addMaterial(Materials.Steel, 2)
+            .addMaterial(Materials.Obsidian, 2)
+            .addAspect(TCAspects.STRONTIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadAlunite() {
+        return new MaterialBuilder().setName("Alunite")
+            .setDefaultLocalName("Alunite")
+            .setMetaItemSubID(911)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xe1b441)
+            .addDustItems()
+            .addOreItems()
+            // KAl3(SO4)2(OH)6
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 14)
+            .constructMaterial();
+    }
+
+    private static Materials loadAmethyst() {
+        return new MaterialBuilder().setName("Amethyst")
+            .setDefaultLocalName("Amethyst")
+            .setMetaItemSubID(509)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setColor(Dyes.dyePink)
+            .setARGB(0x7fd232d2)
+            .setTool(256, 3, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SiliconDioxide, 4)
+            .addMaterial(Materials.Iron, 1)
+            .addAspect(TCAspects.LUCRUM, 6)
+            .addAspect(TCAspects.VITREUS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadApatite() {
+        return new MaterialBuilder().setName("Apatite")
+            .setDefaultLocalName("Apatite")
+            .setMetaItemSubID(530)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0xc8c8ff)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Calcium, 5)
+            .addMaterial(Materials.Phosphate, 3)
+            .addMaterial(Materials.Chlorine, 1)
+            .addAspect(TCAspects.MESSIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadBarite() {
+        return new MaterialBuilder().setName("Barite")
+            .setDefaultLocalName("Barite")
+            .setMetaItemSubID(904)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xe6ebff)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Barium, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadBastnasite() {
+        return new MaterialBuilder().setName("Bastnasite")
+            .setDefaultLocalName("Bastnasite")
+            .setMetaItemSubID(905)
+            .setIconSet(TextureSet.SET_FINE)
+            .setRGB(0xc86e2d)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Ce, La, Y)CO3F
+            .addMaterial(Materials.Cerium, 1)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Fluorine, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBauxite() {
+        return new MaterialBuilder().setName("Bauxite")
+            .setDefaultLocalName("Bauxite")
+            .setMetaItemSubID(822)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Rutile, 2)
+            .addMaterial(Materials.Aluminium, 16)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Oxygen, 11)
+            .constructMaterial();
+    }
+
+    private static Materials loadBentonite() {
+        return new MaterialBuilder().setName("Bentonite")
+            .setDefaultLocalName("Bentonite")
+            .setMetaItemSubID(927)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setRGB(0xf5d7d2)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Na,Ca)0.33(Al,Mg)2(Si4O10)(OH)2 nH2O
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Magnesium, 6)
+            .addMaterial(Materials.Silicon, 12)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Water, 5)
+            .addMaterial(Materials.Oxygen, 36)
+            .constructMaterial();
+    }
+
+    private static Materials loadBiotite() {
+        return new MaterialBuilder().setName("Biotite")
+            .setDefaultLocalName("Biotite")
+            .setMetaItemSubID(848)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x141e14)
+            .addDustItems()
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Magnesium, 3)
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadBismuthBronze() {
+        return new MaterialBuilder().setName("BismuthBronze")
+            .setDefaultLocalName("Bismuth Bronze")
+            .setMetaItemSubID(353)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x647d7d)
+            .setTool(256, 2, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_100)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Bismuth, 1)
+            .addMaterial(Materials.Zinc, 1)
+            .addMaterial(Materials.Copper, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlackBronze() {
+        return new MaterialBuilder().setName("BlackBronze")
+            .setDefaultLocalName("Black Bronze")
+            .setMetaItemSubID(352)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x64327d)
+            .setTool(256, 2, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(2_000)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.Copper, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlackSteel() {
+        return new MaterialBuilder().setName("BlackSteel")
+            .setDefaultLocalName("Black Steel")
+            .setMetaItemSubID(334)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x646464)
+            .setTool(768, 3, 6.5f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.BlackBronze, 1)
+            .addMaterial(Materials.Steel, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlaze() {
+        return new MaterialBuilder().setName("Blaze")
+            .setDefaultLocalName("Blaze")
+            .setMetaItemSubID(801)
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffc800)
+            .setTool(16, 1, 2.0f)
+            .addDustItems()
+            .addToolHeadItems()
+            .setMeltingPoint(6_400)
+            .setDensityMultiplier(3)
+            .setDensityDivider(2)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.DarkAsh, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addAspect(TCAspects.IGNIS, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadBorax() {
+        return new MaterialBuilder().setName("Borax")
+            .setDefaultLocalName("Borax")
+            .setMetaItemSubID(941)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Boron, 4)
+            .addMaterial(Materials.Oxygen, 7)
+            .addMaterial(Materials.Water, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadChrysotile() {
+        return new MaterialBuilder().setName("Chrysotile")
+            .setDefaultLocalName("Chrysotile")
+            .setMetaItemSubID(912)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x6e8c6e)
+            .setTool(10_240, 3, 32.0f)
+            .setTurbine(280.0f, 280.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(9_400)
+            .setBlastFurnaceTemp(9_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Asbestos, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadClay() {
+        return new MaterialBuilder().setName("Clay")
+            .setDefaultLocalName("Clay")
+            .setMetaItemSubID(805)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xc8c8dc)
+            .addDustItems()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Lithium, 1)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Oxygen, 7)
+            .addMaterial(Materials.Water, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltBrass() {
+        return new MaterialBuilder().setName("CobaltBrass")
+            .setDefaultLocalName("Cobalt Brass")
+            .setMetaItemSubID(343)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xb4b4a0)
+            .setTool(256, 2, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Brass, 7)
+            .addMaterial(Materials.Tin, 1)
+            .addMaterial(Materials.Cobalt, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadConcrete() {
+        return new MaterialBuilder().setName("Concrete")
+            .setDefaultLocalName("Concrete")
+            .setMetaItemSubID(947)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x646464)
+            .addDustItems()
+            .setMeltingPoint(300)
+            .addMaterial(Materials.Stone, 1)
+            .addAspect(TCAspects.TERRA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCryolite() {
+        return new MaterialBuilder().setName("Cryolite")
+            .setDefaultLocalName("Cryolite")
+            .setMetaItemSubID(699)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xbfefff)
+            .setTool(64, 1, 1.0f)
+            .addOreItems()
+            .setMeltingPoint(1_012)
+            .setBlastFurnaceTemp(1_012)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addMaterial(Materials.Sodium, 3)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Fluorine, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadDamascusSteel() {
+        return new MaterialBuilder().setName("DamascusSteel")
+            .setDefaultLocalName("Damascus Steel")
+            .setChemicalFormula("(Fe₅" + CustomGlyphs.SUBSCRIPT0 + "C)₉Mn₄Cr₄CSiV")
+            .setMetaItemSubID(335)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x6e6e6e)
+            .setTool(1_280, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_000)
+            .setBlastFurnaceTemp(1_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiatomite() {
+        return new MaterialBuilder().setName("Diatomite")
+            .setDefaultLocalName("Diatomite")
+            .setChemicalFormula("(SiO₂)₈Fe₂O₃(Al₂O₃)")
+            .setMetaItemSubID(948)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xe1e1e1)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Flint, 8)
+            .addMaterial(Materials.BandedIron, 1)
+            .addMaterial(Materials.Sapphire, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDilutedSulfuricAcid() {
+        return new MaterialBuilder().setName("DilutedSulfuricAcid")
+            .setDefaultLocalName("Diluted Sulfuric Acid")
+            .setMetaItemSubID(640)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc07820)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.SulfuricAcid, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDolomite() {
+        return new MaterialBuilder().setName("Dolomite")
+            .setDefaultLocalName("Dolomite")
+            .setMetaItemSubID(914)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setRGB(0xe1cdcd)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // CaMg(CO3)2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadElectricalSteel() {
+        return new MaterialBuilder().setName("ElectricalSteel")
+            .setDefaultLocalName("Electrical Steel")
+            .setMetaItemSubID(365)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xd8d8d8)
+            .setTool(512, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_811)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addMaterial(Materials.Coal, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnderPearl() {
+        return new MaterialBuilder().setName("EnderPearl")
+            .setDefaultLocalName("Enderpearl")
+            .setMetaItemSubID(532)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x6cdcc8)
+            .setTool(16, 1, 1.0f)
+            .addDustItems()
+            .addGemItems()
+            .setDensityMultiplier(16)
+            .setDensityDivider(10)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Beryllium, 1)
+            .addMaterial(Materials.Potassium, 4)
+            .addMaterial(Materials.Nitrogen, 5)
+            .addMaterial(Materials.Magic, 6)
+            .addAspect(TCAspects.ALIENIS, 4)
+            .addAspect(TCAspects.ITER, 4)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadEpoxidFiberReinforced() {
+        return new MaterialBuilder().setName("EpoxidFiberReinforced")
+            .setDefaultLocalName("Fiber-Reinforced Epoxy Resin")
+            .setMetaItemSubID(610)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xa07010)
+            .setTool(64, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(400)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Epoxid, 1)
+            .addAspect(TCAspects.MOTUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadFlint() {
+        return new MaterialBuilder().setName("Flint")
+            .setDefaultLocalName("Flint")
+            .setMetaItemSubID(802)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x002040)
+            .setTool(128, 1, 2.5f)
+            .addDustItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadFullersEarth() {
+        return new MaterialBuilder().setName("FullersEarth")
+            .setDefaultLocalName("Fullers Earth")
+            .setMetaItemSubID(928)
+            .setIconSet(TextureSet.SET_FINE)
+            .setRGB(0xa0a078)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Mg,Al)2Si4O10(OH) 4(H2O)
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Water, 4)
+            .addMaterial(Materials.Oxygen, 11)
+            .constructMaterial();
+    }
+
+    private static Materials loadGarnetRed() {
+        return new MaterialBuilder().setName("GarnetRed")
+            .setDefaultLocalName("Red Garnet")
+            .setMetaItemSubID(527)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x7fc85050)
+            .setTool(128, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Pyrope, 3)
+            .addMaterial(Materials.Almandine, 5)
+            .addMaterial(Materials.Spessartine, 8)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadGarnetYellow() {
+        return new MaterialBuilder().setName("GarnetYellow")
+            .setDefaultLocalName("Yellow Garnet")
+            .setMetaItemSubID(528)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x7fc8c850)
+            .setTool(128, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Andradite, 5)
+            .addMaterial(Materials.Grossular, 8)
+            .addMaterial(Materials.Uvarovite, 3)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlass() {
+        return new MaterialBuilder().setName("Glass")
+            .setDefaultLocalName("Glass")
+            .setMetaItemSubID(890)
+            .setIconSet(TextureSet.SET_GLASS)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0xdcfafafa)
+            .setTool(4, 0, 1.0f)
+            .addDustItems()
+            .addGemItems()
+            .setMeltingPoint(1_500)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlauconite() {
+        return new MaterialBuilder().setName("Glauconite")
+            .setDefaultLocalName("Glauconite")
+            .setMetaItemSubID(933)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x82b43c)
+            .addDustItems()
+            .addOreItems()
+            // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Magnesium, 2)
+            .addMaterial(Materials.Aluminium, 4)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlauconiteSand() {
+        return new MaterialBuilder().setName("GlauconiteSand")
+            .setDefaultLocalName("Glauconite Sand")
+            .setMetaItemSubID(949)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x82b43c)
+            .addDustItems()
+            .addOreItems()
+            // (K,Na)(Fe3+,Al,Mg)2(Si,Al)4O10(OH)2
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Magnesium, 2)
+            .addMaterial(Materials.Aluminium, 4)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadGraniteBlack() {
+        return new MaterialBuilder().setName("GraniteBlack")
+            .setDefaultLocalName("Black Granite")
+            .setMetaItemSubID(849)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .setTool(64, 3, 4.0f)
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.SiliconDioxide, 4)
+            .addMaterial(Materials.Biotite, 1)
+            .addAspect(TCAspects.TUTAMEN, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGraniticMineralSand() {
+        return new MaterialBuilder().setName("GraniticMineralSand")
+            .setDefaultLocalName("Granitic Mineral Sand")
+            .setMetaItemSubID(936)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x283c3c)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magnetite, 1)
+            .addMaterial(Materials.GraniteBlack, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGypsum() {
+        return new MaterialBuilder().setName("Gypsum")
+            .setDefaultLocalName("Gypsum")
+            .setMetaItemSubID(934)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xe6e6fa)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // CaSO4 2H2O
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .addMaterial(Materials.Water, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadHydratedCoal() {
+        return new MaterialBuilder().setName("HydratedCoal")
+            .setDefaultLocalName("Hydrated Coal")
+            .setMetaItemSubID(818)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x464664)
+            .addDustItems()
+            .setDensityMultiplier(9)
+            .setDensityDivider(8)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Coal, 8)
+            .addMaterial(Materials.Water, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIronMagnetic() {
+        return new MaterialBuilder().setName("IronMagnetic")
+            .setDefaultLocalName("Magnetic Iron")
+            .setChemicalFormula("Fe" + CustomGlyphs.MAGNET)
+            .setMetaItemSubID(354)
+            .setIconSet(TextureSet.SET_MAGNETIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xc8c8c8)
+            .setTool(256, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadJasper() {
+        return new MaterialBuilder().setName("Jasper")
+            .setDefaultLocalName("Jasper")
+            .setMetaItemSubID(511)
+            .setIconSet(TextureSet.SET_EMERALD)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x64c85050)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.LUCRUM, 4)
+            .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadKaolinite() {
+        return new MaterialBuilder().setName("Kaolinite")
+            .setDefaultLocalName("Kaolinite")
+            .setMetaItemSubID(929)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf5ebeb)
+            .addDustItems()
+            .addOreItems()
+            // Al2Si2O5(OH)4
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadKnightmetal() {
+        return new MaterialBuilder().setName("Knightmetal")
+            .setDefaultLocalName("Knightmetal")
+            .setMetaItemSubID(362)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xd2f0c8)
+            .setTool(1_024, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 24)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Steel, 2)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.LUCRUM, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadKyanite() {
+        return new MaterialBuilder().setName("Kyanite")
+            .setDefaultLocalName("Kyanite")
+            .setMetaItemSubID(924)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setRGB(0x6e6efa)
+            .addDustItems()
+            .addOreItems()
+            // Al2SiO5
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadLapis() {
+        return new MaterialBuilder().setName("Lapis")
+            .setDefaultLocalName("Lapis")
+            .setMetaItemSubID(526)
+            .setIconSet(TextureSet.SET_LAPIS)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x4646dc)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Lazurite, 12)
+            .addMaterial(Materials.Sodalite, 2)
+            .addMaterial(Materials.Pyrite, 1)
+            .addMaterial(Materials.Calcite, 1)
+            .addAspect(TCAspects.SENSUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLepidolite() {
+        return new MaterialBuilder().setName("Lepidolite")
+            .setDefaultLocalName("Lepidolite")
+            .setMetaItemSubID(907)
+            .setIconSet(TextureSet.SET_FINE)
+            .setRGB(0xf0328c)
+            .addDustItems()
+            .addOreItems()
+            // K(Li,Al,Rb)3(Al,Si)4O10(F,OH)2
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Lithium, 3)
+            .addMaterial(Materials.Aluminium, 4)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Oxygen, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadLignite() {
+        return new MaterialBuilder().setName("Lignite")
+            .setDefaultLocalName("Lignite Coal")
+            .setMetaItemSubID(538)
+            .setIconSet(TextureSet.SET_LIGNITE)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x644646)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Water, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiveRoot() {
+        return new MaterialBuilder().setName("LiveRoot")
+            .setDefaultLocalName("Liveroot")
+            .setChemicalFormula("(COH₃)Ma")
+            .setMetaItemSubID(832)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xdcc800)
+            .addDustItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 16)
+            .setDensityMultiplier(4)
+            .setDensityDivider(3)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Wood, 3)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.ARBOR, 2)
+            .addAspect(TCAspects.VICTUS, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMalachite() {
+        return new MaterialBuilder().setName("Malachite")
+            .setDefaultLocalName("Malachite")
+            .setMetaItemSubID(871)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x055f05)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Cu2CO3(OH)2
+            .addMaterial(Materials.Copper, 2)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadManyullyn() {
+        return new MaterialBuilder().setName("Manyullyn")
+            .setDefaultLocalName("Manyullyn")
+            .setChemicalFormula("AiCo")
+            .setMetaItemSubID(386)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x9a4cb9)
+            .setTool(2_048, 5, 25.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_600)
+            .setBlastFurnaceTemp(3_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Ardite, 1)
+            .addAspect(TCAspects.STRONTIO, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadMarble() {
+        return new MaterialBuilder().setName("Marble")
+            .setDefaultLocalName("Marble")
+            .setMetaItemSubID(845)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc8c8c8)
+            .setTool(16, 1, 1.0f)
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Calcite, 7)
+            .addAspect(TCAspects.PERFODIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMica() {
+        return new MaterialBuilder().setName("Mica")
+            .setDefaultLocalName("Mica")
+            .setMetaItemSubID(901)
+            .setIconSet(TextureSet.SET_FINE)
+            .setRGB(0xc3c3cd)
+            .addDustItems()
+            .addOreItems()
+            // KAl2(AlSi3O10)(F,OH)2
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Fluorine, 2)
+            .addMaterial(Materials.Oxygen, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadMirabilite() {
+        return new MaterialBuilder().setName("Mirabilite")
+            .setDefaultLocalName("Mirabilite")
+            .setMetaItemSubID(900)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf0fad2)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Na2SO4 10H2O
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Water, 10)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadMonazite() {
+        return new MaterialBuilder().setName("Monazite")
+            .setDefaultLocalName("Monazite")
+            .setMetaItemSubID(520)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x324632)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Wikipedia: (Ce, La, Nd, Th, Sm, Gd)PO4 Monazite also smelt-extract to Helium, it is brown like the rare
+            // earth Item Monazite sand deposits are inevitably of the monazite-(Ce) composition. Typically, the
+            // lanthanides in such monazites contain about 45.8% cerium, about 24% lanthanum, about 17% neodymium, about
+            // 5% praseodymium, and minor quantities of samarium, gadolinium, and yttrium. Europium concentrations tend
+            // to be low, about 0.05% Thorium content of monazite is variable.
+            .addMaterial(Materials.RareEarth, 1)
+            .addMaterial(Materials.Phosphate, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNeodymiumMagnetic() {
+        return new MaterialBuilder().setName("NeodymiumMagnetic")
+            .setDefaultLocalName("Magnetic Neodymium")
+            .setChemicalFormula("Nd" + CustomGlyphs.MAGNET)
+            .setMetaItemSubID(356)
+            .setIconSet(TextureSet.SET_MAGNETIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x646464)
+            .setTool(512, 2, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_297)
+            .setBlastFurnaceTemp(1_297)
+            .setBlastFurnaceRequired(true)
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Neodymium, 1)
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.MAGNETO, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadNiter() {
+        return new MaterialBuilder().setName("Niter")
+            .setDefaultLocalName("Niter")
+            .setMetaItemSubID(531)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xffc8c8)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Saltpeter, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitroCoalFuel() {
+        return new MaterialBuilder().setName("NitroCoalFuel")
+            .setDefaultLocalName("Nitro-Coalfuel")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x324632)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 48)
+            .addMaterial(Materials.Glyceryl, 1)
+            .addMaterial(Materials.CoalFuel, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitroFuel() {
+        return new MaterialBuilder().setName("NitroFuel")
+            .setDefaultLocalName("Cetane-Boosted Diesel")
+            .setMetaItemSubID(709)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xc8ff00)
+            .addCell()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 1_000)
+            .constructMaterial();
+    }
+
+    private static Materials loadOlivine() {
+        return new MaterialBuilder().setName("Olivine")
+            .setDefaultLocalName("Olivine")
+            .setMetaItemSubID(505)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x7f96ff96)
+            .setTool(256, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Magnesium, 2)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.SiliconDioxide, 2)
+            .addAspect(TCAspects.LUCRUM, 4)
+            .addAspect(TCAspects.VITREUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadOpal() {
+        return new MaterialBuilder().setName("Opal")
+            .setDefaultLocalName("Opal")
+            .setMetaItemSubID(510)
+            .setIconSet(TextureSet.SET_OPAL)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x000000ff)
+            .setTool(256, 2, 7.0f)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addAspect(TCAspects.LUCRUM, 5)
+            .addAspect(TCAspects.VITREUS, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadPentlandite() {
+        return new MaterialBuilder().setName("Pentlandite")
+            .setDefaultLocalName("Pentlandite")
+            .setMetaItemSubID(909)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xa59605)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Fe,Ni)9S8
+            .addMaterial(Materials.Nickel, 9)
+            .addMaterial(Materials.Sulfur, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadPerlite() {
+        return new MaterialBuilder().setName("Perlite")
+            .setDefaultLocalName("Perlite")
+            .setMetaItemSubID(925)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x1e141e)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Obsidian, 2)
+            .addMaterial(Materials.Water, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPitchblende() {
+        return new MaterialBuilder().setName("Pitchblende")
+            .setDefaultLocalName("Pitchblende")
+            .setMetaItemSubID(873)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xc8d200)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Uraninite, 3)
+            .addMaterial(Materials.Thorium, 1)
+            .addMaterial(Materials.Lead, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPollucite() {
+        return new MaterialBuilder().setName("Pollucite")
+            .setDefaultLocalName("Pollucite")
+            .setMetaItemSubID(919)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf0d2d2)
+            .addDustItems()
+            .addOreItems()
+            // (Cs,Na)2Al2Si4O12 2H2O (also a source of Rb)
+            .addMaterial(Materials.Caesium, 2)
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Water, 2)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassiumFeldspar() {
+        return new MaterialBuilder().setName("PotassiumFeldspar")
+            .setDefaultLocalName("Potassium Feldspar")
+            .setMetaItemSubID(847)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x782828)
+            .addDustItems()
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadQuartzSand() {
+        return new MaterialBuilder().setName("QuartzSand")
+            .setDefaultLocalName("Quartz Sand")
+            .setChemicalFormula("(SiO₂)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
+            .setMetaItemSubID(939)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc2b280)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.CertusQuartz, 1)
+            .addMaterial(Materials.Quartzite, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRawStyreneButadieneRubber() {
+        return new MaterialBuilder().setName("RawStyreneButadieneRubber")
+            .setDefaultLocalName("Raw Styrene-Butadiene Rubber")
+            .setMetaItemSubID(634)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x54403d)
+            .addDustItems()
+            .addMaterial(Materials.Styrene, 1)
+            .addMaterial(Materials.Butadiene, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadRealgar() {
+        return new MaterialBuilder().setName("Realgar")
+            .setDefaultLocalName("Realgar")
+            .setMetaItemSubID(913)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x8c6464)
+            .setTool(32, 1, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Arsenic, 4)
+            .addMaterial(Materials.Sulfur, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedMud() {
+        return new MaterialBuilder().setName("RedMud")
+            .setDefaultLocalName("Red Mud")
+            .setMetaItemSubID(743)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x8c1616)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadRedrock() {
+        return new MaterialBuilder().setName("Redrock")
+            .setDefaultLocalName("Redrock")
+            .setMetaItemSubID(846)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff5032)
+            .addDustItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Calcite, 2)
+            .addMaterial(Materials.Flint, 1)
+            .addMaterial(Materials.Clay, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedstone() {
+        return new MaterialBuilder().setName("Redstone")
+            .setDefaultLocalName("Redstone")
+            .setMetaItemSubID(810)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
+            .addDustItems()
+            .addOreItems()
+            .setMeltingPoint(500)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Pyrite, 5)
+            .addMaterial(Materials.Ruby, 1)
+            .addMaterial(Materials.Mercury, 3)
+            .addAspect(TCAspects.MACHINA, 1)
+            .addAspect(TCAspects.POTENTIA, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadRoseGold() {
+        return new MaterialBuilder().setName("RoseGold")
+            .setDefaultLocalName("Rose Gold")
+            .setMetaItemSubID(351)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xffe61e)
+            .setTool(128, 2, 14.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_600)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Gold, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadSamariumMagnetic() {
+        return new MaterialBuilder().setName("SamariumMagnetic")
+            .setDefaultLocalName("Magnetic Samarium")
+            .setChemicalFormula("Sm" + CustomGlyphs.MAGNET)
+            .setMetaItemSubID(399)
+            .setIconSet(TextureSet.SET_MAGNETIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xffffcc)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_345)
+            .setBlastFurnaceTemp(1_345)
+            .setBlastFurnaceRequired(true)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Samarium, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.RADIO, 1)
+            .addAspect(TCAspects.MAGNETO, 10)
+            .constructMaterial();
+    }
+
+    private static Materials loadSoapstone() {
+        return new MaterialBuilder().setName("Soapstone")
+            .setDefaultLocalName("Soapstone")
+            .setMetaItemSubID(877)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x5f915f)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // H2Mg3(SiO3)4
+            .addMaterial(Materials.Magnesium, 3)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumAluminate() {
+        return new MaterialBuilder().setName("SodiumAluminate")
+            .setDefaultLocalName("Sodium Aluminate")
+            .setMetaItemSubID(696)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xffebff)
+            .setTool(64, 1, 1.0f)
+            .addDustItems()
+            .setBlastFurnaceTemp(1_800)
+            .setMeltingPoint(1_800)
+            .setBlastFurnaceRequired(false)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumCarbonate() {
+        return new MaterialBuilder().setName("SodiumCarbonate")
+            .setDefaultLocalName("Sodium Carbonate")
+            .setMetaItemSubID(695)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xffffeb)
+            .setTool(64, 1, 1.0f)
+            .addDustItems()
+            .setBlastFurnaceTemp(851)
+            .setMeltingPoint(851)
+            .setBlastFurnaceRequired(false)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Sodium, 2)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSpodumene() {
+        return new MaterialBuilder().setName("Spodumene")
+            .setDefaultLocalName("Spodumene")
+            .setMetaItemSubID(920)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xbeaaaa)
+            .addDustItems()
+            .addOreItems()
+            // LiAl(SiO3)2
+            .addMaterial(Materials.Lithium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Silicon, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadSteelMagnetic() {
+        return new MaterialBuilder().setName("SteelMagnetic")
+            .setDefaultLocalName("Magnetic Steel")
+            .setChemicalFormula("Fe₅" + CustomGlyphs.SUBSCRIPT0 + "C" + CustomGlyphs.MAGNET)
+            .setMetaItemSubID(355)
+            .setIconSet(TextureSet.SET_MAGNETIC)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .setTool(512, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_000)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .setDensityMultiplier(51)
+            .setDensityDivider(50)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addAspect(TCAspects.METALLUM, 1)
+            .addAspect(TCAspects.ORDO, 1)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSteeleaf() {
+        return new MaterialBuilder().setName("Steeleaf")
+            .setDefaultLocalName("Steeleaf")
+            .setMetaItemSubID(339)
+            .setIconSet(TextureSet.SET_LEAF)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x327f32)
+            .setTool(768, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 24)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.HERBA, 2)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSterlingSilver() {
+        return new MaterialBuilder().setName("SterlingSilver")
+            .setDefaultLocalName("Sterling Silver")
+            .setMetaItemSubID(350)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfadce1)
+            .setTool(128, 2, 13.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Silver, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadSugar() {
+        return new MaterialBuilder().setName("Sugar")
+            .setDefaultLocalName("Sugar")
+            .setMetaItemSubID(803)
+            .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .addDustItems()
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Water, 5)
+            .addMaterial(Materials.Oxygen, 25)
+            .addAspect(TCAspects.HERBA, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.AER, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTalc() {
+        return new MaterialBuilder().setName("Talc")
+            .setDefaultLocalName("Talc")
+            .setMetaItemSubID(902)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x5ab45a)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // H2Mg3(SiO3)4
+            .addMaterial(Materials.Magnesium, 3)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadTantalite() {
+        return new MaterialBuilder().setName("Tantalite")
+            .setDefaultLocalName("Tantalite")
+            .setMetaItemSubID(921)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x915028)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // (Fe, Mn)Ta2O6 (also source of Nb)
+            .addMaterial(Materials.Manganese, 1)
+            .addMaterial(Materials.Tantalum, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadThaumium() {
+        return new MaterialBuilder().setName("Thaumium")
+            .setDefaultLocalName("Thaumium")
+            .setMetaItemSubID(330)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x9664c8)
+            .setTool(256, 3, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setDensityMultiplier(2)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTPV() {
+        return new MaterialBuilder().setName("TPVAlloy")
+            .setDefaultLocalName("TPV-Alloy")
+            .setMetaItemSubID(576)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xfaaafa)
+            .setTool(4_000, 5, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_000)
+            .setBlastFurnaceTemp(3_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Titanium, 3)
+            .addMaterial(Materials.Platinum, 3)
+            .addMaterial(Materials.Vanadium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTricalciumPhosphate() {
+        return new MaterialBuilder().setName("TricalciumPhosphate")
+            .setDefaultLocalName("Tricalcium Phosphate")
+            .setMetaItemSubID(534)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff00)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Calcium, 3)
+            .addMaterial(Materials.Phosphate, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadTrona() {
+        return new MaterialBuilder().setName("Trona")
+            .setDefaultLocalName("Trona")
+            .setMetaItemSubID(903)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x87875f)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // Na3(CO3)(HCO3) 2H2O
+            .addMaterial(Materials.Sodium, 3)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Water, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadTungstenCarbide() {
+        return new MaterialBuilder().setName("TungstenCarbide")
+            .setDefaultLocalName("Tungstencarbide")
+            .setMetaItemSubID(370)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x330066)
+            .setTool(1_280, 4, 14.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_460)
+            .setBlastFurnaceTemp(2_460)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Carbon, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTungstenSteel() {
+        return new MaterialBuilder().setName("TungstenSteel")
+            .setDefaultLocalName("Tungstensteel")
+            .setMetaItemSubID(316)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x6464a0)
+            .setTool(2_560, 4, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(4_000)
+            .setBlastFurnaceTemp(4_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addMaterial(Materials.Tungsten, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVanadiumMagnetite() {
+        return new MaterialBuilder().setName("VanadiumMagnetite")
+            .setDefaultLocalName("Vanadium Magnetite")
+            .setMetaItemSubID(923)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x23233c)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            // Mixture of Fe3O4 and V2O5
+            .addMaterial(Materials.Magnetite, 1)
+            .addMaterial(Materials.Vanadium, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVanadiumSteel() {
+        return new MaterialBuilder().setName("VanadiumSteel")
+            .setDefaultLocalName("Vanadiumsteel")
+            .setMetaItemSubID(371)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xc0c0c0)
+            .setTool(1_920, 3, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_453)
+            .setBlastFurnaceTemp(1_453)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Vanadium, 1)
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Steel, 7)
+            .constructMaterial();
+    }
+
+    private static Materials loadVermiculite() {
+        return new MaterialBuilder().setName("Vermiculite")
+            .setDefaultLocalName("Vermiculite")
+            .setMetaItemSubID(932)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xc8b40f)
+            .addDustItems()
+            .addOreItems()
+            // (Mg+2, Fe+2, Fe+3)3 [(AlSi)4O10] (OH)2 4H2O)
+            .addMaterial(Materials.Iron, 3)
+            .addMaterial(Materials.Aluminium, 4)
+            .addMaterial(Materials.Silicon, 4)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Water, 4)
+            .addMaterial(Materials.Oxygen, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadVinteum() {
+        return new MaterialBuilder().setName("Vinteum")
+            .setDefaultLocalName("Vinteum")
+            .setChemicalFormula("FeMa*")
+            .setMetaItemSubID(529)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x64c8ff)
+            .setTool(128, 3, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Thaumium, 1)
+            .addAspect(TCAspects.VITREUS, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVis() {
+        return new MaterialBuilder().setName("Vis")
+            .setDefaultLocalName("Vis")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x8000ff)
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magic, 1)
+            .addAspect(TCAspects.AURAM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVolcanicAsh() {
+        return new MaterialBuilder().setName("VolcanicAsh")
+            .setDefaultLocalName("Volcanic Ashes")
+            .setMetaItemSubID(940)
+            .setIconSet(TextureSet.SET_FLINT)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x3c3232)
+            .addDustItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Flint, 6)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Magnesium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadWollastonite() {
+        return new MaterialBuilder().setName("Wollastonite")
+            .setDefaultLocalName("Wollastonite")
+            .setMetaItemSubID(915)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf0f0f0)
+            .addDustItems()
+            .addOreItems()
+            .addElectrolyzerRecipe()
+            // CaSiO3
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadWoodSealed() {
+        return new MaterialBuilder().setName("WoodSealed")
+            .setDefaultLocalName("Sealed Wood")
+            .setChemicalFormula("")
+            .setMetaItemSubID(889)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x502800)
+            .setTool(24, 0, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addMaterial(Materials.Wood, 1)
+            .addAspect(TCAspects.ARBOR, 2)
+            .addAspect(TCAspects.FABRICO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadZeolite() {
+        return new MaterialBuilder().setName("Zeolite")
+            .setDefaultLocalName("Zeolite")
+            .setMetaItemSubID(916)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xf0e6e6)
+            .addDustItems()
+            .addOreItems()
+            // NaCa4(Si27Al9)O72
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Calcium, 4)
+            .addMaterial(Materials.Silicon, 27)
+            .addMaterial(Materials.Aluminium, 9)
+            .addMaterial(Materials.Oxygen, 72)
+            .constructMaterial();
+    }
+
+    private static void loadDegree3Compounds() {
+        Materials.Basalt = loadBasalt();
+        Materials.BlueSteel = loadBlueSteel();
+        Materials.BorosilicateGlass = loadBorosilicateGlass();
+        Materials.Cryotheum = loadCryotheum();
+        Materials.DarkSteel = loadDarkSteel();
+        Materials.EnderEye = loadEnderEye();
+        Materials.Fireclay = loadFireclay();
+        Materials.GarnetSand = loadGarnetSand();
+        Materials.HSSG = loadHSSG();
+        Materials.IronWood = loadIronWood();
+        Materials.Pyrotheum = loadPyrotheum();
+        Materials.GraniteRed = loadGraniteRed();
+        Materials.RedAlloy = loadRedAlloy();
+        Materials.RedSteel = loadRedSteel();
+        Materials.RedstoneAlloy = loadRedstoneAlloy();
+    }
+
+    private static Materials loadBasalt() {
+        return new MaterialBuilder().setName("Basalt")
+            .setDefaultLocalName("Basalt")
+            .setMetaItemSubID(844)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x1e1414)
+            .setTool(64, 1, 1.0f)
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Olivine, 1)
+            .addMaterial(Materials.Calcite, 3)
+            .addMaterial(Materials.Flint, 8)
+            .addMaterial(Materials.DarkAsh, 4)
+            .addAspect(TCAspects.TENEBRAE, 1)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static Materials loadBlueSteel() {
+        return new MaterialBuilder().setName("BlueSteel")
+            .setDefaultLocalName("Blue Steel")
+            .setMetaItemSubID(349)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x64648c)
+            .setTool(1_024, 4, 7.5f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.RoseGold, 1)
+            .addMaterial(Materials.Brass, 1)
+            .addMaterial(Materials.Steel, 2)
+            .addMaterial(Materials.BlackSteel, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadBorosilicateGlass() {
+        return new MaterialBuilder().setName("BorosilicateGlass")
+            .setDefaultLocalName("Borosilicate Glass")
+            .setMetaItemSubID(611)
+            .setIconSet(TextureSet.SET_GLASS)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6f3e6)
+            .addDustItems()
+            .addMetalItems()
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Glass, 7)
+            .addCentrifugeRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCryotheum() {
+        return new MaterialBuilder().setName("Cryotheum")
+            .setDefaultLocalName("Cryotheum")
+            .setChemicalFormula(
+                "(KNO₃)(" + Materials.Redstone.mChemicalFormula + ")(H₂O)(" + Materials.Blizz.mChemicalFormula + ")")
+            .setMetaItemSubID(898)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x0094cb)
+            .addDustItems()
+            .setFuel(MaterialBuilder.FuelType.Thermal, 62)
+            .setDensityMultiplier(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Saltpeter, 1)
+            .addMaterial(Materials.Redstone, 1)
+            .addMaterial(Materials.Snow, 1)
+            .addMaterial(Materials.Blizz, 1)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .addAspect(TCAspects.GELUM, 1)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static Materials loadDarkSteel() {
+        return new MaterialBuilder().setName("DarkSteel")
+            .setDefaultLocalName("Dark Steel")
+            .setMetaItemSubID(364)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x504650)
+            .setTool(512, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.ElectricalSteel, 1)
+            .addMaterial(Materials.Coal, 1)
+            .addMaterial(Materials.Obsidian, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnderEye() {
+        return new MaterialBuilder().setName("EnderEye")
+            .setDefaultLocalName("Endereye")
+            .setMetaItemSubID(533)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0xa0fae6)
+            .setTool(16, 1, 1.0f)
+            .addDustItems()
+            .addGemItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 10)
+            .setDensityMultiplier(2)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.EnderPearl, 1)
+            .addMaterial(Materials.Blaze, 1)
+            .addAspect(TCAspects.SENSUS, 4)
+            .addAspect(TCAspects.ALIENIS, 4)
+            .addAspect(TCAspects.ITER, 4)
+            .addAspect(TCAspects.PRAECANTATIO, 3)
+            .addAspect(TCAspects.IGNIS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadFireclay() {
+        return new MaterialBuilder().setName("Fireclay")
+            .setDefaultLocalName("Fireclay")
+            .setMetaItemSubID(626)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0xada09b)
+            .addDustItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Brick, 1)
+            .addMaterial(Materials.Clay, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGarnetSand() {
+        return new MaterialBuilder().setName("GarnetSand")
+            .setDefaultLocalName("Garnet Sand")
+            .setMetaItemSubID(938)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xc86400)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.GarnetRed, 1)
+            .addMaterial(Materials.GarnetYellow, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHSSG() {
+        return new MaterialBuilder().setName("HSSG")
+            .setDefaultLocalName("HSS-G")
+            .setMetaItemSubID(372)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0x999900)
+            .setTool(4_000, 3, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.TungstenSteel, 5)
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Molybdenum, 2)
+            .addMaterial(Materials.Vanadium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIronWood() {
+        return new MaterialBuilder().setName("IronWood")
+            .setDefaultLocalName("Ironwood")
+            .setMetaItemSubID(338)
+            .setIconSet(TextureSet.SET_WOOD)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x968c6e)
+            .setTool(384, 2, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 8)
+            .setDensityMultiplier(19)
+            .setDensityDivider(18)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 9)
+            .addMaterial(Materials.LiveRoot, 9)
+            .addMaterial(Materials.Gold, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPyrotheum() {
+        return new MaterialBuilder().setName("Pyrotheum")
+            .setDefaultLocalName("Pyrotheum")
+            .setMetaItemSubID(843)
+            .setIconSet(TextureSet.SET_FIERY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xff8000)
+            .addDustItems()
+            .setFuel(MaterialBuilder.FuelType.Thermal, 62)
+            .setDensityMultiplier(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Coal, 1)
+            .addMaterial(Materials.Redstone, 1)
+            .addMaterial(Materials.Blaze, 1)
+            .addMaterial(Materials.Sulfur, 1)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static Materials loadGraniteRed() {
+        return new MaterialBuilder().setName("GraniteRed")
+            .setDefaultLocalName("Red Granite")
+            .setMetaItemSubID(850)
+            .setIconSet(TextureSet.SET_ROUGH)
+            .setColor(Dyes.dyeMagenta)
+            .setRGB(0xff0080)
+            .setTool(64, 3, 4.0f)
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addMaterial(Materials.Aluminium, 2)
+            .addMaterial(Materials.PotassiumFeldspar, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addAspect(TCAspects.TUTAMEN, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedAlloy() {
+        return new MaterialBuilder().setName("RedAlloy")
+            .setDefaultLocalName("Red Alloy")
+            .setChemicalFormula("Cu(" + Materials.Redstone.mChemicalFormula + ")₄")
+            .setMetaItemSubID(308)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc80000)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(500)
+            .setDensityMultiplier(5)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Redstone, 4)
+            .addAspect(TCAspects.MACHINA, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedSteel() {
+        return new MaterialBuilder().setName("RedSteel")
+            .setDefaultLocalName("Red Steel")
+            .setMetaItemSubID(348)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x8c6464)
+            .setTool(896, 4, 7.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_300)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.SterlingSilver, 1)
+            .addMaterial(Materials.BismuthBronze, 1)
+            .addMaterial(Materials.Steel, 2)
+            .addMaterial(Materials.BlackSteel, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadRedstoneAlloy() {
+        return new MaterialBuilder().setName("RedstoneAlloy")
+            .setDefaultLocalName("Redstone Alloy")
+            .setMetaItemSubID(381)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xff4332)
+            .setTool(128, 2, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(671)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Redstone, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addMaterial(Materials.Coal, 1)
+            .constructMaterial();
+    }
+
+    private static void loadDegree4Compounds() {
+        Materials.BasalticMineralSand = loadBasalticMineralSand();
+        Materials.ConductiveIron = loadConductiveIron();
+        Materials.EndSteel = loadEndSteel();
+        Materials.HSSE = loadHSSE();
+        Materials.HSSS = loadHSSS();
+        Materials.PulsatingIron = loadPulsatingIron();
+    }
+
+    private static Materials loadBasalticMineralSand() {
+        return new MaterialBuilder().setName("BasalticMineralSand")
+            .setDefaultLocalName("Basaltic Mineral Sand")
+            .setMetaItemSubID(935)
+            .setIconSet(TextureSet.SET_SAND)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x283228)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Magnetite, 1)
+            .addMaterial(Materials.Basalt, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.MAGNETO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadConductiveIron() {
+        return new MaterialBuilder().setName("ConductiveIron")
+            .setDefaultLocalName("Conductive Iron")
+            .setMetaItemSubID(369)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xffbfc3)
+            .setTool(256, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.RedstoneAlloy, 1)
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Silver, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEndSteel() {
+        return new MaterialBuilder().setName("EndSteel")
+            .setDefaultLocalName("End Steel")
+            .setMetaItemSubID(401)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xdbce7d)
+            .setTool(2_000, 4, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(940)
+            .setBlastFurnaceTemp(3_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.DarkSteel, 1)
+            .addMaterial(Materials.Tungsten, 1)
+            .addMaterial(Materials.Endstone, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHSSE() {
+        return new MaterialBuilder().setName("HSSE")
+            .setDefaultLocalName("HSS-E")
+            .setMetaItemSubID(373)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x336600)
+            .setTool(10_240, 7, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.HSSG, 6)
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Manganese, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadHSSS() {
+        return new MaterialBuilder().setName("HSSS")
+            .setDefaultLocalName("HSS-S")
+            .setMetaItemSubID(374)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x660033)
+            .setTool(10_240, 8, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.HSSG, 6)
+            .addMaterial(Materials.Iridium, 2)
+            .addMaterial(Materials.Osmium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPulsatingIron() {
+        return new MaterialBuilder().setName("PulsatingIron")
+            .setDefaultLocalName("Pulsating Iron")
+            .setMetaItemSubID(378)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x80f69b)
+            .setTool(256, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.EnderPearl, 1)
+            .addMaterial(Materials.RedstoneAlloy, 1)
+            .constructMaterial();
+    }
+
+    private static void loadDegree5Compounds() {
+        Materials.CrystallineAlloy = loadCrystallineAlloy();
+        Materials.EnergeticAlloy = loadEnergeticAlloy();
+        Materials.EnergeticSilver = loadEnergeticSilver();
+        Materials.MelodicAlloy = loadMelodicAlloy();
+    }
+
+    private static Materials loadCrystallineAlloy() {
+        return new MaterialBuilder().setName("CrystallineAlloy")
+            .setDefaultLocalName("Crystalline Alloy")
+            .setMetaItemSubID(403)
+            .setIconSet(TextureSet.SET_CRYSTALLINE)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x4adbdb)
+            .setTool(768, 4, 18.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.Diamond, 1)
+            .addMaterial(Materials.PulsatingIron, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnergeticAlloy() {
+        return new MaterialBuilder().setName("EnergeticAlloy")
+            .setDefaultLocalName("Energetic Alloy")
+            .setMetaItemSubID(366)
+            .setIconSet(TextureSet.SET_ENERGETIC)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff8c19)
+            .setTool(1_024, 3, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(2_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.ConductiveIron, 1)
+            .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.BlackSteel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnergeticSilver() {
+        return new MaterialBuilder().setName("EnergeticSilver")
+            .setDefaultLocalName("Energetic Silver")
+            .setMetaItemSubID(407)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x3887b5)
+            .setTool(512, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(2_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.ConductiveIron, 1)
+            .addMaterial(Materials.BlackSteel, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMelodicAlloy() {
+        return new MaterialBuilder().setName("MelodicAlloy")
+            .setDefaultLocalName("Melodic Alloy")
+            .setMetaItemSubID(404)
+            .setIconSet(TextureSet.SET_MELODIC)
+            .setColor(Dyes.dyeMagenta)
+            .setRGB(0xc155c1)
+            .setTool(1_024, 5, 24.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.EndSteel, 1)
+            .addMaterial(Materials.EnderEye, 1)
+            .addMaterial(Materials.Oriharukon, 1)
+            .constructMaterial();
+    }
+
+    private static void loadDegree6Compounds() {
+        Materials.CrystallinePinkSlime = loadCrystallinePinkSlime();
+        Materials.StellarAlloy = loadStellarAlloy();
+        Materials.VibrantAlloy = loadVibrantAlloy();
+        Materials.VividAlloy = loadVividAlloy();
+    }
+
+    private static Materials loadCrystallinePinkSlime() {
+        return new MaterialBuilder().setName("CrystallinePinkSlime")
+            .setDefaultLocalName("Crystalline Pink Slime")
+            .setMetaItemSubID(406)
+            .setIconSet(TextureSet.SET_CRYSTALLINE)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xe236cb)
+            .setTool(128, 3, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5_000)
+            .setBlastFurnaceTemp(5_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.CrystallineAlloy, 1)
+            .addMaterial(Materials.Diamond, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadStellarAlloy() {
+        return new MaterialBuilder().setName("StellarAlloy")
+            .setDefaultLocalName("Stellar Alloy")
+            .setMetaItemSubID(405)
+            .setIconSet(TextureSet.SET_STELLAR)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xd3ffff)
+            .setTool(10_240, 7, 96.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(7_200)
+            .setBlastFurnaceTemp(7_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.NetherStar, 1)
+            .addMaterial(Materials.MelodicAlloy, 1)
+            .addMaterial(Materials.Naquadah, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVibrantAlloy() {
+        return new MaterialBuilder().setName("VibrantAlloy")
+            .setDefaultLocalName("Vibrant Alloy")
+            .setMetaItemSubID(367)
+            .setIconSet(TextureSet.SET_VIBRANT)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x95e011)
+            .setTool(4_048, 4, 18.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_300)
+            .setBlastFurnaceTemp(3_300)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.EnergeticAlloy, 1)
+            .addMaterial(Materials.EnderEye, 1)
+            .addMaterial(Materials.Chrome, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadVividAlloy() {
+        return new MaterialBuilder().setName("VividAlloy")
+            .setDefaultLocalName("Vivid Alloy")
+            .setMetaItemSubID(408)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x46bcdb)
+            .setTool(768, 4, 12.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_300)
+            .setBlastFurnaceTemp(3_300)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.EnergeticSilver, 1)
+            .addMaterial(Materials.EnderEye, 1)
+            .addMaterial(Materials.Chrome, 1)
+            .constructMaterial();
+    }
+
+    private static void loadPolybenzimidazoleLine() {
+        Materials.ChromiumTrioxide = loadChromiumTrioxide();
+        Materials.Diaminobenzidin = loadDiaminobenzidin();
+        Materials.Dichlorobenzidine = loadDichlorobenzidine();
+        Materials.Dimethylbenzene = loadDimethylbenzene();
+        Materials.Diphenylisophthalate = loadDiphenylisophthalate();
+        Materials.Nitrochlorobenzene = loadNitrochlorobenzene();
+        Materials.PhthalicAcid = loadPhthalicAcid();
+        Materials.Polybenzimidazole = loadPolybenzimidazole();
+        Materials.PotassiumNitrade = loadPotassiumNitrade();
+        Materials.Potassiumdichromate = loadPotassiumdichromate();
+    }
+
+    private static Materials loadChromiumTrioxide() {
+        return new MaterialBuilder().setName("Chromiumtrioxide")
+            .setDefaultLocalName("Chromium Trioxide")
+            .setMetaItemSubID(591)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xffe4e1)
+            .addDustItems()
+            .addMaterial(Materials.Chrome, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDiaminobenzidin() {
+        return new MaterialBuilder().setName("3,3Diaminobenzidine")
+            .setDefaultLocalName("3,3-Diaminobenzidine")
+            .setMetaItemSubID(597)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0x337d59)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 12)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Nitrogen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadDichlorobenzidine() {
+        return new MaterialBuilder().setName("3,3Dichlorobenzidine")
+            .setDefaultLocalName("3,3-Dichlorobenzidine")
+            .setMetaItemSubID(596)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xa1dea6)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 12)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Chlorine, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethylbenzene() {
+        return new MaterialBuilder().setName("Dimethylbenzene")
+            .setDefaultLocalName("1,2-Dimethylbenzene")
+            .setMetaItemSubID(593)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x669c40)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(248)
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadDiphenylisophthalate() {
+        return new MaterialBuilder().setName("DiphenylIsophtalate")
+            .setDefaultLocalName("Diphenyl Isophthalate")
+            .setMetaItemSubID(598)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0x246e57)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 20)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitrochlorobenzene() {
+        return new MaterialBuilder().setName("2Nitrochlorobenzene")
+            .setDefaultLocalName("2-Nitrochlorobenzene")
+            .setMetaItemSubID(592)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x8fb51a)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhthalicAcid() {
+        return new MaterialBuilder().setName("phtalicacid")
+            .setDefaultLocalName("Phthalic Acid")
+            .setMetaItemSubID(595)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0x368547)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolybenzimidazole() {
+        return new MaterialBuilder().setName("Polybenzimidazole")
+            .setDefaultLocalName("Polybenzimidazole")
+            .setMetaItemSubID(599)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x2d2d2d)
+            .setTool(64, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_450)
+            .addMaterial(Materials.Carbon, 20)
+            .addMaterial(Materials.Nitrogen, 4)
+            .addMaterial(Materials.Hydrogen, 12)
+            .addAspect(TCAspects.ORDO, 2)
+            .addAspect(TCAspects.VOLATUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassiumNitrade() {
+        return new MaterialBuilder().setName("PotassiumNitrate")
+            .setDefaultLocalName("Potassium Nitrate")
+            .setMetaItemSubID(590)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x81228d)
+            .addDustItems()
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassiumdichromate() {
+        return new MaterialBuilder().setName("PotassiumDichromate")
+            .setDefaultLocalName("Potassium Dichromate")
+            .setMetaItemSubID(594)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePink)
+            .setRGB(0xff087f)
+            .addDustItems()
+            .addMaterial(Materials.Potassium, 2)
+            .addMaterial(Materials.Chrome, 2)
+            .addMaterial(Materials.Oxygen, 7)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static void loadGasolineLine() {
+        Materials.AntiKnock = loadAntiKnock();
+        Materials.GasolinePremium = loadGasolinePremium();
+        Materials.GasolineRaw = loadGasolineRaw();
+        Materials.GasolineRegular = loadGasolineRegular();
+        Materials.MTBEMixture = loadMTBEMixture();
+        Materials.MTBEMixtureAlt = loadMTBEMixtureAlt();
+        Materials.NitrousOxide = loadNitrousOxide();
+        Materials.Octane = loadOctane();
+    }
+
+    private static Materials loadAntiKnock() {
+        return new MaterialBuilder().setName("EthylTertButylEther")
+            .setDefaultLocalName("Anti-Knock Agent")
+            .setMetaItemSubID(994)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGasolinePremium() {
+        return new MaterialBuilder().setName("HighOctaneGasoline")
+            .setDefaultLocalName("High Octane Gasoline")
+            .setMetaItemSubID(998)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xffa500)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 2_500)
+            .constructMaterial();
+    }
+
+    private static Materials loadGasolineRaw() {
+        return new MaterialBuilder().setName("RawGasoline")
+            .setDefaultLocalName("Raw Gasoline")
+            .setMetaItemSubID(996)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff6400)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadGasolineRegular() {
+        return new MaterialBuilder().setName("Gasoline")
+            .setDefaultLocalName("Gasoline")
+            .setMetaItemSubID(997)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xffa500)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 576)
+            .constructMaterial();
+    }
+
+    private static Materials loadMTBEMixture() {
+        return new MaterialBuilder().setName("MTBEReactionMixture(Butene)")
+            .setDefaultLocalName("MTBE Reaction Mixture (Butene)")
+            .setMetaItemSubID(983)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 12)
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMTBEMixtureAlt() {
+        return new MaterialBuilder().setName("MTBEReactionMixture(Butane)")
+            .setDefaultLocalName("MTBE Reaction Mixture (Butane)")
+            .setMetaItemSubID(425)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNitrousOxide() {
+        return new MaterialBuilder().setName("NitrousOxide")
+            .setDefaultLocalName("Nitrous Oxide")
+            .setMetaItemSubID(993)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x7dc8ff)
+            .addCell()
+            .addGas()
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadOctane() {
+        return new MaterialBuilder().setName("Octane")
+            .setDefaultLocalName("Octane")
+            .setMetaItemSubID(995)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Diesel, 80)
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 18)
+            .constructMaterial();
+    }
+
+    private static void loadAdded() {
+        Materials.BloodInfusedIron = loadBloodInfusedIron();
+        Materials.Electrotine = loadElectrotine();
+        Materials.EnhancedGalgadorian = loadEnhancedGalgadorian();
+        Materials.Galgadorian = loadGalgadorian();
+        Materials.Shadow = loadShadow();
+    }
+
+    private static Materials loadBloodInfusedIron() {
+        return new MaterialBuilder().setName("BloodInfusedIron")
+            .setDefaultLocalName("Blood Infused Iron")
+            .setChemicalFormula(CustomGlyphs.BRIMSTONE + "Fe")
+            .setMetaItemSubID(977)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0x45090a)
+            .setTool(384, 2, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(2_400)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadElectrotine() {
+        return new MaterialBuilder().setName("Electrotine")
+            .setDefaultLocalName("Electrotine")
+            .setChemicalFormula("Rp")
+            .setMetaItemSubID(812)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x3cb4c8)
+            .addDustItems()
+            .addOreItems()
+            .addMaterial(Materials.Redstone, 1)
+            .addMaterial(Materials.Electrum, 1)
+            .addAspect(TCAspects.ELECTRUM, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnhancedGalgadorian() {
+        return new MaterialBuilder().setName("EnhancedGalgadorian")
+            .setDefaultLocalName("Enhanced Galgadorian")
+            .setChemicalFormula("???Fe₂C₉Nh₃")
+            .setMetaItemSubID(385)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x985d85)
+            .setTool(7_200, 5, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadGalgadorian() {
+        return new MaterialBuilder().setName("Galgadorian")
+            .setDefaultLocalName("Galgadorian")
+            .setChemicalFormula("???Fe₂C₉Nh₃")
+            .setMetaItemSubID(384)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setRGB(0x9a6977)
+            .setTool(3_600, 3, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_000)
+            .setBlastFurnaceTemp(3_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadShadow() {
+        return new MaterialBuilder().setName("Shadow")
+            .setDefaultLocalName("Shadow Metal")
+            .setChemicalFormula("Sh₆(FeMa₃)₂")
+            .setMetaItemSubID(368)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x100342)
+            .setTool(8_192, 4, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_800)
+            .setBlastFurnaceTemp(1_800)
+            .setBlastFurnaceRequired(true)
+            .setDensityMultiplier(4)
+            .setDensityDivider(3)
+            .constructMaterial();
+    }
+
+    private static void loadGalaxySpace() {
+        Materials.BlackPlutonium = loadBlackPlutonium();
+        Materials.CallistoIce = loadCallistoIce();
+        Materials.Duralumin = loadDuralumin();
+        Materials.Ledox = loadLedox();
+        Materials.MysteriousCrystal = loadMysteriousCrystal();
+        Materials.Mytryl = loadMytryl();
+        Materials.Quantium = loadQuantium();
+    }
+
+    private static Materials loadBlackPlutonium() {
+        return new MaterialBuilder().setName("BlackPlutonium")
+            .setDefaultLocalName("Black Plutonium")
+            .setChemicalFormula("SpPu")
+            .setMetaItemSubID(388)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323232)
+            .setTool(8_192, 8, 36.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(9_000)
+            .setBlastFurnaceTemp(9_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadCallistoIce() {
+        return new MaterialBuilder().setName("CallistoIce")
+            .setDefaultLocalName("Callisto Ice")
+            .setChemicalFormula("SpH₂O")
+            .setMetaItemSubID(389)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x1eb1ff)
+            .setTool(1_024, 4, 9.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDuralumin() {
+        return new MaterialBuilder().setName("Duralumin")
+            .setDefaultLocalName("Duralumin")
+            .setMetaItemSubID(392)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xebd1a0)
+            .setTool(512, 3, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1_600)
+            .setBlastFurnaceTemp(1_600)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Aluminium, 6)
+            .addMaterial(Materials.Copper, 1)
+            .addMaterial(Materials.Manganese, 1)
+            .addMaterial(Materials.Magnesium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadLedox() {
+        return new MaterialBuilder().setName("Ledox")
+            .setDefaultLocalName("Ledox")
+            .setChemicalFormula("SpPb")
+            .setMetaItemSubID(390)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0074ff)
+            .setTool(1_024, 4, 15.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadMysteriousCrystal() {
+        return new MaterialBuilder().setName("MysteriousCrystal")
+            .setDefaultLocalName("Mysterious Crystal")
+            .setChemicalFormula(CustomGlyphs.CIRCLE_STAR)
+            .setMetaItemSubID(398)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x16856c)
+            .setTool(256, 6, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(7_200)
+            .setBlastFurnaceTemp(7_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadMytryl() {
+        return new MaterialBuilder().setName("Mytryl")
+            .setDefaultLocalName("Mytryl")
+            .setChemicalFormula("SpPt₂FeMa")
+            .setMetaItemSubID(387)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xf26404)
+            .setTool(512, 4, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(3_600)
+            .setBlastFurnaceTemp(3_600)
+            .setBlastFurnaceRequired(true)
+            .constructMaterial();
+    }
+
+    private static Materials loadQuantium() {
+        return new MaterialBuilder().setName("Quantium")
+            .setDefaultLocalName("Quantium")
+            .setChemicalFormula("Qt")
+            .setMetaItemSubID(391)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x00d10b)
+            .setTool(2_048, 4, 18.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(9_900)
+            .setBlastFurnaceTemp(9_900)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial();
+    }
+
+    private static void loadUnclassified07() {
+        Materials.AstralSilver = loadAstralSilver();
+        Materials.BlueAlloy = loadBlueAlloy();
+        Materials.CrudeSteel = loadCrudeSteel();
+        Materials.Enderium = loadEnderium();
+        Materials.Mithril = loadMithril();
+        Materials.ShadowIron = loadShadowIron();
+        Materials.ShadowSteel = loadShadowSteel();
+        Materials.Soularium = loadSoularium();
+    }
+
+    private static void loadOverpoweredMaterials() {
+        Materials.Bedrockium = loadBedrockium();
+        Materials.CosmicNeutronium = loadCosmicNeutronium();
+        Materials.Ichorium = loadIchorium();
+        Materials.Infinity = loadInfinity();
+        Materials.InfinityCatalyst = loadInfinityCatalyst();
+        Materials.Trinium = loadTrinium();
+    }
+
+    private static Materials loadBedrockium() {
+        return new MaterialBuilder().setName("Bedrockium")
+            .setDefaultLocalName("Bedrockium")
+            .setMetaItemSubID(395)
+            .setIconSet(new TextureSet("bedrockium", true))
+            .setColor(Dyes.dyeBlack)
+            .addOreItems()
+            .addDustItems()
+            .addPlasma()
+            .addMetalItems()
+            .setTool(327_680, 9, 8f)
+            .setBlastFurnaceRequired(true)
+            .setBlastFurnaceTemp(9_900)
+            .setMeltingPoint(9_900)
+            .addMaterial(Materials.SiliconDioxide, 26_244)
+            .addMaterial(Materials.Diamond, 9)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV)
             .disableAutoGeneratedBlastFurnaceRecipes()
             .disableAutoGeneratedVacuumFreezerRecipe()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+            .setHasCorrespondingPlasma(true);
+    }
 
-        Materials.ActivatedNetherite = new MaterialBuilder( 133, TextureSet.SET_METALLIC, "Activated Netherite")
-            .addFluid()
-            .addCell()
-            .setRGB(156, 87, 90)
-            .setName("activatednetherite")
-            .setColor(Dyes._NULL)
+    private static Materials loadCosmicNeutronium() {
+        return new MaterialBuilder().setName("CosmicNeutronium")
+            .setDefaultLocalName("Cosmic Neutronium")
+            .setChemicalFormula("SpNt")
+            .setMetaItemSubID(982)
+            .setIconSet(new TextureSet("cosmicneutronium", true))
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323237)
+            .setTool(163_840, 12, 96.0f)
+            .setTurbine(6.0f, 6.0f, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(9_900)
+            .setBlastFurnaceTemp(9_900)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM)
+            .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadIchorium() {
+        return new MaterialBuilder().setName("Ichorium")
+            .setDefaultLocalName("Ichorium")
+            .setChemicalFormula("IcMa")
+            .setMetaItemSubID(978)
+            .setIconSet(new TextureSet("ichorium", true))
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xd37806)
+            .setTool(850_000, 12, 32.0f)
+            .setTurbine(6.0f, 6.0f, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 250_000)
+            .setMeltingPoint(9_000)
+            .setBlastFurnaceTemp(9_000)
+            .setBlastFurnaceRequired(true)
+            .constructMaterial()
+            .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadInfinity() {
+        return new MaterialBuilder().setName("Infinity")
+            .setDefaultLocalName("Infinity")
+            .setChemicalFormula("If*")
+            .setMetaItemSubID(397)
+            .setIconSet(new TextureSet("infinity", true))
+            .setColor(Dyes.dyeLightGray)
+            .setTool(2_621_440, 17, 256.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setFuel(MaterialBuilder.FuelType.Magic, 5_000_000)
+            .setMeltingPoint(10_800)
+            .setBlastFurnaceTemp(10_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV)
+            .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadAstralSilver() {
+        return new MaterialBuilder().setName("AstralSilver")
+            .setDefaultLocalName("Astral Silver")
+            .setMetaItemSubID(333)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe6e6ff)
+            .setTool(64, 2, 10.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Silver, 2)
+            .addMaterial(Materials.Thaumium, 1)
             .constructMaterial();
+    }
 
-        Materials.PrismarineSolution = new MaterialBuilder( 135, TextureSet.SET_METALLIC, "Prismarine Solution")
-            .addFluid()
-            .addCell()
-            .setRGB(85, 154, 138)
-            .setName("prismarinesolution")
-            .setColor(Dyes._NULL)
+    private static Materials loadBlueAlloy() {
+        return new MaterialBuilder().setName("BlueAlloy")
+            .setDefaultLocalName("Blue Alloy")
+            .setChemicalFormula("AgRp₄")
+            .setMetaItemSubID(309)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0x64b4ff)
+            .addDustItems()
+            .addMetalItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Silver, 1)
+            .addMaterial(Materials.Electrotine, 4)
+            .addAspect(TCAspects.ELECTRUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadCrudeSteel() {
+        return new MaterialBuilder().setName("CrudeSteel")
+            .setDefaultLocalName("Clay Compound")
+            .setMetaItemSubID(402)
+            .setIconSet(TextureSet.SET_VIVID)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x9e9087)
+            .setTool(64, 2, 2.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(1_000)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Stone, 1)
+            .addMaterial(Materials.Clay, 1)
+            .addMaterial(Materials.Flint, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnderium() {
+        return new MaterialBuilder().setName("Enderium")
+            .setDefaultLocalName("Enderium")
+            .setMetaItemSubID(321)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x599187)
+            .setTool(1_500, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.EnderiumBase, 2)
+            .addMaterial(Materials.Thaumium, 1)
+            .addMaterial(Materials.EnderPearl, 1)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.ALIENIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMithril() {
+        return new MaterialBuilder().setName("Mithril")
+            .setDefaultLocalName("Mithril")
+            .setMetaItemSubID(331)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xffffd2)
+            .setTool(64, 2, 32.0f)
+            .setTurbine(22.0f, 1.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setMeltingPoint(6_600)
+            .setBlastFurnaceTemp(6_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Platinum, 2)
+            .addMaterial(Materials.Thaumium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadShadowIron() {
+        return new MaterialBuilder().setName("ShadowIron")
+            .setDefaultLocalName("Shadow Iron")
+            .setMetaItemSubID(336)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x787878)
+            .setTool(10_240, 2, 32.0f)
+            .setTurbine(1.0f, 76.0f, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setMeltingPoint(8_400)
+            .setBlastFurnaceTemp(8_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Thaumium, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadShadowSteel() {
+        return new MaterialBuilder().setName("ShadowSteel")
+            .setDefaultLocalName("Shadow Steel")
+            .setMetaItemSubID(337)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x5a5a5a)
+            .setTool(768, 4, 6.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .setBlastFurnaceTemp(1_700)
+            .setBlastFurnaceRequired(true)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Steel, 1)
+            .addMaterial(Materials.Thaumium, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSoularium() {
+        return new MaterialBuilder().setName("Soularium")
+            .setDefaultLocalName("Soularium")
+            .setMetaItemSubID(379)
+            .setIconSet(TextureSet.SET_DARKSTEEL)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x916d3e)
+            .setTool(256, 2, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(800)
+            .setBlastFurnaceTemp(1_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.SoulSand, 1)
+            .addMaterial(Materials.Gold, 1)
+            .addMaterial(Materials.Ash, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfinityCatalyst() {
+        return new MaterialBuilder().setName("InfinityCatalyst")
+            .setDefaultLocalName("Infinity Catalyst")
+            .setChemicalFormula("If")
+            .setMetaItemSubID(394)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setTool(1_310_720, 10, 64.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(10_800)
+            .setBlastFurnaceTemp(10_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .setFuel(MaterialBuilder.FuelType.Magic, 500_000)
             .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
 
-        Materials.PrismarineContaminatedHydrogenPeroxide = new MaterialBuilder( 136, TextureSet.SET_METALLIC, "Prismarine-Contaminated Hydrogen Peroxide")
-            .addFluid()
-            .addCell()
-            .setRGB(68, 95, 89)
-            .setName("prismarinecontaminatedhydrogenperoxide")
-            .setColor(Dyes._NULL)
+    private static Materials loadTrinium() {
+        return new MaterialBuilder().setName("Trinium")
+            .setDefaultLocalName("Trinium")
+            .setChemicalFormula("Ke")
+            .setMetaItemSubID(868)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xc8c8d2)
+            .setTool(51_200, 8, 128.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(7_200)
+            .setBlastFurnaceTemp(7_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial();
+    }
+
+    private static void loadSuperconductorBases() {
+        Materials.Pentacadmiummagnesiumhexaoxid = loadPentacadmiummagnesiumhexaoxid();
+        Materials.Titaniumonabariumdecacoppereikosaoxid = loadTitaniumonabariumdecacoppereikosaoxid();
+        Materials.Uraniumtriplatinid = loadUraniumtriplatinid();
+        Materials.Vanadiumtriindinid = loadVanadiumtriindinid();
+        Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid = loadTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid();
+        Materials.Tetranaquadahdiindiumhexaplatiumosminid = loadTetranaquadahdiindiumhexaplatiumosminid();
+        Materials.Longasssuperconductornameforuvwire = loadLongasssuperconductornameforuvwire();
+        Materials.Longasssuperconductornameforuhvwire = loadLongasssuperconductornameforuhvwire();
+        Materials.SuperconductorUEVBase = loadSuperconductorUEVBase();
+        Materials.SuperconductorUIVBase = loadSuperconductorUIVBase();
+        Materials.SuperconductorUMVBase = loadSuperconductorUMVBase();
+    }
+
+    private static Materials loadPentacadmiummagnesiumhexaoxid() {
+        return new MaterialBuilder().setName("Pentacadmiummagnesiumhexaoxid")
+            .setDefaultLocalName("Superconductor Base MV")
+            .setMetaItemSubID(987)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x555555)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(2_500)
+            .setBlastFurnaceTemp(2_500)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Cadmium, 5)
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.Oxygen, 6)
+            .addAspect(TCAspects.ELECTRUM, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadTitaniumonabariumdecacoppereikosaoxid() {
+        return new MaterialBuilder().setName("Titaniumonabariumdecacoppereikosaoxid")
+            .setDefaultLocalName("Superconductor Base HV")
+            .setMetaItemSubID(988)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x331900)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(3_300)
+            .setBlastFurnaceTemp(3_300)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Barium, 9)
+            .addMaterial(Materials.Copper, 10)
+            .addMaterial(Materials.Oxygen, 20)
+            .addAspect(TCAspects.ELECTRUM, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadUraniumtriplatinid() {
+        return new MaterialBuilder().setName("Uraniumtriplatinid")
+            .setDefaultLocalName("Superconductor Base EV")
+            .setMetaItemSubID(989)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x008700)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(4_400)
+            .setBlastFurnaceTemp(4_400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Uranium, 1)
+            .addMaterial(Materials.Platinum, 3)
+            .addAspect(TCAspects.ELECTRUM, 9)
+            .constructMaterial();
+    }
+
+    private static Materials loadVanadiumtriindinid() {
+        return new MaterialBuilder().setName("Vanadiumtriindinid")
+            .setDefaultLocalName("Superconductor Base IV")
+            .setMetaItemSubID(990)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeMagenta)
+            .setRGB(0x330033)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(5_200)
+            .setBlastFurnaceTemp(5_200)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Vanadium, 1)
+            .addMaterial(Materials.Indium, 3)
+            .addAspect(TCAspects.ELECTRUM, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid() {
+        return new MaterialBuilder().setName("Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid")
+            .setDefaultLocalName("Superconductor Base LuV")
+            .setMetaItemSubID(991)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x994c00)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(6_000)
+            .setBlastFurnaceTemp(6_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Indium, 4)
+            .addMaterial(Materials.Tin, 2)
+            .addMaterial(Materials.Barium, 2)
+            .addMaterial(Materials.Titanium, 1)
+            .addMaterial(Materials.Copper, 7)
+            .addMaterial(Materials.Oxygen, 14)
+            .addAspect(TCAspects.ELECTRUM, 15)
+            .constructMaterial();
+    }
+
+    private static Materials loadTetranaquadahdiindiumhexaplatiumosminid() {
+        return new MaterialBuilder().setName("Tetranaquadahdiindiumhexaplatiumosminid")
+            .setDefaultLocalName("Superconductor Base ZPM")
+            .setMetaItemSubID(992)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(8_100)
+            .setBlastFurnaceTemp(8_100)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Naquadah, 4)
+            .addMaterial(Materials.Indium, 2)
+            .addMaterial(Materials.Palladium, 6)
+            .addMaterial(Materials.Osmium, 1)
+            .addAspect(TCAspects.ELECTRUM, 18)
+            .constructMaterial();
+    }
+
+    private static Materials loadLongasssuperconductornameforuvwire() {
+        return new MaterialBuilder().setName("Longasssuperconductornameforuvwire")
+            .setDefaultLocalName("Superconductor Base UV")
+            .setChemicalFormula("Nq*₄(Ir₃Os)₃EuSm")
+            .setMetaItemSubID(986)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xe0d207)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(9_900)
+            .setBlastFurnaceTemp(9_900)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Naquadria, 4)
+            .addMaterial(Materials.Osmiridium, 3)
+            .addMaterial(Materials.Europium, 1)
+            .addMaterial(Materials.Samarium, 1)
+            .addAspect(TCAspects.ELECTRUM, 21)
             .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_LuV);
+    }
 
-        Materials.PrismarineRichNitrobenzeneSolution = new MaterialBuilder( 137, TextureSet.SET_METALLIC, "Prismarine-Rich Nitrobenzene Solution")
-            .addFluid()
-            .addCell()
-            .setRGB(93, 118, 63)
-            .setName("prismarinerichnitrobenzenesolution")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismarineContaminatedNitrobenzeSolution = new MaterialBuilder( 138, TextureSet.SET_METALLIC, "Prismarine-Contaminated Nitrobenzene Solution")
-            .addFluid()
-            .addCell()
-            .setRGB(47, 51, 30)
-            .setName("prismarinecontaminatednitrobenzenesolution")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismaticGas = new MaterialBuilder( 161, TextureSet.SET_METALLIC, "Prismatic Gas")
-            .addFluid()
-            .addCell()
-            .setRGB(118, 186, 189)
-            .setName("prismaticgas")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismaticAcid = new MaterialBuilder(162,  new TextureSet("prismaticacid", true), "Prismatic Acid")
-            .addFluid()
-            .addCell()
-            .setRGBA(255, 255, 255, 0)
-            .setTransparent(true)
-            .setName("prismaticacid")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismaticNaquadah = new MaterialBuilder(
-            163,
-            TextureSet.SET_METALLIC,
-            "Prismatic Naquadah").setName("prismaticnaquadah")
-            .setTypes(1 | 2)
-            .setRGBA(55, 55, 55, 0)
-            .setTransparent(false)
+    private static Materials loadLongasssuperconductornameforuhvwire() {
+        return new MaterialBuilder().setName("Longasssuperconductornameforuhvwire")
+            .setDefaultLocalName("Superconductor Base UHV")
+            .setChemicalFormula("D₆(SpNt)₇Tn₅Am₆")
+            .setMetaItemSubID(985)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x2681bd)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(10_800)
+            .setBlastFurnaceTemp(10_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Draconium, 6)
+            .addMaterial(Materials.CosmicNeutronium, 7)
+            .addMaterial(Materials.Tritanium, 5)
+            .addMaterial(Materials.Americium, 6)
+            .addAspect(TCAspects.ELECTRUM, 24)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+    }
 
-        Materials.PrismaticNaquadahCompositeSlurry = new MaterialBuilder(164,  TextureSet.SET_FLUID, "Prismatic Naquadah Composite Slurry")
+    private static Materials loadSuperconductorUEVBase() {
+        return new MaterialBuilder().setName("SuperconductorUEVBase")
+            .setDefaultLocalName("Superconductor Base UEV")
+            .setChemicalFormula("D*₅If*₅(✦◆✦)(⚷⚙⚷Ni4Ti6)")
+            .setMetaItemSubID(974)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xae0808)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(11_700)
+            .setBlastFurnaceTemp(11_800)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.ELECTRUM, 27)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static Materials loadSuperconductorUIVBase() {
+        return new MaterialBuilder().setName("SuperconductorUIVBase")
+            .setDefaultLocalName("Superconductor Base UIV")
+            .setChemicalFormula("(C₁₄Os₁₁O₇Ag₃SpH₂O)₄?₁" + CustomGlyphs.SUBSCRIPT0 + "(Fs⚶)₆(⌘☯☯⌘)₅")
+            .setMetaItemSubID(131)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe558b1)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(12_700)
+            .setBlastFurnaceTemp(12_700)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.ELECTRUM, 34)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UHV);
+    }
+
+    private static Materials loadSuperconductorUMVBase() {
+        return new MaterialBuilder().setName("SuperconductorUMVBase")
+            .setDefaultLocalName("Superconductor Base UMV")
+            .setChemicalFormula(
+                "?₆Or₃(Hy⚶)₁₁(((CW)₇Ti₃)₃" + CustomGlyphs.FIRE + CustomGlyphs.EARTH + CustomGlyphs.CHAOS + ")₅۞₂")
+            .setMetaItemSubID(134)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xb526cd)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(13_600)
+            .setBlastFurnaceTemp(13_600)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addAspect(TCAspects.ELECTRUM, 40)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    }
+
+    private static void loadSuperconductors() {
+        Materials.SuperconductorMV = loadSuperconductorMV();
+        Materials.SuperconductorHV = loadSuperconductorHV();
+        Materials.SuperconductorEV = loadSuperconductorEV();
+        Materials.SuperconductorIV = loadSuperconductorIV();
+        Materials.SuperconductorLuV = loadSuperconductorLuV();
+        Materials.SuperconductorZPM = loadSuperconductorZPM();
+        Materials.SuperconductorUV = loadSuperconductorUV();
+        Materials.SuperconductorUHV = loadSuperconductorUHV();
+        Materials.SuperconductorUEV = loadSuperconductorUEV();
+        Materials.SuperconductorUIV = loadSuperconductorUIV();
+        Materials.SuperconductorUMV = loadSuperconductorUMV();
+    }
+
+    private static Materials loadSuperconductorMV() {
+        return new MaterialBuilder().setName("SuperconductorMV")
+            .setDefaultLocalName("Superconductor MV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x555555)
+            .addAspect(TCAspects.ELECTRUM, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorHV() {
+        return new MaterialBuilder().setName("SuperconductorHV")
+            .setDefaultLocalName("Superconductor HV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x331900)
+            .addAspect(TCAspects.ELECTRUM, 12)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorEV() {
+        return new MaterialBuilder().setName("SuperconductorEV")
+            .setDefaultLocalName("Superconductor EV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0x008700)
+            .addAspect(TCAspects.ELECTRUM, 18)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorIV() {
+        return new MaterialBuilder().setName("SuperconductorIV")
+            .setDefaultLocalName("Superconductor IV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeMagenta)
+            .setRGB(0x330033)
+            .addAspect(TCAspects.ELECTRUM, 24)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorLuV() {
+        return new MaterialBuilder().setName("SuperconductorLuV")
+            .setDefaultLocalName("Superconductor LuV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBrown)
+            .setRGB(0x994c00)
+            .addAspect(TCAspects.ELECTRUM, 30)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorZPM() {
+        return new MaterialBuilder().setName("SuperconductorZPM")
+            .setDefaultLocalName("Superconductor ZPM")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x0a0a0a)
+            .addAspect(TCAspects.ELECTRUM, 36)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorUV() {
+        return new MaterialBuilder().setName("SuperconductorUV")
+            .setDefaultLocalName("Superconductor UV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xe0d207)
+            .addAspect(TCAspects.ELECTRUM, 42)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorUHV() {
+        return new MaterialBuilder().setName("Superconductor")
+            .setDefaultLocalName("Superconductor UHV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x2681bd)
+            .addAspect(TCAspects.ELECTRUM, 48)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorUEV() {
+        return new MaterialBuilder().setName("SuperconductorUEV")
+            .setDefaultLocalName("Superconductor UEV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xae0808)
+            .addAspect(TCAspects.ELECTRUM, 54)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorUIV() {
+        return new MaterialBuilder().setName("SuperconductorUIV")
+            .setDefaultLocalName("Superconductor UIV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xe558b1)
+            .addAspect(TCAspects.ELECTRUM, 60)
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperconductorUMV() {
+        return new MaterialBuilder().setName("SuperconductorUMV")
+            .setDefaultLocalName("Superconductor UMV")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xb526cd)
+            .addAspect(TCAspects.ELECTRUM, 66)
+            .constructMaterial();
+    }
+
+    private static void loadWaterLineChemicals() {
+        Materials.ActivatedCarbon = loadActivatedCarbon();
+        Materials.PreActivatedCarbon = loadPreActivatedCarbon();
+        Materials.DirtyActivatedCarbon = loadDirtyActivatedCarbon();
+        Materials.PolyAluminiumChloride = loadPolyAluminiumChloride();
+        Materials.Ozone = loadOzone();
+        Materials.StableBaryonicMatter = loadStableBaryonicMatter();
+    }
+
+    private static Materials loadActivatedCarbon() {
+        return new MaterialBuilder().setName("ActivatedCarbon")
+            .setDefaultLocalName("Activated Carbon")
+            .setMetaItemSubID(563)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x141414)
+            .addDustItems()
+            .addMaterial(Materials.Carbon, 1)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static Materials loadPreActivatedCarbon() {
+        return new MaterialBuilder().setName("PreActivatedCarbon")
+            .setDefaultLocalName("Pre-Activated Carbon")
+            .setMetaItemSubID(564)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x0f3341)
+            .addDustItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.PhosphoricAcid, 1)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static Materials loadDirtyActivatedCarbon() {
+        return new MaterialBuilder()
+            // don't change this to the more sensible name or a centrifuge recipe appears
+            .setName("carbonactivateddirty")
+            .setDefaultLocalName("Dirty Activated Carbon")
+            .setMetaItemSubID(565)
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x6e6e6e)
+            .addDustItems()
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.PhosphoricAcid, 1)
+            .constructMaterial()
+            .disableAutoGeneratedRecycleRecipes();
+    }
+
+    private static Materials loadPolyAluminiumChloride() {
+        return new MaterialBuilder().setName("PolyaluminiumChloride")
+            .setDefaultLocalName("Polyaluminium Chloride")
+            .setChemicalFormula("Al₂(OH)₃Cl₃")
+            .setMetaItemSubID(566)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0xfcec05)
             .addFluid()
             .addCell()
-            .setRGBA(75, 75, 75, 0)
-            .setTransparent(true)
-            .setName("prismaticnaquadahcompositeslurry")
-            .setColor(Dyes._NULL)
+            .constructMaterial();
+    }
+
+    private static Materials loadOzone() {
+        return new MaterialBuilder().setName("Ozone")
+            .setDefaultLocalName("Ozone")
+            .setMetaItemSubID(568)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0xbef4fa)
+            .addGas()
+            .addCell()
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadStableBaryonicMatter() {
+        return new MaterialBuilder().setName("stablebaryonicmatter")
+            .setDefaultLocalName("Stabilised Baryonic Matter")
+            .setMetaItemSubID(569)
+            .setIconSet(new TextureSet("stablebaryonicmatter", true))
+            .setARGB(0x00ffffff)
+            .addFluid()
+            .addCell()
             .constructMaterial()
             .setHasCorrespondingFluid(true);
+    }
 
-        Materials.ComplexityCatalyst = new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst")
+    private static void loadRadoxLine() {
+        Materials.DilutedXenoxene = loadDilutedXenoxene();
+        Materials.RadoxCracked = loadRadoxCracked();
+        Materials.RadoxGas = loadRadoxGas();
+        Materials.RadoxHeavy = loadRadoxHeavy();
+        Materials.RadoxLight = loadRadoxLight();
+        Materials.RadoxPolymer = loadRadoxPolymer();
+        Materials.RadoxSuperHeavy = loadRadoxSuperHeavy();
+        Materials.RadoxSuperLight = loadRadoxSuperLight();
+        Materials.RawRadox = loadRawRadox();
+        Materials.Xenoxene = loadXenoxene();
+    }
+
+    private static Materials loadDilutedXenoxene() {
+        return new MaterialBuilder().setName("DilutedXenoxene")
+            .setDefaultLocalName("Diluted Xenoxene")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xcec8c4)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxCracked() {
+        return new MaterialBuilder().setName("CrackedRadox")
+            .setDefaultLocalName("Cracked Radox")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xb482b4)
+            .addGas()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxGas() {
+        return new MaterialBuilder().setName("RadoxGas")
+            .setDefaultLocalName("Radox Gas")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0xff82ff)
+            .addGas()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxHeavy() {
+        return new MaterialBuilder().setName("HeavyRadox")
+            .setDefaultLocalName("Heavy Radox")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x730073)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxLight() {
+        return new MaterialBuilder().setName("LightRadox")
+            .setDefaultLocalName("Light Radox")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x8c008c)
+            .addGas()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxPolymer() {
+        return new MaterialBuilder().setName("RadoxPoly")
+            .setDefaultLocalName("Radox Polymer")
+            .setMetaItemSubID(979)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x850080)
+            .setTool(346, 3, 8.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addCell()
+            .setMeltingPoint(6_203)
+            .addMaterial(Materials.Carbon, 14)
+            .addMaterial(Materials.Osmium, 11)
+            .addMaterial(Materials.Oxygen, 7)
+            .addMaterial(Materials.Silver, 3)
+            .addMaterial(Materials.CallistoIce, 1)
+            .addAspect(TCAspects.HUMANUS, 2)
+            .constructMaterial()
+            .setHasCorrespondingGas(true)
+            .setGasTemperature(12_406);
+    }
+
+    private static Materials loadRadoxSuperHeavy() {
+        return new MaterialBuilder().setName("SuperHeavyRadox")
+            .setDefaultLocalName("Super Heavy Radox")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x640064)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadRadoxSuperLight() {
+        return new MaterialBuilder().setName("SuperLightRadox")
+            .setDefaultLocalName("Super Light Radox")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x9b009b)
+            .addGas()
+            .constructMaterial();
+    }
+
+    private static Materials loadRawRadox() {
+        return new MaterialBuilder().setName("RawRadox")
+            .setDefaultLocalName("Raw Radox")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x501e50)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadXenoxene() {
+        return new MaterialBuilder().setName("Xenoxene")
+            .setDefaultLocalName("Xenoxene")
+            .setIconSet(TextureSet.SET_DULL)
+            .setRGB(0x858280)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static void loadNetheriteLine() {
+        Materials.NetherAir = loadNetherAir();
+        Materials.NetherSemiFluid = loadNethersemifluid();
+        Materials.NefariousGas = loadNefariousGas();
+        Materials.NefariousOil = loadNefariousOil();
+        Materials.PoorNetherWaste = loadPoorNetherWaste();
+        Materials.RichNetherWaste = loadRichNetherWaste();
+        Materials.HellishMetal = loadHellishMetal();
+        Materials.Netherite = loadNetherite();
+        Materials.ActivatedNetherite = loadActivatedNetherite();
+    }
+
+    private static Materials loadNetherAir() {
+        return new MaterialBuilder().setName("netherair")
+            .setDefaultLocalName("Nether Air")
+            .setMetaItemSubID(118)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0xeea39a)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadNethersemifluid() {
+        return new MaterialBuilder().setName("nethersemifluid")
+            .setDefaultLocalName("Nether Semi-Fluid")
+            .setMetaItemSubID(119)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0xdac172)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadNefariousGas() {
+        return new MaterialBuilder().setName("nefariousgas")
+            .setDefaultLocalName("Nefarious Gas")
+            .setMetaItemSubID(120)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0x300a05)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadNefariousOil() {
+        return new MaterialBuilder().setName("nefariousoil")
+            .setDefaultLocalName("Nefarious Oil")
+            .setMetaItemSubID(122)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0x391616)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPoorNetherWaste() {
+        return new MaterialBuilder().setName("poornetherwaste")
+            .setDefaultLocalName("Poor Nether Waste")
+            .setMetaItemSubID(123)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0xa0827e)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadRichNetherWaste() {
+        return new MaterialBuilder().setName("richnetherwaste")
+            .setDefaultLocalName("Rich Nether Waste")
+            .setMetaItemSubID(124)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setRGB(0xf9827e)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadHellishMetal() {
+        return new MaterialBuilder().setName("HellishMetal")
+            .setDefaultLocalName("Hellish Metal")
+            .setChemicalFormula("RhMa")
+            .setMetaItemSubID(125)
+            .setIconSet(TextureSet.SET_FIERY)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xffaaaaaa)
+            .addMetalItems()
+            .setMeltingPoint(1_200)
+            .setBlastFurnaceTemp(1_900)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadNetherite() {
+        return new MaterialBuilder().setName("Netherite")
+            .setDefaultLocalName("Netherite")
+            .setChemicalFormula("NrAuMa*")
+            .setMetaItemSubID(132)
+            .setIconSet(new TextureSet("netherite", true))
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xffffffff)
+            .addMetalItems()
+            .addGearItems()
+            .setMeltingPoint(1_200)
+            .setBlastFurnaceTemp(1_900)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+    }
+
+    private static Materials loadActivatedNetherite() {
+        return new MaterialBuilder().setName("activatednetherite")
+            .setDefaultLocalName("Activated Netherite")
+            .setMetaItemSubID(133)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x9c575a)
+            .addFluid()
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static void loadPrismaticAcidLine() {
+        Materials.PrismarineSolution = loadPrismarineSolution();
+        Materials.PrismarineContaminatedHydrogenPeroxide = loadPrismarinecontaminatedhydrogenperoxide();
+        Materials.PrismarineRichNitrobenzeneSolution = loadPrismarinerichnitrobenzenesolution();
+        Materials.PrismarineContaminatedNitrobenzeSolution = loadPrismarinecontaminatednitrobenzenesolution();
+        Materials.PrismaticGas = loadPrismaticGas();
+        Materials.PrismaticAcid = loadPrismaticAcid();
+        Materials.PrismaticNaquadah = loadPrismaticNaquadah();
+        Materials.PrismaticNaquadahCompositeSlurry = loadPrismaticNaquadahCompositeSlurry();
+    }
+
+    private static Materials loadPrismarineSolution() {
+        return new MaterialBuilder().setName("prismarinesolution")
+            .setDefaultLocalName("Prismarine Solution")
+            .setMetaItemSubID(135)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x559a8a)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismarinecontaminatedhydrogenperoxide() {
+        return new MaterialBuilder().setName("prismarinecontaminatedhydrogenperoxide")
+            .setDefaultLocalName("Prismarine-Contaminated Hydrogen Peroxide")
+            .setMetaItemSubID(136)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x445f59)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismarinerichnitrobenzenesolution() {
+        return new MaterialBuilder().setName("prismarinerichnitrobenzenesolution")
+            .setDefaultLocalName("Prismarine-Rich Nitrobenzene Solution")
+            .setMetaItemSubID(137)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x5d763f)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismarinecontaminatednitrobenzenesolution() {
+        return new MaterialBuilder().setName("prismarinecontaminatednitrobenzenesolution")
+            .setDefaultLocalName("Prismarine-Contaminated Nitrobenzene Solution")
+            .setMetaItemSubID(138)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x2f331e)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismaticGas() {
+        return new MaterialBuilder().setName("prismaticgas")
+            .setDefaultLocalName("Prismatic Gas")
+            .setMetaItemSubID(161)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x76babd)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismaticAcid() {
+        return new MaterialBuilder().setName("prismaticacid")
+            .setDefaultLocalName("Prismatic Acid")
+            .setMetaItemSubID(162)
+            .setIconSet(new TextureSet("prismaticacid", true))
+            .setARGB(0x00ffffff)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismaticNaquadah() {
+        return new MaterialBuilder().setName("prismaticnaquadah")
+            .setDefaultLocalName("Prismatic Naquadah")
+            .setMetaItemSubID(163)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setARGB(0x00373737)
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+    }
+
+    private static Materials loadPrismaticNaquadahCompositeSlurry() {
+        return new MaterialBuilder().setName("prismaticnaquadahcompositeslurry")
+            .setDefaultLocalName("Prismatic Naquadah Composite Slurry")
+            .setMetaItemSubID(164)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x004b4b4b)
+            .addFluid()
+            .addCell()
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static void loadMagicMaterials() {
+        Materials.ComplexityCatalyst = loadComplexityCatalyst();
+        Materials.EntropicCatalyst = loadEntropicCatalyst();
+    }
+
+    private static Materials loadComplexityCatalyst() {
+        return new MaterialBuilder().setName("ComplexityCatalyst")
+            .setDefaultLocalName("Complexity Catalyst")
+            .setMetaItemSubID(897)
+            .setIconSet(TextureSet.SET_DULL)
             .setRGB(0x8b93a9)
             .addFluid()
             .addCell()
             .constructMaterial();
+    }
 
-        Materials.EntropicCatalyst = new MaterialBuilder(899, TextureSet.SET_DULL, "Entropic Catalyst")
+    private static Materials loadEntropicCatalyst() {
+        return new MaterialBuilder().setName("EntropicCatalyst")
+            .setDefaultLocalName("Entropic Catalyst")
+            .setMetaItemSubID(899)
+            .setIconSet(TextureSet.SET_DULL)
             .setRGB(0xa99da5)
             .addFluid()
             .addCell()
             .constructMaterial();
-
-        // spotless:on
     }
 }

@@ -769,7 +769,6 @@ public class MaterialsUEVplus {
         "Molten Proto-Halkonite Steel Base").setName("protohalkonitebase")
             .addFluid()
             .addCell()
-            .setLiquidTemperature(10000)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(true)
             .setColor(Dyes._NULL)
@@ -782,7 +781,6 @@ public class MaterialsUEVplus {
         new TextureSet("hotprotohalkonite", true),
         "Hot Proto-Halkonite Steel").setName("hotprotohalkonite")
             .setTypes(1 | 2 | 64 | 128)
-            .setOreValue(2)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
             .constructMaterial()
@@ -808,7 +806,6 @@ public class MaterialsUEVplus {
         "Molten Exo-Halkonite Steel Preparation Base").setName("moltenexohalkonitebase")
             .addFluid()
             .addCell()
-            .setLiquidTemperature(10000)
             .setRGBA(30, 30, 30, 0)
             .setTransparent(false)
             .constructMaterial()
@@ -821,7 +818,6 @@ public class MaterialsUEVplus {
         new TextureSet("hotexohalkonite", true),
         "Hot Exo-Halkonite Steel").setName("hotexohalkonite")
             .setTypes(1 | 2 | 64 | 128)
-            .setOreValue(2)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
             .constructMaterial()

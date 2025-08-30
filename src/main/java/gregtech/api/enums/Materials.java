@@ -70,9 +70,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Spotless breaks the table below into many, many lines
     // spotless:off
     public static Materials _NULL = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Collections.singletonList(new TC_AspectStack(TCAspects.VACUOS, 1)));
-    /**
-     * Direct Elements
-     */
+
+    // Elements
     public static Materials Aluminium;
     public static Materials Americium;
     public static Materials Antimony;
@@ -91,11 +90,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Chrome;
     public static Materials Cobalt;
     public static Materials Copper;
-    public static Materials Deuterium;
+    public static Materials Desh; // Not a real element
     public static Materials Dysprosium;
-    public static Materials Empty;
+    public static Materials Empty; // Not a real element
     public static Materials Erbium;
     public static Materials Europium;
+    public static Materials Flerovium;
     public static Materials Fluorine;
     public static Materials Gadolinium;
     public static Materials Gallium;
@@ -103,7 +103,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Holmium;
     public static Materials Hydrogen;
     public static Materials Helium;
-    public static Materials Helium_3;
     public static Materials Indium;
     public static Materials Iridium;
     public static Materials Iron;
@@ -111,23 +110,25 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Lead;
     public static Materials Lithium;
     public static Materials Lutetium;
-    public static Materials Magic;
+    public static Materials Magic; // Not a real element
     public static Materials Magnesium;
     public static Materials Manganese;
     public static Materials Mercury;
+    public static Materials MeteoricIron; // Not a real element
     public static Materials Molybdenum;
+    public static Materials Naquadah; // Not a real element
     public static Materials Neodymium;
     public static Materials Neutronium;
     public static Materials Nickel;
     public static Materials Niobium;
     public static Materials Nitrogen;
+    public static Materials Oriharukon; // Not a real element
     public static Materials Osmium;
     public static Materials Oxygen;
     public static Materials Palladium;
     public static Materials Phosphorus;
     public static Materials Platinum;
     public static Materials Plutonium;
-    public static Materials Plutonium241;
     public static Materials Potassium;
     public static Materials Praseodymium;
     public static Materials Promethium;
@@ -147,15 +148,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Thulium;
     public static Materials Tin;
     public static Materials Titanium;
-    public static Materials Tritanium;
-    public static Materials Tritium;
+    public static Materials Tritanium; // Not a real element
     public static Materials Tungsten;
     public static Materials Uranium;
-    public static Materials Uranium235;
     public static Materials Vanadium;
     public static Materials Ytterbium;
     public static Materials Yttrium;
     public static Materials Zinc;
+
+    // Isotopes
+    public static Materials Deuterium;
+    public static Materials Helium_3;
+    public static Materials Plutonium241;
+    public static Materials Tritium;
+    public static Materials Uranium235;
+
+    // Water Line
+    public static Materials FlocculationWasteLiquid;
     public static Materials Grade1PurifiedWater;
     public static Materials Grade2PurifiedWater;
     public static Materials Grade3PurifiedWater;
@@ -164,57 +173,48 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Grade6PurifiedWater;
     public static Materials Grade7PurifiedWater;
     public static Materials Grade8PurifiedWater;
-    public static Materials FlocculationWasteLiquid;
 
-    //GT++ materials
-
-    public static Materials Flerovium;
-
-    /**
-     * The "Random Material" ones.
-     */
-    public static Materials Organic;
-    public static Materials AnyCopper;
+    // Random
     public static Materials AnyBronze;
+    public static Materials AnyCopper;
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
-    public static Materials Crystal;
-    public static Materials Quartz;
-    public static Materials Metal;
-    public static Materials Unknown;
-    public static Materials Cobblestone;
     public static Materials BrickNether;
+    public static Materials Cobblestone;
+    public static Materials Crystal;
+    public static Materials Metal;
+    public static Materials Organic;
+    public static Materials Quartz;
+    public static Materials Unknown;
 
-    /**
+    /*
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.
      * But I do see potential uses in some of these Materials.
      */
-    public static Materials Serpentine;
-    public static Materials Flux;
-    public static Materials OsmiumTetroxide;
-    public static Materials RubberTreeSap;
-    public static Materials PhasedIron;
-    public static Materials PhasedGold;
-    public static Materials HeeEndium;
-    public static Materials Teslatite;
-    public static Materials Fluix;
-    public static Materials DarkThaumium;
     public static Materials Alfium;
-    public static Materials Mutation;
     public static Materials Aquamarine;
-    public static Materials Ender;
-    public static Materials SodiumPeroxide;
-    public static Materials IridiumSodiumOxide;
-    public static Materials PlatinumGroupSludge;
+    public static Materials DarkThaumium;
     public static Materials Draconium;
     public static Materials DraconiumAwakened;
-    public static Materials PurpleAlloy;
+    public static Materials Ender;
+    public static Materials Fluix;
+    public static Materials Flux;
+    public static Materials HeeEndium;
     public static Materials InfusedTeslatite;
+    public static Materials IridiumSodiumOxide;
+    public static Materials Mutation;
+    public static Materials OsmiumTetroxide;
+    public static Materials PhasedGold;
+    public static Materials PhasedIron;
+    public static Materials PlatinumGroupSludge;
+    public static Materials PurpleAlloy;
+    public static Materials RubberTreeSap;
+    public static Materials Serpentine;
+    public static Materials SodiumPeroxide;
+    public static Materials Teslatite;
 
-    /**
-     * Unknown Material Components. Dead End Section.
-     */
+    // Unknown Material Components. Dead End Section.
     public static Materials Adamantium;
     public static Materials Adamite;
     public static Materials Adluorite;
@@ -231,30 +231,29 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Bitumen;
     public static Materials Black;
     public static Materials Blizz;
+    public static Materials Bloodstone;
     public static Materials Blueschist;
     public static Materials Bluestone;
-    public static Materials Bloodstone;
     public static Materials Blutonium;
     public static Materials Carmot;
     public static Materials Celenegil;
     public static Materials CertusQuartz;
     public static Materials CertusQuartzCharged;
     public static Materials Ceruclase;
+    public static Materials Chert;
+    public static Materials Chimerite;
+    public static Materials Chrysocolla;
     public static Materials Citrine;
     public static Materials CobaltHexahydrate;
     public static Materials ConstructionFoam;
-    public static Materials Chert;
-    public static Materials Chimerite;
     public static Materials Coral;
     public static Materials CrudeOil;
-    public static Materials Chrysocolla;
     public static Materials CrystalFlux;
     public static Materials Cyanite;
     public static Materials Dacite;
     public static Materials DarkIron;
     public static Materials DarkStone;
     public static Materials Demonite;
-    public static Materials Desh;
     public static Materials Desichalkos;
     public static Materials Dilithium;
     public static Materials Draconic;
@@ -277,8 +276,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Gabbro;
     public static Materials Glowstone;
     public static Materials Gneiss;
-    public static Materials Graphite;
     public static Materials Graphene;
+    public static Materials Graphite;
     public static Materials Greenschist;
     public static Materials Greenstone;
     public static Materials Greywacke;
@@ -289,15 +288,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ignatius;
     public static Materials Infernal;
     public static Materials Infuscolium;
-    public static Materials InfusedGold;
     public static Materials InfusedAir;
-    public static Materials InfusedFire;
+    public static Materials InfusedDull;
     public static Materials InfusedEarth;
-    public static Materials InfusedWater;
     public static Materials InfusedEntropy;
+    public static Materials InfusedFire;
+    public static Materials InfusedGold;
     public static Materials InfusedOrder;
     public static Materials InfusedVis;
-    public static Materials InfusedDull;
+    public static Materials InfusedWater;
     public static Materials Inolashite;
     public static Materials Invisium;
     public static Materials Jade;
@@ -309,14 +308,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Magma;
     public static Materials Mawsitsit;
     public static Materials Mercassium;
-    public static Materials MeteoricIron;
     public static Materials MeteoricSteel;
     public static Materials Meteorite;
     public static Materials Meutoite;
     public static Materials Migmatite;
     public static Materials Mimichite;
     public static Materials Moonstone;
-    public static Materials Naquadah;
     public static Materials NaquadahAlloy;
     public static Materials NaquadahEnriched;
     public static Materials Naquadria;
@@ -354,28 +351,41 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Vyroxeres;
     public static Materials Yellorium;
     public static Materials Zectium;
-    public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 8)));
-    public static Materials Advanced                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 4)));
 
-    /**
-     * Tiered materials, primarily Circuitry, Batteries and other Technical things
-     */
-    public static Materials ULV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Primitive"               ,   "Primitive"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 1)));
-    public static Materials LV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Basic"                   ,   "Basic"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 2)));
-    public static Materials MV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Good"                    ,   "Good"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 3)));
-    public static Materials HV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 4)));
-    public static Materials EV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Data"                    ,   "Data"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 5)));
-    public static Materials IV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Elite"                   ,   "Elite"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 6)));
-    public static Materials LuV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Master"                  ,   "Master"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 7)));
-    public static Materials ZPM                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 8)));
-    public static Materials UV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Superconductor"          ,   "Superconductor"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.MACHINA, 9)));
-    public static Materials UHV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Infinite"                ,   "Infinite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 10)));
-    public static Materials UEV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Bio"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 11)));
-    public static Materials UIV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Optical"                 ,   "Optical"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
-    public static Materials UMV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Exotic"                  ,   "Exotic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 13)));
-    public static Materials UXV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Cosmic"                  ,   "Cosmic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 14)));
-    public static Materials MAX                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transcendent"            ,   "Transcendent"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 15)));
+    // Tier materials
+    public static Materials ULV;
+    public static Materials LV;
+    public static Materials MV;
+    public static Materials HV;
+    public static Materials EV;
+    public static Materials IV;
+    public static Materials LuV;
+    public static Materials ZPM;
+    public static Materials UV;
+    public static Materials UHV;
+    public static Materials UEV;
+    public static Materials UIV;
+    public static Materials UMV;
+    public static Materials UXV;
+    public static Materials MAX;
 
+    // Aliases for the old style of tiered circuits
+    @Deprecated public static Materials Primitive;
+    @Deprecated public static Materials Basic;
+    @Deprecated public static Materials Good;
+    @Deprecated public static Materials Advanced;
+    @Deprecated public static Materials Data;
+    @Deprecated public static Materials Elite;
+    @Deprecated public static Materials Master;
+    @Deprecated public static Materials Ultimate;
+    @Deprecated public static Materials Infinite;
+    @Deprecated public static Materials Bio;
+    @Deprecated public static Materials Optical;
+    @Deprecated public static Materials Exotic;
+    @Deprecated public static Materials Cosmic;
+    @Deprecated public static Materials Transcendent;
+
+    // Circuitry, Batteries and other Technical things
     public static Materials Resistor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Resistor"                ,   "Resistor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
     public static Materials Diode                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Diode"                   ,   "Diode"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
     public static Materials Transistor              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transistor"              ,   "Transistor"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
@@ -385,43 +395,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 11)));
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
 
-    /**
-     * Aliases for the old style of tiered circuits
-     */
-    @Deprecated
-    public static Materials Primitive = Materials.ULV;
-    @Deprecated
-    public static Materials Basic = Materials.LV;
-    @Deprecated
-    public static Materials Good = Materials.MV;
-    @Deprecated
-    public static Materials Data = Materials.EV;
-    @Deprecated
-    public static Materials Elite = Materials.IV;
-    @Deprecated
-    public static Materials Master = Materials.LuV;
-    @Deprecated
-    public static Materials Infinite = Materials.UHV;
-    @Deprecated
-    public static Materials Bio = Materials.UEV;
-    @Deprecated
-    public static Materials Optical = Materials.UIV;
-    @Deprecated
-    public static Materials Exotic = Materials.UMV;
-    @Deprecated
-    public static Materials Cosmic = Materials.UXV;
-    @Deprecated
-    public static Materials Transcendent = Materials.MAX;
-
-
-
-
-    /**
-     * Not possible to determine exact Components
-     */
-    public static Materials Antimatter;
-    public static Materials Protomatter;
+    // Not possible to determine exact Components
     public static Materials AdvancedGlue;
+    public static Materials Antimatter;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
@@ -433,23 +409,24 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Coffee;
     public static Materials Creosote;
     public static Materials Ethanol;
-    public static Materials FishOil;
     public static Materials FermentedBiomass;
+    public static Materials FishOil;
+    public static Materials FryingOilHot;
     public static Materials Fuel;
     public static Materials Glue;
     public static Materials Gunpowder;
-    public static Materials FryingOilHot;
     public static Materials Honey;
     public static Materials Leather;
     public static Materials Lubricant;
     public static Materials McGuffium239;
-    public static Materials MeatRaw;
     public static Materials MeatCooked;
+    public static Materials MeatRaw;
     public static Materials Milk;
     public static Materials Mud;
     public static Materials Oil;
     public static Materials Paper;
     public static Materials Peat;
+    public static Materials Protomatter;
     public static Materials RareEarth;
     public static Materials Red;
     public static Materials Reinforced;
@@ -461,64 +438,67 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Unstable;
     public static Materials Unstableingot;
     public static Materials Vinegar;
+    public static Materials WeedEX9000;
     public static Materials Wheat;
     public static Materials WoodGas;
     public static Materials WoodTar;
     public static Materials WoodVinegar;
-    public static Materials WeedEX9000;
 
-    /**
-     * TODO: This
-     */
+    // TODO: this
     public static Materials AluminiumBrass;
-    public static Materials Osmiridium;
-    public static Materials Sunnarium;
     public static Materials Endstone;
     public static Materials Netherrack;
+    public static Materials Osmiridium;
     public static Materials SoulSand;
-    /**
-     * First Degree Compounds
-     */
-    public static Materials Methane;
-    public static Materials CarbonDioxide;
-    public static Materials NobleGases;
+    public static Materials Sunnarium;
+
+    // Degree 1 Compounds
+    public static Materials AceticAcid;
+    public static Materials Acetone;
     public static Materials Air;
-    public static Materials LiquidAir;
-    public static Materials LiquidNitrogen;
-    public static Materials LiquidOxygen;
-    public static Materials SiliconDioxide;
-    public static Materials Jasper;
+    public static Materials AllylChloride;
     public static Materials Almandine;
+    public static Materials Ammonia;
     public static Materials Andradite;
     public static Materials AnnealedCopper;
+    public static Materials AntimonyTrioxide;
+    public static Materials ArsenicTrioxide;
     public static Materials Asbestos;
     public static Materials Ash;
     public static Materials BandedIron;
     public static Materials BatteryAlloy;
+    public static Materials Benzene;
     public static Materials BlueTopaz;
     public static Materials Bone;
     public static Materials Brass;
+    public static Materials Brick;
     public static Materials Bronze;
     public static Materials BrownLimonite;
     public static Materials Calcite;
+    public static Materials CarbonDioxide;
     public static Materials Cassiterite;
     public static Materials CassiteriteSand;
     public static Materials Chalcopyrite;
     public static Materials Charcoal;
+    public static Materials Chlorobenzene;
     public static Materials Chromite;
     public static Materials ChromiumDioxide;
     public static Materials Cinnabar;
-    public static Materials Water;
-    public static Materials Clay;
     public static Materials Coal;
+    public static Materials CobaltOxide;
     public static Materials Cobaltite;
     public static Materials Cooperite;
+    public static Materials CupricOxide;
     public static Materials Cupronickel;
     public static Materials DarkAsh;
     public static Materials DeepIron;
     public static Materials Diamond;
+    public static Materials DilutedHydrochloricAcid;
     public static Materials Electrum;
     public static Materials Emerald;
+    public static Materials Epoxid;
+    public static Materials FerriteMixture;
+    public static Materials Ferrosilite;
     public static Materials FreshWater;
     public static Materials Galena;
     public static Materials Garnierite;
@@ -526,182 +506,180 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GreenSapphire;
     public static Materials Grossular;
     public static Materials HolyWater;
+    public static Materials HydricSulfide;
     public static Materials Ice;
     public static Materials Ilmenite;
-    public static Materials Rutile;
-    public static Materials Bauxite;
-    public static Materials Titaniumtetrachloride;
-    public static Materials Magnesiumchloride;
     public static Materials Invar;
     public static Materials Kanthal;
     public static Materials Lazurite;
+    public static Materials LiquidAir;
+    public static Materials LiquidNitrogen;
+    public static Materials LiquidOxygen;
     public static Materials Magnalium;
+    public static Materials Magnesia;
     public static Materials Magnesite;
+    public static Materials Magnesiumchloride;
     public static Materials Magnetite;
+    public static Materials Massicot;
+    public static Materials Methane;
     public static Materials Molybdenite;
     public static Materials Nichrome;
+    public static Materials NickelZincFerrite;
     public static Materials NiobiumNitride;
     public static Materials NiobiumTitanium;
     public static Materials NitroCarbon;
     public static Materials NitrogenDioxide;
+    public static Materials NobleGases;
     public static Materials Obsidian;
     public static Materials Phosphate;
     public static Materials PigIron;
     public static Materials Plastic;
-    public static Materials Epoxid;
-    public static Materials Polydimethylsiloxane;
-    public static Materials Silicone;
     public static Materials Polycaprolactam;
+    public static Materials Polydimethylsiloxane;
     public static Materials Polytetrafluoroethylene;
+    public static Materials Potash;
     public static Materials Powellite;
     public static Materials Pumice;
     public static Materials Pyrite;
+    public static Materials Pyrochlore;
     public static Materials Pyrolusite;
     public static Materials Pyrope;
+    public static Materials Quicklime;
+    public static Materials RawRubber;
     public static Materials RockSalt;
     public static Materials Rubber;
-    public static Materials RawRubber;
     public static Materials Ruby;
+    public static Materials Rutile;
     public static Materials Salt;
     public static Materials Saltpeter;
     public static Materials Sapphire;
     public static Materials Scheelite;
+    public static Materials SiliconDioxide;
+    public static Materials Silicone;
     public static Materials Snow;
+    public static Materials SodaAsh;
     public static Materials Sodalite;
     public static Materials SodiumPersulfate;
     public static Materials SodiumSulfide;
-    public static Materials HydricSulfide;
+    public static Materials Titaniumtetrachloride;
+    public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
+    public static Materials Zincite;
 
+    // Unclassified 01 materials
     public static Materials OilExtraHeavy;
     public static Materials OilHeavy;
-    public static Materials OilMedium;
     public static Materials OilLight;
+    public static Materials OilMedium;
+    public static Materials SuperCoolant;
+    public static Materials EnrichedHolmium;
+    public static Materials TengamPurified;
+    public static Materials TengamAttuned;
+    public static Materials TengamRaw;
 
+    // Unclassified 02 materials
+    public static Materials Gas;
+    public static Materials HeavyFuel;
+    public static Materials LightFuel;
+    public static Materials LPG;
+    public static Materials Naphtha;
     public static Materials NatruralGas;
     public static Materials SulfuricGas;
-    public static Materials Gas;
-    public static Materials SulfuricNaphtha;
-    public static Materials SulfuricLightFuel;
     public static Materials SulfuricHeavyFuel;
-    public static Materials Naphtha;
-    public static Materials LightFuel;
-    public static Materials HeavyFuel;
-    public static Materials LPG;
+    public static Materials SulfuricLightFuel;
+    public static Materials SulfuricNaphtha;
 
-    public static Materials ReinforceGlass;
+    // Unclassified 03 materials
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
+    public static Materials ReinforceGlass;
 
-    public static Materials Chlorobenzene;
-    public static Materials DilutedHydrochloricAcid;
-    public static Materials Pyrochlore;
-
+    // Unclassified 04 materials
     public static Materials GrowthMediumRaw;
     public static Materials GrowthMediumSterilized;
 
-    public static Materials FerriteMixture;
-    public static Materials NickelZincFerrite;
-
-    public static Materials Massicot;
-    public static Materials ArsenicTrioxide;
-    public static Materials CobaltOxide;
-    public static Materials Zincite;
-    public static Materials AntimonyTrioxide;
-    public static Materials CupricOxide;
-    public static Materials Ferrosilite;
-
-    public static Materials Magnesia;
-    public static Materials Quicklime;
-    public static Materials Potash;
-    public static Materials SodaAsh;
-
+    // Unclassified 05 materials
     public static Materials BioDiesel;
-    public static Materials NitrationMixture;
-    public static Materials Glycerol;
-    public static Materials SodiumBisulfate;
-    public static Materials PolyphenyleneSulfide;
-    public static Materials Dichlorobenzene;
-    public static Materials Polystyrene;
-    public static Materials Styrene;
-    public static Materials Isoprene;
-    public static Materials Tetranitromethane;
-    public static Materials Ethenone;
-    public static Materials Ethane;
-    public static Materials Propane;
+    public static Materials BisphenolA;
+    public static Materials Butadiene;
     public static Materials Butane;
     public static Materials Butene;
-    public static Materials Butadiene;
-    public static Materials RawStyreneButadieneRubber;
-    public static Materials StyreneButadieneRubber;
-    public static Materials Toluene;
+    public static Materials CalciumAcetateSolution;
+    public static Materials CarbonMonoxide;
+    public static Materials Chloramine;
+    public static Materials Chloroform;
+    public static Materials Chloromethane;
+    public static Materials Cumene;
+    public static Materials Dichlorobenzene;
+    public static Materials Dimethylamine;
+    public static Materials Dimethyldichlorosilane;
+    public static Materials Dimethylhydrazine;
+    public static Materials DinitrogenTetroxide;
     public static Materials Epichlorohydrin;
+    public static Materials Ethane;
+    public static Materials Ethenone;
+    public static Materials Ethylene;
+    public static Materials Glycerol;
+    public static Materials HydrochloricAcid;
+    public static Materials HydrofluoricAcid;
+    public static Materials HypochlorousAcid;
+    public static Materials IronIIIChloride;
+    public static Materials Isoprene;
+    public static Materials LifeEssence;
+    public static Materials MetalMixture;
+    public static Materials Methanol;
+    public static Materials MethylAcetate;
+    public static Materials NitrationMixture;
+    public static Materials NitricAcid;
+    public static Materials NitricOxide;
+    public static Materials Phenol;
+    public static Materials PhosphoricAcid;
+    public static Materials PhosphorousPentoxide;
+    public static Materials PolyphenyleneSulfide;
+    public static Materials Polystyrene;
+    public static Materials PolyvinylAcetate;
     public static Materials PolyvinylChloride;
-    public static Materials VinylChloride;
+    public static Materials Propane;
+    public static Materials Propene;
+    public static Materials SaltWater;
+    public static Materials SodiumBisulfate;
+    public static Materials SodiumHydroxide;
+    public static Materials SodiumOxide;
+    public static Materials Styrene;
+    public static Materials StyreneButadieneRubber;
     public static Materials SulfurDioxide;
     public static Materials SulfurTrioxide;
-    public static Materials NitricAcid;
-    public static Materials Dimethylhydrazine;
-    public static Materials Chloramine;
-    public static Materials Dimethylamine;
-    public static Materials DinitrogenTetroxide;
-    public static Materials NitricOxide;
-    public static Materials Ammonia;
-    public static Materials Dimethyldichlorosilane;
-    public static Materials Chloromethane;
-    public static Materials PhosphorousPentoxide;
     public static Materials Tetrafluoroethylene;
-    public static Materials HydrofluoricAcid;
-    public static Materials Chloroform;
-    public static Materials BisphenolA;
-    public static Materials AceticAcid;
-    public static Materials CalciumAcetateSolution;
-    public static Materials Acetone;
-    public static Materials Methanol;
-    public static Materials CarbonMonoxide;
-    public static Materials MetalMixture;
-    public static Materials Ethylene;
-    public static Materials Propene;
+    public static Materials Tetranitromethane;
+    public static Materials Toluene;
     public static Materials VinylAcetate;
-    public static Materials PolyvinylAcetate;
-    public static Materials MethylAcetate;
-    public static Materials AllylChloride;
-    public static Materials HydrochloricAcid;
-    public static Materials HypochlorousAcid;
-    public static Materials SodiumOxide;
-    public static Materials SodiumHydroxide;
-    public static Materials Benzene;
-    public static Materials Phenol;
-    public static Materials Cumene;
-    public static Materials PhosphoricAcid;
-    public static Materials SaltWater;
-    public static Materials IronIIIChloride;
-    public static Materials LifeEssence;
+    public static Materials VinylChloride;
 
-    //Roasted Ore Dust
-    public static Materials RoastedCopper;
+    // Roasted Ores
     public static Materials RoastedAntimony;
+    public static Materials RoastedArsenic;
+    public static Materials RoastedCobalt;
+    public static Materials RoastedCopper;
     public static Materials RoastedIron;
+    public static Materials RoastedLead;
     public static Materials RoastedNickel;
     public static Materials RoastedZinc;
-    public static Materials RoastedCobalt;
-    public static Materials RoastedArsenic;
-    public static Materials RoastedLead;
 
-    //Silicon Line
-    public static Materials SiliconSG;
-    public static Materials CalciumDisilicide;
-    public static Materials SiliconTetrafluoride;
-    public static Materials SiliconTetrachloride;
-    public static Materials Trichlorosilane;
-    public static Materials Hexachlorodisilane;
-    public static Materials Dichlorosilane;
-    public static Materials Silane;
-    public static Materials Calciumhydride;
+    // Silicon Line
     public static Materials AluminiumFluoride;
+    public static Materials CalciumDisilicide;
+    public static Materials Calciumhydride;
+    public static Materials Dichlorosilane;
+    public static Materials Hexachlorodisilane;
+    public static Materials Silane;
+    public static Materials SiliconSG;
+    public static Materials SiliconTetrachloride;
+    public static Materials SiliconTetrafluoride;
+    public static Materials Trichlorosilane;
 
-    public static Materials SolderingAlloy;
+    // Unclassified 06 materials
     public static Materials GalliumArsenide;
     public static Materials IndiumGalliumPhosphide;
+    public static Materials SolderingAlloy;
     public static Materials Spessartine;
     public static Materials Sphalerite;
     public static Materials StainlessSteel;
@@ -723,196 +701,200 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials YellowLimonite;
     public static Materials YttriumBariumCuprate;
 
-    /**
-     * Second Degree Compounds
-     */
-    public static Materials WoodSealed;
-    public static Materials LiveRoot;
-    public static Materials IronWood;
-    public static Materials Glass;
-    public static Materials BorosilicateGlass;
-    public static Materials Perlite;
-    public static Materials Borax;
-    public static Materials Lignite;
-    public static Materials Olivine;
-    public static Materials Opal;
-    public static Materials Amethyst;
-    public static Materials Redstone;
-    public static Materials Lapis;
-    public static Materials Blaze;
-    public static Materials EnderPearl;
-    public static Materials EnderEye;
-    public static Materials Flint;
-    public static Materials Diatomite;
-    public static Materials VolcanicAsh;
-    public static Materials Niter;
-    public static Materials Pyrotheum;
-    public static Materials Cryotheum;
-    public static Materials HydratedCoal;
-    public static Materials Apatite;
+    // Degree 2 Compounds
+    public static Materials Aluminiumhydroxide;
+    public static Materials Aluminiumoxide;
     public static Materials Alumite;
-    public static Materials Manyullyn;
-    public static Materials Steeleaf;
-    public static Materials Knightmetal;
-    public static Materials SterlingSilver;
-    public static Materials RoseGold;
-    public static Materials BlackBronze;
+    public static Materials Alunite;
+    public static Materials Amethyst;
+    public static Materials Apatite;
+    public static Materials Barite;
+    public static Materials Bastnasite;
+    public static Materials Bauxite;
+    public static Materials Bentonite;
+    public static Materials Biotite;
     public static Materials BismuthBronze;
+    public static Materials BlackBronze;
     public static Materials BlackSteel;
-    public static Materials RedSteel;
-    public static Materials BlueSteel;
-    public static Materials DamascusSteel;
-    public static Materials TungstenSteel;
-    public static Materials NitroCoalFuel;
-    public static Materials NitroFuel;
-    public static Materials RedAlloy;
+    public static Materials Blaze;
+    public static Materials Borax;
+    public static Materials Chrysotile;
+    public static Materials Clay;
     public static Materials CobaltBrass;
-    public static Materials TricalciumPhosphate;
-    public static Materials Basalt;
+    public static Materials Concrete;
+    public static Materials Cryolite;
+    public static Materials DamascusSteel;
+    public static Materials Diatomite;
+    public static Materials DilutedSulfuricAcid;
+    public static Materials Dolomite;
+    public static Materials ElectricalSteel;
+    public static Materials EnderPearl;
+    public static Materials EpoxidFiberReinforced;
+    public static Materials Flint;
+    public static Materials FullersEarth;
     public static Materials GarnetRed;
     public static Materials GarnetYellow;
-    public static Materials Marble;
-    public static Materials Sugar;
-    public static Materials Thaumium;
-    public static Materials Vinteum;
-    public static Materials Vis;
-    public static Materials Redrock;
-    public static Materials PotassiumFeldspar;
-    public static Materials Biotite;
-    public static Materials GraniteBlack;
-    public static Materials GraniteRed;
-    public static Materials Chrysotile;
-    public static Materials Realgar;
-    public static Materials VanadiumMagnetite;
-    public static Materials BasalticMineralSand;
-    public static Materials GraniticMineralSand;
-    public static Materials GarnetSand;
-    public static Materials QuartzSand;
-    public static Materials Bastnasite;
-    public static Materials Pentlandite;
-    public static Materials Spodumene;
-    public static Materials Pollucite;
-    public static Materials Tantalite;
-    public static Materials Lepidolite;
+    public static Materials Glass;
     public static Materials Glauconite;
     public static Materials GlauconiteSand;
-    public static Materials Vermiculite;
-    public static Materials Bentonite;
-    public static Materials FullersEarth;
-    public static Materials Pitchblende;
-    public static Materials Monazite;
-    public static Materials Malachite;
-    public static Materials Mirabilite;
-    public static Materials Mica;
-    public static Materials Trona;
-    public static Materials Barite;
+    public static Materials GraniteBlack;
+    public static Materials GraniticMineralSand;
     public static Materials Gypsum;
-    public static Materials Alunite;
-    public static Materials Dolomite;
-    public static Materials Wollastonite;
-    public static Materials Zeolite;
-    public static Materials Kyanite;
-    public static Materials Kaolinite;
-    public static Materials Talc;
-    public static Materials Soapstone;
-    public static Materials Concrete;
+    public static Materials HydratedCoal;
     public static Materials IronMagnetic;
-    public static Materials SteelMagnetic;
+    public static Materials Jasper;
+    public static Materials Kaolinite;
+    public static Materials Knightmetal;
+    public static Materials Kyanite;
+    public static Materials Lapis;
+    public static Materials Lepidolite;
+    public static Materials Lignite;
+    public static Materials LiveRoot;
+    public static Materials Malachite;
+    public static Materials Manyullyn;
+    public static Materials Marble;
+    public static Materials Mica;
+    public static Materials Mirabilite;
+    public static Materials Monazite;
     public static Materials NeodymiumMagnetic;
+    public static Materials Niter;
+    public static Materials NitroCoalFuel;
+    public static Materials NitroFuel;
+    public static Materials Olivine;
+    public static Materials Opal;
+    public static Materials Pentlandite;
+    public static Materials Perlite;
+    public static Materials Pitchblende;
+    public static Materials Pollucite;
+    public static Materials PotassiumFeldspar;
+    public static Materials QuartzSand;
+    public static Materials RawStyreneButadieneRubber;
+    public static Materials Realgar;
+    public static Materials RedMud;
+    public static Materials Redrock;
+    public static Materials Redstone;
+    public static Materials RoseGold;
     public static Materials SamariumMagnetic;
+    public static Materials Soapstone;
+    public static Materials SodiumAluminate;
+    public static Materials SodiumCarbonate;
+    public static Materials Spodumene;
+    public static Materials SteelMagnetic;
+    public static Materials Steeleaf;
+    public static Materials SterlingSilver;
+    public static Materials Sugar;
+    public static Materials Talc;
+    public static Materials Tantalite;
+    public static Materials Thaumium;
+    public static Materials TPV;
+    public static Materials TricalciumPhosphate;
+    public static Materials Trona;
     public static Materials TungstenCarbide;
+    public static Materials TungstenSteel;
+    public static Materials VanadiumMagnetite;
     public static Materials VanadiumSteel;
+    public static Materials Vermiculite;
+    public static Materials Vinteum;
+    public static Materials Vis;
+    public static Materials VolcanicAsh;
+    public static Materials Wollastonite;
+    public static Materials WoodSealed;
+    public static Materials Zeolite;
+
+    // Degree 3 Compounds
+    public static Materials Basalt;
+    public static Materials BlueSteel;
+    public static Materials BorosilicateGlass;
+    public static Materials Cryotheum;
+    public static Materials DarkSteel;
+    public static Materials EnderEye;
+    public static Materials Fireclay;
+    public static Materials GarnetSand;
     public static Materials HSSG;
+    public static Materials IronWood;
+    public static Materials Pyrotheum;
+    public static Materials GraniteRed;
+    public static Materials RedAlloy;
+    public static Materials RedSteel;
+    public static Materials RedstoneAlloy;
+
+    // Degree 4 Compounds
+    public static Materials BasalticMineralSand;
+    public static Materials ConductiveIron;
+    public static Materials EndSteel;
     public static Materials HSSE;
     public static Materials HSSS;
-    public static Materials TPV;
-    public static Materials DilutedSulfuricAcid;
-    public static Materials EpoxidFiberReinforced;
-    public static Materials SodiumCarbonate;
-    public static Materials SodiumAluminate;
-    public static Materials Aluminiumoxide;
-    public static Materials Aluminiumhydroxide;
-    public static Materials Cryolite;
-    public static Materials RedMud;
+    public static Materials PulsatingIron;
 
-    public static Materials Brick;
-    public static Materials Fireclay;
+    // Degree 5 Compounds
+    public static Materials CrystallineAlloy;
+    public static Materials EnergeticAlloy;
+    public static Materials EnergeticSilver;
+    public static Materials MelodicAlloy;
 
-    // Polybenzimidazole stuff
-    public static Materials PotassiumNitrade;
+    // Degree 6 Compounds
+    public static Materials CrystallinePinkSlime;
+    public static Materials StellarAlloy;
+    public static Materials VibrantAlloy;
+    public static Materials VividAlloy;
+
+    // Polybenzimidazole Line
     public static Materials ChromiumTrioxide;
-    public static Materials Nitrochlorobenzene;
-    public static Materials Dimethylbenzene;
-    public static Materials Potassiumdichromate;
-    public static Materials PhthalicAcid;
-    public static Materials Dichlorobenzidine;
     public static Materials Diaminobenzidin;
+    public static Materials Dichlorobenzidine;
+    public static Materials Dimethylbenzene;
     public static Materials Diphenylisophthalate;
+    public static Materials Nitrochlorobenzene;
+    public static Materials PhthalicAcid;
     public static Materials Polybenzimidazole;
+    public static Materials PotassiumNitrade;
+    public static Materials Potassiumdichromate;
 
-    //Gasoline
+    // Gasoline Line
+    public static Materials AntiKnock;
+    public static Materials GasolinePremium;
+    public static Materials GasolineRaw;
+    public static Materials GasolineRegular;
     public static Materials MTBEMixture;
     public static Materials MTBEMixtureAlt;
     public static Materials NitrousOxide;
-    public static Materials AntiKnock;
     public static Materials Octane;
-    public static Materials GasolineRaw;
-    public static Materials GasolineRegular;
-    public static Materials GasolinePremium;
 
-    //ADDED
-    public static Materials Electrotine;
-    public static Materials Galgadorian;
-    public static Materials EnhancedGalgadorian;
+    // Added
     public static Materials BloodInfusedIron;
+    public static Materials Electrotine;
+    public static Materials EnhancedGalgadorian;
+    public static Materials Galgadorian;
     public static Materials Shadow;
 
-    /**
-     * Galaxy Space 1.10 compat from Version 2.6
-     */
-    public static Materials Ledox;
-    public static Materials Quantium;
-    public static Materials Mytryl;
+    // Galaxy Space 1.10 compat from Version 2.6
     public static Materials BlackPlutonium;
     public static Materials CallistoIce;
     public static Materials Duralumin;
-    public static Materials Oriharukon;
+    public static Materials Ledox;
     public static Materials MysteriousCrystal;
+    public static Materials Mytryl;
+    public static Materials Quantium;
 
-    public static Materials RedstoneAlloy;
-    public static Materials Soularium;
-    public static Materials ConductiveIron;
-    public static Materials ElectricalSteel;
-    public static Materials EnergeticAlloy;
-    public static Materials VibrantAlloy;
-    public static Materials PulsatingIron;
-    public static Materials DarkSteel;
-    public static Materials EndSteel;
+    // Unclassified 07 materials
+    public static Materials AstralSilver;
+    public static Materials BlueAlloy;
     public static Materials CrudeSteel;
-    public static Materials CrystallineAlloy;
-    public static Materials MelodicAlloy;
-    public static Materials StellarAlloy;
-    public static Materials CrystallinePinkSlime;
-    public static Materials EnergeticSilver;
-    public static Materials VividAlloy;
     public static Materials Enderium;
     public static Materials Mithril;
-    public static Materials BlueAlloy;
     public static Materials ShadowIron;
     public static Materials ShadowSteel;
-    public static Materials AstralSilver;
+    public static Materials Soularium;
 
-    /**
-     * Op materials (draconic evolution above)
-     */
-    public static Materials InfinityCatalyst;
-    public static Materials Infinity;
+    // Overpowered Materials (Draconic Evolution & above)
     public static Materials Bedrockium;
-    public static Materials Trinium;
-    public static Materials Ichorium;
     public static Materials CosmicNeutronium;
+    public static Materials Ichorium;
+    public static Materials Infinity;
+    public static Materials InfinityCatalyst;
+    public static Materials Trinium;
 
-    // Superconductor base.
+    // Superconductor Bases
     public static Materials Pentacadmiummagnesiumhexaoxid;
     public static Materials Titaniumonabariumdecacoppereikosaoxid;
     public static Materials Uraniumtriplatinid;
@@ -925,7 +907,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUIVBase;
     public static Materials SuperconductorUMVBase;
 
-    // Superconductors.
+    // Superconductors
     public static Materials SuperconductorMV;
     public static Materials SuperconductorHV;
     public static Materials SuperconductorEV;
@@ -937,14 +919,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUEV;
     public static Materials SuperconductorUIV;
     public static Materials SuperconductorUMV;
-
-    public static Materials SuperCoolant;
-
-    public static Materials EnrichedHolmium;
-
-    public static Materials TengamPurified;
-    public static Materials TengamAttuned;
-    public static Materials TengamRaw;
 
     public static Materials DenseSteam = makeDenseSteam();
 
@@ -959,7 +933,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static Materials makeDenseSupercriticalSteam() {
         return new MaterialBuilder(234, TextureSet.SET_FLUID , "Dense Supercritical Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
     }
-    // Activated Carbon Line and waterline chemicals
+
+    // Waterline Chemicals
     public static Materials ActivatedCarbon;
     public static Materials PreActivatedCarbon;
     public static Materials DirtyActivatedCarbon;
@@ -967,17 +942,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ozone;
     public static Materials StableBaryonicMatter;
 
-    public static Materials RawRadox;
-    public static Materials RadoxSuperLight;
-    public static Materials RadoxLight;
-    public static Materials RadoxHeavy;
-    public static Materials RadoxSuperHeavy;
-    public static Materials Xenoxene;
+    // Radox Line
     public static Materials DilutedXenoxene;
     public static Materials RadoxCracked;
     public static Materials RadoxGas;
+    public static Materials RadoxHeavy;
+    public static Materials RadoxLight;
     public static Materials RadoxPolymer;
+    public static Materials RadoxSuperHeavy;
+    public static Materials RadoxSuperLight;
+    public static Materials RawRadox;
+    public static Materials Xenoxene;
 
+    // Netherite Line
     public static Materials NetherAir;
     public static Materials NetherSemiFluid;
     public static Materials NefariousGas;
@@ -986,6 +963,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RichNetherWaste;
     public static Materials HellishMetal;
     public static Materials Netherite;
+
+    // Prismatic Acid Line
     public static Materials ActivatedNetherite;
     public static Materials PrismarineSolution;
     public static Materials PrismarineContaminatedHydrogenPeroxide;
@@ -996,12 +975,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
 
-    // Misc GT Magic Materials
+    // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
-
-    // Aliases
-    public static Materials Steam; // Steam.getGas(..) reads better than Water.getGas(..)
 
     // spotless:on
 
@@ -1012,11 +988,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     static {
-        MaterialsBotania.init();
+        MaterialsBotania.load();
     }
 
     static {
-        MaterialsKevlar.init();
+        MaterialsKevlar.load();
     }
 
     static {
@@ -1084,7 +1060,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public int mFuelPower = 0;
     public int mFuelType = 0;
     public int mExtraData = 0;
-    public int mOreValue = 0;
     public int mOreMultiplier = 1;
     public int mByProductMultiplier = 1;
     public int mSmeltingMultiplier = 1;
@@ -1120,6 +1095,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false, canBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3], steamCrackedFluids = new Fluid[3];
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         boolean aUnificatable, String aName, String aDefaultLocalName) {
         this(
@@ -1136,6 +1112,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             "null");
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         boolean aUnificatable, String aName, String aDefaultLocalName, String aConfigSection, boolean aCustomOre,
         String aCustomID) {
@@ -1154,6 +1131,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mIconSet = aIconSet;
     }
 
+    @Deprecated
     public Materials(Materials aMaterialInto, boolean aReRegisterIntoThis) {
         mUnificatable = false;
         mDefaultLocalName = aMaterialInto.mDefaultLocalName;
@@ -1165,6 +1143,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mIconSet = TextureSet.SET_NONE;
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1197,6 +1176,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             "null");
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1249,6 +1229,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * @param aBlastFurnaceRequired If this requires a Blast Furnace.
      * @param aColor                Vanilla MC Wool Color which comes the closest to this.
      */
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1272,7 +1253,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mTransparent = aTransparent;
         mFuelPower = aFuelPower;
         mFuelType = aFuelType;
-        mOreValue = aOreValue;
         mDensityMultiplier = aDensityMultiplier;
         mDensityDivider = aDensityDivider;
         mDensity = (M * aDensityMultiplier) / aDensityDivider;
@@ -1287,6 +1267,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if ((mTypes & 2) != 0) add(SubTag.SMELTING_TO_FLUID);
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1318,6 +1299,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mAspects.addAll(aAspects);
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1357,6 +1339,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mAspects.addAll(aAspects);
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1390,6 +1373,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             null);
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1436,13 +1420,65 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 for (TCAspects.TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) tAspect.addToAspectList(mAspects);
         }
 
-        if (mMeltingPoint < 0) mMeltingPoint = (short) (tMeltingPoint / tAmountOfComponents);
+        if (mMeltingPoint < 0) mMeltingPoint = 0;
 
         tAmountOfComponents *= aDensityMultiplier;
         tAmountOfComponents /= aDensityDivider;
         if (aAspects == null) for (TCAspects.TC_AspectStack tAspect : mAspects)
             tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
         else mAspects.addAll(aAspects);
+    }
+
+    protected Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+        float steamMultiplier, float gasMultiplier, float plasmaMultiplier, int aTypes, int aR, int aG, int aB, int aA,
+        String aName, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp,
+        boolean aBlastFurnaceRequired, boolean aAutoGenerateBlastFurnaceRecipes,
+        boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent, int aDensityMultiplier, int aDensityDivider,
+        Dyes aColor, int aExtraData, Element aElement, String chemicalFormula, List<MaterialStack> aMaterialList,
+        List<TCAspects.TC_AspectStack> aAspects) {
+        this(
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            0,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor,
+            aExtraData,
+            aMaterialList,
+            aAspects);
+        this.mSteamMultiplier = steamMultiplier;
+        this.mGasMultiplier = gasMultiplier;
+        this.mPlasmaMultiplier = plasmaMultiplier;
+        this.mAutoGenerateBlastFurnaceRecipes = aAutoGenerateBlastFurnaceRecipes;
+        this.mAutoGenerateVacuumFreezerRecipes = aAutoGenerateVacuumFreezerRecipes;
+        if (aElement != null) {
+            mElement = aElement;
+            mElement.mLinkedMaterials.add(this);
+            if (mElement == Element._NULL) {
+                mChemicalFormula = "Empty";
+            } else {
+                mChemicalFormula = aElement.toString();
+                mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
+            }
+        } else {
+            mChemicalFormula = chemicalFormula;
+        }
     }
 
     private static void setSmeltingInto() {
@@ -1936,213 +1972,63 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void overrideChemicalFormulas() {
-        InfusedAir.mChemicalFormula = CustomGlyphs.AIR;
-        InfusedEarth.mChemicalFormula = CustomGlyphs.EARTH;
-        InfusedFire.mChemicalFormula = CustomGlyphs.FIRE;
-        InfusedWater.mChemicalFormula = CustomGlyphs.WATER;
-        Glue.mChemicalFormula = "No Horses were harmed in the the making of this substance";
-        AdvancedGlue.mChemicalFormula = "A chemically approved glue!";
-        UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
-        WoodSealed.mChemicalFormula = "";
-        Wood.mChemicalFormula = "";
-        HeeEndium.mChemicalFormula = "Em";
-        Alduorite.mChemicalFormula = "SpAl";
-        PlatinumGroupSludge.mChemicalFormula = "(SiO\u2082)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "Au"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "Pt"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "Pd"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "??";
-        Ceruclase.mChemicalFormula = "SpAg";
-        Orichalcum.mChemicalFormula = "SpBi";
-        Rubracium.mChemicalFormula = "SpRb";
-        Vulcanite.mChemicalFormula = "SpCu";
-        Vyroxeres.mChemicalFormula = "SpBe";
-        Force.mChemicalFormula = "Fc⚙";
-        DarkAsh.mChemicalFormula = "C" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??";
-        Ash.mChemicalFormula = "??";
-        FierySteel.mChemicalFormula = CustomGlyphs.BRIMSTONE + "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C";
-        RareEarth.mChemicalFormula = "??????";
-        WroughtIron.mChemicalFormula = "Fe*";
-        AnnealedCopper.mChemicalFormula = "Cu*";
-        PigIron.mChemicalFormula = "\u00bfFe?";
-        LiveRoot.mChemicalFormula = "(COH\u2083)Ma";
-        Vinteum.mChemicalFormula = "FeMa*";
-        Forcicium.mChemicalFormula = "\u25C3\u25C1\u25C0";
-        Forcillium.mChemicalFormula = "\u25B6\u25B7\u25B9";
-        DarkIron.mChemicalFormula = "Sp\u2086Fe" + CustomGlyphs.PICKAXE;
-        IronMagnetic.mChemicalFormula = "Fe" + CustomGlyphs.MAGNET;
-        SteelMagnetic.mChemicalFormula = "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C" + CustomGlyphs.MAGNET;
-        NeodymiumMagnetic.mChemicalFormula = "Nd" + CustomGlyphs.MAGNET;
-        SamariumMagnetic.mChemicalFormula = "Sm" + CustomGlyphs.MAGNET;
-        MetalMixture.mChemicalFormula = "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "O"
-            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-            + "??";
-        Void.mChemicalFormula = "ShFeMa\u2083";
-        Shadow.mChemicalFormula = "Sh\u2086(FeMa\u2083)\u2082";
-        BloodInfusedIron.mChemicalFormula = CustomGlyphs.BRIMSTONE + "Fe";
-        DamascusSteel.mChemicalFormula = "(Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C)\u2089Mn\u2084Cr\u2084CSiV";
-        Dilithium.mChemicalFormula = "\u2233Li\u2233Li\u2233";
-        NetherStar.mChemicalFormula = "(Nh\u2082Ma)\u2083" + CustomGlyphs.CIRCLE_CROSS + "C\u2086";
-        Unstable.mChemicalFormula = CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C\u230B";
-        RoastedAntimony.mChemicalFormula = "Sb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedArsenic.mChemicalFormula = "As" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedCobalt.mChemicalFormula = "Co" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedCopper.mChemicalFormula = "Cu" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedIron.mChemicalFormula = "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedLead.mChemicalFormula = "Pb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedNickel.mChemicalFormula = "Ni" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        RoastedZinc.mChemicalFormula = "Zn" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        Reinforced.mChemicalFormula = "Fe\u2082(C(MgFeSi\u2082O\u2088)\u2088)";
-        Galgadorian.mChemicalFormula = "???Fe\u2082C\u2089Nh\u2083";
-        EnhancedGalgadorian.mChemicalFormula = "???Fe\u2082C\u2089Nh\u2083";
-        QuartzSand.mChemicalFormula = "(SiO\u2082)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??";
-        Blizz.mChemicalFormula = "\u2746Ma";
-        Firestone.mChemicalFormula = "\u2f55";
-        InfusedOrder.mChemicalFormula = CustomGlyphs.ORDER;
-        InfusedEntropy.mChemicalFormula = CustomGlyphs.CHAOS;
-        MaterialsUEVplus.BlackDwarfMatter.mChemicalFormula = ">>\u2205<<";
-        MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "\u2205";
-        MysteriousCrystal.mChemicalFormula = CustomGlyphs.CIRCLE_STAR;
-        Cryotheum.mChemicalFormula = "(KNO\u2083)(" + Redstone.mChemicalFormula
-            + ")(H\u2082O)("
-            + Blizz.mChemicalFormula
-            + ")";
-        Uranium235.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT3
-            + CustomGlyphs.SUPERSCRIPT5
-            + "U";
-        Plutonium241.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT4
-            + CustomGlyphs.SUPERSCRIPT1
-            + "Pu";
-
-        Electrotine.mChemicalFormula = "Rp";
-        Trinium.mChemicalFormula = "Ke";
-        Naquadah.mChemicalFormula = "Nq";
-        NaquadahEnriched.mChemicalFormula = "Nq+";
-        Naquadria.mChemicalFormula = "Nq*";
-        NaquadahAlloy.mChemicalFormula = "Nq\u2082KeC";
-        Sunnarium.mChemicalFormula = "Su";
-        Adamantium.mChemicalFormula = "Ad";
-        InfusedGold.mChemicalFormula = "AuMa*";
-        MeteoricIron.mChemicalFormula = "SpFe";
-        MeteoricSteel.mChemicalFormula = "SpFe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C";
-        Duranium.mChemicalFormula = "Du";
-        Tritanium.mChemicalFormula = "Tn";
-        Ardite.mChemicalFormula = "Ai";
-        Manyullyn.mChemicalFormula = "AiCo";
-        Mytryl.mChemicalFormula = "SpPt\u2082FeMa";
-        BlackPlutonium.mChemicalFormula = "SpPu";
-        Ledox.mChemicalFormula = "SpPb";
-        CallistoIce.mChemicalFormula = "SpH\u2082O";
-        Quantium.mChemicalFormula = "Qt";
-        Desh.mChemicalFormula = "De";
-        Oriharukon.mChemicalFormula = "Oh";
-        Draconium.mChemicalFormula = "D";
-        DraconiumAwakened.mChemicalFormula = "D*";
-        BlueAlloy.mChemicalFormula = "AgRp\u2084";
-        RedAlloy.mChemicalFormula = "Cu(" + Redstone.mChemicalFormula + ")\u2084";
-        AnyIron.mChemicalFormula = "Fe";
-        AnyCopper.mChemicalFormula = "Cu";
-        ElectrumFlux.mChemicalFormula = "The formula is too long...";
-        DeepIron.mChemicalFormula = "Sp\u2082Fe";
-        Ichorium.mChemicalFormula = "IcMa";
-        Infinity.mChemicalFormula = "If*";
-        InfinityCatalyst.mChemicalFormula = "If";
-        CosmicNeutronium.mChemicalFormula = "SpNt";
-        Aluminiumhydroxide.mChemicalFormula = "Al\u0028OH\u0029\u2083";
-        MaterialsKevlar.LiquidCrystalKevlar.mChemicalFormula = "[-CO-C\u2086H\u2084-CO-NH-C\u2086H\u2084-NH-]n";
-        MaterialsKevlar.RhodiumChloride.mChemicalFormula = "RhCl\u2083";
-        MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C\u2086H\u2085)\u2083)\u2083";
-        MaterialsKevlar.CobaltIINitrate.mChemicalFormula = "Co(NO\u2083)\u2082";
-        MaterialsKevlar.CobaltIIHydroxide.mChemicalFormula = "Co(OH)\u2082";
-        SiliconSG.mChemicalFormula = "Si*";
-        NetherQuartz.mChemicalFormula = "SiO\u2082";
-        Quartzite.mChemicalFormula = "SiO\u2082";
-        CertusQuartz.mChemicalFormula = "SiO\u2082";
-        CertusQuartzCharged.mChemicalFormula = "SiO\u2082" + CustomGlyphs.HIGH_VOLTAGE;
+        MaterialsUEVplus.BlackDwarfMatter.mChemicalFormula = ">>∅<<";
+        MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "∅";
+        MaterialsKevlar.LiquidCrystalKevlar.mChemicalFormula = "[-CO-C₆H₄-CO-NH-C₆H₄-NH-]n";
+        MaterialsKevlar.RhodiumChloride.mChemicalFormula = "RhCl₃";
+        MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C₆H₅)₃)₃";
+        MaterialsKevlar.CobaltIINitrate.mChemicalFormula = "Co(NO₃)₂";
+        MaterialsKevlar.CobaltIIHydroxide.mChemicalFormula = "Co(OH)₂";
         MaterialsUEVplus.SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
         MaterialsUEVplus.Universium.mChemicalFormula = "A tear into the space beyond space";
-        MaterialsUEVplus.Eternity.mChemicalFormula = "En\u29BC";
-        MaterialsUEVplus.MagMatter.mChemicalFormula = "M\u238B";
+        MaterialsUEVplus.Eternity.mChemicalFormula = "En⦼";
+        MaterialsUEVplus.MagMatter.mChemicalFormula = "M⎋";
         MaterialsUEVplus.RawStarMatter.mChemicalFormula = CustomGlyphs.GALAXY;
-        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "\u21F2"
+        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "⇲"
             + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
             + CustomGlyphs.GALAXY
             + CustomGlyphs.ARROW_CORNER_NORTH_WEST
-            + "\u21F1";
-        Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
-        Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
-        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7Ni4Ti6)";
-        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
-            + CustomGlyphs.SUBSCRIPT0
-            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
-        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083"
-            + CustomGlyphs.FIRE
-            + CustomGlyphs.EARTH
-            + CustomGlyphs.CHAOS
-            + ")\u2085\u06DE\u2082";
-        Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
-        EnrichedHolmium.mChemicalFormula = "Nq+\u2084Ho\u2081";
-        Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade2PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade3PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade4PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade5PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
-        Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
-        FlocculationWasteLiquid.mChemicalFormula = "Al\u2082(OH)\u2083??Cl\u2083";
-        TengamRaw.mChemicalFormula = "M" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
-        TengamPurified.mChemicalFormula = "M";
-        TengamAttuned.mChemicalFormula = CustomGlyphs.HIGH_VOLTAGE + "M" + CustomGlyphs.MAGNET;
+            + "⇱";
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
         MaterialsUEVplus.DimensionallyTranscendentResidue.mChemicalFormula = CustomGlyphs.SPARKLES + "-"
             + CustomGlyphs.EMPTY_SET;
-        PolyAluminiumChloride.mChemicalFormula = "Al\u2082(OH)\u2083Cl\u2083";
         MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
             + EnumChatFormatting.RESET
             + EnumChatFormatting.GRAY
             + "g"
             + EnumChatFormatting.OBFUSCATED
             + "X";
-        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
-        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081" + CustomGlyphs.SUBSCRIPT0
-            + "Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085"
+        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "〄";
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si₅O₁" + CustomGlyphs.SUBSCRIPT0
+            + "Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅"
             + CustomGlyphs.SUBSCRIPT0
-            + "C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
+            + "C)₅Og*Pr₁₅((C₁₄Os₁₁O₇Ag₃SpH₂O)₄?₁"
             + CustomGlyphs.SUBSCRIPT0
-            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
-        MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
-        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081("
-            + FierySteel.mChemicalFormula
-            + ")\u2087"
+            + "(Fs⚶)₆(⌘☯☯⌘)₅)₆〄₄";
+        MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "✢";
+        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn₁₁Or₈Rb₁₁(" + FierySteel.mChemicalFormula
+            + ")₇"
             + Firestone.mChemicalFormula
-            + "\u2081\u2083?\u2081\u2083";
-        MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
-        Tartarite.mChemicalFormula = "Tt";
+            + "₁₃?₁₃";
+        MaterialsUEVplus.Creon.mChemicalFormula = "⸎";
         MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
         // I hate this
         MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula = "("
             + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
-            + ")\u2082"
-            + "(W\u2088Nq*\u2087("
+            + ")₂"
+            + "(W₈Nq*₇("
             + Materials.Bedrockium.mChemicalFormula
-            + ")\u2084C\u2084V\u2083SpPu)\u2082"
+            + ")₄C₄V₃SpPu)₂"
             + Tartarite.mChemicalFormula
-            + "\u2082"
-            + "((CW)\u2087Ti\u2083)\u2083"
+            + "₂"
+            + "((CW)₇Ti₃)₃"
             + CustomGlyphs.FIRE
             + CustomGlyphs.EARTH
             + CustomGlyphs.CHAOS
             + "If*";
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
-        Materials.HellishMetal.mChemicalFormula = "RhMa";
-        Materials.Netherite.mChemicalFormula = "NrAuMa*";
     }
 
     private static void initSubTags() {
@@ -2951,6 +2837,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setTurbine(float, float, float)} on a `MaterialBuilder` instead. */
+    @Deprecated
     public Materials setTurbineMultipliers(float steamMultiplier, float gasMultiplier, float plasmaMultiplier) {
         mSteamMultiplier = steamMultiplier;
         mGasMultiplier = gasMultiplier;
