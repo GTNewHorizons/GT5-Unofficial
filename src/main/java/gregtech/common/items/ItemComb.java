@@ -920,7 +920,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             100,
             NI,
             50 * 100);
-
         // (Noble)gas Line
         addFluidExtractorProcess(CombType.HELIUM, Materials.Helium.getGas(250), Voltage.HV);
         addFluidExtractorProcess(CombType.ARGON, Materials.Argon.getGas(250), Voltage.MV);
