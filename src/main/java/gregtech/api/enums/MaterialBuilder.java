@@ -366,6 +366,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    @Deprecated
     public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
         this.aspects = aspects;
         return this;
