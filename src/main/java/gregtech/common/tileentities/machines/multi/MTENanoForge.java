@@ -20,6 +20,9 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,6 +57,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -64,6 +68,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -449,17 +454,26 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                drainedMagmatter = 0;
                 if (mSpecialTier >= 4) {
                     boolean foundNanite = false;
-                    ItemStack inputNanite = recipe.mOutputs[0];
+                    ItemStack outputNanite = recipe.mOutputs[0];
+                    List<MaterialStack> inputNaniteMats = new ArrayList<>();
+
+                    for (ItemStack input : recipe.mInputs) {
+                        ItemData data = GTOreDictUnificator.getAssociation(input);
+                        if (data == null) {
+                            continue;
+                        }
+                        if (data.mPrefix == OrePrefixes.nanite) {
+                            inputNaniteMats.add(data.mMaterial);
+                        }
+                    }
 
                     int busWithNaniteIndex = 0;
                     int slotWithNaniteIndex = 0;
 
-                    for (int i = 0; i < mInputBusses.size(); i++) {
-                        if (foundNanite) {
-                            break;
-                        }
+                    busScan: for (int i = 0; i < mInputBusses.size(); i++) {
                         MTEHatchInputBus inputBus = mInputBusses.get(i);
                         ItemStack[] busInventory = inputBus.getRealInventory();
                         for (int j = 0; j < busInventory.length; j++) {
@@ -472,18 +486,31 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                             } else {
                                 inputItem = inputBus.getStackInSlot(j);
                             }
-                            if (inputItem != null && inputItem.isItemEqual(inputNanite)) {
-                                busWithNaniteIndex = i;
-                                slotWithNaniteIndex = j;
-                                foundNanite = true;
-                                break;
+                            if (inputItem != null) {
+                                ItemData data = GTOreDictUnificator.getAssociation(inputItem);
+                                if (data == null) {
+                                    continue;
+                                }
+                                if (data.mPrefix == OrePrefixes.nanite) {
+                                    if (inputItem.isItemEqual(outputNanite)) {
+                                        busWithNaniteIndex = i;
+                                        slotWithNaniteIndex = j;
+                                        foundNanite = true;
+                                    } else {
+                                        if (!inputNaniteMats
+                                            .contains(GTOreDictUnificator.getAssociation(inputItem).mMaterial)) {
+                                            foundNanite = false;
+                                            break busScan;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
 
                     if (renderActive) {
                         TileEntityNanoForgeRenderer tile = getRenderer();
-                        ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
+                        ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
                         if (data != null) {
                             Materials mat = data.mMaterial.mMaterial;
                             short[] color = mat.mRGBa;
@@ -507,10 +534,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                                 .decrStackSize(slotWithNaniteIndex, 1);
                         }
                     }
-                } else {
-                    drainedMagmatter = 0;
                 }
-                maxParallel = Math.max((int) (drainedMagmatter / (144 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
+                maxParallel = Math
+                    .max((int) (drainedMagmatter / (288 / GTUtility.powInt(2, 4 - recipe.mSpecialValue))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
             }
@@ -524,8 +550,15 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe)
-                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
+                // Perfect OC for recipes for struct tier 1-3 if recipe tier is lower than struct tier
+                // If struct is t4, only apply perfect OC if the parallel mechanic is used
+                double OCFactor = 2.0;
+                if ((mSpecialTier < 4 || recipe.mSpecialValue < 3) && mSpecialTier > recipe.mSpecialValue) {
+                    OCFactor = 4.0;
+                } else if (recipe.mSpecialValue == 3 && maxParallel > 1) {
+                    OCFactor = 4.0;
+                }
+                return super.createOverclockCalculator(recipe).setDurationDecreasePerOC(OCFactor)
                     .setDurationModifier(mSpecialTier >= 4 ? GTUtility.powInt(0.9999, maxParallel) : 1);
             }
         };
@@ -884,13 +917,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.2")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 80)
+                    .setPos(0, 75)
                     .setSize(244, 60))
             .widget(
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.3")
                     .setDefaultColor(EnumChatFormatting.GREEN)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 140)
+                    .setPos(0, 135)
                     .setSize(244, 20))
             .widget(
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.4")
@@ -909,7 +942,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     .setDefaultColor(EnumChatFormatting.GREEN)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(0, 230)
-                    .setSize(244, 20));
+                    .setSize(244, 20))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.7")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 255)
+                    .setSize(244, 50));
         builder.widget(
             scrollable.setSize(244, 244)
                 .setPos(3, 3))
