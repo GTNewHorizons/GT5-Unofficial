@@ -135,6 +135,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    @Deprecated
     public MaterialBuilder setTypes(int types) {
         this.types = types;
         return this;
