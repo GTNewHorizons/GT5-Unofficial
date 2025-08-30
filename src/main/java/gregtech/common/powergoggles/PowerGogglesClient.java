@@ -75,14 +75,12 @@ public class PowerGogglesClient {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("uuid", uuid.toString());
 
-        if (lscLink == null) {
-            return tag;
+        if (lscLink != null) {
+            tag.setInteger("x", lscLink.x);
+            tag.setInteger("y", lscLink.y);
+            tag.setInteger("z", lscLink.z);
+            tag.setInteger("dim", lscLink.getDimension());
         }
-
-        tag.setInteger("x", lscLink.x);
-        tag.setInteger("y", lscLink.y);
-        tag.setInteger("z", lscLink.z);
-        tag.setInteger("dim", lscLink.getDimension());
 
         NBTTagList measurementsTag = new NBTTagList();
         for (PowerGogglesMeasurement measurement : measurements) {
