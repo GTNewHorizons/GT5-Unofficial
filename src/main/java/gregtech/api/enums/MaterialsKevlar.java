@@ -2,8 +2,6 @@ package gregtech.api.enums;
 
 import java.util.Arrays;
 
-import gregtech.api.objects.MaterialStack;
-
 public class MaterialsKevlar {
 
     public static Materials DiphenylmethaneDiisocyanate;
@@ -112,11 +110,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
             // C15H10N2O2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 15),
-                new MaterialStack(Materials.Hydrogen, 10),
-                new MaterialStack(Materials.Nitrogen, 2),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
@@ -133,10 +130,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(365)
             // C13H14N2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 13),
-                new MaterialStack(Materials.Hydrogen, 14),
-                new MaterialStack(Materials.Nitrogen, 2))
+            .addMaterial(Materials.Carbon, 13)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Nitrogen, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -153,11 +149,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
             // C15H10N2O2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 15),
-                new MaterialStack(Materials.Hydrogen, 10),
-                new MaterialStack(Materials.Nitrogen, 2),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -172,10 +167,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(176)
             // C4H8O
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 4),
-                new MaterialStack(Materials.Hydrogen, 8),
-                new MaterialStack(Materials.Oxygen, 1))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -191,10 +185,9 @@ public class MaterialsKevlar {
             .setMeltingPoint(208)
             .setExtraData(1)
             // C4H8O
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 4),
-                new MaterialStack(Materials.Hydrogen, 8),
-                new MaterialStack(Materials.Oxygen, 1))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -209,10 +202,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(256)
             // C4NiO4
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 4),
-                new MaterialStack(Materials.Nickel, 1),
-                new MaterialStack(Materials.Oxygen, 4))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -241,10 +233,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(160)
             // C2H4O
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 2),
-                new MaterialStack(Materials.Hydrogen, 4),
-                new MaterialStack(Materials.Oxygen, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 1)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -272,10 +263,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(260)
             // C2H6O2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 2),
-                new MaterialStack(Materials.Hydrogen, 6),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -290,10 +280,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(150)
             // C2H4O
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 2),
-                new MaterialStack(Materials.Hydrogen, 4),
-                new MaterialStack(Materials.Oxygen, 1))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 1)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
@@ -307,10 +296,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(533)
             // C5H12O4
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 5),
-                new MaterialStack(Materials.Hydrogen, 12),
-                new MaterialStack(Materials.Oxygen, 4))
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 12)
+            .addMaterial(Materials.Oxygen, 4)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
@@ -334,11 +322,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(249)
             // C5H9NO
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 5),
-                new MaterialStack(Materials.Hydrogen, 9),
-                new MaterialStack(Materials.Nitrogen, 1),
-                new MaterialStack(Materials.Oxygen, 1))
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 1)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
@@ -354,11 +341,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeGreen)
             .setMeltingPoint(355)
             // C8H4Cl2O2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 8),
-                new MaterialStack(Materials.Hydrogen, 4),
-                new MaterialStack(Materials.Chlorine, 2),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 2)
+            .addMaterial(Materials.Oxygen, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
@@ -374,7 +360,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(192)
             // C2H2
-            .setMaterialList(new MaterialStack(Materials.Carbon, 2), new MaterialStack(Materials.Hydrogen, 2))
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 2)
             .constructMaterial();
     }
 
@@ -386,11 +373,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeOrange)
             .setMeltingPoint(420)
             // C6H6N2O2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 6),
-                new MaterialStack(Materials.Hydrogen, 6),
-                new MaterialStack(Materials.Nitrogen, 2),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
@@ -405,10 +391,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(293)
             // C6H6N2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 6),
-                new MaterialStack(Materials.Hydrogen, 8),
-                new MaterialStack(Materials.Nitrogen, 2))
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Nitrogen, 2)
             .setAspects(
                 Arrays.asList(
                     new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
@@ -425,10 +410,9 @@ public class MaterialsKevlar {
             .setMeltingPoint(180)
             .setExtraData(1)
             // CH5N
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 1),
-                new MaterialStack(Materials.Hydrogen, 5),
-                new MaterialStack(Materials.Nitrogen, 1))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Nitrogen, 1)
             .constructMaterial();
     }
 
@@ -441,10 +425,9 @@ public class MaterialsKevlar {
             .setMeltingPoint(156)
             .setExtraData(1)
             // C3H9N
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 3),
-                new MaterialStack(Materials.Hydrogen, 9),
-                new MaterialStack(Materials.Nitrogen, 1))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Nitrogen, 1)
             .constructMaterial();
     }
 
@@ -456,10 +439,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(229)
             // C4H6O2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 4),
-                new MaterialStack(Materials.Hydrogen, 6),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -470,7 +452,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(2430)
             // CaC2
-            .setMaterialList(new MaterialStack(Materials.Calcium, 1), new MaterialStack(Materials.Carbon, 2))
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Carbon, 2)
             .constructMaterial();
     }
 
@@ -491,10 +474,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(331)
             // C4H6O2
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 4),
-                new MaterialStack(Materials.Hydrogen, 6),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -508,7 +490,8 @@ public class MaterialsKevlar {
             .setBlastFurnaceTemp(1668)
             .setBlastFurnaceRequired(true)
             // NiAl3
-            .setMaterialList(new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Aluminium, 3))
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Aluminium, 3)
             .constructMaterial()
             .disableAutoGeneratedBlastFurnaceRecipes();
     }
@@ -520,7 +503,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(1955)
             // NiAl
-            .setMaterialList(new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Aluminium, 1))
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Aluminium, 1)
             .constructMaterial();
     }
 
@@ -531,7 +515,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(1090)
             // Bi2O3
-            .setMaterialList(new MaterialStack(Materials.Bismuth, 2), new MaterialStack(Materials.Oxygen, 3))
+            .addMaterial(Materials.Bismuth, 2)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
@@ -561,10 +546,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(415)
             // C10H10O4
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 10),
-                new MaterialStack(Materials.Hydrogen, 10),
-                new MaterialStack(Materials.Oxygen, 4))
+            .addMaterial(Materials.Carbon, 10)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -585,10 +569,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(480)
             // C9H6O6
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 8L),
-                new MaterialStack(Materials.Hydrogen, 6),
-                new MaterialStack(Materials.Oxygen, 4))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -599,7 +582,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(225)
             // C8H10
-            .setMaterialList(new MaterialStack(Materials.Carbon, 8), new MaterialStack(Materials.Hydrogen, 10))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -611,7 +595,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(286)
             // C8H10
-            .setMaterialList(new MaterialStack(Materials.Carbon, 8), new MaterialStack(Materials.Hydrogen, 10))
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
             .constructMaterial();
     }
@@ -623,11 +608,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeBrown)
             .setMeltingPoint(413)
             // CoC22H14O4
-            .setMaterialList(
-                new MaterialStack(Materials.Cobalt, 1),
-                new MaterialStack(Materials.Carbon, 22),
-                new MaterialStack(Materials.Hydrogen, 14),
-                new MaterialStack(Materials.Oxygen, 4))
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Carbon, 22)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -647,10 +631,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(441)
             // CoH2O2
-            .setMaterialList(
-                new MaterialStack(Materials.Cobalt, 1),
-                new MaterialStack(Materials.Hydrogen, 2),
-                new MaterialStack(Materials.Oxygen, 2))
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
@@ -661,11 +644,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(413)
             // C4H6CoO4
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 4L),
-                new MaterialStack(Materials.Hydrogen, 6),
-                new MaterialStack(Materials.Cobalt, 1),
-                new MaterialStack(Materials.Oxygen, 4))
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Oxygen, 4)
             .constructMaterial();
     }
 
@@ -676,10 +658,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
             // Co(NO3)2
-            .setMaterialList(
-                new MaterialStack(Materials.Cobalt, 1),
-                new MaterialStack(Materials.Nitrogen, 2),
-                new MaterialStack(Materials.Oxygen, 6))
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 6)
             .constructMaterial();
     }
 
@@ -691,7 +672,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
             // RhHCO(P(C6H5)3)3
-            .setMaterialList(new MaterialStack(Materials.Cobalt, 1), new MaterialStack(Materials.NitricAcid, 2))
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.NitricAcid, 2)
             .constructMaterial();
     }
 
@@ -701,10 +683,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(673)
             // NaBH4
-            .setMaterialList(
-                new MaterialStack(Materials.Sodium, 1),
-                new MaterialStack(Materials.Boron, 1),
-                new MaterialStack(Materials.Hydrogen, 4))
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Hydrogen, 4)
             .constructMaterial();
     }
 
@@ -724,10 +705,9 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(353)
             // C18H15P
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 18L),
-                new MaterialStack(Materials.Hydrogen, 15L),
-                new MaterialStack(Materials.Phosphorus, 1L))
+            .addMaterial(Materials.Carbon, 18)
+            .addMaterial(Materials.Hydrogen, 15)
+            .addMaterial(Materials.Phosphorus, 1)
             .constructMaterial();
     }
 
@@ -738,7 +718,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(179)
             // PCL3
-            .setMaterialList(new MaterialStack(Materials.Phosphorus, 1L), new MaterialStack(Materials.Chlorine, 3L))
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Chlorine, 3)
             .constructMaterial();
     }
 
@@ -749,7 +730,8 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeLightGray)
             .setMeltingPoint(911)
             // NaH
-            .setMaterialList(new MaterialStack(Materials.Sodium, 1L), new MaterialStack(Materials.Hydrogen, 1L))
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
     }
 
@@ -760,11 +742,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(239)
             // C3H9BO3
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 3L),
-                new MaterialStack(Materials.Hydrogen, 9L),
-                new MaterialStack(Materials.Boron, 1L),
-                new MaterialStack(Materials.Oxygen, 3L))
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
     }
 
@@ -774,11 +755,10 @@ public class MaterialsKevlar {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(400)
             // CH3NaO
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 1L),
-                new MaterialStack(Materials.Hydrogen, 3L),
-                new MaterialStack(Materials.Oxygen, 1L),
-                new MaterialStack(Materials.Sodium, 1L))
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Sodium, 1)
             .constructMaterial();
     }
 }
