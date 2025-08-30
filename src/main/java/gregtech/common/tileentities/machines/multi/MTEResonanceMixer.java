@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +33,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -47,8 +47,7 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
     implements ISurvivalConstructable {
 
     private Byte mSolenoidLevel = null;
-    private MTEHatchInput mPlasmaInputHatch;
-    private int plasmaInputHatchAmount = 0;
+    private ArrayList<MTEHatchInput> mPlasmaInputHatch = new ArrayList<>();
     private final static int STRUCTURE_OFFSET_X = 5;
     private final static int STRUCTURE_OFFSET_Y = 13;
     private final static int STRUCTURE_OFFSET_Z = 1;
@@ -105,12 +104,9 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
-            mPlasmaInputHatch = (MTEHatchInput) aMetaTileEntity;
-            plasmaInputHatchAmount++;
-            return true;
+        if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            return mPlasmaInputHatch.add(hatch);
         }
         return false;
     }
@@ -225,16 +221,14 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mSolenoidLevel = 0;
-        plasmaInputHatchAmount = 0;
+        mPlasmaInputHatch.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z)) {
             return false;
         }
 
         if (mCasingAmount < 14) return false;
-        if (plasmaInputHatchAmount != 1) return false;
-
-        fixAllIssues();
+        if (mPlasmaInputHatch.size() != 1) return false;
         return true;
     }
 
@@ -261,12 +255,16 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!mMachine) return;
         boolean hasPlasma = false;
-        FluidStack fluid = mPlasmaInputHatch.getFluid();
-        for (FluidStack plasma : plasmaList) {
-            if (GTUtility.areFluidsEqual(fluid, plasma)) {
-                hasPlasma = true;
-                break;
+        for (MTEHatchInput hatch : mPlasmaInputHatch) {
+            FluidStack fluid = hatch.getFluid();
+            if (fluid == null) continue;
+            for (FluidStack plasma : plasmaList) {
+                if (GTUtility.areFluidsEqual(fluid, plasma)) {
+                    hasPlasma = true;
+                    break;
+                }
             }
+            if (hasPlasma) break;
         }
         if (!hasPlasma) {
             stopMachine(ShutDownReasonRegistry.outOfFluid(plasmaList.get(0)));
@@ -291,5 +289,10 @@ public class MTEResonanceMixer extends MTEExtendedPowerMultiBlockBase<MTEResonan
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }
