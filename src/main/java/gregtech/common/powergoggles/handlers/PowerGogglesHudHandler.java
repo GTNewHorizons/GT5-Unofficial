@@ -1,7 +1,6 @@
 package gregtech.common.powergoggles.handlers;
 
 import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 
@@ -13,7 +12,6 @@ import java.util.LinkedList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
@@ -29,6 +27,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.powergoggles.PowerGogglesConstants;
 import gregtech.common.powergoggles.PowerGogglesUtil;
+import gregtech.common.powergoggles.gui.PowerGogglesRenderer;
+import gregtech.common.powergoggles.gui.SimplePowerGogglesRenderer;
 
 public class PowerGogglesHudHandler {
 
@@ -62,6 +62,8 @@ public class PowerGogglesHudHandler {
 
     private String storage = "";
 
+    private PowerGogglesRenderer renderer = new SimplePowerGogglesRenderer();
+
     private PowerGogglesHudHandler() {}
 
     public static PowerGogglesHudHandler getInstance() {
@@ -75,45 +77,11 @@ public class PowerGogglesHudHandler {
             return;
         }
 
-        ScaledResolution resolution = event.resolution;
-        int screenHeight = resolution.getScaledHeight();
-        int screenWidth = resolution.getScaledWidth();
-
-        FontRenderer fontRenderer = mc.fontRenderer;
-        GL11.glPushMatrix();
-        GL11.glEnable(GL_CULL_FACE);
-
-        int xOffset = PowerGogglesConfigHandler.mainOffsetX;
-        int yOffset = PowerGogglesConfigHandler.mainOffsetY;
-        int w = PowerGogglesConfigHandler.rectangleWidth;
-        int h = PowerGogglesConfigHandler.rectangleHeight;
-        int borderRadius = 3;
-
-        double subScale = PowerGogglesConfigHandler.subTextScaling;
-        int gapBetweenLines = 2;
-        int scaleOffsetX = xOffset - borderRadius;
-        int scaleOffsetY = screenHeight - yOffset
-            + gapBetweenLines * 2
-            + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
-            + borderRadius;
-
-        GL11.glTranslated(scaleOffsetX, scaleOffsetY, 0);
-        GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
-        GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
-
-        int chartOffsetY = drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
-
+        renderer.renderMainInfo(event);
         if (PowerGogglesConfigHandler.showPowerChart) {
-            drawPowerChart(
-                xOffset,
-                chartOffsetY - borderRadius,
-                PowerGogglesConfigHandler.rectangleWidth,
-                100,
-                screenHeight,
-                screenWidth,
-                borderRadius);
+            renderer.renderPowerChart();
         }
-        GL11.glPopMatrix();
+
     }
 
     private boolean shouldDrawHud(RenderGameOverlayEvent.Post event) {
@@ -132,7 +100,7 @@ public class PowerGogglesHudHandler {
 
     }
 
-    private int drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
+    public int drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
         int left = h + xOffset;
         int up = screenHeight - h - yOffset;
         int right = left + w;
@@ -267,7 +235,7 @@ public class PowerGogglesHudHandler {
         return highestPoint;
     }
 
-    private void drawPowerChart(int xOffset, int yOffset, int chartWidth, int chartHeight, int screenHeight,
+    public void drawPowerChart(int xOffset, int yOffset, int chartWidth, int chartHeight, int screenHeight,
         int screenWidth, int borderRadius) {
         int readings = Math.min(measurements.size(), measurementCount5m);
         int left = xOffset;
