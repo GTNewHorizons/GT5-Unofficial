@@ -1430,11 +1430,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     protected Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-        boolean aAutoGenerateBlastFurnaceRecipes, boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent,
-        int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, Element aElement,
-        String chemicalFormula, List<MaterialStack> aMaterialList, List<TCAspects.TC_AspectStack> aAspects) {
+        float steamMultiplier, float gasMultiplier, float plasmaMultiplier, int aTypes, int aR, int aG, int aB, int aA,
+        String aName, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp,
+        boolean aBlastFurnaceRequired, boolean aAutoGenerateBlastFurnaceRecipes,
+        boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent, int aDensityMultiplier, int aDensityDivider,
+        Dyes aColor, int aExtraData, Element aElement, String chemicalFormula, List<MaterialStack> aMaterialList,
+        List<TCAspects.TC_AspectStack> aAspects) {
         this(
             aMetaItemSubID,
             aIconSet,
@@ -1461,6 +1462,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aExtraData,
             aMaterialList,
             aAspects);
+        this.mSteamMultiplier = steamMultiplier;
+        this.mGasMultiplier = gasMultiplier;
+        this.mPlasmaMultiplier = plasmaMultiplier;
         this.mAutoGenerateBlastFurnaceRecipes = aAutoGenerateBlastFurnaceRecipes;
         this.mAutoGenerateVacuumFreezerRecipes = aAutoGenerateVacuumFreezerRecipes;
         if (aElement != null) {

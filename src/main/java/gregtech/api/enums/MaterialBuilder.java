@@ -68,6 +68,9 @@ public class MaterialBuilder {
     private boolean canBeCracked = false;
     private Element element;
     private String chemicalFormula = "?";
+    private float steamMultiplier = 1.0f;
+    private float gasMultiplier = 1.0f;
+    private float plasmaMultiplier = 1.0f;
 
     public MaterialBuilder() {}
 
@@ -88,6 +91,9 @@ public class MaterialBuilder {
             toolSpeed,
             durability,
             toolQuality,
+            steamMultiplier,
+            gasMultiplier,
+            plasmaMultiplier,
             types,
             r,
             g,
@@ -386,6 +392,13 @@ public class MaterialBuilder {
 
     public MaterialBuilder setCanBeCracked(boolean canBeCracked) {
         this.canBeCracked = canBeCracked;
+        return this;
+    }
+
+    public MaterialBuilder setTurbine(float steamMultiplier, float gasMultiplier, float plasmaMultiplier) {
+        this.steamMultiplier = steamMultiplier;
+        this.gasMultiplier = gasMultiplier;
+        this.plasmaMultiplier = plasmaMultiplier;
         return this;
     }
 }
