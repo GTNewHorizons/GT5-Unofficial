@@ -13152,7 +13152,7 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .addFluid()
             .addCell()
-            .setRGB(2_490, 130, 126)
+            .setRGB(0xf9827e)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
