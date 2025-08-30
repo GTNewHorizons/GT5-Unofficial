@@ -6879,7 +6879,6 @@ public class MaterialsInit1 {
             .setMetaItemSubID(837)
             .setIconSet(TextureSet.SET_QUARTZ)
             .addDustItems()
-            .setRGB(0xffffff)
             .setColor(Dyes.dyeLightGray)
             .addMaterial(Materials.Silicon, 1)
             .addMaterial(Materials.Oxygen, 2)
