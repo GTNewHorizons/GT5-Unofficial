@@ -7,10 +7,6 @@ import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.rod;
 import static gregtech.api.enums.OrePrefixes.rotor;
 
-import java.util.Arrays;
-
-import gregtech.api.enums.TCAspects.TC_AspectStack;
-
 public class MaterialsBotania {
 
     public static Materials Manasteel;
@@ -88,8 +84,8 @@ public class MaterialsBotania {
             .setMeltingPoint(1_500)
             .setBlastFurnaceTemp(1_500)
             .setBlastFurnaceRequired(true)
-            .setAspects(
-                Arrays.asList(new TC_AspectStack(TCAspects.METALLUM, 3), new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
 
@@ -107,11 +103,9 @@ public class MaterialsBotania {
             .setMeltingPoint(5_400)
             .setBlastFurnaceTemp(5_400)
             .setBlastFurnaceRequired(true)
-            .setAspects(
-                Arrays.asList(
-                    new TC_AspectStack(TCAspects.METALLUM, 2),
-                    new TC_AspectStack(TCAspects.TERRA, 1),
-                    new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
 
@@ -129,11 +123,9 @@ public class MaterialsBotania {
             .setMeltingPoint(7_200)
             .setBlastFurnaceTemp(7_200)
             .setBlastFurnaceRequired(true)
-            .setAspects(
-                Arrays.asList(
-                    new TC_AspectStack(TCAspects.METALLUM, 3),
-                    new TC_AspectStack(TCAspects.PRAECANTATIO, 2),
-                    new TC_AspectStack(TCAspects.AURAM, 1)))
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addAspect(TCAspects.AURAM, 1)
             .constructMaterial();
     }
 
@@ -145,7 +137,8 @@ public class MaterialsBotania {
             .addDustItems()
             .addToolHeadItems()
             .addGearItems()
-            .setAspects(Arrays.asList(new TC_AspectStack(TCAspects.TERRA, 2), new TC_AspectStack(TCAspects.VICTUS, 2)))
+            .addAspect(TCAspects.TERRA, 2)
+            .addAspect(TCAspects.VICTUS, 2)
             .constructMaterial();
     }
 
@@ -171,7 +164,8 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setAspects(Arrays.asList(new TC_AspectStack(TCAspects.ARBOR, 4), new TC_AspectStack(TCAspects.VICTUS, 2)))
+            .addAspect(TCAspects.ARBOR, 4)
+            .addAspect(TCAspects.VICTUS, 2)
             .constructMaterial();
     }
 
@@ -184,11 +178,9 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setAspects(
-                Arrays.asList(
-                    new TC_AspectStack(TCAspects.ARBOR, 4),
-                    new TC_AspectStack(TCAspects.AURAM, 2),
-                    new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
+            .addAspect(TCAspects.ARBOR, 4)
+            .addAspect(TCAspects.AURAM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
             .constructMaterial();
     }
 
