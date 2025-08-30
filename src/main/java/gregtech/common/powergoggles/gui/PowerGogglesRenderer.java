@@ -16,9 +16,5 @@ public abstract class PowerGogglesRenderer {
 
     public abstract void processMeasurement(PowerGogglesMeasurement measurement);
 
-    public LinkedList<PowerGogglesMeasurement> getMeasurements() {
-        return measurements;
-    }
-
     public abstract void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements);
 }
