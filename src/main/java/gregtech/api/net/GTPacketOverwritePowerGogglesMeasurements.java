@@ -1,6 +1,7 @@
 package gregtech.api.net;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
@@ -85,6 +86,7 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
             measurements.stream()
                 .map(PowerGogglesMeasurement::getMeasurement)
                 .collect(Collectors.toList()));
+        Collections.reverse(PowerGogglesHudHandler.measurements); // TODO: REMOVE THIS IN HUD REFACTOR
 
         if (!measurements.isEmpty()) {
             PowerGogglesHudHandler.capacity = measurements.getLast()
