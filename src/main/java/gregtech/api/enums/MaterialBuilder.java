@@ -323,6 +323,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    @Deprecated
     public MaterialBuilder setExtraData(int extraData) {
         this.extraData = extraData;
         return this;
