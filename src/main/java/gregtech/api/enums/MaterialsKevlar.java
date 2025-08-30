@@ -103,8 +103,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadDiphenylmethaneDiisocyanate() {
-        return new MaterialBuilder(796, TextureSet.SET_DULL, "4,4'-Diphenylmethane Diisocyanate")
-            .setName("DiphenylmethaneDiisocyanate")
+        return new MaterialBuilder().setName("DiphenylmethaneDiisocyanate")
+            .setDefaultLocalName("4,4'-Diphenylmethane Diisocyanate")
+            .setMetaItemSubID(796)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setRGB(0xffe632)
             .setColor(Dyes.dyeYellow)
@@ -122,8 +124,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadDiaminodiphenylmethanMixture() {
-        return new MaterialBuilder(795, TextureSet.SET_FLUID, "Diaminodiphenylmethane Mixture")
-            .setName("DiaminodiphenylmethanMixture")
+        return new MaterialBuilder().setName("DiaminodiphenylmethanMixture")
+            .setDefaultLocalName("Diaminodiphenylmethane Mixture")
+            .setMetaItemSubID(795)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setRGB(0xfff37a)
@@ -141,8 +145,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadDiphenylmethaneDiisocyanateMixture() {
-        return new MaterialBuilder(794, TextureSet.SET_FLUID, "Diphenylmethane Diisocyanate Mixture")
-            .setName("DiphenylmethaneDiisocyanateMixture")
+        return new MaterialBuilder().setName("DiphenylmethaneDiisocyanateMixture")
+            .setDefaultLocalName("Diphenylmethane Diisocyanate Mixture")
+            .setMetaItemSubID(794)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setRGB(0xffe632)
@@ -161,7 +167,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadButyraldehyde() {
-        return new MaterialBuilder(793, TextureSet.SET_FLUID, "Butyraldehyde").setName("Butyraldehyde")
+        return new MaterialBuilder().setName("Butyraldehyde")
+            .setDefaultLocalName("Butyraldehyde")
+            .setMetaItemSubID(793)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -178,7 +187,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadIsobutyraldehyde() {
-        return new MaterialBuilder(792, TextureSet.SET_FLUID, "Isobutyraldehyde").setName("Isobutyraldehyde")
+        return new MaterialBuilder().setName("Isobutyraldehyde")
+            .setDefaultLocalName("Isobutyraldehyde")
+            .setMetaItemSubID(792)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -196,7 +208,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadNickelTetracarbonyl() {
-        return new MaterialBuilder(791, TextureSet.SET_FLUID, "Nickel Tetracarbonyl").setName("NickelTetracarbonyl")
+        return new MaterialBuilder().setName("NickelTetracarbonyl")
+            .setDefaultLocalName("Nickel Tetracarbonyl")
+            .setMetaItemSubID(791)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -213,8 +228,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadKevlarCatalyst() {
-        return new MaterialBuilder(790, TextureSet.SET_DULL, "Polyurethane Catalyst A")
-            .setName("PolyurethaneCatalystADust")
+        return new MaterialBuilder().setName("PolyurethaneCatalystADust")
+            .setDefaultLocalName("Polyurethane Catalyst A")
+            .setMetaItemSubID(790)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setRGB(0x323232)
             .setColor(Dyes.dyeBlack)
@@ -227,7 +244,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadEthyleneOxide() {
-        return new MaterialBuilder(789, TextureSet.SET_FLUID, "Ethylene Oxide").setName("EthyleneOxide")
+        return new MaterialBuilder().setName("EthyleneOxide")
+            .setDefaultLocalName("Ethylene Oxide")
+            .setMetaItemSubID(789)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
             .setColor(Dyes.dyeWhite)
@@ -244,7 +264,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadSiliconOil() {
-        return new MaterialBuilder(788, TextureSet.SET_FLUID, "Silicon Oil").setName("SiliconOil")
+        return new MaterialBuilder().setName("SiliconOil")
+            .setDefaultLocalName("Silicon Oil")
+            .setMetaItemSubID(788)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -257,7 +280,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadEthyleneglycol() {
-        return new MaterialBuilder(787, TextureSet.SET_FLUID, "Ethylene Glycol").setName("EthyleneGlycol")
+        return new MaterialBuilder().setName("EthyleneGlycol")
+            .setDefaultLocalName("Ethylene Glycol")
+            .setMetaItemSubID(787)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -274,7 +300,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadAcetaldehyde() {
-        return new MaterialBuilder(786, TextureSet.SET_FLUID, "Acetaldehyde").setName("Acetaldehyde")
+        return new MaterialBuilder().setName("Acetaldehyde")
+            .setDefaultLocalName("Acetaldehyde")
+            .setMetaItemSubID(786)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
             .setColor(Dyes.dyeWhite)
@@ -291,7 +320,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadPentaerythritol() {
-        return new MaterialBuilder(785, TextureSet.SET_DULL, "Pentaerythritol").setName("Pentaerythritol")
+        return new MaterialBuilder().setName("Pentaerythritol")
+            .setDefaultLocalName("Pentaerythritol")
+            .setMetaItemSubID(785)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(533)
@@ -307,7 +339,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadPolyurethaneResin() {
-        return new MaterialBuilder(784, TextureSet.SET_FLUID, "Polyurethane Resin").setName("PolyurethaneResin")
+        return new MaterialBuilder().setName("PolyurethaneResin")
+            .setDefaultLocalName("Polyurethane Resin")
+            .setMetaItemSubID(784)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setRGB(0xe6e678)
@@ -316,7 +351,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadNMethylIIPyrrolidone() {
-        return new MaterialBuilder(783, TextureSet.SET_FLUID, "N-Methyl-2-pyrrolidone").setName("NMethylpyrolidone")
+        return new MaterialBuilder().setName("NMethylpyrolidone")
+            .setDefaultLocalName("N-Methyl-2-pyrrolidone")
+            .setMetaItemSubID(783)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -334,8 +372,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadTerephthaloylChloride() {
-        return new MaterialBuilder(782, TextureSet.SET_POWDER, "Terephthaloyl Chloride")
-            .setName("TerephthaloylChloride")
+        return new MaterialBuilder().setName("TerephthaloylChloride")
+            .setDefaultLocalName("Terephthaloyl Chloride")
+            .setMetaItemSubID(782)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0x00ff0c)
             .setColor(Dyes.dyeGreen)
@@ -354,7 +394,10 @@ public class MaterialsKevlar {
 
     private static Materials loadAcetylene() {
         // TODO: Add to JUPITER Athmosphere and Enceladus and to moon of Saturn
-        return new MaterialBuilder(781, TextureSet.SET_FLUID, "Acetylene").setName("Acetylene")
+        return new MaterialBuilder().setName("Acetylene")
+            .setDefaultLocalName("Acetylene")
+            .setMetaItemSubID(781)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
             .setColor(Dyes.dyeWhite)
@@ -366,7 +409,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadIVNitroaniline() {
-        return new MaterialBuilder(780, TextureSet.SET_FLUID, "4-Nitroaniline").setName("4Nitroaniline")
+        return new MaterialBuilder().setName("4Nitroaniline")
+            .setDefaultLocalName("4-Nitroaniline")
+            .setMetaItemSubID(780)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setRGB(0xff8733)
@@ -385,7 +431,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadParaPhenylenediamine() {
-        return new MaterialBuilder(779, TextureSet.SET_POWDER, "para-Phenylenediamine").setName("pPhenylenediamine")
+        return new MaterialBuilder().setName("pPhenylenediamine")
+            .setDefaultLocalName("para-Phenylenediamine")
+            .setMetaItemSubID(779)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xfbec5d)
             .setColor(Dyes.dyeYellow)
@@ -402,7 +451,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadMethylamine() {
-        return new MaterialBuilder(778, TextureSet.SET_FLUID, "Methylamine").setName("Methylamine")
+        return new MaterialBuilder().setName("Methylamine")
+            .setDefaultLocalName("Methylamine")
+            .setMetaItemSubID(778)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
             .setRGB(0x414469)
@@ -417,7 +469,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadTrimethylamine() {
-        return new MaterialBuilder(777, TextureSet.SET_FLUID, "Trimethylamine").setName("Trimethylamine")
+        return new MaterialBuilder().setName("Trimethylamine")
+            .setDefaultLocalName("Trimethylamine")
+            .setMetaItemSubID(777)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
             .setRGB(0x694469)
@@ -432,7 +487,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadGammaButyrolactone() {
-        return new MaterialBuilder(776, TextureSet.SET_FLUID, "gamma-Butyrolactone").setName("GammaButyrolactone")
+        return new MaterialBuilder().setName("GammaButyrolactone")
+            .setDefaultLocalName("gamma-Butyrolactone")
+            .setMetaItemSubID(776)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setRGB(0xffff97)
@@ -446,7 +504,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadCalciumCarbide() {
-        return new MaterialBuilder(775, TextureSet.SET_DULL, "Calcium Carbide").setName("CacliumCarbide")
+        return new MaterialBuilder().setName("CacliumCarbide")
+            .setDefaultLocalName("Calcium Carbide")
+            .setMetaItemSubID(775)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setRGB(0xebebeb)
             .setColor(Dyes.dyeGray)
@@ -459,7 +520,10 @@ public class MaterialsKevlar {
 
     private static Materials loadLiquidCrystalKevlar() {
         // [-CO-C6H4-CO-NH-C6H4-NH-]n
-        return new MaterialBuilder(774, TextureSet.SET_FLUID, "Liquid Crystal Kevlar").setName("LiquidCrystalKevlar")
+        return new MaterialBuilder().setName("LiquidCrystalKevlar")
+            .setDefaultLocalName("Liquid Crystal Kevlar")
+            .setMetaItemSubID(774)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setRGB(0xf0f078)
@@ -468,7 +532,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadIIButinIIVdiol() {
-        return new MaterialBuilder(773, TextureSet.SET_POWDER, "2-Butin-1,4-diol").setName("2Butin14diol")
+        return new MaterialBuilder().setName("2Butin14diol")
+            .setDefaultLocalName("2-Butin-1,4-diol")
+            .setMetaItemSubID(773)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xf7f7b4)
             .setColor(Dyes.dyeYellow)
@@ -481,7 +548,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadNickelAluminide() {
-        return new MaterialBuilder(772, TextureSet.SET_METALLIC, "Nickel Aluminide").setName("NickelAluminide")
+        return new MaterialBuilder().setName("NickelAluminide")
+            .setDefaultLocalName("Nickel Aluminide")
+            .setMetaItemSubID(772)
+            .setIconSet(TextureSet.SET_METALLIC)
             .addDustItems()
             .addMetalItems()
             .setRGB(0xe6e6e6)
@@ -497,7 +567,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadRaneyNickelActivated() {
-        return new MaterialBuilder(771, TextureSet.SET_POWDER, "Raney Nickel").setName("RaneyNickelActivated")
+        return new MaterialBuilder().setName("RaneyNickelActivated")
+            .setDefaultLocalName("Raney Nickel")
+            .setMetaItemSubID(771)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xe6e6e6)
             .setColor(Dyes.dyeGray)
@@ -509,7 +582,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadBismuthIIIOxide() {
-        return new MaterialBuilder(769, TextureSet.SET_POWDER, "Bismuth Oxide").setName("BismuthIIIOxide")
+        return new MaterialBuilder().setName("BismuthIIIOxide")
+            .setDefaultLocalName("Bismuth Oxide")
+            .setMetaItemSubID(769)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0x323232)
             .setColor(Dyes.dyeBlack)
@@ -522,7 +598,10 @@ public class MaterialsKevlar {
 
     private static Materials loadThionylChloride() {
         // SOCl2
-        return new MaterialBuilder(768, TextureSet.SET_FLUID, "Thionyl Chloride").setName("ThionylChloride")
+        return new MaterialBuilder().setName("ThionylChloride")
+            .setDefaultLocalName("Thionyl Chloride")
+            .setMetaItemSubID(768)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -531,7 +610,10 @@ public class MaterialsKevlar {
 
     private static Materials loadSulfurDichloride() {
         // SCl2
-        return new MaterialBuilder(767, TextureSet.SET_FLUID, "Sulfur Dichloride").setName("SulfurDichloride")
+        return new MaterialBuilder().setName("SulfurDichloride")
+            .setDefaultLocalName("Sulfur Dichloride")
+            .setMetaItemSubID(767)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setRGB(0xc80000)
@@ -540,7 +622,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadDimethylTerephthalate() {
-        return new MaterialBuilder(766, TextureSet.SET_FLUID, "Dimethyl Terephthalate").setName("DimethylTerephthalate")
+        return new MaterialBuilder().setName("DimethylTerephthalate")
+            .setDefaultLocalName("Dimethyl Terephthalate")
+            .setMetaItemSubID(766)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -553,7 +638,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadKevlar() {
-        return new MaterialBuilder(765, TextureSet.SET_DULL, "Kevlar").setName("Kevlar")
+        return new MaterialBuilder().setName("Kevlar")
+            .setDefaultLocalName("Kevlar")
+            .setMetaItemSubID(765)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .addMetalItems()
             .addGearItems()
@@ -563,7 +651,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadTerephthalicAcid() {
-        return new MaterialBuilder(764, TextureSet.SET_FLUID, "Terephthalic Acid").setName("TerephthalicAcid")
+        return new MaterialBuilder().setName("TerephthalicAcid")
+            .setDefaultLocalName("Terephthalic Acid")
+            .setMetaItemSubID(764)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -576,7 +667,11 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadIIIDimethylbenzene() {
-        return new MaterialBuilder(763, TextureSet.SET_FLUID, "1,3-Dimethylbenzene").addCell()
+        return new MaterialBuilder().setName("1,3Dimethylbenzene")
+            .setDefaultLocalName("1,3-Dimethylbenzene")
+            .setMetaItemSubID(763)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
             .addFluid()
             .setRGB(0x70924a)
             .setColor(Dyes.dyeLime)
@@ -589,7 +684,11 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadIVDimethylbenzene() {
-        return new MaterialBuilder(762, TextureSet.SET_FLUID, "1,4-Dimethylbenzene").addCell()
+        return new MaterialBuilder().setName("1,4Dimethylbenzene")
+            .setDefaultLocalName("1,4-Dimethylbenzene")
+            .setMetaItemSubID(762)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
             .addFluid()
             .setRGB(0x7a8854)
             .setColor(Dyes.dyeLime)
@@ -602,7 +701,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadCobaltIINaphthenate() {
-        return new MaterialBuilder(761, TextureSet.SET_DULL, "Cobalt II Naphthenate").setName("Cobalt(II)Naphthenate")
+        return new MaterialBuilder().setName("Cobalt(II)Naphthenate")
+            .setDefaultLocalName("Cobalt II Naphthenate")
+            .setMetaItemSubID(761)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
             .setRGB(0x8f5f27)
             .setColor(Dyes.dyeBrown)
@@ -616,7 +718,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadNaphthenicAcid() {
-        return new MaterialBuilder(760, TextureSet.SET_FLUID, "Naphthenic Acid").setName("NaphthenicAcid")
+        return new MaterialBuilder().setName("NaphthenicAcid")
+            .setDefaultLocalName("Naphthenic Acid")
+            .setMetaItemSubID(760)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -625,7 +730,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadCobaltIIHydroxide() {
-        return new MaterialBuilder(759, TextureSet.SET_POWDER, "Cobalt II Hydroxide").setName("CobaltIIHydroxide")
+        return new MaterialBuilder().setName("CobaltIIHydroxide")
+            .setDefaultLocalName("Cobalt II Hydroxide")
+            .setMetaItemSubID(759)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xe58cef)
             .setColor(Dyes.dyePurple)
@@ -638,7 +746,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadCobaltIIAcetate() {
-        return new MaterialBuilder(758, TextureSet.SET_POWDER, "Cobalt II Acetate").setName("Cobalt(II)Acetate")
+        return new MaterialBuilder().setName("Cobalt(II)Acetate")
+            .setDefaultLocalName("Cobalt II Acetate")
+            .setMetaItemSubID(758)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xdba2e5)
             .setColor(Dyes.dyePurple)
@@ -652,7 +763,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadCobaltIINitrate() {
-        return new MaterialBuilder(757, TextureSet.SET_POWDER, "Cobalt II Nitrate").setName("Cobalt(II)Nitrate")
+        return new MaterialBuilder().setName("Cobalt(II)Nitrate")
+            .setDefaultLocalName("Cobalt II Nitrate")
+            .setMetaItemSubID(757)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xaa0000)
             .setColor(Dyes.dyeRed)
@@ -665,8 +779,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadOrganorhodiumCatalyst() {
-        return new MaterialBuilder(756, TextureSet.SET_POWDER, "Organorhodium Catalyst")
-            .setName("OrganorhodiumCatalyst")
+        return new MaterialBuilder().setName("OrganorhodiumCatalyst")
+            .setDefaultLocalName("Organorhodium Catalyst")
+            .setMetaItemSubID(756)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xaa0000)
             .setColor(Dyes.dyeRed)
@@ -678,7 +794,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadSodiumBorohydride() {
-        return new MaterialBuilder(755, TextureSet.SET_POWDER, "Sodium Borohydride").setName("SodiumBorohydride")
+        return new MaterialBuilder().setName("SodiumBorohydride")
+            .setDefaultLocalName("Sodium Borohydride")
+            .setMetaItemSubID(755)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(673)
@@ -691,7 +810,10 @@ public class MaterialsKevlar {
 
     private static Materials loadRhodiumChloride() {
         // RHCL3
-        return new MaterialBuilder(754, TextureSet.SET_POWDER, "Rhodium Chloride").setName("RhodiumChloride")
+        return new MaterialBuilder().setName("RhodiumChloride")
+            .setDefaultLocalName("Rhodium Chloride")
+            .setMetaItemSubID(754)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0x800000)
             .setColor(Dyes.dyeRed)
@@ -700,7 +822,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadTriphenylphosphene() {
-        return new MaterialBuilder(753, TextureSet.SET_POWDER, "Triphenylphosphine").setName("Triphenylphosphene")
+        return new MaterialBuilder().setName("Triphenylphosphene")
+            .setDefaultLocalName("Triphenylphosphine")
+            .setMetaItemSubID(753)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(353)
@@ -712,7 +837,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadPhosphorusTrichloride() {
-        return new MaterialBuilder(752, TextureSet.SET_FLUID, "Phosphorus Trichloride").setName("PhosphorusTrichloride")
+        return new MaterialBuilder().setName("PhosphorusTrichloride")
+            .setDefaultLocalName("Phosphorus Trichloride")
+            .setMetaItemSubID(752)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -724,7 +852,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadSodiumHydride() {
-        return new MaterialBuilder(751, TextureSet.SET_POWDER, "Sodium Hydride").setName("SodiumHydride")
+        return new MaterialBuilder().setName("SodiumHydride")
+            .setDefaultLocalName("Sodium Hydride")
+            .setMetaItemSubID(751)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xc0c0c0)
             .setColor(Dyes.dyeLightGray)
@@ -736,7 +867,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadTrimethylBorate() {
-        return new MaterialBuilder(750, TextureSet.SET_FLUID, "Trimethyl Borate").setName("TrimethylBorate")
+        return new MaterialBuilder().setName("TrimethylBorate")
+            .setDefaultLocalName("Trimethyl Borate")
+            .setMetaItemSubID(750)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
             .setColor(Dyes.dyeWhite)
@@ -750,7 +884,10 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadSodiumMethoxide() {
-        return new MaterialBuilder(749, TextureSet.SET_POWDER, "Sodium Methoxide").setName("SodiumMethoxide")
+        return new MaterialBuilder().setName("SodiumMethoxide")
+            .setDefaultLocalName("Sodium Methoxide")
+            .setMetaItemSubID(749)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(400)
