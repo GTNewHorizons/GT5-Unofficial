@@ -123,7 +123,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
         final IGregTechTileEntity mte = getBaseMetaTileEntity();
         final ITexture[] sideTexture = getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false);
-        final ITexture[] endTexture = getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false);
+        final ITexture[] endTexture = getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false);
         ctx.renderNegativeYFacing(sideTexture);
         ctx.renderPositiveYFacing(sideTexture);
         ctx.renderNegativeZFacing(sideTexture);
