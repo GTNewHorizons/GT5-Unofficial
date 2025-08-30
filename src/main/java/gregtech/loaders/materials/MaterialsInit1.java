@@ -6034,7 +6034,7 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
-            .setARGB(127, 100, 200, 130)
+            .setARGB(0x7f64c882)
             .setColor(Dyes.dyeCyan)
             .addMaterial(Materials.Aluminium, 2)
             .addMaterial(Materials.Oxygen, 3)
@@ -6847,7 +6847,7 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
-            .setARGB(127, 100, 100, 200)
+            .setARGB(0x7f6464c8)
             .setColor(Dyes.dyeBlue)
             .addMaterial(Materials.Aluminium, 2)
             .addMaterial(Materials.Oxygen, 3)
@@ -7102,7 +7102,7 @@ public class MaterialsInit1 {
             .setMetaItemSubID(582)
             .setIconSet(TextureSet.SET_METALLIC)
             .addMetalItems()
-            .setARGB(0, 18, 100, 255)
+            .setARGB(0x001264ff)
             .setBlastFurnaceTemp(3_000)
             .setBlastFurnaceRequired(true)
             .setColor(Dyes.dyePurple)
@@ -8458,7 +8458,7 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
-            .setARGB(0, 255, 255, 255)
+            .setARGB(0x00ffffff)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(151)
             .addElectrolyzerRecipe()
@@ -8550,7 +8550,7 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
-            .setARGB(0, 200, 200, 200)
+            .setARGB(0x00c8c8c8)
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(178)
             // SIF4
@@ -12950,7 +12950,7 @@ public class MaterialsInit1 {
             .setIconSet(new TextureSet("stablebaryonicmatter", true))
             .addFluid()
             .addCell()
-            .setARGB(0, 255, 255, 255)
+            .setARGB(0x00ffffff)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -13179,7 +13179,7 @@ public class MaterialsInit1 {
             .setMetaItemSubID(132)
             .setIconSet(new TextureSet("netherite", true))
             .setColor(Dyes.dyeLightGray)
-            .setARGB(255, 255, 255, 255)
+            .setARGB(0xffffffff)
             .addMetalItems()
             .addGearItems()
             .setMeltingPoint(1_200)
@@ -13280,7 +13280,7 @@ public class MaterialsInit1 {
             .setIconSet(new TextureSet("prismaticacid", true))
             .addFluid()
             .addCell()
-            .setARGB(0, 255, 255, 255)
+            .setARGB(0x00ffffff)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }
@@ -13292,7 +13292,7 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_METALLIC)
             .addDustItems()
             .addMetalItems()
-            .setARGB(0, 55, 55, 55)
+            .setARGB(0x00373737)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
@@ -13304,7 +13304,7 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .addFluid()
             .addCell()
-            .setARGB(0, 75, 75, 75)
+            .setARGB(0x004b4b4b)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
     }

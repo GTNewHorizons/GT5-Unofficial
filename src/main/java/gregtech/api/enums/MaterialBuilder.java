@@ -191,21 +191,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setARGB(int, int, int, int)} instead. */
-    @Deprecated
-    public MaterialBuilder setRGBA(int r, int g, int b, int a) {
-        return setARGB(a, r, g, b);
-    }
-
-    public MaterialBuilder setARGB(int a, int r, int g, int b) {
-        this.transparent = true;
-        this.a = a;
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        return this;
-    }
-
     public MaterialBuilder setARGB(int argb) {
         this.transparent = true;
         this.a = (argb >>> 24) & 0xFF;
@@ -215,10 +200,11 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setRGB(int)} instead. */
+    /** @deprecated Use {@link MaterialBuilder#setARGB(int)} instead. */
     @Deprecated
-    public MaterialBuilder setRGB(int r, int g, int b) {
-        this.transparent = false;
+    public MaterialBuilder setRGBA(int r, int g, int b, int a) {
+        this.transparent = true;
+        this.a = a;
         this.r = r;
         this.g = g;
         this.b = b;
@@ -230,6 +216,16 @@ public class MaterialBuilder {
         this.r = (rgb >>> 16) & 0xFF;
         this.g = (rgb >>> 8) & 0xFF;
         this.b = rgb & 0xFF;
+        return this;
+    }
+
+    /** @deprecated Use {@link MaterialBuilder#setRGB(int)} instead. */
+    @Deprecated
+    public MaterialBuilder setRGB(int r, int g, int b) {
+        this.transparent = false;
+        this.r = r;
+        this.g = g;
+        this.b = b;
         return this;
     }
 
