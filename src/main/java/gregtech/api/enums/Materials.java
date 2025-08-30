@@ -992,7 +992,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     static {
-        MaterialsKevlar.init();
+        MaterialsKevlar.load();
     }
 
     static {
