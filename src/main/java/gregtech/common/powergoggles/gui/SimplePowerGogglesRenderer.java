@@ -110,6 +110,47 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int rectangleLeft = xOffset;
         int rectangleRight = xOffset + gradientRectangleWidth;
 
+        int[] rectangleColors = getGradientRectangleColors();
+
+        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
+        GL11.glShadeModel(GL11.GL_SMOOTH); // enable color interpolation (gradients)
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(
+            GlStateManager.SourceFactor.SRC_ALPHA,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+
+        tessellator.setColorRGBA(
+            Color.getRed(rectangleColors[0]),
+            Color.getGreen(rectangleColors[0]),
+            Color.getBlue(rectangleColors[0]),
+            Color.getAlpha(rectangleColors[0]));
+        tessellator.addVertex(rectangleLeft, rectangleTop, 300);
+        tessellator.addVertex(rectangleLeft, rectangleBottom, 300);
+
+        tessellator.setColorRGBA(
+            Color.getRed(rectangleColors[1]),
+            Color.getGreen(rectangleColors[1]),
+            Color.getBlue(rectangleColors[1]),
+            Color.getAlpha(rectangleColors[1]));
+        tessellator.addVertex(rectangleRight, rectangleBottom, 300);
+        tessellator.addVertex(rectangleRight, rectangleTop, 300);
+
+        tessellator.draw();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GL11.glPopAttrib();
+    }
+
+    private int[] getGradientRectangleColors() {
+        int[] gradients;
+        int colorLeft;
+        int colorRight;
+
         BigInteger lastMeasurement = measurements.isEmpty() ? BigInteger.ZERO
             : measurements.getLast()
                 .getMeasurement();
@@ -118,10 +159,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             : new BigDecimal(euDifference5m.multiply(BigInteger.valueOf(100)))
                 .divide(new BigDecimal(lastMeasurement), RoundingMode.FLOOR)
                 .intValue() / 100f;
-
-        int[] gradients;
-        int colorLeft;
-        int colorRight;
 
         double gradientChangeFactor = 3.3;
         if (differenceRatio < 0) {
@@ -141,39 +178,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             colorLeft = gradients[1];
             colorRight = gradients[0];
         }
-
-        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
-        GL11.glShadeModel(GL11.GL_SMOOTH); // enable color interpolation (gradients)
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(
-            GlStateManager.SourceFactor.SRC_ALPHA,
-            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-            GlStateManager.SourceFactor.ONE,
-            GlStateManager.DestFactor.ZERO);
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-
-        tessellator.setColorRGBA(
-            Color.getRed(colorLeft),
-            Color.getGreen(colorLeft),
-            Color.getBlue(colorLeft),
-            Color.getAlpha(colorLeft));
-        tessellator.addVertex(rectangleLeft, rectangleTop, 300);
-        tessellator.addVertex(rectangleLeft, rectangleBottom, 300);
-
-        tessellator.setColorRGBA(
-            Color.getRed(colorRight),
-            Color.getGreen(colorRight),
-            Color.getBlue(colorRight),
-            Color.getAlpha(colorRight));
-        tessellator.addVertex(rectangleRight, rectangleBottom, 300);
-        tessellator.addVertex(rectangleRight, rectangleTop, 300);
-
-        tessellator.draw();
-        GlStateManager.disableBlend();
-        GlStateManager.enableTexture2D();
-        GL11.glPopAttrib();
+        return new int[] { colorLeft, colorRight };
     }
 
     private void renderStorageText() {
@@ -313,6 +318,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     public void renderPowerChart() {
+
         renderPowerChartBackground();
         if (measurements.isEmpty()) return;
 
@@ -341,16 +347,17 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         drawScaledString(
             PowerGogglesUtil.format(minReading),
             xOffset,
-            yOffset - (int) (fontRenderer.FONT_HEIGHT * scale),
+            screenHeight - yOffset - borderRadius * 2 - (int) (fontRenderer.FONT_HEIGHT * scale),
             Color.rgb(237, 2, 158),
             scale);
         drawScaledString(
             minReading.compareTo(maxReading) == 0 ? "" : PowerGogglesUtil.format(maxReading),
             xOffset,
-            yOffset - chartHeight,
+            screenHeight - yOffset - borderRadius * 2 - chartHeight,
             Color.rgb(237, 2, 158),
             scale);
         if (measurementCount < 2) return;
+
         GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
@@ -371,7 +378,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             .getMeasurement();
         double pointsWidth = chartWidth * 0.8d;
         double lastX = xOffset + chartWidth;
-        double lastY = (yOffset + (chartHeight * (-1 + Math.min(
+        double lastY = screenHeight + (yOffset + (chartHeight * (-1 + Math.min(
             1,
             1 - lastReading.subtract(minReading)
                 .floatValue()
@@ -381,7 +388,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             BigInteger reading = measurements.get(i)
                 .getMeasurement();
             double x = xOffset + chartWidth - (pointsWidth / (measurementCount)) * i;
-            double y = (yOffset + (chartHeight * (-1 + Math.min(
+            double y = screenHeight + (yOffset + (chartHeight * (-1 + Math.min(
                 1,
                 1 - reading.subtract(minReading)
                     .floatValue()
