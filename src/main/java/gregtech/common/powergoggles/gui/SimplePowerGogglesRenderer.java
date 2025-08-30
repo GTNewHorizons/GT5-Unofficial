@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -326,98 +325,38 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         renderPowerChartBackground();
         if (measurements.isEmpty()) return;
 
-        int measurementCount = Math.min(measurements.size(), PowerGogglesConstants.MEASUREMENT_COUNT_5M);
+        List<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
+            PowerGogglesConstants.MEASUREMENT_COUNT_5M);
+        // Reverses is it back to oldest to newest for easier chart line rendering
+        Collections.reverse(lastMeasurements);
 
-        BigInteger minReading = measurements.get(0)
-            .getMeasurement();
-        BigInteger maxReading = measurements.get(0)
-            .getMeasurement();
-        for (int i = 0; i < measurementCount; i++) {
-            BigInteger temp = measurements.get(i)
-                .getMeasurement();
-            if (temp.compareTo(minReading) < 0) minReading = temp;
-            if (maxReading.compareTo(temp) < 0) maxReading = temp;
-        }
+        BigInteger minReading = getMinimumMeasurement(lastMeasurements);
+        BigInteger maxReading = getMaximumMeasurement(lastMeasurements);
 
-        int exponent = minReading.compareTo(BigInteger.ZERO) == 0 ? 0
-            : BigIntegerMath.log10(minReading, RoundingMode.DOWN);
-        minReading = minReading.compareTo(BigInteger.ZERO) == 0 ? BigInteger.ZERO
-            : BigInteger.valueOf(10)
+        if (minReading.compareTo(BigInteger.ZERO) != 0) {
+            int exponent = BigIntegerMath.log10(minReading, RoundingMode.DOWN);
+            minReading = BigInteger.valueOf(10)
                 .pow(exponent);
-
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        double scale = 0.5f;
-
-        drawScaledString(
-            PowerGogglesUtil.format(minReading),
-            xOffset,
-            screenHeight - yOffset - borderRadius * 2 - (int) (fontRenderer.FONT_HEIGHT * scale),
-            Color.rgb(237, 2, 158),
-            scale);
-        drawScaledString(
-            minReading.compareTo(maxReading) == 0 ? "" : PowerGogglesUtil.format(maxReading),
-            xOffset,
-            screenHeight - yOffset - borderRadius * 2 - chartHeight,
-            Color.rgb(237, 2, 158),
-            scale);
-        if (measurementCount < 2) return;
-
-        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(
-            GlStateManager.SourceFactor.SRC_ALPHA,
-            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-            GlStateManager.SourceFactor.ONE,
-            GlStateManager.DestFactor.ZERO);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawing(GL_LINES);
-
-        int negative = PowerGogglesConfigHandler.textBadColor;
-        int positive = PowerGogglesConfigHandler.textGoodColor;
-        BigInteger lastReading = measurements.getLast()
-            .getMeasurement();
-        double pointsWidth = chartWidth * 0.8d;
-        double lastX = xOffset + chartWidth;
-        double lastY = screenHeight + (yOffset + (chartHeight * (-1 + Math.min(
-            1,
-            1 - lastReading.subtract(minReading)
-                .floatValue()
-                / maxReading.subtract(minReading)
-                    .floatValue()))));
-        for (int i = 1; i < measurementCount; i++) {
-            BigInteger reading = measurements.get(i)
-                .getMeasurement();
-            double x = xOffset + chartWidth - (pointsWidth / (measurementCount)) * i;
-            double y = screenHeight + (yOffset + (chartHeight * (-1 + Math.min(
-                1,
-                1 - reading.subtract(minReading)
-                    .floatValue()
-                    / maxReading.subtract(minReading)
-                        .floatValue()))));
-            if (reading.compareTo(lastReading) > 0) {
-                tessellator
-                    .setColorRGBA_F(Color.getRed(negative), Color.getGreen(negative), Color.getBlue(negative), 255);
-            } else {
-                tessellator
-                    .setColorRGBA_F(Color.getRed(positive), Color.getGreen(positive), Color.getBlue(positive), 255);
-            }
-            lastReading = reading;
-            tessellator.addVertex(lastX, lastY, 0);
-            tessellator.addVertex(x, y, 0);
-            lastX = x;
-            lastY = y;
         }
-        tessellator.draw();
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-        GL11.glPopAttrib();
 
+        renderPowerChartBounds(minReading, maxReading);
+        if (lastMeasurements.size() < 2) return;
+
+        renderPowerChartLines(maxReading, lastMeasurements);
+    }
+
+    private BigInteger getMinimumMeasurement(List<PowerGogglesMeasurement> lastMeasurements) {
+        return lastMeasurements.stream()
+            .map(PowerGogglesMeasurement::getMeasurement)
+            .reduce(BigInteger::min)
+            .orElse(BigInteger.ZERO);
+    }
+
+    private BigInteger getMaximumMeasurement(List<PowerGogglesMeasurement> lastMeasurements) {
+        return lastMeasurements.stream()
+            .map(PowerGogglesMeasurement::getMeasurement)
+            .reduce(BigInteger::max)
+            .orElse(BigInteger.ZERO);
     }
 
     private void renderPowerChartBackground() {
@@ -437,6 +376,104 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             bottom + borderRadius,
             borderColor,
             borderColor);
+    }
+
+    private void renderPowerChartBounds(BigInteger minReading, BigInteger maxReading) {
+        double scale = 0.5f;
+        drawScaledString(
+            PowerGogglesUtil.format(minReading),
+            xOffset,
+            screenHeight - yOffset - borderRadius * 2 - (int) (fontRenderer.FONT_HEIGHT * scale),
+            Color.rgb(237, 2, 158),
+            scale);
+        drawScaledString(
+            minReading.compareTo(maxReading) == 0 ? "" : PowerGogglesUtil.format(maxReading),
+            xOffset,
+            screenHeight - yOffset - borderRadius * 2 - chartHeight,
+            Color.rgb(237, 2, 158),
+            scale);
+    }
+
+    private void renderPowerChartLines(BigInteger maxReading, List<PowerGogglesMeasurement> lastMeasurements) {
+        int measurementCount = lastMeasurements.size();
+
+        double completeChartLineWidth = chartWidth * 0.8d;
+        int chartY = yOffset + borderRadius * 2;
+
+        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(
+            GlStateManager.SourceFactor.SRC_ALPHA,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawing(GL_LINES);
+
+        BigInteger lastMeasurement = lastMeasurements.get(0)
+            .getMeasurement();
+        double lastX = xOffset + borderRadius + (chartWidth * 0.2d);
+        double lastY = getPointY(chartY, chartHeight, maxReading, lastMeasurement);
+        double lineWidth = completeChartLineWidth / PowerGogglesConstants.MEASUREMENT_COUNT_5M;
+
+        for (int i = 1; i < measurementCount; i++) {
+
+            BigInteger measurement = lastMeasurements.get(i)
+                .getMeasurement();
+            setLineColor(tessellator, lastMeasurement, measurement);
+
+            double currentX = lastX + lineWidth;
+            double currentY = getPointY(chartY, chartHeight, maxReading, measurement);
+
+            tessellator.addVertex(lastX, lastY, 0);
+            tessellator.addVertex(currentX, currentY, 0);
+
+            lastMeasurement = measurement;
+            lastX = currentX;
+            lastY = currentY;
+        }
+
+        tessellator.draw();
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+        GL11.glPopAttrib();
+    }
+
+    private double getPointY(int chartY, int chartHeight, BigInteger maxReading, BigInteger lastMeasurement) {
+        if (lastMeasurement.compareTo(BigInteger.ZERO) == 0) {
+            return screenHeight - chartY;
+        }
+        BigInteger percentageLastMeasurement = lastMeasurement.multiply(BigInteger.valueOf(100));
+
+        double heightRatio = percentageLastMeasurement.divide(maxReading)
+            .doubleValue();
+        double heightPercentage = heightRatio / 100.0;
+        return screenHeight - (chartY + (chartHeight * heightPercentage));
+    }
+
+    private void setLineColor(Tessellator tessellator, BigInteger lastMeasurement, BigInteger measurement) {
+        int negative = PowerGogglesConfigHandler.textBadColor;
+        int positive = PowerGogglesConfigHandler.textGoodColor;
+
+        if (measurement.compareTo(lastMeasurement) < 0) {
+            tessellator.setColorRGBA(
+                Color.getRed(negative),
+                Color.getGreen(negative),
+                Color.getBlue(negative),
+                Color.getAlpha(negative));
+        } else {
+            tessellator.setColorRGBA(
+                Color.getRed(positive),
+                Color.getGreen(positive),
+                Color.getBlue(positive),
+                Color.getAlpha(positive));
+        }
     }
 
     @Override
