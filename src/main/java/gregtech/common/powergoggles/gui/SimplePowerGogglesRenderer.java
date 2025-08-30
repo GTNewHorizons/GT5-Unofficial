@@ -35,6 +35,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private double mainScale;
     private double subScale;
 
+    private BigInteger euDifference5m = BigInteger.ZERO;
+    private BigInteger euDifference1h = BigInteger.ZERO;
+
     @Override
     public void renderMainInfo(RenderGameOverlayEvent.Post event) {
         updateRenderingProperties(event);
@@ -120,7 +123,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * mainScale);
         int stringY = screenHeight - offsetFactor - stringHeight;
 
-        String currentStorage = measurements.isEmpty() ? "0" : PowerGogglesUtil.format(measurements.getFirst());;
+        String currentStorage = legacyMeasurements.isEmpty() ? "0" : PowerGogglesUtil.format(legacyMeasurements.getFirst());;
 
         drawScaledString(currentStorage, xOffset, stringY, Color.rgb(255, 255, 255), mainScale);
     }
@@ -129,8 +132,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int offsetFactor = yOffset - gapBetweenLines;
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * subScale);
 
-        String timedDifference5m = PowerGogglesUtil.format(BigInteger.valueOf(12389143));
-        String timedDifference1h = PowerGogglesUtil.format(BigInteger.valueOf(123891430));
+        String timedDifference5m = PowerGogglesUtil.format(euDifference5m);
+        String timedDifference1h = PowerGogglesUtil.format(euDifference1h);
 
         int string5mY = screenHeight - offsetFactor;
         int string1hY = string5mY + gapBetweenLines + stringHeight;
@@ -232,7 +235,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     @Override
     public void clear() {
-        measurements.clear();
+        legacyMeasurements.clear();
         currentEU = BigInteger.valueOf(0);
         measurement = BigInteger.valueOf(0);
         highest = BigInteger.valueOf(0);
@@ -251,7 +254,22 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         measurement = newEU;
         if (highest.compareTo(measurement) < 0) highest = measurement;
         currentEU = measurement;
-        measurements.addFirst(measurement);
-        if (measurements.size() > measurementCount1h) measurements.removeLast();
+        legacyMeasurements.addFirst(measurement);
+        if (legacyMeasurements.size() > measurementCount1h) legacyMeasurements.removeLast();
+
+        onNewMeasurement();
+    }
+
+    private void onNewMeasurement(){
+        update5mDifference();
+        update1hDifference();
+    }
+
+    private void update5mDifference() {
+
+    }
+
+    private void update1hDifference() {
+
     }
 }
