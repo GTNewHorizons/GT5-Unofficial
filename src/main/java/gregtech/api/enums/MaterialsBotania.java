@@ -151,34 +151,16 @@ public class MaterialsBotania {
     }
 
     private static Materials loadGaiaSpirit() {
-        return new Materials(
-            205,
-            new TextureSet("GaiaSpirit", true),
-            32.0F,
-            850000,
-            12,
-            1 | 2 | 64 | 128,
-            255,
-            255,
-            255,
-            0,
-            "GaiaSpirit",
-            "Gaia Spirit",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            true,
-            2,
-            1,
-            1,
-            Dyes._NULL,
-            Arrays.asList(
-                new TC_AspectStack(TCAspects.PRAECANTATIO, 27),
-                new TC_AspectStack(TCAspects.AURAM, 24),
-                new TC_AspectStack(TCAspects.VICTUS, 24),
-                new TC_AspectStack(TCAspects.METALLUM, 1)));
+        return new MaterialBuilder().setName("GaiaSpirit")
+            .setDefaultLocalName("Gaia Spirit")
+            .setMetaItemSubID(205)
+            .setIconSet(new TextureSet("GaiaSpirit", true))
+            .setTool(850_000, 12, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .constructMaterial();
     }
 
     private static Materials loadLivingwood() {
