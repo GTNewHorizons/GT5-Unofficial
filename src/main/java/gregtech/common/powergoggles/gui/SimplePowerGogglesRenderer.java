@@ -2,6 +2,7 @@ package gregtech.common.powergoggles.gui;
 
 import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -19,7 +21,9 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.math.BigIntegerMath;
 import com.gtnewhorizons.modularui.api.GlStateManager;
+import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.math.Color;
 
 import gregtech.common.powergoggles.PowerGogglesConstants;
@@ -55,10 +59,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         updateRenderingProperties(event);
 
         int scaleOffsetX = xOffset - borderRadius;
-        int scaleOffsetY = screenHeight - yOffset
-            + gapBetweenLines * 2
-            + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
-            + borderRadius;
+        int scaleOffsetY = screenHeight - yOffset;
 
         GL11.glPushMatrix();
         GL11.glEnable(GL_CULL_FACE);
@@ -71,7 +72,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         renderTimedDifferenceText();
 
         if (PowerGogglesConfigHandler.showPowerChart) {
-            // renderPowerChart();
+            renderPowerChart();
         }
         renderBackground();
 
@@ -309,6 +310,122 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GlStateManager.enableTexture2D();
         GL11.glPopAttrib();
 
+    }
+
+    public void renderPowerChart() {
+        renderPowerChartBackground();
+        if (measurements.isEmpty()) return;
+
+        int measurementCount = Math.min(measurements.size(), PowerGogglesConstants.MEASUREMENT_COUNT_5M);
+
+        BigInteger minReading = measurements.get(0)
+            .getMeasurement();
+        BigInteger maxReading = measurements.get(0)
+            .getMeasurement();
+        for (int i = 0; i < measurementCount; i++) {
+            BigInteger temp = measurements.get(i)
+                .getMeasurement();
+            if (temp.compareTo(minReading) < 0) minReading = temp;
+            if (maxReading.compareTo(temp) < 0) maxReading = temp;
+        }
+
+        int exponent = minReading.compareTo(BigInteger.ZERO) == 0 ? 0
+            : BigIntegerMath.log10(minReading, RoundingMode.DOWN);
+        minReading = minReading.compareTo(BigInteger.ZERO) == 0 ? BigInteger.ZERO
+            : BigInteger.valueOf(10)
+                .pow(exponent);
+
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        double scale = 0.5f;
+
+        drawScaledString(
+            PowerGogglesUtil.format(minReading),
+            xOffset,
+            yOffset - (int) (fontRenderer.FONT_HEIGHT * scale),
+            Color.rgb(237, 2, 158),
+            scale);
+        drawScaledString(
+            minReading.compareTo(maxReading) == 0 ? "" : PowerGogglesUtil.format(maxReading),
+            xOffset,
+            yOffset - chartHeight,
+            Color.rgb(237, 2, 158),
+            scale);
+        if (measurementCount < 2) return;
+        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(
+            GlStateManager.SourceFactor.SRC_ALPHA,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawing(GL_LINES);
+
+        int negative = PowerGogglesConfigHandler.textBadColor;
+        int positive = PowerGogglesConfigHandler.textGoodColor;
+        BigInteger lastReading = measurements.getLast()
+            .getMeasurement();
+        double pointsWidth = chartWidth * 0.8d;
+        double lastX = xOffset + chartWidth;
+        double lastY = (yOffset + (chartHeight * (-1 + Math.min(
+            1,
+            1 - lastReading.subtract(minReading)
+                .floatValue()
+                / maxReading.subtract(minReading)
+                    .floatValue()))));
+        for (int i = 1; i < measurementCount; i++) {
+            BigInteger reading = measurements.get(i)
+                .getMeasurement();
+            double x = xOffset + chartWidth - (pointsWidth / (measurementCount)) * i;
+            double y = (yOffset + (chartHeight * (-1 + Math.min(
+                1,
+                1 - reading.subtract(minReading)
+                    .floatValue()
+                    / maxReading.subtract(minReading)
+                        .floatValue()))));
+            if (reading.compareTo(lastReading) > 0) {
+                tessellator
+                    .setColorRGBA_F(Color.getRed(negative), Color.getGreen(negative), Color.getBlue(negative), 255);
+            } else {
+                tessellator
+                    .setColorRGBA_F(Color.getRed(positive), Color.getGreen(positive), Color.getBlue(positive), 255);
+            }
+            lastReading = reading;
+            tessellator.addVertex(lastX, lastY, 0);
+            tessellator.addVertex(x, y, 0);
+            lastX = x;
+            lastY = y;
+        }
+        tessellator.draw();
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+        GL11.glPopAttrib();
+
+    }
+
+    private void renderPowerChartBackground() {
+
+        int left = xOffset;
+        int right = xOffset + chartWidth;
+        int top = screenHeight - yOffset - chartHeight - borderRadius * 2;
+        int bottom = screenHeight - yOffset - borderRadius * 2;
+        int bgColor = Color.argb(19, 14, 91, (int) (255 * 0.75f));
+        GuiHelper.drawGradientRect(-1, left, top, right, bottom, bgColor, bgColor);
+        int borderColor = Color.rgb(81, 79, 104);
+        GuiHelper.drawGradientRect(
+            -2,
+            left - borderRadius,
+            top - borderRadius,
+            right + borderRadius,
+            bottom + borderRadius,
+            borderColor,
+            borderColor);
     }
 
     @Override
