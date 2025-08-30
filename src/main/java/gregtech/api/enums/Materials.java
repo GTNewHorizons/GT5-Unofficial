@@ -2837,6 +2837,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setTurbine(float, float, float)} on a `MaterialBuilder` instead. */
+    @Deprecated
     public Materials setTurbineMultipliers(float steamMultiplier, float gasMultiplier, float plasmaMultiplier) {
         mSteamMultiplier = steamMultiplier;
         mGasMultiplier = gasMultiplier;
