@@ -480,6 +480,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
         this.measurements = measurements;
         onNewMeasurement();
+        euDifference5m = BigInteger.ZERO;
+        euDifference1h = BigInteger.ZERO;
     }
 
     @Override
