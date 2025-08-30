@@ -38,29 +38,29 @@ public class PowerGogglesHudHandler {
     private final static int SECONDS = 20 * TICKS;
     private final static int MINUTES = 60 * SECONDS;
 
-    public static LinkedList<BigInteger> measurements = new LinkedList<>();
-    static Minecraft mc = Minecraft.getMinecraft();
+    private final int ticksBetweenMeasurements = PowerGogglesConstants.TICKS_BETWEEN_MEASUREMENTS;
+    private final int measurementCount5m = PowerGogglesConstants.MEASUREMENT_COUNT_5M;
+    private final int measurementCount1h = PowerGogglesConstants.MEASUREMENT_COUNT_1H;
 
-    public static final int ticksBetweenMeasurements = PowerGogglesConstants.TICKS_BETWEEN_MEASUREMENTS;
-    static final int measurementCount5m = PowerGogglesConstants.MEASUREMENT_COUNT_5M;
-    static final int measurementCount1h = PowerGogglesConstants.MEASUREMENT_COUNT_1H;
+    private LinkedList<BigInteger> measurements = new LinkedList<>();
+    private final Minecraft mc = Minecraft.getMinecraft();
 
-    static BigInteger currentEU = BigInteger.valueOf(0);
-    static BigInteger measurement = BigInteger.valueOf(0);
-    static BigInteger highest = BigInteger.valueOf(0);
-    public static long capacity = 0; // If this is higher than 0 there's a linked LSC
+    private BigInteger currentEU = BigInteger.valueOf(0);
+    private BigInteger measurement = BigInteger.valueOf(0);
+    private BigInteger highest = BigInteger.valueOf(0);
+    private long capacity = 0; // If this is higher than 0 there's a linked LSC
 
-    static int change5mColor = PowerGogglesConfigHandler.textOkColor;
-    static String change5mString = "";
-    static BigInteger change5m = BigInteger.valueOf(0);
-    static int change5mDiff;
+    private int change5mColor = PowerGogglesConfigHandler.textOkColor;
+    private String change5mString = "";
+    private BigInteger change5m = BigInteger.valueOf(0);
+    private int change5mDiff;
 
-    static int change1hColor = PowerGogglesConfigHandler.textOkColor;
-    static String change1hString = "";
-    static BigInteger change1h = BigInteger.valueOf(0);
-    static int change1hDiff;
+    private int change1hColor = PowerGogglesConfigHandler.textOkColor;
+    private String change1hString = "";
+    private BigInteger change1h = BigInteger.valueOf(0);
+    private int change1hDiff;
 
-    static String storage = "";
+    private String storage = "";
 
     private PowerGogglesHudHandler() {}
 
@@ -116,7 +116,7 @@ public class PowerGogglesHudHandler {
         GL11.glPopMatrix();
     }
 
-    private static int drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
+    private int drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
         int left = h + xOffset;
         int up = screenHeight - h - yOffset;
         int right = left + w;
@@ -356,7 +356,7 @@ public class PowerGogglesHudHandler {
 
     }
 
-    private static void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
+    private void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
         double scale) {
         GL11.glPushMatrix();
         GL11.glTranslated(xOffset, yOffset, 0);
@@ -366,12 +366,12 @@ public class PowerGogglesHudHandler {
         GL11.glPopMatrix();
     }
 
-    public static void setMeasurement(BigInteger newEU, long lscCapacity) {
+    public void setMeasurement(BigInteger newEU, long lscCapacity) {
         capacity = lscCapacity;
         setMeasurement(newEU);
     }
 
-    public static void setMeasurement(BigInteger newEU) {
+    public void setMeasurement(BigInteger newEU) {
         measurement = newEU;
         if (highest.compareTo(measurement) < 0) highest = measurement;
         currentEU = measurement;
@@ -379,7 +379,7 @@ public class PowerGogglesHudHandler {
         if (measurements.size() > measurementCount1h) measurements.removeLast();
     }
 
-    public static int[] getGradient(double severity, double scale, int gradientLeft, int gradientRight) {
+    public int[] getGradient(double severity, double scale, int gradientLeft, int gradientRight) {
         int newGradientLeft = gradientLeft;
         int newGradientRight = gradientRight;
 
@@ -411,7 +411,7 @@ public class PowerGogglesHudHandler {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void drawTick() {
+    public void drawTick() {
         if (Minecraft.getMinecraft()
             .isGamePaused()) return;
 
@@ -445,7 +445,7 @@ public class PowerGogglesHudHandler {
 
     }
 
-    private static String toFormatted(BigInteger EU) {
+    private String toFormatted(BigInteger EU) {
         switch (PowerGogglesConfigHandler.formatIndex) {
             case 1:
                 return toCustom(EU);
@@ -457,11 +457,11 @@ public class PowerGogglesHudHandler {
 
     }
 
-    private static String toCustom(BigInteger EU) {
+    private String toCustom(BigInteger EU) {
         return toCustom(EU, false, 3);
     }
 
-    private static String toCustom(BigInteger EU, boolean useSI, int baseDigits) {
+    private String toCustom(BigInteger EU, boolean useSI, int baseDigits) {
         String[] suffixes = { "", "K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q" };
         if (EU.abs()
             .compareTo(BigInteger.valueOf(1)) < 0) {
@@ -484,19 +484,19 @@ public class PowerGogglesHudHandler {
         return String.format("%s.%sE%d", base, decimal, E);
     }
 
-    private static BigInteger getTotalChange(LinkedList<BigInteger> list, int count) {
+    private BigInteger getTotalChange(LinkedList<BigInteger> list, int count) {
         if (list.isEmpty()) return BigInteger.valueOf(0);
         return list.get(0)
             .subtract(list.get(Math.min(count, list.size() - 1)));
     }
 
-    private static int getColor(int compareResult) {
+    private int getColor(int compareResult) {
         if (compareResult == 0) return PowerGogglesConfigHandler.textOkColor;
         if (compareResult < 0) return PowerGogglesConfigHandler.textBadColor;
         return PowerGogglesConfigHandler.textGoodColor;
     }
 
-    public static void clear() {
+    public void clear() {
         measurements.clear();
         currentEU = BigInteger.valueOf(0);
         measurement = BigInteger.valueOf(0);
@@ -507,8 +507,24 @@ public class PowerGogglesHudHandler {
         updateColors();
     }
 
-    public static void updateColors() {
+    public void updateColors() {
         change5mColor = getColor(change5mDiff);
         change1hColor = getColor(change1hDiff);
+    }
+
+    public LinkedList<BigInteger> getMeasurements() {
+        return measurements;
+    }
+
+    public void setMeasurements(LinkedList<BigInteger> measurements) {
+        this.measurements = measurements;
+    }
+
+    public long getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(long capacity) {
+        this.capacity = capacity;
     }
 }
