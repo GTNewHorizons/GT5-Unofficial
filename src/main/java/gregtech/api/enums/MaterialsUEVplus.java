@@ -117,29 +117,17 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadDimensionallyTranscendentResplendentCatalyst() {
-        return new Materials(
-            746,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            10,
-            20,
-            20,
-            1,
-            "DimensionallyTranscendentResplendentCatalyst",
-            "Dimensionally Transcendent Resplendent Catalyst",
-            0,
-            0,
-            75_000_000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeLime).setHasCorrespondingFluid(true);
+        return new MaterialBuilder().setName("DimensionallyTranscendentResplendentCatalyst")
+            .setDefaultLocalName("Dimensionally Transcendent Resplendent Catalyst")
+            .setMetaItemSubID(746)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x010a1414)
+            .addCell()
+            .setMeltingPoint(75_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
     }
 
     private static Materials loadDimensionallyTranscendentExoticCatalyst() {
