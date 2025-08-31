@@ -1,5 +1,9 @@
 package gregtech.api.enums;
 
+import net.minecraft.util.EnumChatFormatting;
+
+import gregtech.api.util.CustomGlyphs;
+
 public class MaterialsUEVplus {
 
     public static Materials DimensionallyTranscendentCrudeCatalyst;
@@ -145,6 +149,7 @@ public class MaterialsUEVplus {
     private static Materials loadDimensionallyTranscendentStellarCatalyst() {
         return new MaterialBuilder().setName("DimensionallyTranscendentStellarCatalyst")
             .setDefaultLocalName("Dimensionally Transcendent Stellar Catalyst")
+            .setChemicalFormula("Stellar")
             .setMetaItemSubID(130)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
@@ -211,6 +216,7 @@ public class MaterialsUEVplus {
     private static Materials loadExcitedDTSC() {
         return new MaterialBuilder().setName("ExcitedDTSC")
             .setDefaultLocalName("Excited Dimensionally Transcendent Stellar Catalyst")
+            .setChemicalFormula("[-Stellar-Stellar-]")
             .setMetaItemSubID(127)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
@@ -224,6 +230,7 @@ public class MaterialsUEVplus {
     private static Materials loadDimensionallyTranscendentResidue() {
         return new MaterialBuilder().setName("DimensionallyTranscendentResidue")
             .setDefaultLocalName("Dimensionally Transcendent Residue")
+            .setChemicalFormula(CustomGlyphs.SPARKLES + "-" + CustomGlyphs.EMPTY_SET)
             .setMetaItemSubID(589)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
@@ -237,6 +244,7 @@ public class MaterialsUEVplus {
     private static Materials loadSpaceTime() {
         return new MaterialBuilder().setName("SpaceTime")
             .setDefaultLocalName("SpaceTime")
+            .setChemicalFormula("Reality itself distilled into physical form")
             .setMetaItemSubID(588)
             .setIconSet(new TextureSet("spacetime", true))
             .setARGB(0x00ffffff)
@@ -255,6 +263,7 @@ public class MaterialsUEVplus {
     private static Materials loadTranscendentMetal() {
         return new MaterialBuilder().setName("TranscendentMetal")
             .setDefaultLocalName("Transcendent Metal")
+            .setChemicalFormula("TsЖ")
             .setMetaItemSubID(581)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
@@ -278,6 +287,11 @@ public class MaterialsUEVplus {
     private static Materials loadMagnetohydrodynamicallyConstrainedStarMatter() {
         return new MaterialBuilder().setName("MagnetohydrodynamicallyConstrainedStarMatter")
             .setDefaultLocalName("Magnetohydrodynamically Constrained Star Matter")
+            .setChemicalFormula(
+                "⇲" + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
+                    + CustomGlyphs.GALAXY
+                    + CustomGlyphs.ARROW_CORNER_NORTH_WEST
+                    + "⇱")
             .setMetaItemSubID(583)
             .setIconSet(new TextureSet("MagnetohydrodynamicallyConstrainedStarMatter", true))
             .setARGB(0x00ffffff)
@@ -294,6 +308,7 @@ public class MaterialsUEVplus {
     private static Materials loadRawStarMatter() {
         return new MaterialBuilder().setName("RawStarMatter")
             .setDefaultLocalName("Condensed Raw Stellar Plasma Mixture")
+            .setChemicalFormula(CustomGlyphs.GALAXY)
             .setMetaItemSubID(584)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePurple)
@@ -306,6 +321,7 @@ public class MaterialsUEVplus {
     private static Materials loadWhiteDwarfMatter() {
         return new MaterialBuilder().setName("WhiteDwarfMatter")
             .setDefaultLocalName("White Dwarf Matter")
+            .setChemicalFormula("∅")
             .setMetaItemSubID(585)
             .setIconSet(new TextureSet("WhiteDwarfMatter", true))
             .setColor(Dyes.dyePurple)
@@ -323,6 +339,7 @@ public class MaterialsUEVplus {
     private static Materials loadBlackDwarfMatter() {
         return new MaterialBuilder().setName("BlackDwarfMatter")
             .setDefaultLocalName("Black Dwarf Matter")
+            .setChemicalFormula(">>∅<<")
             .setMetaItemSubID(586)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePurple)
@@ -365,6 +382,7 @@ public class MaterialsUEVplus {
     private static Materials loadUniversium() {
         return new MaterialBuilder().setName("Universium")
             .setDefaultLocalName("Universium")
+            .setChemicalFormula("A tear into the space beyond space")
             .setMetaItemSubID(139)
             .setIconSet(new TextureSet("universium", true))
             .setARGB(0xff263145)
@@ -381,6 +399,7 @@ public class MaterialsUEVplus {
     private static Materials loadEternity() {
         return new MaterialBuilder().setName("Eternity")
             .setDefaultLocalName("Eternity")
+            .setChemicalFormula("En⦼")
             .setMetaItemSubID(141)
             .setIconSet(new TextureSet("eternity", true))
             .setTool(20_971_520, 26, 1.0f)
@@ -413,6 +432,7 @@ public class MaterialsUEVplus {
     private static Materials loadMagMatter() {
         return new MaterialBuilder().setName("Magmatter")
             .setDefaultLocalName("Magmatter")
+            .setChemicalFormula("M⎋")
             .setMetaItemSubID(143)
             .setIconSet(new TextureSet("magmatter", true))
             .setTool(167_772_160, 26, 1.0f)
@@ -430,6 +450,13 @@ public class MaterialsUEVplus {
     private static Materials loadQuarkGluonPlasma() {
         return new MaterialBuilder().setName("QuarkGluonPlasma")
             .setDefaultLocalName("Degenerate Quark Gluon Plasma")
+            .setChemicalFormula(
+                EnumChatFormatting.OBFUSCATED + "X"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + "g"
+                    + EnumChatFormatting.OBFUSCATED
+                    + "X")
             .setMetaItemSubID(144)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00ffffff)
@@ -442,6 +469,13 @@ public class MaterialsUEVplus {
     private static Materials loadPhononMedium() {
         return new MaterialBuilder().setName("PhononMedium")
             .setDefaultLocalName("Lossless Phonon Transfer Medium")
+            .setChemicalFormula(
+                "((Si₅O₁" + CustomGlyphs.SUBSCRIPT0
+                    + "Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅"
+                    + CustomGlyphs.SUBSCRIPT0
+                    + "C)₅Og*Pr₁₅((C₁₄Os₁₁O₇Ag₃SpH₂O)₄?₁"
+                    + CustomGlyphs.SUBSCRIPT0
+                    + "(Fs⚶)₆(⌘☯☯⌘)₅)₆〄₄")
             .setMetaItemSubID(145)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00ffffff)
@@ -454,6 +488,7 @@ public class MaterialsUEVplus {
     private static Materials loadPhononCrystalSolution() {
         return new MaterialBuilder().setName("PhononCrystalSolution")
             .setDefaultLocalName("Saturated Phononic Crystal Solution")
+            .setChemicalFormula("〄")
             .setMetaItemSubID(146)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00ffffff)
@@ -466,6 +501,7 @@ public class MaterialsUEVplus {
     private static Materials loadSixPhasedCopper() {
         return new MaterialBuilder().setName("SixPhasedCopper")
             .setDefaultLocalName("Six-Phased Copper")
+            .setChemicalFormula("✢")
             .setMetaItemSubID(147)
             .setIconSet(TextureSet.SET_SHINY)
             .setRGB(0xff7814)
@@ -489,6 +525,11 @@ public class MaterialsUEVplus {
     private static Materials loadMellion() {
         return new MaterialBuilder().setName("Mellion")
             .setDefaultLocalName("Mellion")
+            .setChemicalFormula(
+                "Tn₁₁Or₈Rb₁₁(" + Materials.FierySteel.mChemicalFormula
+                    + ")₇"
+                    + Materials.Firestone.mChemicalFormula
+                    + "₁₃?₁₃")
             .setMetaItemSubID(148)
             .setIconSet(TextureSet.SET_SHINY)
             .setRGB(0x3c0505)
@@ -510,6 +551,7 @@ public class MaterialsUEVplus {
     private static Materials loadCreon() {
         return new MaterialBuilder().setName("Creon")
             .setDefaultLocalName("Creon")
+            .setChemicalFormula("⸎")
             .setMetaItemSubID(149)
             .setIconSet(TextureSet.SET_SHINY)
             .setRGB(0x460046)
@@ -559,6 +601,19 @@ public class MaterialsUEVplus {
     private static Materials loadMoltenProtoHalkoniteBase() {
         return new MaterialBuilder().setName("protohalkonitebase")
             .setDefaultLocalName("Molten Proto-Halkonite Steel Base")
+            .setChemicalFormula(
+                "(" + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
+                    + ")₂"
+                    + "(W₈Nq*₇("
+                    + Materials.Bedrockium.mChemicalFormula
+                    + ")₄C₄V₃SpPu)₂"
+                    + Materials.Tartarite.mChemicalFormula
+                    + "₂"
+                    + "((CW)₇Ti₃)₃"
+                    + CustomGlyphs.FIRE
+                    + CustomGlyphs.EARTH
+                    + CustomGlyphs.CHAOS
+                    + "If*")
             .setMetaItemSubID(152)
             .setIconSet(new TextureSet("protohalkonitebase", true))
             .setARGB(0x00ffffff)
@@ -573,6 +628,7 @@ public class MaterialsUEVplus {
     private static Materials loadHotProtoHalkonite() {
         return new MaterialBuilder().setName("hotprotohalkonite")
             .setDefaultLocalName("Hot Proto-Halkonite Steel")
+            .setChemicalFormula(MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula)
             .setMetaItemSubID(153)
             .setIconSet(new TextureSet("hotprotohalkonite", true))
             .addDustItems()
@@ -589,6 +645,7 @@ public class MaterialsUEVplus {
     private static Materials loadProtoHalkonite() {
         return new MaterialBuilder().setName("protohalkonite")
             .setDefaultLocalName("Proto-Halkonite Steel")
+            .setChemicalFormula(MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula)
             .setMetaItemSubID(154)
             .setIconSet(new TextureSet("protohalkonite", true))
             .addDustItems()

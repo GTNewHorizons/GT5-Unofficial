@@ -20,7 +20,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,7 +31,6 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
@@ -1015,8 +1013,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setHeatDamage();
         setByProducts();
         setColors();
-
-        overrideChemicalFormulas();
     }
 
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 }, mMoltenRGBa = new short[] { 255, 255, 255, 0 };
@@ -1950,61 +1946,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Naquadria.mMoltenRGBa[1] = 255;
         Naquadria.mMoltenRGBa[2] = 128;
         Naquadria.mMoltenRGBa[3] = 0;
-    }
-
-    private static void overrideChemicalFormulas() {
-        MaterialsUEVplus.BlackDwarfMatter.mChemicalFormula = ">>∅<<";
-        MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "∅";
-        MaterialsUEVplus.SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
-        MaterialsUEVplus.Universium.mChemicalFormula = "A tear into the space beyond space";
-        MaterialsUEVplus.Eternity.mChemicalFormula = "En⦼";
-        MaterialsUEVplus.MagMatter.mChemicalFormula = "M⎋";
-        MaterialsUEVplus.RawStarMatter.mChemicalFormula = CustomGlyphs.GALAXY;
-        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "⇲"
-            + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
-            + CustomGlyphs.GALAXY
-            + CustomGlyphs.ARROW_CORNER_NORTH_WEST
-            + "⇱";
-        MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
-        MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
-        MaterialsUEVplus.DimensionallyTranscendentResidue.mChemicalFormula = CustomGlyphs.SPARKLES + "-"
-            + CustomGlyphs.EMPTY_SET;
-        MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
-            + EnumChatFormatting.RESET
-            + EnumChatFormatting.GRAY
-            + "g"
-            + EnumChatFormatting.OBFUSCATED
-            + "X";
-        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "〄";
-        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si₅O₁" + CustomGlyphs.SUBSCRIPT0
-            + "Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅"
-            + CustomGlyphs.SUBSCRIPT0
-            + "C)₅Og*Pr₁₅((C₁₄Os₁₁O₇Ag₃SpH₂O)₄?₁"
-            + CustomGlyphs.SUBSCRIPT0
-            + "(Fs⚶)₆(⌘☯☯⌘)₅)₆〄₄";
-        MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "✢";
-        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn₁₁Or₈Rb₁₁(" + FierySteel.mChemicalFormula
-            + ")₇"
-            + Firestone.mChemicalFormula
-            + "₁₃?₁₃";
-        MaterialsUEVplus.Creon.mChemicalFormula = "⸎";
-        MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
-        // I hate this
-        MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula = "("
-            + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
-            + ")₂"
-            + "(W₈Nq*₇("
-            + Materials.Bedrockium.mChemicalFormula
-            + ")₄C₄V₃SpPu)₂"
-            + Tartarite.mChemicalFormula
-            + "₂"
-            + "((CW)₇Ti₃)₃"
-            + CustomGlyphs.FIRE
-            + CustomGlyphs.EARTH
-            + CustomGlyphs.CHAOS
-            + "If*";
-        MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
-        MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
     }
 
     private static void initSubTags() {
