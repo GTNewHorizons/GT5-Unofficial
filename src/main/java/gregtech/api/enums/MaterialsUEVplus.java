@@ -398,29 +398,15 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadPrimordialMatter() {
-        return new Materials(
-            142,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            255,
-            255,
-            255,
-            0,
-            "PrimordialMatter",
-            "Liquid Primordial Matter",
-            -1,
-            -1,
-            2_000_000_000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeBlue);
+        return new MaterialBuilder().setName("PrimordialMatter")
+            .setDefaultLocalName("Liquid Primordial Matter")
+            .setMetaItemSubID(142)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .addCell()
+            .setMeltingPoint(2_000_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadMagMatter() {
