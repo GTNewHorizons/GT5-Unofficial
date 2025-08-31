@@ -265,7 +265,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Emery;
     public static Materials EnderiumBase;
     public static Materials Energized;
-    public static Materials Epidote;
     public static Materials Eximite;
     public static Materials FierySteel;
     public static Materials Firestone;
@@ -834,13 +833,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Aluminiumhydroxide;
     public static Materials Cryolite;
     public static Materials RedMud;
-    
-    public static Materials Chlorite;
-    public static Materials Staurolite;
-    public static Materials Cordierite;
-    public static Materials Datolite;
-    public static Materials MetamorphicMineralMixture;
-    public static Materials Plagioclase;
 
     public static Materials Brick;
     public static Materials Fireclay;
