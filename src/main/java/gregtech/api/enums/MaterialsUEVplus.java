@@ -900,7 +900,7 @@ public class MaterialsUEVplus {
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
      * initialized
      */
-    public static void init() {
+    public static void load() {
         // no-op. all work is done by <clinit>
     }
 }

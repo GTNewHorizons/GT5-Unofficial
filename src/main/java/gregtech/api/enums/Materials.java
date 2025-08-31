@@ -46,7 +46,7 @@ import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import gregtech.loaders.materials.MaterialsInit1;
+import gregtech.loaders.materials.MaterialsInit;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
 public class Materials implements IColorModulationContainer, ISubTagContainer {
@@ -982,25 +982,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // spotless:on
 
     static {
-        // Load all materials, this has been split into different classes to make
-        // class too large errors disappear
-        MaterialsInit1.load();
-    }
-
-    static {
+        MaterialsInit.load();
         MaterialsBotania.load();
-    }
-
-    static {
         MaterialsKevlar.load();
-    }
-
-    static {
         MaterialsOreAlum.load();
-    }
-
-    static {
-        MaterialsUEVplus.init();
+        MaterialsUEVplus.load();
     }
 
     /**

@@ -9,7 +9,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.CustomGlyphs;
 
-public class MaterialsInit1 {
+public class MaterialsInit {
 
     public static void load() {
         loadElements();
