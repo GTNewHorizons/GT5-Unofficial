@@ -3088,6 +3088,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return hasCorrespondingGas;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#addGas()} on a `MaterialBuilder` instead. */
+    @Deprecated
     public Materials setHasCorrespondingGas(boolean hasCorrespondingGas) {
         this.hasCorrespondingGas = hasCorrespondingGas;
         return this;
