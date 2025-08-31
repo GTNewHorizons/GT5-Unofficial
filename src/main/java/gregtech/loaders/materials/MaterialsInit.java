@@ -1875,10 +1875,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x003d3a52)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade1PurifiedWater() {
@@ -1890,10 +1890,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x003f4cfd)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade2PurifiedWater() {
@@ -1905,10 +1905,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x005d5dfe)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade3PurifiedWater() {
@@ -1920,10 +1920,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x00736dfe)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade4PurifiedWater() {
@@ -1935,10 +1935,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x00877eff)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade5PurifiedWater() {
@@ -1950,10 +1950,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x009890ff)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade6PurifiedWater() {
@@ -1965,10 +1965,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x00a8a1ff)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade7PurifiedWater() {
@@ -1980,10 +1980,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x00b7b3ff)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static Materials loadGrade8PurifiedWater() {
@@ -1995,10 +1995,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x00c5c5ff)
             .addCell()
+            .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .constructMaterial();
     }
 
     private static void loadRandom() {
@@ -5563,12 +5563,12 @@ public class MaterialsInit {
             .setARGB(0xf0a9d0f5)
             .addCell()
             .addPlasma()
+            .addGas()
             .setMeltingPoint(25)
             .setBlastFurnaceTemp(1)
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Oxygen, 2)
-            .constructMaterial()
-            .setHasCorrespondingGas(true);
+            .constructMaterial();
     }
 
     private static Materials loadCassiterite() {
@@ -6467,14 +6467,14 @@ public class MaterialsInit {
             .setARGB(0xf0a9d0f5)
             .addCell()
             .addPlasma()
+            .addGas()
             .setMeltingPoint(4)
             .addCentrifugeRecipe()
             .addMaterial(Materials.CarbonDioxide, 21)
             .addMaterial(Materials.Helium, 9)
             .addMaterial(Materials.Methane, 3)
             .addMaterial(Materials.Deuterium, 1)
-            .constructMaterial()
-            .setHasCorrespondingGas(true);
+            .constructMaterial();
     }
 
     private static Materials loadObsidian() {
@@ -12949,10 +12949,9 @@ public class MaterialsInit {
             .setMetaItemSubID(569)
             .setIconSet(new TextureSet("stablebaryonicmatter", true))
             .setARGB(0x00ffffff)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static void loadRadoxLine() {
@@ -13024,6 +13023,7 @@ public class MaterialsInit {
             .addDustItems()
             .addMetalItems()
             .addCell()
+            .addGas()
             .setMeltingPoint(6_203)
             .addMaterial(Materials.Carbon, 14)
             .addMaterial(Materials.Osmium, 11)
@@ -13032,7 +13032,6 @@ public class MaterialsInit {
             .addMaterial(Materials.CallistoIce, 1)
             .addAspect(TCAspects.HUMANUS, 2)
             .constructMaterial()
-            .setHasCorrespondingGas(true)
             .setGasTemperature(12_406);
     }
 
@@ -13090,10 +13089,9 @@ public class MaterialsInit {
             .setMetaItemSubID(118)
             .setIconSet(TextureSet.SET_FLUID)
             .setRGB(0xeea39a)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadNethersemifluid() {
@@ -13102,10 +13100,9 @@ public class MaterialsInit {
             .setMetaItemSubID(119)
             .setIconSet(TextureSet.SET_FLUID)
             .setRGB(0xdac172)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadNefariousGas() {
@@ -13114,10 +13111,9 @@ public class MaterialsInit {
             .setMetaItemSubID(120)
             .setIconSet(TextureSet.SET_FLUID)
             .setRGB(0x300a05)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadNefariousOil() {
@@ -13126,10 +13122,9 @@ public class MaterialsInit {
             .setMetaItemSubID(122)
             .setIconSet(TextureSet.SET_FLUID)
             .setRGB(0x391616)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadPoorNetherWaste() {
@@ -13138,10 +13133,9 @@ public class MaterialsInit {
             .setMetaItemSubID(123)
             .setIconSet(TextureSet.SET_FLUID)
             .setRGB(0xa0827e)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadRichNetherWaste() {
@@ -13150,10 +13144,9 @@ public class MaterialsInit {
             .setMetaItemSubID(124)
             .setIconSet(TextureSet.SET_FLUID)
             .setRGB(0xf9827e)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadHellishMetal() {
@@ -13219,10 +13212,9 @@ public class MaterialsInit {
             .setMetaItemSubID(135)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0x559a8a)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadPrismarinecontaminatedhydrogenperoxide() {
@@ -13231,10 +13223,9 @@ public class MaterialsInit {
             .setMetaItemSubID(136)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0x445f59)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadPrismarinerichnitrobenzenesolution() {
@@ -13243,10 +13234,9 @@ public class MaterialsInit {
             .setMetaItemSubID(137)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0x5d763f)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadPrismarinecontaminatednitrobenzenesolution() {
@@ -13255,10 +13245,9 @@ public class MaterialsInit {
             .setMetaItemSubID(138)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0x2f331e)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadPrismaticGas() {
@@ -13267,10 +13256,9 @@ public class MaterialsInit {
             .setMetaItemSubID(161)
             .setIconSet(TextureSet.SET_METALLIC)
             .setRGB(0x76babd)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadPrismaticAcid() {
@@ -13279,10 +13267,9 @@ public class MaterialsInit {
             .setMetaItemSubID(162)
             .setIconSet(new TextureSet("prismaticacid", true))
             .setARGB(0x00ffffff)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static Materials loadPrismaticNaquadah() {
@@ -13303,10 +13290,9 @@ public class MaterialsInit {
             .setMetaItemSubID(164)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x004b4b4b)
-            .addFluid()
             .addCell()
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+            .addFluid()
+            .constructMaterial();
     }
 
     private static void loadMagicMaterials() {
