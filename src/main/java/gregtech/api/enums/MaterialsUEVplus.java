@@ -224,29 +224,16 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadDimensionallyTranscendentResidue() {
-        return new Materials(
-            589,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            0,
-            0,
-            0,
-            1,
-            "DimensionallyTranscendentResidue",
-            "Dimensionally Transcendent Residue",
-            -1,
-            -1,
-            25,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeBlack);
+        return new MaterialBuilder().setName("DimensionallyTranscendentResidue")
+            .setDefaultLocalName("Dimensionally Transcendent Residue")
+            .setMetaItemSubID(589)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setARGB(0x01000000)
+            .addCell()
+            .setMeltingPoint(25)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadSpaceTime() {
