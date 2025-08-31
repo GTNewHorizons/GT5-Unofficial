@@ -117,7 +117,16 @@ public class MTEVoidMiners {
             tt.addMachineType("Miner")
                 .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
                 .addInfo(
-                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                    "Can be supplied with " + EnumChatFormatting.AQUA
+                        + "2 L/s"
+                        + EnumChatFormatting.GRAY
+                        + " of Noble gases to boost "
+                        + EnumChatFormatting.GOLD
+                        + "output")
+                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
                 .addInfo(
                     "Will output " + 2 * this.TIER_MULTIPLIER
                         + " Ores per Second depending on the Dimension it is build in")
@@ -269,7 +278,16 @@ public class MTEVoidMiners {
             tt.addMachineType("Miner")
                 .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
                 .addInfo(
-                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                    "Can be supplied with " + EnumChatFormatting.AQUA
+                        + "2 L/s"
+                        + EnumChatFormatting.GRAY
+                        + " of Noble gases to boost "
+                        + EnumChatFormatting.GOLD
+                        + "output")
+                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
                 .addInfo(
                     "Will output " + 2 * this.TIER_MULTIPLIER
                         + " Ores per Second depending on the Dimension it is build in")
@@ -418,9 +436,18 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType("Miner")
-                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
                 .addInfo(
-                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                    "Can be supplied with " + EnumChatFormatting.AQUA
+                        + "2 L/s"
+                        + EnumChatFormatting.GRAY
+                        + " of Noble gases to boost "
+                        + EnumChatFormatting.GOLD
+                        + "output")
+                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
                 .addInfo(
                     "Will output " + 2 * this.TIER_MULTIPLIER
                         + " Ores per Second depending on the Dimension it is build in")

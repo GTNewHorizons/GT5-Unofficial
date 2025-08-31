@@ -211,18 +211,17 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
         StructureWrapperTooltipBuilder<MTEEntropicProcessor> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("Entropic Processor")
-            .addInfo("Processes substances by increasing or decreasing their entropy.")
+            .addInfo("Processes substances by increasing or decreasing their entropy")
             .addSeparator()
-            .addInfo("Has " + TooltipHelper.parallelText(8) + " parallels by default.")
+            .addInfo("Has " + TooltipHelper.parallelText(8) + " parallels by default")
             .addInfo(
                 "Using Advanced Alchemical Constructs increases the machine's parallels to "
-                    + TooltipHelper.parallelText(32)
-                    + ".")
+                    + TooltipHelper.parallelText(32))
             .addSeparator()
-            .addInfo("Mixes fluids or solids with a magical catalyst.")
-            .addInfo("Catalyst is consumed by the recipe, then returned upon completion.")
+            .addInfo("Mixes fluids or solids with a magical catalyst")
+            .addInfo("Catalyst is consumed by the recipe, then returned upon completion")
             .addSeparator()
-            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC).");
+            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)");
 
         tt.beginStructureBlock(true)
             .addAllCasingInfo();
