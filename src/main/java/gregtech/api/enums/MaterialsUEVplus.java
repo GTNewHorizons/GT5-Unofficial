@@ -185,29 +185,16 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadExcitedDTRC() {
-        return new Materials(
-            121,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            38,
-            20,
-            56,
-            1,
-            "ExcitedDTRC",
-            "Excited Dimensionally Transcendent Resplendent Catalyst",
-            -1,
-            -1,
-            500000000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeLime);
+        return new MaterialBuilder().setName("ExcitedDTRC")
+            .setDefaultLocalName("Excited Dimensionally Transcendent Resplendent Catalyst")
+            .setMetaItemSubID(121)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x01261438)
+            .addCell()
+            .setMeltingPoint(500_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadExcitedDTEC() {
