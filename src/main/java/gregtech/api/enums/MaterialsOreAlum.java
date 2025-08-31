@@ -28,7 +28,7 @@ public class MaterialsOreAlum {
         return new MaterialBuilder(409, TextureSet.SET_FLUID, "Bauxite Slurry").setName("BauxiteSlurry")
             .addCell()
             .addFluid()
-            .setRGB(37, 67, 168)
+            .setRGB(0x2543a8)
             .setMeltingPoint(295)
             .setColor(Dyes.dyeBlue)
             .constructMaterial();
@@ -38,7 +38,7 @@ public class MaterialsOreAlum {
         return new MaterialBuilder(410, TextureSet.SET_FLUID, "Heated Bauxite Slurry").setName("HeadedBauxiteSlurry")
             .addCell()
             .addFluid()
-            .setRGB(55, 92, 212)
+            .setRGB(0x375cd4)
             .setMeltingPoint(295)
             .setColor(Dyes.dyeBlue)
             .constructMaterial();
@@ -48,7 +48,7 @@ public class MaterialsOreAlum {
         return new MaterialBuilder(411, TextureSet.SET_FLUID, "Sluice Juice").setName("SluiceJuice")
             .addCell()
             .addFluid()
-            .setRGB(92, 60, 36)
+            .setRGB(0x5c3c24)
             .setMeltingPoint(295)
             .setColor(Dyes.dyeGray)
             .constructMaterial();
@@ -57,7 +57,7 @@ public class MaterialsOreAlum {
     private static Materials loadSluiceSand() {
         return new MaterialBuilder(412, TextureSet.SET_FINE, "Sluice Sand").setName("SluiceSand")
             .addDustItems()
-            .setRGB(165, 165, 120)
+            .setRGB(0xa5a578)
             .setColor(Dyes.dyeGray)
             .constructMaterial();
     }
@@ -65,7 +65,7 @@ public class MaterialsOreAlum {
     private static Materials loadBauxiteSlag() {
         return new MaterialBuilder(413, TextureSet.SET_FINE, "Bauxite Slag").setName("BauxiteSlag")
             .addDustItems()
-            .setRGB(110, 31, 31)
+            .setRGB(0x6e1f1f)
             .setColor(Dyes.dyeRed)
             .constructMaterial();
     }
@@ -73,7 +73,7 @@ public class MaterialsOreAlum {
     private static Materials loadIlmeniteSlag() {
         return new MaterialBuilder(414, TextureSet.SET_FINE, "Ilmenite Slag").setName("IlmeniteSlag")
             .addDustItems()
-            .setRGB(163, 38, 38)
+            .setRGB(0xa32626)
             .setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
@@ -82,7 +82,7 @@ public class MaterialsOreAlum {
         return new MaterialBuilder(415, TextureSet.SET_FLUID, "Green Sapphire Juice").setName("GreenSapphireJuice")
             .addCell()
             .addFluid()
-            .setRGB(100, 200, 130)
+            .setRGB(0x64c882)
             .setColor(Dyes.dyeGreen)
             .constructMaterial();
     }
@@ -91,7 +91,7 @@ public class MaterialsOreAlum {
         return new MaterialBuilder(416, TextureSet.SET_FLUID, "Sapphire Juice").setName("SapphireJuice")
             .addCell()
             .addFluid()
-            .setRGB(100, 100, 200)
+            .setRGB(0x6464c8)
             .setColor(Dyes.dyeBlue)
             .constructMaterial();
     }
@@ -100,7 +100,7 @@ public class MaterialsOreAlum {
         return new MaterialBuilder(417, TextureSet.SET_FLUID, "Ruby Juice").setName("RubyJuice")
             .addCell()
             .addFluid()
-            .setRGB(255, 100, 100)
+            .setRGB(0xff6464)
             .setColor(Dyes.dyeRed)
             .constructMaterial();
     }
