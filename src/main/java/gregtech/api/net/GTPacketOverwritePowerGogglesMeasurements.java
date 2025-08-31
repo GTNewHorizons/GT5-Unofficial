@@ -13,7 +13,6 @@ import io.netty.buffer.ByteBuf;
 
 public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
 
-    private static final PowerGogglesHudHandler hudHandler = PowerGogglesHudHandler.getInstance();
     LinkedList<PowerGogglesMeasurement> measurements;
 
     public GTPacketOverwritePowerGogglesMeasurements() {}
@@ -79,7 +78,8 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
 
     @Override
     public void process(IBlockAccess world) {
-        hudHandler.getRenderer()
+        PowerGogglesHudHandler.getInstance()
+            .getRenderer()
             .setMeasurements(measurements);
     }
 }
