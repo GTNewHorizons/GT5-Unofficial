@@ -427,29 +427,14 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadQuarkGluonPlasma() {
-        return new Materials(
-            144,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            255,
-            255,
-            255,
-            0,
-            "QuarkGluonPlasma",
-            "Degenerate Quark Gluon Plasma",
-            -1,
-            -1,
-            2_000_000_000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("QuarkGluonPlasma")
+            .setDefaultLocalName("Degenerate Quark Gluon Plasma")
+            .setMetaItemSubID(144)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .setMeltingPoint(2_000_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadPhononMedium() {
