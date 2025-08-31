@@ -1955,11 +1955,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void overrideChemicalFormulas() {
         MaterialsUEVplus.BlackDwarfMatter.mChemicalFormula = ">>∅<<";
         MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "∅";
-        MaterialsKevlar.LiquidCrystalKevlar.mChemicalFormula = "[-CO-C₆H₄-CO-NH-C₆H₄-NH-]n";
-        MaterialsKevlar.RhodiumChloride.mChemicalFormula = "RhCl₃";
-        MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C₆H₅)₃)₃";
-        MaterialsKevlar.CobaltIINitrate.mChemicalFormula = "Co(NO₃)₂";
-        MaterialsKevlar.CobaltIIHydroxide.mChemicalFormula = "Co(OH)₂";
         MaterialsUEVplus.SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
         MaterialsUEVplus.Universium.mChemicalFormula = "A tear into the space beyond space";
         MaterialsUEVplus.Eternity.mChemicalFormula = "En⦼";

@@ -485,9 +485,9 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadLiquidCrystalKevlar() {
-        // [-CO-C6H4-CO-NH-C6H4-NH-]n
         return new MaterialBuilder().setName("LiquidCrystalKevlar")
             .setDefaultLocalName("Liquid Crystal Kevlar")
+            .setChemicalFormula("[-CO-C₆H₄-CO-NH-C₆H₄-NH-]n")
             .setMetaItemSubID(774)
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
@@ -698,13 +698,13 @@ public class MaterialsKevlar {
     private static Materials loadCobaltIIHydroxide() {
         return new MaterialBuilder().setName("CobaltIIHydroxide")
             .setDefaultLocalName("Cobalt II Hydroxide")
+            .setChemicalFormula("Co(OH)₂")
             .setMetaItemSubID(759)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xe58cef)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(441)
-            // CoH2O2
             .addMaterial(Materials.Cobalt, 1)
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 2)
@@ -731,13 +731,13 @@ public class MaterialsKevlar {
     private static Materials loadCobaltIINitrate() {
         return new MaterialBuilder().setName("Cobalt(II)Nitrate")
             .setDefaultLocalName("Cobalt II Nitrate")
+            .setChemicalFormula("Co(NO₃)₂")
             .setMetaItemSubID(757)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xaa0000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
-            // Co(NO3)2
             .addMaterial(Materials.Cobalt, 1)
             .addMaterial(Materials.Nitrogen, 2)
             .addMaterial(Materials.Oxygen, 6)
@@ -747,13 +747,13 @@ public class MaterialsKevlar {
     private static Materials loadOrganorhodiumCatalyst() {
         return new MaterialBuilder().setName("OrganorhodiumCatalyst")
             .setDefaultLocalName("Organorhodium Catalyst")
+            .setChemicalFormula("RhHCO(P(C₆H₅)₃)₃")
             .setMetaItemSubID(756)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
             .setRGB(0xaa0000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
-            // RhHCO(P(C6H5)3)3
             .addMaterial(Materials.Cobalt, 1)
             .addMaterial(Materials.NitricAcid, 2)
             .constructMaterial();
@@ -775,9 +775,9 @@ public class MaterialsKevlar {
     }
 
     private static Materials loadRhodiumChloride() {
-        // RHCL3
         return new MaterialBuilder().setName("RhodiumChloride")
             .setDefaultLocalName("Rhodium Chloride")
+            .setChemicalFormula("RhCl₃")
             .setMetaItemSubID(754)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
