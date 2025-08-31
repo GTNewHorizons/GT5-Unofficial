@@ -138,12 +138,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    @Deprecated
-    public MaterialBuilder setTypes(int types) {
-        this.types = types;
-        return this;
-    }
-
     public MaterialBuilder addDustItems() {
         types = types | 1;
         return this;
@@ -191,6 +185,13 @@ public class MaterialBuilder {
 
     public MaterialBuilder addGas() {
         this.hasCorrespondingGas = true;
+        return this;
+    }
+
+    /** @deprecated Use `addXXX` methods instead. */
+    @Deprecated
+    public MaterialBuilder setTypes(int types) {
+        this.types = types;
         return this;
     }
 
@@ -323,12 +324,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    @Deprecated
-    public MaterialBuilder setExtraData(int extraData) {
-        this.extraData = extraData;
-        return this;
-    }
-
     public MaterialBuilder addElectrolyzerRecipe() {
         extraData = extraData | 1;
         return this;
@@ -339,20 +334,29 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** @deprecated Use `addXXX` methods instead. */
+    @Deprecated
+    public MaterialBuilder setExtraData(int extraData) {
+        this.extraData = extraData;
+        return this;
+    }
+
+    public MaterialBuilder addMaterial(Materials material, int amount) {
+        this.materialList.add(new MaterialStack(material, amount));
+        return this;
+    }
+
+    /** @deprecated Use {@link MaterialBuilder#addMaterial(Materials, int)} instead. */
     @Deprecated
     public MaterialBuilder setMaterialList(List<MaterialStack> materialList) {
         this.materialList = materialList;
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#addMaterial(Materials, int)} instead. */
     @Deprecated
     public MaterialBuilder setMaterialList(MaterialStack... materials) {
         this.materialList = Arrays.asList(materials);
-        return this;
-    }
-
-    public MaterialBuilder addMaterial(Materials material, int amount) {
-        this.materialList.add(new MaterialStack(material, amount));
         return this;
     }
 
@@ -366,14 +370,15 @@ public class MaterialBuilder {
         return this;
     }
 
-    @Deprecated
-    public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
-        this.aspects = aspects;
+    public MaterialBuilder addAspect(TCAspects aspect, int amount) {
+        this.aspects.add(new TCAspects.TC_AspectStack(aspect, amount));
         return this;
     }
 
-    public MaterialBuilder addAspect(TCAspects aspect, int amount) {
-        this.aspects.add(new TCAspects.TC_AspectStack(aspect, amount));
+    /** @deprecated Use {@link MaterialBuilder#addAspect(TCAspects, int)} instead. */
+    @Deprecated
+    public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
+        this.aspects = aspects;
         return this;
     }
 
