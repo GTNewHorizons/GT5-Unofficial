@@ -392,7 +392,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 1,
                 70_000,
                 4,
-                800,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium.get(1),
                 false));
@@ -403,7 +403,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 2,
                 70_000,
                 4,
-                1_600,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium2.get(1),
                 false));
@@ -414,7 +414,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 70_000,
                 4,
-                3_200,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium4.get(1),
                 false));
@@ -440,7 +440,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 1,
                 70_000,
                 2,
-                1_000,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium.get(1),
                 true));
@@ -451,7 +451,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 2,
                 70_000,
                 2,
-                2_000,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium2.get(1),
                 true));
@@ -462,7 +462,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 70_000,
                 2,
-                4_000,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium4.get(1),
                 true));
@@ -482,7 +482,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 1,
                 6_000,
                 48,
-                8_000,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium.get(1),
                 false));
@@ -493,7 +493,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 2,
                 6_000,
                 48,
-                8_000,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium2.get(1),
                 false));
@@ -504,7 +504,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 6_000,
                 48,
-                8_000,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium4.get(1),
                 false));
@@ -524,7 +524,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 1,
                 10_000,
                 64,
-                10_000,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium.get(1),
                 true));
@@ -535,7 +535,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 2,
                 10_000,
                 64,
-                10_000,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium2.get(1),
                 true));
@@ -546,7 +546,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 10_000,
                 64,
-                10_000,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium4.get(1),
                 true));
