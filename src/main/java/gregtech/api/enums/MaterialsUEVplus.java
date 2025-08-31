@@ -539,22 +539,24 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadDimensionallyShiftedSuperfluid() {
-        return new MaterialBuilder(
-            151,
-            new TextureSet("dimensionallyshiftedsuperfluid", true),
-            "Dimensionally Shifted Superfluid").addCell()
-                .addFluid()
-                .setRGBA(255, 255, 255, 0)
-                .setTransparent(true)
-                .setName("dimensionallyshiftedsuperfluid")
-                .setColor(Dyes._NULL)
-                .constructMaterial()
-                .setHasCorrespondingFluid(true);
+        return new MaterialBuilder().setName("dimensionallyshiftedsuperfluid")
+            .setDefaultLocalName("Dimensionally Shifted Superfluid")
+            .setMetaItemSubID(151)
+            .setIconSet(new TextureSet("dimensionallyshiftedsuperfluid", true))
+            .addCell()
+            .addFluid()
+            .setRGBA(255, 255, 255, 0)
+            .setTransparent(true)
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
     }
 
     private static Materials loadMoltenProtoHalkoniteBase() {
-        return new MaterialBuilder(152, new TextureSet("protohalkonitebase", true), "Molten Proto-Halkonite Steel Base")
-            .setName("protohalkonitebase")
+        return new MaterialBuilder().setName("protohalkonitebase")
+            .setDefaultLocalName("Molten Proto-Halkonite Steel Base")
+            .setMetaItemSubID(152)
+            .setIconSet(new TextureSet("protohalkonitebase", true))
             .addFluid()
             .addCell()
             .setRGBA(255, 255, 255, 0)
@@ -567,8 +569,10 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadHotProtoHalkonite() {
-        return new MaterialBuilder(153, new TextureSet("hotprotohalkonite", true), "Hot Proto-Halkonite Steel")
-            .setName("hotprotohalkonite")
+        return new MaterialBuilder().setName("hotprotohalkonite")
+            .setDefaultLocalName("Hot Proto-Halkonite Steel")
+            .setMetaItemSubID(153)
+            .setIconSet(new TextureSet("hotprotohalkonite", true))
             .setTypes(1 | 2 | 64 | 128)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
@@ -580,8 +584,10 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadProtoHalkonite() {
-        return new MaterialBuilder(154, new TextureSet("protohalkonite", true), "Proto-Halkonite Steel")
-            .setName("protohalkonite")
+        return new MaterialBuilder().setName("protohalkonite")
+            .setDefaultLocalName("Proto-Halkonite Steel")
+            .setMetaItemSubID(154)
+            .setIconSet(new TextureSet("protohalkonite", true))
             .setTypes(1 | 2 | 64 | 128)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
@@ -592,8 +598,10 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadMoltenExoHalkoniteBase() {
-        return new MaterialBuilder(155, TextureSet.SET_FLUID, "Molten Exo-Halkonite Steel Preparation Base")
-            .setName("moltenexohalkonitebase")
+        return new MaterialBuilder().setName("moltenexohalkonitebase")
+            .setDefaultLocalName("Molten Exo-Halkonite Steel Preparation Base")
+            .setMetaItemSubID(155)
+            .setIconSet(TextureSet.SET_FLUID)
             .addFluid()
             .addCell()
             .setRGBA(30, 30, 30, 0)
@@ -605,8 +613,10 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadHotExoHalkonite() {
-        return new MaterialBuilder(156, new TextureSet("hotexohalkonite", true), "Hot Exo-Halkonite Steel")
-            .setName("hotexohalkonite")
+        return new MaterialBuilder().setName("hotexohalkonite")
+            .setDefaultLocalName("Hot Exo-Halkonite Steel")
+            .setMetaItemSubID(156)
+            .setIconSet(new TextureSet("hotexohalkonite", true))
             .setTypes(1 | 2 | 64 | 128)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
@@ -618,8 +628,10 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadExoHalkonite() {
-        return new MaterialBuilder(157, new TextureSet("exohalkonite", true), "Exo-Halkonite Steel")
-            .setName("exohalkonite")
+        return new MaterialBuilder().setName("exohalkonite")
+            .setDefaultLocalName("Exo-Halkonite Steel")
+            .setMetaItemSubID(157)
+            .setIconSet(new TextureSet("exohalkonite", true))
             .setTypes(1 | 2 | 64 | 128)
             .setRGBA(255, 255, 255, 0)
             .setTransparent(false)
@@ -650,8 +662,10 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadStargateCrystalSlurry() {
-        return new MaterialBuilder(160, new TextureSet("sgcrystalfluid", true), "Stargate Crystal Slurry")
-            .setName("sgcrystalslurry")
+        return new MaterialBuilder().setName("sgcrystalslurry")
+            .setDefaultLocalName("Stargate Crystal Slurry")
+            .setMetaItemSubID(160)
+            .setIconSet(new TextureSet("sgcrystalfluid", true))
             .addFluid()
             .addCell()
             .setRGBA(255, 255, 255, 0)
