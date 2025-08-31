@@ -159,29 +159,16 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadExcitedDTCC() {
-        return new Materials(
-            109,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            10,
-            20,
-            20,
-            1,
-            "ExcitedDTCC",
-            "Excited Dimensionally Transcendent Crude Catalyst",
-            -1,
-            -1,
-            500000000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeCyan);
+        return new MaterialBuilder().setName("ExcitedDTCC")
+            .setDefaultLocalName("Excited Dimensionally Transcendent Crude Catalyst")
+            .setMetaItemSubID(109)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0x010a1414)
+            .addCell()
+            .setMeltingPoint(500_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadExcitedDTPC() {
