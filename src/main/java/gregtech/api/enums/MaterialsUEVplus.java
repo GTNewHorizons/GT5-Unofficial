@@ -198,29 +198,16 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadExcitedDTEC() {
-        return new Materials(
-            126,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            240,
-            240,
-            41,
-            1,
-            "ExcitedDTEC",
-            "Excited Dimensionally Transcendent Exotic Catalyst",
-            -1,
-            -1,
-            500000000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeMagenta);
+        return new MaterialBuilder().setName("ExcitedDTEC")
+            .setDefaultLocalName("Excited Dimensionally Transcendent Exotic Catalyst")
+            .setMetaItemSubID(126)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeMagenta)
+            .setARGB(0x01f0f029)
+            .addCell()
+            .setMeltingPoint(500_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadExcitedDTSC() {
