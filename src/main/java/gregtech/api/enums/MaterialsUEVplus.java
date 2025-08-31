@@ -211,29 +211,16 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadExcitedDTSC() {
-        return new Materials(
-            127,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            126,
-            75,
-            11,
-            1,
-            "ExcitedDTSC",
-            "Excited Dimensionally Transcendent Stellar Catalyst",
-            -1,
-            -1,
-            500000000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeOrange);
+        return new MaterialBuilder().setName("ExcitedDTSC")
+            .setDefaultLocalName("Excited Dimensionally Transcendent Stellar Catalyst")
+            .setMetaItemSubID(127)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x017e4b0b)
+            .addCell()
+            .setMeltingPoint(500_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadDimensionallyTranscendentResidue() {
