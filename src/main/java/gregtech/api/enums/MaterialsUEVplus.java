@@ -438,29 +438,14 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadPhononMedium() {
-        return new Materials(
-            145,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            255,
-            255,
-            255,
-            0,
-            "PhononMedium",
-            "Lossless Phonon Transfer Medium",
-            -1,
-            -1,
-            500,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("PhononMedium")
+            .setDefaultLocalName("Lossless Phonon Transfer Medium")
+            .setMetaItemSubID(145)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .setMeltingPoint(500)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadPhononCrystalSolution() {
