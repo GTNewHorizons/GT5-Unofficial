@@ -172,29 +172,16 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadExcitedDTPC() {
-        return new Materials(
-            113,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            35,
-            59,
-            41,
-            1,
-            "ExcitedDTPC",
-            "Excited Dimensionally Transcendent Prosaic Catalyst",
-            -1,
-            -1,
-            500000000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeGreen);
+        return new MaterialBuilder().setName("ExcitedDTPC")
+            .setDefaultLocalName("Excited Dimensionally Transcendent Prosaic Catalyst")
+            .setMetaItemSubID(113)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x01233b29)
+            .addCell()
+            .setMeltingPoint(500_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadExcitedDTRC() {
