@@ -11,6 +11,7 @@ import gregtech.common.powergoggles.PowerGogglesUtil;
 import gregtech.common.powergoggles.gui.PowerGogglesRenderer;
 import gregtech.common.powergoggles.gui.SimplePowerGogglesRenderer;
 
+@SideOnly(Side.CLIENT)
 public class PowerGogglesHudHandler {
 
     private static final PowerGogglesHudHandler INSTANCE = new PowerGogglesHudHandler();
@@ -26,7 +27,6 @@ public class PowerGogglesHudHandler {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void drawHud(RenderGameOverlayEvent.Post event) {
         if (!shouldDrawHud(event)) {
             return;
