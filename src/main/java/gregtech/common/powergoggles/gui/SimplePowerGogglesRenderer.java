@@ -154,10 +154,19 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             : measurements.getLast()
                 .getMeasurement();
 
-        double differenceRatio = lastMeasurement.compareTo(BigInteger.ZERO) == 0 ? 0
-            : new BigDecimal(euDifference5m.multiply(BigInteger.valueOf(100)))
+        double differenceRatio;
+        if (lastMeasurement.compareTo(BigInteger.ZERO) == 0) {
+            if (getMaximumMeasurement(getLastMeasurements(PowerGogglesConstants.MEASUREMENT_COUNT_5M))
+                .compareTo(BigInteger.ZERO) > 0) {
+                differenceRatio = -1;
+            } else {
+                differenceRatio = 0;
+            }
+        } else {
+            differenceRatio = new BigDecimal(euDifference5m.multiply(BigInteger.valueOf(100)))
                 .divide(new BigDecimal(lastMeasurement), RoundingMode.FLOOR)
-                .intValue() / 100f;
+                .doubleValue() / 100f;
+        }
 
         double gradientChangeFactor = 3.3;
         if (differenceRatio < 0) {
