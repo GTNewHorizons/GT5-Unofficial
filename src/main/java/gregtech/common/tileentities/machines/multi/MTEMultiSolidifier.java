@@ -106,8 +106,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         .addShape(
             STRUCTURE_PIECE_MAIN,
             (transpose(
-                new String[][] {
-                    { "       ", "BBBBBBB", "BBBBBBB", "BBBBBBB", "       " },
+                new String[][] { { "       ", "BBBBBBB", "BBBBBBB", "BBBBBBB", "       " },
                     { "BBBBBBB", "       ", "D D D D", "       ", "BBBBBBB" },
                     { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
                     { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
