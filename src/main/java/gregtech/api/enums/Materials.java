@@ -835,14 +835,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Cryolite;
     public static Materials RedMud;
 
-    // Deepslate stuff
-    public static Materials Chlorite;
-    public static Materials Staurolite;
-    public static Materials Cordierite;
-    public static Materials Datolite;
-    public static Materials MetamorphicMineralMixture;
-    public static Materials Plagioclase;
-
     public static Materials Brick;
     public static Materials Fireclay;
 
