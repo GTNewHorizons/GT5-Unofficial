@@ -998,12 +998,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * @deprecated Use {@link #SuperconductorUHV} instead
      */
     @Deprecated
-    public static Materials Superconductor = new Materials(SuperconductorUHV, true); // new Materials( -1,
-    // TextureSet.SET_NONE , 1.0F, 0,
-    // 0, 0
-    // , 255, 255, 255, 0, "Superconductor" , "Superconductor" , 0,
-    // 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray , Arrays.asList(new
-    // TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
+    public static Materials Superconductor = new Materials(SuperconductorUHV, true);
 
     private static Materials[] MATERIALS_ARRAY = new Materials[] {};
 
