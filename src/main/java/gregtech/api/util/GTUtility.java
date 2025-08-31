@@ -4525,13 +4525,11 @@ public class GTUtility {
      */
     private static double powBySquaring(double base, long exp) {
         if (base == 2) {
-            if(exp > 1023)
-                return Double.POSITIVE_INFINITY;
+            if (exp > 1023) return Double.POSITIVE_INFINITY;
             return Double.longBitsToDouble(exp + 1023L << 52);
         }
         if (base == 4) {
-            if(exp > 511)
-                return Double.POSITIVE_INFINITY;
+            if (exp > 511) return Double.POSITIVE_INFINITY;
             return Double.longBitsToDouble(exp * 2L + 1023L << 52);
         }
         double result = 1.0;
