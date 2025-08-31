@@ -29,11 +29,11 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Bauxite Slurry")
             .setMetaItemSubID(409)
             .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
             .addCell()
             .addFluid()
             .setRGB(0x2543a8)
             .setMeltingPoint(295)
-            .setColor(Dyes.dyeBlue)
             .constructMaterial();
     }
 
@@ -42,11 +42,11 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Heated Bauxite Slurry")
             .setMetaItemSubID(410)
             .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
             .addCell()
             .addFluid()
             .setRGB(0x375cd4)
             .setMeltingPoint(295)
-            .setColor(Dyes.dyeBlue)
             .constructMaterial();
     }
 
@@ -55,11 +55,11 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Sluice Juice")
             .setMetaItemSubID(411)
             .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
             .addCell()
             .addFluid()
             .setRGB(0x5c3c24)
             .setMeltingPoint(295)
-            .setColor(Dyes.dyeGray)
             .constructMaterial();
     }
 
@@ -68,9 +68,9 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Sluice Sand")
             .setMetaItemSubID(412)
             .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeGray)
             .addDustItems()
             .setRGB(0xa5a578)
-            .setColor(Dyes.dyeGray)
             .constructMaterial();
     }
 
@@ -79,9 +79,9 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Bauxite Slag")
             .setMetaItemSubID(413)
             .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeRed)
             .addDustItems()
             .setRGB(0x6e1f1f)
-            .setColor(Dyes.dyeRed)
             .constructMaterial();
     }
 
@@ -90,9 +90,9 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Ilmenite Slag")
             .setMetaItemSubID(414)
             .setIconSet(TextureSet.SET_FINE)
+            .setColor(Dyes.dyeBrown)
             .addDustItems()
             .setRGB(0xa32626)
-            .setColor(Dyes.dyeBrown)
             .constructMaterial();
     }
 
@@ -101,10 +101,10 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Green Sapphire Juice")
             .setMetaItemSubID(415)
             .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
             .addCell()
             .addFluid()
             .setRGB(0x64c882)
-            .setColor(Dyes.dyeGreen)
             .constructMaterial();
     }
 
@@ -113,10 +113,10 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Sapphire Juice")
             .setMetaItemSubID(416)
             .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
             .addCell()
             .addFluid()
             .setRGB(0x6464c8)
-            .setColor(Dyes.dyeBlue)
             .constructMaterial();
     }
 
@@ -125,10 +125,10 @@ public class MaterialsOreAlum {
             .setDefaultLocalName("Ruby Juice")
             .setMetaItemSubID(417)
             .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeRed)
             .addCell()
             .addFluid()
             .setRGB(0xff6464)
-            .setColor(Dyes.dyeRed)
             .constructMaterial();
     }
 }
