@@ -3077,6 +3077,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return hasCorrespondingFluid;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#addFluid()} on a `MaterialBuilder` instead. */
+    @Deprecated
     public Materials setHasCorrespondingFluid(boolean hasCorrespondingFluid) {
         this.hasCorrespondingFluid = hasCorrespondingFluid;
         return this;
