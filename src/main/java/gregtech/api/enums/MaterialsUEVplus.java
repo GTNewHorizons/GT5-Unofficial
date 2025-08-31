@@ -410,31 +410,20 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadMagMatter() {
-        return new Materials(
-            143,
-            new TextureSet("magmatter", true),
-            1.0F,
-            64 * 2621440,
-            26,
-            1 | 2 | 64 | 128,
-            255,
-            255,
-            255,
-            0,
-            "Magmatter",
-            "Magmatter",
-            -1,
-            -1,
-            0,
-            25000,
-            true,
-            false,
-            2,
-            1,
-            1,
-            Dyes._NULL,
-            Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
-                .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+        return new MaterialBuilder().setName("Magmatter")
+            .setDefaultLocalName("Magmatter")
+            .setMetaItemSubID(143)
+            .setIconSet(new TextureSet("magmatter", true))
+            .setTool(167_772_160, 26, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(25_000)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
     }
 
     private static Materials loadQuarkGluonPlasma() {
