@@ -532,7 +532,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
+        return SoundResource.GTCEU_LOOP_FURNACE;
     }
 
 }
