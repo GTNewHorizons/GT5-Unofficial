@@ -213,7 +213,7 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Netherite, 8),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Netherite, 4),
                     ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(16))
                 .fluidInputs(Materials.Manyullyn.getMolten(1152))
                 .itemOutputs(ItemList.Naquarite_Universal_Insulator_Foil.get(8))
@@ -403,7 +403,7 @@ public class NetheriteRecipes {
         addNetheritePartRecipe(OrePrefixes.bolt, 8, 1);
         addNetheritePartRecipe(OrePrefixes.screw, 8, 1);
         addNetheritePartRecipe(OrePrefixes.ring, 4, 1);
-        addNetheritePartRecipe(OrePrefixes.foil, 8, 1);
+        addNetheritePartRecipe(OrePrefixes.foil, 4, 1);
         addNetheritePartRecipe(OrePrefixes.itemCasing, 2, 1);
         addNetheritePartRecipe(OrePrefixes.gearGtSmall, 1, 1);
         addNetheritePartRecipe(OrePrefixes.rotor, 1, 5);
