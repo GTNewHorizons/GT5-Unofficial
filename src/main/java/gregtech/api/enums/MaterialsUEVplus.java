@@ -131,29 +131,17 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadDimensionallyTranscendentExoticCatalyst() {
-        return new Materials(
-            745,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            10,
-            20,
-            20,
-            1,
-            "DimensionallyTranscendentExoticCatalyst",
-            "Dimensionally Transcendent Exotic Catalyst",
-            0,
-            0,
-            100_000_000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeMagenta).setHasCorrespondingFluid(true);
+        return new MaterialBuilder().setName("DimensionallyTranscendentExoticCatalyst")
+            .setDefaultLocalName("Dimensionally Transcendent Exotic Catalyst")
+            .setMetaItemSubID(745)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeMagenta)
+            .setARGB(0x010a1414)
+            .addCell()
+            .setMeltingPoint(100_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
     }
 
     private static Materials loadDimensionallyTranscendentStellarCatalyst() {
