@@ -640,29 +640,13 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadProtomatter() {
-        return new Materials(
-            159,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            255,
-            255,
-            255,
-            0,
-            "Protomatter",
-            "Protomatter",
-            -1,
-            -1,
-            0,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Protomatter")
+            .setDefaultLocalName("Protomatter")
+            .setMetaItemSubID(159)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadStargateCrystalSlurry() {
