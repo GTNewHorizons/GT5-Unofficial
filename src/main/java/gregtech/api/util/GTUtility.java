@@ -4524,8 +4524,16 @@ public class GTUtility {
      * Computes base raised to non-negative long exponent.
      */
     private static double powBySquaring(double base, long exp) {
-        if (base == 2) return 1 << exp;
-        if (base == 4) return 1 << 2 * exp;
+        if (base == 2) {
+            if(exp > 1023)
+                return Double.POSITIVE_INFINITY;
+            return Double.longBitsToDouble(exp + 1023L << 52);
+        }
+        if (base == 4) {
+            if(exp > 511)
+                return Double.POSITIVE_INFINITY;
+            return Double.longBitsToDouble(exp * 2L + 1023L << 52);
+        }
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;

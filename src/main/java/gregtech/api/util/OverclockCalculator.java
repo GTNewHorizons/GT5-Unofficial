@@ -400,7 +400,7 @@ public class OverclockCalculator {
 
         // Split overclocks into heat-based and regular overclocks.
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
-        int regularOverclocks = overclocks - heatOverclocks;
+        long regularOverclocks = overclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
         calculatedConsumption = (long) Math.ceil(recipePower * GTUtility.powInt(eutIncreasePerOC, overclocks));
