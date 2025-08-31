@@ -662,6 +662,16 @@ public class MaterialsGTNH implements IMaterialHandler {
             new MaterialStack(Silicon, 3),
             new MaterialStack(Oxygen, 8))
         .constructMaterial();
+    public static Materials Epidote = new MaterialBuilder(862, TextureSet.SET_DULL, "Epidote").addDustItems()
+        .setRGB(140, 177, 33)
+        .setColor(Dyes.dyeLime)
+        .setMaterialList(
+            new MaterialStack(Calcium, 2),
+            new MaterialStack(Aluminium, 3),
+            new MaterialStack(SiliconDioxide, 3),
+            new MaterialStack(Oxygen, 1),
+            new MaterialStack(Hydrogen, 1))
+        .constructMaterial();
 
     private static void initSubTags() {
         SubTag.METAL.addTo(Signalum, Lumium, EnrichedCopper, DiamondCopper);
