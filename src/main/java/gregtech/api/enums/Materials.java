@@ -996,7 +996,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     static {
-        MaterialsOreAlum.init();
+        MaterialsOreAlum.load();
     }
 
     static {
