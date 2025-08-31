@@ -399,7 +399,7 @@ public class OverclockCalculator {
         overclocks = Math.max(overclocks, 0);
 
         // Split overclocks into heat-based and regular overclocks.
-        int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
+        long heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         long regularOverclocks = overclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
