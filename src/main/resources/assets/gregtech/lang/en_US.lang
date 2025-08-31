@@ -1303,10 +1303,11 @@ GT5U.machines.nano_forge.t4_info_tooltip=Click for T4 info
 GT5U.machines.nano_forge.t4_info_header=Nano Forge Tier 4
 GT5U.machines.nano_forge.t4_info_text.1=Upgrading the Nano Forge to T4 by placing an eternity nanite into the controller completely transforms the structure and unlocks both a scaling speed boost and parallel for mass nanite creation.
 GT5U.machines.nano_forge.t4_info_text.2=The Nano Forge can be supplied with molten magmatter to increase its maximum parallels. At the start of a recipe cycle ALL supplied magmatter is consumed and converted to parallels via the following formula:
-GT5U.machines.nano_forge.t4_info_text.3=Maximum Parallel = Max((Magmatter Amount / (144 / 2^(4 - Recipe Tier))), 1)
-GT5U.machines.nano_forge.t4_info_text.4=To actually apply the parallels to the recipe, a copy of the output nanite has to be supplied in an input bus and will be consumed.
+GT5U.machines.nano_forge.t4_info_text.3=Maximum Parallel = Max((Magmatter Amount / (288 / 2^(4 - Recipe Tier))), 1)
+GT5U.machines.nano_forge.t4_info_text.4=To actually apply the parallels to the recipe, a copy of the output nanite has to be supplied in an input bus and will be consumed. If other types of nanites are present this wont work.
 GT5U.machines.nano_forge.t4_info_text.5=A recipe time multiplier is also granted based on maximum parallels via the following formula:
 GT5U.machines.nano_forge.t4_info_text.6=Recipe Time Multiplier = 0.9999^(Maximum Parallel)
+GT5U.machines.nano_forge.t4_info_text.7=Additionally, tier 1 & 2 nanites will receive unconditional perfect overclocks, while perfect OCs on tier 3 nanites require parallels to be above 1. Tier 4 nanites do not get perfect overclocks.
 GT5U.machines.antimatter_forge.enableRender=Enable Antimatter Forge Render
 GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
 
