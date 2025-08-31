@@ -351,29 +351,15 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadSpace() {
-        return new Materials(
-            106,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16 | 32,
-            100,
-            1,
-            255,
-            255,
-            "spatialFluid",
-            "Spatially Enlarged Fluid",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            false,
-            200,
-            1,
-            1,
-            Dyes.dyePurple);
+        return new MaterialBuilder().setName("spatialFluid")
+            .setDefaultLocalName("Spatially Enlarged Fluid")
+            .setMetaItemSubID(106)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0xff6401ff)
+            .addCell()
+            .addPlasma()
+            .constructMaterial();
     }
 
     private static Materials loadUniversium() {
