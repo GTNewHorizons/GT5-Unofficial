@@ -339,29 +339,15 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadTime() {
-        return new Materials(
-            587,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16 | 32,
-            100,
-            1,
-            255,
-            255,
-            "temporalFluid",
-            "Tachyon Rich Temporal Fluid",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            false,
-            200,
-            1,
-            1,
-            Dyes.dyePurple);
+        return new MaterialBuilder().setName("temporalFluid")
+            .setDefaultLocalName("Tachyon Rich Temporal Fluid")
+            .setMetaItemSubID(587)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0xff6401ff)
+            .addCell()
+            .addPlasma()
+            .constructMaterial();
     }
 
     private static Materials loadSpace() {
