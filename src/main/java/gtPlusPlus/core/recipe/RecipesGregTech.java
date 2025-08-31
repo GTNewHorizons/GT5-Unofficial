@@ -701,8 +701,8 @@ public class RecipesGregTech {
         // Distillus Upgrade Chip
         RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
-                GregtechItemList.Laser_Lens_WoodsGlass.get(0))
+                GregtechItemList.Laser_Lens_WoodsGlass.get(0),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 1L))
             .itemOutputs(GregtechItemList.Distillus_Upgrade_Chip.get(1))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
