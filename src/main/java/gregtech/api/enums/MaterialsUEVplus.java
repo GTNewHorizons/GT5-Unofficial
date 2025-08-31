@@ -89,29 +89,17 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadDimensionallyTranscendentCrudeCatalyst() {
-        return new Materials(
-            748,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            10,
-            20,
-            20,
-            1,
-            "DimensionallyTranscendentCrudeCatalyst",
-            "Dimensionally Transcendent Crude Catalyst",
-            0,
-            0,
-            25_000_000,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes.dyeCyan).setHasCorrespondingFluid(true);
+        return new MaterialBuilder().setName("DimensionallyTranscendentCrudeCatalyst")
+            .setDefaultLocalName("Dimensionally Transcendent Crude Catalyst")
+            .setMetaItemSubID(748)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0x010a1414)
+            .addCell()
+            .setMeltingPoint(25_000_000)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
     }
 
     private static Materials loadDimensionallyTranscendentProsaicCatalyst() {
