@@ -363,31 +363,19 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadUniversium() {
-        return new Materials(
-            139,
-            new TextureSet("universium", true),
-            1.0F,
-            4 * 2621440,
-            25,
-            1 | 2 | 64 | 128,
-            38,
-            49,
-            69,
-            255,
-            "Universium",
-            "Universium",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            true,
-            2,
-            1,
-            1,
-            Dyes._NULL,
-            Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
-                .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+        return new MaterialBuilder().setName("Universium")
+            .setDefaultLocalName("Universium")
+            .setMetaItemSubID(139)
+            .setIconSet(new TextureSet("universium", true))
+            .setARGB(0xff263145)
+            .setTool(10485760, 25, 1.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
     }
 
     private static Materials loadEternity() {
