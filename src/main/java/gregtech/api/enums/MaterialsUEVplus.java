@@ -292,29 +292,15 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadRawStarMatter() {
-        return new Materials(
-            584,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16 | 32,
-            100,
-            1,
-            255,
-            255,
-            "RawStarMatter",
-            "Condensed Raw Stellar Plasma Mixture",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            false,
-            200,
-            1,
-            1,
-            Dyes.dyePurple);
+        return new MaterialBuilder().setName("RawStarMatter")
+            .setDefaultLocalName("Condensed Raw Stellar Plasma Mixture")
+            .setMetaItemSubID(584)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0xff6401ff)
+            .addCell()
+            .addPlasma()
+            .constructMaterial();
     }
 
     private static Materials loadWhiteDwarfMatter() {
