@@ -277,31 +277,18 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadMagnetohydrodynamicallyConstrainedStarMatter() {
-        return new Materials(
-            583,
-            new TextureSet("MagnetohydrodynamicallyConstrainedStarMatter", true),
-            320.0F,
-            4 * 2621440,
-            25,
-            1 | 2 | 64 | 128,
-            255,
-            255,
-            255,
-            0,
-            "MagnetohydrodynamicallyConstrainedStarMatter",
-            "Magnetohydrodynamically Constrained Star Matter",
-            -1,
-            -1,
-            0,
-            0,
-            false,
-            true,
-            2,
-            1,
-            1,
-            Dyes._NULL,
-            Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)))
-                .setProcessingMaterialTierEU(TierEU.RECIPE_UIV);
+        return new MaterialBuilder().setName("MagnetohydrodynamicallyConstrainedStarMatter")
+            .setDefaultLocalName("Magnetohydrodynamically Constrained Star Matter")
+            .setMetaItemSubID(583)
+            .setIconSet(new TextureSet("MagnetohydrodynamicallyConstrainedStarMatter", true))
+            .setTool(10485760, 25, 320.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.AQUA, 1)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UIV);
     }
 
     private static Materials loadRawStarMatter() {
