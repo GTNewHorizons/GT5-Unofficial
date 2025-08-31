@@ -449,29 +449,14 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadPhononCrystalSolution() {
-        return new Materials(
-            146,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            255,
-            255,
-            255,
-            0,
-            "PhononCrystalSolution",
-            "Saturated Phononic Crystal Solution",
-            -1,
-            -1,
-            500,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("PhononCrystalSolution")
+            .setDefaultLocalName("Saturated Phononic Crystal Solution")
+            .setMetaItemSubID(146)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .setMeltingPoint(500)
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadSixPhasedCopper() {
