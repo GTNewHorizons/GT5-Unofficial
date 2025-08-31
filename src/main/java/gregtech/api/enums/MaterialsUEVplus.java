@@ -630,29 +630,13 @@ public class MaterialsUEVplus {
     }
 
     private static Materials loadAntimatter() {
-        return new Materials(
-            158,
-            TextureSet.SET_FLUID,
-            1.0F,
-            0,
-            2,
-            16,
-            255,
-            255,
-            255,
-            0,
-            "Antimatter",
-            "Semi-Stable Antimatter",
-            -1,
-            -1,
-            0,
-            1,
-            false,
-            true,
-            1,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Antimatter")
+            .setDefaultLocalName("Semi-Stable Antimatter")
+            .setMetaItemSubID(158)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .setBlastFurnaceTemp(1)
+            .constructMaterial();
     }
 
     private static Materials loadProtomatter() {
