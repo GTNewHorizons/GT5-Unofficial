@@ -2399,6 +2399,9 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Item_Redstone_Sniffer
             .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        // commented while it's not approved and serves as an example for HUDManager.java
+        // ItemList.Item_Dashboard_Tool
+        // .set(new ItemDashboardTool("Item_Dashboard_Tool", "Dashboard Tool", "Where do i place gui?!"));
         ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
 
