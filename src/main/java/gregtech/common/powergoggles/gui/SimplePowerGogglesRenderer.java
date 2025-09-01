@@ -66,8 +66,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
         GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
 
-        renderGradientRectangle();
         renderStorageText();
+        renderGradientRectangle();
         renderTimedDifferenceText();
 
         if (PowerGogglesConfigHandler.showPowerChart) {
@@ -97,6 +97,26 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         this.mainScale = PowerGogglesConfigHandler.mainTextScaling;
         this.subScale = PowerGogglesConfigHandler.subTextScaling;
+    }
+
+    private void renderStorageText() {
+        int stringY = screenHeight - yOffset + borderRadius;
+
+        BigInteger measurement = measurements.isEmpty() ? BigInteger.ZERO
+            : measurements.getLast()
+                .getMeasurement();
+        String currentStorage = PowerGogglesUtil.format(measurement);
+        int stringColor = getTextColor(euDifference5m);
+
+        drawScaledString(currentStorage, xOffset, stringY, stringColor, mainScale);
+    }
+
+    private int getTextColor(BigInteger measurement) {
+        return switch (measurement.compareTo(BigInteger.ZERO)) {
+            case -1 -> PowerGogglesConfigHandler.textBadColor;
+            case 1 -> PowerGogglesConfigHandler.textGoodColor;
+            default -> PowerGogglesConfigHandler.textOkColor;
+        };
     }
 
     private void renderGradientRectangle() {
@@ -187,26 +207,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             colorRight = gradients[0];
         }
         return new int[] { colorLeft, colorRight };
-    }
-
-    private void renderStorageText() {
-        int stringY = screenHeight - yOffset + borderRadius;
-
-        BigInteger measurement = measurements.isEmpty() ? BigInteger.ZERO
-            : measurements.getLast()
-                .getMeasurement();
-        String currentStorage = PowerGogglesUtil.format(measurement);
-        int stringColor = getTextColor(euDifference5m);
-
-        drawScaledString(currentStorage, xOffset, stringY, stringColor, mainScale);
-    }
-
-    private int getTextColor(BigInteger measurement) {
-        return switch (measurement.compareTo(BigInteger.ZERO)) {
-            case -1 -> PowerGogglesConfigHandler.textBadColor;
-            case 1 -> PowerGogglesConfigHandler.textGoodColor;
-            default -> PowerGogglesConfigHandler.textOkColor;
-        };
     }
 
     private void renderTimedDifferenceText() {
