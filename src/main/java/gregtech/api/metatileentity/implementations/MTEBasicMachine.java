@@ -654,6 +654,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             } else {
                 if (!mStuttering) {
                     stutterProcess();
+                    aBaseMetaTileEntity.setActive(false);
                     mStuttering = true;
                 }
             }
@@ -830,7 +831,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      */
     public void stutterProcess() {
         if (useStandardStutterSound()) sendSound((byte) 8);
-        aBaseMetaTileEntity.setActive(false);
     }
 
     /**
