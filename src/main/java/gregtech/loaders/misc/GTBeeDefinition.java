@@ -2701,7 +2701,8 @@ public enum GTBeeDefinition implements IBeeDefinition {
     ELVEN(GTBranchDefinition.BOTANIC, "Elven", true, new Color(0xC72ED9), new Color(0xEFBFF9), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.ELVEN), 0.33f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
-    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> dis.init()),
+    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),dis -> dis.registerMutation(MANASTEEL, getSpecies(MAGICBEES, "TCVoid"), 5)
+        .requireResource("blockElvenElementium")),
     TERRASTEEL(GTBranchDefinition.BOTANIC, "TerraSteel", true, new Color(0x51BA00), new Color(0xAEFF6B), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.TERRASTEEL), 0.10f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
