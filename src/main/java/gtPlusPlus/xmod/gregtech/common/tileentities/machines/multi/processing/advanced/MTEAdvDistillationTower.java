@@ -177,7 +177,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Stats dictated by tower tier and mode")
-            .addInfo("Right click the controller with screwdriver to change mode.")
+            .addInfo("Right click the controller with screwdriver to change mode")
             .addSeparator()
             .addInfo("Distillery Mode (requires full height tower)")
             .addInfo(TooltipHelper.parallelText("Tower Tier * Voltage Tier * 4") + " Parallels")
