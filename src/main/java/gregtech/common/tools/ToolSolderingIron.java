@@ -68,7 +68,7 @@ public class ToolSolderingIron extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_WRENCH.toString();
+        return SoundResource.IC2_TOOLS_BATTERY_USE.toString();
     }
 
     @Override

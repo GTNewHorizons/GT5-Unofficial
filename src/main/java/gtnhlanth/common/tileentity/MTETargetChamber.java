@@ -186,9 +186,20 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Collision Chamber")
-            .addInfo("Hitting things with other things")
+            .addInfo("Engraves Wafers with " + EnumChatFormatting.LIGHT_PURPLE + "Particle Beams" + EnumChatFormatting.GRAY + " and " + createMaskText("Masks"))
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+            .addSeparator()
+            .addInfo(createMaskText("Masks") + " have limited durability, degrading by 1 with each engraving")
+            .addInfo("NEI shows the required " + EnumChatFormatting.LIGHT_PURPLE + "particle type" + EnumChatFormatting.GRAY + ", minimum " + EnumChatFormatting.AQUA + "EU/t")
+            .addInfo("minimum " + createFocusText("Beam Focus") + ", minimum " + EnumChatFormatting.GOLD + "Beam Rate" + EnumChatFormatting.GRAY + "(Amount), and required " + EnumChatFormatting.BLUE + "Beam Energy Range")
+            .addSeparator()
+            .addInfo("The incoming " + EnumChatFormatting.LIGHT_PURPLE + "Beam" + EnumChatFormatting.GRAY + " must be within the required " + EnumChatFormatting.BLUE + "Energy Range" + EnumChatFormatting.GRAY + ", be the correct " + EnumChatFormatting.LIGHT_PURPLE + "particle type")
+            .addInfo("and have sufficient " + createFocusText("Focus") + " and " + EnumChatFormatting.GOLD+"Rate")
+            .addInfo(EnumChatFormatting.WHITE + "Processing Time" + EnumChatFormatting.GRAY + " is determined solely by the " + createRateText("Beam Rate"))
+            .addInfo(EnumChatFormatting.WHITE + "Processing Time = 5 seconds * " + EnumChatFormatting.GOLD + "Minimum Required Rate" + EnumChatFormatting.WHITE + " / " + createRateText("Input Beam Rate"))
+            .addInfo("Can process up to one " + createMaskText("Mask's") + " worth of durability per game tick")
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Grate Machine Casing", 29, false)
@@ -208,6 +219,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
+        //spotless:on
     }
 
     @Override
@@ -492,4 +504,17 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 + EnumChatFormatting.LIGHT_PURPLE
                 + information.getRate() };
     }
+
+    private String createMaskText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.GREEN, text, EnumChatFormatting.GRAY);
+    }
+
+    private String createRateText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.YELLOW, text, EnumChatFormatting.GRAY);
+    }
+
+    private String createFocusText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
+    }
+
 }
