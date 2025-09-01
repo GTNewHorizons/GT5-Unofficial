@@ -785,10 +785,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
-        if (aIndex == 8) {
-            GTUtility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
-            mStuttering = true;
-        }
+        if (aIndex == 8) GTUtility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
     }
 
     public boolean doesAutoOutput() {
@@ -851,7 +848,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected void doActivitySound(SoundResource activitySound) {
         if (getBaseMetaTileEntity().isActive() && activitySound != null
             && !getBaseMetaTileEntity().hasMufflerUpgrade()
-            && !mStuttering) {
+            && !getBaseMetaTileEntity().getProgress() < 0) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
