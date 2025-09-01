@@ -625,9 +625,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
         } else {
-            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
-                doActivitySound(getActivitySoundLoop());
-            }
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -879,7 +877,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null
+            && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -892,6 +891,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
         } else {
             if (activitySoundLoop != null) {
+                activitySoundLoop.setFadeMe(true);
                 activitySoundLoop = null;
             }
         }

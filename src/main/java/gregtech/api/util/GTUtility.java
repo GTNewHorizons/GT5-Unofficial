@@ -4730,8 +4730,10 @@ public class GTUtility {
      * Computes base raised to non-negative integer exponent.
      */
     private static double powBySquaring(double base, int exp) {
-        if (base == 2) return 1 << exp;
-        if (base == 4) return 1 << 2 * exp;
+        // IEEE 754 double: 1 sign bit, 11 exponent bits, 52 mantissa bits. Exponent is stored with offset 1023.
+        // The result is directly constructed for bases 2 and 4 from the exponent bits.
+        if (base == 2) return exp > 1023 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp + 1023L << 52);
+        if (base == 4) return exp > 511 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp * 2L + 1023L << 52);
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;
@@ -4755,8 +4757,10 @@ public class GTUtility {
      * Computes base raised to non-negative long exponent.
      */
     private static double powBySquaring(double base, long exp) {
-        if (base == 2) return 1 << exp;
-        if (base == 4) return 1 << 2 * exp;
+        // IEEE 754 double: 1 sign bit, 11 exponent bits, 52 mantissa bits. Exponent is stored with offset 1023.
+        // The result is directly constructed for bases 2 and 4 from the exponent bits.
+        if (base == 2) return exp > 1023 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp + 1023L << 52);
+        if (base == 4) return exp > 511 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp * 2L + 1023L << 52);
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;

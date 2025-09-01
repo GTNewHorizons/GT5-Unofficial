@@ -284,7 +284,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 HEATING_COIL_EU_MULTIPLIER,
                 EnumChatFormatting.GRAY
             ))
-            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers.")
+            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)

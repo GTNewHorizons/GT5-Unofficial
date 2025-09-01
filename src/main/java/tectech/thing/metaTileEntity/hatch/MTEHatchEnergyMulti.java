@@ -62,13 +62,13 @@ public class MTEHatchEnergyMulti extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        if (maxAmperes >= 64) {
+        if (maxAmperes > 64) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier] };
-        } else if (maxAmperes >= 16) {
+        } else if (maxAmperes > 16) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
-        } else if (maxAmperes >= 4) {
+        } else if (maxAmperes > 4) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier] };
-        } else if (maxAmperes >= 2) {
+        } else if (maxAmperes > 2) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier] };
         } else {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier] };
@@ -77,13 +77,13 @@ public class MTEHatchEnergyMulti extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        if (maxAmperes >= 64) {
+        if (maxAmperes > 64) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier] };
-        } else if (maxAmperes >= 16) {
+        } else if (maxAmperes > 16) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
-        } else if (maxAmperes >= 4) {
+        } else if (maxAmperes > 4) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier] };
-        } else if (maxAmperes >= 2) {
+        } else if (maxAmperes > 2) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier] };
         } else {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier] };
