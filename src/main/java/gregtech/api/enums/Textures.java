@@ -1889,6 +1889,8 @@ public class Textures {
         NANITE_CORE,
         NANITE_SHIELDING_FRAME,
 
+        COLLIDER_CASING,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 

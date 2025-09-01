@@ -2743,6 +2743,9 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    LargeHadronCollider,
+    ColliderCasing,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
