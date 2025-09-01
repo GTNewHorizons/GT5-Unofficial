@@ -158,7 +158,8 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     public void unbind() {
-        if (controller != null) for (GTFluidTank tank : controller.STORE) notifyListeners(false, tank.get());
+        if (controller == null) return;
+        for (GTFluidTank tank : controller.STORE) notifyListeners(false, tank.get());
         this.controller = null;
 
     }
