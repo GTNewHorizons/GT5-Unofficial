@@ -223,6 +223,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
                             aZ - 0.5 + XSTR_INSTANCE.nextFloat())
                         .run());
         }
+        mStuttering = true;
     }
 
     @Override
