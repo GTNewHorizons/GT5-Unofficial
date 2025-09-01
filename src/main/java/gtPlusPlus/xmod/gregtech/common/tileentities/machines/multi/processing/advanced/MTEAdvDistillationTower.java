@@ -66,6 +66,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
     protected static final String STRUCTURE_PIECE_TOP_HINT = "topHint";
+    protected static final int DT_MODE_MAX_PARALLELS = 12;
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
@@ -179,7 +180,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addStaticEuEffInfo(0.85f)
             .addSeparator()
             .addInfo("Distillation Tower Mode")
-            .addInfo(TooltipHelper.parallelText("12") + " Parallels")
+            .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -369,7 +370,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getMaxParallelRecipes() {
         return switch (mMode) {
-            case DistillationTower -> 12;
+            case DistillationTower -> DT_MODE_MAX_PARALLELS;
             case Distillery -> 8 * GTUtility.getTier(this.getMaxInputVoltage());
         };
     }
