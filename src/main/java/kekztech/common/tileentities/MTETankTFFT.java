@@ -462,6 +462,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 final FluidStack toDeplete = aFluid.copy();
                 toDeplete.amount = this.pull(aFluid, true);
                 depleteInput(toDeplete);
+                notifyMultiHatch(true, toDeplete);
             }
         }
 
@@ -495,8 +496,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     if (isFluidSelected) {
                         if (isFluidLocked && !lockedFluidName.equals(sFluid.name())) continue;
                         if (!isFluidEmpty && !sFluid.contains(tFluid)) continue;
-
-                        tHatch.fill(this.push(sFluid.get(remaining), true), true);
+                        FluidStack tofill = this.push(sFluid.get(remaining), true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     } else if (isFluidLocked) {
                         if (!isFluidEmpty && !lockedFluidName.equals(
                             tFluid.getFluid()
@@ -504,11 +506,19 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                             continue;
 
                         FluidStack aFluid = FluidRegistry.getFluidStack(lockedFluidName, remaining);
-                        tHatch.fill(this.push(aFluid, true), true);
+                        FluidStack tofill = this.push(aFluid, true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     } else if (isFluidEmpty) {
-                        if (this.firstNotNull() != null) tHatch.fill(this.push(hatchCapacity, true), true);
+                        if (this.firstNotNull() != null) {
+                            FluidStack tofill = this.push(hatchCapacity, true);
+                            tHatch.fill(tofill, true);
+                            notifyMultiHatch(false, tofill);
+                        }
                     } else {
-                        tHatch.fill(this.push(new FluidStack(tFluid, remaining), true), true);
+                        FluidStack tofill = this.push(new FluidStack(tFluid, remaining), true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     }
                 }
             }
@@ -793,5 +803,11 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             info[i] = STORE[i].getInfo();
         }
         return info;
+    }
+
+    public void notifyMultiHatch(boolean isIncrement, FluidStack stack) {
+        if (tfftHatch != null && tfftHatch.isValid()) {
+            tfftHatch.notifyListeners(isIncrement, stack);
+        }
     }
 }
