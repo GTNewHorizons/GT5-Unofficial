@@ -103,7 +103,14 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return (controller != null) ? controller.pull(resource, doFill) : 0;
+        int accepted = (controller != null) ? controller.pull(resource, doFill) : 0;
+        if (doFill && resource != null) {
+            FluidStack acceptedStack = resource.copy();
+            acceptedStack.amount = accepted;
+            notifyListeners(true, acceptedStack);
+
+        }
+        return accepted;
     }
 
     @Override
@@ -111,7 +118,9 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         if (controller != null) {
             final GTFluidTank sFluid = controller.getSelectedFluid();
             if (controller.getFluidSelector() == -1 || (sFluid != null && sFluid.contains(resource))) {
-                return controller.push(resource, doDrain);
+                FluidStack drained = controller.push(resource, doDrain);
+                if (doDrain) notifyListeners(false, drained);
+                return drained;
             }
         }
         return null;
@@ -121,8 +130,18 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         if (controller != null) {
             final GTFluidTank sFluid = controller.getSelectedFluid();
-            if (controller.getFluidSelector() == -1) return controller.push(maxDrain, doDrain);
-            if (sFluid != null) return controller.push(sFluid.get(maxDrain), doDrain);
+            if (controller.getFluidSelector() == -1) {
+                FluidStack drained = controller.push(maxDrain, doDrain);
+                if (doDrain) notifyListeners(false, drained);
+                return drained;
+            }
+            if (sFluid != null) {
+
+                FluidStack drained = controller.push(sFluid.get(maxDrain), doDrain);
+                if (doDrain) notifyListeners(false, drained);
+
+                return drained;
+            }
         }
         return null;
     }
@@ -263,10 +282,8 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
 
     public void notifyListeners(boolean isIncrement, FluidStack stack) {
         if (stack == null) return;
-
         AEFluidStack s = AEFluidStack.create(stack);
         if (isIncrement == false) s.setStackSize(-s.getStackSize());
-
         listeners.forEach((l, o) -> {
             if (l.isValid(o)) l.postChange(this, ImmutableSet.of(s), null);
             else removeListener(l);
