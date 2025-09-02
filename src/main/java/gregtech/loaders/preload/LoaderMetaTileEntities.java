@@ -932,7 +932,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -947,7 +947,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -962,7 +962,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -977,7 +977,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -992,7 +992,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -1007,7 +1007,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -1022,7 +1022,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -1037,7 +1037,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -1052,7 +1052,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -1067,7 +1067,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -1082,7 +1082,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
 
@@ -1097,7 +1097,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 1,
                 1000,
-                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                SoundResource.GTCEU_LOOP_REPLICATOR,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "AMPLIFAB").getStackForm(1L));
     }

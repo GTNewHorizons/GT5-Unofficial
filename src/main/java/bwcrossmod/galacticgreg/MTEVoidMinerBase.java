@@ -129,12 +129,16 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
         if (this.totalWeight != 0.f) {
             this.handleFluidConsumption();
-            this.handleOutputs();
             return true;
         } else {
             this.stopMachine(ShutDownReasonRegistry.NONE);
             return false;
         }
+    }
+
+    @Override
+    protected void outputAfterRecipe() {
+        if (this.totalWeight != 0.f) this.handleOutputs();
     }
 
     @Override
