@@ -142,8 +142,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Brewery")
-            .addInfo("50% faster than singleblock machines of the same voltage")
-            .addInfo("Gains 4 parallels per voltage tier")
+            .addBulkMachineInfo(4, 1.5F, 1F)
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Reinforced Wooden Casing", 14, false)

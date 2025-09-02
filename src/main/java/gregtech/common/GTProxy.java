@@ -136,6 +136,7 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;
@@ -866,6 +867,13 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
+        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
+        ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
+        ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
+        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
+        ItemList.IC2_Plutonium_Small.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
+        ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
+        ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
         ItemList.IC2_Food_Can_Filled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 0));
         ItemList.IC2_Food_Can_Spoiled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 1));
@@ -1923,9 +1931,11 @@ public class GTProxy implements IFuelHandler {
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
+                RunnableMachineUpdate.onBeforeTickLockLocked();
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
+                RunnableMachineUpdate.onAfterTickLockReleased();
                 GTMusicSystem.ServerSystem.tick();
             }
         }
@@ -2026,12 +2036,11 @@ public class GTProxy implements IFuelHandler {
         }
 
         int tCount = 64;
-        for (int i = 0; i < 36; i++) {
-            final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
+        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
+        for (ItemStack tStack : mainInventory) {
             if (tStack == null) {
                 continue;
             }
-
             if (!aEvent.player.capabilities.isCreativeMode) {
                 GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
                 final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
@@ -2051,8 +2060,8 @@ public class GTProxy implements IFuelHandler {
             }
 
         }
-        final ItemStack[] inventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : inventory) {
+        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
+        for (final ItemStack tStack : armorInventory) {
             if (tStack == null) {
                 continue;
             }
@@ -2502,8 +2511,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     /**
-     * This method allows fast lookup of EntityPlayerMp from UUID.
-     * It should only ever be called from the ServerThread and while the Server is running.
+     * This method allows fast lookup of EntityPlayerMp from UUID. It should only ever be called from the ServerThread
+     * and while the Server is running.
      *
      * @param uuid - uuid of the EntityPlayerMP
      */
@@ -2522,8 +2531,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     /**
-     * This method allows fast lookup of player UUID from their name.
-     * It should only ever be called from the ServerThread and while the Server is running.
+     * This method allows fast lookup of player UUID from their name. It should only ever be called from the
+     * ServerThread and while the Server is running.
      *
      * @param playername - the name of the player as returned by getCommandSenderName()
      */

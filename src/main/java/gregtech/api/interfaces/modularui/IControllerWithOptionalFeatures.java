@@ -29,10 +29,11 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.common.config.Gregtech;
 
 /**
- * Machines implementing this interface can have logic and GUI buttons
- * to configure various behaviors regarding multiblock.
+ * Machines implementing this interface can have logic and GUI buttons to configure various behaviors regarding
+ * multiblock.
  * <ul>
  * <li>Power switch</li>
  * <li>Void protection</li>
@@ -184,20 +185,11 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
         if (!supportsMachineModeSwitch()) return null;
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (supportsMachineModeSwitch()) {
-                onMachineModeSwitchClick();
-                setMachineMode(nextMachineMode());
-            }
+            onMachineModeSwitchClick();
+            setMachineMode(nextMachineMode());
         })
-            .setPlayClickSound(supportsMachineModeSwitch())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (supportsMachineModeSwitch()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(getMachineModeIcon(getMachineMode()));
-                } else return null;
-                return ret.toArray(new IDrawable[0]);
-            })
+            .setPlayClickSound(true)
+            .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, getMachineModeIcon(getMachineMode()) })
             .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
@@ -315,7 +307,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     void setBatchMode(boolean enabled);
 
     default boolean getDefaultBatchMode() {
-        return false;
+        return Gregtech.general.batchModeInitialValue;
     }
 
     Pos2d getBatchModeButtonPos();
@@ -425,8 +417,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
      * </ul>
      *
      * <p>
-     * <strong>Important:</strong> When implementing this method, ensure that any action that changes
-     * the feature's enabled state calls {@code widget.notifyTooltipChange()} to refresh the tooltip display.
+     * <strong>Important:</strong> When implementing this method, ensure that any action that changes the feature's
+     * enabled state calls {@code widget.notifyTooltipChange()} to refresh the tooltip display.
      *
      * @param widget                 the widget button to add the tooltip to
      * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported

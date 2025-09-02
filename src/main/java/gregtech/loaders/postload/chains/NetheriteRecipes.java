@@ -77,8 +77,8 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 24))
                 .fluidInputs(
-                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000), // Hydrogen Peroxide
-                    FluidUtils.getHydrofluoricAcid(4000)) // Industrial Strength Hydrofluoric Acid
+                    FluidUtils.getHydrofluoricAcid(4000), // Industrial Strength Hydrofluoric Acid
+                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000)) // Hydrogen Peroxide
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 4))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
@@ -213,7 +213,7 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Netherite, 8),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Netherite, 4),
                     ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(16))
                 .fluidInputs(Materials.Manyullyn.getMolten(1152))
                 .itemOutputs(ItemList.Naquarite_Universal_Insulator_Foil.get(8))
@@ -366,7 +366,7 @@ public class NetheriteRecipes {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
+            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Netherite_Nanoparticles.get(1))
             .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
             .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -378,7 +378,7 @@ public class NetheriteRecipes {
         if (Forestry.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(1),
+                    GTUtility.getIntegratedCircuit(2),
                     ItemList.Netherite_Nanoparticles.get(1),
                     GTBees.combs.getStackForType(CombType.NETHERITE, 32))
                 .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
@@ -403,7 +403,7 @@ public class NetheriteRecipes {
         addNetheritePartRecipe(OrePrefixes.bolt, 8, 1);
         addNetheritePartRecipe(OrePrefixes.screw, 8, 1);
         addNetheritePartRecipe(OrePrefixes.ring, 4, 1);
-        addNetheritePartRecipe(OrePrefixes.foil, 8, 1);
+        addNetheritePartRecipe(OrePrefixes.foil, 4, 1);
         addNetheritePartRecipe(OrePrefixes.itemCasing, 2, 1);
         addNetheritePartRecipe(OrePrefixes.gearGtSmall, 1, 1);
         addNetheritePartRecipe(OrePrefixes.rotor, 1, 5);
@@ -475,7 +475,7 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
-            .duration(34 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(plasmaArcFurnaceRecipes);
 

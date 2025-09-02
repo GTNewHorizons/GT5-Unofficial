@@ -177,7 +177,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     @Override
     public int getRenderType() {
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     @Override

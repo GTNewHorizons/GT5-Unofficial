@@ -4062,8 +4062,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             int tier = i + 1;
             CoverRegistry.registerCover(
                 ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
-                TextureFactory
-                    .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
+                TextureFactory.of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[0]),
                 context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
                 CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }

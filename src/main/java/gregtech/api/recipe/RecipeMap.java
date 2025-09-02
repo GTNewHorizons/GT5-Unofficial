@@ -28,8 +28,8 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
- * Manages list of recipes. Its functionalities are split
- * between {@link RecipeMapBackend} and {@link RecipeMapFrontend}.
+ * Manages list of recipes. Its functionalities are split between {@link RecipeMapBackend} and
+ * {@link RecipeMapFrontend}.
  *
  * @param <B> Type of {@link RecipeMapBackend}
  */
@@ -101,16 +101,16 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     /**
-     * @return Amperage of this recipemap. Note that recipes store EU/t with amperage included,
-     *         e.g. Arc Furnace recipe with 90 EU/t means 30 EU/t (LV) with 3 amperage.
+     * @return Amperage of this recipemap. Note that recipes store EU/t with amperage included, e.g. Arc Furnace recipe
+     *         with 90 EU/t means 30 EU/t (LV) with 3 amperage.
      */
     public int getAmperage() {
         return frontend.getUIProperties().amperage;
     }
 
     /**
-     * Callback called before the recipe builder emits recipes. Can edit this builder to change this recipe, or
-     * use this information to add recipes elsewhere.
+     * Callback called before the recipe builder emits recipes. Can edit this builder to change this recipe, or use this
+     * information to add recipes elsewhere.
      */
     public void appendBuilderTransformer(Consumer<? super GTRecipeBuilder> builderTransformer) {
         backend.properties.appendBuilderTransformer(builderTransformer);
@@ -238,8 +238,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     private static final Pattern LEGACY_IDENTIFIER_PATTERN = Pattern.compile("(.+)_[0-9]+_[0-9]+_[0-9]+_[0-9]+_[0-9]+");
 
     /**
-     * Gets recipemap instance from old mUniqueIdentifier format. This is only for backward compat, where tiles
-     * saved recipemap with mUniqueIdentifier.
+     * Gets recipemap instance from old mUniqueIdentifier format. This is only for backward compat, where tiles saved
+     * recipemap with mUniqueIdentifier.
      *
      * @param legacyIdentifier mUniqueIdentifier, in %s_%d_%d_%d_%d_%d format
      * @return Found recipemap, can be null
