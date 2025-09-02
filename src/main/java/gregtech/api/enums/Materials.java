@@ -265,7 +265,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Emery;
     public static Materials EnderiumBase;
     public static Materials Energized;
-    public static Materials Epidote;
     public static Materials Eximite;
     public static Materials FierySteel;
     public static Materials Firestone;
