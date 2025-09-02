@@ -127,7 +127,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     .child(
                         new TextWidget(
                             IKey.dynamic(
-                                () -> EnumChatFormatting.DARK_PURPLE + "Speed Bonus: "
+                                () -> EnumChatFormatting.DARK_PURPLE + "Speed: "
                                     + EnumChatFormatting.WHITE
                                     + speedSync.getValue())).size(120, 20))
                     .child(

@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -8,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.common.misc.GTStructureChannels;
 
 public class BlockCasingsFoundry extends BlockCasingsAbstract {
 
@@ -24,9 +24,8 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
         register(8, ItemList.Extra_Casting_Basins_Solidifier_Modular, "Superdense Casting Basin Casing");
         register(9, ItemList.Hypercooler_Solidifier_Modular, "Hypercooler Siphon Casing");
         register(10, ItemList.Streamlined_Casters_Solidifier_Modular, "Streamlined Casting Casing");
-        for(int i = 1; i <= 3;i++)
-        {
-            GTStructureChannels.MAGNETIC_CHASSIS.registerAsIndicator(new ItemStack(this,1,i),i);
+        for (int i = 1; i <= 3; i++) {
+            GTStructureChannels.MAGNETIC_CHASSIS.registerAsIndicator(new ItemStack(this, 1, i), i);
         }
 
     }

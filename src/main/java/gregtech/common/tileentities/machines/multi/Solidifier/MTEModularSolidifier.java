@@ -9,7 +9,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
@@ -29,8 +28,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.common.blocks.BlockCasingsFoundry;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -75,6 +72,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
@@ -264,17 +263,23 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
         .addElement('D', ofFrame(MaterialsUEVplus.TranscendentMetal))
         .addElement('E', lazy(() -> ofBlock(GodforgeCasings, 0)))
-        .addElement('F', GTStructureChannels.MAGNETIC_CHASSIS.use(ofBlocksTiered(
-            MTEModularSolidifier::getTierFromMeta,
-            ImmutableList.of(
-            Pair.of(GregTechAPI.sBlockCasingsFoundry,1),
-            Pair.of(GregTechAPI.sBlockCasingsFoundry,2),
-            Pair.of(GregTechAPI.sBlockCasingsFoundry,3)), -1, MTEModularSolidifier::setMachineTier,MTEModularSolidifier::getMachineTier)))
+        .addElement(
+            'F',
+            GTStructureChannels.MAGNETIC_CHASSIS.use(
+                ofBlocksTiered(
+                    MTEModularSolidifier::getTierFromMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasingsFoundry, 1),
+                        Pair.of(GregTechAPI.sBlockCasingsFoundry, 2),
+                        Pair.of(GregTechAPI.sBlockCasingsFoundry, 3)),
+                    -1,
+                    MTEModularSolidifier::setMachineTier,
+                    MTEModularSolidifier::getMachineTier)))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7)) // item pipe casing
         .addElement(
             'H',
             buildHatchAdder(MTEModularSolidifier.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
                 .dot(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
@@ -377,26 +382,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return rTexture;
     }
 
-    /*
-     * Colors for stats
-     * Speed bonus - White
-     * Parallels - Aqua
-     * Eu Eff - Red
-     * OC Factor - Dark Purple
-     * OC Total - Light Purple
-     * mTier - Gold
-     * spaces for module info - 4
-     */
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo(
-                EnumChatFormatting.WHITE + "150%"
-                    + EnumChatFormatting.GRAY
-                    + " faster than singleblock machines of the same voltage")
-            .addInfo(
-                "Gains " + EnumChatFormatting.AQUA + "16" + EnumChatFormatting.GRAY + " parallels per voltage tier")
+            .addBulkMachineInfo(16, speedModifierBase, 1.0f)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
                     + "not"
@@ -405,7 +395,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "overclocks"
                     + EnumChatFormatting.GRAY
-                    + " over the hatch tier without modules.")
+                    + " over the hatch tier without modules")
             .addInfo(
                 "Has " + EnumChatFormatting.GOLD
                     + "3 Tiers"
@@ -420,8 +410,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 "Each Module Slot has " + EnumChatFormatting.GOLD
                     + "7"
                     + EnumChatFormatting.GRAY
-                    + " different options.")
-            .addInfo("Toggle Render with Screwdriver.")
+                    + " different options")
+            .addInfo("Toggle Render with Screwdriver")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("" + EnumChatFormatting.BOLD + EnumChatFormatting.RED + "Glorious Evolution!")
@@ -453,7 +443,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
             .addEnergyHatch("Any Foundry Casing", 1)
-            .addMaintenanceHatch("Any Foundry Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.AQUA + "Hypercooler Module")
@@ -504,19 +493,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.YELLOW + "Time Dilation System")
             .addStructureInfo(
-                "Multiplies " + EnumChatFormatting.WHITE
-                    + "Speed"
-                    + EnumChatFormatting.GRAY
-                    + " by "
-                    + EnumChatFormatting.WHITE
-                    + "6x"
-                    + EnumChatFormatting.GRAY
-                    + ". Multiplies "
-                    + EnumChatFormatting.RED
-                    + "EU Consumption"
-                    + EnumChatFormatting.GRAY
-                    + " by "
-                    + EnumChatFormatting.RED
+                "Multiplies Speed and EU Consumption by " + EnumChatFormatting.GREEN
                     + "6x"
                     + EnumChatFormatting.GRAY
                     + ". Limit of "
@@ -546,16 +523,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.DARK_AQUA + "Power Efficient Subsystems")
             .addStructureInfo(
-                "Subtracts initial " + EnumChatFormatting.RED
-                    + "EU Consumption"
-                    + EnumChatFormatting.GRAY
-                    + " by "
-                    + EnumChatFormatting.RED
+                "Subtracts initial EU Consumption by " + EnumChatFormatting.AQUA
                     + "20%"
                     + EnumChatFormatting.GRAY
-                    + ". Multiplies "
-                    + EnumChatFormatting.WHITE
-                    + "Speed Bonus"
+                    + ", multiplies "
+                    + EnumChatFormatting.GREEN
+                    + "Speed"
                     + EnumChatFormatting.GRAY
                     + " by "
                     + EnumChatFormatting.WHITE
@@ -563,36 +536,26 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.GREEN + "Streamlined Casters")
             .addStructureInfo(
-                "Multiplies " + EnumChatFormatting.WHITE
-                    + "Speed Bonus"
-                    + EnumChatFormatting.GRAY
+                "Multiplies Speed" + EnumChatFormatting.GRAY
                     + " by "
-                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.GREEN
                     + "1.25x"
                     + EnumChatFormatting.GRAY
-                    + ". Ramps up "
-                    + EnumChatFormatting.WHITE
-                    + "speed"
-                    + EnumChatFormatting.GRAY
-                    + " over time to a maximum of "
-                    + EnumChatFormatting.WHITE
+                    + ". Ramps up speed over time to a maximum of "
+                    + EnumChatFormatting.GREEN
                     + "2.5x"
                     + EnumChatFormatting.GRAY
-                    + ", cools down at double that rate.")
-            .addStructureInfo(
-                "Multiplies " + EnumChatFormatting.AQUA
-                    + "Parallels"
-                    + EnumChatFormatting.GRAY
-                    + " by "
-                    + EnumChatFormatting.AQUA
-                    + "0.5x")
+                    + ", cools down at double that rate")
+            .addStructureInfo("Multiplies Parallels by " + EnumChatFormatting.GOLD + "0.5x")
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.BLUE + "Extra Casting Basins")
             .addStructureInfo(
-                "Adds " + EnumChatFormatting.AQUA
-                    + "12 Parallels"
+                "Adds " + EnumChatFormatting.GOLD
+                    + "12"
                     + EnumChatFormatting.GRAY
-                    + " per tier. Casings are valid for extra hatch space.")
+                    + " Parallels per "
+                    + TooltipTier.VOLTAGE.getValue()
+                    + " tier. Casings are valid for extra hatch space")
 
             .toolTipFinisher();
 
@@ -655,8 +618,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         mCasingAmount++;
     }
 
-    private void setMachineTier(int tier){ mTier = tier;}
-    private int getMachineTier() {return mTier;}
+    private void setMachineTier(int tier) {
+        mTier = tier;
+    }
+
+    private int getMachineTier() {
+        return mTier;
+    }
 
     @Nullable
     private static Integer getTierFromMeta(Block block, Integer metaID) {
@@ -664,7 +632,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         if (metaID < 1 || metaID > 3) return null;
         return metaID;
     }
-
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -676,11 +643,14 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return false;
     }
 
-
     private boolean checkModules() {
         for (int i = 0; i < 2 + (mTier - 1); i++) {
             SolidifierModules m = modules[i];
-            if (!checkPiece(m.structureID, moduleHorizontalOffsets[i], moduleVerticalOffsets[i], moduleDepthOffsets[i])) {
+            if (!checkPiece(
+                m.structureID,
+                moduleHorizontalOffsets[i],
+                moduleVerticalOffsets[i],
+                moduleDepthOffsets[i])) {
                 if (renderTileEntity != null) renderTileEntity.setModuleStatusWithIndex(false, i);
                 return false;
             }
@@ -768,7 +738,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         checkSolidifierModules();
-        logic.setSpeedBonus(1F / speedMultiplier);
+        logic.setSpeedBonus(1F / speedModifierAdj);
         logic.setMaxParallel((int) (Math.floor(parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
         logic.setEuModifier(euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
@@ -899,6 +869,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return true;
     }
 
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
     // mui2 stuff
     @Override
     public int getMaxParallelRecipes() {
@@ -949,10 +924,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         }
     }
 
-    // its not good to run the same method 5 times over per tick when displaying stats, but its fine i guess
     public String getSpeedStr() {
         checkSolidifierModules();
-        return (speedModifierAdj - 1) * 100 + "%";
+        return (speedModifierAdj) * 100 + "%";
     }
 
     public String getParallelsString() {
