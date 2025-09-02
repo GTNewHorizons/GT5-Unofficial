@@ -1357,53 +1357,35 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData,
         List<MaterialStack> aMaterialList, List<TCAspects.TC_AspectStack> aAspects) {
         this(
-            aMetaItemSubID,
-            aIconSet,
-            aToolSpeed,
-            aDurability,
-            aToolQuality,
-            aTypes,
-            aR,
-            aG,
-            aB,
-            aA,
+            // spotless:off
             aName,
             aDefaultLocalName,
-            aFuelType,
-            aFuelPower,
+            null,
+            "?",
+            aMetaItemSubID,
+            aIconSet,
+            aColor,
+            ((aA & 0xFF) << 24) | ((aR & 0xFF) << 16) | ((aG & 0xFF) << 8) | (aB & 0xFF),
+            aTransparent,
+            aDurability, aToolQuality, aToolSpeed,
+            1.0f, 1.0f, 1.0f,
+            aFuelType, aFuelPower,
+            false,
+            false,
+            aTypes,
+            aExtraData,
             aMeltingPoint,
             aBlastFurnaceTemp,
             aBlastFurnaceRequired,
-            aTransparent,
-            aOreValue,
+            true,
+            true,
             aDensityMultiplier,
             aDensityDivider,
-            aColor);
-        mExtraData = aExtraData;
-        mMaterialList.addAll(aMaterialList);
-        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0)
-            .toString(true);
-        else mChemicalFormula = mMaterialList.stream()
-            .map(MaterialStack::toString)
-            .collect(Collectors.joining())
-            .replaceAll("_", "-");
-
-        int tAmountOfComponents = 0, tMeltingPoint = 0;
-        for (MaterialStack tMaterial : mMaterialList) {
-            tAmountOfComponents += tMaterial.mAmount;
-            if (tMaterial.mMaterial.mMeltingPoint > 0)
-                tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
-            if (aAspects == null)
-                for (TCAspects.TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) tAspect.addToAspectList(mAspects);
-        }
-
-        if (mMeltingPoint < 0) mMeltingPoint = 0;
-
-        tAmountOfComponents *= aDensityMultiplier;
-        tAmountOfComponents /= aDensityDivider;
-        if (aAspects == null) for (TCAspects.TC_AspectStack tAspect : mAspects)
-            tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
-        else mAspects.addAll(aAspects);
+            aMaterialList,
+            aAspects,
+            new LinkedHashSet<>()
+            // spotless:on
+        );
     }
 
     protected Materials(
@@ -1459,10 +1441,32 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             0,
             densityMultiplier,
             densityDivider,
-            color,
-            extraData,
-            materialList,
-            aspects);
+            color);
+        mExtraData = extraData;
+        mMaterialList.addAll(materialList);
+        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0)
+            .toString(true);
+        else mChemicalFormula = mMaterialList.stream()
+            .map(MaterialStack::toString)
+            .collect(Collectors.joining())
+            .replaceAll("_", "-");
+
+        int tAmountOfComponents = 0, tMeltingPoint = 0;
+        for (MaterialStack tMaterial : mMaterialList) {
+            tAmountOfComponents += tMaterial.mAmount;
+            if (tMaterial.mMaterial.mMeltingPoint > 0)
+                tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
+            if (aspects == null)
+                for (TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) tAspect.addToAspectList(mAspects);
+        }
+
+        if (mMeltingPoint < 0) mMeltingPoint = 0;
+
+        tAmountOfComponents *= densityMultiplier;
+        tAmountOfComponents /= densityDivider;
+        if (aspects == null) for (TC_AspectStack tAspect : mAspects)
+            tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
+        else mAspects.addAll(aspects);
         // this.mSubTags = subTags;
         this.hasCorrespondingFluid = hasFluid;
         this.hasCorrespondingGas = hasGas;
