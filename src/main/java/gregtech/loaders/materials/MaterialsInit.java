@@ -685,10 +685,10 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
             .setARGB(0xf00000ff)
+            .setFuel(MaterialBuilder.FuelType.Gas, 20)
             .addCell()
             .addPlasma()
             .setMeltingPoint(14)
-            .setFuel(MaterialBuilder.FuelType.Gas, 20)
             .addAspect(TCAspects.AQUA, 1)
             .constructMaterial();
     }
@@ -856,6 +856,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyePurple)
             .setRGB(0x6400c8)
             .setTool(5_120, 5, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addDustItems()
             .addMetalItems()
             .addGemItems()
@@ -865,7 +866,6 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(5_000)
-            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addAspect(TCAspects.PRAECANTATIO, 4)
             .constructMaterial();
     }
@@ -915,10 +915,10 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightGray)
             .setRGB(0xffdcdc)
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addCell()
             .addPlasma()
             .setMeltingPoint(234)
-            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.VENENUM, 1)
@@ -2558,11 +2558,11 @@ public class MaterialsInit {
             .setColor(Dyes.dyeOrange)
             .setARGB(0x7fff8000)
             .setTool(128, 2, 4.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Carbon, 10)
             .addMaterial(Materials.Hydrogen, 10)
@@ -3111,6 +3111,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeRed)
             .setRGB(0x400000)
             .setTool(256, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 2_048)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -3119,7 +3120,6 @@ public class MaterialsInit {
             .setBlastFurnaceTemp(1_800)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setFuel(MaterialBuilder.FuelType.Magic, 2_048)
             .addAspect(TCAspects.PRAECANTATIO, 3)
             .addAspect(TCAspects.IGNIS, 3)
             .addAspect(TCAspects.CORPUS, 3)
@@ -3414,12 +3414,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ffff00)
             .setTool(64, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.AER, 2)
             .constructMaterial();
@@ -3432,12 +3432,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00646464)
             .setTool(64, 3, 32.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.VACUOS, 2)
             .constructMaterial();
@@ -3452,12 +3452,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyeGreen)
             .setARGB(0x0000ff00)
             .setTool(256, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.TERRA, 2)
             .constructMaterial();
@@ -3472,12 +3472,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlack)
             .setARGB(0x003e3e3e)
             .setTool(64, 4, 32.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 320)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 320)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.PERDITIO, 2)
             .constructMaterial();
@@ -3492,12 +3492,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyeRed)
             .setARGB(0x00ff0000)
             .setTool(64, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 320)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 320)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.IGNIS, 2)
             .constructMaterial();
@@ -3529,12 +3529,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00fcfcfc)
             .setTool(64, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 240)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 240)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.ORDO, 2)
             .constructMaterial();
@@ -3547,12 +3547,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyePurple)
             .setARGB(0x00ff00ff)
             .setTool(64, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 240)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 240)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.AURAM, 2)
             .constructMaterial();
@@ -3567,12 +3567,12 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x000000ff)
             .setTool(64, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.AQUA, 2)
             .constructMaterial();
@@ -3890,11 +3890,11 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_NETHERSTAR)
             .setColor(Dyes.dyeWhite)
             .setTool(5_120, 4, 6.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 50_000)
             .addDustItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 50_000)
             .constructMaterial();
     }
 
@@ -4171,11 +4171,11 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlack)
             .setARGB(0x001c0639)
             .setTool(512, 4, 32.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 1_500)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 1_500)
             .setDensityMultiplier(2)
             .addAspect(TCAspects.VACUOS, 1)
             .constructMaterial();
@@ -4468,8 +4468,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
             .setRGB(0x00ff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 8)
+            .addCell()
             .constructMaterial();
     }
 
@@ -4534,8 +4534,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0x323246)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Diesel, 16)
+            .addCell()
             .constructMaterial();
     }
 
@@ -4568,8 +4568,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBrown)
             .setRGB(0x804000)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 8)
+            .addCell()
             .constructMaterial();
     }
 
@@ -4580,8 +4580,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setRGB(0xff8000)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Diesel, 192)
+            .addCell()
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 6)
@@ -4610,8 +4610,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffc400)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addCell()
             .addAspect(TCAspects.CORPUS, 2)
             .constructMaterial();
     }
@@ -4636,8 +4636,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Diesel, 480)
+            .addCell()
             .constructMaterial();
     }
 
@@ -4771,8 +4771,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0x0a0a0a)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 20)
+            .addCell()
             .constructMaterial();
     }
 
@@ -4845,8 +4845,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setRGB(0xc4ff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addCell()
             .addAspect(TCAspects.GRANUM, 2)
             .constructMaterial();
     }
@@ -4858,8 +4858,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setRGB(0xc4ff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addCell()
             .addAspect(TCAspects.GRANUM, 2)
             .constructMaterial();
     }
@@ -4871,8 +4871,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setRGB(0xc4ff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
+            .addCell()
             .addAspect(TCAspects.GRANUM, 2)
             .constructMaterial();
     }
@@ -4962,9 +4962,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBrown)
             .setRGB(0xdecd87)
+            .setFuel(MaterialBuilder.FuelType.Gas, 24)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 24)
             .constructMaterial();
     }
 
@@ -5422,9 +5422,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGray)
             .setRGB(0x1a1a1a)
+            .setFuel(MaterialBuilder.FuelType.Gas, 360)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Gas, 360)
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
@@ -6324,8 +6324,8 @@ public class MaterialsInit {
             .setMetaItemSubID(715)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeMagenta)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 104)
+            .addCell()
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 4)
@@ -7042,8 +7042,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0x0a0a0a)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 45)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7054,8 +7054,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0x0a0a0a)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 40)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7066,8 +7066,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0x0a0a0a)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 20)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7078,8 +7078,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0x0a0a0a)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 30)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7182,8 +7182,8 @@ public class MaterialsInit {
             .setMetaItemSubID(735)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 160)
+            .addCell()
             .constructMaterial()
             .setCanBeCracked(true);
     }
@@ -7195,8 +7195,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 240)
+            .addCell()
             .constructMaterial()
             .setCanBeCracked(true);
     }
@@ -7208,8 +7208,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Diesel, 305)
+            .addCell()
             .constructMaterial()
             .setCanBeCracked(true);
     }
@@ -7221,8 +7221,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 320)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7233,8 +7233,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 220)
+            .addCell()
             .constructMaterial()
             .setCanBeCracked(true);
     }
@@ -7245,8 +7245,8 @@ public class MaterialsInit {
             .setMetaItemSubID(733)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 20)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7256,8 +7256,8 @@ public class MaterialsInit {
             .setMetaItemSubID(734)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 25)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7268,8 +7268,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 40)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7280,8 +7280,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Diesel, 40)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7292,8 +7292,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 40)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7433,9 +7433,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setRGB(0xff8000)
+            .setFuel(MaterialBuilder.FuelType.Diesel, 320)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Diesel, 320)
             .constructMaterial();
     }
 
@@ -7461,9 +7461,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setRGB(0xe86900)
+            .setFuel(MaterialBuilder.FuelType.Gas, 206)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 206)
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
@@ -7478,9 +7478,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setRGB(0xb6371e)
+            .setFuel(MaterialBuilder.FuelType.Gas, 296)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 296)
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
@@ -7495,9 +7495,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setRGB(0xcf5005)
+            .setFuel(MaterialBuilder.FuelType.Gas, 256)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 256)
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
@@ -7529,9 +7529,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBrown)
             .setRGB(0x0e4880)
+            .setFuel(MaterialBuilder.FuelType.Gas, 24)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 24)
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Oxygen, 1)
             .constructMaterial();
@@ -7703,9 +7703,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLightBlue)
             .setRGB(0xc8c8ff)
+            .setFuel(MaterialBuilder.FuelType.Gas, 168)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 168)
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
@@ -7736,9 +7736,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
             .setRGB(0xe1e1e1)
+            .setFuel(MaterialBuilder.FuelType.Gas, 128)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 128)
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addElectrolyzerRecipe()
@@ -7753,9 +7753,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setRGB(0x87de87)
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 164)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.SemiFluid, 164)
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Oxygen, 3)
@@ -7845,9 +7845,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeRed)
             .setRGB(0x6e0303)
+            .setFuel(MaterialBuilder.FuelType.Magic, 100)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Magic, 100)
             .constructMaterial();
     }
 
@@ -7871,9 +7871,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBrown)
             .setRGB(0xaa8800)
+            .setFuel(MaterialBuilder.FuelType.Diesel, 84)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Diesel, 84)
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Oxygen, 1)
@@ -7945,9 +7945,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBrown)
             .setRGB(0x784421)
+            .setFuel(MaterialBuilder.FuelType.Gas, 288)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Gas, 288)
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 1)
@@ -8060,9 +8060,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xfae250)
+            .setFuel(MaterialBuilder.FuelType.Gas, 232)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 232)
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
@@ -8077,9 +8077,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xffdd55)
+            .setFuel(MaterialBuilder.FuelType.Gas, 192)
             .addCell()
             .addGas()
-            .setFuel(MaterialBuilder.FuelType.Gas, 192)
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
@@ -8241,8 +8241,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBrown)
             .setRGB(0x501d05)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Gas, 328)
+            .addCell()
             .addMaterial(Materials.Carbon, 7)
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
@@ -9919,11 +9919,11 @@ public class MaterialsInit {
             .setColor(Dyes.dyeLime)
             .setRGB(0xd2f0c8)
             .setTool(1_024, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 24)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 24)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Steel, 2)
             .addMaterial(Materials.Magic, 1)
@@ -10007,8 +10007,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_WOOD)
             .setColor(Dyes.dyeBrown)
             .setRGB(0xdcc800)
-            .addDustItems()
             .setFuel(MaterialBuilder.FuelType.Magic, 16)
+            .addDustItems()
             .setDensityMultiplier(4)
             .setDensityDivider(3)
             .addCentrifugeRecipe()
@@ -10182,8 +10182,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setRGB(0x324632)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Diesel, 48)
+            .addCell()
             .addMaterial(Materials.Glyceryl, 1)
             .addMaterial(Materials.CoalFuel, 4)
             .constructMaterial();
@@ -10196,8 +10196,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setRGB(0xc8ff00)
-            .addCell()
             .setFuel(MaterialBuilder.FuelType.Diesel, 1_000)
+            .addCell()
             .constructMaterial();
     }
 
@@ -10562,11 +10562,11 @@ public class MaterialsInit {
             .setColor(Dyes.dyeGreen)
             .setRGB(0x327f32)
             .setTool(768, 3, 8.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 24)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 24)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Steel, 1)
             .addMaterial(Materials.Magic, 1)
@@ -10840,13 +10840,13 @@ public class MaterialsInit {
             .setColor(Dyes.dyeLightBlue)
             .setRGB(0x64c8ff)
             .setTool(128, 3, 10.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addDustItems()
             .addMetalItems()
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 32)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Thaumium, 1)
             .addAspect(TCAspects.VITREUS, 2)
@@ -11021,8 +11021,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightBlue)
             .setRGB(0x0094cb)
-            .addDustItems()
             .setFuel(MaterialBuilder.FuelType.Thermal, 62)
+            .addDustItems()
             .setDensityMultiplier(4)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Saltpeter, 1)
@@ -11066,9 +11066,9 @@ public class MaterialsInit {
             .setColor(Dyes.dyeGreen)
             .setRGB(0xa0fae6)
             .setTool(16, 1, 1.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 10)
             .addDustItems()
             .addGemItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 10)
             .setDensityMultiplier(2)
             .addCentrifugeRecipe()
             .addMaterial(Materials.EnderPearl, 1)
@@ -11143,11 +11143,11 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBrown)
             .setRGB(0x968c6e)
             .setTool(384, 2, 6.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 8)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 8)
             .setDensityMultiplier(19)
             .setDensityDivider(18)
             .addCentrifugeRecipe()
@@ -11164,8 +11164,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FIERY)
             .setColor(Dyes.dyeYellow)
             .setRGB(0xff8000)
-            .addDustItems()
             .setFuel(MaterialBuilder.FuelType.Thermal, 62)
+            .addDustItems()
             .setDensityMultiplier(4)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Coal, 1)
@@ -11808,9 +11808,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setRGB(0xffa500)
+            .setFuel(MaterialBuilder.FuelType.Diesel, 2_500)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Diesel, 2_500)
             .constructMaterial();
     }
 
@@ -11833,9 +11833,9 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setRGB(0xffa500)
+            .setFuel(MaterialBuilder.FuelType.Diesel, 576)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Diesel, 576)
             .constructMaterial();
     }
 
@@ -11888,9 +11888,9 @@ public class MaterialsInit {
             .setMetaItemSubID(995)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
+            .setFuel(MaterialBuilder.FuelType.Diesel, 80)
             .addCell()
             .addFluid()
-            .setFuel(MaterialBuilder.FuelType.Diesel, 80)
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 18)
             .constructMaterial();
@@ -12234,13 +12234,13 @@ public class MaterialsInit {
             .setRGB(0xd37806)
             .setTool(850_000, 12, 32.0f)
             .setTurbine(6.0f, 6.0f, 3.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 250_000)
             .addDustItems()
             .addMetalItems()
             .addOreItems()
             .addPlasma()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 250_000)
             .setMeltingPoint(9_000)
             .setBlastFurnaceTemp(9_000)
             .setBlastFurnaceRequired(true)
@@ -12256,12 +12256,12 @@ public class MaterialsInit {
             .setIconSet(new TextureSet("infinity", true))
             .setColor(Dyes.dyeLightGray)
             .setTool(2_621_440, 17, 256.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 5_000_000)
             .addDustItems()
             .addMetalItems()
             .addPlasma()
             .addToolHeadItems()
             .addGearItems()
-            .setFuel(MaterialBuilder.FuelType.Magic, 5_000_000)
             .setMeltingPoint(10_800)
             .setBlastFurnaceTemp(10_800)
             .setBlastFurnaceRequired(true)
@@ -12449,6 +12449,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightGray)
             .setTool(1_310_720, 10, 64.0f)
+            .setFuel(MaterialBuilder.FuelType.Magic, 500_000)
             .addDustItems()
             .addMetalItems()
             .addOreItems()
@@ -12459,7 +12460,6 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setFuel(MaterialBuilder.FuelType.Magic, 500_000)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
     }

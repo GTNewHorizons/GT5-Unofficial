@@ -688,10 +688,10 @@ public class MaterialsKevlar {
             .setDefaultLocalName("Naphthenic Acid")
             .setMetaItemSubID(760)
             .setIconSet(TextureSet.SET_FLUID)
-            .addCell()
-            .addFluid()
             .setColor(Dyes.dyeWhite)
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 80)
+            .addCell()
+            .addFluid()
             .constructMaterial();
     }
 
