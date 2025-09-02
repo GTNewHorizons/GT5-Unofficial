@@ -4,7 +4,9 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -20,12 +22,17 @@ import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
+import gtnhlanth.common.tileentity.MTETargetChamber;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -44,6 +51,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+
 
     private static final IStructureDefinition<MTELargeHadronCollider> STRUCTURE_DEFINITION = StructureDefinition
         .<MTELargeHadronCollider>builder()
@@ -1760,18 +1770,20 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             "
             }})
         //spotless:on
-        .addElement(
-            'C', // sparge casing (need something new)
-            buildHatchAdder(MTELargeHadronCollider.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .dot(1)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
-                .buildAndChain(
-                    onElementPass(MTELargeHadronCollider::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 10))))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings13, 10) ) // collider casing
         .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
-        .addElement('E', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0)) // neonite saffron mango or whatever
-        .addElement('F', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0)) // beamline input hatch
+        .addElement('E', lazy(t -> { // neonite saffron mango or whatever
+            if (Mods.Chisel.isModLoaded()) {
+                Block neonite = GameRegistry.findBlock(Mods.Chisel.ID, "neonite");
+                return ofBlockAnyMeta(neonite, 1);
+            } else {
+                return ofBlockAnyMeta(Blocks.air);
+            }}))
+        .addElement('F', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
+            .casingIndex(CASING_INDEX_CENTRE).dot(2)
+            .adder(MTELargeHadronCollider::addBeamLineInputHatch).build()) // beamline input hatch
+
         .build();
 
     public MTELargeHadronCollider(final int aID, final String aName, final String aNameRegional) {
@@ -1781,6 +1793,21 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public MTELargeHadronCollider(String aName) {
         super(aName);
     }
+
+    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
+        if (te == null) return false;
+
+        IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte == null) return false;
+
+        if (mte instanceof MTEHatchInputBeamline) {
+            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
+        }
+
+        return false;
+    }
+
+
 
 
     @Override
@@ -1801,33 +1828,33 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE) // todo: new texture
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW) // todo: new texture
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY) // todo: new texture
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW) // todo: new texture
                         .extFacing()
                         .glow()
                         .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
         }
         return rTexture;
     }
@@ -1877,19 +1904,19 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
+    protected ProcessingLogic createProcessingLogic() { // todo: new
         return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (4 * GTUtility.getTier(this.getMaxInputVoltage())); // todo: new
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.brewingRecipes;
+        return RecipeMaps.brewingRecipes; // todo: new
     }
 
     @Override
