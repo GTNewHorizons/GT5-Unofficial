@@ -152,6 +152,14 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     public void bind(MTETankTFFT controller) {
+        if (controller == this.controller) {
+            // try to bind the same controller, do nothing
+            return;
+        }
+        if (this.controller != null) {
+            // notify the listeners of the disappearance of fluid in old controller
+            unbind();
+        }
         this.controller = controller;
         for (GTFluidTank tank : controller.STORE) notifyListeners(true, tank.get());
 
@@ -281,6 +289,10 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         return StorageChannel.FLUIDS;
     }
 
+    /*
+     * This method is only called when fluid is injected/extracted by not an ME Fluid Storage Bus.
+     * For example, from Input Hatches or Output Hatches on TFFT Tank or fluid pipes connected to this Hatch.
+     */
     public void notifyListeners(boolean isIncrement, FluidStack stack) {
         if (stack == null) return;
         AEFluidStack s = AEFluidStack.create(stack);
@@ -295,7 +307,8 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (controller != null && !controller.isValid()) {
+            if (controller != null && ((!controller.isValid()) || controller.tfftHatch != this)) {
+                // controller is destroyed or controller has a different tfftHatch
                 unbind();
             }
         }

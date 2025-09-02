@@ -289,7 +289,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     private boolean doVoidExcess = false;
     private byte fluidSelector = -1;
 
-    private MTEHatchTFFT tfftHatch = null;
+    public MTEHatchTFFT tfftHatch = null;
 
     public MTETankTFFT(String aName) {
         super(aName);
@@ -397,10 +397,11 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     public void clearHatches() {
         super.clearHatches();
-        if (tfftHatch != null) {
-            tfftHatch.unbind();
-            tfftHatch = null;
-        }
+        // do not call tfftHatch.unbind() here
+        // if tfftHatch is actually removed, tfftHatch will unbind itself later
+        // if tfftHatch is not removed, this will save a pair of unbind()/bind() call
+        tfftHatch = null;
+
     }
 
     @Override
