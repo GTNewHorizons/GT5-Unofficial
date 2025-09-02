@@ -113,7 +113,8 @@ public class MaterialBuilder {
             densityMultiplier,
             densityDivider,
             materialList,
-            aspects
+            aspects,
+            subTags
             // spotless:on
         ).setCanBeCracked(canBeCracked);
 

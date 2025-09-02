@@ -1425,14 +1425,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int types,
         int extraData,
         int meltingPoint,
-        int blastFurnaceTempt,
-        boolean aBlastFurnaceRequired,
-        boolean aAutoGenerateBlastFurnaceRecipes,
-        boolean aAutoGenerateVacuumFreezerRecipes,
-        int aDensityMultiplier,
-        int aDensityDivider,
-        List<MaterialStack> aMaterialList,
-        List<TCAspects.TC_AspectStack> aAspects
+        int blastFurnaceTemp,
+        boolean blastFurnaceRequired,
+        boolean autoGenerateBlastFurnaceRecipes,
+        boolean autoGenerateVacuumFreezerRecipes,
+        int densityMultiplier,
+        int densityDivider,
+        List<MaterialStack> materialList,
+        List<TCAspects.TC_AspectStack> aspects,
+        LinkedHashSet<SubTag> subTags
         // spotless:on
     ) {
 
@@ -1452,23 +1453,24 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             fuelType,
             fuelPower,
             meltingPoint,
-            blastFurnaceTempt,
-            aBlastFurnaceRequired,
+            blastFurnaceTemp,
+            blastFurnaceRequired,
             transparent,
             0,
-            aDensityMultiplier,
-            aDensityDivider,
+            densityMultiplier,
+            densityDivider,
             color,
             extraData,
-            aMaterialList,
-            aAspects);
+            materialList,
+            aspects);
+        // this.mSubTags = subTags;
         this.hasCorrespondingFluid = hasFluid;
         this.hasCorrespondingGas = hasGas;
         this.mSteamMultiplier = steamMultiplier;
         this.mGasMultiplier = gasMultiplier;
         this.mPlasmaMultiplier = plasmaMultiplier;
-        this.mAutoGenerateBlastFurnaceRecipes = aAutoGenerateBlastFurnaceRecipes;
-        this.mAutoGenerateVacuumFreezerRecipes = aAutoGenerateVacuumFreezerRecipes;
+        this.mAutoGenerateBlastFurnaceRecipes = autoGenerateBlastFurnaceRecipes;
+        this.mAutoGenerateVacuumFreezerRecipes = autoGenerateVacuumFreezerRecipes;
         if (element != null) {
             mElement = element;
             mElement.mLinkedMaterials.add(this);
