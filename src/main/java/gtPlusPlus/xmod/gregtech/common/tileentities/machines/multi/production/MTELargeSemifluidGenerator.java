@@ -146,7 +146,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             GTRecipe aFuel = GTPPRecipeMaps.semiFluidFuels.getBackend()
                 .findFuel(hatchFluid);
             if (aFuel == null) {
-                // Not a valid semi-fluid fuel.
+                // Not a valid semifluid fuel.
                 continue;
             }
 

@@ -1575,7 +1575,7 @@ public class RecipesMachines {
             "plateDoubleGrisium",
             RECIPE_IndustrialMultiTankController);
 
-        // Semi-Fluid Generators
+        // Semifluid Generators
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(14),
