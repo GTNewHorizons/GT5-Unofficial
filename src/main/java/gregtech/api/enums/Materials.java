@@ -1406,37 +1406,58 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         else mAspects.addAll(aAspects);
     }
 
-    protected Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-        float steamMultiplier, float gasMultiplier, float plasmaMultiplier, int aTypes, int argb, String aName,
-        String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp,
-        boolean aBlastFurnaceRequired, boolean aAutoGenerateBlastFurnaceRecipes,
-        boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent, int aDensityMultiplier, int aDensityDivider,
-        Dyes aColor, int aExtraData, Element aElement, String chemicalFormula, List<MaterialStack> aMaterialList,
-        List<TCAspects.TC_AspectStack> aAspects) {
+    protected Materials(
+        // spotless:off
+        String name,
+        String defaultLocalName,
+        Element element,
+        String chemicalFormula,
+        int metaItemSubID,
+        TextureSet iconSet,
+        Dyes color,
+        int argb,
+        boolean transparent,
+        int toolDurability, int toolQuality, float toolSpeed,
+        float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
+        int fuelType, int fuelPower,
+        int types,
+        int extraData,
+        int meltingPoint,
+        int blastFurnaceTempt,
+        boolean aBlastFurnaceRequired,
+        boolean aAutoGenerateBlastFurnaceRecipes,
+        boolean aAutoGenerateVacuumFreezerRecipes,
+        int aDensityMultiplier,
+        int aDensityDivider,
+        List<MaterialStack> aMaterialList,
+        List<TCAspects.TC_AspectStack> aAspects
+        // spotless:on
+    ) {
+
         this(
-            aMetaItemSubID,
-            aIconSet,
-            aToolSpeed,
-            aDurability,
-            aToolQuality,
-            aTypes,
+            metaItemSubID,
+            iconSet,
+            toolSpeed,
+            toolDurability,
+            toolQuality,
+            types,
             (argb >>> 16) & 0xFF,
             (argb >>> 8) & 0xFF,
             argb & 0xFF,
             (argb >>> 24) & 0xFF,
-            aName,
-            aDefaultLocalName,
-            aFuelType,
-            aFuelPower,
-            aMeltingPoint,
-            aBlastFurnaceTemp,
+            name,
+            defaultLocalName,
+            fuelType,
+            fuelPower,
+            meltingPoint,
+            blastFurnaceTempt,
             aBlastFurnaceRequired,
-            aTransparent,
+            transparent,
             0,
             aDensityMultiplier,
             aDensityDivider,
-            aColor,
-            aExtraData,
+            color,
+            extraData,
             aMaterialList,
             aAspects);
         this.mSteamMultiplier = steamMultiplier;
@@ -1444,13 +1465,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         this.mPlasmaMultiplier = plasmaMultiplier;
         this.mAutoGenerateBlastFurnaceRecipes = aAutoGenerateBlastFurnaceRecipes;
         this.mAutoGenerateVacuumFreezerRecipes = aAutoGenerateVacuumFreezerRecipes;
-        if (aElement != null) {
-            mElement = aElement;
+        if (element != null) {
+            mElement = element;
             mElement.mLinkedMaterials.add(this);
             if (mElement == Element._NULL) {
                 mChemicalFormula = "Empty";
             } else {
-                mChemicalFormula = aElement.toString();
+                mChemicalFormula = element.toString();
                 mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
             }
         } else {
