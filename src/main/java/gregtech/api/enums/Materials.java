@@ -1420,6 +1420,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int toolDurability, int toolQuality, float toolSpeed,
         float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
         int fuelType, int fuelPower,
+        boolean hasFluid,
+        boolean hasGas,
         int types,
         int extraData,
         int meltingPoint,
@@ -1460,6 +1462,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             extraData,
             aMaterialList,
             aAspects);
+        this.hasCorrespondingFluid = hasFluid;
+        this.hasCorrespondingGas = hasGas;
         this.mSteamMultiplier = steamMultiplier;
         this.mGasMultiplier = gasMultiplier;
         this.mPlasmaMultiplier = plasmaMultiplier;

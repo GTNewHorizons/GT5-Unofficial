@@ -64,8 +64,8 @@ public class MaterialBuilder {
     private List<MaterialStack> materialList = new ArrayList<>();
     private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
     private List<SubTag> subTags = new ArrayList<>();
-    private boolean hasCorrespondingFluid = false;
-    private boolean hasCorrespondingGas = false;
+    private boolean hasFluid = false;
+    private boolean hasGas = false;
     private boolean canBeCracked = false;
     private Element element;
     private String chemicalFormula = "?";
@@ -100,6 +100,8 @@ public class MaterialBuilder {
             toolDurability, toolQuality, toolSpeed,
             steamMultiplier, gasMultiplier, plasmaMultiplier,
             fuelType.getIndex(), fuelPower,
+            hasFluid,
+            hasGas,
             types,
             extraData,
             meltingPoint,
@@ -112,9 +114,7 @@ public class MaterialBuilder {
             materialList,
             aspects
             // spotless:on
-        ).setHasCorrespondingFluid(hasCorrespondingFluid)
-            .setHasCorrespondingGas(hasCorrespondingGas)
-            .setCanBeCracked(canBeCracked);
+        ).setCanBeCracked(canBeCracked);
     }
 
     public MaterialBuilder setMetaItemSubID(int metaItemSubID) {
@@ -178,12 +178,12 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder addFluid() {
-        this.hasCorrespondingFluid = true;
+        this.hasFluid = true;
         return this;
     }
 
     public MaterialBuilder addGas() {
-        this.hasCorrespondingGas = true;
+        this.hasGas = true;
         return this;
     }
 
