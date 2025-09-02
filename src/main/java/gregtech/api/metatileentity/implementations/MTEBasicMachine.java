@@ -545,7 +545,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
             if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
-                aBaseMetaTileEntity.setActive(true);
+                if (mProgresstime > 0) aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
@@ -654,6 +654,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             } else {
                 if (!mStuttering) {
                     stutterProcess();
+                    aBaseMetaTileEntity.setActive(false);
                     mStuttering = true;
                 }
             }
