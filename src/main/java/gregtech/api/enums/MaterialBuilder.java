@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import gregtech.api.objects.MaterialStack;
@@ -63,7 +64,7 @@ public class MaterialBuilder {
     private int extraData = 0;
     private List<MaterialStack> materialList = new ArrayList<>();
     private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
-    private List<SubTag> subTags = new ArrayList<>();
+    private LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private boolean hasFluid = false;
     private boolean hasGas = false;
     private boolean canBeCracked = false;
@@ -86,7 +87,7 @@ public class MaterialBuilder {
     }
 
     public Materials constructMaterial() {
-        return new Materials(
+        Materials material = new Materials(
             // spotless:off
             name,
             defaultLocalName,
@@ -115,6 +116,10 @@ public class MaterialBuilder {
             aspects
             // spotless:on
         ).setCanBeCracked(canBeCracked);
+
+        for (SubTag subTag : subTags) subTag.addContainerToList(material);
+
+        return material;
     }
 
     public MaterialBuilder setMetaItemSubID(int metaItemSubID) {
