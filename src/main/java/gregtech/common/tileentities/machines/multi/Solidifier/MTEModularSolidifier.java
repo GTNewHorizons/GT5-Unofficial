@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.render.IMTERenderer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -83,7 +84,7 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, IMTERenderer {
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -651,10 +652,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 moduleHorizontalOffsets[i],
                 moduleVerticalOffsets[i],
                 moduleDepthOffsets[i])) {
-                if (renderTileEntity != null) renderTileEntity.setModuleStatusWithIndex(false, i);
                 return false;
             }
-            if (renderTileEntity != null) renderTileEntity.setModuleColorWithIndex(modules[i].rgbArr, i);
         }
         return true;
 
@@ -834,13 +833,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return RecipeMaps.fluidSolidifierRecipes;
     }
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (!renderDisabled) {
-            if (renderTileEntity == null) createSolidifierRender();
-        }
-    }
+
 
     /*
      * things to consider with processing math
@@ -874,7 +867,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return false;
     }
 
-    // mui2 stuff
+    // GUI code
     @Override
     public int getMaxParallelRecipes() {
         checkModules();
@@ -918,10 +911,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         if (modules[index] == moduleToAdd) return;
 
         modules[index] = moduleToAdd;
-        if (moduleToAdd != SolidifierModules.UNSET) {
-            // update render color at pos.
-            if (renderTileEntity != null) renderTileEntity.setModuleColorWithIndex(moduleToAdd.rgbArr, index);
-        }
     }
 
     public String getSpeedStr() {
@@ -943,74 +932,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         checkSolidifierModules();
         return 2 + ocFactorAdditive + " : 4";
     }
-
-    // rendering stuff
-    private boolean renderDisabled = false;
-    private TileEntityModularSolidifierRenderer renderTileEntity = null;
-
-    private TileEntityModularSolidifierRenderer getRenderer() {
-        ChunkCoordinates renderPos = getRenderPos();
-        TileEntity tile = this.getBaseMetaTileEntity()
-            .getWorld()
-            .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
-
-        if (tile instanceof TileEntityModularSolidifierRenderer modularSolidifierTile) {
-            return modularSolidifierTile;
-        }
-        return null;
-    }
-
-    private ChunkCoordinates getRenderPos() {
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
-        int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
-        // todo: update this?
-        double xOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double yOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-        double zOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
-    }
-
-    public boolean createSolidifierRender() {
-        IGregTechTileEntity base = this.getBaseMetaTileEntity();
-        World world = base.getWorld();
-        if (world == null || renderDisabled || !mMachine) return false;
-        ChunkCoordinates pos = this.getRenderPos();
-        // unsure if this is bad, if its in the structure, it should be fine.
-        world.setBlock(pos.posX, pos.posY, pos.posZ, Blocks.air);
-        world.setBlock(pos.posX, pos.posY, pos.posZ, GregTechAPI.modularSolidifierRender);
-        renderTileEntity = (TileEntityModularSolidifierRenderer) base.getWorld()
-            .getTileEntity(pos.posX, pos.posY, pos.posZ);
-        return true;
-    }
-
-    public void destroySolidifierRender() {
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
-        if (world == null) return;
-        ChunkCoordinates pos = this.getRenderPos();
-        world.setBlock(pos.posX, pos.posY, pos.posZ, Blocks.air);
-    }
-
-    @Override
-    public void onBlockDestroyed() {
-        destroySolidifierRender();
-        super.onBlockDestroyed();
-    }
-
-    @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        renderDisabled = !renderDisabled;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
-        if (renderDisabled) {
-            destroySolidifierRender();
-        }
-    }
-
     public String coolingStrOrder(String val1, String val2, String val3) {
         return EnumChatFormatting.BLUE + val1
             + "/"
@@ -1022,6 +943,37 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             + EnumChatFormatting.GRAY;
     }
 
+    //Render code
+    private boolean renderDisabled = false;
+    private boolean renderInitialized;
+    @Override
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        if(renderDisabled) return;
+
+        if(!renderInitialized)
+        {
+            initializeRender();
+            if(!renderInitialized) return;
+        }
+
+    }
+
+    private void initializeRender(){
+        // spotless:off
+        renderInitialized = true;
+        // spotless:on
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        renderDisabled = !renderDisabled;
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
+    }
+
+    //data class
     private static class CoolingFluid {
 
         public Materials material;
@@ -1036,7 +988,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         public FluidStack getStack() {
             FluidStack stack = material.getFluid(amount);
-            // shoutout penguin, i think i get why you were upset with this code here :^)
             if (stack == null) {
                 return material.getMolten(amount);
             }
