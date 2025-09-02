@@ -1862,20 +1862,14 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Brewery")
-            .addBulkMachineInfo(4, 1.5F, 1F)
-            .beginStructureBlock(3, 5, 3, true)
+        tt.addMachineType("Particle Collider")
+            .addBulkMachineInfo(0, 0.0F, 0F)
+            .beginStructureBlock(109, 13, 122, false)
             .addController("Front Center")
-            .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 6, false)
-            .addCasingInfoExactly("Steel Frame Box", 4, false)
-            .addInputBus("Any Wooden Casing", 1)
-            .addOutputBus("Any Wooden Casing", 1)
-            .addInputHatch("Any Wooden Casing", 1)
-            .addOutputHatch("Any Wooden Casing", 1)
-            .addEnergyHatch("Any Wooden Casing", 1)
-            .addMaintenanceHatch("Any Wooden Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasingInfoExactly("Collider Casing", 5817, false)
+            .addCasingInfoExactly("Shielded Accelerator Casing", 16, false)
+            .addCasingInfoExactly("Shielded Accelerator Glass", 20, false)
+            .addCasingInfoExactly("Beamline Input Hatch", 1, false)
             .toolTipFinisher();
         return tt;
     }
