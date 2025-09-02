@@ -1323,31 +1323,35 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData,
         List<MaterialStack> aMaterialList) {
         this(
-            aMetaItemSubID,
-            aIconSet,
-            aToolSpeed,
-            aDurability,
-            aToolQuality,
-            aTypes,
-            aR,
-            aG,
-            aB,
-            aA,
+            // spotless:off
             aName,
             aDefaultLocalName,
-            aFuelType,
-            aFuelPower,
+            null,
+            "?",
+            aMetaItemSubID,
+            aIconSet,
+            aColor,
+            ((aA & 0xFF) << 24) | ((aR & 0xFF) << 16) | ((aG & 0xFF) << 8) | (aB & 0xFF),
+            aTransparent,
+            aDurability, aToolQuality, aToolSpeed,
+            1.0f, 1.0f, 1.0f,
+            aFuelType, aFuelPower,
+            false,
+            false,
+            aTypes,
+            aExtraData,
             aMeltingPoint,
             aBlastFurnaceTemp,
             aBlastFurnaceRequired,
-            aTransparent,
-            aOreValue,
+            true,
+            true,
             aDensityMultiplier,
             aDensityDivider,
-            aColor,
-            aExtraData,
             aMaterialList,
-            null);
+            new ArrayList<>(),
+            new LinkedHashSet<>()
+            // spotless:on
+        );
     }
 
     @Deprecated
