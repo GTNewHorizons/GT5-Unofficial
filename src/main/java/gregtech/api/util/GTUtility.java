@@ -3604,50 +3604,52 @@ public class GTUtility {
         float modY = (aY % 1.0f + 1.0f) % 1.0f;
         float modZ = (aZ % 1.0f + 1.0f) % 1.0f;
         ForgeDirection tBack = side.getOpposite();
+        // The = here is necessary; Since the hitVec only has a precision of 1/16th on MP and gets rounded down,
+        // a value of 0.8 would be 0.75 on MP, which is not > 0.75, returning false.
         switch (side) {
             case DOWN, UP -> {
                 if (modX < 0.25) {
                     if (modZ < 0.25) return tBack;
-                    if (modZ > 0.75) return tBack;
+                    if (modZ >= 0.75) return tBack;
                     return WEST;
                 }
-                if (modX > 0.75) {
+                if (modX >= 0.75) {
                     if (modZ < 0.25) return tBack;
-                    if (modZ > 0.75) return tBack;
+                    if (modZ >= 0.75) return tBack;
                     return EAST;
                 }
                 if (modZ < 0.25) return NORTH;
-                if (modZ > 0.75) return SOUTH;
+                if (modZ >= 0.75) return SOUTH;
                 return side;
             }
             case NORTH, SOUTH -> {
                 if (modX < 0.25) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return WEST;
                 }
-                if (modX > 0.75) {
+                if (modX >= 0.75) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return EAST;
                 }
                 if (modY < 0.25) return DOWN;
-                if (modY > 0.75) return UP;
+                if (modY >= 0.75) return UP;
                 return side;
             }
             case WEST, EAST -> {
                 if (modZ < 0.25) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return NORTH;
                 }
-                if (modZ > 0.75) {
+                if (modZ >= 0.75) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return SOUTH;
                 }
                 if (modY < 0.25) return DOWN;
-                if (modY > 0.75) return UP;
+                if (modY >= 0.75) return UP;
                 return side;
             }
         }
@@ -4499,8 +4501,10 @@ public class GTUtility {
      * Computes base raised to non-negative integer exponent.
      */
     private static double powBySquaring(double base, int exp) {
-        if (base == 2) return 1 << exp;
-        if (base == 4) return 1 << 2 * exp;
+        // IEEE 754 double: 1 sign bit, 11 exponent bits, 52 mantissa bits. Exponent is stored with offset 1023.
+        // The result is directly constructed for bases 2 and 4 from the exponent bits.
+        if (base == 2) return exp > 1023 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp + 1023L << 52);
+        if (base == 4) return exp > 511 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp * 2L + 1023L << 52);
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;
@@ -4524,8 +4528,10 @@ public class GTUtility {
      * Computes base raised to non-negative long exponent.
      */
     private static double powBySquaring(double base, long exp) {
-        if (base == 2) return 1 << exp;
-        if (base == 4) return 1 << 2 * exp;
+        // IEEE 754 double: 1 sign bit, 11 exponent bits, 52 mantissa bits. Exponent is stored with offset 1023.
+        // The result is directly constructed for bases 2 and 4 from the exponent bits.
+        if (base == 2) return exp > 1023 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp + 1023L << 52);
+        if (base == 4) return exp > 511 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp * 2L + 1023L << 52);
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;

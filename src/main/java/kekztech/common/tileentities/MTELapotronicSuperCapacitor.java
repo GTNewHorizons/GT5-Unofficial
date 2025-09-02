@@ -348,7 +348,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Energy Storage, LSC")
-            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
+            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours")
             .addInfo(
                 "Capped at " + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap)
@@ -357,21 +357,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + GTValues.TIER_COLORS[9]
                     + GTValues.VN[9]
                     + EnumChatFormatting.GRAY
-                    + " capacitor.")
+                    + " capacitor")
             .addInfo(
                 "The passive loss increases " + EnumChatFormatting.DARK_RED
                     + "100"
                     + EnumChatFormatting.GRAY
                     + "-fold"
-                    + " for every capacitor tier above.")
-            .addInfo("Passive loss is multiplied by the number of maintenance issues present.")
+                    + " for every capacitor tier above")
+            .addInfo("Passive loss is multiplied by the number of maintenance issues present")
             .addSeparator()
-            .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
+            .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo("Add more or better capacitors to increase capacity.")
+            .addInfo("Add more or better capacitors to increase capacity")
             .addSeparator()
-            .addInfo("Wireless mode can be enabled by right clicking with a screwdriver.")
+            .addInfo("Wireless mode can be enabled by right clicking with a screwdriver")
             .addInfo(
                 "This mode can only be enabled if you have a " + GTValues.TIER_COLORS[9]
                     + GTValues.VN[9]
@@ -401,14 +401,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + "all excess"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " EU to the network, removing it from the LSC.")
-            .addInfo("This can potentially brick your base, be careful.")
+                    + " EU to the network, removing it from the LSC")
+            .addInfo("This can potentially brick your base, be careful")
             .addInfo(
                 "The threshold increases " + EnumChatFormatting.DARK_RED
                     + "100"
                     + EnumChatFormatting.GRAY
                     + "-fold"
-                    + " for every capacitor tier above.")
+                    + " for every capacitor tier above")
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("Modular height of 4-50 blocks.")
             .addController("Front center bottom")

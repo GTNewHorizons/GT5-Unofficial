@@ -17,12 +17,18 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -31,7 +37,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.items.SimpleSubItemClass;
@@ -53,7 +61,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor> {
+public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor>
+    implements ISurvivalConstructable {
 
     private static final int BASECASINGINDEX = 44;
     private int mCasingAmount = 0;
@@ -102,17 +111,19 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         .addElement(
             'b',
             ofChain(
-                ofHatchAdder(MTEThoriumHighTempReactor::addOutputToMachineList, BASECASINGINDEX, 1),
-                ofHatchAdder(MTEThoriumHighTempReactor::addMaintenanceToMachineList, BASECASINGINDEX, 1),
-                ofHatchAdder(MTEThoriumHighTempReactor::addEnergyInputToMachineList, BASECASINGINDEX, 1),
+                buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(OutputHatch, OutputBus, Maintenance)
+                    .dot(1)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
         .addElement(
             'B',
             ofChain(
-                ofHatchAdder(MTEThoriumHighTempReactor::addInputToMachineList, BASECASINGINDEX, 2),
+                buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(InputHatch, InputBus)
+                    .dot(2)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
-        // ofHatchAdderOptional(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2,
-        // GregTechAPI.sBlockCasings3, 12))
         .build();
 
     public MTEThoriumHighTempReactor(int aID, String aName, String aNameRegional) {
@@ -133,11 +144,27 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor, THTR")
             .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
-            .addInfo("Needs a constant supply of coolant while running")
-            .addInfo("Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles)")
-            .addInfo("Consumes up to 0.5% of total Fuel Pellets per Operation depending on efficiency")
+            .addInfo(
+                "Needs a constant supply of " + EnumChatFormatting.AQUA
+                    + "coolant"
+                    + EnumChatFormatting.GRAY
+                    + " while running")
+            .addInfo(
+                "Needs at least " + EnumChatFormatting.GOLD
+                    + "100K"
+                    + EnumChatFormatting.GRAY
+                    + " Fuel pebbles to start operation (can hold up to 675k pebbles)")
+            .addInfo(
+                "Consumes up to " + EnumChatFormatting.GOLD
+                    + "0.5%"
+                    + EnumChatFormatting.GRAY
+                    + " of total Fuel Pellets per Operation depending on efficiency")
             .addInfo("Efficiency decreases exponentially if the internal buffer is not completely filled")
-            .addInfo("Reactor will take 4 800L/t of coolant multiplied by efficiency")
+            .addInfo(
+                "Reactor will take " + EnumChatFormatting.AQUA
+                    + "4800L/t"
+                    + EnumChatFormatting.GRAY
+                    + " of coolant multiplied by efficiency")
             .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
             .beginStructureBlock(11, 12, 11, true)
@@ -162,6 +189,11 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 11, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 11, 0, elementBudget, env, false, true);
     }
 
     @Override

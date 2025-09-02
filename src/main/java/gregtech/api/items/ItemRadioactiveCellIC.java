@@ -59,8 +59,8 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                         : StatCollector.translateToLocalFormatted(
                             "GT5U.nei.nuclear.heat.1",
                             (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f,
-                            aCellcount,
-                            aCellcount + 1),
+                            pulses,
+                            pulses + 1),
                     StatCollector.translateToLocalFormatted(
                         "GT5U.nei.nuclear.energy",
                         aEnergy * aCellcount * pulses * nukePowerMult,

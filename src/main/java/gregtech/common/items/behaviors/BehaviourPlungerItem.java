@@ -63,7 +63,7 @@ public class BehaviourPlungerItem extends BehaviourNone {
                                     aWorld.spawnEntityInWorld(tEntity);
                                     GTUtility.sendSoundToPlayers(
                                         aWorld,
-                                        SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                                        SoundResource.GTCEU_OP_PLUNGER,
                                         1.0F,
                                         -1.0F,
                                         aX,

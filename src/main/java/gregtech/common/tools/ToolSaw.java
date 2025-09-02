@@ -15,6 +15,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -40,6 +41,16 @@ public class ToolSaw extends GTTool {
     @Override
     public float getBaseDamage() {
         return 1.75F;
+    }
+
+    @Override
+    public String getCraftingSound() {
+        return SoundResource.GTCEU_OP_SAW.toString();
+    }
+
+    @Override
+    public String getMiningSound() {
+        return SoundResource.GTCEU_OP_SAW.toString();
     }
 
     @Override
