@@ -2391,7 +2391,6 @@ public class MaterialsInit {
         Materials.Emery = loadEmery();
         Materials.EnderiumBase = loadEnderiumBase();
         Materials.Energized = loadEnergized();
-        Materials.Epidote = loadEpidote();
         Materials.Eximite = loadEximite();
         Materials.FierySteel = loadFierySteel();
         Materials.Firestone = loadFirestone();
@@ -3076,15 +3075,6 @@ public class MaterialsInit {
     private static Materials loadEnergized() {
         return new MaterialBuilder().setName("Energized")
             .setDefaultLocalName("Energized")
-            .constructMaterial();
-    }
-
-    private static Materials loadEpidote() {
-        return new MaterialBuilder().setName("Epidote")
-            .setDefaultLocalName("Epidote")
-            .setMetaItemSubID(862)
-            .setIconSet(TextureSet.SET_DULL)
-            .addDustItems()
             .constructMaterial();
     }
 
