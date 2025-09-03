@@ -2,11 +2,15 @@ package kubatech.tileentity.gregtech.multiblock.eigbuckets;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -16,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
@@ -123,11 +128,18 @@ public class EIGSeedBucket extends EIGBucket {
         EIGDropTable drops = new EIGDropTable();
         World world = greenhouse.getBaseMetaTileEntity()
             .getWorld();
+
+        fakeWorld.capturedDrops.clear();
+
         for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
-            ArrayList<ItemStack> blockDrops = block.getDrops(world, 0, 0, 0, optimalGrowthMetadata, FORTUNE_LEVEL);
+            ArrayList<ItemStack> blockDrops = block.getDrops(fakeWorld, 0, 0, 0, optimalGrowthMetadata, FORTUNE_LEVEL);
             for (ItemStack drop : blockDrops) {
                 drops.addDrop(drop, drop.stackSize);
             }
+        }
+
+        for (ItemStack capturedDrop : fakeWorld.capturedDrops) {
+            drops.addDrop(capturedDrop, capturedDrop.stackSize);
         }
 
         // reduce the number of drops to account for the seeds
@@ -238,6 +250,8 @@ public class EIGSeedBucket extends EIGBucket {
         public int x, y, z, meta = 0;
         public Block block;
 
+        public final List<ItemStack> capturedDrops = new ArrayList<>();
+
         GreenHouseWorld(int x, int y, int z) {
             super();
             this.x = x;
@@ -256,6 +270,23 @@ public class EIGSeedBucket extends EIGBucket {
         public Block getBlock(int aX, int aY, int aZ) {
             if (aY == y - 1) return Blocks.farmland;
             return Blocks.air;
+        }
+
+        @Override
+        public boolean spawnEntityInWorld(Entity entity) {
+            if (entity instanceof EntityLivingBase livingEntity) {
+                livingEntity.captureDrops = true;
+
+                livingEntity.onDeath(DamageSource.generic);
+                livingEntity.captureDrops = false;
+
+                if (livingEntity.capturedDrops != null && !livingEntity.capturedDrops.isEmpty()) {
+                    for (EntityItem drop : livingEntity.capturedDrops) {
+                        this.capturedDrops.add(drop.getEntityItem());
+                    }
+                }
+            }
+            return false;
         }
 
         @Override
