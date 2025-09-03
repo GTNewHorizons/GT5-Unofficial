@@ -8,16 +8,20 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
@@ -25,6 +29,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -36,6 +41,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static java.lang.Math.max;
 
 
 public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELargeHadronCollider>
@@ -50,6 +56,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
+    private float outputEnergy;
+    private int outputRate;
+    private int outputParticleID;
+    private float outputFocus;
 
     private static final IStructureDefinition<MTELargeHadronCollider> STRUCTURE_DEFINITION = StructureDefinition
         .<MTELargeHadronCollider>builder()
@@ -2522,9 +2532,13 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) { // todo: modify
-        mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1) && mCasingAmount >= 0;
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) { // todo: modify to allow lower than max tier structure
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_E, 5,-1,-113)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_W, 5, -1, -9)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_S, 57, -1, -61)) return false;
+        return checkPiece(STRUCTURE_PIECE_G, -47, -1, -61);
     }
 
 
@@ -2539,6 +2553,70 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         return false;
     }
 
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+
+        BeamInformation inputInfo = this.getInputInformation();
+        if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        float inputEnergy = inputInfo.getEnergy();
+        Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
+        int inputRate = inputInfo.getRate();
+        if (inputEnergy == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+        float inputFocus = inputInfo.getFocus();
+
+        if (!inputParticle.canAccelerate()) {
+            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000); // todo: dunno what this does
+        this.mEfficiencyIncrease = 10000; // todo: dunno what this does
+        this.mMaxProgresstime = TickTime.SECOND;
+        //todo: // energy this.lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] * this.getMaxInputAmps();
+
+        //todo: same^ // long voltage = this.getMaxInputEu();
+        //todo: same^ // float voltageFactor = getVoltageFactor(voltage);
+        //todo: same^ // this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier);
+
+
+        this.outputParticleID = (int) 15; // todo: randomize
+
+        Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
+
+        this.outputEnergy = (float) (inputEnergy)/2;
+
+        float outputMass = outputParticle.getMass();
+        this.outputRate = (int) max(0,(1 - (outputMass/this.outputEnergy))*(inputRate)); // * type_probability // use mass of particles
+
+        this.outputFocus = (int) (inputFocus);
+
+        if (this.outputRate == 0) {
+            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_eut"));
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        outputPacketAfterRecipe();
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private BeamInformation getInputInformation() {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+            return in.dataPacket.getContent();
+        }
+        return null;
+    }
+    private void outputPacketAfterRecipe() {
+        if (!this.mOutputBeamline.isEmpty()) {
+            BeamLinePacket packet = new BeamLinePacket(
+                new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
+            for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
+                o.dataPacket = packet;
+            }
+        }
+    }
     //todo:
     //@Override
     //public String[] getInfoData() {}
