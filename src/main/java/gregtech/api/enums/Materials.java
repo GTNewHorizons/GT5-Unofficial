@@ -1073,6 +1073,169 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false, canBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3], steamCrackedFluids = new Fluid[3];
 
+    /*
+     * DOCUMENTATION OUTDATED
+     * @param aMetaItemSubID the Sub-ID used in my own MetaItems. Range 0-1000. -1 for no Material
+     * @param aTypes which kind of Items should be generated. Bitmask as follows: 1 = Dusts of all kinds.
+     * 2 = Dusts, Ingots, Plates, Rods/Sticks, Machine Components and other Metal specific
+     * things. 4 = Dusts, Gems, Plates, Lenses (if transparent). 8 = Dusts, Impure Dusts,
+     * crushed Ores, purified Ores, centrifuged Ores etc. 16 = Cells 32 = Plasma Cells 64 =
+     * Tool Heads 128 = Gears 256 = Designates something as empty (only used for the Empty
+     * material)
+     * @param aR, aG, aB Color of the Material 0-255 each.
+     * @param aA transparency of the Material Texture. 0 = fully visible, 255 = Invisible.
+     * @param aName The Name used as Default for localization.
+     * @param aFuelType Type of Generator to get Energy from this Material.
+     * @param aFuelPower EU generated. Will be multiplied by 1000, also additionally multiplied by 2 for
+     * Gems.
+     * @param aMeltingPoint Used to determine the smelting Costs in furnace. >>>>**ADD 20000 to remove EBF
+     * recipes to add them MANUALLY ! :D**<<<<
+     * @param aBlastFurnaceTemp Used to determine the needed Heat capacity Costs in Blast Furnace.
+     * @param aBlastFurnaceRequired If this requires a Blast Furnace.
+     * @param aColor Vanilla MC Wool Color which comes the closest to this.
+     */
+    protected Materials(
+        // spotless:off
+        String name,
+        String defaultLocalName,
+        @Nullable Element element,
+        @Nullable String chemicalFormula,
+        int metaItemSubID,
+        TextureSet iconSet,
+        Dyes color,
+        int argb,
+        boolean transparent,
+        int toolDurability, int toolQuality, float toolSpeed,
+        float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
+        int fuelType, int fuelPower,
+        boolean hasFluid,
+        boolean hasGas,
+        int types,
+        int extraData,
+        int meltingPoint,
+        int blastFurnaceTemp,
+        boolean blastFurnaceRequired,
+        boolean autoGenerateBlastFurnaceRecipes,
+        boolean autoGenerateVacuumFreezerRecipes,
+        int densityMultiplier,
+        int densityDivider,
+        List<MaterialStack> materialList,
+        List<TCAspects.TC_AspectStack> aspects,
+        LinkedHashSet<SubTag> subTags
+        // spotless:on
+    ) {
+
+        // Set names
+        mName = name;
+        mDefaultLocalName = defaultLocalName;
+        MATERIALS_MAP.put(mName, this);
+        mMetaItemSubID = metaItemSubID;
+
+        // Set element
+        if (element != null) {
+            mElement = element;
+            mElement.mLinkedMaterials.add(this);
+        }
+
+        // Set Chemical formula
+        if (chemicalFormula != null) {
+            mChemicalFormula = chemicalFormula;
+        } else if (element != null) {
+            mChemicalFormula = element.toString();
+        } else if (materialList.size() == 1) {
+            mChemicalFormula = materialList.get(0)
+                .toString(true);
+        } else if (materialList.size() > 1) {
+            mChemicalFormula = materialList.stream()
+                .map(MaterialStack::toString)
+                .collect(Collectors.joining())
+                .replaceAll("_", "-");
+        }
+
+        // Set texture and colors
+        mIconSet = iconSet;
+        mColor = color;
+        mRGBa[0] = mMoltenRGBa[0] = (short) ((argb >>> 16) & 0xFF);
+        mRGBa[1] = mMoltenRGBa[1] = (short) ((argb >>> 8) & 0xFF);
+        mRGBa[2] = mMoltenRGBa[2] = (short) (argb & 0xFF);
+        mRGBa[3] = mMoltenRGBa[3] = (short) ((argb >>> 24) & 0xFF);
+        mTransparent = transparent;
+
+        // Set tool properties
+        mDurability = toolDurability;
+        mToolSpeed = toolSpeed;
+        mToolQuality = (byte) toolQuality;
+
+        // Set turbine properties
+        mSteamMultiplier = steamMultiplier;
+        mGasMultiplier = gasMultiplier;
+        mPlasmaMultiplier = plasmaMultiplier;
+
+        // Set fuel properties
+        mFuelPower = fuelPower;
+        mFuelType = fuelType;
+
+        // Set auto-generated parts and recipes
+        mTypes = types;
+        mExtraData = extraData;
+        hasCorrespondingFluid = hasFluid;
+        hasCorrespondingGas = hasGas;
+        mBlastFurnaceRequired = blastFurnaceRequired;
+        mBlastFurnaceTemp = (short) blastFurnaceTemp;
+        mAutoGenerateBlastFurnaceRecipes = autoGenerateBlastFurnaceRecipes;
+        mAutoGenerateVacuumFreezerRecipes = autoGenerateVacuumFreezerRecipes;
+
+        // Set what materials this material is composed of
+        mMaterialList = materialList;
+
+        // Set material density
+        mDensityMultiplier = densityMultiplier;
+        mDensityDivider = densityDivider;
+        mDensity = (M * densityMultiplier) / densityDivider;
+
+        // Constant fields
+        mCustomOre = false;
+        mCustomID = "null";
+        mConfigSection = "ore";
+        mUnificatable = true;
+        mMaterialInto = this;
+
+        // Set material SubTags
+        mSubTags = subTags;
+        if (mColor != null) mSubTags.add(SubTag.HAS_COLOR);
+        if (mTransparent) mSubTags.add(SubTag.TRANSPARENT);
+        if ((mTypes & 2) != 0) mSubTags.add(SubTag.SMELTING_TO_FLUID);
+
+        // No clue what is going on here...
+        mMeltingPoint = meltingPoint;
+
+        int numberOfComponents = 0;
+        int tMeltingPoint = 0;
+        for (MaterialStack tMaterial : mMaterialList) {
+            numberOfComponents += tMaterial.mAmount;
+            if (tMaterial.mMaterial.mMeltingPoint > 0) {
+                tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
+            }
+            if (aspects == null) {
+                for (TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) {
+                    tAspect.addToAspectList(mAspects);
+                }
+            }
+        }
+
+        if (mMeltingPoint < 0) mMeltingPoint = 0;
+
+        numberOfComponents *= densityMultiplier;
+        numberOfComponents /= densityDivider;
+        if (aspects == null) {
+            for (TC_AspectStack tAspect : mAspects) {
+                tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, numberOfComponents));
+            }
+        } else {
+            mAspects.addAll(aspects);
+        }
+    }
+
     @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         boolean aUnificatable, String aName, String aDefaultLocalName) {
@@ -1187,26 +1350,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             "null");
     }
 
-    /**
-     * @param aMetaItemSubID        the Sub-ID used in my own MetaItems. Range 0-1000. -1 for no Material
-     * @param aTypes                which kind of Items should be generated. Bitmask as follows: 1 = Dusts of all kinds.
-     *                              2 = Dusts, Ingots, Plates, Rods/Sticks, Machine Components and other Metal specific
-     *                              things. 4 = Dusts, Gems, Plates, Lenses (if transparent). 8 = Dusts, Impure Dusts,
-     *                              crushed Ores, purified Ores, centrifuged Ores etc. 16 = Cells 32 = Plasma Cells 64 =
-     *                              Tool Heads 128 = Gears 256 = Designates something as empty (only used for the Empty
-     *                              material)
-     * @param aR,                   aG, aB Color of the Material 0-255 each.
-     * @param aA                    transparency of the Material Texture. 0 = fully visible, 255 = Invisible.
-     * @param aName                 The Name used as Default for localization.
-     * @param aFuelType             Type of Generator to get Energy from this Material.
-     * @param aFuelPower            EU generated. Will be multiplied by 1000, also additionally multiplied by 2 for
-     *                              Gems.
-     * @param aMeltingPoint         Used to determine the smelting Costs in furnace. >>>>**ADD 20000 to remove EBF
-     *                              recipes to add them MANUALLY ! :D**<<<<
-     * @param aBlastFurnaceTemp     Used to determine the needed Heat capacity Costs in Blast Furnace.
-     * @param aBlastFurnaceRequired If this requires a Blast Furnace.
-     * @param aColor                Vanilla MC Wool Color which comes the closest to this.
-     */
     @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
@@ -1391,126 +1534,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             new LinkedHashSet<>()
             // spotless:on
         );
-    }
-
-    protected Materials(
-        // spotless:off
-        String name,
-        String defaultLocalName,
-        @Nullable Element element,
-        @Nullable String chemicalFormula,
-        int metaItemSubID,
-        TextureSet iconSet,
-        Dyes color,
-        int argb,
-        boolean transparent,
-        int toolDurability, int toolQuality, float toolSpeed,
-        float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
-        int fuelType, int fuelPower,
-        boolean hasFluid,
-        boolean hasGas,
-        int types,
-        int extraData,
-        int meltingPoint,
-        int blastFurnaceTemp,
-        boolean blastFurnaceRequired,
-        boolean autoGenerateBlastFurnaceRecipes,
-        boolean autoGenerateVacuumFreezerRecipes,
-        int densityMultiplier,
-        int densityDivider,
-        List<MaterialStack> materialList,
-        List<TCAspects.TC_AspectStack> aspects,
-        LinkedHashSet<SubTag> subTags
-        // spotless:on
-    ) {
-
-        mMetaItemSubID = metaItemSubID;
-        mDefaultLocalName = defaultLocalName;
-        mName = name;
-        MATERIALS_MAP.put(mName, this);
-        mCustomOre = false;
-        mCustomID = "null";
-        mConfigSection = "ore";
-        mUnificatable = true;
-        mDurability = toolDurability;
-        mToolSpeed = toolSpeed;
-        mToolQuality = (byte) toolQuality;
-        mMaterialInto = this;
-        mIconSet = iconSet;
-        mMeltingPoint = meltingPoint;
-        mBlastFurnaceRequired = blastFurnaceRequired;
-        mBlastFurnaceTemp = (short) blastFurnaceTemp;
-        mTransparent = transparent;
-        mFuelPower = fuelPower;
-        mFuelType = fuelType;
-        mDensityMultiplier = densityMultiplier;
-        mDensityDivider = densityDivider;
-        mDensity = (M * densityMultiplier) / densityDivider;
-        mColor = color;
-        mRGBa[0] = mMoltenRGBa[0] = (short) ((argb >>> 16) & 0xFF);
-        mRGBa[1] = mMoltenRGBa[1] = (short) ((argb >>> 8) & 0xFF);
-        mRGBa[2] = mMoltenRGBa[2] = (short) (argb & 0xFF);
-        mRGBa[3] = mMoltenRGBa[3] = (short) ((argb >>> 24) & 0xFF);
-        mTypes = types;
-        if (mColor != null) add(SubTag.HAS_COLOR);
-        if (mTransparent) add(SubTag.TRANSPARENT);
-        if ((mTypes & 2) != 0) add(SubTag.SMELTING_TO_FLUID);
-
-        if (element != null) {
-            mElement = element;
-            mElement.mLinkedMaterials.add(this);
-        }
-
-        if (chemicalFormula != null) {
-            mChemicalFormula = chemicalFormula;
-        } else if (element != null) {
-            mChemicalFormula = element.toString();
-        } else if (materialList.size() == 1) {
-            mChemicalFormula = materialList.get(0)
-                .toString(true);
-        } else if (materialList.size() > 1) {
-            mChemicalFormula = materialList.stream()
-                .map(MaterialStack::toString)
-                .collect(Collectors.joining())
-                .replaceAll("_", "-");
-        }
-
-        mExtraData = extraData;
-        mMaterialList = materialList;
-        hasCorrespondingFluid = hasFluid;
-        hasCorrespondingGas = hasGas;
-        mSteamMultiplier = steamMultiplier;
-        mGasMultiplier = gasMultiplier;
-        mPlasmaMultiplier = plasmaMultiplier;
-        mAutoGenerateBlastFurnaceRecipes = autoGenerateBlastFurnaceRecipes;
-        mAutoGenerateVacuumFreezerRecipes = autoGenerateVacuumFreezerRecipes;
-
-        // No clue what is going on here...
-        int numberOfComponents = 0;
-        int tMeltingPoint = 0;
-        for (MaterialStack tMaterial : mMaterialList) {
-            numberOfComponents += tMaterial.mAmount;
-            if (tMaterial.mMaterial.mMeltingPoint > 0) {
-                tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
-            }
-            if (aspects == null) {
-                for (TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) {
-                    tAspect.addToAspectList(mAspects);
-                }
-            }
-        }
-
-        if (mMeltingPoint < 0) mMeltingPoint = 0;
-
-        numberOfComponents *= densityMultiplier;
-        numberOfComponents /= densityDivider;
-        if (aspects == null) {
-            for (TC_AspectStack tAspect : mAspects) {
-                tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, numberOfComponents));
-            }
-        } else {
-            mAspects.addAll(aspects);
-        }
     }
 
     private static void setSmeltingInto() {
