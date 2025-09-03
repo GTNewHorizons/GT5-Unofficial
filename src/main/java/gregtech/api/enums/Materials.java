@@ -1446,7 +1446,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             0,
             densityMultiplier,
             densityDivider,
-            color);
+            color,
+            "ore",
+            false,
+            "null");
 
         if (element != null) {
             mElement = element;
