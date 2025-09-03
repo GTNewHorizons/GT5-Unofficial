@@ -1424,18 +1424,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // spotless:on
     ) {
 
-        this(
-            metaItemSubID,
-            iconSet,
-            toolSpeed,
-            toolDurability,
-            toolQuality,
-            true,
-            name,
-            defaultLocalName,
-            "ore",
-            false,
-            "null");
+        mMetaItemSubID = metaItemSubID;
+        mDefaultLocalName = defaultLocalName;
+        mName = name;
+        MATERIALS_MAP.put(mName, this);
+        mCustomOre = false;
+        mCustomID = "null";
+        mConfigSection = "ore";
+        mUnificatable = true;
+        mDurability = toolDurability;
+        mToolSpeed = toolSpeed;
+        mToolQuality = (byte) toolQuality;
+        mMaterialInto = this;
+        mIconSet = iconSet;
         mMeltingPoint = meltingPoint;
         mBlastFurnaceRequired = blastFurnaceRequired;
         mBlastFurnaceTemp = (short) blastFurnaceTemp;
