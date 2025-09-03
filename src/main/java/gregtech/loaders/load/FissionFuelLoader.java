@@ -289,11 +289,11 @@ public class FissionFuelLoader implements Runnable {
 
         // MOX
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium_Small.get(3))
+            .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium.get(3))
             .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
             .fluidInputs(GTModHandler.getIC2Coolant(1_000))
             .duration(20 * SECONDS)
-            .eut(120)
+            .eut(256)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
