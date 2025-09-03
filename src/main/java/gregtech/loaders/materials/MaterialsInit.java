@@ -13096,7 +13096,7 @@ public class MaterialsInit {
 
     private static Materials loadNethersemifluid() {
         return new MaterialBuilder().setName("nethersemifluid")
-            .setDefaultLocalName("Nether Semi-Fluid")
+            .setDefaultLocalName("Nether SemiFluid")
             .setMetaItemSubID(119)
             .setIconSet(TextureSet.SET_FLUID)
             .setRGB(0xdac172)
