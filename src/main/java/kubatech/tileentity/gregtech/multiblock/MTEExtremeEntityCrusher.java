@@ -50,6 +50,8 @@ import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCL
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_ON;
+import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SPAWNER;
+import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SWORD;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -96,7 +98,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -143,7 +144,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
@@ -1110,16 +1110,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         final SlotWidget spawnerSlot = new SlotWidget(inventoryHandler, 1);
         spawnerSlot.setBackground(
             GTUITextures.SLOT_DARK_GRAY,
-            UITexture.fullImage(Tags.MODID, "gui/slot/gray_spawner")
-                .withFixedSize(16, 16)
+            SLOT_EEC_SPAWNER.withFixedSize(16, 16)
                 .withOffset(1, 1));
         spawnerSlot.setFilter(stack -> stack.getItem() == poweredSpawnerItem);
         slotWidgets.add(spawnerSlot);
         final SlotWidget weaponSlot = new SlotWidget(weaponCache, 0);
         weaponSlot.setBackground(
             GTUITextures.SLOT_DARK_GRAY,
-            UITexture.fullImage(Tags.MODID, "gui/slot/gray_sword")
-                .withFixedSize(16, 16)
+            SLOT_EEC_SWORD.withFixedSize(16, 16)
                 .withOffset(1, 1));
         slotWidgets.add(weaponSlot);
     }
