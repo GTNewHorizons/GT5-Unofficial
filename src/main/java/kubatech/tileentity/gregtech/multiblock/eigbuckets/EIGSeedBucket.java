@@ -2,7 +2,6 @@ package kubatech.tileentity.gregtech.multiblock.eigbuckets;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -129,17 +128,13 @@ public class EIGSeedBucket extends EIGBucket {
         World world = greenhouse.getBaseMetaTileEntity()
             .getWorld();
 
-        fakeWorld.capturedDrops.clear();
+        fakeWorld.dropTable = drops;
 
         for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
             ArrayList<ItemStack> blockDrops = block.getDrops(fakeWorld, 0, 0, 0, optimalGrowthMetadata, FORTUNE_LEVEL);
             for (ItemStack drop : blockDrops) {
                 drops.addDrop(drop, drop.stackSize);
             }
-        }
-
-        for (ItemStack capturedDrop : fakeWorld.capturedDrops) {
-            drops.addDrop(capturedDrop, capturedDrop.stackSize);
         }
 
         // reduce the number of drops to account for the seeds
@@ -249,8 +244,7 @@ public class EIGSeedBucket extends EIGBucket {
 
         public int x, y, z, meta = 0;
         public Block block;
-
-        public final List<ItemStack> capturedDrops = new ArrayList<>();
+        public EIGDropTable dropTable;
 
         GreenHouseWorld(int x, int y, int z) {
             super();
@@ -274,6 +268,10 @@ public class EIGSeedBucket extends EIGBucket {
 
         @Override
         public boolean spawnEntityInWorld(Entity entity) {
+            if (this.dropTable == null) {
+                return false;
+            }
+
             if (entity instanceof EntityLivingBase livingEntity) {
                 livingEntity.captureDrops = true;
 
@@ -282,7 +280,8 @@ public class EIGSeedBucket extends EIGBucket {
 
                 if (livingEntity.capturedDrops != null && !livingEntity.capturedDrops.isEmpty()) {
                     for (EntityItem drop : livingEntity.capturedDrops) {
-                        this.capturedDrops.add(drop.getEntityItem());
+                        ItemStack itemStack = drop.getEntityItem();
+                        this.dropTable.addDrop(itemStack, itemStack.stackSize);
                     }
                 }
             }
