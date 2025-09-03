@@ -1430,26 +1430,30 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             toolSpeed,
             toolDurability,
             toolQuality,
-            types,
-            (argb >>> 16) & 0xFF,
-            (argb >>> 8) & 0xFF,
-            argb & 0xFF,
-            (argb >>> 24) & 0xFF,
+            true,
             name,
             defaultLocalName,
-            fuelType,
-            fuelPower,
-            meltingPoint,
-            blastFurnaceTemp,
-            blastFurnaceRequired,
-            transparent,
-            0,
-            densityMultiplier,
-            densityDivider,
-            color,
             "ore",
             false,
             "null");
+        mMeltingPoint = meltingPoint;
+        mBlastFurnaceRequired = blastFurnaceRequired;
+        mBlastFurnaceTemp = (short) blastFurnaceTemp;
+        mTransparent = transparent;
+        mFuelPower = fuelPower;
+        mFuelType = fuelType;
+        mDensityMultiplier = densityMultiplier;
+        mDensityDivider = densityDivider;
+        mDensity = (M * densityMultiplier) / densityDivider;
+        mColor = color;
+        mRGBa[0] = mMoltenRGBa[0] = (short) ((argb >>> 16) & 0xFF);
+        mRGBa[1] = mMoltenRGBa[1] = (short) ((argb >>> 8) & 0xFF);
+        mRGBa[2] = mMoltenRGBa[2] = (short) (argb & 0xFF);
+        mRGBa[3] = mMoltenRGBa[3] = (short) ((argb >>> 24) & 0xFF);
+        mTypes = types;
+        if (mColor != null) add(SubTag.HAS_COLOR);
+        if (mTransparent) add(SubTag.TRANSPARENT);
+        if ((mTypes & 2) != 0) add(SubTag.SMELTING_TO_FLUID);
 
         if (element != null) {
             mElement = element;
