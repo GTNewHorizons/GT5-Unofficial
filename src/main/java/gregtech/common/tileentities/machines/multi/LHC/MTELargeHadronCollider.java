@@ -51,12 +51,17 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_E = "e";
+    private static final String STRUCTURE_PIECE_W = "w";
+    private static final String STRUCTURE_PIECE_S = "s";
+    private static final String STRUCTURE_PIECE_G = "g";
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
 
     private static final IStructureDefinition<MTELargeHadronCollider> STRUCTURE_DEFINITION = StructureDefinition
         .<MTELargeHadronCollider>builder()
+        //<editor-fold desc="main structure">
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -1769,6 +1774,565 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                               CCCCCCCCCCCCCCC                                               ",
                 "                                                                                                             "
             }})
+
+        //</editor-fold>
+
+        //<editor-fold desc="electromagnetism module">
+        .addShape(
+            STRUCTURE_PIECE_E,
+            new String[][]{{
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                "CCDDDCDDDCC",
+                "CBCCCCCCCBC",
+                "CBCGCBCGCBC",
+                "CBCCCCCCCBC",
+                "CCDDDCDDDCC",
+                "CCCCCCCCCCC",
+                "           ",
+                "           "
+            },{
+                "           ",
+                "CCBBBBBBBCC",
+                "CDI  J  IDC",
+                "CCCCCCCCCCC",
+                " DI  J  ID ",
+                " DI  J  ID ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC",
+                "CDI  J  IDC",
+                "CCBBBBBBBCC",
+                "           "
+            },{
+                "CCCCCCCCCCC",
+                "CDI  J  IDC",
+                " DI  J  ID ",
+                " D       D ",
+                " D       D ",
+                " DI  J  ID ",
+                " D       D ",
+                " D       D ",
+                " DI  J  ID ",
+                "CDI  J  IDC",
+                "CCCCCCCCCCC"
+            },{
+                "CBBCEEECBBC",
+                "CCCCCCCCCCC",
+                " D       D ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                " DI  J  ID ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "           "
+            },{
+                "CBCCECCCCBC",
+                " DI  J  ID ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "           ",
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                " D       D ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC"
+            },{
+                "CBCCEEECCBC",
+                " DI  J  ID ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC",
+                "           ",
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                " DI  J  ID ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC"
+            },{
+                "CBCCECCCCBC",
+                " DI  J  ID ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "           ",
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                " D       D ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC"
+            },{
+                "CBBCEEECBBC",
+                "CCCCCCCCCCC",
+                " D       D ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                " DI  J  ID ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "           "
+            },{
+                "CCCCCCCCCCC",
+                "CDI  J  IDC",
+                " DI  J  ID ",
+                " D       D ",
+                " D       D ",
+                " DI  J  ID ",
+                " D       D ",
+                " D       D ",
+                " DI  J  ID ",
+                "CDI  J  IDC",
+                "CCCCCCCCCCC"
+            },{
+                "           ",
+                "CBBBBBBBBBC",
+                "CDI  J  IDC",
+                "CCCCCCCCCCC",
+                " DI  J  ID ",
+                " DI  J  ID ",
+                " DI  J  ID ",
+                "CCCCCCCCCCC",
+                "CDI  J  IDC",
+                "CBBBBBBBBBC",
+                "           "
+            },{
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                "CDDDDDDDDDC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CDDDDDDDDDC",
+                "CCCCCCCCCCC",
+                "           ",
+                "           "
+            }}
+        )
+        //</editor-fold>
+
+        //<editor-fold desc="weak module">
+        .addShape(
+            STRUCTURE_PIECE_W,
+            new String[][]{{
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                "CDDDDDDDDDC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CDDDDDDDDDC",
+                "CCCCCCCCCCC",
+                "           ",
+                "           "
+            },{
+                "           ",
+                "CKKKKKKKKKC",
+                "CD       DC",
+                "CCCCCCCCCCC",
+                " D       D ",
+                " D       D ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "CD       DC",
+                "CKKKKKKKKKC",
+                "           "
+            },{
+                "CCCCCCCCCCC",
+                "CD       DC",
+                " D       D ",
+                " D       D ",
+                " DKKKKKKKD ",
+                " DKKKKKKKD ",
+                " DKKKKKKKD ",
+                " D       D ",
+                " D       D ",
+                "CD       DC",
+                "CCCCCCCCCCC"
+            },{
+                "CKCECCCECKC",
+                "CCC     CCC",
+                " D       D ",
+                " DKKKKKKKD ",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                " DKKKKKKKD ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "           "
+            },{
+                "CKCECECECKC",
+                " D       D ",
+                " DKKKKKKKD ",
+                "CCCCCCCCCCC",
+                "           ",
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                " DKKKKKKKD ",
+                " D       D ",
+                "CCCCCCCCCCC"
+            },{
+                "CKCECECECKC",
+                " D       D ",
+                " DKKKKKKKD ",
+                "CCCCCCCCCCC",
+                "           ",
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                " DKKKKKKKD ",
+                " D       D ",
+                "CCCCCCCCCCC"
+            },{
+                "CKCECECECKC",
+                " D       D ",
+                " DKKKKKKKD ",
+                "CCCCCCCCCCC",
+                "           ",
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                " DKKKKKKKD ",
+                " D       D ",
+                "CCCCCCCCCCC"
+            },{
+                "CKCCECECCKC",
+                "CCC     CCC",
+                " D       D ",
+                " DKKKKKKKD ",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                "CCCCCCCCCCC",
+                " DKKKKKKKD ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "           "
+            },{
+                "CCCCCCCCCCC",
+                "CD       DC",
+                " D       D ",
+                " D       D ",
+                " DKKKKKKKD ",
+                " DKKKKKKKD ",
+                " DKKKKKKKD ",
+                " D       D ",
+                " D       D ",
+                "CD       DC",
+                "CCCCCCCCCCC"
+            },{
+                "           ",
+                "CCKKKKKKKCC",
+                "CD       DC",
+                "CCCCCCCCCCC",
+                " D       D ",
+                " D       D ",
+                " D       D ",
+                "CCCCCCCCCCC",
+                "CD       DC",
+                "CCKKKKKKKCC",
+                "           "
+            },{
+                "           ",
+                "           ",
+                "CCCCCCCCCCC",
+                "CCDDDCDDDCC",
+                "CKCCCCCCCKC",
+                "CKCGC CGCKC",
+                "CKCCCCCCCKC",
+                "CCDDDCDDDCC",
+                "CCCCCCCCCCC",
+                "           ",
+                "           "
+            }}
+        )
+        //</editor-fold>
+
+        //<editor-fold desc="strong module">
+        .addShape(
+            STRUCTURE_PIECE_S,
+            new String[][]{{
+                "  CCCCCCC  ",
+                " CCC   CCC ",
+                "CC       CC",
+                "CC  CCC  CC",
+                "C  C   C  C",
+                "C  C   C  C",
+                "C  C   C  C",
+                "CC  CCC  CC",
+                "CC       CC",
+                " CCC   CCC ",
+                "  C CCC C  "
+            },{
+                "  CIIIIIC  ",
+                " IDCDDDCDC ",
+                "CDDDDDDDDDC",
+                "DCDDCCCDDCC",
+                "CDDC   CDDI",
+                "CDDC   CDDI",
+                "CDDC   CDDI",
+                "DCDDCCCDDCC",
+                "CDDDDDDDDDC",
+                " IDCDDDCDC ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " ILCLLLCLD ",
+                "CLLLLLLLLLC",
+                "DCLLCCCLLCD",
+                "CLLC   CLLC",
+                "CLLC   CLLC",
+                "CLLC   CLLC",
+                "DCLLCCCLLCD",
+                "CLLLLLLLLLC",
+                " ILCLLLCLD ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " IMMMMMMMD ",
+                "CMMMMMMMMMC",
+                "DCMMCCCMMCD",
+                "CMMC   CMMC",
+                "CMMC   CMMG",
+                "CMMC   CMMC",
+                "DCMMCCCMMCD",
+                "CMMMMMMMMMC",
+                " IMCMMMCMD ",
+                "  C CCC C  "
+            },{
+                "  CEEECEC  ",
+                " IMMMMMMMD ",
+                "CMMMMMMMMMC",
+                "DCMMCCCMMCD",
+                "CMMC   CMMC",
+                "CMMC   CMMC",
+                "CMMC   CMMC",
+                "DCMMCCCMMCD",
+                "CMMMMMMMMMC",
+                " IMCMMMCMD ",
+                "  C CCC C  "
+            },{
+                "  CECECEC  ",
+                " IMMMMMMMD ",
+                "CMMMMMMMMMC",
+                "DCMMCCCMMCC",
+                "CMMC   CMMC",
+                "CMMC   CMM ",
+                "CMMC   CMMC",
+                "DCMMCCCMMCC",
+                "CMMMMMMMMMC",
+                " IMCMMMCMD ",
+                "  C CCC C  "
+            },{
+                "  CECEEEC  ",
+                " IMMMMMMMD ",
+                "CMMMMMMMMMC",
+                "DCMMCCCMMCD",
+                "CMMC   CMMC",
+                "CMMC   CMMC",
+                "CMMC   CMMC",
+                "DCMMCCCMMCD",
+                "CMMMMMMMMMC",
+                " IMCMMMCMD ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " IMMMMMMMD ",
+                "CMMMMMMMMMC",
+                "DCMMCCCMMCD",
+                "CMMC   CMMC",
+                "CMMC   CMMG",
+                "CMMC   CMMC",
+                "DCMMCCCMMCD",
+                "CMMMMMMMMMC",
+                " IMCMMMCMD ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " INCNNNCND ",
+                "CNNNNNNNNNC",
+                "DCNNCCCNNCD",
+                "CNNC   CNNC",
+                "CNNC   CNNC",
+                "CNNC   CNNC",
+                "DCNNCCCNNCD",
+                "CNNNNNNNNNC",
+                " INCNNNCND ",
+                "  C CCC C  "
+            },{
+                "  CIIIIIC  ",
+                " IDCDDDCDC ",
+                "CDDDDDDDDDC",
+                "DCDDCCCDDCC",
+                "CDDC   CDDI",
+                "CDDC   CDDI",
+                "CDDC   CDDI",
+                "DCDDCCCDDCC",
+                "CDDDDDDDDDC",
+                " IDCDDDCDC ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " CCC   CCC ",
+                "CC       CC",
+                "CC  CCC  CC",
+                "C  C   C  C",
+                "C  C   C  C",
+                "C  C   C  C",
+                "CC  CCC  CC",
+                "CC       CC",
+                " CCC   CCC ",
+                "  C CCC C  "
+            }}
+        )
+        //</editor-fold>
+
+        //<editor-fold desc="gravity module">
+        .addShape(
+            STRUCTURE_PIECE_G,
+            new String[][]{{
+                "  CCCCCCC  ",
+                " CCC   CCC ",
+                "CC       CC",
+                "CC  CCC  CC",
+                "C  C   C  C",
+                "C  C   C  C",
+                "C  C   C  C",
+                "CC  CCC  CC",
+                "CC       CC",
+                " CCC   CCC ",
+                "  C CCC C  "
+            },{
+                "  COPOPOC  ",
+                " CDCDDDCDO ",
+                "CDDDDDDDDDC",
+                "CCDDCCCDDCD",
+                "ODDC   CDDC",
+                "PDDC   CDDC",
+                "ODDC   CDDC",
+                "CCDDCCCDDCD",
+                "CDDDDDDDDDC",
+                " CDCDDDCDO ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " OPCPPPCPP ",
+                "CPOOOOOOOPC",
+                "DCOPCCCPOCD",
+                "CPOC   COPC",
+                "CPOC   COPC",
+                "CPOC   COPC",
+                "DCOPCCCPOCD",
+                "CPOOOOOOOPC",
+                " OPCPPPCPP ",
+                "  C CCC C  "
+            },{
+                "  CEEECEC  ",
+                " P       P ",
+                "C         C",
+                "DC  CCC  CD",
+                "C  C   C  C",
+                "G  C   C  C",
+                "C  C   C  C",
+                "DC  CCC  CD",
+                "C         C",
+                " P C   C P ",
+                "  C CCC C  "
+            },{
+                "  CECECEC  ",
+                " P       P ",
+                "C         C",
+                "DC  CCC  CD",
+                "C  C   C  C",
+                "C  C   C  C",
+                "C  C   C  C",
+                "DC  CCC  CD",
+                "C         C",
+                " P C   C P ",
+                "  C CCC C  "
+            },{
+                "  CECECEC  ",
+                " O       O ",
+                "C         C",
+                "CC  CCC  CD",
+                "C  C   C  C",
+                "   C   C  C",
+                "C  C   C  C",
+                "CC  CCC  CD",
+                "C         C",
+                " O C   C O ",
+                "  C CCC C  "
+            },{
+                "  CECCCEC  ",
+                " P       P ",
+                "C         C",
+                "DC  CCC  CD",
+                "C  C   C  C",
+                "C  C   C  C",
+                "C  C   C  C",
+                "DC  CCC  CD",
+                "C         C",
+                " P C   C P ",
+                "  C CCC C  "
+            },{
+                "  CEEEEEC  ",
+                " P       P ",
+                "C         C",
+                "DC  CCC  CD",
+                "C  C   C  C",
+                "G  C   C  C",
+                "C  C   C  C",
+                "DC  CCC  CD",
+                "C         C",
+                " P C   C P ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " OOCOOOCOP ",
+                "COPPPPPPPOC",
+                "DCPOCCCOPCD",
+                "COPC   CPOC",
+                "COPC   CPOC",
+                "COPC   CPOC",
+                "DCPOCCCOPCD",
+                "COPPPPPPPOC",
+                " OOCOOOCOP ",
+                "  C CCC C  "
+            },{
+                "  COPOPOC  ",
+                " CDCDDDCDO ",
+                "CDDDDDDDDDC",
+                "CCDDCCCDDCD",
+                "ODDC   CDDC",
+                "PDDC   CDDC",
+                "ODDC   CDDC",
+                "CCDDCCCDDCD",
+                "CDDDDDDDDDC",
+                " CDCDDDCDO ",
+                "  C CCC C  "
+            },{
+                "  CCCCCCC  ",
+                " CCC   CCC ",
+                "CC       CC",
+                "CC  CCC  CC",
+                "C  C   C  C",
+                "C  C   C  C",
+                "C  C   C  C",
+                "CC  CCC  CC",
+                "CC       CC",
+                " CCC   CCC ",
+                "  C CCC C  "
+            }}
+        )
+        //</editor-fold>
+
         //spotless:on
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings13, 10) ) // collider casing
         .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
@@ -1783,7 +2347,16 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         .addElement('F', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(2)
             .adder(MTELargeHadronCollider::addBeamLineInputHatch).build()) // beamline input hatch
-
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of samarium // todo
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings13, 10)) // beam output hatch // todo
+        .addElement('I', ofBlock(GregTechAPI.sBlockCasings13, 10)) // coils - tiered? // todo
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 10)) // superconductor coils - tiered? // todo
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of gallium // todo
+        .addElement('L', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of neutronium // todo
+        .addElement('M', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of infinity // todo
+        .addElement('N', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of cosmic neutronium // todo
+        .addElement('O', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of transcendent metal // todo
+        .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of spacetime // todo
         .build();
 
     public MTELargeHadronCollider(final int aID, final String aName, final String aNameRegional) {
@@ -1877,12 +2450,62 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 54, 4, 1);
+        buildPiece(STRUCTURE_PIECE_E, stackSize, hintsOnly, 5,-1,-113);
+        if (stackSize.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_W, stackSize, hintsOnly, 5,-1,-9);
+        }
+        if (stackSize.stackSize > 2) {
+            buildPiece(STRUCTURE_PIECE_S, stackSize, hintsOnly, 57,-1,-61);
+        }
+        if (stackSize.stackSize > 3) {
+            buildPiece(STRUCTURE_PIECE_G, stackSize, hintsOnly, -47,-1,-61);
+        }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        int built = 0;
+
+        built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 54, 4, 1, elementBudget, env, false, true);
+        built += survivalBuildPiece(STRUCTURE_PIECE_E, stackSize, 5, -1, -113, elementBudget, env, false, true);
+        if (built >= 0) return built;
+        if (stackSize.stackSize > 1) {
+            built += survivalBuildPiece(
+                STRUCTURE_PIECE_W,
+                stackSize,
+                5,
+                -1,
+                -9,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
+        if (stackSize.stackSize > 2) {
+            built += survivalBuildPiece(
+                STRUCTURE_PIECE_S,
+                stackSize,
+                57,
+                -1,
+                -61,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
+        if (stackSize.stackSize > 3) {
+            built += survivalBuildPiece(
+                STRUCTURE_PIECE_G,
+                stackSize,
+                -47,
+                -1,
+                -61,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
+        return built;
     }
 
     private int mCasingAmount;
@@ -1894,7 +2517,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 14;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1) && mCasingAmount >= 0;
     }
 
     @Override
@@ -1911,21 +2534,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.brewingRecipes; // todo: new
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
     }
 
     @Override
