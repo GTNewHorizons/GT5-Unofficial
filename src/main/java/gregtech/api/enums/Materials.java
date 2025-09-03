@@ -1452,6 +1452,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if (element != null) {
             mElement = element;
             mElement.mLinkedMaterials.add(this);
+        }
+
+        if (chemicalFormula != null) {
+            mChemicalFormula = chemicalFormula;
+        } else if (element != null) {
             mChemicalFormula = element.toString();
         } else if (materialList.size() == 1) {
             mChemicalFormula = materialList.get(0)
@@ -1461,8 +1466,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 .map(MaterialStack::toString)
                 .collect(Collectors.joining())
                 .replaceAll("_", "-");
-        } else {
-            mChemicalFormula = chemicalFormula;
         }
 
         mExtraData = extraData;
