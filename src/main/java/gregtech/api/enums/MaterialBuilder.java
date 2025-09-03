@@ -69,7 +69,7 @@ public class MaterialBuilder {
     private boolean hasGas = false;
     private boolean canBeCracked = false;
     private Element element;
-    private String chemicalFormula = "?";
+    private String chemicalFormula;
     private float steamMultiplier = 1.0f;
     private float gasMultiplier = 1.0f;
     private float plasmaMultiplier = 1.0f;

@@ -23,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
@@ -1396,8 +1398,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // spotless:off
         String name,
         String defaultLocalName,
-        Element element,
-        String chemicalFormula,
+        @Nullable Element element,
+        @Nullable String chemicalFormula,
         int metaItemSubID,
         TextureSet iconSet,
         Dyes color,
