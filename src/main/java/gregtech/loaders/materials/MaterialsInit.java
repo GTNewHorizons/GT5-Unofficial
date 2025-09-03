@@ -9055,7 +9055,6 @@ public class MaterialsInit {
         Materials.Concrete = loadConcrete();
         Materials.Cryolite = loadCryolite();
         Materials.DamascusSteel = loadDamascusSteel();
-        Materials.Diatomite = loadDiatomite();
         Materials.DilutedSulfuricAcid = loadDilutedSulfuricAcid();
         Materials.Dolomite = loadDolomite();
         Materials.ElectricalSteel = loadElectricalSteel();
@@ -9546,23 +9545,6 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Steel, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadDiatomite() {
-        return new MaterialBuilder().setName("Diatomite")
-            .setDefaultLocalName("Diatomite")
-            .setChemicalFormula("(SiO₂)₈Fe₂O₃(Al₂O₃)")
-            .setMetaItemSubID(948)
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeGray)
-            .setRGB(0xe1e1e1)
-            .addDustItems()
-            .addOreItems()
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Flint, 8)
-            .addMaterial(Materials.BandedIron, 1)
-            .addMaterial(Materials.Sapphire, 1)
             .constructMaterial();
     }
 
@@ -10941,6 +10923,7 @@ public class MaterialsInit {
         Materials.BorosilicateGlass = loadBorosilicateGlass();
         Materials.Cryotheum = loadCryotheum();
         Materials.DarkSteel = loadDarkSteel();
+        Materials.Diatomite = loadDiatomite();
         Materials.EnderEye = loadEnderEye();
         Materials.Fireclay = loadFireclay();
         Materials.GarnetSand = loadGarnetSand();
@@ -11055,6 +11038,23 @@ public class MaterialsInit {
             .addMaterial(Materials.ElectricalSteel, 1)
             .addMaterial(Materials.Coal, 1)
             .addMaterial(Materials.Obsidian, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiatomite() {
+        return new MaterialBuilder().setName("Diatomite")
+            .setDefaultLocalName("Diatomite")
+            .setChemicalFormula("(SiO₂)₈Fe₂O₃(Al₂O₃)")
+            .setMetaItemSubID(948)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0xe1e1e1)
+            .addDustItems()
+            .addOreItems()
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Flint, 8)
+            .addMaterial(Materials.BandedIron, 1)
+            .addMaterial(Materials.Sapphire, 1)
             .constructMaterial();
     }
 
