@@ -1446,50 +1446,58 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             densityMultiplier,
             densityDivider,
             color);
-        mExtraData = extraData;
-        mMaterialList.addAll(materialList);
-        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0)
-            .toString(true);
-        else mChemicalFormula = mMaterialList.stream()
-            .map(MaterialStack::toString)
-            .collect(Collectors.joining())
-            .replaceAll("_", "-");
 
-        int tAmountOfComponents = 0, tMeltingPoint = 0;
+        if (element != null) {
+            mElement = element;
+            mElement.mLinkedMaterials.add(this);
+            mChemicalFormula = element.toString();
+        } else if (materialList.size() == 1) {
+            mChemicalFormula = materialList.get(0)
+                .toString(true);
+        } else if (materialList.size() > 1) {
+            mChemicalFormula = materialList.stream()
+                .map(MaterialStack::toString)
+                .collect(Collectors.joining())
+                .replaceAll("_", "-");
+        } else {
+            mChemicalFormula = chemicalFormula;
+        }
+
+        mExtraData = extraData;
+        mMaterialList = materialList;
+        hasCorrespondingFluid = hasFluid;
+        hasCorrespondingGas = hasGas;
+        mSteamMultiplier = steamMultiplier;
+        mGasMultiplier = gasMultiplier;
+        mPlasmaMultiplier = plasmaMultiplier;
+        mAutoGenerateBlastFurnaceRecipes = autoGenerateBlastFurnaceRecipes;
+        mAutoGenerateVacuumFreezerRecipes = autoGenerateVacuumFreezerRecipes;
+
+        // No clue what is going on here...
+        int numberOfComponents = 0;
+        int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
-            tAmountOfComponents += tMaterial.mAmount;
-            if (tMaterial.mMaterial.mMeltingPoint > 0)
+            numberOfComponents += tMaterial.mAmount;
+            if (tMaterial.mMaterial.mMeltingPoint > 0) {
                 tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
-            if (aspects == null)
-                for (TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) tAspect.addToAspectList(mAspects);
+            }
+            if (aspects == null) {
+                for (TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) {
+                    tAspect.addToAspectList(mAspects);
+                }
+            }
         }
 
         if (mMeltingPoint < 0) mMeltingPoint = 0;
 
-        tAmountOfComponents *= densityMultiplier;
-        tAmountOfComponents /= densityDivider;
-        if (aspects == null) for (TC_AspectStack tAspect : mAspects)
-            tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
-        else mAspects.addAll(aspects);
-        // this.mSubTags = subTags;
-        this.hasCorrespondingFluid = hasFluid;
-        this.hasCorrespondingGas = hasGas;
-        this.mSteamMultiplier = steamMultiplier;
-        this.mGasMultiplier = gasMultiplier;
-        this.mPlasmaMultiplier = plasmaMultiplier;
-        this.mAutoGenerateBlastFurnaceRecipes = autoGenerateBlastFurnaceRecipes;
-        this.mAutoGenerateVacuumFreezerRecipes = autoGenerateVacuumFreezerRecipes;
-        if (element != null) {
-            mElement = element;
-            mElement.mLinkedMaterials.add(this);
-            if (mElement == Element._NULL) {
-                mChemicalFormula = "Empty";
-            } else {
-                mChemicalFormula = element.toString();
-                mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
+        numberOfComponents *= densityMultiplier;
+        numberOfComponents /= densityDivider;
+        if (aspects == null) {
+            for (TC_AspectStack tAspect : mAspects) {
+                tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, numberOfComponents));
             }
         } else {
-            mChemicalFormula = chemicalFormula;
+            mAspects.addAll(aspects);
         }
     }
 
