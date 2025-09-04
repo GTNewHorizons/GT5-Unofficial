@@ -264,7 +264,8 @@ public abstract class BWOreLayer extends GTWorldgen {
         if (this == o) return true;
         if (!(o instanceof BWOreLayer that)) return false;
 
-        if (this.bwOres != that.bwOres || this.mMinY != that.mMinY
+        if (!this.mWorldGenName.equals(that.mWorldGenName) || this.bwOres != that.bwOres
+            || this.mMinY != that.mMinY
             || this.mWeight != that.mWeight
             || this.mDensity != that.mDensity) return false;
         if (this.mSize != that.mSize) return false;
@@ -277,21 +278,19 @@ public abstract class BWOreLayer extends GTWorldgen {
 
     @Override
     public int hashCode() {
-        return MurmurHash3.murmurhash3_x86_32(
-            ByteBuffer.allocate(37)
-                .put(this.bwOres)
-                .putInt(this.mMinY)
-                .putInt(this.mWeight)
-                .putInt(this.mDensity)
-                .putInt(this.mSize)
-                .putInt(this.mMaxY)
-                .putInt(this.mPrimaryMeta)
-                .putInt(this.mSecondaryMeta)
-                .putInt(this.mBetweenMeta)
-                .putInt(this.mSporadicMeta)
-                .array(),
-            0,
-            37,
-            31);
+        ByteBuffer buffer = ByteBuffer.allocate(37 + this.mWorldGenName.length())
+            .put(this.bwOres)
+            .putInt(this.mMinY)
+            .putInt(this.mWeight)
+            .putInt(this.mDensity)
+            .putInt(this.mSize)
+            .putInt(this.mMaxY)
+            .putInt(this.mPrimaryMeta)
+            .putInt(this.mSecondaryMeta)
+            .putInt(this.mBetweenMeta)
+            .putInt(this.mSporadicMeta)
+            .put(this.mWorldGenName.getBytes());
+
+        return MurmurHash3.murmurhash3_x86_32(buffer.array(), 0, buffer.position(), 31);
     }
 }
