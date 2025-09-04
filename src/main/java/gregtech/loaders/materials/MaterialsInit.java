@@ -7106,6 +7106,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Potassium, 1)
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Oxygen, 3)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
