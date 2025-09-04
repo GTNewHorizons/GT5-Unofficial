@@ -9678,6 +9678,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 4)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
