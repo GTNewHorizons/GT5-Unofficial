@@ -11002,6 +11002,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Nickel, 9)
             .addMaterial(Materials.Sulfur, 8)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
+            .addSubTag(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
             .constructMaterial();
     }
 
