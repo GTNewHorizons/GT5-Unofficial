@@ -17,6 +17,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -111,7 +112,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         .addElement(
             'b',
             ofChain(
-                buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(OutputHatch, OutputBus, Maintenance)
+                buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(Energy, OutputHatch, OutputBus, Maintenance)
                     .dot(1)
                     .casingIndex(BASECASINGINDEX)
                     .build(),
