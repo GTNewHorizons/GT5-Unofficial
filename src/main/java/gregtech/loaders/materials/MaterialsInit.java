@@ -9437,6 +9437,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Antimony, 1)
             .addMaterial(Materials.Sulfur, 3)
             .addMaterial(Materials.Iron, 1)
+            .addSubTag(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
+            .addSubTag(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
             .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
