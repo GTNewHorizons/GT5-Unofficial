@@ -7377,6 +7377,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Silicon, 3)
             .addMaterial(Materials.Sodium, 4)
             .addMaterial(Materials.Chlorine, 1)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
