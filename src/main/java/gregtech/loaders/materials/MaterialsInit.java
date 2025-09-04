@@ -12201,7 +12201,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 12)
             .addAspect(TCAspects.ORDO, 2)
             .addAspect(TCAspects.VOLATUS, 1)
+            .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
