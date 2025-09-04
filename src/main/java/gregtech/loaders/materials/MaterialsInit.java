@@ -10837,6 +10837,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Calcite, 2)
             .addMaterial(Materials.Flint, 1)
             .addMaterial(Materials.Clay, 1)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
