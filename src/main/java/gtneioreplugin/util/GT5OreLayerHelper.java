@@ -126,7 +126,7 @@ public class GT5OreLayerHelper {
 
         public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
-            this.localizedName = veinName;
+            this.localizedName = GTLanguageManager.getTranslation(veinName);
             this.Meta[0] = getMeta(primary);
             this.Meta[1] = getMeta(secondary);
             this.Meta[2] = getMeta(between);
