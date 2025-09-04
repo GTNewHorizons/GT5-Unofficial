@@ -12454,7 +12454,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Redstone, 1)
             .addMaterial(Materials.Electrum, 1)
             .addAspect(TCAspects.ELECTRUM, 2)
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.STONE)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
