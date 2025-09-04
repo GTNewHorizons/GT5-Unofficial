@@ -25,9 +25,9 @@ public class MaterialsInit {
 
         // Circuitry, Batteries and other Technical things
         Materials.Resistor = loadResistor();
+        Materials.Diode = loadDiode();
 
         // spotless:off
-        Materials.Diode                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Diode"                   ,   "Diode"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
         Materials.Transistor              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transistor"              ,   "Transistor"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
         Materials.Capacitor               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Capacitor"               ,   "Capacitor"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
         Materials.Inductor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Inductor"                ,   "Inductor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
@@ -4779,6 +4779,14 @@ public class MaterialsInit {
     private static Materials loadResistor() {
         return new MaterialBuilder().setName("Resistor")
             .setDefaultLocalName("Resistor")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiode() {
+        return new MaterialBuilder().setName("Diode")
+            .setDefaultLocalName("Diode")
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.ELECTRUM, 1)
             .constructMaterial();
