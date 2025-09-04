@@ -9853,7 +9853,11 @@ public class MaterialsInit {
             .addMaterial(Materials.Magic, 1)
             .addAspect(TCAspects.PRAECANTATIO, 2)
             .addAspect(TCAspects.IGNIS, 4)
+            .addSubTag(SubTag.BURNING)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
