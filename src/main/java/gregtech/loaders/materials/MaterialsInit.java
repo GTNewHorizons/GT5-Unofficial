@@ -4635,6 +4635,8 @@ public class MaterialsInit {
             .setDefaultLocalName("Basic")
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.MACHINA, 2)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
