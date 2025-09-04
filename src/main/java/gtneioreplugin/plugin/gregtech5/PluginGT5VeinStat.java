@@ -32,13 +32,24 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         if (stack.getUnlocalizedName()
             .startsWith("gt.blockores")) {
             loadMatchingVeins((short) (stack.getItemDamage() % 1000));
-        } else super.loadCraftingRecipes(stack);
+        } else if (stack.getUnlocalizedName()
+            .startsWith("bw.blocktype.ore")) {
+            loadMatchingVeinsBW((short) (stack.getItemDamage()));
+        } elsesuper.loadCraftingRecipes(stack);
     }
 
     private void loadMatchingVeins(short oreId) {
         for (OreLayerWrapper oreVein : getAllVeins()) {
             if (oreVein.containsOre(oreId)) {
                 addVeinWithLayers(oreVein, getMaximumMaterialIndex(oreId, false));
+            }
+        }
+    }
+
+    private void loadMatchingVeinsBW(short oreId) {
+        for (OreLayerWrapper oreVein : getAllVeins()) {
+            if (oreVein instanceof OreLayerWrapperBW && (OreLayerWrapperBW) oreVein.containsOreBW(oreId)) {
+                addVeinWithLayers(oreVein, 1);
             }
         }
     }
