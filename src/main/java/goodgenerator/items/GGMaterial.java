@@ -161,7 +161,7 @@ public class GGMaterial implements Runnable {
     // Thorium-233
     public static final Werkstoff oxalate = new Werkstoff(
         new short[] { 0x79, 0xd8, 0x55 },
-        "Oxalate",
+        "Oxalic Acid",
         Werkstoff.Types.BIOLOGICAL,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),

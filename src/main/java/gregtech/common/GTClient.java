@@ -18,6 +18,7 @@ import java.util.TreeSet;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -68,6 +69,7 @@ import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.recipe.RecipeCategory;
@@ -82,10 +84,13 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.capes.GTCapesLoader;
+import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
+import gregtech.common.render.BaseMetaTileEntityRenderer;
 import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
@@ -285,7 +290,8 @@ public class GTClient extends GTProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, new WormholeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, new BlackholeRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class,  new NanoForgeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class, new NanoForgeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new BaseMetaTileEntityRenderer());
 
         MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
@@ -319,6 +325,8 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
         shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
         ClientRegistry.registerKeyBinding(shakeLockKey);
+
+        RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
         // spotless:on
     }
 

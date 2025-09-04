@@ -19,7 +19,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
+import static gregtech.api.enums.SoundResource.GTCEU_LOOP_ASSEMBLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -197,7 +197,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
                     + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
                     + EnumChatFormatting.GRAY)
-            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1.")
+            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
@@ -282,7 +282,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 20) {
-            GTUtility.doSoundAtClient(IC2_MACHINES_MAGNETIZER_LOOP, 10, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(GTCEU_LOOP_ASSEMBLER, 10, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -397,7 +397,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return IC2_MACHINES_MAGNETIZER_LOOP;
+        return GTCEU_LOOP_ASSEMBLER;
     }
 
     @Override

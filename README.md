@@ -37,8 +37,8 @@ the chance of strange errors.
 
 ## Attribution
 
-Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno
-for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
+Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
+Many sound effects were backported from the GregTech Community Edition Unofficial / Modern team: https://github.com/GregTechCEu/
 
 ## Music duration metadata
 

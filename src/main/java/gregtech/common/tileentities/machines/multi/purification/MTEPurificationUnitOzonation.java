@@ -181,25 +181,21 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Will explode if the input hatch contains more than " + EnumChatFormatting.RED
                     + MAX_OZONE_GAS_FOR_EXPLOSION
                     + "L "
                     + EnumChatFormatting.WHITE
-                    + "Ozone Gas"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Ozone Gas")
             .addInfo(
                 "Receives a " + EnumChatFormatting.RED
                     + "20%"
                     + EnumChatFormatting.GRAY
                     + " bonus to success chance for every doubling of "
                     + EnumChatFormatting.WHITE
-                    + "Ozone Gas"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Ozone Gas")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""

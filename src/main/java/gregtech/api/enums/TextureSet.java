@@ -89,7 +89,7 @@ public class TextureSet {
         for (int i = 0; i < 128; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 switch (SUFFIXES[i]) {
-                    case "/frameGt", "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
+                    case "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
                         aTextMatIconDir + aSetName + SUFFIXES[i]);
                     default -> mTextures[i] = new Textures.BlockIcons.CustomIcon(
                         aTextMatIconDir + aSetName + SUFFIXES[i]);
