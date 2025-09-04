@@ -10682,7 +10682,11 @@ public class MaterialsInit {
             // to be low, about 0.05% Thorium content of monazite is variable.
             .addMaterial(Materials.RareEarth, 1)
             .addMaterial(Materials.Phosphate, 1)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
