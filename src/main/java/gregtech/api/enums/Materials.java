@@ -974,19 +974,30 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setColors();
     }
 
-    public final short[] mRGBa = new short[] { 255, 255, 255, 0 }, mMoltenRGBa = new short[] { 255, 255, 255, 0 };
+    public final short[] mRGBa = new short[] { 255, 255, 255, 0 };
+    public final short[] mMoltenRGBa = new short[] { 255, 255, 255, 0 };
     public TextureSet mIconSet;
     public GeneratedMaterialRenderer renderer;
     public List<MaterialStack> mMaterialList = new ArrayList<>();
-    public List<Materials> mOreByProducts = new ArrayList<>(), mOreReRegistrations = new ArrayList<>();
+    public List<Materials> mOreByProducts = new ArrayList<>();
+    public List<Materials> mOreReRegistrations = new ArrayList<>();
     public List<TCAspects.TC_AspectStack> mAspects = new ArrayList<>();
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
     public Collection<SubTag> mSubTags = new LinkedHashSet<>();
-    public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
-    public boolean mUnificatable, mBlastFurnaceRequired = false, mAutoGenerateBlastFurnaceRecipes = true,
-        mAutoGenerateVacuumFreezerRecipes = true, mAutoGenerateRecycleRecipes = true, mHasParentMod = true,
-        mHasPlasma = false, mHasGas = false, mCustomOre = false;
-    public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0, mToolQuality = 0;
+    public Enchantment mEnchantmentTools = null;
+    public Enchantment mEnchantmentArmors = null;
+    public boolean mUnificatable;
+    public boolean mBlastFurnaceRequired = false;
+    public boolean mAutoGenerateBlastFurnaceRecipes = true;
+    public boolean mAutoGenerateVacuumFreezerRecipes = true;
+    public boolean mAutoGenerateRecycleRecipes = true;
+    public boolean mHasParentMod = true;
+    public boolean mHasPlasma = false;
+    public boolean mHasGas = false;
+    public boolean mCustomOre = false;
+    public byte mEnchantmentToolsLevel = 0;
+    public byte mEnchantmentArmorsLevel = 0;
+    public byte mToolQuality = 0;
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
     public int mGasTemp = 0;
@@ -1001,35 +1012,42 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public int mSmeltingMultiplier = 1;
     public int mDensityMultiplier = 1;
     public int mDensityDivider = 1;
-
-    public int getProcessingMaterialTierEU() {
-        return processingMaterialTierEU;
-    }
-
-    public Materials setProcessingMaterialTierEU(final long processingMaterialTierEU) {
-        this.processingMaterialTierEU = (int) processingMaterialTierEU;
-        return this;
-    }
-
     public int processingMaterialTierEU = 0;
     public long mDensity = M;
-    public float mToolSpeed = 1.0F, mHeatDamage = 0.0F, mSteamMultiplier = 1.0F, mGasMultiplier = 1.0F,
-        mPlasmaMultiplier = 1.0F;
-    public String mChemicalFormula = "?", mName, mDefaultLocalName, mCustomID = "null", mConfigSection = "null",
-        mLocalizedName = "null";
+    public float mToolSpeed = 1.0F;
+    public float mHeatDamage = 0.0F;
+    public float mSteamMultiplier = 1.0F;
+    public float mGasMultiplier = 1.0F;
+    public float mPlasmaMultiplier = 1.0F;
+    public String mChemicalFormula = "?";
+    public String mName;
+    public String mDefaultLocalName;
+    public String mCustomID = "null";
+    public String mConfigSection = "null";
+    public String mLocalizedName = "null";
     public Dyes mColor = Dyes._NULL;
     public Element mElement = null;
-    public Materials mDirectSmelting = this, mOreReplacement = this, mMacerateInto = this, mSmeltInto = this,
-        mArcSmeltInto = this, mHandleMaterial = this, mMaterialInto;
-    public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
+    public Materials mDirectSmelting = this;
+    public Materials mOreReplacement = this;
+    public Materials mMacerateInto = this;
+    public Materials mSmeltInto = this;
+    public Materials mArcSmeltInto = this;
+    public Materials mHandleMaterial = this;
+    public Materials mMaterialInto;
+    public Fluid mSolid = null;
+    public Fluid mFluid = null;
+    public Fluid mGas = null;
+    public Fluid mPlasma = null;
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material
      * Unit worth of fluid.
      */
     public Fluid mStandardMoltenFluid = null;
-
-    private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false, canBeCracked = false;
-    private Fluid[] hydroCrackedFluids = new Fluid[3], steamCrackedFluids = new Fluid[3];
+    private boolean hasCorrespondingFluid = false;
+    private boolean hasCorrespondingGas = false;
+    private boolean canBeCracked = false;
+    private Fluid[] hydroCrackedFluids = new Fluid[3];
+    private Fluid[] steamCrackedFluids = new Fluid[3];
 
     /*
      * DOCUMENTATION OUTDATED
@@ -2193,6 +2211,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Deprecated
     public Materials disableAutoGeneratedVacuumFreezerRecipe() {
         mAutoGenerateVacuumFreezerRecipes = false;
+        return this;
+    }
+
+    public int getProcessingMaterialTierEU() {
+        return processingMaterialTierEU;
+    }
+
+    public Materials setProcessingMaterialTierEU(final long processingMaterialTierEU) {
+        this.processingMaterialTierEU = (int) processingMaterialTierEU;
         return this;
     }
 
