@@ -9402,6 +9402,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
     }
 
