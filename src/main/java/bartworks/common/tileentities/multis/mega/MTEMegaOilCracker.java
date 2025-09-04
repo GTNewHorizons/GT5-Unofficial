@@ -256,7 +256,11 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                 if (this.glassTier < hatch.mTier) {
                     return false;
                 }
+                if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
+                    return false;
+                }
             }
+
             for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
                     return false;

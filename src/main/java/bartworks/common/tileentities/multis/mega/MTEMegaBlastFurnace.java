@@ -53,6 +53,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -272,7 +273,14 @@ public class MTEMegaBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaB
             }
         }
         if (glassTier < VoltageIndex.UV) {
-            if (mExoticEnergyHatches.size() > 0) return false;
+            for (MTEHatch hatch : this.mExoticEnergyHatches) {
+                if (this.glassTier < hatch.mTier) {
+                    return false;
+                }
+                if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
+                    return false;
+                }
+            }
         }
         mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputEu()) - 2);
         return true;
