@@ -6935,6 +6935,11 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Phosphorus, 1)
             .addMaterial(Materials.Oxygen, 4)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
