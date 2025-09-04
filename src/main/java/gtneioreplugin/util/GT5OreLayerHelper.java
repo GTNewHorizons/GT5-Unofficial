@@ -7,6 +7,7 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.oregen.BWOreLayer;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -123,7 +124,7 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapperBW extends OreLayerWrapper {
         public byte bwOres;
-        public OreLayerWrapperBW(string veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
+        public OreLayerWrapperBW(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = mix.oreMixName;
             this.localizedName = mix.localizedName;
             this.Meta[0] = getMeta(primary);
