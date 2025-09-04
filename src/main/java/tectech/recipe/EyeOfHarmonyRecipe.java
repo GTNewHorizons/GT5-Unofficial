@@ -392,8 +392,8 @@ public class EyeOfHarmonyRecipe {
             ISubTagContainer byProductMaterial = material.getOreByProductRaw(index);
             if (byProductMaterial == null) continue;
             else if (byProductMaterial instanceof Materials) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
-            else if (byProductMaterial instanceof Werkstoff) outputWerkstoffMap.add(byProductMaterial.getmID(), 2 * mainMultiplier * probability);
+                .add((Materials) byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
+            else if (byProductMaterial instanceof Werkstoff) outputWerkstoffMap.add((Werkstoff) byProductMaterial.getmID(), 2 * mainMultiplier * probability);
         }
     }
 
