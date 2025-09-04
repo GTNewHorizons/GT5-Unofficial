@@ -127,7 +127,7 @@ public class EyeOfHarmonyRecipe {
 
         this.recipeTriggerItem = new ItemStack(block);
 
-        this.outputItems = outputItem;
+        this.outputItems = outputItems;
 
         this.sumOfItems = this.outputItems.stream()
             .map(ItemStackLong::getStackSize)
@@ -385,14 +385,16 @@ public class EyeOfHarmonyRecipe {
     private static void processHelperWerksoff(HashMapHelper outputMap, IDMapHelper outputWerkstoffMap, Werkstoff material, double mainMultiplier,
         double probability) {
         if (material == null) return;
-        outputWerkstoffMap.add(material.mID, (material.mOreMultiplier * 2) * mainMultiplier * probability);
+        // cannot find mOreMultiplier, assert it to 1
+        outputWerkstoffMap.add(material.getmID(), 2 * mainMultiplier * probability);
 
         int index = 0;
-        for (ISubTagContainer byProductMaterial : material.mOreByProducts) {
+        for (int index = 0; index < material.getNoOfByProducts(); index++) {
+            ISubTagContainer byProductMaterial = material.getOreByProductRaw(index);
             if (byProductMaterial == null) continue;
             else if (byProductMaterial instanceof Materials) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
-            else if (material instanceof Werkstoff) outputWerkstoffMap.add(byProductMaterial.mID, (material.mOreMultiplier * 2) * mainMultiplier * probability);
+            else if (material instanceof Werkstoff) outputWerkstoffMap.add(byProductMaterial.getmID(), 2 * mainMultiplier * probability);
         }
     }
 
@@ -427,7 +429,7 @@ public class EyeOfHarmonyRecipe {
         outputMap.forEach((material, quantity) -> outputList.add(Pair.of(material, (long) Math.floor(quantity))));
         outputWerkstoffMap.forEach((id, quantity) -> outputIDList.add(Pair.of(id, (long) Math.floor(quantity))));
 
-        return Pair.of(outputList, outputWerkstoffMap);
+        return Pair.of(outputList, outputIDList);
     }
 
     private static ArrayList<FluidStack> validPlasmaGenerator(final List<Pair<Materials, Long>> planetList) {
