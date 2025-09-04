@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
 import codechicken.nei.PositionedStack;
+import gregtech.api.util.GTLanguageManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -42,7 +43,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     private void loadMatchingVeins(short oreId) {
         for (OreLayerWrapper oreVein : getAllVeins()) {
             if (oreVein.containsOre(oreId)) {
-                addVeinWithLayers(oreVein, oreVein.hasVarients ? getMaximumMaterialIndex(oreId, false) : 1);
+                addVeinWithLayers(oreVein, oreVein.hasVariants ? getMaximumMaterialIndex(oreId, false) : 1);
             }
         }
     }
