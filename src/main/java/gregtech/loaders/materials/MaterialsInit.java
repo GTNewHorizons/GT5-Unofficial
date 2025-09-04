@@ -6829,6 +6829,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 2)
             .addAspect(TCAspects.MOTUS, 2)
+            .addSubTag(SubTag.BOUNCY)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
