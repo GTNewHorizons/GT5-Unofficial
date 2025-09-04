@@ -6227,6 +6227,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Palladium, 1)
+            .addSubTag(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
             .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }

@@ -1551,8 +1551,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Garnierite.setDirectSmelting(Nickel);
         Cobaltite.setDirectSmelting(Cobalt);
         Stibnite.setDirectSmelting(Antimony);
-        Cooperite.setDirectSmelting(Platinum)
-            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Cooperite.setDirectSmelting(Platinum);
         Molybdenite.setDirectSmelting(Molybdenum)
             .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         Galena.setDirectSmelting(Lead);
