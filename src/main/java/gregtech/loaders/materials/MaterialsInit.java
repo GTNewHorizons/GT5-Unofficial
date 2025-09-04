@@ -4199,6 +4199,11 @@ public class MaterialsInit {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
