@@ -8,7 +8,6 @@ import static gregtech.api.util.GTUtility.formatStringSafe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -66,10 +65,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * location where it shouldn't happen.
      */
 
-    // Spotless breaks the table below into many, many lines
-    // spotless:off
-    public static Materials _NULL = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Collections.singletonList(new TC_AspectStack(TCAspects.VACUOS, 1)));
-    // spotless:on
+    public static Materials _NULL = new MaterialBuilder().setName("NULL")
+        .setDefaultLocalName("NULL")
+        .setElement(Element._NULL)
+        .constructMaterial();
 
     // Elements
     public static Materials Aluminium;
