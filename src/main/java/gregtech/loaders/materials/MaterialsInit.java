@@ -6850,6 +6850,7 @@ public class MaterialsInit {
             // MoS2 (also source of Re)
             .addMaterial(Materials.Molybdenum, 1)
             .addMaterial(Materials.Sulfur, 2)
+            .addSubTag(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
             .constructMaterial();
     }
 
