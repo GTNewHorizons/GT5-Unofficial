@@ -3549,6 +3549,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.ORDO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
     }
 
