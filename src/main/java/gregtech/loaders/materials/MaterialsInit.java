@@ -10708,6 +10708,9 @@ public class MaterialsInit {
             .addOreItems()
             .addCentrifugeRecipe()
             .addMaterial(Materials.Saltpeter, 1)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
