@@ -13684,6 +13684,8 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBrown)
             .setARGB(0x00994c00)
             .addAspect(TCAspects.ELECTRUM, 30)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
