@@ -27,9 +27,9 @@ public class MaterialsInit {
         Materials.Resistor = loadResistor();
         Materials.Diode = loadDiode();
         Materials.Transistor = loadTransistor();
+        Materials.Capacitor = loadCapacitor();
 
         // spotless:off
-        Materials.Capacitor               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Capacitor"               ,   "Capacitor"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
         Materials.Inductor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Inductor"                ,   "Inductor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
 
         Materials.Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 11)));
@@ -4795,6 +4795,14 @@ public class MaterialsInit {
     private static Materials loadTransistor() {
         return new MaterialBuilder().setName("Transistor")
             .setDefaultLocalName("Transistor")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCapacitor() {
+        return new MaterialBuilder().setName("Capacitor")
+            .setDefaultLocalName("Capacitor")
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.ELECTRUM, 1)
             .constructMaterial();
