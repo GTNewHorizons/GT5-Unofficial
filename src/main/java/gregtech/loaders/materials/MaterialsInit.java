@@ -12125,6 +12125,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
+            .addSubTag(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
             .constructMaterial();
     }
 
