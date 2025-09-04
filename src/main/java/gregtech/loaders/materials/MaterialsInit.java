@@ -13660,6 +13660,8 @@ public class MaterialsInit {
             .setColor(Dyes.dyeLime)
             .setARGB(0x00008700)
             .addAspect(TCAspects.ELECTRUM, 18)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
