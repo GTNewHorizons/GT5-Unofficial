@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.Werkstoff;
 import codechicken.nei.PositionedStack;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
@@ -116,10 +117,18 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 80);
     }
 
+    private static void getBWOreName(short meta) {
+        final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(meta, null);
+        return GTLanguageManager.getTranslation("bw.blocktype.ore").replace("%material", werkstoff.getLocalizedName());
+    }
+
     private static void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
+        final String oreName;
+        if ((oreLayer.bwOres & 0b1000 >> veinLayer) == 0) oreName = getBWOreName(oreLayer.Meta[veinLayer]);
+        else oreName = getGTOreLocalizedName(oreLayer.Meta[veinLayer]);
         drawLine(
             OreVeinLayer.getOreVeinLayerName(veinLayer),
-            getGTOreLocalizedName(oreLayer.Meta[veinLayer]),
+            oreName,
             2,
             height);
     }
