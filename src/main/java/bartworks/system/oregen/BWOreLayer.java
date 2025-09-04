@@ -28,8 +28,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.collect.ArrayListMultimap;
-
 import bartworks.MainMod;
 import bartworks.system.material.BWMetaGeneratedOres;
 import bartworks.system.material.BWMetaGeneratedSmallOres;
@@ -90,26 +88,24 @@ public abstract class BWOreLayer extends GTWorldgen {
         this.mSecondaryMeta = aSecondary;
         this.mBetweenMeta = aBetween;
         this.mSporadicMeta = aSporadic;
-  
+
     }
 
     public BWOreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
-        ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled, String dim) {
-        
+        ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled,
+        String dim) {
+
         this(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
 
         for (OreLayerWrapper layer : NEIList) {
-            if (
-                layer.bwOres == this.bwOres
-                && layer.Meta[0] == this.mPrimaryMeta 
+            if (layer.bwOres == this.bwOres && layer.Meta[0] == this.mPrimaryMeta
                 && layer.Meta[1] == this.mSecondaryMeta
                 && layer.Meta[2] == this.mBetweenMeta
                 && layer.Meta[3] == this.mSporadicMeta
                 && layer.randomWeight == (short) aWeight
                 && layer.size == (short) aSize
                 && layer.density == (short) aDensity
-                && layer.worldGenHeightRange.equals(aMinY + "-" + aMaxY)
-            ) {
+                && layer.worldGenHeightRange.equals(aMinY + "-" + aMaxY)) {
                 layer.addDimension(dim);
                 return;
             }
