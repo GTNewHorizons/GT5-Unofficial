@@ -11462,6 +11462,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Boron, 1)
             .addMaterial(Materials.Glass, 7)
             .addCentrifugeRecipe()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_RECYCLING)
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .constructMaterial();
     }
