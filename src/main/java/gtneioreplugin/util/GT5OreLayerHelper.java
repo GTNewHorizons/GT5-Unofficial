@@ -7,10 +7,9 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.system.oregen.BWOreLayer;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import galacticgreg.api.enums.DimensionDef;
+import bartworks.system.oregen.BWOreLayer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreMixes;
@@ -115,17 +114,18 @@ public class GT5OreLayerHelper {
                 for (int i = 0; i < maximumMaterialIndex; i++) {
                     stackList.add(getLayerOre(veinLayer, i));
                 }
-            }
-            else stackList.add(getLayerOre(veinLayer, 0));
+            } else stackList.add(getLayerOre(veinLayer, 0));
             return stackList;
         }
 
         public ItemStack getLayerOre(int veinLayer, int materialIndex) {
-            if ((this.bwOres & 0b1000 >> veinLayer) == 0) return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
+            if ((this.bwOres & 0b1000 >> veinLayer) == 0)
+                return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
             return new ItemStack(WerkstoffLoader.BWOres, 1, Meta[veinLayer]);
         }
 
-        public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
+        public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
+            ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
             this.localizedName = GTLanguageManager.getTranslation(veinName);
             this.Meta[0] = getMeta(primary);
@@ -154,7 +154,8 @@ public class GT5OreLayerHelper {
             else return 0;
         }
 
-        private byte getBwOres(ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
+        private byte getBwOres(ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between,
+            ISubTagContainer sprinkled) {
             byte bwOres = 0;
             if (top instanceof Werkstoff) bwOres = (byte) (bwOres | 0b1000);
             if (bottom instanceof Werkstoff) bwOres = (byte) (bwOres | 0b0100);

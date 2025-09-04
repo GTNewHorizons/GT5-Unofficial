@@ -118,7 +118,8 @@ public class EyeOfHarmonyRecipe {
         return rocketTier;
     }
 
-    private EyeOfHarmonyRecipe(final ArrayList<ItemStackLong> outputItems, final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
+    private EyeOfHarmonyRecipe(final ArrayList<ItemStackLong> outputItems,
+        final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
         final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
         final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
 
@@ -208,7 +209,16 @@ public class EyeOfHarmonyRecipe {
     public EyeOfHarmonyRecipe(final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
         final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
         final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
-        this(validDustGenerator(materialList), materialList, block, recipeEnergyEfficiency, hydrogenRequirement, heliumRequirement, miningTimeSeconds, rocketTierOfRecipe, baseSuccessChance);
+        this(
+            validDustGenerator(materialList),
+            materialList,
+            block,
+            recipeEnergyEfficiency,
+            hydrogenRequirement,
+            heliumRequirement,
+            miningTimeSeconds,
+            rocketTierOfRecipe,
+            baseSuccessChance);
     }
 
     private ItemStack getStoneDustType(String key) {
@@ -263,10 +273,12 @@ public class EyeOfHarmonyRecipe {
             spacetimeCasingTierRequired,
             baseSuccessChance);
     }
-    public EyeOfHarmonyRecipe(Pair<ArrayList<Pair<Materials, Long>>, ArrayList<Pair<Short, Long>>> ret, final BlockDimensionDisplay block,
-        final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
-        final long miningTimeSeconds, final long spacetimeCasingTierRequired, final double baseSuccessChance) {
-        
+
+    public EyeOfHarmonyRecipe(Pair<ArrayList<Pair<Materials, Long>>, ArrayList<Pair<Short, Long>>> ret,
+        final BlockDimensionDisplay block, final double recipeEnergyEfficiency, final long hydrogenRequirement,
+        final long heliumRequirement, final long miningTimeSeconds, final long spacetimeCasingTierRequired,
+        final double baseSuccessChance) {
+
         this(
             validDustGenerator(ret.getLeft(), ret.getRight()),
             ret.getLeft(),
@@ -277,7 +289,7 @@ public class EyeOfHarmonyRecipe {
             miningTimeSeconds,
             spacetimeCasingTierRequired,
             baseSuccessChance);
-        }
+    }
 
     // Return clone of list. Deep copy. Maybe a better way to do this?
     public ArrayList<ItemStackLong> getOutputItems() {
@@ -374,11 +386,13 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    private static void processHelper(HashMapHelper outputMap, IDMapHelper outputWerkstoffMap, ISubTagContainer material, double mainMultiplier,
-        double probability) {
+    private static void processHelper(HashMapHelper outputMap, IDMapHelper outputWerkstoffMap,
+        ISubTagContainer material, double mainMultiplier, double probability) {
         if (material == null) return;
-        else if (material instanceof Materials) processHelper(outputMap, (Materials) material, mainMultiplier, probability);
-        else if (material instanceof Werkstoff) processHelperWerkstoff(outputMap, outputWerkstoffMap, (Werkstoff) material, mainMultiplier, probability);
+        else if (material instanceof Materials)
+            processHelper(outputMap, (Materials) material, mainMultiplier, probability);
+        else if (material instanceof Werkstoff)
+            processHelperWerkstoff(outputMap, outputWerkstoffMap, (Werkstoff) material, mainMultiplier, probability);
     }
 
     public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
@@ -394,8 +408,8 @@ public class EyeOfHarmonyRecipe {
     }
 
     // Sadly our universe have something that is not Materials.
-    private static void processHelperWerkstoff(HashMapHelper outputMap, IDMapHelper outputWerkstoffMap, Werkstoff material, double mainMultiplier,
-        double probability) {
+    private static void processHelperWerkstoff(HashMapHelper outputMap, IDMapHelper outputWerkstoffMap,
+        Werkstoff material, double mainMultiplier, double probability) {
         if (material == null) return;
         // cannot find mOreMultiplier, assert it to 1
         outputWerkstoffMap.add(material.getmID(), 2 * mainMultiplier * probability);
@@ -403,9 +417,11 @@ public class EyeOfHarmonyRecipe {
         for (int index = 0; index < material.getNoOfByProducts(); index++) {
             ISubTagContainer byProductMaterial = material.getOreByProductRaw(index);
             if (byProductMaterial == null) continue;
-            else if (byProductMaterial instanceof Materials) outputMap
-                .add(((Materials) byProductMaterial).mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
-            else if (byProductMaterial instanceof Werkstoff) outputWerkstoffMap.add(((Werkstoff) byProductMaterial).getmID(), 2 * mainMultiplier * probability);
+            else if (byProductMaterial instanceof Materials) outputMap.add(
+                ((Materials) byProductMaterial).mDirectSmelting,
+                mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
+            else if (byProductMaterial instanceof Werkstoff)
+                outputWerkstoffMap.add(((Werkstoff) byProductMaterial).getmID(), 2 * mainMultiplier * probability);
         }
     }
 
@@ -419,11 +435,26 @@ public class EyeOfHarmonyRecipe {
 
         if (normalOreDimWrapper != null) {
             normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                processHelper(outputMap, outputWerkstoffMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelper(
+                    outputMap,
+                    outputWerkstoffMap,
+                    veinInfo.mPrimaryVeinMaterial,
+                    mainMultiplier,
+                    probability);
                 processHelper(outputMap, outputWerkstoffMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
                 // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                processHelper(outputMap, outputWerkstoffMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
-                processHelper(outputMap, outputWerkstoffMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
+                processHelper(
+                    outputMap,
+                    outputWerkstoffMap,
+                    veinInfo.mBetweenMaterial,
+                    mainMultiplier / 8.0,
+                    probability);
+                processHelper(
+                    outputMap,
+                    outputWerkstoffMap,
+                    veinInfo.mSporadicMaterial,
+                    mainMultiplier / 8.0,
+                    probability);
             });
         }
 
@@ -436,7 +467,7 @@ public class EyeOfHarmonyRecipe {
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
         ArrayList<Pair<Short, Long>> outputIDList = new ArrayList<>();
-        
+
         outputMap.forEach((material, quantity) -> outputList.add(Pair.of(material, (long) Math.floor(quantity))));
         outputWerkstoffMap.forEach((id, quantity) -> outputIDList.add(Pair.of(id, (long) Math.floor(quantity))));
 
@@ -473,12 +504,15 @@ public class EyeOfHarmonyRecipe {
         return dustList;
     }
 
-    private static ArrayList<ItemStackLong> validDustGenerator(final ArrayList<Pair<Materials, Long>> materialList, final ArrayList<Pair<Short, Long>> werkstoffIDList) {
+    private static ArrayList<ItemStackLong> validDustGenerator(final ArrayList<Pair<Materials, Long>> materialList,
+        final ArrayList<Pair<Short, Long>> werkstoffIDList) {
         ArrayList<ItemStackLong> dustList = validDustGenerator(materialList);
         for (Pair<Short, Long> pair : werkstoffIDList) {
             Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(pair.getLeft(), null);
-            if (werkstoff == null) {continue;}
-            
+            if (werkstoff == null) {
+                continue;
+            }
+
             ItemStack dust = getUnificatedOreDictStack(werkstoff.get(OrePrefixes.dust, 1));
             if (dust != null) {
                 dustList.add(new ItemStackLong(dust, pair.getRight()));
