@@ -10754,6 +10754,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 5)
+            .addSubTag(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
             .constructMaterial();
     }
 
