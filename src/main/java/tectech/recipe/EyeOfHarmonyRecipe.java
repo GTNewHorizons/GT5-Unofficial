@@ -336,11 +336,12 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
+    // Sadly our universe have something that is not Materials.
     public static void processHelper(HashMapHelper outputMap, ISubTagContainer material, double mainMultiplier,
         double probability) {
         if (material == null) return;
         else if (material instanceof Materials) processHelperMaterial(outputMap, (Materials) material, mainMultiplier, probability);
-        else if (material instanceof Werkstoff) processHelperWerkstoff(outputMap, (Werkstoff) material, mainMultiplier, probability);
+        // else if (material instanceof Werkstoff) processHelperWerkstoff(outputMap, (Werkstoff) material, mainMultiplier, probability);
     }
 
     public static void processHelperMaterial(HashMapHelper outputMap, Materials material, double mainMultiplier,
@@ -353,11 +354,6 @@ public class EyeOfHarmonyRecipe {
             outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
         }
-    }
-
-    //TODO
-    public static void processHelperWerkstoff(HashMapHelper outputMap, Werkstoff werkstoff, double mainMultiplier,
-        double probability) {
     }
 
     private static ArrayList<Pair<Materials, Long>> processDimension(
