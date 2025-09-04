@@ -1539,9 +1539,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void setDirectSmelting() {
         Cinnabar.setDirectSmelting(Mercury);
         Tetrahedrite.setDirectSmelting(Copper);
-        Chalcopyrite.setDirectSmelting(Copper)
-            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
-            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Chalcopyrite.setDirectSmelting(Copper);
         Malachite.setDirectSmelting(Copper)
             .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
         Pentlandite.setDirectSmelting(Nickel)
