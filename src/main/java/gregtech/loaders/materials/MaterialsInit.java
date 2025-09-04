@@ -4611,7 +4611,7 @@ public class MaterialsInit {
         Materials.IV = Materials.Elite = loadIV();
         Materials.LuV = Materials.Master = loadLuV();
         Materials.ZPM = Materials.Ultimate = loadZPM();
-        Materials.UV = /* Materials.Superconductor = */ loadUV();
+        Materials.UV = Materials.Superconductor = loadUV();
         Materials.UHV = Materials.Infinite = loadUHV();
         Materials.UEV = Materials.Bio = loadUEV();
         Materials.UIV = Materials.Optical = loadUIV();
@@ -13708,6 +13708,8 @@ public class MaterialsInit {
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00e0d207)
             .addAspect(TCAspects.ELECTRUM, 42)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 

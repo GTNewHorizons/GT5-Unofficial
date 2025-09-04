@@ -361,7 +361,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials  IV; @Deprecated public static Materials Elite;
     public static Materials LuV; @Deprecated public static Materials Master;
     public static Materials ZPM; @Deprecated public static Materials Ultimate;
-    public static Materials  UV;
+    public static Materials  UV; @Deprecated public static Materials Superconductor;
     public static Materials UHV; @Deprecated public static Materials Infinite;
     public static Materials UEV; @Deprecated public static Materials Bio;
     public static Materials UIV; @Deprecated public static Materials Optical;
@@ -988,22 +988,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.load();
     }
 
-    /**
-     * Superconductor re-routed for mod compatibility. Circuits are re-routed into SuperconductorUHV as well.
-     * <p>
-     * Internal name is now Superconductor while translated name is SuperconductorUHV.
-     * </p>
-     *
-     * @deprecated Use {@link #SuperconductorUHV} instead
-     */
-    @Deprecated
-    public static Materials Superconductor = new Materials(SuperconductorUHV, true);
-
     private static Materials[] MATERIALS_ARRAY = new Materials[] {};
 
     static {
-        initSubTags();
-
         setReRegistration();
         setMaceratingInto();
         setSmeltingInto();
@@ -2009,11 +1996,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Naquadria.mMoltenRGBa[1] = 255;
         Naquadria.mMoltenRGBa[2] = 128;
         Naquadria.mMoltenRGBa[3] = 0;
-    }
-
-    private static void initSubTags() {
-        // TODO: remove this once it will be fully deprecated
-        Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
     }
 
     public static void init() {
