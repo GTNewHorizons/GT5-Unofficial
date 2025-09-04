@@ -20,16 +20,7 @@ public class MaterialsInit {
         loadDontCare();
         loadUnknownComponents();
         loadTiers();
-
-        // Circuitry, Batteries and other Technical things
-        Materials.Resistor = loadResistor();
-        Materials.Diode = loadDiode();
-        Materials.Transistor = loadTransistor();
-        Materials.Capacitor = loadCapacitor();
-        Materials.Inductor = loadInductor();
-        Materials.Nano = loadNano();
-        Materials.Piko = loadPiko();
-
+        loadCircuitry();
         loadNotExact();
         loadTODOThis();
         loadDegree1Compounds();
@@ -4768,6 +4759,16 @@ public class MaterialsInit {
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.ELECTRUM, 15)
             .constructMaterial();
+    }
+
+    private static void loadCircuitry() {
+        Materials.Resistor = loadResistor();
+        Materials.Diode = loadDiode();
+        Materials.Transistor = loadTransistor();
+        Materials.Capacitor = loadCapacitor();
+        Materials.Inductor = loadInductor();
+        Materials.Nano = loadNano();
+        Materials.Piko = loadPiko();
     }
 
     private static Materials loadResistor() {
