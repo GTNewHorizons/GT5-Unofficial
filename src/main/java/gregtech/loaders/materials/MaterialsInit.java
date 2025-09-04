@@ -3156,6 +3156,11 @@ public class MaterialsInit {
             .addGemItems()
             .addOreItems()
             .addCell()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.QUARTZ)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
