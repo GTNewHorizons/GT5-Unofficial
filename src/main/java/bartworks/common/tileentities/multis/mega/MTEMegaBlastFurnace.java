@@ -168,15 +168,40 @@ public class MTEMegaBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaB
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo("Increases Heat by " + EnumChatFormatting.RED + "100K" + EnumChatFormatting.GRAY + " for every " + TooltipHelper.tierText("Voltage") + " tier past " + EnumChatFormatting.AQUA + "MV")
-            .addInfo("Reduces " + TooltipHelper.effText("EU Usage") + " by " + EnumChatFormatting.WHITE + "5%" + EnumChatFormatting.GRAY + " every " + EnumChatFormatting.RED + "900K" + EnumChatFormatting.GRAY + " above the recipe requirement")
-            .addInfo("Every " + EnumChatFormatting.RED + "1800K" + EnumChatFormatting.GRAY + " over the recipe requirement grants 1 " + EnumChatFormatting.LIGHT_PURPLE + " Perfect Overclock")
+            .addInfo(
+                "Increases Heat by " + EnumChatFormatting.RED
+                    + "100K"
+                    + EnumChatFormatting.GRAY
+                    + " for every "
+                    + TooltipHelper.tierText("Voltage")
+                    + " tier past "
+                    + EnumChatFormatting.AQUA
+                    + "MV")
+            .addInfo(
+                "Reduces " + TooltipHelper.effText("EU Usage")
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "5%"
+                    + EnumChatFormatting.GRAY
+                    + " every "
+                    + EnumChatFormatting.RED
+                    + "900K"
+                    + EnumChatFormatting.GRAY
+                    + " above the recipe requirement")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "1800K"
+                    + EnumChatFormatting.GRAY
+                    + " over the recipe requirement grants 1 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Perfect Overclock")
             .addTecTechHatchInfo()
             .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
+            .addController("3rd layer center")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
             .addCasingInfoExactly("Heating Coils", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 1007, true)
@@ -188,6 +213,7 @@ public class MTEMegaBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaB
             .addInputHatch("Any bottom layer casing")
             .addOutputBus("Any bottom layer casing")
             .addOutputHatch("Any Heat Proof Machine Casing")
+            .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();

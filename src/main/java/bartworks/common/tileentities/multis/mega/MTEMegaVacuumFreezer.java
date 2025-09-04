@@ -162,25 +162,34 @@ public class MTEMegaVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEMega
         return new MTEMegaVacuumFreezer(mName);
     }
 
-    // spotless:off
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer, MVF")
-            .addInfo("Cools hot ingots and cells")
+            .addInfo("Handles all things cooling!")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .addSeparator()
-            .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
-            .addInfo("To activate " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling " + EnumChatFormatting.GRAY + "supply a coolant while running recipes.")
-            .addInfo(EnumChatFormatting.RED + "7500 L/s " + EnumChatFormatting.DARK_PURPLE + "Molten SpaceTime" + EnumChatFormatting.GRAY + ": " + EnumChatFormatting.RED + "1" + EnumChatFormatting.GRAY + " perfect overclock.")
-            .addInfo(EnumChatFormatting.RED + "5000 L/s " + EnumChatFormatting.DARK_PURPLE + "Spatially Enlarged Fluid" + EnumChatFormatting.GRAY + ": " + EnumChatFormatting.RED + "2" + EnumChatFormatting.GRAY + " perfect overclocks.")
-            .addInfo(EnumChatFormatting.RED + "2500 L/s " + EnumChatFormatting.DARK_PURPLE + "Molten Eternity" + EnumChatFormatting.GRAY + ": " + EnumChatFormatting.RED + "3" + EnumChatFormatting.GRAY + " perfect overclocks.")
+            .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.DARK_AQUA + "Subspace Cooling.")
+            .addInfo(
+                "Will gain " + EnumChatFormatting.GOLD
+                    + "perfect overclocks "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.GREEN
+                    + "consuming "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "coolants:")
+            .addInfo(getCoolantTextFormatted("Molten Spacetime", "7500", 1))
+            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "5000", 2))
+            .addInfo(getCoolantTextFormatted("Molten Eternity", "2500", 3))
             .addSeparator()
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Reinforcing the structure allows the injection of exotic coolants,")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "enabling the capture of heat energy in miniature tears in spacetime,")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "massively increasing the efficiency of the cooling process.")
+            .addInfo(
+                EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
+            .addInfo(
+                EnumChatFormatting.DARK_AQUA + "enabling the capture of heat energy from miniature tears in spacetime,")
+            .addInfo(EnumChatFormatting.DARK_AQUA + "massively increasing the efficiency of the cooling process.")
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
             .addEnergyHatch("Any Frost Proof Machine Casing", 1)
@@ -189,15 +198,43 @@ public class MTEMegaVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEMega
             .addOutputHatch("Any Frost Proof Machine Casing", 1)
             .addInputBus("Any Frost Proof Machine Casing", 1)
             .addOutputBus("Any Frost Proof Machine Casing", 1)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + "):")
-            .addCasingInfoMinColored("Frost Proof Machine Casing", EnumChatFormatting.GRAY, 800, EnumChatFormatting.GOLD, false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + "2" + EnumChatFormatting.BLUE + " (Upgrades from Tier " + EnumChatFormatting.DARK_PURPLE + "1" + EnumChatFormatting.BLUE + "):")
-            .addCasingInfoMinColored("Frost Proof Machine Casing", EnumChatFormatting.GRAY, 700, EnumChatFormatting.GOLD, false)
-            .addCasingInfoExactlyColored("Infinity Cooled Casing", EnumChatFormatting.GRAY, 384, EnumChatFormatting.GOLD, false)
+            .addStructureInfo(
+                EnumChatFormatting.BLUE + "Base Multi (Tier "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + 1
+                    + EnumChatFormatting.BLUE
+                    + "):")
+            .addCasingInfoMinColored(
+                "Frost Proof Machine Casing",
+                EnumChatFormatting.GRAY,
+                800,
+                EnumChatFormatting.GOLD,
+                false)
+            .addStructureInfo(
+                EnumChatFormatting.BLUE + "Tier "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + 2
+                    + EnumChatFormatting.BLUE
+                    + " (Upgrades from Tier "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + 1
+                    + EnumChatFormatting.BLUE
+                    + "):")
+            .addCasingInfoMinColored(
+                "Frost Proof Machine Casing",
+                EnumChatFormatting.GRAY,
+                700,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Infinity Cooled Casing",
+                EnumChatFormatting.GRAY,
+                384,
+                EnumChatFormatting.GOLD,
+                false)
             .toolTipFinisher();
         return tt;
     }
-    // spotless:on
 
     @Override
     public IStructureDefinition<MTEMegaVacuumFreezer> getStructureDefinition() {
@@ -407,5 +444,18 @@ public class MTEMegaVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEMega
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP;
+    }
+
+    private String getCoolantTextFormatted(String fluidType, String litersConsumed, int ocboost) {
+        return String.format(
+            "%s%s L/s%s : %s%d %s: %s%s",
+            EnumChatFormatting.GREEN,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            ocboost,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            fluidType);
     }
 }

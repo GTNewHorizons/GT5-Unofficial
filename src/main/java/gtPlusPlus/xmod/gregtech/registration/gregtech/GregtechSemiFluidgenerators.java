@@ -18,31 +18,31 @@ public class GregtechSemiFluidgenerators {
             new MTESemiFluidGenerator(
                 Generator_SemiFluid_LV.ID,
                 "basicgenerator.semifluid.tier.01",
-                "Basic Semi-Fluid Generator",
+                "Basic Semifluid Generator",
                 1).getStackForm(1L));
         GregtechItemList.Generator_SemiFluid_MV.set(
             new MTESemiFluidGenerator(
                 Generator_SemiFluid_MV.ID,
                 "basicgenerator.semifluid.tier.02",
-                "Advanced Semi-Fluid Generator",
+                "Advanced Semifluid Generator",
                 2).getStackForm(1L));
         GregtechItemList.Generator_SemiFluid_HV.set(
             new MTESemiFluidGenerator(
                 Generator_SemiFluid_HV.ID,
                 "basicgenerator.semifluid.tier.03",
-                "Turbo Semi-Fluid Generator",
+                "Turbo Semifluid Generator",
                 3).getStackForm(1L));
         GregtechItemList.Generator_SemiFluid_EV.set(
             new MTESemiFluidGenerator(
                 Generator_SemiFluid_EV.ID,
                 "basicgenerator.semifluid.tier.04",
-                "Turbo Semi-Fluid Generator II",
+                "Turbo Semifluid Generator II",
                 4).getStackForm(1L));
         GregtechItemList.Generator_SemiFluid_IV.set(
             new MTESemiFluidGenerator(
                 Generator_SemiFluid_IV.ID,
                 "basicgenerator.semifluid.tier.05",
-                "Turbo Semi-Fluid Generator III",
+                "Turbo Semifluid Generator III",
                 5).getStackForm(1L));
         GregtechItemList.Controller_LargeSemifluidGenerator.set(
             new MTELargeSemifluidGenerator(
