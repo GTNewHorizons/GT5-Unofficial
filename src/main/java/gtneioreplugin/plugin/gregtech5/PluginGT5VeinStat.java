@@ -14,7 +14,6 @@ import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
-import  gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperBW;
 import gtneioreplugin.util.OreVeinLayer;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
