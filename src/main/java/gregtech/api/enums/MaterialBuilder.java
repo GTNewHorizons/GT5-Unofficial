@@ -313,9 +313,9 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setDensity(int densityMultiplier, int densityDivider) {
-        this.densityMultiplier = densityMultiplier;
-        this.densityDivider = densityDivider;
+    public MaterialBuilder setDensity(int multiplier, int divider) {
+        this.densityMultiplier = multiplier;
+        this.densityDivider = divider;
         return this;
     }
 
