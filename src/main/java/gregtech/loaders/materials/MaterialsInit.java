@@ -4713,6 +4713,8 @@ public class MaterialsInit {
             .setDefaultLocalName("Infinite")
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.ELECTRUM, 10)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
