@@ -2479,7 +2479,10 @@ public class MaterialsInit {
             .setDefaultLocalName("Teslatite")
             .setARGB(0x003cb4c8)
             .addDustItems()
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.STONE)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
