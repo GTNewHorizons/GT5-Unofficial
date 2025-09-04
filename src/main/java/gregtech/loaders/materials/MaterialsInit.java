@@ -12889,6 +12889,7 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Silver, 2)
             .addMaterial(Materials.Thaumium, 1)
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
