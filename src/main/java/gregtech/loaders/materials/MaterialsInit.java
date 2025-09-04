@@ -2288,6 +2288,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Dark Thaumium")
             .addDustItems()
             .addMetalItems()
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
