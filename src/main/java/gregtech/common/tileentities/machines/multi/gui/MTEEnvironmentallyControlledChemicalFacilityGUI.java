@@ -57,17 +57,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
 
     @Override
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
-            .paddingRight(6)
-            .paddingLeft(4)
-            .height(textBoxToInventoryGap)
-            .child(createVoidExcessButton(syncManager))
-            .child(createInputSeparationButton(syncManager))
-            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
-            .child(createBatchModeButton(syncManager))
-            .child(createLockToSingleRecipeButton(syncManager))
-            .child(createConditionControlButton(parent, syncManager))
-            .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+        return super.createPanelGap(parent, syncManager).child(createConditionControlButton(parent, syncManager));
     }
 
     private IWidget createConditionControlButton(ModularPanel parent, PanelSyncManager syncManager) {
