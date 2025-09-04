@@ -22,7 +22,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             for (OreLayerWrapper oreVein : getAllVeins()) {
-                addVeinWithLayers(oreVein, 7);
+                addVeinWithLayers(oreVein, oreVein.hasVarients ? 7 : 1);
             }
         } else super.loadCraftingRecipes(outputId, results);
     }
@@ -33,7 +33,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             .startsWith("gt.blockores")) {
             loadMatchingVeins((short) (stack.getItemDamage() % 1000));
         } else if (stack.getUnlocalizedName()
-            .startsWith("bw.blocktype.ore")) {
+            .startsWith("bw.blockores")) {
             loadMatchingVeinsBW((short) (stack.getItemDamage()));
         } else super.loadCraftingRecipes(stack);
     }
@@ -41,7 +41,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     private void loadMatchingVeins(short oreId) {
         for (OreLayerWrapper oreVein : getAllVeins()) {
             if (oreVein.containsOre(oreId)) {
-                addVeinWithLayers(oreVein, getMaximumMaterialIndex(oreId, false));
+                addVeinWithLayers(oreVein, oreVein.hasVarients ? getMaximumMaterialIndex(oreId, false) : 1);
             }
         }
     }
