@@ -6344,6 +6344,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.GELUM, 2)
             .addSubTag(SubTag.FOOD)
+            .addSubTag(SubTag.NO_RECYCLING)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
