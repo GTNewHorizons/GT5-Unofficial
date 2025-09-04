@@ -11712,7 +11712,9 @@ public class MaterialsInit {
             .addMaterial(Materials.PotassiumFeldspar, 1)
             .addMaterial(Materials.Oxygen, 3)
             .addAspect(TCAspects.TUTAMEN, 1)
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
