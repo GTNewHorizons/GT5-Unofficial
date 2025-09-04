@@ -2020,9 +2020,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        SubTag.BLASTFURNACE_CALCITE_DOUBLE
-            .addTo(Pyrite, BrownLimonite, YellowLimonite, BasalticMineralSand, GraniticMineralSand, Magnetite);
-
         SubTag.BLASTFURNACE_CALCITE_TRIPLE.addTo(Iron, PigIron, DeepIron, ShadowIron, WroughtIron, MeteoricIron);
 
         SubTag.WASHING_MERCURY.addTo(Gold, Osmium, Mithril, Platinum, Cooperite, AstralSilver);

@@ -5703,6 +5703,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
@@ -6486,6 +6487,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 4)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
             .constructMaterial();
     }
@@ -6850,6 +6852,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Sulfur, 2)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
@@ -9217,6 +9220,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
@@ -10031,6 +10035,7 @@ public class MaterialsInit {
             .addMaterial(Materials.GraniteBlack, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
             .constructMaterial();
     }
@@ -11549,6 +11554,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Basalt, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
             .constructMaterial();
     }
