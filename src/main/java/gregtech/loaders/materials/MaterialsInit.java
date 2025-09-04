@@ -10233,6 +10233,11 @@ public class MaterialsInit {
             .addAspect(TCAspects.ALIENIS, 4)
             .addAspect(TCAspects.ITER, 4)
             .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.PEARL)
             .constructMaterial();
     }
 
