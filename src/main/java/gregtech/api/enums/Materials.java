@@ -2021,8 +2021,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
-
         Gold.add(SubTag.MORTAR_GRINDABLE);
         Silver.add(SubTag.MORTAR_GRINDABLE);
         Iron.add(SubTag.MORTAR_GRINDABLE);

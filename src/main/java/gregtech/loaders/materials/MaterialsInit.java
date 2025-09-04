@@ -7095,6 +7095,8 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Potassium, 1)
             .addMaterial(Materials.Chlorine, 1)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
