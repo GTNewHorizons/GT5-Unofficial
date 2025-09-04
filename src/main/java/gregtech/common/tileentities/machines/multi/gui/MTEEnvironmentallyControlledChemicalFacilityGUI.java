@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -79,30 +79,30 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
     }
 
     private Flow createIndicators(PanelSyncManager syncManager) {
-        return new Row().child(
-            new ParentWidget<>().size(54, 48)
-                .background(GTGuiTextures.ECCF_FRAME)
-                .left(5)
-                .child(
-                    GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
-                        .margin(4, 4)
-                        .size(46, 40)))
+        return new Row().coverChildrenHeight()
             .child(
-                new ParentWidget<>().size(54, 48)
+                new SingleChildWidget<>().size(54, 48)
+                    .padding(4)
+                    .background(GTGuiTextures.ECCF_FRAME)
+                    .left(5)
+                    .child(
+                        GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
+                            .size(46, 40)))
+            .child(
+                new SingleChildWidget<>().size(54, 48)
+                    .padding(4)
                     .background(GTGuiTextures.ECCF_FRAME)
                     .right(5)
                     .child(
                         GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
-                            .margin(4, 4)
                             .size(46, 40)))
             .child(
-                new ParentWidget<>().horizontalCenter()
+                new SingleChildWidget<>().horizontalCenter()
+                    .padding(4)
                     .size(48, 48)
                     .background(GTGuiTextures.ECCF_FRAME)
                     .child(
                         new Row().size(40, 40)
-                            .horizontalCenter()
-                            .marginTop(4)
                             .child(createLeftIndicator(syncManager))
                             .child(createRightIndicator(syncManager))));
     }
@@ -216,7 +216,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         DoubleSyncValue tempModule = (DoubleSyncValue) syncManager.getSyncHandler("TempModule:0");
         DoubleSyncValue presModule = (DoubleSyncValue) syncManager.getSyncHandler("PresModule:0");
 
-        return new Column().marginTop(48)
+        return new Column()
             .child(
                 createValueRow(
                     IKey.dynamic(() -> valueConverter(tempSyncer.getValue(), false, "K")),
@@ -265,7 +265,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
             .size(176, 136)
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .child(
-                new ParentWidget<>().top(5)
+                new Column().top(5)
                     .sizeRel(1.0f)
                     .child(createIndicators(syncManager))
                     .child(createInfoColumn(syncManager)))
