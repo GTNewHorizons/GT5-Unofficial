@@ -6545,6 +6545,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Silicon, 6)
             .addMaterial(Materials.Calcium, 8)
             .addMaterial(Materials.Sodium, 8)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
