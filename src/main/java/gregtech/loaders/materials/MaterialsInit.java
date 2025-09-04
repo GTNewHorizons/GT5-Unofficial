@@ -3289,7 +3289,10 @@ public class MaterialsInit {
             .addAspect(TCAspects.PRAECANTATIO, 3)
             .addAspect(TCAspects.IGNIS, 3)
             .addAspect(TCAspects.CORPUS, 3)
+            .addSubTag(SubTag.BURNING)
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
