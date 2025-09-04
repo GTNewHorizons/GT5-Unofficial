@@ -2105,8 +2105,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorZPM.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         // SuperconductorUV .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorUHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-
-        Mithril.add(SubTag.MAGICAL);
     }
 
     public static void init() {
