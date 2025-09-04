@@ -37,7 +37,6 @@ import bartworks.system.material.BWTileEntityMetaGeneratedOre;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.MurmurHash3;
-import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -95,7 +94,7 @@ public abstract class BWOreLayer extends GTWorldgen {
     }
 
     public BWOreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
-        ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled, DimensionDef dimensionDef) {
+        ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled, String dim) {
         
         super(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
 
@@ -112,14 +111,14 @@ public abstract class BWOreLayer extends GTWorldgen {
                 && layer.mMinY == (short) aMinY
                 && layer.mMaxY == (short) aMaxY
             ) {
-                layer.addDimension(dimensionDef);
+                layer.addDimension(dim);
                 return;
             }
         }
 
         OreLayerWrapperBW layer2 = new OreLayerWrapperBW();
         NEIList.add(layer2);
-        layer2.addDimension(dimensionDef);
+        layer2.addDimension(dim);
     }
 
     public List<ItemStack> getStacks() {
