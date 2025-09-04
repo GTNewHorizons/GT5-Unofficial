@@ -798,6 +798,7 @@ public class MaterialsInit {
             .addGearItems()
             .setMeltingPoint(1_811)
             .addAspect(TCAspects.METALLUM, 3)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -983,6 +984,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -6012,6 +6014,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -6717,6 +6720,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addCentrifugeRecipe()
             .addMaterial(Materials.Iron, 1)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -9186,6 +9190,7 @@ public class MaterialsInit {
             .setMeltingPoint(1_811)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Iron, 1)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -12695,6 +12700,7 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Thaumium, 3)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
