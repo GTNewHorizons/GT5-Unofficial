@@ -3067,6 +3067,9 @@ public class MaterialsInit {
             .setARGB(0x00643264)
             .addDustItems()
             .addGemItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
