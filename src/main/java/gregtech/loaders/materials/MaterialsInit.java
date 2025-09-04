@@ -8330,6 +8330,10 @@ public class MaterialsInit {
             .setTool(32, 1, 3.0f)
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 8)
+            .addSubTag(SubTag.BOUNCY)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
