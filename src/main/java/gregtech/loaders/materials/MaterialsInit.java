@@ -364,6 +364,7 @@ public class MaterialsInit {
             .setMeltingPoint(3_800)
             .addAspect(TCAspects.VITREUS, 1)
             .addAspect(TCAspects.IGNIS, 1)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 

@@ -2152,8 +2152,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         AstralSilver.add(SubTag.MAGICAL);
         Mithril.add(SubTag.MAGICAL);
 
-        Carbon.add(SubTag.NO_SMELTING);
-
         MaterialsUEVplus.TranscendentMetal.add(SubTag.BLACK_HOLE);
     }
 
