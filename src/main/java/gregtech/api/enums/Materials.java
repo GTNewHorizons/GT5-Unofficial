@@ -2020,8 +2020,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM.addTo(Bastnasite, Monazite, Forcicium, Forcillium);
-
         SubTag.ELECTROMAGNETIC_SEPERATION_GOLD
             .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 

@@ -3307,6 +3307,7 @@ public class MaterialsInit {
             .addOreItems()
             .addCell()
             .addAspect(TCAspects.POTENTIA, 2)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .constructMaterial();
     }
 
@@ -3323,6 +3324,7 @@ public class MaterialsInit {
             .addOreItems()
             .addCell()
             .addAspect(TCAspects.POTENTIA, 2)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .constructMaterial();
     }
 
@@ -9469,6 +9471,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Fluorine, 1)
             .addMaterial(Materials.Oxygen, 3)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .constructMaterial();
     }
 
@@ -10322,6 +10325,7 @@ public class MaterialsInit {
             // to be low, about 0.05% Thorium content of monazite is variable.
             .addMaterial(Materials.RareEarth, 1)
             .addMaterial(Materials.Phosphate, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .constructMaterial();
     }
 
