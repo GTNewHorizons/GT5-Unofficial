@@ -216,7 +216,7 @@ public class EyeOfHarmonyRecipe {
         return switch (key) {
             case "Ne" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
             case "ED", "VA", "EA" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
-            case "Mo" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
+            case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "item.DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "item.MarsStoneDust", 1, placeholder);
             case "Ph" -> getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1, placeholder);
@@ -253,11 +253,8 @@ public class EyeOfHarmonyRecipe {
 
         // Process recipes output items.
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
-        final Pair ret = processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds);
-        final ArrayList<ItemStackLong> outputItems = validDustGenerator(ret.getLeft(), ret.getRight());
         this(
-            outputItems,
-            ret.getLeft(),
+            processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds),
             block,
             recipeEnergyEfficiency,
             hydrogenRequirement,
@@ -266,6 +263,20 @@ public class EyeOfHarmonyRecipe {
             spacetimeCasingTierRequired,
             baseSuccessChance);
     }
+    public EyeOfHarmonyRecipe(Pair<ArrayList<Pair<Materials, Long>>, ArrayList<Pair<Short, Long>>> ret, final BlockDimensionDisplay block,
+        final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
+        final long miningTimeSeconds, final long spacetimeCasingTierRequired, final double baseSuccessChance) {
+        
+        this(
+            validDustGenerator(ret.getLeft(), ret.getRight()),
+            ret.getLeft(),
+            recipeEnergyEfficiency,
+            hydrogenRequirement,
+            heliumRequirement,
+            miningTimeSeconds,
+            spacetimeCasingTierRequired,
+            baseSuccessChance);
+        }
 
     // Return clone of list. Deep copy. Maybe a better way to do this?
     public ArrayList<ItemStackLong> getOutputItems() {
