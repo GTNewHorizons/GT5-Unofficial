@@ -6152,6 +6152,8 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Mercury, 1)
             .addMaterial(Materials.Sulfur, 1)
+            .addSubTag(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
+            .addSubTag(SubTag.SMELTING_TO_GEM)
             .constructMaterial();
     }
 
