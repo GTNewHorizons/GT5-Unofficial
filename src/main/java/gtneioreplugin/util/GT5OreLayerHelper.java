@@ -124,6 +124,16 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapperBW extends OreLayerWrapper {
         public byte bwOres;
+        public final String veinName, worldGenHeightRange, localizedName;
+        public final short[] Meta = new short[4];
+        public final short randomWeight, size, density;
+        public final Map<String, Boolean> allowedDimWithOrigNames;
+
+        public final ISubTagContainer mPrimaryVeinMaterial;
+        public final ISubTagContainer mSecondaryMaterial;
+        public final ISubTagContainer mBetweenMaterial;
+        public final ISubTagContainer mSporadicMaterial;
+
         public OreLayerWrapperBW(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = mix.oreMixName;
             this.localizedName = mix.localizedName;
@@ -133,10 +143,10 @@ public class GT5OreLayerHelper {
             this.Meta[3] = getMeta(sporadic);
             setBwOres(primary, secondary, between, sporadic);
 
-            this.mPrimaryVeinMaterial = mix.primary;
-            this.mSecondaryMaterial = mix.secondary;
-            this.mBetweenMaterial = mix.between;
-            this.mSporadicMaterial = mix.sporadic;
+            this.mPrimaryVeinMaterial = primary;
+            this.mSecondaryMaterial = secondary;
+            this.mBetweenMaterial = between;
+            this.mSporadicMaterial = sporadic;
 
             this.size = (short) layer.mSize;
             this.density = (short) layer.mDensity;
