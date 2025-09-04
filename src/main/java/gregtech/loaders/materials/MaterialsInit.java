@@ -11512,7 +11512,11 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 9)
             .addMaterial(Materials.LiveRoot, 9)
             .addMaterial(Materials.Gold, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .addSubTag(SubTag.WOOD)
             .constructMaterial();
     }
 
