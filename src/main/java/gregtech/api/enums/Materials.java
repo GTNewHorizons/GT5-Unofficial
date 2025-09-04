@@ -2021,7 +2021,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Nickel.add(SubTag.MORTAR_GRINDABLE);
         Invar.add(SubTag.MORTAR_GRINDABLE);
         Brass.add(SubTag.MORTAR_GRINDABLE);
         WroughtIron.add(SubTag.MORTAR_GRINDABLE);

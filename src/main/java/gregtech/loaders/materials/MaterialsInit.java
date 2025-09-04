@@ -1134,6 +1134,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.IGNIS, 1)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
