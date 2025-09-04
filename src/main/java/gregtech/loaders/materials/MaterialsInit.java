@@ -6821,6 +6821,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Silicon, 2)
             .addMaterial(Materials.Oxygen, 8)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 

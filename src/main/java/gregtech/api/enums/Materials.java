@@ -2021,7 +2021,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Obsidian.add(SubTag.STONE, SubTag.NO_SMASHING);
         Flint.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
         GraniteRed.add(SubTag.STONE, SubTag.NO_SMASHING);
         GraniteBlack.add(SubTag.STONE, SubTag.NO_SMASHING);
