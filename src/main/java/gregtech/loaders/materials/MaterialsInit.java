@@ -4056,6 +4056,8 @@ public class MaterialsInit {
             .setARGB(0x00640000)
             .addDustItems()
             .addAspect(TCAspects.IGNIS, 1)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
