@@ -5281,6 +5281,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeYellow)
             .addDustItems()
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 

@@ -2021,7 +2021,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Endstone.add(SubTag.STONE, SubTag.NO_SMASHING);
         Marble.add(SubTag.STONE, SubTag.NO_SMASHING);
         Basalt.add(SubTag.STONE, SubTag.NO_SMASHING);
         Redrock.add(SubTag.STONE, SubTag.NO_SMASHING);
