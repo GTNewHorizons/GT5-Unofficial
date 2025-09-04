@@ -10392,6 +10392,9 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.LUCRUM, 4)
             .addAspect(TCAspects.VITREUS, 2)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
