@@ -10316,6 +10316,12 @@ public class MaterialsInit {
             .addAspect(TCAspects.ARBOR, 2)
             .addAspect(TCAspects.VICTUS, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.WOOD)
             .constructMaterial();
     }
 

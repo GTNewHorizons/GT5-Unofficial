@@ -2020,13 +2020,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        LiveRoot.add(
-            SubTag.WOOD,
-            SubTag.FLAMMABLE,
-            SubTag.NO_SMELTING,
-            SubTag.NO_SMASHING,
-            SubTag.MAGICAL,
-            SubTag.MORTAR_GRINDABLE);
         IronWood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
         Steeleaf.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.NO_SMELTING);
 
