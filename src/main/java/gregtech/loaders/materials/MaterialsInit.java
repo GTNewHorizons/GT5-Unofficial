@@ -4872,6 +4872,10 @@ public class MaterialsInit {
             .addDustItems()
             .addAspect(TCAspects.PERDITIO, 3)
             .addAspect(TCAspects.IGNIS, 4)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
