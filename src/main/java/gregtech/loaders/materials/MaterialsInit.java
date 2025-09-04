@@ -5966,6 +5966,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.POTENTIA, 2)
             .addAspect(TCAspects.IGNIS, 2)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
