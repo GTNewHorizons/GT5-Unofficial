@@ -65,11 +65,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * location where it shouldn't happen.
      */
 
-    public static Materials _NULL = new MaterialBuilder().setName("NULL")
-        .setDefaultLocalName("NULL")
-        .setElement(Element._NULL)
-        .constructMaterial();
-
     // Elements
     public static Materials Aluminium;
     public static Materials Americium;
@@ -121,6 +116,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Nickel;
     public static Materials Niobium;
     public static Materials Nitrogen;
+    public static Materials _NULL; // Not a real element
     public static Materials Oriharukon; // Not a real element
     public static Materials Osmium;
     public static Materials Oxygen;

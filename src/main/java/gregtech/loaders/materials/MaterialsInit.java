@@ -103,6 +103,7 @@ public class MaterialsInit {
         Materials.Nickel = loadNickel();
         Materials.Niobium = loadNiobium();
         Materials.Nitrogen = loadNitrogen();
+        Materials._NULL = loadNULL(); // Not a real element
         Materials.Oriharukon = loadOriharukon();
         Materials.Osmium = loadOsmium();
         Materials.Oxygen = loadOxygen();
@@ -1178,6 +1179,13 @@ public class MaterialsInit {
             .setMeltingPoint(63)
             .addAspect(TCAspects.AER, 2)
             .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadNULL() {
+        return new MaterialBuilder().setName("NULL")
+            .setDefaultLocalName("NULL")
+            .setElement(Element._NULL)
             .constructMaterial();
     }
 
