@@ -10202,8 +10202,11 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.VITREUS, 2)
-            .addSubTag(SubTag.TRANSPARENT)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_RECYCLING)
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
