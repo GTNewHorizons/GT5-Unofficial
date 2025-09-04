@@ -10084,6 +10084,9 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.TERRA, 1)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
