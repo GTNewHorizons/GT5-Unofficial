@@ -125,7 +125,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private static void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
         final String oreName;
-        if ((oreLayer.bwOres & 0b1000 >> veinLayer) == 0) oreName = getBWOreName(oreLayer.Meta[veinLayer]);
+        if ((oreLayer.bwOres & 0b1000 >> veinLayer) != 0) oreName = getBWOreName(oreLayer.Meta[veinLayer]);
         else oreName = getGTOreLocalizedName(oreLayer.Meta[veinLayer]);
         drawLine(
             OreVeinLayer.getOreVeinLayerName(veinLayer),
