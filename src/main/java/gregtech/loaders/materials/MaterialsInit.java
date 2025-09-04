@@ -7169,6 +7169,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Sodium, 1)
             .addMaterial(Materials.Chlorine, 1)
             .addSubTag(SubTag.FOOD)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
