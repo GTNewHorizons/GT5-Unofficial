@@ -253,8 +253,8 @@ public class EyeOfHarmonyRecipe {
 
         // Process recipes output items.
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
-        Pair ret = processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds);
-        ArrayList<ItemStackLong> outputItems = validDustGenerator(ret.getLeft(), ret.getRight());
+        final Pair ret = processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds);
+        final ArrayList<ItemStackLong> outputItems = validDustGenerator(ret.getLeft(), ret.getRight());
         this(
             outputItems,
             ret.getLeft(),
@@ -392,8 +392,8 @@ public class EyeOfHarmonyRecipe {
             ISubTagContainer byProductMaterial = material.getOreByProductRaw(index);
             if (byProductMaterial == null) continue;
             else if (byProductMaterial instanceof Materials) outputMap
-                .add((Materials) byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
-            else if (byProductMaterial instanceof Werkstoff) outputWerkstoffMap.add((Werkstoff) byProductMaterial.getmID(), 2 * mainMultiplier * probability);
+                .add(((Materials) byProductMaterial).mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
+            else if (byProductMaterial instanceof Werkstoff) outputWerkstoffMap.add(((Werkstoff) byProductMaterial).getmID(), 2 * mainMultiplier * probability);
         }
     }
 
