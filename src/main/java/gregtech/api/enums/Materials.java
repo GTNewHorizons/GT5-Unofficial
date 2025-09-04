@@ -2014,7 +2014,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void initSubTags() {
         Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING); // Todo: remove this once it will be fully
         // deprecated
-        SuperconductorIV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorLuV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorZPM.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         // SuperconductorUV .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
