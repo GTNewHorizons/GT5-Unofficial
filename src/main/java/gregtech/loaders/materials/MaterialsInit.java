@@ -8363,6 +8363,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 3)
             .addMaterial(Materials.Chlorine, 1)
+            .addSubTag(SubTag.BOUNCY)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
