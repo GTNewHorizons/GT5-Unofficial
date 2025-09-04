@@ -465,6 +465,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
 
@@ -485,6 +486,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.PERMUTATIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
 
@@ -1110,6 +1112,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.IGNIS, 1)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
 
@@ -1836,6 +1839,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.SANO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
 
@@ -5927,6 +5931,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Cobalt, 1)
             .addMaterial(Materials.Arsenic, 1)
             .addMaterial(Materials.Sulfur, 1)
+            .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
 
@@ -9014,6 +9019,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Antimony, 1)
             .addMaterial(Materials.Sulfur, 3)
             .addMaterial(Materials.Iron, 1)
+            .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
 
