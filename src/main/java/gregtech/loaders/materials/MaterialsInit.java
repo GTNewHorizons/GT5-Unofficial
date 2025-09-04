@@ -6294,6 +6294,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 5)
             .addMaterial(Materials.Nitrogen, 3)
             .addMaterial(Materials.Oxygen, 9)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
