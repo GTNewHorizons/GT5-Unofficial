@@ -5771,6 +5771,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Aluminium, 2)
             .addMaterial(Materials.Silicon, 4)
             .addMaterial(Materials.Oxygen, 11)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
