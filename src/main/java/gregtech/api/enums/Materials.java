@@ -2020,7 +2020,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Silicone.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
         Polytetrafluoroethylene.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.STRETCHY);
         Polybenzimidazole.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.STRETCHY);
         PolyphenyleneSulfide.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.STRETCHY);

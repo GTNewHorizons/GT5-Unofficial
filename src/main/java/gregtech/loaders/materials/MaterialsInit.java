@@ -7206,6 +7206,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 1)
             .addMaterial(Materials.Silicon, 1)
             .addAspect(TCAspects.MOTUS, 2)
+            .addSubTag(SubTag.BOUNCY)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
