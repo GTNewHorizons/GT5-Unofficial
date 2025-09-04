@@ -813,6 +813,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 3)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
