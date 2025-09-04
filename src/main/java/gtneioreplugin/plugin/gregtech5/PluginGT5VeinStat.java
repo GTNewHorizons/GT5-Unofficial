@@ -49,7 +49,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private void loadMatchingVeinsBW(short oreId) {
         for (OreLayerWrapper oreVein : getAllVeins()) {
-            if (oreVein instanceof OreLayerWrapperBW && (OreLayerWrapperBW) oreVein.containsOreBW(oreId)) {
+            if (oreVein.containsOreBW(oreId)) {
                 addVeinWithLayers(oreVein, 1);
             }
         }
