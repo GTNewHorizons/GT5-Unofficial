@@ -24,7 +24,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             for (OreLayerWrapper oreVein : getAllVeins()) {
-                addVeinWithLayers(oreVein, oreVein.hasVarients ? 7 : 1);
+                addVeinWithLayers(oreVein, oreVein.hasVariants ? 7 : 1);
             }
         } else super.loadCraftingRecipes(outputId, results);
     }
@@ -118,7 +118,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 80);
     }
 
-    private static void getBWOreName(short meta) {
+    private static String getBWOreName(short meta) {
         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(meta, null);
         return GTLanguageManager.getTranslation("bw.blocktype.ore").replace("%material", werkstoff.getLocalizedName());
     }
