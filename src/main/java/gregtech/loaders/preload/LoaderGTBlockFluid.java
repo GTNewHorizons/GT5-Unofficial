@@ -531,7 +531,7 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.RodExcitedPlutonium2.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedPlutonium2",
-                "Fuel Rod (Excited Plutonium)",
+                "Dual Fuel Rod (Excited Plutonium)",
                 2,
                 10_000,
                 64,
@@ -542,7 +542,7 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.RodExcitedPlutonium4.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedPlutonium4",
-                "Fuel Rod (Excited Plutonium)",
+                "Quad Fuel Rod (Excited Plutonium)",
                 4,
                 10_000,
                 64,
