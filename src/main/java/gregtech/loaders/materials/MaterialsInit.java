@@ -5001,7 +5001,12 @@ public class MaterialsInit {
             .setARGB(0x00fafafa)
             .addDustItems()
             .addAspect(TCAspects.COGNITIO, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.PAPER)
             .constructMaterial();
     }
 
