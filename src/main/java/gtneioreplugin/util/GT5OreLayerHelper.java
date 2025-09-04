@@ -158,8 +158,8 @@ public class GT5OreLayerHelper {
             if (sprinkled instanceof Werkstoff) this.bwOres = (byte) (this.bwOres | 0b0001);
         }
 
-        public void addDimension(DimensionDef dim) {
-            this.allowedDimWithOrigNames.put(dim.modDimensionDef.getDimensionName(), true);
+        public void addDimension(String dim) {
+            this.allowedDimWithOrigNames.put(dim, true);
         }
 
         @Override
