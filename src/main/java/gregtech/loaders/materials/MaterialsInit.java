@@ -1556,6 +1556,9 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(388)
             .addAspect(TCAspects.IGNIS, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
