@@ -4158,6 +4158,10 @@ public class MaterialsInit {
     private static Materials loadPeanutwood() {
         return new MaterialBuilder().setName("Peanutwood")
             .setDefaultLocalName("Peanut Wood")
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.WOOD)
             .constructMaterial();
     }
 
