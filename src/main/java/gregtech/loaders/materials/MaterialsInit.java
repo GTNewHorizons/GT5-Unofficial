@@ -9312,6 +9312,7 @@ public class MaterialsInit {
             .addOreItems()
             .addMaterial(Materials.Zinc, 1)
             .addMaterial(Materials.Sulfur, 1)
+            .addSubTag(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
             .constructMaterial();
     }
 
