@@ -3443,7 +3443,12 @@ public class MaterialsInit {
             .addOreItems()
             .addCell()
             .addAspect(TCAspects.POTENTIA, 2)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
