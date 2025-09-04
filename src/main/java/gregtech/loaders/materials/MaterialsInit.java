@@ -28,10 +28,9 @@ public class MaterialsInit {
         Materials.Diode = loadDiode();
         Materials.Transistor = loadTransistor();
         Materials.Capacitor = loadCapacitor();
+        Materials.Inductor = loadInductor();
 
         // spotless:off
-        Materials.Inductor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Inductor"                ,   "Inductor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
-
         Materials.Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 11)));
         Materials.Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 12)));
         // spotless:on
@@ -4803,6 +4802,14 @@ public class MaterialsInit {
     private static Materials loadCapacitor() {
         return new MaterialBuilder().setName("Capacitor")
             .setDefaultLocalName("Capacitor")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadInductor() {
+        return new MaterialBuilder().setName("Inductor")
+            .setDefaultLocalName("Inductor")
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.ELECTRUM, 1)
             .constructMaterial();
