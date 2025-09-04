@@ -5603,6 +5603,7 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Copper, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
     }
 
