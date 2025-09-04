@@ -8480,6 +8480,10 @@ public class MaterialsInit {
             .setTool(128, 1, 3.0f)
             .addMaterial(Materials.Styrene, 1)
             .addMaterial(Materials.Butadiene, 3)
+            .addSubTag(SubTag.BOUNCY)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
