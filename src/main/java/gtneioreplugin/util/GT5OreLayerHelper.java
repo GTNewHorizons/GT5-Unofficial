@@ -43,7 +43,7 @@ public class GT5OreLayerHelper {
     public static void init() {
         for (OreMixes mix : OreMixes.values())
             mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
-        for (OreLayerWrapperBW layer : BWOreLayer.NEIList) {
+        for (OreLayerWrapper layer : BWOreLayer.NEIList) {
             mapOreLayerWrapper.put(layer.veinName, layer);
         }
         for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {
