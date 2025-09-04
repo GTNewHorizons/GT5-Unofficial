@@ -6890,7 +6890,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Fluorine, 4)
             .addAspect(TCAspects.MOTUS, 2)
+            .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
