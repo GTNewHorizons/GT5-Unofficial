@@ -885,7 +885,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .getTileEntity(xyz[0], xyz[1], xyz[2]);
         }
 
-        if (masterStoneRitual != null && !masterStoneRitual.isInvalid() && masterStoneRitual instanceof TEMasterStone tRitualTe) {
+        if (masterStoneRitual != null && !masterStoneRitual.isInvalid()
+            && masterStoneRitual instanceof TEMasterStone tRitualTe) {
             if (tRitualTe.getCurrentRitual()
                 .equals(WellOfSufferingRitualName)) return true;
         }
