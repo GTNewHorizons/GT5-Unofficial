@@ -7,6 +7,7 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreMixes;
