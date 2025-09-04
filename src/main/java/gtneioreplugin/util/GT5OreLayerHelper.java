@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.system.oregen.BWOreLayer;
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -72,6 +73,7 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapper {
 
+        public byte bwOres;
         public final String veinName, worldGenHeightRange, localizedName;
         public final short[] Meta = new short[4];
         public final short randomWeight, size, density;
@@ -105,38 +107,21 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int maximumMaterialIndex, int veinLayer) {
             List<ItemStack> stackList = new ArrayList<>();
-            for (int i = 0; i < maximumMaterialIndex; i++) {
-                stackList.add(getLayerOre(veinLayer, i));
+            if ((this.bwOres & 0b0001 << veinLayer) == 0) {
+                for (int i = 0; i < maximumMaterialIndex; i++) {
+                    stackList.add(getLayerOre(veinLayer, i));
+                }
             }
+            else stackList.add(getLayerOre(veinLayer, -1));
             return stackList;
         }
 
         public ItemStack getLayerOre(int veinLayer, int materialIndex) {
-            return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
+            if ((this.bwOres & 0b0001 << veinLayer) == 0) return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
+            return new ItemStack(WerkstoffLoader.BWOres, 1, Meta[veinLayer]);
         }
 
-        public boolean containsOre(short materialIndex) {
-            return Meta[OreVeinLayer.VEIN_PRIMARY] == materialIndex
-                || Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex
-                || Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex
-                || Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex;
-        }
-    }
-
-    public static class OreLayerWrapperBW extends OreLayerWrapper {
-        public byte bwOres;
-        public final String veinName, worldGenHeightRange, localizedName;
-        public final short[] Meta = new short[4];
-        public final short randomWeight, size, density;
-        public final Map<String, Boolean> allowedDimWithOrigNames;
-
-        public final ISubTagContainer mPrimaryVeinMaterial;
-        public final ISubTagContainer mSecondaryMaterial;
-        public final ISubTagContainer mBetweenMaterial;
-        public final ISubTagContainer mSporadicMaterial;
-        public final BWOreLayer oreLayer;
-
-        public OreLayerWrapperBW(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
+        public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
             this.localizedName = veinName;
             this.Meta[0] = getMeta(primary);
@@ -156,7 +141,6 @@ public class GT5OreLayerHelper {
             this.randomWeight = (short) layer.mWeight;
 
             this.allowedDimWithOrigNames = new HashMap<>();
-            this.oreLayer = layer;
         }
 
         private short getMeta(ISubTagContainer material) {
@@ -176,7 +160,6 @@ public class GT5OreLayerHelper {
             this.allowedDimWithOrigNames.put(dim, true);
         }
 
-        @Override
         public boolean containsOre(short materialIndex) {
             return ((this.bwOres & 0b1000) == 0 && Meta[OreVeinLayer.VEIN_PRIMARY] == materialIndex)
                 || ((this.bwOres & 0b0100) == 0 && Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex)
@@ -189,19 +172,6 @@ public class GT5OreLayerHelper {
                 || ((this.bwOres & 0b0100) != 0 && Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex)
                 || ((this.bwOres & 0b0010) != 0 && Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex)
                 || ((this.bwOres & 0b0001) != 0 && Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex);
-        }
-
-        @Override
-        public List<ItemStack> getVeinLayerOre(int _unused, int veinLayer) {
-            List<ItemStack> stackList = new ArrayList<>();
-            stackList.add(getLayerOre(veinLayer, 0));
-            return stackList;
-        }
-        
-        @Override
-        public ItemStack getLayerOre(int veinLayer, int _unused) {
-            List<ItemStack> List = this.oreLayer.getStacks();
-            return List.get(veinLayer);
         }
     }
 }
