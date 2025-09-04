@@ -3436,6 +3436,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.VITREUS, 2)
             .addAspect(TCAspects.IGNIS, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
