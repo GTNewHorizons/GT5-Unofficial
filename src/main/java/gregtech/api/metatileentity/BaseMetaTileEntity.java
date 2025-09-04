@@ -1327,7 +1327,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public ArrayList<ItemStack> getDrops() {
         final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
-        if (mMuffler) tNBT.setBoolean("mMuffler", true);
         if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", true);
         if (mColor > 0) tNBT.setByte("mColor", mColor);
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
@@ -1342,7 +1341,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     public int getUpgradeCount() {
-        return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + mOtherUpgrades;
+        return (mLockUpgrade ? 1 : 0) + mOtherUpgrades;
     }
 
     @Override
@@ -1401,16 +1400,24 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            mInputDisabled = !mInputDisabled;
-                            if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                            GTUtility.sendChatToPlayer(
-                                aPlayer,
-                                GTUtility.trans("086", "Auto-Input: ")
-                                    + (mInputDisabled ? GTUtility.trans("087", "Disabled")
+                            if (aPlayer.isSneaking()) {
+                                mInputDisabled = !mInputDisabled;
+                                if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
+                                GTUtility.sendChatToPlayer(
+                                    aPlayer,
+                                    GTUtility.trans("086", "Auto-Input: ") + (mInputDisabled
+                                        ? GTUtility.trans("087", "Disabled")
                                         : GTUtility.trans("088", "Enabled") + GTUtility.trans("089", "  Auto-Output: ")
                                             + (mOutputDisabled ? GTUtility.trans("087", "Disabled")
                                                 : GTUtility.trans("088", "Enabled"))));
-                            sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
+                                sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
+                            } else {
+                                mMuffler = !mMuffler;
+                                GTUtility.sendChatToPlayer(
+                                    aPlayer,
+                                    StatCollector.translateToLocal(
+                                        mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off"));
+                            }
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
