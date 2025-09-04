@@ -18,7 +18,8 @@ import org.lwjgl.opengl.GL11;
 import com.github.bsideup.jabel.Desugar;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.client.hud.elements.*;
+import gregtech.client.hud.elements.DroplistElement;
+import gregtech.client.hud.elements.TextInputElement;
 
 /**
  * Manages HUD widgets, handling rendering, mouse interactions, and edit mode.

@@ -11,7 +11,13 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 
 import gregtech.client.hud.HUDManager.UIConstants;
-import gregtech.client.hud.elements.*;
+import gregtech.client.hud.elements.ButtonElement;
+import gregtech.client.hud.elements.CheckboxElement;
+import gregtech.client.hud.elements.Configurable;
+import gregtech.client.hud.elements.RectElement;
+import gregtech.client.hud.elements.TextElement;
+import gregtech.client.hud.elements.TextInputElement;
+import gregtech.client.hud.elements.WidgetElement;
 
 public class HUDGui {
 
