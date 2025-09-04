@@ -2363,6 +2363,11 @@ public class MaterialsInit {
             .setDefaultLocalName("Fluix")
             .addDustItems()
             .addGemItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.QUARTZ)
             .constructMaterial();
     }
 
