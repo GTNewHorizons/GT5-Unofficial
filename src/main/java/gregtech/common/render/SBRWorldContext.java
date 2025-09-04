@@ -41,8 +41,6 @@ import gregtech.api.render.SBRContextHolder;
  */
 public final class SBRWorldContext extends SBRContextBase implements ISBRWorldContext {
 
-    private static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
-
     /**
      * Used to determine if face is flush with negative neighbour
      */
@@ -212,7 +210,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     @Override
     public void renderPositiveYFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
-        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+        if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
             && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, 1)) return;
         setupLightingYPos();
         super.renderPositiveYFacing(tex);
@@ -221,7 +219,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     @Override
     public void renderNegativeZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
-        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+        if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
             && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, 2)) return;
         setupLightingZNeg();
         super.renderNegativeZFacing(tex);
@@ -230,7 +228,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     @Override
     public void renderPositiveZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
-        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+        if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
             && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, 3)) return;
         setupLightingZPos();
         super.renderPositiveZFacing(tex);
@@ -239,7 +237,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     @Override
     public void renderNegativeXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
-        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+        if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
             && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, 4)) return;
         setupLightingXNeg();
         super.renderNegativeXFacing(tex);
@@ -248,7 +246,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     @Override
     public void renderPositiveXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
-        if (renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
+        if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
             && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, 5)) return;
         setupLightingXPos();
         super.renderPositiveXFacing(tex);
@@ -321,13 +319,35 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     }
 
     /**
+     * Optionally loads the {@code blockrenderer6343.client.world.DummyWorld} class
+     */
+    private static final Class<?> BR63430_DUMMY_WORLD_CLASS;
+    static {
+        Class<?> c = null;
+        try {
+            c = Class.forName("blockrenderer6343.client.world.DummyWorld");
+        } catch (ClassNotFoundException ignored) {}
+        BR63430_DUMMY_WORLD_CLASS = c;
+    }
+
+    /**
+     * Performs an optional instanceof check
+     * 
+     * @param blockAccess the world access interface to check
+     * @return {@code true} if {@code blockAccess instanceof blockrenderer6343.client.world.DummyWorld}
+     */
+    private static boolean isBlockRenderer6343DummyWorld(IBlockAccess blockAccess) {
+        return BR63430_DUMMY_WORLD_CLASS != null && BR63430_DUMMY_WORLD_CLASS.isInstance(blockAccess);
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @implNote Check against the world render pass
      */
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
-        return blockAccess instanceof blockrenderer6343.client.world.DummyWorld || predicate.test(worldRenderPass);
+        return predicate.test(worldRenderPass) || isBlockRenderer6343DummyWorld(blockAccess);
     }
 
     /**
