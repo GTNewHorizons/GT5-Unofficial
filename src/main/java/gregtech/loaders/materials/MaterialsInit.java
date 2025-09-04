@@ -4723,6 +4723,8 @@ public class MaterialsInit {
             .setDefaultLocalName("Bio")
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.ELECTRUM, 11)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
