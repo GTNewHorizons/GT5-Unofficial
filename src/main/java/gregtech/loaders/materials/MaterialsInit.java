@@ -159,6 +159,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.VOLATUS, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -178,6 +179,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -465,6 +467,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
@@ -486,6 +489,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.PERMUTATIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
@@ -514,6 +518,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ALIENIS, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -585,6 +590,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -682,6 +688,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.LUCRUM, 2)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
@@ -781,6 +788,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MACHINA, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -803,6 +811,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 3)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -845,6 +854,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ORDO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -924,6 +934,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.SANO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -989,6 +1000,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -1038,6 +1050,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.RADIO, 1)
             .addAspect(TCAspects.NEBRISUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -1088,6 +1101,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.VITREUS, 3)
             .addAspect(TCAspects.ALIENIS, 2)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_LuV);
     }
@@ -1112,6 +1126,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.IGNIS, 1)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
     }
@@ -1176,6 +1191,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.LUCRUM, 2)
             .addAspect(TCAspects.ALIENIS, 1)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -1203,6 +1219,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.MACHINA, 1)
             .addAspect(TCAspects.NEBRISUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
@@ -1282,6 +1299,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.NEBRISUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
@@ -1304,6 +1322,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 2)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -1483,6 +1502,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.LUCRUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY_99_PERCENT)
             .constructMaterial();
     }
@@ -1660,6 +1680,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.VITREUS, 1)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -1686,6 +1707,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.TUTAMEN, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -1738,6 +1760,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 3)
             .addAspect(TCAspects.TUTAMEN, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -2608,6 +2631,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -3989,6 +4013,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.RADIO, 3)
             .addAspect(TCAspects.NEBRISUM, 3)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial()
             .setHasCorrespondingPlasma(true);
     }
@@ -4951,6 +4976,7 @@ public class MaterialsInit {
             .setARGB(0x00fafafa)
             .addDustItems()
             .addAspect(TCAspects.COGNITIO, 1)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -5224,6 +5250,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iridium, 3)
             .addMaterial(Materials.Osmium, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -5253,6 +5280,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -5696,6 +5724,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -6772,6 +6801,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.MOTUS, 2)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -6807,6 +6837,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Fluorine, 4)
             .addAspect(TCAspects.MOTUS, 2)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -8737,6 +8768,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addAspect(TCAspects.METALLUM, 4)
             .addAspect(TCAspects.TENEBRAE, 2)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -8922,6 +8954,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Manganese, 1)
             .addMaterial(Materials.Nickel, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -8948,6 +8981,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ORDO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -9629,6 +9663,7 @@ public class MaterialsInit {
             .addMaterial(Materials.BlackBronze, 1)
             .addMaterial(Materials.Steel, 3)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -10916,6 +10951,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -11024,6 +11060,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Steel, 1)
             .addMaterial(Materials.Tungsten, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -11413,6 +11450,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Molybdenum, 2)
             .addMaterial(Materials.Vanadium, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -11670,6 +11708,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iridium, 2)
             .addMaterial(Materials.Osmium, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -11796,6 +11835,7 @@ public class MaterialsInit {
             .addMaterial(Materials.EnderEye, 1)
             .addMaterial(Materials.Oriharukon, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -11827,6 +11867,7 @@ public class MaterialsInit {
             .addMaterial(Materials.CrystallineAlloy, 1)
             .addMaterial(Materials.Diamond, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12044,6 +12085,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 12)
             .addAspect(TCAspects.ORDO, 2)
             .addAspect(TCAspects.VOLATUS, 1)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12302,6 +12344,7 @@ public class MaterialsInit {
             .setDensityMultiplier(4)
             .setDensityDivider(3)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12335,6 +12378,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12352,6 +12396,7 @@ public class MaterialsInit {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12376,6 +12421,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Copper, 1)
             .addMaterial(Materials.Manganese, 1)
             .addMaterial(Materials.Magnesium, 1)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12393,6 +12439,7 @@ public class MaterialsInit {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12415,6 +12462,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12435,6 +12483,7 @@ public class MaterialsInit {
             .setMeltingPoint(3_600)
             .setBlastFurnaceTemp(3_600)
             .setBlastFurnaceRequired(true)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12458,6 +12507,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
@@ -12527,6 +12577,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM)
             .setHasCorrespondingPlasma(true);
@@ -12577,6 +12628,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UV)
             .setHasCorrespondingPlasma(true);
@@ -12689,6 +12741,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Platinum, 2)
             .addMaterial(Materials.Thaumium, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
@@ -12781,6 +12834,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
     }
@@ -12805,6 +12859,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
     }
 
