@@ -11167,6 +11167,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Magic, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
