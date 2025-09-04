@@ -6735,6 +6735,10 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Carbon, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
