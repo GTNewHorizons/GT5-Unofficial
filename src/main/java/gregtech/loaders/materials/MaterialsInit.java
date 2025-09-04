@@ -11235,6 +11235,11 @@ public class MaterialsInit {
             .addMaterial(Materials.Wood, 1)
             .addAspect(TCAspects.ARBOR, 2)
             .addAspect(TCAspects.FABRICO, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_WORKING)
+            .addSubTag(SubTag.WOOD)
             .constructMaterial();
     }
 
