@@ -7185,6 +7185,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.GELUM, 1)
+            .addSubTag(SubTag.NO_RECYCLING)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
