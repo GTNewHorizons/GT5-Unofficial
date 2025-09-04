@@ -1012,7 +1012,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setOthers();
         setMultipliers();
         setEnchantments();
-        setHeatDamage();
         setByProducts();
         setColors();
     }
@@ -1833,13 +1832,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
-    }
-
-    private static void setHeatDamage() {
-        FryingOilHot.setHeatDamage(1.0F);
-        Lava.setHeatDamage(3.0F);
-        Firestone.setHeatDamage(5.0F);
-        Pyrotheum.setHeatDamage(5.0F);
     }
 
     private static void setByProducts() {
