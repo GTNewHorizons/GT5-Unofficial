@@ -37,11 +37,13 @@ import bartworks.system.material.BWTileEntityMetaGeneratedOre;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.MurmurHash3;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.blocks.TileEntityOres;
+import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperBW;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -49,7 +51,7 @@ import gregtech.common.blocks.TileEntityOres;
 public abstract class BWOreLayer extends GTWorldgen {
 
     public static final List<BWOreLayer> sList = new ArrayList<>();
-    public static final ArrayListMultimap<Short, BWOreLayer> NEIMAP = ArrayListMultimap.create();
+    public static final List<OreLayerWrapperBW> NEIList = new List<>();
     private static final boolean logOregenRoss128 = false;
     public static int sWeight;
     public byte bwOres;
@@ -89,10 +91,35 @@ public abstract class BWOreLayer extends GTWorldgen {
         this.mSecondaryMeta = aSecondary;
         this.mBetweenMeta = aBetween;
         this.mSporadicMeta = aSporadic;
-        NEIMAP.put((short) this.mPrimaryMeta, this);
-        NEIMAP.put((short) this.mSecondaryMeta, this);
-        NEIMAP.put((short) this.mBetweenMeta, this);
-        NEIMAP.put((short) this.mSporadicMeta, this);
+  
+    }
+
+    public BWOreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
+        ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled, DimensionDef dimensionDef) {
+        
+        super(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
+
+        for (OreLayerWrapperBW layer : NEIList) {
+            if (
+                layer.bwOres == this.bwOres
+                && layer.Meta[0] == this.mPrimaryMeta 
+                && layer.Meta[1] == this.mSecondaryMeta
+                && layer.Meta[2] == this.mBetweenMeta
+                && layer.Meta[3] == this.mSporadicMeta
+                && layer.randomWeight == (short) aWeight
+                && layer.size == (short) aSize
+                && layer.density == (short) aDensity
+                && layer.mMinY == (short) aMinY
+                && layer.mMaxY == (short) aMaxY
+            ) {
+                layer.addDimension(dimensionDef);
+                return;
+            }
+        }
+
+        OreLayerWrapperBW layer2 = new OreLayerWrapperBW();
+        NEIList.add(layer2);
+        layer2.addDimension(dimensionDef);
     }
 
     public List<ItemStack> getStacks() {
