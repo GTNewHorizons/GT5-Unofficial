@@ -9912,6 +9912,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Silicon, 2)
             .addMaterial(Materials.Oxygen, 7)
             .addMaterial(Materials.Water, 2)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
     }
 
