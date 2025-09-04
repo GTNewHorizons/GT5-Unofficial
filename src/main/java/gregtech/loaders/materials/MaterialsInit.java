@@ -6473,6 +6473,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 4)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
             .constructMaterial();
     }
 
@@ -10007,6 +10008,7 @@ public class MaterialsInit {
             .addMaterial(Materials.GraniteBlack, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
             .constructMaterial();
     }
 
@@ -10993,6 +10995,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Vanadium, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
             .constructMaterial();
     }
 
@@ -11517,6 +11520,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Basalt, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)
             .constructMaterial();
     }
 
