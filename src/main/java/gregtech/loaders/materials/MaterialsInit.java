@@ -1,7 +1,5 @@
 package gregtech.loaders.materials;
 
-import java.util.Collections;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
@@ -30,10 +28,7 @@ public class MaterialsInit {
         Materials.Capacitor = loadCapacitor();
         Materials.Inductor = loadInductor();
         Materials.Nano = loadNano();
-
-        // spotless:off
-        Materials.Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 12)));
-        // spotless:on
+        Materials.Piko = loadPiko();
 
         loadNotExact();
         loadTODOThis();
@@ -4820,6 +4815,14 @@ public class MaterialsInit {
             .setDefaultLocalName("Bio")
             .setColor(Dyes.dyeLightGray)
             .addAspect(TCAspects.ELECTRUM, 11)
+            .constructMaterial();
+    }
+
+    private static Materials loadPiko() {
+        return new MaterialBuilder().setName("Piko")
+            .setDefaultLocalName("Bio")
+            .setColor(Dyes.dyeLightGray)
+            .addAspect(TCAspects.ELECTRUM, 12)
             .constructMaterial();
     }
 
