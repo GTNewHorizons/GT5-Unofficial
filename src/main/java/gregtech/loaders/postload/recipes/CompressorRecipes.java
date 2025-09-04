@@ -32,7 +32,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 4))
-            .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.netherrack, 1)))
+            .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.netherrack, 3)))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
