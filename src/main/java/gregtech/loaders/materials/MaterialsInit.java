@@ -10487,6 +10487,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Pyrite, 1)
             .addMaterial(Materials.Calcite, 1)
             .addAspect(TCAspects.SENSUS, 1)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
