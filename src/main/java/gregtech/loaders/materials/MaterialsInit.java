@@ -491,6 +491,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.PERMUTATIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
             .constructMaterial();
