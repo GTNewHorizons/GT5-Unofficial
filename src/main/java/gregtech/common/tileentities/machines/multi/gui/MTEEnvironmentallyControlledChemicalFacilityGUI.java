@@ -261,16 +261,14 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
     }
 
     public ModularPanel createECCFPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
+        return ModularPanel.defaultPanel("gt:eccf")
             .size(176, 136)
-            .background(GTGuiTextures.BACKGROUND_STANDARD);
-
-        ParentWidget<?> infoPage = new ParentWidget<>().top(5)
-            .child(createIndicators(syncManager))
-            .child(createInfoColumn(syncManager));
-
-        infoPage.sizeRel(1.0f);
-        return ui.child(infoPage.sizeRel(1.0f))
+            .background(GTGuiTextures.BACKGROUND_STANDARD)
+            .child(
+                new ParentWidget<>().top(5)
+                    .sizeRel(1.0f)
+                    .child(createIndicators(syncManager))
+                    .child(createInfoColumn(syncManager)))
             .relative(parent)
             .leftRel(0, -4, 1)
             .topRel(0, -4, 0);
