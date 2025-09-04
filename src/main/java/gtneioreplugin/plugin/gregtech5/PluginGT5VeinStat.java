@@ -14,6 +14,7 @@ import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+import  gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperBW;
 import gtneioreplugin.util.OreVeinLayer;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
@@ -35,7 +36,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         } else if (stack.getUnlocalizedName()
             .startsWith("bw.blocktype.ore")) {
             loadMatchingVeinsBW((short) (stack.getItemDamage()));
-        } elsesuper.loadCraftingRecipes(stack);
+        } else super.loadCraftingRecipes(stack);
     }
 
     private void loadMatchingVeins(short oreId) {
