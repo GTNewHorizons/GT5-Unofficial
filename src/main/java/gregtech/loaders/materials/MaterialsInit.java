@@ -5287,6 +5287,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeRed)
             .setARGB(0x00c80000)
             .addDustItems()
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
