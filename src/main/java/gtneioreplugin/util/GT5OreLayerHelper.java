@@ -130,7 +130,7 @@ public class GT5OreLayerHelper {
             this.Meta[1] = getMeta(secondary);
             this.Meta[2] = getMeta(between);
             this.Meta[3] = getMeta(sporadic);
-            setBwOres(primary, secondary, between, sporadic)
+            setBwOres(primary, secondary, between, sporadic);
 
             this.mPrimaryVeinMaterial = mix.primary;
             this.mSecondaryMaterial = mix.secondary;
