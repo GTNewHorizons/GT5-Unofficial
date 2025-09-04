@@ -10196,6 +10196,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Almandine, 5)
             .addMaterial(Materials.Spessartine, 8)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
