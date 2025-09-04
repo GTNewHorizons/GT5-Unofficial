@@ -244,6 +244,13 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                     amountAvailable += fluid.amount;
                 }
             }
+
+            /*
+             * Clamp the amount of available input water to Int.MAX_VALUE so that the number of parallels can't cause
+             * an overflow when outputting
+             */
+            amountAvailable = Math.min(amountAvailable, Integer.MAX_VALUE);
+
             // Determine effective parallel
             effectiveParallel = (int) Math.min(maxParallel, Math.floorDiv(amountAvailable, waterInput.amount));
             // This should not happen, throw an error
