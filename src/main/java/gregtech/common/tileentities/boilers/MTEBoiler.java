@@ -295,8 +295,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 mBoilingSound = null;
             }
         }
-        if (getBaseMetaTileEntity().isActive()
-            && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
             if (mHeatingSound == null) {
                 mHeatingSound = new GTSoundLoop(
                     SoundResource.GTCEU_LOOP_FURNACE.resourceLocation,
