@@ -106,7 +106,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(796)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setRGB(0xffe632)
+            .setARGB(0x00ffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
             // C15H10N2O2
@@ -126,7 +126,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0xfff37a)
+            .setARGB(0x00fff37a)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(365)
             // C13H14N2
@@ -145,7 +145,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0xffe632)
+            .setARGB(0x00ffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
             // C15H10N2O2
@@ -219,7 +219,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(790)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setRGB(0x323232)
+            .setARGB(0x00323232)
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(300)
             .addAspect(TCAspects.AQUA, 1)
@@ -319,7 +319,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0xe6e678)
+            .setARGB(0x00e6e678)
             .setColor(Dyes.dyeYellow)
             .constructMaterial();
     }
@@ -349,7 +349,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(782)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0x00ff0c)
+            .setARGB(0x0000ff0c)
             .setColor(Dyes.dyeGreen)
             .setMeltingPoint(355)
             // C8H4Cl2O2
@@ -385,7 +385,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0xff8733)
+            .setARGB(0x00ff8733)
             .setColor(Dyes.dyeOrange)
             .setMeltingPoint(420)
             // C6H6N2O2
@@ -404,7 +404,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(779)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xfbec5d)
+            .setARGB(0x00fbec5d)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(293)
             // C6H6N2
@@ -423,7 +423,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
-            .setRGB(0x414469)
+            .setARGB(0x00414469)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(180)
             .addElectrolyzerRecipe()
@@ -441,7 +441,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addGas()
-            .setRGB(0x694469)
+            .setARGB(0x00694469)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(156)
             .addElectrolyzerRecipe()
@@ -459,7 +459,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0xffff97)
+            .setARGB(0x00ffff97)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(229)
             // C4H6O2
@@ -475,7 +475,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(775)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setRGB(0xebebeb)
+            .setARGB(0x00ebebeb)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(2430)
             // CaC2
@@ -492,7 +492,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0xf0f078)
+            .setARGB(0x00f0f078)
             .setColor(Dyes.dyeYellow)
             .constructMaterial();
     }
@@ -503,7 +503,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(773)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xf7f7b4)
+            .setARGB(0x00f7f7b4)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(331)
             // C4H6O2
@@ -520,7 +520,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_METALLIC)
             .addDustItems()
             .addMetalItems()
-            .setRGB(0xe6e6e6)
+            .setARGB(0x00e6e6e6)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(1_668)
             .setBlastFurnaceTemp(1_668)
@@ -538,7 +538,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(771)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xe6e6e6)
+            .setARGB(0x00e6e6e6)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(1_955)
             // NiAl
@@ -553,7 +553,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(769)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0x323232)
+            .setARGB(0x00323232)
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(1090)
             // Bi2O3
@@ -582,7 +582,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0xc80000)
+            .setARGB(0x00c80000)
             .setColor(Dyes.dyeRed)
             .constructMaterial();
     }
@@ -611,7 +611,7 @@ public class MaterialsKevlar {
             .addDustItems()
             .addMetalItems()
             .addGearItems()
-            .setRGB(0xf0f078)
+            .setARGB(0x00f0f078)
             .setColor(Dyes.dyeYellow)
             .constructMaterial();
     }
@@ -639,7 +639,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0x70924a)
+            .setARGB(0x0070924a)
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(225)
             // C8H10
@@ -656,7 +656,7 @@ public class MaterialsKevlar {
             .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(0x7a8854)
+            .setARGB(0x007a8854)
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(286)
             // C8H10
@@ -672,7 +672,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(761)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setRGB(0x8f5f27)
+            .setARGB(0x008f5f27)
             .setColor(Dyes.dyeBrown)
             .setMeltingPoint(413)
             // CoC22H14O4
@@ -702,7 +702,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(759)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xe58cef)
+            .setARGB(0x00e58cef)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(441)
             .addMaterial(Materials.Cobalt, 1)
@@ -717,7 +717,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(758)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xdba2e5)
+            .setARGB(0x00dba2e5)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(413)
             // C4H6CoO4
@@ -735,7 +735,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(757)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xaa0000)
+            .setARGB(0x00aa0000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
             .addMaterial(Materials.Cobalt, 1)
@@ -751,7 +751,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(756)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xaa0000)
+            .setARGB(0x00aa0000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(373)
             .addMaterial(Materials.Cobalt, 1)
@@ -781,7 +781,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(754)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0x800000)
+            .setARGB(0x00800000)
             .setColor(Dyes.dyeRed)
             .setMeltingPoint(723)
             .constructMaterial();
@@ -823,7 +823,7 @@ public class MaterialsKevlar {
             .setMetaItemSubID(751)
             .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0xc0c0c0)
+            .setARGB(0x00c0c0c0)
             .setColor(Dyes.dyeLightGray)
             .setMeltingPoint(911)
             // NaH

@@ -30,7 +30,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(409)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
-            .setRGB(0x2543a8)
+            .setARGB(0x002543a8)
             .addCell()
             .addFluid()
             .setMeltingPoint(295)
@@ -43,7 +43,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(410)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
-            .setRGB(0x375cd4)
+            .setARGB(0x00375cd4)
             .addCell()
             .addFluid()
             .setMeltingPoint(295)
@@ -56,7 +56,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(411)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGray)
-            .setRGB(0x5c3c24)
+            .setARGB(0x005c3c24)
             .addCell()
             .addFluid()
             .setMeltingPoint(295)
@@ -69,7 +69,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(412)
             .setIconSet(TextureSet.SET_FINE)
             .setColor(Dyes.dyeGray)
-            .setRGB(0xa5a578)
+            .setARGB(0x00a5a578)
             .addDustItems()
             .constructMaterial();
     }
@@ -80,7 +80,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(413)
             .setIconSet(TextureSet.SET_FINE)
             .setColor(Dyes.dyeRed)
-            .setRGB(0x6e1f1f)
+            .setARGB(0x006e1f1f)
             .addDustItems()
             .constructMaterial();
     }
@@ -91,7 +91,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(414)
             .setIconSet(TextureSet.SET_FINE)
             .setColor(Dyes.dyeBrown)
-            .setRGB(0xa32626)
+            .setARGB(0x00a32626)
             .addDustItems()
             .constructMaterial();
     }
@@ -102,7 +102,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(415)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
-            .setRGB(0x64c882)
+            .setARGB(0x0064c882)
             .addCell()
             .addFluid()
             .constructMaterial();
@@ -114,7 +114,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(416)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
-            .setRGB(0x6464c8)
+            .setARGB(0x006464c8)
             .addCell()
             .addFluid()
             .constructMaterial();
@@ -126,7 +126,7 @@ public class MaterialsOreAlum {
             .setMetaItemSubID(417)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeRed)
-            .setRGB(0xff6464)
+            .setARGB(0x00ff6464)
             .addCell()
             .addFluid()
             .constructMaterial();
