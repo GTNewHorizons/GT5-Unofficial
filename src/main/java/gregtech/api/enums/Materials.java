@@ -2021,7 +2021,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Electrum.add(SubTag.MORTAR_GRINDABLE);
         Clay.add(SubTag.MORTAR_GRINDABLE);
 
         Glass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);

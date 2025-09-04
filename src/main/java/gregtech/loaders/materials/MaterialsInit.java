@@ -6205,6 +6205,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Silver, 1)
             .addMaterial(Materials.Gold, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
     }
 
