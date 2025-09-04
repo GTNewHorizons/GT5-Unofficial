@@ -2021,7 +2021,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Redstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.PULVERIZING_CINNABAR);
         Glowstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE);
         Electrotine.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE);
         Teslatite.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE);

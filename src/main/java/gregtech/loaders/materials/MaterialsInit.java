@@ -10835,7 +10835,11 @@ public class MaterialsInit {
             .addMaterial(Materials.Mercury, 3)
             .addAspect(TCAspects.MACHINA, 1)
             .addAspect(TCAspects.POTENTIA, 2)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.PULVERIZING_CINNABAR)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.STONE)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
