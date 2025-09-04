@@ -118,7 +118,7 @@ public class EyeOfHarmonyRecipe {
         return rocketTier;
     }
 
-    public EyeOfHarmonyRecipe(final ArrayList<ItemStackLong> outputItems, final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
+    public EyeOfHarmonyRecipe(final boolean _unused, final ArrayList<ItemStackLong> outputItems, final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
         final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
         final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
 
@@ -208,7 +208,7 @@ public class EyeOfHarmonyRecipe {
     public EyeOfHarmonyRecipe(final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
         final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
         final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
-        this(validDustGenerator(materialList), materialList, block, recipeEnergyEfficiency, hydrogenRequirement, heliumRequirement, miningTimeSeconds, rocketTierOfRecipe, baseSuccessChance);
+        this(false, validDustGenerator(materialList), materialList, block, recipeEnergyEfficiency, hydrogenRequirement, heliumRequirement, miningTimeSeconds, rocketTierOfRecipe, baseSuccessChance);
     }
 
     private ItemStack getStoneDustType(String key) {
@@ -268,6 +268,7 @@ public class EyeOfHarmonyRecipe {
         final long miningTimeSeconds, final long spacetimeCasingTierRequired, final double baseSuccessChance) {
         
         this(
+            false,
             validDustGenerator(ret.getLeft(), ret.getRight()),
             ret.getLeft(),
             recipeEnergyEfficiency,
