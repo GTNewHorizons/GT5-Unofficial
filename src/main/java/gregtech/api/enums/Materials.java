@@ -2020,12 +2020,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
-        MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
-        MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
-        MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
-        Materials.Netherite.remove(SubTag.SMELTING_TO_FLUID);
-
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
             BrownLimonite,
@@ -2185,23 +2179,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Tin.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL);
         SolderingAlloy.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_GOOD);
 
-        Cheese.add(SubTag.SMELTING_TO_FLUID);
-        Sugar.add(SubTag.SMELTING_TO_FLUID);
-
-        Concrete.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
+        Concrete.add(SubTag.STONE, SubTag.NO_SMASHING);
         ConstructionFoam.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.EXPLOSIVE, SubTag.NO_SMELTING);
-        ReinforceGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
-        BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
+        ReinforceGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING);
+        BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);
 
-        Redstone.add(
-            SubTag.STONE,
-            SubTag.NO_SMASHING,
-            SubTag.UNBURNABLE,
-            SubTag.SMELTING_TO_FLUID,
-            SubTag.PULVERIZING_CINNABAR);
-        Glowstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
-        Electrotine.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
-        Teslatite.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
+        Redstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.PULVERIZING_CINNABAR);
+        Glowstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE);
+        Electrotine.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE);
+        Teslatite.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE);
         Netherrack.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.FLAMMABLE);
         Stone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);
         Brick.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -2212,8 +2198,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Redrock.add(SubTag.STONE, SubTag.NO_SMASHING);
         Obsidian.add(SubTag.STONE, SubTag.NO_SMASHING);
         Flint.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-        GraniteRed.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
-        GraniteBlack.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
+        GraniteRed.add(SubTag.STONE, SubTag.NO_SMASHING);
+        GraniteBlack.add(SubTag.STONE, SubTag.NO_SMASHING);
         Salt.add(SubTag.STONE, SubTag.NO_SMASHING);
         RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
 
@@ -2238,7 +2224,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Electrum.add(SubTag.MORTAR_GRINDABLE);
         Clay.add(SubTag.MORTAR_GRINDABLE);
 
-        Glass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
+        Glass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);
         Diamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
         Emerald.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Amethyst.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -2323,7 +2309,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // SuperconductorUV .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorUHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
 
-        Blaze.add(SubTag.MAGICAL, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
+        Blaze.add(SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
         FierySteel.add(SubTag.MAGICAL, SubTag.UNBURNABLE, SubTag.BURNING);
         DarkThaumium.add(SubTag.MAGICAL);
         Thaumium.add(SubTag.MAGICAL);
@@ -2333,7 +2319,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Mithril.add(SubTag.MAGICAL);
 
         Carbon.add(SubTag.NO_SMELTING);
-        Boron.add(SubTag.SMELTING_TO_FLUID);
 
         MaterialsUEVplus.TranscendentMetal.add(SubTag.BLACK_HOLE);
     }
