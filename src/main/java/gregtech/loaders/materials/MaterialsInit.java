@@ -4682,6 +4682,7 @@ public class MaterialsInit {
             .addDustItems()
             .addOreItems()
             .setMeltingPoint(320)
+            .addSubTag(SubTag.FOOD)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .constructMaterial();
     }
@@ -4694,6 +4695,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeRed)
             .setARGB(0x00c80000)
             .addDustItems()
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4705,6 +4707,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBrown)
             .setARGB(0x00be5f00)
             .addDustItems()
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4737,6 +4740,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBrown)
             .setARGB(0x00be5f00)
             .addDustItems()
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4748,6 +4752,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBrown)
             .setARGB(0x00964b00)
             .addDustItems()
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4803,6 +4808,7 @@ public class MaterialsInit {
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
             .addCell()
             .addAspect(TCAspects.CORPUS, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4816,6 +4822,7 @@ public class MaterialsInit {
             .addCell()
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.IGNIS, 1)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4865,6 +4872,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00d2c800)
             .addCell()
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4921,6 +4929,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyePink)
             .setARGB(0x00963c14)
             .addDustItems()
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4932,6 +4941,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyePink)
             .setARGB(0x00ff6464)
             .addDustItems()
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -4945,6 +4955,7 @@ public class MaterialsInit {
             .addDustItems()
             .addCell()
             .addAspect(TCAspects.SANO, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -5040,6 +5051,7 @@ public class MaterialsInit {
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
             .addCell()
             .addAspect(TCAspects.GRANUM, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -5053,6 +5065,7 @@ public class MaterialsInit {
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
             .addCell()
             .addAspect(TCAspects.GRANUM, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -5066,6 +5079,7 @@ public class MaterialsInit {
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
             .addCell()
             .addAspect(TCAspects.GRANUM, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -5146,6 +5160,7 @@ public class MaterialsInit {
             .setARGB(0x00ffffc4)
             .addDustItems()
             .addAspect(TCAspects.MESSIS, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -6195,6 +6210,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.AQUA, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -6320,6 +6336,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.GELUM, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -7059,6 +7076,7 @@ public class MaterialsInit {
             .addOreItems()
             .addMaterial(Materials.Sodium, 1)
             .addMaterial(Materials.Chlorine, 1)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -7248,6 +7266,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.AQUA, 2)
+            .addSubTag(SubTag.FOOD)
             .constructMaterial();
     }
 
@@ -10896,6 +10915,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.HERBA, 1)
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.AER, 1)
+            .addSubTag(SubTag.FOOD)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .constructMaterial();
     }
