@@ -5174,7 +5174,9 @@ public class MaterialsInit {
             .setARGB(0x00ffffc4)
             .addDustItems()
             .addAspect(TCAspects.MESSIS, 2)
+            .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.FOOD)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
     }
 
