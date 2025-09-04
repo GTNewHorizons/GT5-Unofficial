@@ -3,15 +3,16 @@ package gregtech.common.render;
 import static gregtech.api.enums.Mods.Angelica;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.prupe.mcpatcher.ctm.CTMUtils;
 
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.ISBRContext;
+import gregtech.api.render.ISBRWorldContext;
 
 public class GTCopiedBlockTextureRender extends GTTextureBase implements ITexture, IBlockContainer {
 
@@ -19,7 +20,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     private final byte mSide;
     private final int mMeta;
 
-    protected GTCopiedBlockTextureRender(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
+    protected GTCopiedBlockTextureRender(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa) {
         if (aRGBa.length != 4)
             throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTCopiedBlockTextureRender");
         mBlock = aBlock;
@@ -27,95 +28,91 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         mMeta = aMeta;
     }
 
-    @Override
-    public boolean isOldTexture() {
-        return false;
-    }
-
-    private IIcon getIcon(int ordinalSide, IBlockAccess access, int x, int y, int z) {
-        IIcon icon;
+    private IIcon getIcon(int ordinalSide, ISBRContext ctx) {
+        final IIcon icon;
         if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
         else icon = mBlock.getIcon(mSide, mMeta);
         if (!Angelica.isModLoaded()) return icon;
-        else {
-            return CTMUtils.getBlockIcon(icon, mBlock, access, x, y, z, ordinalSide);
-        }
+        else return ctx instanceof ISBRWorldContext ctxW
+            ? CTMUtils
+                .getBlockIcon(icon, mBlock, ctxW.getBlockAccess(), ctxW.getX(), ctxW.getY(), ctxW.getZ(), ordinalSide)
+            : CTMUtils.getBlockIcon(icon, mBlock, ordinalSide);
     }
 
     @Override
-    public void renderXPos(SBRContext ctx) {
-        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
-        final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx.world, ctx.x, ctx.y, ctx.z);
-        ctx.renderer.field_152631_f = true;
-        startDrawingQuads(ctx.renderer, 1.0f, 0.0f, 0.0f);
+    public void renderXPos(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        renderBlocks.field_152631_f = true;
+        startDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
         ctx.reset()
-            .setupLightingXPos()
             .setupColor(ForgeDirection.EAST, 0xffffff);
-        ctx.renderer.renderFaceXPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
-        ctx.renderer.field_152631_f = false;
+        renderBlocks.renderFaceXPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        renderBlocks.field_152631_f = false;
     }
 
     @Override
-    public void renderXNeg(SBRContext ctx) {
-        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
-        startDrawingQuads(ctx.renderer, -1.0f, 0.0f, 0.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx.world, ctx.x, ctx.y, ctx.z);
+    public void renderXNeg(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
         ctx.reset()
-            .setupLightingXNeg()
             .setupColor(ForgeDirection.WEST, 0xffffff);
-        ctx.renderer.renderFaceXNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        renderBlocks.renderFaceXNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderYPos(SBRContext ctx) {
-        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, 1.0f, 0.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx.world, ctx.x, ctx.y, ctx.z);
+    public void renderYPos(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
         ctx.reset()
-            .setupLightingYPos()
             .setupColor(ForgeDirection.UP, 0xffffff);
-        ctx.renderer.renderFaceYPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        renderBlocks.renderFaceYPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderYNeg(SBRContext ctx) {
-        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, -1.0f, 0.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx.world, ctx.x, ctx.y, ctx.z);
+    public void renderYNeg(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
         ctx.reset()
-            .setupLightingYNeg()
             .setupColor(ForgeDirection.DOWN, 0xffffff);
-        ctx.renderer.renderFaceYNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        renderBlocks.renderFaceYNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderZPos(SBRContext ctx) {
-        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, 1.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx.world, ctx.x, ctx.y, ctx.z);
+    public void renderZPos(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
         ctx.reset()
-            .setupLightingZPos()
             .setupColor(ForgeDirection.SOUTH, 0xffffff);
-        ctx.renderer.renderFaceZPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
+        renderBlocks.renderFaceZPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderZNeg(SBRContext ctx) {
-        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
-        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, -1.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx.world, ctx.x, ctx.y, ctx.z);
-        ctx.renderer.field_152631_f = true;
+    public void renderZNeg(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);
+        renderBlocks.field_152631_f = true;
         ctx.reset()
-            .setupLightingZNeg()
             .setupColor(ForgeDirection.NORTH, 0xffffff);
-        ctx.renderer.renderFaceZNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
-        draw(ctx.renderer);
-        ctx.renderer.field_152631_f = false;
+        renderBlocks.renderFaceZNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        renderBlocks.field_152631_f = false;
     }
 
     @Override

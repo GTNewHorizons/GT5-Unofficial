@@ -44,6 +44,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -173,7 +174,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
     public int machineMode = 0;
-    public List<UITexture> machineModeIcons = new ArrayList<>();
+    protected List<UITexture> machineModeIcons;
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -623,9 +624,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
         } else {
-            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
-                doActivitySound(getActivitySoundLoop());
-            }
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -643,13 +642,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (getRepairStatus() != getIdealStatus()) {
             for (MTEHatchMaintenance tHatch : validMTEList(mMaintenanceHatches)) {
-                if (tHatch.mAuto) tHatch.autoMaintainance();
-                if (tHatch.mWrench) mWrench = true;
-                if (tHatch.mScrewdriver) mScrewdriver = true;
-                if (tHatch.mSoftMallet) mSoftMallet = true;
-                if (tHatch.mHardHammer) mHardHammer = true;
-                if (tHatch.mSolderingTool) mSolderingTool = true;
-                if (tHatch.mCrowbar) mCrowbar = true;
+                boolean tDidRepair = false;
+
+                if (tHatch.mAuto) tDidRepair = tHatch.autoMaintainance();
+
+                // For each tool, only if needed, collect the tool flags
+                // that this Maintenance Hatch has provided
+                if (tHatch.mWrench && !mWrench) tDidRepair = mWrench = true;
+                if (tHatch.mScrewdriver && !mScrewdriver) tDidRepair = mScrewdriver = true;
+                if (tHatch.mSoftMallet && !mSoftMallet) tDidRepair = mSoftMallet = true;
+                if (tHatch.mHardHammer && !mHardHammer) tDidRepair = mHardHammer = true;
+                if (tHatch.mSolderingTool && !mSolderingTool) tDidRepair = mSolderingTool = true;
+                if (tHatch.mCrowbar && !mCrowbar) tDidRepair = mCrowbar = true;
 
                 tHatch.mWrench = false;
                 tHatch.mScrewdriver = false;
@@ -657,6 +661,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 tHatch.mHardHammer = false;
                 tHatch.mSolderingTool = false;
                 tHatch.mCrowbar = false;
+
+                if (tDidRepair) tHatch.onMaintenancePerformed(this);
             }
         }
     }
@@ -870,7 +876,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null
+            && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -883,6 +890,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
         } else {
             if (activitySoundLoop != null) {
+                activitySoundLoop.setFadeMe(true);
                 activitySoundLoop = null;
             }
         }
@@ -2343,6 +2351,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
 
+        if (tag.getInteger("maxParallelRecipes") > 1) {
+            currentTip.add(
+                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                    + EnumChatFormatting.WHITE
+                    + tag.getInteger("maxParallelRecipes"));
+        }
+
+        if (tag.hasKey("mode")) {
+            currentTip.add(
+                StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
+                    + EnumChatFormatting.WHITE
+                    + tag.getString("mode")
+                    + EnumChatFormatting.RESET);
+        }
+
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
@@ -2361,6 +2384,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
+        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
         tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
         SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
         tag.setString(
@@ -2756,8 +2780,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      * Creates the icon list for this machine. Override this and add the overlays to machineModeIcons in order.
      */
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+
     }
 
     /**
@@ -2883,7 +2906,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .setPos(10, 7)
                 .setSize(182, 79));
 
-        setMachineModeIcons();
+        if (supportsMachineModeSwitch() && machineModeIcons == null) {
+            machineModeIcons = new ArrayList<>(4);
+            setMachineModeIcons();
+        }
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
@@ -3560,6 +3586,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public boolean getDefaultHasMaintenanceChecks() {
         return true;
+    }
+
+    protected boolean requiresMuffler() {
+        return getPollutionPerSecond(null) > 0;
     }
 
     public boolean shouldCheckMaintenance() {

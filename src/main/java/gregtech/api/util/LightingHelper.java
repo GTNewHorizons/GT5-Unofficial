@@ -94,8 +94,8 @@ public class LightingHelper {
     /**
      * Resets override flags to their default values.
      * <p>
-     * This ensures deterministic rendering by clearing any leftover state from previous use of this LightingHelper
-     * instance.
+     * This ensures deterministic rendering by clearing any leftover state
+     * from previous use of this LightingHelper instance.
      *
      * @return the {@link LightingHelper}
      */

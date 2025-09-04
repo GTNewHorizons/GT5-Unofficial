@@ -2,7 +2,7 @@ package gregtech.common.render;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.ISBRContext;
 
 /**
  * <p>
@@ -25,32 +25,32 @@ public class GTMultiTextureRender extends GTTextureBase implements ITexture {
     }
 
     @Override
-    public void renderXPos(SBRContext ctx) {
+    public void renderXPos(ISBRContext ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXPos(ctx);
     }
 
     @Override
-    public void renderXNeg(SBRContext ctx) {
+    public void renderXNeg(ISBRContext ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXNeg(ctx);
     }
 
     @Override
-    public void renderYPos(SBRContext ctx) {
+    public void renderYPos(ISBRContext ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYPos(ctx);
     }
 
     @Override
-    public void renderYNeg(SBRContext ctx) {
+    public void renderYNeg(ISBRContext ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYNeg(ctx);
     }
 
     @Override
-    public void renderZPos(SBRContext ctx) {
+    public void renderZPos(ISBRContext ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZPos(ctx);
     }
 
     @Override
-    public void renderZNeg(SBRContext ctx) {
+    public void renderZNeg(ISBRContext ctx) {
         for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZNeg(ctx);
     }
 
