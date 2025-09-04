@@ -196,6 +196,7 @@ public class MaterialsInit {
             .setMeltingPoint(903)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -437,6 +438,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MACHINA, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -937,6 +939,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .setMeltingPoint(1_519)
             .addAspect(TCAspects.METALLUM, 3)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -1102,6 +1105,7 @@ public class MaterialsInit {
             .setMeltingPoint(1_728)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.IGNIS, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -1645,6 +1649,7 @@ public class MaterialsInit {
             .setBlastFurnaceTemp(505)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.VITREUS, 1)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -5555,6 +5560,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Iron, 2)
             .addMaterial(Materials.Oxygen, 3)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -5697,6 +5703,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -5828,6 +5835,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Chrome, 2)
             .addMaterial(Materials.Oxygen, 4)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -6285,6 +6293,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Titanium, 1)
             .addMaterial(Materials.Oxygen, 3)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -6841,6 +6850,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Sulfur, 2)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -9207,6 +9217,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -9927,6 +9938,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Grossular, 8)
             .addMaterial(Materials.Uvarovite, 3)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
@@ -9964,6 +9976,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Aluminium, 4)
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 12)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -9981,6 +9994,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Aluminium, 4)
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 12)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -10460,6 +10474,7 @@ public class MaterialsInit {
             // (Fe,Ni)9S8
             .addMaterial(Materials.Nickel, 9)
             .addMaterial(Materials.Sulfur, 8)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 
@@ -11049,6 +11064,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Water, 4)
             .addMaterial(Materials.Oxygen, 12)
+            .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .constructMaterial();
     }
 

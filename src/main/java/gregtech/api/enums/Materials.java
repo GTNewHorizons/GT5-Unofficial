@@ -2020,24 +2020,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
-            YellowLimonite,
-            BrownLimonite,
-            Pyrite,
-            BandedIron,
-            Nickel,
-            Vermiculite,
-            Glauconite,
-            GlauconiteSand,
-            Pentlandite,
-            Tin,
-            Antimony,
-            Ilmenite,
-            Manganese,
-            Chrome,
-            Chromite,
-            Andradite);
-
         SubTag.BLASTFURNACE_CALCITE_DOUBLE
             .addTo(Pyrite, BrownLimonite, YellowLimonite, BasalticMineralSand, GraniticMineralSand, Magnetite);
 
