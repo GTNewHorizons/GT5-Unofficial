@@ -8,6 +8,7 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.oregen.BWOreLayer;
+import bartworks.system.material.Werkstoff;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -133,6 +134,7 @@ public class GT5OreLayerHelper {
         public final ISubTagContainer mSecondaryMaterial;
         public final ISubTagContainer mBetweenMaterial;
         public final ISubTagContainer mSporadicMaterial;
+        public final BWOreLayer oreLayer;
 
         public OreLayerWrapperBW(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
@@ -154,6 +156,7 @@ public class GT5OreLayerHelper {
             this.randomWeight = (short) layer.mWeight;
 
             this.allowedDimWithOrigNames = new HashMap<>();
+            this.oreLayer = layer;
         }
 
         private short getMeta(ISubTagContainer material) {
@@ -197,7 +200,7 @@ public class GT5OreLayerHelper {
         
         @Override
         public ItemStack getLayerOre(int veinLayer, int _unused) {
-            List<ItemStack> List = layer.getStacks();
+            List<ItemStack> List = this.oreLayer.getStacks();
             return List.get(veinLayer);
         }
     }
