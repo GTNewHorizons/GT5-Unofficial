@@ -107,12 +107,12 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int maximumMaterialIndex, int veinLayer) {
             List<ItemStack> stackList = new ArrayList<>();
-            if ((this.bwOres & 0b0001 << veinLayer) == 0) {
+            if (this.bwOres == 0) {
                 for (int i = 0; i < maximumMaterialIndex; i++) {
                     stackList.add(getLayerOre(veinLayer, i));
                 }
             }
-            else stackList.add(getLayerOre(veinLayer, -1));
+            else stackList.add(getLayerOre(veinLayer, 0));
             return stackList;
         }
 
