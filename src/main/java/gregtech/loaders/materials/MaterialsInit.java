@@ -8320,6 +8320,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Sulfur, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
