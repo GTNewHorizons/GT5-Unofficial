@@ -10577,6 +10577,10 @@ public class MaterialsInit {
             .addCell()
             .addMaterial(Materials.Glyceryl, 1)
             .addMaterial(Materials.CoalFuel, 4)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
