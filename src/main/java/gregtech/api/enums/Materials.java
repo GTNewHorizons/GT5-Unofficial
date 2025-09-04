@@ -16,13 +16,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.GTMod;
@@ -2225,13 +2224,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return MATERIALS_MAP;
     }
 
-    @Nonnull
-    public static Materials get(String aMaterialName) {
+    public static @NotNull Materials get(String aMaterialName) {
         return getWithFallback(aMaterialName, Materials._NULL);
     }
 
-    @Nonnull
-    public static Materials getWithFallback(String name, @Nonnull Materials fallback) {
+    public static @NotNull Materials getWithFallback(String name, @NotNull Materials fallback) {
         Materials material = getMaterialsMap().get(name);
         if (material != null) {
             return material;
