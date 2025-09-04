@@ -4934,6 +4934,8 @@ public class MaterialsInit {
             .setARGB(0x00963c14)
             .addDustItems()
             .addSubTag(SubTag.FOOD)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
