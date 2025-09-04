@@ -131,7 +131,7 @@ public class GT5OreLayerHelper {
             this.Meta[1] = getMeta(secondary);
             this.Meta[2] = getMeta(between);
             this.Meta[3] = getMeta(sporadic);
-            setBwOres(primary, secondary, between, sporadic);
+            this.bwOres = getBwOres(primary, secondary, between, sporadic);
 
             this.mPrimaryVeinMaterial = primary;
             this.mSecondaryMaterial = secondary;
@@ -153,11 +153,13 @@ public class GT5OreLayerHelper {
             else return 0;
         }
 
-        private void setBwOres(ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
-            if (top instanceof Werkstoff) this.bwOres = (byte) (this.bwOres | 0b1000);
-            if (bottom instanceof Werkstoff) this.bwOres = (byte) (this.bwOres | 0b0100);
-            if (between instanceof Werkstoff) this.bwOres = (byte) (this.bwOres | 0b0010);
-            if (sprinkled instanceof Werkstoff) this.bwOres = (byte) (this.bwOres | 0b0001);
+        private byte getBwOres(ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
+            byte bwOres = 0;
+            if (top instanceof Werkstoff) bwOres = (byte) (bwOres | 0b1000);
+            if (bottom instanceof Werkstoff) bwOres = (byte) (bwOres | 0b0100);
+            if (between instanceof Werkstoff) bwOres = (byte) (bwOres | 0b0010);
+            if (sprinkled instanceof Werkstoff) .bwOres = (byte) (bwOres | 0b0001);
+            return bwOres;
         }
 
         public void addDimension(String dim) {
