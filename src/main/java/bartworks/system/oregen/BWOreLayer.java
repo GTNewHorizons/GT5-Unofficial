@@ -108,7 +108,7 @@ public abstract class BWOreLayer extends GTWorldgen {
                 && layer.randomWeight == (short) aWeight
                 && layer.size == (short) aSize
                 && layer.density == (short) aDensity
-                && layer.worldGenHeightRange == aMinY + "-" + aMaxY
+                && layer.worldGenHeightRange.equals(aMinY + "-" + aMaxY)
             ) {
                 layer.addDimension(dim);
                 return;
