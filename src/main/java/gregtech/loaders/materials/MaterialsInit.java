@@ -6183,6 +6183,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.VITREUS, 3)
             .addAspect(TCAspects.LUCRUM, 4)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
