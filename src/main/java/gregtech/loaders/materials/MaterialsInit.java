@@ -212,6 +212,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(83)
             .addAspect(TCAspects.AER, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -538,6 +539,7 @@ public class MaterialsInit {
             .setARGB(0xffffffff)
             .setTypes(256) // Only when needed
             .addAspect(TCAspects.VACUOS, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -612,6 +614,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(53)
             .addAspect(TCAspects.PERDITIO, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -710,6 +713,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(14)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -725,6 +729,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(1)
             .addAspect(TCAspects.AER, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1132,6 +1137,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(63)
             .addAspect(TCAspects.AER, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1201,6 +1207,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(54)
             .addAspect(TCAspects.AER, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1357,6 +1364,7 @@ public class MaterialsInit {
             .setMeltingPoint(202)
             .addAspect(TCAspects.AER, 1)
             .addAspect(TCAspects.RADIO, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1839,6 +1847,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(14)
             .addAspect(TCAspects.AQUA, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1854,6 +1863,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(1)
             .addAspect(TCAspects.AER, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1892,6 +1902,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(14)
             .addAspect(TCAspects.AQUA, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1941,6 +1952,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1956,6 +1968,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1971,6 +1984,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1986,6 +2000,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -2001,6 +2016,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -2016,6 +2032,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -2031,6 +2048,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -2046,6 +2064,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -2061,6 +2080,7 @@ public class MaterialsInit {
             .addFluid()
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -2644,6 +2664,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 16)
             .addAspect(TCAspects.VINCULUM, 2)
             .addAspect(TCAspects.VITREUS, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3056,6 +3077,7 @@ public class MaterialsInit {
             .addGemItems()
             .addOreItems()
             .addCell()
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3248,6 +3270,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 4)
             .addAspect(TCAspects.LUCRUM, 2)
             .addAspect(TCAspects.VITREUS, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3510,6 +3533,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.AER, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3528,6 +3552,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.VACUOS, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3548,6 +3573,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.TERRA, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3568,6 +3594,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.PERDITIO, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3588,6 +3615,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.IGNIS, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3626,6 +3654,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.ORDO, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3644,6 +3673,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.AURAM, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -3664,6 +3694,7 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.AQUA, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -4284,6 +4315,7 @@ public class MaterialsInit {
             .setDensityMultiplier(2)
             .addAspect(TCAspects.VACUOS, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -4293,6 +4325,7 @@ public class MaterialsInit {
             .setARGB(0xc8ffffff)
             .addAspect(TCAspects.VITREUS, 1)
             .addAspect(TCAspects.VACUOS, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -4634,6 +4667,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Cluster")
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fffffff)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -4795,6 +4829,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeOrange)
             .setARGB(0x7f969650)
             .addDustItems()
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -5021,6 +5056,7 @@ public class MaterialsInit {
             .setARGB(0x7fdcdcdc)
             .addDustItems()
             .addAspect(TCAspects.PERDITIO, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -5030,6 +5066,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fffffff)
             .addAspect(TCAspects.PERDITIO, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -5356,6 +5393,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 11)
             .addMaterial(Materials.Argon, 1)
             .addMaterial(Materials.NobleGases, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -5565,6 +5603,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 6)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -5685,6 +5724,7 @@ public class MaterialsInit {
             .setBlastFurnaceTemp(1)
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -5979,6 +6019,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addAspect(TCAspects.VITREUS, 3)
             .addAspect(TCAspects.LUCRUM, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6034,6 +6075,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 18)
             .addAspect(TCAspects.VITREUS, 3)
             .addAspect(TCAspects.LUCRUM, 5)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6162,6 +6204,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 3)
             .addAspect(TCAspects.LUCRUM, 5)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6316,6 +6359,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 11)
             .addMaterial(Materials.Argon, 1)
             .addMaterial(Materials.NobleGases, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6331,6 +6375,7 @@ public class MaterialsInit {
             .setMeltingPoint(4)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Nitrogen, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6346,6 +6391,7 @@ public class MaterialsInit {
             .setMeltingPoint(4)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Oxygen, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6601,6 +6647,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Helium, 9)
             .addMaterial(Materials.Methane, 3)
             .addMaterial(Materials.Deuterium, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6917,6 +6964,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 3)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -6981,6 +7029,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 3)
             .addAspect(TCAspects.LUCRUM, 5)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -7235,6 +7284,7 @@ public class MaterialsInit {
             .setBlastFurnaceTemp(3_000)
             .setBlastFurnaceRequired(true)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -8597,6 +8647,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Chlorine, 2)
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.VENENUM, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -8687,6 +8738,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Fluorine, 4)
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.VENENUM, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -8913,6 +8965,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 13)
             .addAspect(TCAspects.LUCRUM, 5)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -8974,6 +9027,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 6)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -9364,6 +9418,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 4)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -9840,6 +9895,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Almandine, 5)
             .addMaterial(Materials.Spessartine, 8)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -9860,6 +9916,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Grossular, 8)
             .addMaterial(Materials.Uvarovite, 3)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -9877,6 +9934,7 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.VITREUS, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -10020,6 +10078,7 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.LUCRUM, 4)
             .addAspect(TCAspects.VITREUS, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -10350,6 +10409,7 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 2)
             .addAspect(TCAspects.LUCRUM, 4)
             .addAspect(TCAspects.VITREUS, 2)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -10369,6 +10429,7 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 1)
             .addAspect(TCAspects.LUCRUM, 5)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -13160,6 +13221,7 @@ public class MaterialsInit {
             .setARGB(0x00ffffff)
             .addCell()
             .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -13371,6 +13433,7 @@ public class MaterialsInit {
             .setBlastFurnaceTemp(1_900)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -13389,6 +13452,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
@@ -13478,6 +13542,7 @@ public class MaterialsInit {
             .setARGB(0x00ffffff)
             .addCell()
             .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -13489,6 +13554,7 @@ public class MaterialsInit {
             .setARGB(0x00373737)
             .addDustItems()
             .addMetalItems()
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
@@ -13501,6 +13567,7 @@ public class MaterialsInit {
             .setARGB(0x004b4b4b)
             .addCell()
             .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 

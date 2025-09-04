@@ -48,7 +48,6 @@ public class MaterialBuilder {
     private int toolQuality = 0;
     private int types = 0;
     private int argb = 0x00ffffff;
-    private boolean transparent = false;
     private String name;
     private String defaultLocalName;
     private FuelType fuelType = FuelType.Diesel;
@@ -97,7 +96,6 @@ public class MaterialBuilder {
             iconSet,
             color,
             argb,
-            transparent,
             toolDurability, toolQuality, toolSpeed,
             steamMultiplier, gasMultiplier, plasmaMultiplier,
             fuelType.getIndex(), fuelPower,
@@ -201,7 +199,6 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder setARGB(int argb) {
-        this.transparent = true;
         this.argb = argb;
         return this;
     }
@@ -209,29 +206,26 @@ public class MaterialBuilder {
     /** @deprecated Use {@link MaterialBuilder#setARGB(int)} instead. */
     @Deprecated
     public MaterialBuilder setRGBA(int r, int g, int b, int a) {
-        this.transparent = true;
         this.argb = ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setARGB(int)} instead. */
     public MaterialBuilder setRGB(int rgb) {
-        this.transparent = false;
         this.argb = rgb;
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setRGB(int)} instead. */
+    /** @deprecated Use {@link MaterialBuilder#setARGB(int)} instead. */
     @Deprecated
     public MaterialBuilder setRGB(int r, int g, int b) {
-        this.transparent = false;
         this.argb = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setRGB(int)} or {@link MaterialBuilder#setARGB(int)} instead. */
+    /** @deprecated Add a transparent `SubTag` instead with {@link MaterialBuilder#addSubTag(SubTag)}. */
     @Deprecated
     public MaterialBuilder setTransparent(boolean transparent) {
-        this.transparent = transparent;
         return this;
     }
 

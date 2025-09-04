@@ -1026,8 +1026,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Collection<SubTag> mSubTags = new LinkedHashSet<>();
     public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
     public boolean mUnificatable, mBlastFurnaceRequired = false, mAutoGenerateBlastFurnaceRecipes = true,
-        mAutoGenerateVacuumFreezerRecipes = true, mAutoGenerateRecycleRecipes = true, mTransparent = false,
-        mHasParentMod = true, mHasPlasma = false, mHasGas = false, mCustomOre = false;
+        mAutoGenerateVacuumFreezerRecipes = true, mAutoGenerateRecycleRecipes = true, mHasParentMod = true,
+        mHasPlasma = false, mHasGas = false, mCustomOre = false;
     public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0, mToolQuality = 0;
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
@@ -1104,7 +1104,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         TextureSet iconSet,
         Dyes color,
         int argb,
-        boolean transparent,
         int toolDurability, int toolQuality, float toolSpeed,
         float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
         int fuelType, int fuelPower,
@@ -1159,7 +1158,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mRGBa[1] = mMoltenRGBa[1] = (short) ((argb >>> 8) & 0xFF);
         mRGBa[2] = mMoltenRGBa[2] = (short) (argb & 0xFF);
         mRGBa[3] = mMoltenRGBa[3] = (short) ((argb >>> 24) & 0xFF);
-        mTransparent = transparent;
 
         // Set tool properties
         mDurability = toolDurability;
@@ -1203,7 +1201,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // Set material SubTags
         mSubTags = subTags;
         if (mColor != null) mSubTags.add(SubTag.HAS_COLOR);
-        if (mTransparent) mSubTags.add(SubTag.TRANSPARENT);
         if ((mTypes & 2) != 0) mSubTags.add(SubTag.SMELTING_TO_FLUID);
 
         // No clue what is going on here...
@@ -1371,7 +1368,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mMeltingPoint = aMeltingPoint;
         mBlastFurnaceRequired = aBlastFurnaceRequired;
         mBlastFurnaceTemp = (short) aBlastFurnaceTemp;
-        mTransparent = aTransparent;
         mFuelPower = aFuelPower;
         mFuelType = aFuelType;
         mDensityMultiplier = aDensityMultiplier;
@@ -1384,7 +1380,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mRGBa[3] = mMoltenRGBa[3] = (short) aA;
         mTypes = aTypes;
         if (mColor != null) add(SubTag.HAS_COLOR);
-        if (mTransparent) add(SubTag.TRANSPARENT);
         if ((mTypes & 2) != 0) add(SubTag.SMELTING_TO_FLUID);
     }
 
@@ -1476,7 +1471,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aIconSet,
             aColor,
             ((aA & 0xFF) << 24) | ((aR & 0xFF) << 16) | ((aG & 0xFF) << 8) | (aB & 0xFF),
-            aTransparent,
             aDurability, aToolQuality, aToolSpeed,
             1.0f, 1.0f, 1.0f,
             aFuelType, aFuelPower,
@@ -1514,7 +1508,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aIconSet,
             aColor,
             ((aA & 0xFF) << 24) | ((aR & 0xFF) << 16) | ((aG & 0xFF) << 8) | (aB & 0xFF),
-            aTransparent,
             aDurability, aToolQuality, aToolSpeed,
             1.0f, 1.0f, 1.0f,
             aFuelType, aFuelPower,
