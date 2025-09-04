@@ -2,7 +2,6 @@ package gregtech.common.items;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +34,7 @@ public class ItemDashboardTool extends GTGenericItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> list, ItemStack stack, EntityPlayer player) {
-        list.add("Author: Vortex");
+        list.add("Author: §9Vortex");
         list.add("Right-click to toggle dashboard HUD");
         list.add("Press RSHIFT to toggle edit mode");
     }
@@ -56,59 +55,52 @@ public class ItemDashboardTool extends GTGenericItem {
         return stack;
     }
 
+    private double lastPlayerY = 0.0;
+
     private void createWidgets() {
         HUDManager hud = HUDManager.getInstance();
 
-        // 1. GraphElement: график высоты игрока
-        Supplier<Double> heightSupplier = () -> {
-            if (Minecraft.getMinecraft().thePlayer != null) {
-                return (double) Minecraft.getMinecraft().thePlayer.posY;
-            }
-            return 0.0;
-        };
-        GraphElement heightGraphElement = new GraphElement(heightSupplier).size(120, 50);
+        hud.addWidget(
+            new CompositeWidget(10, 10).isConfigurable()
+                .addElement(
+                    new RectElement().size(140, 90)
+                        .offset(-10, -10))
+                .addElement(new GraphElement(() -> {
+                    if (Minecraft.getMinecraft().thePlayer != null) {
+                        lastPlayerY = Minecraft.getMinecraft().thePlayer.posY;
+                    }
+                    return lastPlayerY;
+                }).size(120, 50))
+                .addElement(
+                    new RectElement().size(102, 18)
+                        .offset(-5, 55))
+                .addElement(
+                    new TextElement(() -> "Player Y: " + String.format("%.5f", lastPlayerY)).offsetVertical(60)));
 
-        CompositeWidget heightGraph = new CompositeWidget(10, 10).isConfigurable();
-        heightGraph.addElement(
-            new RectElement().size(140, 70)
-                .offset(-10, -10));
-        heightGraph.addElement(heightGraphElement);
-        hud.addWidget(heightGraph);
+        hud.addWidget(
+            new CompositeWidget(10, 130).isConfigurable()
+                .addElement(new TextInputElement(text -> {
+                    try {
+                        int val = Integer.parseInt(text);
+                        System.out.println("Input value: " + val);
+                    } catch (NumberFormatException ignored) {}
+                }).size(80, 18)));
 
-        // 2. TextElement: текущая высота игрока
-        CompositeWidget heightTextWidget = new CompositeWidget(10, 90).isConfigurable();
-        heightTextWidget.addElement(new TextElement(() -> {
-            if (Minecraft.getMinecraft().thePlayer != null) {
-                return "Player Y: " + (int) Minecraft.getMinecraft().thePlayer.posY;
-            }
-            return "Player Y: ?";
-        }));
-        hud.addWidget(heightTextWidget);
+        hud.addWidget(
+            new CompositeWidget(10, 160).isConfigurable()
+                .addElement(
+                    new DroplistElement(
+                        () -> Arrays.asList("Option 1", "Option 2", "Option 3"),
+                        0,
+                        selected -> System.out.println("Selected: " + selected)).size(100, 18)));
 
-        // 3. TextInputElement: можно ввести число для теста
-        CompositeWidget testInputWidget = new CompositeWidget(10, 130).isConfigurable();
-        testInputWidget.addElement(new TextInputElement(text -> {
-            try {
-                int val = Integer.parseInt(text);
-                System.out.println("Input value: " + val);
-            } catch (NumberFormatException ignored) {}
-        }).size(80, 18));
-        hud.addWidget(testInputWidget);
-
-        // 4. DroplistElement: пример выбора опций
-        CompositeWidget droplistWidget = new CompositeWidget(10, 160).isConfigurable();
-        droplistWidget.addElement(
-            new DroplistElement(
-                () -> Arrays.asList("Option 1", "Option 2", "Option 3"),
-                0,
-                selected -> System.out.println("Selected: " + selected)).size(100, 18));
-        hud.addWidget(droplistWidget);
-
-        // 5. CheckboxElement: пример включения/отключения
-        CompositeWidget checkboxWidget = new CompositeWidget(10, 190).isConfigurable();
-        checkboxWidget.addElement(
-            new CheckboxElement("Enable feature", false, checked -> System.out.println("Checkbox: " + checked)));
-        hud.addWidget(checkboxWidget);
+        hud.addWidget(
+            new CompositeWidget(10, 190).isConfigurable()
+                .addElement(
+                    new CheckboxElement(
+                        "Enable feature",
+                        false,
+                        checked -> System.out.println("Checkbox: " + checked))));
     }
 
 }
