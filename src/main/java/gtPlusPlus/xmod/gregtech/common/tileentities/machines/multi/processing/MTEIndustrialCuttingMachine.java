@@ -11,15 +11,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -36,14 +29,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialCuttingMachineGui;
 
 public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable {
@@ -69,7 +60,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public String getMachineType() {
-        return "Cutting Machine, Slicing Machine, ICF";
+        return "Cutting Machine, ICF";
     }
 
     @Override
@@ -159,12 +150,6 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
         return RecipeMaps.cutterRecipes;
     }
 
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.cutterRecipes, RecipeMaps.slicerRecipes);
-    }
-
     @Override
     public int getRecipeCatalystPriority() {
         return -1;
@@ -172,28 +157,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-
-        return new ProcessingLogic() {
-
-            RecipeMap<?> currentRecipeMap = RecipeMaps.cutterRecipes;
-
-            @Override
-            protected RecipeMap<?> getCurrentRecipeMap() {
-                lastRecipeMap = currentRecipeMap;
-                return currentRecipeMap;
-            }
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                currentRecipeMap = RecipeMaps.cutterRecipes;
-                CheckRecipeResult result = super.process();
-                if (result.wasSuccessful()) return result;
-
-                currentRecipeMap = RecipeMaps.slicerRecipes;
-                return super.process();
-            }
-        }.setSpeedBonus(1F / 3F)
+        return new ProcessingLogic().setSpeedBonus(1F / 3F)
             .setEuModifier(0.75F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -229,10 +193,5 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_CUTTING_MACHINE_LOOP;
-    }
-
-    @Override
-    protected @NotNull MTEIndustrialCuttingMachineGui getGui() {
-        return new MTEIndustrialCuttingMachineGui(this);
     }
 }
