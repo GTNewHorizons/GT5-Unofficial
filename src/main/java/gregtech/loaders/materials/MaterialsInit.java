@@ -10220,7 +10220,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Grossular, 8)
             .addMaterial(Materials.Uvarovite, 3)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.CRYSTAL)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
