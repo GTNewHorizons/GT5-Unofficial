@@ -96,7 +96,7 @@ public abstract class BWOreLayer extends GTWorldgen {
     public BWOreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
         ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled, String dim) {
         
-        super(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
+        this(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
 
         for (OreLayerWrapperBW layer : NEIList) {
             if (
