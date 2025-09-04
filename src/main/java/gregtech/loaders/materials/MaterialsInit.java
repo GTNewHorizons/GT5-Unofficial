@@ -11348,6 +11348,11 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Calcium, 3)
             .addMaterial(Materials.Phosphate, 2)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
