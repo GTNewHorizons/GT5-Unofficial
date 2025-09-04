@@ -10221,7 +10221,9 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 4)
             .addMaterial(Materials.Biotite, 1)
             .addAspect(TCAspects.TUTAMEN, 1)
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
