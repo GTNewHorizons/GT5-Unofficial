@@ -9670,6 +9670,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 2)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
+            .addSubTag(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
             .constructMaterial();
     }
 
