@@ -2725,6 +2725,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 16)
             .addAspect(TCAspects.VINCULUM, 2)
             .addAspect(TCAspects.VITREUS, 1)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
