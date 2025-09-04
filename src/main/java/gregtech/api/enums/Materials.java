@@ -2012,7 +2012,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Data.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Elite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Master.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Ultimate.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
