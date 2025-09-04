@@ -98,7 +98,7 @@ public abstract class BWOreLayer extends GTWorldgen {
         
         this(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
 
-        for (OreLayerWrapperBW layer : NEIList) {
+        for (OreLayerWrapper layer : NEIList) {
             if (
                 layer.bwOres == this.bwOres
                 && layer.Meta[0] == this.mPrimaryMeta 
