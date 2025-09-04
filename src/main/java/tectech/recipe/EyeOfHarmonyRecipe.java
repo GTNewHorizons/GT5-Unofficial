@@ -382,19 +382,18 @@ public class EyeOfHarmonyRecipe {
     }
 
     // Sadly our universe have something that is not Materials.
-    private static void processHelperWerksoff(HashMapHelper outputMap, IDMapHelper outputWerkstoffMap, Werkstoff material, double mainMultiplier,
+    private static void processHelperWerkstoff(HashMapHelper outputMap, IDMapHelper outputWerkstoffMap, Werkstoff material, double mainMultiplier,
         double probability) {
         if (material == null) return;
         // cannot find mOreMultiplier, assert it to 1
         outputWerkstoffMap.add(material.getmID(), 2 * mainMultiplier * probability);
 
-        int index = 0;
         for (int index = 0; index < material.getNoOfByProducts(); index++) {
             ISubTagContainer byProductMaterial = material.getOreByProductRaw(index);
             if (byProductMaterial == null) continue;
             else if (byProductMaterial instanceof Materials) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
-            else if (material instanceof Werkstoff) outputWerkstoffMap.add(byProductMaterial.getmID(), 2 * mainMultiplier * probability);
+            else if (byProductMaterial instanceof Werkstoff) outputWerkstoffMap.add(byProductMaterial.getmID(), 2 * mainMultiplier * probability);
         }
     }
 
@@ -468,7 +467,7 @@ public class EyeOfHarmonyRecipe {
             Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(pair.getLeft(), null);
             if (werkstoff == null) {continue;}
             
-            ItemStack dust = getUnificatedOreDictStack(werkstoff.get(dust, 1));
+            ItemStack dust = getUnificatedOreDictStack(werkstoff.get(OrePrefixes.dust, 1));
             if (dust != null) {
                 dustList.add(new ItemStackLong(dust, pair.getRight()));
             }
