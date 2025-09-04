@@ -3976,6 +3976,9 @@ public class MaterialsInit {
             .addDustItems()
             .addGemItems()
             .addOreItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
