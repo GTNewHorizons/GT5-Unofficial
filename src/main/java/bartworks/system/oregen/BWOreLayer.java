@@ -50,7 +50,7 @@ import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperBW;
 public abstract class BWOreLayer extends GTWorldgen {
 
     public static final List<BWOreLayer> sList = new ArrayList<>();
-    public static final List<OreLayerWrapperBW> NEIList = new List<>();
+    public static final List<OreLayerWrapperBW> NEIList = new ArrayList<>();
     private static final boolean logOregenRoss128 = false;
     public static int sWeight;
     public byte bwOres;
@@ -108,15 +108,14 @@ public abstract class BWOreLayer extends GTWorldgen {
                 && layer.randomWeight == (short) aWeight
                 && layer.size == (short) aSize
                 && layer.density == (short) aDensity
-                && layer.mMinY == (short) aMinY
-                && layer.mMaxY == (short) aMaxY
+                && layer.worldGenHeightRange == aMinY + "-" + aMaxY
             ) {
                 layer.addDimension(dim);
                 return;
             }
         }
 
-        OreLayerWrapperBW layer2 = new OreLayerWrapperBW();
+        OreLayerWrapperBW layer2 = new OreLayerWrapperBW(aName, top, bottom, between, sprinkled, this);
         NEIList.add(layer2);
         layer2.addDimension(dim);
     }
