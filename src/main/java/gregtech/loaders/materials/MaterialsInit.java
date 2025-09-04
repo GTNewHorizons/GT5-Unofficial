@@ -12957,6 +12957,7 @@ public class MaterialsInit {
             .addMaterial(Materials.EnderPearl, 1)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ALIENIS, 1)
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
