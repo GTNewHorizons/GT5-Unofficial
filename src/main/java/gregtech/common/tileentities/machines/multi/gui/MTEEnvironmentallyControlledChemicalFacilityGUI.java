@@ -78,15 +78,85 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
             .size(18, 18);
     }
 
-    protected Flow renderProgressBars() {
+    private Flow createIndicators(PanelSyncManager syncManager) {
         return new Row().child(
-            GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
+            new ParentWidget<>().size(54, 48)
+                .background(GTGuiTextures.ECCF_FRAME)
                 .left(5)
-                .size(54, 48))
+                .child(
+                    GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
+                        .margin(4, 4)
+                        .size(46, 40)))
             .child(
-                GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
+                new ParentWidget<>().size(54, 48)
+                    .background(GTGuiTextures.ECCF_FRAME)
                     .right(5)
-                    .size(54, 48));
+                    .child(
+                        GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
+                            .margin(4, 4)
+                            .size(46, 40)))
+            .child(
+                new ParentWidget<>().horizontalCenter()
+                    .size(48, 48)
+                    .background(GTGuiTextures.ECCF_FRAME)
+                    .child(
+                        new Row().size(40, 40)
+                            .horizontalCenter()
+                            .marginTop(4)
+                            .child(createLeftIndicator(syncManager))
+                            .child(createRightIndicator(syncManager))));
+    }
+
+    private IWidget createLeftIndicator(PanelSyncManager syncManager) {
+        IntSyncValue cool = (IntSyncValue) syncManager.getSyncHandler("Cool:0");
+        IntSyncValue heat = (IntSyncValue) syncManager.getSyncHandler("Heat:0");
+        IntSyncValue left = (IntSyncValue) syncManager.getSyncHandler("Parallel_Left:0");
+
+        return new DynamicDrawable(() -> {
+            if (cool.getValue() >= 0) return GTGuiTextures.COOLING_ECCF_INDICATOR;
+            if (heat.getValue() >= 0) return GTGuiTextures.HEATING_ECCF_INDICATOR;
+            if (left.getValue() >= 0) return GTGuiTextures.PARALLEL_ECCF_INDICATOR_L;
+            return GTGuiTextures.EMPTY_ECCF_INDICATOR;
+        }).asWidget()
+            .size(20, 40)
+            .tooltip((tooltip) -> {
+                tooltip.addLine("Left module status:");
+                if (cool.getValue() >= 0) {
+                    tooltip.addLine("§bCooling module §aconnected");
+                } else if (heat.getValue() >= 0) {
+                    tooltip.addLine("§6Heating module §aconnected");
+                } else if (left.getValue() >= 0) {
+                    tooltip.addLine("§2Parallel module §aconnected");
+                } else {
+                    tooltip.addLine("§8No module connected");
+                }
+            });
+    }
+
+    private IWidget createRightIndicator(PanelSyncManager syncManager) {
+        IntSyncValue compress = (IntSyncValue) syncManager.getSyncHandler("Compress:0");
+        IntSyncValue vacuum = (IntSyncValue) syncManager.getSyncHandler("Vacuum:0");
+        IntSyncValue right = (IntSyncValue) syncManager.getSyncHandler("Parallel_Right:0");
+
+        return new DynamicDrawable(() -> {
+            if (compress.getValue() >= 0) return GTGuiTextures.PRESSURE_ECCF_INDICATOR;
+            if (vacuum.getValue() >= 0) return GTGuiTextures.VACUUM_ECCF_INDICATOR;
+            if (right.getValue() >= 0) return GTGuiTextures.PARALLEL_ECCF_INDICATOR_R;
+            return GTGuiTextures.EMPTY_ECCF_INDICATOR;
+        }).asWidget()
+            .size(20, 40)
+            .tooltip((tooltip) -> {
+                tooltip.addLine("Right module status:");
+                if (compress.getValue() >= 0) {
+                    tooltip.addLine("§9Pressure module §aconnected");
+                } else if (vacuum.getValue() >= 0) {
+                    tooltip.addLine("§3Vacuum module §aconnected");
+                } else if (right.getValue() >= 0) {
+                    tooltip.addLine("§2Parallel module §aconnected");
+                } else {
+                    tooltip.addLine("§8No module connected");
+                }
+            });
     }
 
     private String valueConverter(double value, boolean changeFormat, String unit) {
@@ -104,15 +174,16 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
 
     private Flow createValueRow(IKey tempValue, IKey presValue, String label) {
         return new Row().child(
-            new TextWidget(tempValue).marginRight(5)
+            new TextWidget(tempValue).left(5)
                 .size(54, 10)
                 .alignment(Alignment.Center))
             .child(
-                new TextWidget(presValue).marginLeft(5)
+                new TextWidget(presValue).right(5)
                     .size(54, 10)
                     .alignment(Alignment.Center))
             .child(
-                new TextWidget(IKey.str(label)).size(54, 10)
+                new TextWidget(IKey.str(label)).horizontalCenter()
+                    .size(54, 10)
                     .alignment(Alignment.Center))
             .height(10);
     }
@@ -130,46 +201,6 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         IntSyncValue deltaPres = (IntSyncValue) syncManager.getSyncHandler("DeltaPres:0");
         DoubleSyncValue leakPres = (DoubleSyncValue) syncManager.getSyncHandler("LeakPres:0");
         return presModule.getValue() + lossPres.getValue() + deltaPres.getValue() + leakPres.getValue();
-    }
-
-    private IWidget getLeftIndicatorTexture(PanelSyncManager syncManager) {
-        IntSyncValue coolCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Cool:0");
-        IntSyncValue heatCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Heat:0");
-        IntSyncValue leftParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Left:0");
-        return new DynamicDrawable(() -> {
-            if (coolCoilSyncer.getValue() >= 0) {
-                return GTGuiTextures.COOLING_ECCF_INDICATOR;
-            }
-            if (heatCoilSyncer.getValue() >= 0) {
-                return GTGuiTextures.HEATING_ECCF_INDICATOR;
-            }
-            if (leftParallelSyncer.getValue() >= 0) {
-                return GTGuiTextures.PARALLEL_ECCF_INDICATOR_L;
-            }
-            return GTGuiTextures.EMPTY_ECCF_INDICATOR_L;
-        }).asWidget()
-            .size(48, 48)
-            .horizontalCenter();
-    }
-
-    private IWidget getRightIndicatorTexture(PanelSyncManager syncManager) {
-        IntSyncValue compressCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Compress:0");
-        IntSyncValue vacuumCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Vacuum:0");
-        IntSyncValue rightParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Right:0");
-        return new DynamicDrawable(() -> {
-            if (compressCoilSyncer.getValue() >= 0) {
-                return GTGuiTextures.PRESSURE_ECCF_INDICATOR;
-            }
-            if (vacuumCoilSyncer.getValue() >= 0) {
-                return GTGuiTextures.VACUUM_ECCF_INDICATOR;
-            }
-            if (rightParallelSyncer.getValue() >= 0) {
-                return GTGuiTextures.PARALLEL_ECCF_INDICATOR_R;
-            }
-            return GTGuiTextures.EMPTY_ECCF_INDICATOR_R;
-        }).asWidget()
-            .size(48, 48)
-            .horizontalCenter();
     }
 
     private Flow createInfoColumn(PanelSyncManager syncManager) {
@@ -235,9 +266,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
             .background(GTGuiTextures.BACKGROUND_STANDARD);
 
         ParentWidget<?> infoPage = new ParentWidget<>().top(5)
-            .child(renderProgressBars())
-            .child(getLeftIndicatorTexture(syncManager))
-            .child(getRightIndicatorTexture(syncManager))
+            .child(createIndicators(syncManager))
             .child(createInfoColumn(syncManager));
 
         infoPage.sizeRel(1.0f);

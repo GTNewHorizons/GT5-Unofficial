@@ -72,6 +72,11 @@ public final class GTGuiTextures {
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
+    public static final UITexture ECCF_FRAME = UITexture.builder()
+        .location(GregTech.ID, "gui/background/ECCF_frame")
+        .imageSize(48, 48)
+        .adaptable(4)
+        .build();
     // endregion background
 
     // region overlay
@@ -330,10 +335,8 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/picture/ECCF_pressure_indicator");
     public static final UITexture VACUUM_ECCF_INDICATOR = UITexture
         .fullImage(GregTech.ID, "gui/picture/ECCF_vacuum_indicator");
-    public static final UITexture EMPTY_ECCF_INDICATOR_L = UITexture
-        .fullImage(GregTech.ID, "gui/picture/ECCF_empty_indicator_L");
-    public static final UITexture EMPTY_ECCF_INDICATOR_R = UITexture
-        .fullImage(GregTech.ID, "gui/picture/ECCF_empty_indicator_R");
+    public static final UITexture EMPTY_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_empty_indicator");
     public static final UITexture PARALLEL_ECCF_INDICATOR_L = UITexture
         .fullImage(GregTech.ID, "gui/picture/ECCF_parallel_indicator_L");
     public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
