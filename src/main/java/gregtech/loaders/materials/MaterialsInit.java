@@ -3310,6 +3310,14 @@ public class MaterialsInit {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
+            .addSubTag(SubTag.BURNING)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.QUARTZ)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 

@@ -2071,15 +2071,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         NetherStar.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
         EnderPearl.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
         EnderEye.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
-        Firestone.add(
-            SubTag.CRYSTAL,
-            SubTag.NO_SMASHING,
-            SubTag.NO_SMELTING,
-            SubTag.CRYSTALLISABLE,
-            SubTag.MAGICAL,
-            SubTag.QUARTZ,
-            SubTag.UNBURNABLE,
-            SubTag.BURNING);
         Forcicium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Forcillium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Force.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
