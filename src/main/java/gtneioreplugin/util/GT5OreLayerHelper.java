@@ -158,7 +158,7 @@ public class GT5OreLayerHelper {
             if (top instanceof Werkstoff) bwOres = (byte) (bwOres | 0b1000);
             if (bottom instanceof Werkstoff) bwOres = (byte) (bwOres | 0b0100);
             if (between instanceof Werkstoff) bwOres = (byte) (bwOres | 0b0010);
-            if (sprinkled instanceof Werkstoff) .bwOres = (byte) (bwOres | 0b0001);
+            if (sprinkled instanceof Werkstoff) bwOres = (byte) (bwOres | 0b0001);
             return bwOres;
         }
 
