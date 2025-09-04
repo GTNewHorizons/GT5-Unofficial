@@ -1813,8 +1813,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         YellowLimonite.addOreByProducts(Nickel, BrownLimonite, Cobalt);
         Lepidolite.addOreByProducts(Lithium, Caesium);
         Andradite.addOreByProducts(GarnetYellow, Iron);
-        Pyrolusite.addOreByProducts(Manganese, Tantalite, Niobium)
-            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Pyrolusite.addOreByProducts(Manganese, Tantalite, Niobium);
         TricalciumPhosphate.addOreByProducts(Apatite, Phosphate, Pyrochlore);
         Apatite.addOreByProducts(TricalciumPhosphate, Phosphate, Pyrochlore);
         Pyrochlore.addOreByProducts(Apatite, Calcite, Niobium);

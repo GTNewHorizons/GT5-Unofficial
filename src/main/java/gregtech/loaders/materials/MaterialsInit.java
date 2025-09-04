@@ -7225,6 +7225,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Manganese, 1)
             .addMaterial(Materials.Oxygen, 2)
+            .addSubTag(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
             .constructMaterial();
     }
 
