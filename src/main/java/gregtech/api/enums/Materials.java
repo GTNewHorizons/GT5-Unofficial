@@ -2013,8 +2013,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Magic.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
-
         Primitive.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Basic.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Good.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);

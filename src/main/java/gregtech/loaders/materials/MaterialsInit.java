@@ -923,6 +923,9 @@ public class MaterialsInit {
             .addGearItems()
             .setMeltingPoint(5_000)
             .addAspect(TCAspects.PRAECANTATIO, 4)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
