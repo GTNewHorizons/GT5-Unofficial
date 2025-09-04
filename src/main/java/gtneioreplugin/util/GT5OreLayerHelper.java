@@ -73,7 +73,8 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapper {
 
-        public byte bwOres;
+        public final byte bwOres;
+        public final boolean hasVariants;
         public final String veinName, worldGenHeightRange, localizedName;
         public final short[] Meta = new short[4];
         public final short randomWeight, size, density;
@@ -103,6 +104,8 @@ public class GT5OreLayerHelper {
             this.randomWeight = (short) mix.weight;
 
             this.allowedDimWithOrigNames = mix.dimsEnabled;
+            this.bwOres = 0;
+            this.hasVariants = true;
         }
 
         public List<ItemStack> getVeinLayerOre(int maximumMaterialIndex, int veinLayer) {
@@ -141,6 +144,7 @@ public class GT5OreLayerHelper {
             this.randomWeight = (short) layer.mWeight;
 
             this.allowedDimWithOrigNames = new HashMap<>();
+            this.hasVariants = false;
         }
 
         private short getMeta(ISubTagContainer material) {
