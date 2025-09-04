@@ -208,7 +208,7 @@ public class EyeOfHarmonyRecipe {
     public EyeOfHarmonyRecipe(final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
         final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
         final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
-        this(validDustGenerator(materialList), materialList, block, recipeEnergyEfficiency, hydrogenRequirement, heliumRequirement, miningTimeSeconds, rocketTierOfRecipe, baseSuccessChance)
+        this(validDustGenerator(materialList), materialList, block, recipeEnergyEfficiency, hydrogenRequirement, heliumRequirement, miningTimeSeconds, rocketTierOfRecipe, baseSuccessChance);
     }
 
     private ItemStack getStoneDustType(String key) {
