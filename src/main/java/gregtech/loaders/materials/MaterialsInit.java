@@ -854,7 +854,10 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ORDO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.SOLDERING_MATERIAL)
+            .addSubTag(SubTag.SOLDERING_MATERIAL_BAD)
             .constructMaterial();
     }
 
