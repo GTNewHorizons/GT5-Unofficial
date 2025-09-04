@@ -986,6 +986,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.VENENUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.SMELTING_TO_GEM)
             .constructMaterial();
     }
 

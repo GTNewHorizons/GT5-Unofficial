@@ -968,7 +968,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setMaceratingInto();
         setSmeltingInto();
         setDirectSmelting();
-        setOthers();
         setMultipliers();
         setEnchantments();
         setByProducts();
@@ -1530,10 +1529,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         TengamAttuned.setSmeltingInto(TengamPurified)
             .setMaceratingInto(TengamPurified)
             .setArcSmeltingInto(TengamPurified);
-    }
-
-    private static void setOthers() {
-        Mercury.add(SubTag.SMELTING_TO_GEM);
     }
 
     private static void setDirectSmelting() {
