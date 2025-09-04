@@ -2039,8 +2039,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Salt.add(SubTag.STONE, SubTag.NO_SMASHING);
         RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
 
-        Sand.add(SubTag.NO_RECYCLING);
-
         Gold.add(SubTag.MORTAR_GRINDABLE);
         Silver.add(SubTag.MORTAR_GRINDABLE);
         Iron.add(SubTag.MORTAR_GRINDABLE);

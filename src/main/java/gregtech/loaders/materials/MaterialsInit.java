@@ -4275,6 +4275,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Sand")
             .setDefaultLocalName("Sand")
             .setColor(Dyes.dyeYellow)
+            .addSubTag(SubTag.NO_RECYCLING)
             .constructMaterial();
     }
 
