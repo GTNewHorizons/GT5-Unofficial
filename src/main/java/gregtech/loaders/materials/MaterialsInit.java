@@ -4401,6 +4401,7 @@ public class MaterialsInit {
             .addGearItems()
             .setDensityMultiplier(2)
             .addAspect(TCAspects.VACUOS, 1)
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();

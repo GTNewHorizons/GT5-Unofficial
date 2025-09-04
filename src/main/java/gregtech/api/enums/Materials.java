@@ -2106,7 +2106,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // SuperconductorUV .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorUHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
 
-        Void.add(SubTag.MAGICAL);
         Enderium.add(SubTag.MAGICAL);
         AstralSilver.add(SubTag.MAGICAL);
         Mithril.add(SubTag.MAGICAL);
