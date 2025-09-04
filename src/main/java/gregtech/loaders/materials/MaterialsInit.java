@@ -10509,6 +10509,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Magnesium, 1)
             .addMaterial(Materials.Calcite, 7)
             .addAspect(TCAspects.PERFODIO, 1)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
