@@ -4946,6 +4946,7 @@ public class MaterialsInit {
             .setARGB(0x00ff6464)
             .addDustItems()
             .addSubTag(SubTag.FOOD)
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
