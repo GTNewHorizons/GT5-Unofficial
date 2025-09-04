@@ -5123,6 +5123,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeRed)
             .addAspect(TCAspects.PERDITIO, 7)
             .addAspect(TCAspects.IGNIS, 4)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
