@@ -9235,6 +9235,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .addAspect(TCAspects.ARBOR, 2)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.WOOD)
             .constructMaterial();
     }
 
