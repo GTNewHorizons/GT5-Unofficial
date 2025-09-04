@@ -19,7 +19,7 @@ repositories {
         }
     }
     ivy {
-        url 'https://files.vexatos.com/'
+        url = 'https://files.vexatos.com/'
         patternLayout {
             artifact "[module]/[artifact]-[revision](-[classifier])(.[ext])"
         }
