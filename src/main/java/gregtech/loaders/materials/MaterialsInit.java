@@ -10593,6 +10593,10 @@ public class MaterialsInit {
             .setARGB(0x00c8ff00)
             .setFuel(MaterialBuilder.FuelType.Diesel, 1_000)
             .addCell()
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
