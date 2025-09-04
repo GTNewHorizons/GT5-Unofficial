@@ -2237,6 +2237,11 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Quartz")
             .setDefaultLocalName("Quartz")
             .setIconSet(TextureSet.SET_QUARTZ)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.QUARTZ)
             .constructMaterial();
     }
 
