@@ -369,16 +369,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials UXV; @Deprecated public static Materials Cosmic;
     public static Materials MAX; @Deprecated public static Materials Transcendent;
 
-    // Circuitry, Batteries and other Technical things
-    public static Materials Resistor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Resistor"                ,   "Resistor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
-    public static Materials Diode                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Diode"                   ,   "Diode"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
-    public static Materials Transistor              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transistor"              ,   "Transistor"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
-    public static Materials Capacitor               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Capacitor"               ,   "Capacitor"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
-    public static Materials Inductor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Inductor"                ,   "Inductor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
-
-    public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 11)));
-    public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
-    // spotless:on
+    // Circuitry
+    public static Materials Resistor;
+    public static Materials Diode;
+    public static Materials Transistor;
+    public static Materials Capacitor;
+    public static Materials Inductor;
+    public static Materials Nano;
+    public static Materials Piko;
 
     // Not possible to determine exact Components
     public static Materials AdvancedGlue;

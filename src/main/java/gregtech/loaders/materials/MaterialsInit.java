@@ -1,5 +1,7 @@
 package gregtech.loaders.materials;
 
+import java.util.Collections;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
@@ -20,6 +22,19 @@ public class MaterialsInit {
         loadDontCare();
         loadUnknownComponents();
         loadTiers();
+
+        // Circuitry, Batteries and other Technical things
+        // spotless:off
+        Materials.Resistor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Resistor"                ,   "Resistor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
+        Materials.Diode                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Diode"                   ,   "Diode"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
+        Materials.Transistor              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transistor"              ,   "Transistor"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
+        Materials.Capacitor               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Capacitor"               ,   "Capacitor"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
+        Materials.Inductor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Inductor"                ,   "Inductor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
+
+        Materials.Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 11)));
+        Materials.Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 12)));
+        // spotless:on
+
         loadNotExact();
         loadTODOThis();
         loadDegree1Compounds();
