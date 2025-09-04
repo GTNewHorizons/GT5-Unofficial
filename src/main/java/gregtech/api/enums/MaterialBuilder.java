@@ -313,11 +313,21 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder setDensity(int densityMultiplier, int densityDivider) {
+        this.densityMultiplier = densityMultiplier;
+        this.densityDivider = densityDivider;
+        return this;
+    }
+
+    /** @deprecated Use {@link MaterialBuilder#setDensity(int, int)} instead. */
+    @Deprecated
     public MaterialBuilder setDensityMultiplier(int densityMultiplier) {
         this.densityMultiplier = densityMultiplier;
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setDensity(int, int)} instead. */
+    @Deprecated
     public MaterialBuilder setDensityDivider(int densityDivider) {
         this.densityDivider = densityDivider;
         return this;
