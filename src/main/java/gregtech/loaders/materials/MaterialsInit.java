@@ -2968,6 +2968,11 @@ public class MaterialsInit {
             .addAspect(TCAspects.POTENTIA, 1)
             .addAspect(TCAspects.VITREUS, 1)
             .addAspect(TCAspects.ELECTRUM, 1)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.QUARTZ)
             .constructMaterial();
     }
 
