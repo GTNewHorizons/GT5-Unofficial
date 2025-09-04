@@ -9897,7 +9897,9 @@ public class MaterialsInit {
             .setMeltingPoint(300)
             .addMaterial(Materials.Stone, 1)
             .addAspect(TCAspects.TERRA, 1)
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
