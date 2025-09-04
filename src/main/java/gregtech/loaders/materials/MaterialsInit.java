@@ -3019,6 +3019,10 @@ public class MaterialsInit {
             .addCell()
             .addToolHeadItems()
             .addGearItems()
+            .addSubTag(SubTag.STONE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.EXPLOSIVE)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
