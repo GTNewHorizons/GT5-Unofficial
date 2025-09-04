@@ -70,6 +70,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Spotless breaks the table below into many, many lines
     // spotless:off
     public static Materials _NULL = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Collections.singletonList(new TC_AspectStack(TCAspects.VACUOS, 1)));
+    // spotless:on
 
     // Elements
     public static Materials Aluminium;
@@ -189,8 +190,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Unknown;
 
     /*
-     * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.
-     * But I do see potential uses in some of these Materials.
+     * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make
+     * the Material Finder shut up about them. But I do see potential uses in some of these Materials.
      */
     public static Materials Alfium;
     public static Materials Aquamarine;
@@ -351,38 +352,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Yellorium;
     public static Materials Zectium;
 
-    // Tier materials
-    public static Materials ULV;
-    public static Materials LV;
-    public static Materials MV;
-    public static Materials HV;
-    public static Materials EV;
-    public static Materials IV;
-    public static Materials LuV;
-    public static Materials ZPM;
-    public static Materials UV;
-    public static Materials UHV;
-    public static Materials UEV;
-    public static Materials UIV;
-    public static Materials UMV;
-    public static Materials UXV;
-    public static Materials MAX;
-
-    // Aliases for the old style of tiered circuits
-    @Deprecated public static Materials Primitive;
-    @Deprecated public static Materials Basic;
-    @Deprecated public static Materials Good;
-    @Deprecated public static Materials Advanced;
-    @Deprecated public static Materials Data;
-    @Deprecated public static Materials Elite;
-    @Deprecated public static Materials Master;
-    @Deprecated public static Materials Ultimate;
-    @Deprecated public static Materials Infinite;
-    @Deprecated public static Materials Bio;
-    @Deprecated public static Materials Optical;
-    @Deprecated public static Materials Exotic;
-    @Deprecated public static Materials Cosmic;
-    @Deprecated public static Materials Transcendent;
+    // spotless:off
+    // Tier materials and aliases for the old style of tiered circuits
+    public static Materials ULV; @Deprecated public static Materials Primitive;
+    public static Materials  LV; @Deprecated public static Materials Basic;
+    public static Materials  MV; @Deprecated public static Materials Good;
+    public static Materials  HV; @Deprecated public static Materials Advanced;
+    public static Materials  EV; @Deprecated public static Materials Data;
+    public static Materials  IV; @Deprecated public static Materials Elite;
+    public static Materials LuV; @Deprecated public static Materials Master;
+    public static Materials ZPM; @Deprecated public static Materials Ultimate;
+    public static Materials  UV;
+    public static Materials UHV; @Deprecated public static Materials Infinite;
+    public static Materials UEV; @Deprecated public static Materials Bio;
+    public static Materials UIV; @Deprecated public static Materials Optical;
+    public static Materials UMV; @Deprecated public static Materials Exotic;
+    public static Materials UXV; @Deprecated public static Materials Cosmic;
+    public static Materials MAX; @Deprecated public static Materials Transcendent;
 
     // Circuitry, Batteries and other Technical things
     public static Materials Resistor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Resistor"                ,   "Resistor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 1)));
@@ -393,6 +379,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 11)));
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
+    // spotless:on
 
     // Not possible to determine exact Components
     public static Materials AdvancedGlue;
@@ -922,15 +909,31 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials DenseSteam = makeDenseSteam();
 
     private static Materials makeDenseSteam() {
-        return new MaterialBuilder(232, TextureSet.SET_FLUID , "Dense Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+        return new MaterialBuilder(232, TextureSet.SET_FLUID, "Dense Steam").addCell()
+            .addGas()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .constructMaterial();
     }
+
     public static Materials DenseSuperheatedSteam = makeDenseSuperheatedSteam();
+
     private static Materials makeDenseSuperheatedSteam() {
-        return new MaterialBuilder(233, TextureSet.SET_FLUID , "Dense Superheated Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+        return new MaterialBuilder(233, TextureSet.SET_FLUID, "Dense Superheated Steam").addCell()
+            .addGas()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .constructMaterial();
     }
+
     public static Materials DenseSupercriticalSteam = makeDenseSupercriticalSteam();
+
     private static Materials makeDenseSupercriticalSteam() {
-        return new MaterialBuilder(234, TextureSet.SET_FLUID , "Dense Supercritical Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+        return new MaterialBuilder(234, TextureSet.SET_FLUID, "Dense Supercritical Steam").addCell()
+            .addGas()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .constructMaterial();
     }
 
     // Waterline Chemicals
@@ -977,8 +980,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
-
-    // spotless:on
 
     static {
         MaterialsInit.load();
