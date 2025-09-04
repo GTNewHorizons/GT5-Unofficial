@@ -10332,6 +10332,10 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Water, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
