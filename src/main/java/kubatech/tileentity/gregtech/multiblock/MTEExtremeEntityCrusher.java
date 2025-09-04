@@ -794,10 +794,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         EECPlayer.currentWeapon = tWeaponCopy;
         for (int i = 0; i < aBatchModeMultiplier; i++) {
-            // Force max weapons at max damage to be considered broken,
+            // Force weapons at max damage to be considered broken,
             // even if they would survive a hit by having the Unbreaking enchantment.
-            // This prevents weapons from being effectively unbreakable due to the
-            // removal the chance-based chance of the weapon breaking.
+            // This prevents weapons from being effectively unbreakable due to being
+            // able to perfectly predict when a hit would or would not damage it.
             if (aPreventPerfectUnbreaking && tWeaponCopy.getItemDamage() == tWeaponCopy.getMaxDamage()) {
                 EECPlayer.currentWeapon = null;
                 return null;
