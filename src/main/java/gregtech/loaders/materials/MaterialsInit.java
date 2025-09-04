@@ -9733,6 +9733,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Phosphate, 3)
             .addMaterial(Materials.Chlorine, 1)
             .addAspect(TCAspects.MESSIS, 2)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
