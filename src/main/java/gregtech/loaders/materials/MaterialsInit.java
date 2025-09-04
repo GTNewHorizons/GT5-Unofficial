@@ -3734,7 +3734,12 @@ public class MaterialsInit {
             .addGearItems()
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addAspect(TCAspects.PERDITIO, 2)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.MAGICAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
