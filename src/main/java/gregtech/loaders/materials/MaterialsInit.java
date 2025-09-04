@@ -3402,7 +3402,10 @@ public class MaterialsInit {
             .addCell()
             .addAspect(TCAspects.LUX, 2)
             .addAspect(TCAspects.SENSUS, 1)
+            .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.STONE)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
