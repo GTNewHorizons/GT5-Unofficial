@@ -20,12 +20,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import bartworks.system.material.Werkstoff;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -334,7 +336,14 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
+    public static void processHelper(HashMapHelper outputMap, ISubTagContainer material, double mainMultiplier,
+        double probability) {
+        if (material == null) return;
+        else if (material instanceof Materials) processHelperMaterial(outputMap, (Materials) material, mainMultiplier, probability);
+        else if (material instanceof Werkstoff) processHelperWerkstoff(outputMap, (Werkstoff) material, mainMultiplier, probability);
+    }
+
+    public static void processHelperMaterial(HashMapHelper outputMap, Materials material, double mainMultiplier,
         double probability) {
         if (material == null) return;
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
@@ -344,6 +353,11 @@ public class EyeOfHarmonyRecipe {
             outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
         }
+    }
+
+    //TODO
+    public static void processHelperWerkstoff(HashMapHelper outputMap, Werkstoff werkstoff, double mainMultiplier,
+        double probability) {
     }
 
     private static ArrayList<Pair<Materials, Long>> processDimension(
