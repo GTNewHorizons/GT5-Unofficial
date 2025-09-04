@@ -2212,6 +2212,9 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Crystal")
             .setDefaultLocalName("Crystal")
             .setIconSet(TextureSet.SET_SHINY)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
