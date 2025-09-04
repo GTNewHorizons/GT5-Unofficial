@@ -2021,7 +2021,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void initSubTags() {
-        Stone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);
         Brick.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         NetherBrick.add(SubTag.STONE, SubTag.NO_SMASHING);
         Endstone.add(SubTag.STONE, SubTag.NO_SMASHING);

@@ -5135,6 +5135,9 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .addAspect(TCAspects.TERRA, 1)
+            .addSubTag(SubTag.NO_RECYCLING)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
 
