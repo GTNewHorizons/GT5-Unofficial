@@ -2151,8 +2151,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Enderium.add(SubTag.MAGICAL);
         AstralSilver.add(SubTag.MAGICAL);
         Mithril.add(SubTag.MAGICAL);
-
-        MaterialsUEVplus.TranscendentMetal.add(SubTag.BLACK_HOLE);
     }
 
     public static void init() {

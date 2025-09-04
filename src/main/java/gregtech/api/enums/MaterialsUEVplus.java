@@ -292,6 +292,7 @@ public class MaterialsUEVplus {
             .setDensityMultiplier(1_000)
             .setDensityDivider(1_000)
             .addAspect(TCAspects.AQUA, 1)
+            .addSubTag(SubTag.BLACK_HOLE)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UHV);
