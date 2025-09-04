@@ -17,6 +17,7 @@ import static gregtech.api.enums.TickTime.SECOND;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -201,14 +202,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Ore Processor, IOF")
-            .addInfo("It is OP. I mean ore processor.")
-            .addInfo("Do all ore processing in one step.")
-            .addInfo("Can process up to 1024 ores at a time.")
-            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
-            .addInfo("Processing time is dependent on mode.")
-            .addInfo("Use a screwdriver to switch mode.")
-            .addInfo("Sneak click with screwdriver to void the stone dust.")
+            .addInfo("Does all ore processing in one step")
+            .addStaticParallelInfo(1024)
+            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
+            .addInfo("Processing time is dependent on mode")
+            .addInfo("Use a screwdriver to switch mode")
+            .addInfo("Sneak click with screwdriver to void the stone dust")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
@@ -251,6 +253,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             case 3 -> 20 * SECOND;
             case 4 -> 17 * SECOND;
             case 5 -> 32 * SECOND;
+            case 6 -> 1 * SECOND;
             default ->
                 // go to hell
                 1000000000;
@@ -412,6 +415,11 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 doThermal(isCrushedPureOre, isCrushedOre);
                 doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
             }
+            case 6 -> {
+                doHam(isOre);
+                doHam(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                doSimWash(isImpureDust, isPureDust);
+            }
             default -> {
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
@@ -449,7 +457,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
             return;
         }
-        sMode = (sMode + 1) % 6;
+        sMode = (sMode + 1) % 7;
         List<String> des = getDisplayMode(sMode);
         GTUtility.sendChatToPlayer(aPlayer, String.join("", des));
     }
@@ -615,6 +623,52 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         doCompress(tProduct);
     }
 
+    private void doHam(IntOpenHashSet... aTables) {
+        List<ItemStack> tProduct = new ArrayList<>();
+        if (sMidProduct != null) {
+            for (ItemStack aStack : sMidProduct) {
+                int tID = GTUtility.stackToInt(aStack);
+                if (checkTypes(tID, aTables)) {
+                    GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
+                        .caching(false)
+                        .items(aStack)
+                        .find();
+                    if (tRecipe != null) {
+                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
+                    } else {
+                        tProduct.add(aStack);
+                    }
+                } else {
+                    tProduct.add(aStack);
+                }
+            }
+        }
+        doCompress(tProduct);
+    }
+
+    private void doSimWash(IntOpenHashSet... aTables) {
+        List<ItemStack> tProduct = new ArrayList<>();
+        if (sMidProduct != null) {
+            for (ItemStack aStack : sMidProduct) {
+                int tID = GTUtility.stackToInt(aStack);
+                if (checkTypes(tID, aTables)) {
+                    GTRecipe tRecipe = simpleWasherRecipes.findRecipeQuery()
+                        .items(aStack)
+                        .fluids(Materials.Water.getFluid(100))
+                        .find();
+                    if (tRecipe != null) {
+                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
+                    } else {
+                        tProduct.add(aStack);
+                    }
+                } else {
+                    tProduct.add(aStack);
+                }
+            }
+        }
+        doCompress(tProduct);
+    }
+
     private int getFluidAmount(FluidStack aFluid) {
         int tAmt = 0;
         if (aFluid == null) return 0;
@@ -750,6 +804,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         final String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
         final String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
             .replace(" ", " " + AQUA);
+        final String HAMMER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Forge_Hammer");
+        final String SIM_WASHER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Simple_Washer");
         final String ARROW = " " + AQUA + "-> ";
 
         List<String> des = new ArrayList<>();
@@ -789,6 +845,11 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 des.add(AQUA + CHEM_WASH + ARROW);
                 des.add(AQUA + THERMAL + ARROW);
                 des.add(AQUA + CRUSH + ' ');
+            }
+            case 6 -> {
+                des.add(AQUA + HAMMER + ARROW);
+                des.add(AQUA + HAMMER + ARROW);
+                des.add(AQUA + SIM_WASHER + ' ');
             }
             default -> des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }

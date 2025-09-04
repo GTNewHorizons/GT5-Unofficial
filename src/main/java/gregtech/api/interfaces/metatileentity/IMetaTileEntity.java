@@ -33,7 +33,8 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.render.SBRContextBase;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -353,9 +354,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    default boolean render(SBRContextBase ctx) {
-        return false;
-    }
+    boolean renderInInventory(ISBRInventoryContext ctx);
+
+    /**
+     * @return true if you override the Rendering.
+     */
+    @SideOnly(Side.CLIENT)
+    boolean renderInWorld(ISBRWorldContext ctx);
 
     /**
      * Gets the Output for the comparator on the given Side
