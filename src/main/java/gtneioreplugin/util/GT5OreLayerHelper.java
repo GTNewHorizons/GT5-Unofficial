@@ -135,8 +135,8 @@ public class GT5OreLayerHelper {
         public final ISubTagContainer mSporadicMaterial;
 
         public OreLayerWrapperBW(String veinName, ISubTagContainer primary, ISubTagContainer secondary, ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
-            this.veinName = mix.oreMixName;
-            this.localizedName = mix.localizedName;
+            this.veinName = veinName;
+            this.localizedName = veinName;
             this.Meta[0] = getMeta(primary);
             this.Meta[1] = getMeta(secondary);
             this.Meta[2] = getMeta(between);
