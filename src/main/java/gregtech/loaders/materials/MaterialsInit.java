@@ -680,6 +680,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.LUCRUM, 2)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
 
@@ -1199,6 +1200,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.MACHINA, 1)
             .addAspect(TCAspects.NEBRISUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
 
@@ -1277,6 +1279,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.NEBRISUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
 
@@ -5940,6 +5943,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Palladium, 1)
+            .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
 
@@ -12586,6 +12590,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Silver, 2)
             .addMaterial(Materials.Thaumium, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
 
@@ -12677,6 +12682,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Platinum, 2)
             .addMaterial(Materials.Thaumium, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.WASHING_MERCURY)
             .constructMaterial();
     }
 
