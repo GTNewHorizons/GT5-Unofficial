@@ -1543,8 +1543,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Malachite.setDirectSmelting(Copper);
         Pentlandite.setDirectSmelting(Nickel);
         Sphalerite.setDirectSmelting(Zinc);
-        Pyrite.setDirectSmelting(Iron)
-            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        Pyrite.setDirectSmelting(Iron);
         BasalticMineralSand.setDirectSmelting(Iron)
             .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
         GraniticMineralSand.setDirectSmelting(Iron)
