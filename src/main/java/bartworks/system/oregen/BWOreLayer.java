@@ -42,7 +42,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.blocks.TileEntityOres;
-import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperBW;
+import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -50,7 +50,7 @@ import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperBW;
 public abstract class BWOreLayer extends GTWorldgen {
 
     public static final List<BWOreLayer> sList = new ArrayList<>();
-    public static final List<OreLayerWrapperBW> NEIList = new ArrayList<>();
+    public static final List<OreLayerWrapper> NEIList = new ArrayList<>();
     private static final boolean logOregenRoss128 = false;
     public static int sWeight;
     public byte bwOres;
@@ -115,7 +115,7 @@ public abstract class BWOreLayer extends GTWorldgen {
             }
         }
 
-        OreLayerWrapperBW layer2 = new OreLayerWrapperBW(aName, top, bottom, between, sprinkled, this);
+        OreLayerWrapper layer2 = new OreLayerWrapper(aName, top, bottom, between, sprinkled, this);
         NEIList.add(layer2);
         layer2.addDimension(dim);
     }
