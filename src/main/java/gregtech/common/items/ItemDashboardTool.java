@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.GTGenericItem;
 import gregtech.client.hud.CompositeWidget;
 import gregtech.client.hud.HUDGui;
@@ -57,6 +59,7 @@ public class ItemDashboardTool extends GTGenericItem {
 
     private double lastPlayerY = 0.0;
 
+    @SideOnly(Side.CLIENT)
     private void createWidgets() {
         HUDManager hud = HUDManager.getInstance();
 
