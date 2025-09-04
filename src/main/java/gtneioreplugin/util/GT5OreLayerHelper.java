@@ -15,6 +15,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.common.OreMixBuilder;
 
 public class GT5OreLayerHelper {
