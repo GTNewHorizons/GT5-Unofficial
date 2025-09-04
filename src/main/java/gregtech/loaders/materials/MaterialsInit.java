@@ -3404,7 +3404,10 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .addAspect(TCAspects.POTENTIA, 5)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.UNBURNABLE)
             .constructMaterial();
     }
 
