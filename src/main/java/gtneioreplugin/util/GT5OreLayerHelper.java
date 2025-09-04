@@ -117,7 +117,7 @@ public class GT5OreLayerHelper {
         }
 
         public ItemStack getLayerOre(int veinLayer, int materialIndex) {
-            if ((this.bwOres & 0b0001 << veinLayer) == 0) return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
+            if ((this.bwOres & 0b1000 >> veinLayer) == 0) return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
             return new ItemStack(WerkstoffLoader.BWOres, 1, Meta[veinLayer]);
         }
 
