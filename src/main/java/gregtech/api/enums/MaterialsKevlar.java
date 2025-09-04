@@ -613,7 +613,10 @@ public class MaterialsKevlar {
             .addGearItems()
             .setARGB(0x00f0f078)
             .setColor(Dyes.dyeYellow)
+            .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
