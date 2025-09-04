@@ -76,7 +76,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         this::getSteamCapacity);
     public boolean mHadNoWater = false;
     private int mExcessWater = 0;
-    public boolean playHeating = false;
     public boolean playBoiling = false;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop mHeatingSound;
@@ -245,7 +244,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
-            updateSoundLoops(aBaseMetaTileEntity, playBoiling);
+            updateSoundLoops(playBoiling);
         }
 
         pollute(aTick);
@@ -278,8 +277,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @SideOnly(Side.CLIENT)
-    protected void updateSoundLoops(IGregTechTileEntity aBaseMetaTileEntity, boolean playBoiling) {
-        if (playBoiling) {
+    protected void updateSoundLoops(boolean playBoiling) {
+        if (playBoiling && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
             if (mBoilingSound == null) {
                 mBoilingSound = new GTSoundLoop(
                     SoundResource.GTCEU_LOOP_BOILER.resourceLocation,
@@ -296,7 +295,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 mBoilingSound = null;
             }
         }
-        if (aBaseMetaTileEntity.isActive()) {
+        if (getBaseMetaTileEntity().isActive()
+            && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
             if (mHeatingSound == null) {
                 mHeatingSound = new GTSoundLoop(
                     SoundResource.GTCEU_LOOP_FURNACE.resourceLocation,
