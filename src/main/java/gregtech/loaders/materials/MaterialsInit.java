@@ -4279,6 +4279,11 @@ public class MaterialsInit {
             .addDustItems()
             .addGemItems()
             .addOreItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.QUARTZ)
             .constructMaterial();
     }
 
