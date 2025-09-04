@@ -9012,6 +9012,9 @@ public class MaterialsInit {
             .addMaterial(Materials.Tin, 9)
             .addMaterial(Materials.Antimony, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
+            .addSubTag(SubTag.SOLDERING_MATERIAL)
+            .addSubTag(SubTag.SOLDERING_MATERIAL_GOOD)
             .constructMaterial();
     }
 
