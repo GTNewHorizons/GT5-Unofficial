@@ -7591,6 +7591,9 @@ public class MaterialsInit {
     }
 
     private static void loadUnclassified01() {
+        Materials.DenseSteam = loadDenseSteam();
+        Materials.DenseSuperheatedSteam = loadDenseSuperheatedSteam();
+        Materials.DenseSupercriticalSteam = loadDenseSupercriticalSteam();
         Materials.OilExtraHeavy = loadOilExtraHeavy();
         Materials.OilHeavy = loadOilHeavy();
         Materials.OilLight = loadOilLight();
@@ -7600,6 +7603,36 @@ public class MaterialsInit {
         Materials.TengamPurified = loadTengamPurified();
         Materials.TengamAttuned = loadTengamAttuned();
         Materials.TengamRaw = loadTengamRaw();
+    }
+
+    private static Materials loadDenseSteam() {
+        return new MaterialBuilder().setName("DenseSteam")
+            .setDefaultLocalName("Dense Steam")
+            .setMetaItemSubID(232)
+            .addCell()
+            .addGas()
+            .setColor(Dyes.dyeWhite)
+            .constructMaterial();
+    }
+
+    private static Materials loadDenseSuperheatedSteam() {
+        return new MaterialBuilder().setName("DenseSuperheatedSteam")
+            .setDefaultLocalName("Dense Superheated Steam")
+            .setMetaItemSubID(233)
+            .addCell()
+            .addGas()
+            .setColor(Dyes.dyeWhite)
+            .constructMaterial();
+    }
+
+    private static Materials loadDenseSupercriticalSteam() {
+        return new MaterialBuilder().setName("DenseSupercriticalSteam")
+            .setDefaultLocalName("Dense Supercritical Steam")
+            .setMetaItemSubID(234)
+            .addCell()
+            .addGas()
+            .setColor(Dyes.dyeWhite)
+            .constructMaterial();
     }
 
     private static Materials loadOilExtraHeavy() {

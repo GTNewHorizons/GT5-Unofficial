@@ -551,6 +551,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Zincite;
 
     // Unclassified 01 materials
+    public static Materials DenseSteam;
+    public static Materials DenseSuperheatedSteam;
+    public static Materials DenseSupercriticalSteam;
     public static Materials OilExtraHeavy;
     public static Materials OilHeavy;
     public static Materials OilLight;
@@ -904,36 +907,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUEV;
     public static Materials SuperconductorUIV;
     public static Materials SuperconductorUMV;
-
-    public static Materials DenseSteam = makeDenseSteam();
-
-    private static Materials makeDenseSteam() {
-        return new MaterialBuilder(232, TextureSet.SET_FLUID, "Dense Steam").addCell()
-            .addGas()
-            .setRGB(255, 255, 255)
-            .setColor(Dyes.dyeWhite)
-            .constructMaterial();
-    }
-
-    public static Materials DenseSuperheatedSteam = makeDenseSuperheatedSteam();
-
-    private static Materials makeDenseSuperheatedSteam() {
-        return new MaterialBuilder(233, TextureSet.SET_FLUID, "Dense Superheated Steam").addCell()
-            .addGas()
-            .setRGB(255, 255, 255)
-            .setColor(Dyes.dyeWhite)
-            .constructMaterial();
-    }
-
-    public static Materials DenseSupercriticalSteam = makeDenseSupercriticalSteam();
-
-    private static Materials makeDenseSupercriticalSteam() {
-        return new MaterialBuilder(234, TextureSet.SET_FLUID, "Dense Supercritical Steam").addCell()
-            .addGas()
-            .setRGB(255, 255, 255)
-            .setColor(Dyes.dyeWhite)
-            .constructMaterial();
-    }
 
     // Waterline Chemicals
     public static Materials ActivatedCarbon;
