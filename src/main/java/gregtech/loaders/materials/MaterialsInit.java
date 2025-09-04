@@ -200,6 +200,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AQUA, 1)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
     }
 
