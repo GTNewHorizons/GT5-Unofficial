@@ -226,7 +226,7 @@ public class MaterialBuilder {
     /** @deprecated Add a transparent `SubTag` instead with {@link MaterialBuilder#addSubTag(SubTag)}. */
     @Deprecated
     public MaterialBuilder setTransparent(boolean transparent) {
-        return this;
+        return this.addSubTag(SubTag.TRANSPARENT);
     }
 
     public MaterialBuilder setColor(Dyes color) {
