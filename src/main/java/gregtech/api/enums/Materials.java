@@ -1763,22 +1763,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setArmorEnchantments() {
         InfusedAir.setEnchantmentForArmors(Enchantment.respiration, 3);
-
         InfusedFire.setEnchantmentForArmors(Enchantment.featherFalling, 4);
-
         Steeleaf.setEnchantmentForArmors(Enchantment.protection, 2);
         Knightmetal.setEnchantmentForArmors(Enchantment.protection, 1);
         InfusedEarth.setEnchantmentForArmors(Enchantment.protection, 4);
-
         InfusedEntropy.setEnchantmentForArmors(Enchantment.thorns, 3);
-
         InfusedWater.setEnchantmentForArmors(Enchantment.aquaAffinity, 1);
         IronWood.setEnchantmentForArmors(Enchantment.aquaAffinity, 1);
-
         InfusedOrder.setEnchantmentForArmors(Enchantment.projectileProtection, 4);
-
         InfusedDull.setEnchantmentForArmors(Enchantment.blastProtection, 4);
-
         InfusedVis.setEnchantmentForArmors(Enchantment.protection, 4);
     }
 
