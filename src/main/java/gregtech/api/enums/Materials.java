@@ -966,7 +966,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setDirectSmelting();
         setMultipliers();
         setEnchantments();
-        setColors();
     }
 
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 };
@@ -1076,6 +1075,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         TextureSet iconSet,
         Dyes color,
         int argb,
+        int argbMolten,
         int toolDurability, int toolQuality, float toolSpeed,
         float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
         int fuelType, int fuelPower,
@@ -1127,10 +1127,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // Set texture and colors
         mIconSet = iconSet;
         mColor = color;
-        mRGBa[0] = mMoltenRGBa[0] = (short) ((argb >>> 16) & 0xFF);
-        mRGBa[1] = mMoltenRGBa[1] = (short) ((argb >>> 8) & 0xFF);
-        mRGBa[2] = mMoltenRGBa[2] = (short) (argb & 0xFF);
-        mRGBa[3] = mMoltenRGBa[3] = (short) ((argb >>> 24) & 0xFF);
+        mRGBa[0] = (short) ((argb >>> 16) & 0xFF);
+        mRGBa[1] = (short) ((argb >>> 8) & 0xFF);
+        mRGBa[2] = (short) (argb & 0xFF);
+        mRGBa[3] = (short) ((argb >>> 24) & 0xFF);
+        mMoltenRGBa[0] = (short) ((argbMolten >>> 16) & 0xFF);
+        mMoltenRGBa[1] = (short) ((argbMolten >>> 8) & 0xFF);
+        mMoltenRGBa[2] = (short) (argbMolten & 0xFF);
+        mMoltenRGBa[3] = (short) ((argbMolten >>> 24) & 0xFF);
 
         // Set tool properties
         mDurability = toolDurability;
@@ -1646,21 +1650,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
-    }
-
-    private static void setColors() {
-        Naquadah.mMoltenRGBa[0] = 0;
-        Naquadah.mMoltenRGBa[1] = 255;
-        Naquadah.mMoltenRGBa[2] = 0;
-        Naquadah.mMoltenRGBa[3] = 0;
-        NaquadahEnriched.mMoltenRGBa[0] = 64;
-        NaquadahEnriched.mMoltenRGBa[1] = 255;
-        NaquadahEnriched.mMoltenRGBa[2] = 64;
-        NaquadahEnriched.mMoltenRGBa[3] = 0;
-        Naquadria.mMoltenRGBa[0] = 128;
-        Naquadria.mMoltenRGBa[1] = 255;
-        Naquadria.mMoltenRGBa[2] = 128;
-        Naquadria.mMoltenRGBa[3] = 0;
     }
 
     public static void init() {

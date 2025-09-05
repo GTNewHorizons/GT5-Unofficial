@@ -49,6 +49,7 @@ public class MaterialBuilder {
     private int toolQuality = 0;
     private int types = 0;
     private int argb = 0x00ffffff;
+    private int argbMolten = 0x00ffffff;
     private String name;
     private String defaultLocalName;
     private FuelType fuelType = FuelType.Diesel;
@@ -98,6 +99,7 @@ public class MaterialBuilder {
             iconSet,
             color,
             argb,
+            argbMolten,
             toolDurability, toolQuality, toolSpeed,
             steamMultiplier, gasMultiplier, plasmaMultiplier,
             fuelType.getIndex(), fuelPower,
@@ -201,8 +203,15 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Sets {@link MaterialBuilder#argb} and {@link MaterialBuilder#argbMolten}. */
     public MaterialBuilder setARGB(int argb) {
         this.argb = argb;
+        this.argbMolten = argb;
+        return this;
+    }
+
+    public MaterialBuilder setMoltenARGB(int argb) {
+        this.argbMolten = argb;
         return this;
     }
 
