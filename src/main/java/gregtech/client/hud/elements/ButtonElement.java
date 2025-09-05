@@ -3,10 +3,13 @@ package gregtech.client.hud.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.CompositeWidget;
 import gregtech.client.hud.HUDGui;
 import gregtech.client.hud.HUDManager;
 
+@SideOnly(Side.CLIENT)
 public class ButtonElement extends WidgetElement<ButtonElement> implements Configurable {
 
     private String label;

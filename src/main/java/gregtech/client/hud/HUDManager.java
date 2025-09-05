@@ -18,6 +18,8 @@ import org.lwjgl.opengl.GL11;
 import com.github.bsideup.jabel.Desugar;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.elements.DroplistElement;
 import gregtech.client.hud.elements.TextInputElement;
 
@@ -26,6 +28,7 @@ import gregtech.client.hud.elements.TextInputElement;
  * Usage: Register with HUDManager.getInstance().register(), enable with setEnabled(true), add widgets with
  * addWidget(widget).
  */
+@SideOnly(Side.CLIENT)
 public class HUDManager {
 
     private static final HUDManager INSTANCE = new HUDManager();

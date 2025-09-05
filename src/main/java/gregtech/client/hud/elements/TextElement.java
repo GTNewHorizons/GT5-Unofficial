@@ -5,10 +5,13 @@ import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.CompositeWidget;
 import gregtech.client.hud.HUDGui;
 import gregtech.client.hud.HUDManager;
 
+@SideOnly(Side.CLIENT)
 public class TextElement extends WidgetElement<TextElement> implements Configurable {
 
     private Supplier<String> textSupplier;

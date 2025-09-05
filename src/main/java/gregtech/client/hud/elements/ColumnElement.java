@@ -6,9 +6,12 @@ import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.HUDGui;
 import gregtech.client.hud.HUDManager;
 
+@SideOnly(Side.CLIENT)
 public class ColumnElement extends WidgetElement<ColumnElement> implements Configurable {
 
     private final Supplier<List<Double>> dataSupplier;

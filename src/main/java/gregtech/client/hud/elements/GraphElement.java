@@ -9,9 +9,12 @@ import net.minecraft.client.gui.FontRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.HUDGui;
 import gregtech.client.hud.HUDManager;
 
+@SideOnly(Side.CLIENT)
 public class GraphElement extends WidgetElement<GraphElement> implements Configurable {
 
     private final Supplier<Double> valueSupplier;

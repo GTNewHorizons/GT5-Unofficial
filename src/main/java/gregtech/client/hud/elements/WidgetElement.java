@@ -6,8 +6,11 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.HUDManager;
 
+@SideOnly(Side.CLIENT)
 public abstract class WidgetElement<T extends WidgetElement<T>> {
 
     public int offsetX;
