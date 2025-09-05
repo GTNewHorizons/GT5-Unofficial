@@ -520,11 +520,11 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     }
 
     private String formatCoolant(Fluid liquid){
-     return String.format("§3%s§7: §b%,.0f K", liquid.getLocalizedName(), getCoolantTemp(liquid.getName(), ambientTemp));
+     return String.format("§3%s§7: §b%,.0f K", liquid.getLocalizedName(), getCoolantTemp(liquid.getName()));
     }
 
     private String formatHeater(Fluid liquid){
-        return String.format("§6%s§7: §e%,.0f K", liquid.getLocalizedName(), getCoolantTemp(liquid.getName(), ambientTemp));
+        return String.format("§6%s§7: §e%,.0f K", liquid.getLocalizedName(), getCoolantTemp(liquid.getName()));
     }
 
     private String formatLubricant(String name, String displayName) {
@@ -862,7 +862,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         };
     }
 
-    private static double getCoolantTemp(String name, double ambientTemp) {
+    private double getCoolantTemp(String name) {
         return switch (name) {
             case "ic2coolant" -> 250;
             case "cryotheum" -> 25;
@@ -916,11 +916,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        initializeConditions();
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         handleEnergyDrain();
         if (mMachine && aTick % TICK_INTERVAL == 0) {
-            initializeConditions();
             updateTemperature();
             updatePressure();
             applyRecipeConditions();
@@ -954,7 +959,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 if (fluid == null) continue;
                 String coolantName = fluid.getFluid()
                     .getName();
-                coolantTemp = getCoolantTemp(coolantName, ambientTemp);
+                coolantTemp = getCoolantTemp(coolantName);
                 boolean isCoolant = coolantName.equals("ic2coolant") || coolantName.equals("cryotheum")
                     || coolantName.equals("supercoolant")
                     || coolantName.equals("molten.spacetime");
