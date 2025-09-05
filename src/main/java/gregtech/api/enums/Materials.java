@@ -977,6 +977,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public List<TCAspects.TC_AspectStack> mAspects = new ArrayList<>();
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
     public Collection<SubTag> mSubTags = new LinkedHashSet<>();
+    public LinkedHashSet<SubTag> mSubTags = new LinkedHashSet<>();
     public Enchantment mEnchantmentTools = null;
     public Enchantment mEnchantmentArmors = null;
     public boolean mUnificatable;
