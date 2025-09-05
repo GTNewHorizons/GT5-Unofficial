@@ -85,8 +85,8 @@ public class Oremix implements Comparable<Oremix> {
         String[] headers = new String[sizeData + DimensionHelper.DimNameDisplayed.length];
         headers[0] = "Ore Mix Name";
         headers[1] = "Primary Ore";
-        headers[2] = "Secondary Ore";
-        headers[3] = "InBetween Ore";
+        headers[2] = "InBetween Ore";
+        headers[3] = "Secondary Ore";
         headers[4] = "Sporadic Ore";
         headers[5] = "Ore Meta IDs";
         headers[6] = "Height";
@@ -103,8 +103,8 @@ public class Oremix implements Comparable<Oremix> {
         String[] values = new String[sizeData + DimensionHelper.DimNameDisplayed.length];
         values[0] = oreMixName;
         values[1] = primary;
-        values[2] = secondary;
-        values[3] = inbetween;
+        values[2] = inbetween;
+        values[3] = secondary;
         values[4] = sporadic;
         values[5] = oreMixIDs;
         values[6] = height;
