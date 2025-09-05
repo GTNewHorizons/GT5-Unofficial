@@ -2389,7 +2389,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Deprecated
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
     public Materials addOreByProduct(Materials aMaterial) {
-        mOreByProducts.add(aMaterial.mMaterialInto);
+        if (!mOreByProducts.contains(aMaterial.mMaterialInto)) mOreByProducts.add(aMaterial.mMaterialInto);
         return this;
     }
 
