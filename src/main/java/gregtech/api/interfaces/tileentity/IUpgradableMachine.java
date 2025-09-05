@@ -31,6 +31,8 @@ public interface IUpgradableMachine extends IMachineProgress {
      */
     boolean addMufflerUpgrade();
 
+    default void setMuffler(boolean value) {}
+
     /**
      * Adds MJ-Converter Upgrade
      */

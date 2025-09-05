@@ -385,6 +385,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
                 && !CoverRegistry.isCover(tCurrentItem)) return false;
         }
 

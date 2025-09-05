@@ -659,7 +659,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 }
             }
         } else {
-            doActivitySound(getActivitySoundLoop());
+            updateSounds(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -846,9 +846,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      * Starts the activity sound loop if it isn't already playing.
      */
     @SideOnly(Side.CLIENT)
-    protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null
-            && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+    protected void updateSounds(SoundResource activitySound) {
+        if (activitySound == null) return;
+
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -1301,6 +1302,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         builder.widget(createChargerSlot(79, 62));
 
         addProgressBar(builder, uiProperties);
+
+        builder.widget(createMuffleButton());
 
         builder.widget(
             createErrorStatusArea(
