@@ -1669,6 +1669,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
+    public void setMuffler(boolean value) {
+        mMuffler = value;
+    }
+
+    @Override
     public void markInventoryBeenModified() {
         mInventoryChanged = true;
     }

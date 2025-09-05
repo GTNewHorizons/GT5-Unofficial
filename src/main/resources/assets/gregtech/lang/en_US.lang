@@ -1097,6 +1097,7 @@ GT5U.machines.separatebus=Input buses are separated
 GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
+GT5U.machines.muffled=Sound Muffling
 GT5U.machines.muffled.on=Sound Muffling: §aEnabled§r
 GT5U.machines.muffled.off=Sound Muffling: §cDisabled§r
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r

@@ -1303,6 +1303,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
         addProgressBar(builder, uiProperties);
 
+        builder.widget(createMuffleButton());
+
         builder.widget(
             createErrorStatusArea(
                 builder,
