@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,6 +33,7 @@ import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
@@ -957,6 +959,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static Materials[] MATERIALS_ARRAY = new Materials[] {};
 
     static {
+        setOreByproducts();
         setReRegistration();
         setMaceratingInto();
         setSmeltingInto();
@@ -976,6 +979,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public List<TCAspects.TC_AspectStack> mAspects = new ArrayList<>();
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
     public LinkedHashSet<SubTag> mSubTags = new LinkedHashSet<>();
+    public List<Supplier<Materials>> mPendingOreByproducts = new ArrayList<>();
     public List<Materials> mOreByProducts = new ArrayList<>();
     public Enchantment mEnchantmentTools = null;
     public Enchantment mEnchantmentArmors = null;
@@ -1089,7 +1093,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int densityDivider,
         List<MaterialStack> materialList,
         List<TCAspects.TC_AspectStack> aspects,
-        List<Materials> oreByproducts,
+        List<Supplier<Materials>> pendingOreByproducts,
         LinkedHashSet<SubTag> subTags
         // spotless:on
     ) {
@@ -1155,7 +1159,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         // Set what materials this material is composed of
         mMaterialList = materialList;
-        mOreByProducts = oreByproducts;
+        mPendingOreByproducts = pendingOreByproducts;
 
         // Set material density
         mDensityMultiplier = densityMultiplier;
@@ -1502,6 +1506,180 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         );
     }
 
+    private static void setOreByproducts() {
+        for (Materials material : MATERIALS_MAP.values()) {
+            material.mPendingOreByproducts.stream()
+                .flatMap(GTStreamUtil::ofSupplier)
+                .map(byproduct -> byproduct.mMaterialInto)
+                .filter(byproduct -> !material.mOreByProducts.contains(byproduct))
+                .forEachOrdered(material.mOreByProducts::add);
+
+            material.mPendingOreByproducts = null;
+        }
+    }
+
+    @Deprecated
+    private static void setByProducts() {
+        // Mytryl.addOreByProducts(Samarium, Samarium, Zinc, Zinc);
+        // Rubracium.addOreByProducts(Samarium, Samarium, Samarium, Samarium);
+        // Chalcopyrite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);
+        // Sphalerite.addOreByProducts(GarnetYellow, Cadmium, Gallium, Zinc);
+        // MeteoricIron.addOreByProducts(Iron, Nickel, Iridium, Platinum);
+        // GlauconiteSand.addOreByProducts(Sodium, Aluminiumoxide, Iron);
+        // Glauconite.addOreByProducts(Sodium, Aluminiumoxide, Iron);
+        // Vermiculite.addOreByProducts(Iron, Aluminiumoxide, Magnesium);
+        // FullersEarth.addOreByProducts(Aluminiumoxide, SiliconDioxide, Magnesium);
+        // Bentonite.addOreByProducts(Aluminiumoxide, Calcium, Magnesium);
+        // Uraninite.addOreByProducts(Uranium, Thorium, Uranium235);
+        // Pitchblende.addOreByProducts(Thorium, Uranium, Lead);
+        // Galena.addOreByProducts(Sulfur, Silver, Lead);
+        // Lapis.addOreByProducts(Lazurite, Sodalite, Pyrite);
+        // Pyrite.addOreByProducts(Sulfur, TricalciumPhosphate, Iron);
+        // Copper.addOreByProducts(Cobalt, Gold, Nickel);
+        // Nickel.addOreByProducts(Cobalt, Platinum, Iron);
+        // GarnetRed.addOreByProducts(Spessartine, Pyrope, Almandine);
+        // GarnetYellow.addOreByProducts(Andradite, Grossular, Uvarovite);
+        // Cooperite.addOreByProducts(Palladium, Nickel, Iridium);
+        // Cinnabar.addOreByProducts(Redstone, Sulfur, Glowstone);
+        // Tantalite.addOreByProducts(Manganese, Niobium, Tantalum);
+        // Pollucite.addOreByProducts(Caesium, Aluminiumoxide, Rubidium);
+        // Chrysotile.addOreByProducts(Asbestos, SiliconDioxide, Magnesium);
+        // Asbestos.addOreByProducts(Asbestos, SiliconDioxide, Magnesium);
+        // Pentlandite.addOreByProducts(Iron, Sulfur, Cobalt);
+        // Uranium.addOreByProducts(Lead, Uranium235, Thorium);
+        // Scheelite.addOreByProducts(Manganese, Molybdenum, Calcium);
+        // Tungstate.addOreByProducts(Manganese, Silver, Lithium);
+        // Bauxite.addOreByProducts(Grossular, Rutile, Gallium);
+        // QuartzSand.addOreByProducts(CertusQuartz, Quartzite, Barite);
+        // Redstone.addOreByProducts(Cinnabar, RareEarth, Glowstone);
+        // Monazite.addOreByProducts(Thorium, Neodymium, RareEarth);
+        // Forcicium.addOreByProducts(Thorium, Neodymium, RareEarth);
+        // Forcillium.addOreByProducts(Thorium, Neodymium, RareEarth);
+        // Malachite.addOreByProducts(Copper, BrownLimonite, Calcite);
+        // YellowLimonite.addOreByProducts(Nickel, BrownLimonite, Cobalt);
+        // Lepidolite.addOreByProducts(Lithium, Caesium);
+        // Andradite.addOreByProducts(GarnetYellow, Iron);
+        // Pyrolusite.addOreByProducts(Manganese, Tantalite, Niobium);
+        // TricalciumPhosphate.addOreByProducts(Apatite, Phosphate, Pyrochlore);
+        // Apatite.addOreByProducts(TricalciumPhosphate, Phosphate, Pyrochlore);
+        // Pyrochlore.addOreByProducts(Apatite, Calcite, Niobium);
+        // Quartzite.addOreByProducts(CertusQuartz, Barite);
+        // CertusQuartz.addOreByProducts(Quartzite, Barite);
+        // CertusQuartzCharged.addOreByProducts(CertusQuartz, Quartzite, Barite);
+        // BrownLimonite.addOreByProducts(Malachite, YellowLimonite);
+        // Neodymium.addOreByProducts(Monazite, RareEarth);
+        // Glowstone.addOreByProducts(Redstone, Gold);
+        // Zinc.addOreByProducts(Tin, Gallium);
+        // Tungsten.addOreByProducts(Manganese, Molybdenum);
+        // Diatomite.addOreByProducts(BandedIron, Sapphire);
+        // Iron.addOreByProducts(Nickel, Tin);
+        // Gold.addOreByProducts(Copper, Nickel);
+        // Tin.addOreByProducts(Iron, Zinc);
+        // Antimony.addOreByProducts(Zinc, Iron);
+        // Silver.addOreByProducts(Lead, Sulfur);
+        // Lead.addOreByProducts(Silver, Sulfur);
+        // Thorium.addOreByProducts(Uranium, Lead);
+        // Plutonium.addOreByProducts(Uranium, Lead);
+        // Electrum.addOreByProducts(Gold, Silver);
+        // Electrotine.addOreByProducts(Redstone, Electrum);
+        // Bronze.addOreByProducts(Copper, Tin);
+        // Brass.addOreByProducts(Copper, Zinc);
+        // Coal.addOreByProducts(Lignite, Thorium);
+        // Ilmenite.addOreByProducts(Iron, Rutile);
+        // Manganese.addOreByProducts(Chrome, Iron);
+        // Sapphire.addOreByProducts(Aluminiumoxide, GreenSapphire);
+        // GreenSapphire.addOreByProducts(Aluminiumoxide, Sapphire);
+        // Platinum.addOreByProducts(Nickel, Iridium);
+        // Emerald.addOreByProducts(Beryllium, Aluminiumoxide);
+        // Olivine.addOreByProducts(Pyrope, Magnesium);
+        // Chrome.addOreByProducts(Iron, Magnesium);
+        // Chromite.addOreByProducts(Iron, Magnesium);
+        // Tetrahedrite.addOreByProducts(Antimony, Zinc);
+        // GarnetSand.addOreByProducts(GarnetRed, GarnetYellow);
+        // Magnetite.addOreByProducts(Iron, Gold);
+        // GraniticMineralSand.addOreByProducts(GraniteBlack, Magnetite);
+        // BasalticMineralSand.addOreByProducts(Basalt, Magnetite);
+        // Basalt.addOreByProducts(Olivine, DarkAsh);
+        // VanadiumMagnetite.addOreByProducts(Magnetite, Vanadium);
+        // Lazurite.addOreByProducts(Sodalite, Lapis);
+        // Sodalite.addOreByProducts(Lazurite, Lapis);
+        // Spodumene.addOreByProducts(Aluminiumoxide, Lithium);
+        // Ruby.addOreByProducts(Chrome, GarnetRed);
+        // Iridium.addOreByProducts(Platinum, Osmium);
+        // Pyrope.addOreByProducts(GarnetRed, Magnesium);
+        // Almandine.addOreByProducts(GarnetRed, Aluminiumoxide);
+        // Spessartine.addOreByProducts(GarnetRed, Manganese);
+        // Grossular.addOreByProducts(GarnetYellow, Calcium);
+        // Uvarovite.addOreByProducts(GarnetYellow, Chrome);
+        // Calcite.addOreByProducts(Andradite, Malachite);
+        // NaquadahEnriched.addOreByProducts(Naquadah, Naquadria);
+        // Salt.addOreByProducts(RockSalt, Borax);
+        // RockSalt.addOreByProducts(Salt, Borax);
+        // Naquadah.addOreByProducts(NaquadahEnriched);
+        // Molybdenite.addOreByProducts(Molybdenum);
+        // Stibnite.addOreByProducts(Antimony);
+        // Garnierite.addOreByProducts(Nickel);
+        // Lignite.addOreByProducts(Coal);
+        // Diamond.addOreByProducts(Graphite);
+        // Beryllium.addOreByProducts(Emerald);
+        // Electrotine.addOreByProducts(Diamond);
+        // Teslatite.addOreByProducts(Diamond);
+        // Magnesite.addOreByProducts(Magnesium);
+        // NetherQuartz.addOreByProducts(Netherrack);
+        // PigIron.addOreByProducts(Iron);
+        // DeepIron.addOreByProducts(Trinium, Iron, Trinium);
+        // ShadowIron.addOreByProducts(Iron);
+        // DarkIron.addOreByProducts(Iron);
+        // MeteoricIron.addOreByProducts(Iron);
+        // Steel.addOreByProducts(Iron);
+        // HSLA.addOreByProducts(Iron);
+        // Mithril.addOreByProducts(Platinum);
+        // AstralSilver.addOreByProducts(Silver);
+        // Graphite.addOreByProducts(Carbon);
+        // Netherrack.addOreByProducts(Sulfur);
+        // Flint.addOreByProducts(Obsidian);
+        // Cobaltite.addOreByProducts(Cobalt);
+        // Cobalt.addOreByProducts(Cobaltite);
+        // Sulfur.addOreByProducts(Sulfur);
+        // Saltpeter.addOreByProducts(Saltpeter);
+        // Endstone.addOreByProducts(Helium_3);
+        // Osmium.addOreByProducts(Iridium);
+        // Magnesium.addOreByProducts(Olivine);
+        // Aluminium.addOreByProducts(Bauxite);
+        // Titanium.addOreByProducts(Almandine);
+        // Obsidian.addOreByProducts(Olivine);
+        // Ash.addOreByProducts(Carbon);
+        // DarkAsh.addOreByProducts(Carbon);
+        // Redrock.addOreByProducts(Clay);
+        // Marble.addOreByProducts(Calcite);
+        // Clay.addOreByProducts(Clay);
+        // Cassiterite.addOreByProducts(Tin);
+        // CassiteriteSand.addOreByProducts(Tin);
+        // GraniteBlack.addOreByProducts(Biotite);
+        // GraniteRed.addOreByProducts(PotassiumFeldspar);
+        // Phosphate.addOreByProducts(Phosphorus);
+        // Phosphorus.addOreByProducts(Phosphate);
+        // Tanzanite.addOreByProducts(Opal);
+        // Opal.addOreByProducts(Tanzanite);
+        // Amethyst.addOreByProducts(Amethyst);
+        // FoolsRuby.addOreByProducts(Jasper);
+        // Amber.addOreByProducts(Amber);
+        // Topaz.addOreByProducts(BlueTopaz);
+        // BlueTopaz.addOreByProducts(Topaz);
+        // Niter.addOreByProducts(Saltpeter);
+        // Vinteum.addOreByProducts(Vinteum);
+        // Force.addOreByProducts(Force);
+        // Dilithium.addOreByProducts(Dilithium);
+        // Neutronium.addOreByProducts(Neutronium);
+        // Lithium.addOreByProducts(Lithium);
+        // Silicon.addOreByProducts(SiliconDioxide);
+        // InfusedGold.addOreByProduct(Gold);
+        // Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
+        // Naquadria.addOreByProduct(Naquadria);
+        // RoastedNickel.addOreByProduct(Nickel);
+        // TengamRaw.addOreByProducts(NeodymiumMagnetic, SamariumMagnetic);
+    }
+
     private static void setSmeltingInto() {
         SamariumMagnetic.setSmeltingInto(Samarium)
             .setMaceratingInto(Samarium)
@@ -1786,168 +1964,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
-    }
-
-    private static void setByProducts() {
-        Mytryl.addOreByProducts(Samarium, Samarium, Zinc, Zinc);
-        Rubracium.addOreByProducts(Samarium, Samarium, Samarium, Samarium);
-        Chalcopyrite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);
-        Sphalerite.addOreByProducts(GarnetYellow, Cadmium, Gallium, Zinc);
-        MeteoricIron.addOreByProducts(Iron, Nickel, Iridium, Platinum);
-        GlauconiteSand.addOreByProducts(Sodium, Aluminiumoxide, Iron);
-        Glauconite.addOreByProducts(Sodium, Aluminiumoxide, Iron);
-        Vermiculite.addOreByProducts(Iron, Aluminiumoxide, Magnesium);
-        FullersEarth.addOreByProducts(Aluminiumoxide, SiliconDioxide, Magnesium);
-        Bentonite.addOreByProducts(Aluminiumoxide, Calcium, Magnesium);
-        Uraninite.addOreByProducts(Uranium, Thorium, Uranium235);
-        Pitchblende.addOreByProducts(Thorium, Uranium, Lead);
-        Galena.addOreByProducts(Sulfur, Silver, Lead);
-        Lapis.addOreByProducts(Lazurite, Sodalite, Pyrite);
-        Pyrite.addOreByProducts(Sulfur, TricalciumPhosphate, Iron);
-        Copper.addOreByProducts(Cobalt, Gold, Nickel);
-        Nickel.addOreByProducts(Cobalt, Platinum, Iron);
-        GarnetRed.addOreByProducts(Spessartine, Pyrope, Almandine);
-        GarnetYellow.addOreByProducts(Andradite, Grossular, Uvarovite);
-        Cooperite.addOreByProducts(Palladium, Nickel, Iridium);
-        Cinnabar.addOreByProducts(Redstone, Sulfur, Glowstone);
-        Tantalite.addOreByProducts(Manganese, Niobium, Tantalum);
-        Pollucite.addOreByProducts(Caesium, Aluminiumoxide, Rubidium);
-        Chrysotile.addOreByProducts(Asbestos, SiliconDioxide, Magnesium);
-        Asbestos.addOreByProducts(Asbestos, SiliconDioxide, Magnesium);
-        Pentlandite.addOreByProducts(Iron, Sulfur, Cobalt);
-        Uranium.addOreByProducts(Lead, Uranium235, Thorium);
-        Scheelite.addOreByProducts(Manganese, Molybdenum, Calcium);
-        Tungstate.addOreByProducts(Manganese, Silver, Lithium);
-        Bauxite.addOreByProducts(Grossular, Rutile, Gallium);
-        QuartzSand.addOreByProducts(CertusQuartz, Quartzite, Barite);
-        Redstone.addOreByProducts(Cinnabar, RareEarth, Glowstone);
-        Monazite.addOreByProducts(Thorium, Neodymium, RareEarth);
-        Forcicium.addOreByProducts(Thorium, Neodymium, RareEarth);
-        Forcillium.addOreByProducts(Thorium, Neodymium, RareEarth);
-        Malachite.addOreByProducts(Copper, BrownLimonite, Calcite);
-        YellowLimonite.addOreByProducts(Nickel, BrownLimonite, Cobalt);
-        Lepidolite.addOreByProducts(Lithium, Caesium);
-        Andradite.addOreByProducts(GarnetYellow, Iron);
-        Pyrolusite.addOreByProducts(Manganese, Tantalite, Niobium);
-        TricalciumPhosphate.addOreByProducts(Apatite, Phosphate, Pyrochlore);
-        Apatite.addOreByProducts(TricalciumPhosphate, Phosphate, Pyrochlore);
-        Pyrochlore.addOreByProducts(Apatite, Calcite, Niobium);
-        Quartzite.addOreByProducts(CertusQuartz, Barite);
-        CertusQuartz.addOreByProducts(Quartzite, Barite);
-        CertusQuartzCharged.addOreByProducts(CertusQuartz, Quartzite, Barite);
-        BrownLimonite.addOreByProducts(Malachite, YellowLimonite);
-        Neodymium.addOreByProducts(Monazite, RareEarth);
-        Bastnasite.addOreByProducts(Neodymium, RareEarth);
-        Glowstone.addOreByProducts(Redstone, Gold);
-        Zinc.addOreByProducts(Tin, Gallium);
-        Tungsten.addOreByProducts(Manganese, Molybdenum);
-        Diatomite.addOreByProducts(BandedIron, Sapphire);
-        Iron.addOreByProducts(Nickel, Tin);
-        Gold.addOreByProducts(Copper, Nickel);
-        Tin.addOreByProducts(Iron, Zinc);
-        Antimony.addOreByProducts(Zinc, Iron);
-        Silver.addOreByProducts(Lead, Sulfur);
-        Lead.addOreByProducts(Silver, Sulfur);
-        Thorium.addOreByProducts(Uranium, Lead);
-        Plutonium.addOreByProducts(Uranium, Lead);
-        Electrum.addOreByProducts(Gold, Silver);
-        Electrotine.addOreByProducts(Redstone, Electrum);
-        Bronze.addOreByProducts(Copper, Tin);
-        Brass.addOreByProducts(Copper, Zinc);
-        Coal.addOreByProducts(Lignite, Thorium);
-        Ilmenite.addOreByProducts(Iron, Rutile);
-        Manganese.addOreByProducts(Chrome, Iron);
-        Sapphire.addOreByProducts(Aluminiumoxide, GreenSapphire);
-        GreenSapphire.addOreByProducts(Aluminiumoxide, Sapphire);
-        Platinum.addOreByProducts(Nickel, Iridium);
-        Emerald.addOreByProducts(Beryllium, Aluminiumoxide);
-        Olivine.addOreByProducts(Pyrope, Magnesium);
-        Chrome.addOreByProducts(Iron, Magnesium);
-        Chromite.addOreByProducts(Iron, Magnesium);
-        Tetrahedrite.addOreByProducts(Antimony, Zinc);
-        GarnetSand.addOreByProducts(GarnetRed, GarnetYellow);
-        Magnetite.addOreByProducts(Iron, Gold);
-        GraniticMineralSand.addOreByProducts(GraniteBlack, Magnetite);
-        BasalticMineralSand.addOreByProducts(Basalt, Magnetite);
-        Basalt.addOreByProducts(Olivine, DarkAsh);
-        VanadiumMagnetite.addOreByProducts(Magnetite, Vanadium);
-        Lazurite.addOreByProducts(Sodalite, Lapis);
-        Sodalite.addOreByProducts(Lazurite, Lapis);
-        Spodumene.addOreByProducts(Aluminiumoxide, Lithium);
-        Ruby.addOreByProducts(Chrome, GarnetRed);
-        Iridium.addOreByProducts(Platinum, Osmium);
-        Pyrope.addOreByProducts(GarnetRed, Magnesium);
-        Almandine.addOreByProducts(GarnetRed, Aluminiumoxide);
-        Spessartine.addOreByProducts(GarnetRed, Manganese);
-        Grossular.addOreByProducts(GarnetYellow, Calcium);
-        Uvarovite.addOreByProducts(GarnetYellow, Chrome);
-        Calcite.addOreByProducts(Andradite, Malachite);
-        NaquadahEnriched.addOreByProducts(Naquadah, Naquadria);
-        Salt.addOreByProducts(RockSalt, Borax);
-        RockSalt.addOreByProducts(Salt, Borax);
-        Naquadah.addOreByProducts(NaquadahEnriched);
-        Molybdenite.addOreByProducts(Molybdenum);
-        Stibnite.addOreByProducts(Antimony);
-        Garnierite.addOreByProducts(Nickel);
-        Lignite.addOreByProducts(Coal);
-        Diamond.addOreByProducts(Graphite);
-        Beryllium.addOreByProducts(Emerald);
-        Electrotine.addOreByProducts(Diamond);
-        Teslatite.addOreByProducts(Diamond);
-        Magnesite.addOreByProducts(Magnesium);
-        NetherQuartz.addOreByProducts(Netherrack);
-        PigIron.addOreByProducts(Iron);
-        DeepIron.addOreByProducts(Trinium, Iron, Trinium);
-        ShadowIron.addOreByProducts(Iron);
-        DarkIron.addOreByProducts(Iron);
-        MeteoricIron.addOreByProducts(Iron);
-        Steel.addOreByProducts(Iron);
-        HSLA.addOreByProducts(Iron);
-        Mithril.addOreByProducts(Platinum);
-        AstralSilver.addOreByProducts(Silver);
-        Graphite.addOreByProducts(Carbon);
-        Netherrack.addOreByProducts(Sulfur);
-        Flint.addOreByProducts(Obsidian);
-        Cobaltite.addOreByProducts(Cobalt);
-        Cobalt.addOreByProducts(Cobaltite);
-        Sulfur.addOreByProducts(Sulfur);
-        Saltpeter.addOreByProducts(Saltpeter);
-        Endstone.addOreByProducts(Helium_3);
-        Osmium.addOreByProducts(Iridium);
-        Magnesium.addOreByProducts(Olivine);
-        Aluminium.addOreByProducts(Bauxite);
-        Titanium.addOreByProducts(Almandine);
-        Obsidian.addOreByProducts(Olivine);
-        Ash.addOreByProducts(Carbon);
-        DarkAsh.addOreByProducts(Carbon);
-        Redrock.addOreByProducts(Clay);
-        Marble.addOreByProducts(Calcite);
-        Clay.addOreByProducts(Clay);
-        Cassiterite.addOreByProducts(Tin);
-        CassiteriteSand.addOreByProducts(Tin);
-        GraniteBlack.addOreByProducts(Biotite);
-        GraniteRed.addOreByProducts(PotassiumFeldspar);
-        Phosphate.addOreByProducts(Phosphorus);
-        Phosphorus.addOreByProducts(Phosphate);
-        Tanzanite.addOreByProducts(Opal);
-        Opal.addOreByProducts(Tanzanite);
-        Amethyst.addOreByProducts(Amethyst);
-        FoolsRuby.addOreByProducts(Jasper);
-        Amber.addOreByProducts(Amber);
-        Topaz.addOreByProducts(BlueTopaz);
-        BlueTopaz.addOreByProducts(Topaz);
-        Niter.addOreByProducts(Saltpeter);
-        Vinteum.addOreByProducts(Vinteum);
-        Force.addOreByProducts(Force);
-        Dilithium.addOreByProducts(Dilithium);
-        Neutronium.addOreByProducts(Neutronium);
-        Lithium.addOreByProducts(Lithium);
-        Silicon.addOreByProducts(SiliconDioxide);
-        InfusedGold.addOreByProduct(Gold);
-        Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
-        Naquadria.addOreByProduct(Naquadria);
-        RoastedNickel.addOreByProduct(Nickel);
-        TengamRaw.addOreByProducts(NeodymiumMagnetic, SamariumMagnetic);
     }
 
     private static void setColors() {
@@ -2377,31 +2393,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
     public Materials setHeatDamage(float aHeatDamage) {
         mHeatDamage = aHeatDamage;
-        return this;
-    }
-
-    /**
-     * Adds a Material to the List of Byproducts when grinding this Ore. Is used for more precise Ore grinding, so that
-     * it is possible to choose between certain kinds of Materials.
-     *
-     * @deprecated Use {@link MaterialBuilder#addOreByproduct(Materials)} on {@link MaterialBuilder} instead.
-     */
-    @Deprecated
-    @SuppressWarnings("UnusedReturnValue") // Maintains signature
-    public Materials addOreByProduct(Materials aMaterial) {
-        if (!mOreByProducts.contains(aMaterial.mMaterialInto)) mOreByProducts.add(aMaterial.mMaterialInto);
-        return this;
-    }
-
-    /**
-     * Adds multiple Materials to the List of Byproducts when grinding this Ore. Is used for more precise Ore grinding,
-     * so that it is possible to choose between certain kinds of Materials.
-     *
-     * @deprecated Use {@link MaterialBuilder#addOreByproduct(Materials)} on {@link MaterialBuilder} instead.
-     */
-    @Deprecated
-    public Materials addOreByProducts(Materials... aMaterials) {
-        for (Materials tMaterial : aMaterials) if (tMaterial != null) addOreByProduct(tMaterial);
         return this;
     }
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.function.Supplier;
 
 import gregtech.api.objects.MaterialStack;
 
@@ -63,7 +64,7 @@ public class MaterialBuilder {
     private int extraData = 0;
     private List<MaterialStack> materialList = new ArrayList<>();
     private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
-    private final List<Materials> oreByproducts = new ArrayList<>();
+    private final List<Supplier<Materials>> pendingOreByproducts = new ArrayList<>();
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private boolean hasFluid = false;
     private boolean hasGas = false;
@@ -113,7 +114,7 @@ public class MaterialBuilder {
             densityDivider,
             materialList,
             aspects,
-            oreByproducts,
+            pendingOreByproducts,
             subTags
             // spotless:on
         ).setCanBeCracked(canBeCracked);
@@ -398,8 +399,8 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder addOreByproduct(Materials material) {
-        if (!oreByproducts.contains(material.mMaterialInto)) oreByproducts.add(material.mMaterialInto);
+    public MaterialBuilder addOreByproduct(Supplier<Materials> material) {
+        pendingOreByproducts.add(material);
         return this;
     }
 

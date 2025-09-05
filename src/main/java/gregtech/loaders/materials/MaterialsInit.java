@@ -10025,6 +10025,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Fluorine, 1)
             .addMaterial(Materials.Oxygen, 3)
+            .addOreByproduct(() -> Materials.Neodymium)
+            .addOreByproduct(() -> Materials.RareEarth)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .constructMaterial();
     }
