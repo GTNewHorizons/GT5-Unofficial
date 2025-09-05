@@ -63,8 +63,8 @@ public class MaterialBuilder {
     private int extraData = 0;
     private List<MaterialStack> materialList = new ArrayList<>();
     private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
+    private final List<Materials> oreByproducts = new ArrayList<>();
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
-    private final LinkedHashSet<Materials> oreByproducts = new LinkedHashSet<>();
     private boolean hasFluid = false;
     private boolean hasGas = false;
     private boolean canBeCracked = false;
@@ -113,8 +113,8 @@ public class MaterialBuilder {
             densityDivider,
             materialList,
             aspects,
-            subTags,
-            oreByproducts
+            oreByproducts,
+            subTags
             // spotless:on
         ).setCanBeCracked(canBeCracked);
 
@@ -399,7 +399,7 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder addOreByproduct(Materials material) {
-        oreByproducts.add(material.mMaterialInto);
+        if (!oreByproducts.contains(material.mMaterialInto)) oreByproducts.add(material.mMaterialInto);
         return this;
     }
 

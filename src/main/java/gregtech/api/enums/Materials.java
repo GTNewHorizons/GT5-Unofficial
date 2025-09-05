@@ -976,7 +976,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public List<TCAspects.TC_AspectStack> mAspects = new ArrayList<>();
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
     public LinkedHashSet<SubTag> mSubTags = new LinkedHashSet<>();
-    public LinkedHashSet<Materials> mOreByProducts = new LinkedHashSet<>();
+    public List<Materials> mOreByProducts = new ArrayList<>();
     public Enchantment mEnchantmentTools = null;
     public Enchantment mEnchantmentArmors = null;
     public boolean mUnificatable;
@@ -1089,8 +1089,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int densityDivider,
         List<MaterialStack> materialList,
         List<TCAspects.TC_AspectStack> aspects,
-        LinkedHashSet<SubTag> subTags,
-        LinkedHashSet<Materials> oreByproducts
+        List<Materials> oreByproducts,
+        LinkedHashSet<SubTag> subTags
         // spotless:on
     ) {
 
@@ -1458,7 +1458,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aDensityDivider,
             aMaterialList,
             new ArrayList<>(),
-            new LinkedHashSet<>(),
+            new ArrayList<>(),
             new LinkedHashSet<>()
             // spotless:on
         );
@@ -1496,7 +1496,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aDensityDivider,
             aMaterialList,
             aAspects,
-            new LinkedHashSet<>(),
+            new ArrayList<>(),
             new LinkedHashSet<>()
             // spotless:on
         );
