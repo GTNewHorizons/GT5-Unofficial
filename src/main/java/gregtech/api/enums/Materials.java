@@ -972,12 +972,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public TextureSet mIconSet;
     public GeneratedMaterialRenderer renderer;
     public List<MaterialStack> mMaterialList = new ArrayList<>();
-    public List<Materials> mOreByProducts = new ArrayList<>();
     public List<Materials> mOreReRegistrations = new ArrayList<>();
     public List<TCAspects.TC_AspectStack> mAspects = new ArrayList<>();
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
-    public Collection<SubTag> mSubTags = new LinkedHashSet<>();
     public LinkedHashSet<SubTag> mSubTags = new LinkedHashSet<>();
+    public LinkedHashSet<Materials> mOreByProducts = new LinkedHashSet<>();
     public Enchantment mEnchantmentTools = null;
     public Enchantment mEnchantmentArmors = null;
     public boolean mUnificatable;
@@ -1090,7 +1089,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int densityDivider,
         List<MaterialStack> materialList,
         List<TCAspects.TC_AspectStack> aspects,
-        LinkedHashSet<SubTag> subTags
+        LinkedHashSet<SubTag> subTags,
+        LinkedHashSet<Materials> oreByproducts
         // spotless:on
     ) {
 
@@ -1155,6 +1155,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         // Set what materials this material is composed of
         mMaterialList = materialList;
+        mOreByProducts = oreByproducts;
 
         // Set material density
         mDensityMultiplier = densityMultiplier;
@@ -1457,6 +1458,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aDensityDivider,
             aMaterialList,
             new ArrayList<>(),
+            new LinkedHashSet<>(),
             new LinkedHashSet<>()
             // spotless:on
         );
@@ -1494,6 +1496,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aDensityDivider,
             aMaterialList,
             aAspects,
+            new LinkedHashSet<>(),
             new LinkedHashSet<>()
             // spotless:on
         );
@@ -2380,17 +2383,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     /**
      * Adds a Material to the List of Byproducts when grinding this Ore. Is used for more precise Ore grinding, so that
      * it is possible to choose between certain kinds of Materials.
+     *
+     * @deprecated Use {@link MaterialBuilder#addOreByproduct(Materials)} on a `MaterialBuilder` instead.
      */
+    @Deprecated
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
     public Materials addOreByProduct(Materials aMaterial) {
-        if (!mOreByProducts.contains(aMaterial.mMaterialInto)) mOreByProducts.add(aMaterial.mMaterialInto);
+        mOreByProducts.add(aMaterial.mMaterialInto);
         return this;
     }
 
     /**
      * Adds multiple Materials to the List of Byproducts when grinding this Ore. Is used for more precise Ore grinding,
      * so that it is possible to choose between certain kinds of Materials.
+     *
+     * @deprecated Use {@link MaterialBuilder#addOreByproduct(Materials)} on a `MaterialBuilder` instead.
      */
+    @Deprecated
     public Materials addOreByProducts(Materials... aMaterials) {
         for (Materials tMaterial : aMaterials) if (tMaterial != null) addOreByProduct(tMaterial);
         return this;
