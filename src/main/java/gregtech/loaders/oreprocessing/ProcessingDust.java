@@ -368,13 +368,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     return;
                 }
 
-                Materials tByProduct = aMaterial;
-                // TODO: create special field for this on `Materials`
-                // Materials tByProduct = GTUtility.selectItemInList(
-                // aPrefix == OrePrefixes.dustRefined ? 2 : aPrefix == OrePrefixes.dustPure ? 1 : 0,
-                // aMaterial,
-                // aMaterial.mOreByProducts);
-
+                Materials tByProduct = GTUtility.selectItemInList(
+                    aPrefix == OrePrefixes.dustRefined ? 2 : aPrefix == OrePrefixes.dustPure ? 1 : 0,
+                    aMaterial,
+                    aMaterial.mOreByProducts);
                 if (aPrefix == OrePrefixes.dustPure) {
                     if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)) {
                         GTValues.RA.stdBuilder()
