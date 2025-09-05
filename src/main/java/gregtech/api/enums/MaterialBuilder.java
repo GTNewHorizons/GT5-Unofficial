@@ -64,6 +64,7 @@ public class MaterialBuilder {
     private List<MaterialStack> materialList = new ArrayList<>();
     private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
     private LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
+    private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private boolean hasFluid = false;
     private boolean hasGas = false;
     private boolean canBeCracked = false;
