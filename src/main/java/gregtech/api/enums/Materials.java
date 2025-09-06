@@ -965,7 +965,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setDirectSmelting();
         setReRegistration();
         setMultipliers();
-        setArmorEnchantments();
     }
 
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 };
@@ -1493,20 +1492,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(4);
         Coal.setOreMultiplier(2)
             .setByProductMultiplier(2);
-    }
-
-    private static void setArmorEnchantments() {
-        InfusedAir.setEnchantmentForArmors(Enchantment.respiration, 3);
-        InfusedFire.setEnchantmentForArmors(Enchantment.featherFalling, 4);
-        Steeleaf.setEnchantmentForArmors(Enchantment.protection, 2);
-        Knightmetal.setEnchantmentForArmors(Enchantment.protection, 1);
-        InfusedEarth.setEnchantmentForArmors(Enchantment.protection, 4);
-        InfusedEntropy.setEnchantmentForArmors(Enchantment.thorns, 3);
-        InfusedWater.setEnchantmentForArmors(Enchantment.aquaAffinity, 1);
-        IronWood.setEnchantmentForArmors(Enchantment.aquaAffinity, 1);
-        InfusedOrder.setEnchantmentForArmors(Enchantment.projectileProtection, 4);
-        InfusedDull.setEnchantmentForArmors(Enchantment.blastProtection, 4);
-        InfusedVis.setEnchantmentForArmors(Enchantment.protection, 4);
     }
 
     private static void setReRegistration() {
