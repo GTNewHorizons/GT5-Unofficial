@@ -70,6 +70,7 @@ public class MaterialBuilder {
     private Supplier<Materials> pendingSmeltingInto;
     private Supplier<Materials> pendingMaceratingInto;
     private Supplier<Materials> pendingArcSmeltingInto;
+    private Supplier<Materials> pendingDirectSmelting;
     private boolean hasFluid = false;
     private boolean hasGas = false;
     private boolean canBeCracked = false;
@@ -123,6 +124,7 @@ public class MaterialBuilder {
             pendingSmeltingInto,
             pendingMaceratingInto,
             pendingArcSmeltingInto,
+            pendingDirectSmelting,
             subTags
             // spotless:on
         ).setCanBeCracked(canBeCracked);
@@ -431,6 +433,11 @@ public class MaterialBuilder {
 
     public MaterialBuilder setArcSmeltingInto(Supplier<Materials> material) {
         pendingArcSmeltingInto = material;
+        return this;
+    }
+
+    public MaterialBuilder setDirectSmelting(Supplier<Materials> material) {
+        pendingDirectSmelting = material;
         return this;
     }
 

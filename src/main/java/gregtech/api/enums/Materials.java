@@ -1022,7 +1022,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public String mLocalizedName = "null";
     public Dyes mColor = Dyes._NULL;
     public Element mElement = null;
-    public Materials mDirectSmelting = this;
     public Materials mOreReplacement = this;
     private Supplier<Materials> mPendingSmeltingInto;
     public Materials mSmeltInto = this;
@@ -1030,6 +1029,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Materials mMacerateInto = this;
     private Supplier<Materials> mPendingArcSmeltingInto;
     public Materials mArcSmeltInto = this;
+    private Supplier<Materials> mPendingDirectSmelting;
+    public Materials mDirectSmelting = this;
     public Materials mHandleMaterial = this;
     public Materials mMaterialInto;
     public Fluid mSolid = null;
@@ -1099,6 +1100,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Supplier<Materials> pendingSmeltingInto,
         Supplier<Materials> pendingMaceratingInto,
         Supplier<Materials> pendingArcSmeltingInto,
+        Supplier<Materials> pendingDirectSmelting,
         LinkedHashSet<SubTag> subTags
         // spotless:on
     ) {
@@ -1172,6 +1174,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mPendingSmeltingInto = pendingSmeltingInto;
         mPendingMaceratingInto = pendingMaceratingInto;
         mPendingArcSmeltingInto = pendingArcSmeltingInto;
+        mPendingDirectSmelting = pendingDirectSmelting;
 
         // Set material density
         mDensityMultiplier = densityMultiplier;
