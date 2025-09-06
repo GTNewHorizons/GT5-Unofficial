@@ -363,13 +363,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use `addXXX` methods instead. */
-    @Deprecated
-    public MaterialBuilder setExtraData(int extraData) {
-        this.extraData = extraData;
-        return this;
-    }
-
     public MaterialBuilder addMaterial(Materials material, int amount) {
         this.materialList.add(new MaterialStack(material, amount));
         return this;
