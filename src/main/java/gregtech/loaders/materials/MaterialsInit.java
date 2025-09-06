@@ -1,5 +1,7 @@
 package gregtech.loaders.materials;
 
+import net.minecraft.enchantment.Enchantment;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
@@ -3760,6 +3762,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ffff00)
             .setTool(64, 3, 8.0f)
+            .setToolEnchantment(Enchantment.knockback, 2)
             .setFuel(MaterialBuilder.FuelType.Magic, 160)
             .addDustItems()
             .addGemItems()
@@ -7313,6 +7316,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00c8c8c8)
             .setTool(32, 1, 3.0f)
+            .setToolEnchantment(Enchantment.knockback, 1)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -7567,6 +7571,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlack)
             .setARGB(0x00000000)
             .setTool(32, 0, 1.5f)
+            .setToolEnchantment(Enchantment.knockback, 2)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -8913,11 +8918,12 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00beb4aa)
+            .setTool(32, 1, 3.0f)
+            .setToolEnchantment(Enchantment.knockback, 1)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setTool(32, 1, 3.0f)
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 8)
             .addSubTag(SubTag.BOUNCY)
@@ -8949,11 +8955,12 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00d7e6e6)
+            .setTool(32, 1, 3.0f)
+            .setToolEnchantment(Enchantment.knockback, 1)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setTool(32, 1, 3.0f)
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 3)
             .addMaterial(Materials.Chlorine, 1)
@@ -9075,11 +9082,12 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeBlack)
             .setARGB(0x00211a18)
+            .setTool(128, 1, 3.0f)
+            .setToolEnchantment(Enchantment.knockback, 2)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setTool(128, 1, 3.0f)
             .addMaterial(Materials.Styrene, 1)
             .addMaterial(Materials.Butadiene, 3)
             .addSubTag(SubTag.BOUNCY)

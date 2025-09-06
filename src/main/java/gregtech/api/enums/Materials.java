@@ -1492,15 +1492,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(2);
     }
 
-    private static void setEnchantmentKnockbackTools() {
-        Plastic.setEnchantmentForTools(Enchantment.knockback, 1);
-        PolyvinylChloride.setEnchantmentForTools(Enchantment.knockback, 1);
-        Polystyrene.setEnchantmentForTools(Enchantment.knockback, 1);
-        Rubber.setEnchantmentForTools(Enchantment.knockback, 2);
-        StyreneButadieneRubber.setEnchantmentForTools(Enchantment.knockback, 2);
-        InfusedAir.setEnchantmentForTools(Enchantment.knockback, 2);
-    }
-
     private static void setEnchantmentFortuneTools() {
         IronWood.setEnchantmentForTools(Enchantment.fortune, 1);
         Steeleaf.setEnchantmentForTools(Enchantment.fortune, 2);
@@ -1580,7 +1571,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setToolEnchantments() {
-        setEnchantmentKnockbackTools();
         setEnchantmentFortuneTools();
         setEnchantmentFireAspectTools();
         setEnchantmentSilkTouchTools();
