@@ -231,12 +231,6 @@ public class MaterialBuilder {
     }
 
     /** @deprecated Use {@link MaterialBuilder#setARGB(int)} instead. */
-    public MaterialBuilder setRGB(int rgb) {
-        this.argb = rgb;
-        return this;
-    }
-
-    /** @deprecated Use {@link MaterialBuilder#setARGB(int)} instead. */
     @Deprecated
     public MaterialBuilder setRGB(int r, int g, int b) {
         this.argb = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
