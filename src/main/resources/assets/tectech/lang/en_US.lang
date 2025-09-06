@@ -708,12 +708,21 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 
+gt.blockmachines.multimachine.em.switch.type=Computation Network Switch, CNS
+gt.blockmachines.multimachine.em.switch.name=Weighted Network Switch With QoS
 gt.blockmachines.multimachine.em.switch.desc.0=Distributes computation to transmission connectors based on weights.
 gt.blockmachines.multimachine.em.switch.desc.1=Transmission connectors are assigned an ID.
 gt.blockmachines.multimachine.em.switch.desc.2=Scan connectors with a Portable Scanner to determine their ID.
 gt.blockmachines.multimachine.em.switch.desc.3=Computation output is configured via TecTech parameters.
 gt.blockmachines.multimachine.em.switch.desc.4=The first parameter in each group controls the hatch ID.
 gt.blockmachines.multimachine.em.switch.desc.5=The second parameter in each group controls the hatch weight.
+gt.blockmachines.multimachine.em.switch.adv.name=Static Network Switch With QoS
+gt.blockmachines.multimachine.em.switch.adv.desc.0=Variable-length version of the Weighted Network Switch.
+gt.blockmachines.multimachine.em.switch.adv.desc.1=Consumes §b524,288§7 EU/t per middle slice while active.
+gt.blockmachines.multimachine.em.switch.adv.desc.2=Computation output is configured by right clicking transmission connectors with a screwdriver.
+gt.blockmachines.multimachine.em.switch.adv.desc.3=Transmission connectors must be part of the structure for them to be configurable.
+gt.blockmachines.multimachine.em.switch.adv.desc.4=Computation output for a hatch is directly controlled by the hatch's setting.
+gt.blockmachines.multimachine.em.switch.adv.desc.5=For weighted computation distribution, use the §6%s§r.
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC

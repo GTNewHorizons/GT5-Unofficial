@@ -3,6 +3,8 @@ package tectech.thing.metaTileEntity.multi;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.CustomItemList.Machine_Multi_Switch;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
@@ -277,17 +279,19 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitchAdv> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("Static Network Switch With QoS")
-            .addInfo("Variable-length version of the Weighted Network Switch.")
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.0"))
             .addSeparator()
-            .addInfo("Consumes §b524,288§7 EU/t per middle slice while active.")
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.1"))
             .addSeparator()
-            .addInfo("Computation output is configured by right clicking transmission connectors with a screwdriver.")
-            .addInfo("Transmission connectors must be part of the structure for them to be configurable.")
-            .addInfo("Computation output for a hatch is directly controlled by the hatch's setting.")
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.2"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.3"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.4"))
             .addInfo(
-                "For weighted computation distribution, use the §6" + Machine_Multi_Switch.get(1)
-                    .getDisplayName() + "§r.")
+                translateToLocalFormatted(
+                    "gt.blockmachines.multimachine.em.switch.adv.desc.5",
+                    Machine_Multi_Switch.get(1)
+                        .getDisplayName()))
             .addSeparator();
 
         tt.beginStructureBlock();
