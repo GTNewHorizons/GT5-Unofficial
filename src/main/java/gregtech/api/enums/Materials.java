@@ -2107,17 +2107,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * This Material smelts always into an instance of aMaterial. Used for Magnets.
-     * 
-     * @deprecated Use {@link MaterialBuilder#setSmeltingInto(Supplier)} on {@link MaterialBuilder} instead.
-     */
-    @Deprecated
-    public Materials setSmeltingInto(Materials aMaterial) {
-        if (aMaterial != null) mSmeltInto = aMaterial.mMaterialInto.mSmeltInto;
-        return this;
-    }
-
-    /**
      * This Material arc smelts always into an instance of aMaterial. Used for Wrought Iron.
      */
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
