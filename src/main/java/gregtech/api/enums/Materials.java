@@ -962,8 +962,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setSmeltingInto();
         setMaceratingInto();
         setArcSmeltingInto();
-        setReRegistration();
         setDirectSmelting();
+        setReRegistration();
         setMultipliers();
         setEnchantments();
     }
@@ -1412,36 +1412,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setDirectSmelting() {
-        Cinnabar.setDirectSmelting(Mercury);
-        Tetrahedrite.setDirectSmelting(Copper);
-        Chalcopyrite.setDirectSmelting(Copper);
-        Malachite.setDirectSmelting(Copper);
-        Pentlandite.setDirectSmelting(Nickel);
-        Sphalerite.setDirectSmelting(Zinc);
-        Pyrite.setDirectSmelting(Iron);
-        BasalticMineralSand.setDirectSmelting(Iron);
-        GraniticMineralSand.setDirectSmelting(Iron);
-        YellowLimonite.setDirectSmelting(Iron);
-        BrownLimonite.setDirectSmelting(Iron);
-        BandedIron.setDirectSmelting(Iron);
-        Magnetite.setDirectSmelting(Iron);
-        Cassiterite.setDirectSmelting(Tin);
-        CassiteriteSand.setDirectSmelting(Tin);
-        Chromite.setDirectSmelting(Chrome);
-        Garnierite.setDirectSmelting(Nickel);
-        Cobaltite.setDirectSmelting(Cobalt);
-        Stibnite.setDirectSmelting(Antimony);
-        Cooperite.setDirectSmelting(Platinum);
-        Molybdenite.setDirectSmelting(Molybdenum);
-        Galena.setDirectSmelting(Lead);
-        RoastedIron.setDirectSmelting(Iron);
-        RoastedAntimony.setDirectSmelting(Antimony);
-        RoastedLead.setDirectSmelting(Lead);
-        RoastedArsenic.setDirectSmelting(Arsenic);
-        RoastedCobalt.setDirectSmelting(Cobalt);
-        RoastedZinc.setDirectSmelting(Zinc);
-        RoastedNickel.setDirectSmelting(Nickel);
-        RoastedCopper.setDirectSmelting(Copper);
+        for (Materials material : MATERIALS_MAP.values()) {
+            if (material.mPendingDirectSmelting == null) continue;
+            material.mDirectSmelting = material.mPendingDirectSmelting.get().mMaterialInto.mDirectSmelting;
+            material.mPendingDirectSmelting = null;
+        }
     }
 
     private static void setMultipliers() {
@@ -2047,14 +2022,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public Materials setSmeltingMultiplier(int aSmeltingMultiplier) {
         if (aSmeltingMultiplier > 0) mSmeltingMultiplier = aSmeltingMultiplier;
-        return this;
-    }
-
-    /**
-     * This Ore should be molten directly into an Ingot of this Material instead of an Ingot of itself.
-     */
-    public Materials setDirectSmelting(Materials aMaterial) {
-        if (aMaterial != null) mDirectSmelting = aMaterial.mMaterialInto.mDirectSmelting;
         return this;
     }
 
