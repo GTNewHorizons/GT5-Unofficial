@@ -1019,7 +1019,7 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
-        Materials.NetherSemiFluid = new MaterialBuilder( 119, TextureSet.SET_FLUID, "Nether Semi-Fluid")
+        Materials.NetherSemiFluid = new MaterialBuilder( 119, TextureSet.SET_FLUID, "Nether Semifluid")
             .addFluid()
             .addCell()
             .setRGB(218, 193, 114)
