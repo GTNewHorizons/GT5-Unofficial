@@ -377,13 +377,6 @@ public class MaterialBuilder {
 
     /** @deprecated Use {@link MaterialBuilder#addMaterial(Materials, int)} instead. */
     @Deprecated
-    public MaterialBuilder setMaterialList(List<MaterialStack> materialList) {
-        this.materialList = materialList;
-        return this;
-    }
-
-    /** @deprecated Use {@link MaterialBuilder#addMaterial(Materials, int)} instead. */
-    @Deprecated
     public MaterialBuilder setMaterialList(MaterialStack... materials) {
         this.materialList = Arrays.asList(materials);
         return this;
