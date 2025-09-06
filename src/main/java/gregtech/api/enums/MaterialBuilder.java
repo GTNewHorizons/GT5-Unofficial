@@ -1,7 +1,6 @@
 package gregtech.api.enums;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.function.Supplier;
@@ -279,13 +278,6 @@ public class MaterialBuilder {
 
     public MaterialBuilder addMaterial(Materials material, int amount) {
         this.materialList.add(new MaterialStack(material, amount));
-        return this;
-    }
-
-    /** @deprecated Use {@link MaterialBuilder#addMaterial(Materials, int)} instead. */
-    @Deprecated
-    public MaterialBuilder setMaterialList(MaterialStack... materials) {
-        this.materialList = Arrays.asList(materials);
         return this;
     }
 

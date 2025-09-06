@@ -1,21 +1,8 @@
 package gregtech.api.enums;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.enums.Materials.Aluminium;
-import static gregtech.api.enums.Materials.Aluminiumoxide;
-import static gregtech.api.enums.Materials.Boron;
-import static gregtech.api.enums.Materials.Calcium;
-import static gregtech.api.enums.Materials.Hydrogen;
-import static gregtech.api.enums.Materials.Iron;
-import static gregtech.api.enums.Materials.Magnesium;
-import static gregtech.api.enums.Materials.Oxygen;
-import static gregtech.api.enums.Materials.Silicon;
-import static gregtech.api.enums.Materials.SiliconDioxide;
-import static gregtech.api.enums.Materials.Sodium;
-import static gregtech.api.enums.Materials.Water;
 
 import gregtech.api.interfaces.IMaterialHandler;
-import gregtech.api.objects.MaterialStack;
 
 public class MaterialsGTNH implements IMaterialHandler {
 
@@ -608,43 +595,39 @@ public class MaterialsGTNH implements IMaterialHandler {
     public static Materials Chlorite = new MaterialBuilder(167, TextureSet.SET_SHINY, "Chlorite").addDustItems()
         .setRGB(96, 125, 108)
         .setColor(Dyes.dyeLime)
-        .setMaterialList(
-            new MaterialStack(Iron, 3),
-            new MaterialStack(Magnesium, 2),
-            new MaterialStack(Aluminiumoxide, 1),
-            new MaterialStack(SiliconDioxide, 3),
-            new MaterialStack(Water, 4),
-            new MaterialStack(Oxygen, 5))
+        .addMaterial(Materials.Iron, 3)
+        .addMaterial(Materials.Magnesium, 2)
+        .addMaterial(Materials.Aluminiumoxide, 1)
+        .addMaterial(Materials.SiliconDioxide, 3)
+        .addMaterial(Materials.Water, 4)
+        .addMaterial(Materials.Oxygen, 5)
         .constructMaterial();
     public static Materials Staurolite = new MaterialBuilder(168, TextureSet.SET_DULL, "Staurolite").addDustItems()
         .setRGB(63, 40, 22)
         .setColor(Dyes.dyeBrown)
-        .setMaterialList(
-            new MaterialStack(Iron, 2),
-            new MaterialStack(Aluminium, 9),
-            new MaterialStack(SiliconDioxide, 4),
-            new MaterialStack(Oxygen, 16),
-            new MaterialStack(Hydrogen, 1))
+        .addMaterial(Materials.Iron, 2)
+        .addMaterial(Materials.Aluminium, 9)
+        .addMaterial(Materials.SiliconDioxide, 4)
+        .addMaterial(Materials.Oxygen, 16)
+        .addMaterial(Materials.Hydrogen, 1)
         .constructMaterial();
     public static Materials Cordierite = new MaterialBuilder(169, TextureSet.SET_SHINY, "Cordierite").addDustItems()
         .setRGB(67, 75, 130)
         .setColor(Dyes.dyePurple)
-        .setMaterialList(
-            new MaterialStack(Iron, 1),
-            new MaterialStack(Magnesium, 1),
-            new MaterialStack(SiliconDioxide, 5),
-            new MaterialStack(Aluminiumoxide, 1),
-            new MaterialStack(Oxygen, 5))
+        .addMaterial(Materials.Iron, 1)
+        .addMaterial(Materials.Magnesium, 1)
+        .addMaterial(Materials.SiliconDioxide, 5)
+        .addMaterial(Materials.Aluminiumoxide, 1)
+        .addMaterial(Materials.Oxygen, 5)
         .constructMaterial();
     public static Materials Datolite = new MaterialBuilder(170, TextureSet.SET_SHINY, "Datolite").addDustItems()
         .setRGB(234, 196, 206)
         .setColor(Dyes.dyeWhite)
-        .setMaterialList(
-            new MaterialStack(Calcium, 1),
-            new MaterialStack(Boron, 1),
-            new MaterialStack(SiliconDioxide, 1),
-            new MaterialStack(Oxygen, 3),
-            new MaterialStack(Hydrogen, 1))
+        .addMaterial(Materials.Calcium, 1)
+        .addMaterial(Materials.Boron, 1)
+        .addMaterial(Materials.SiliconDioxide, 1)
+        .addMaterial(Materials.Oxygen, 3)
+        .addMaterial(Materials.Hydrogen, 1)
         .constructMaterial();
     public static Materials MetamorphicMineralMixture = new MaterialBuilder(
         171,
@@ -656,21 +639,19 @@ public class MaterialsGTNH implements IMaterialHandler {
     public static Materials Plagioclase = new MaterialBuilder(172, TextureSet.SET_SHINY, "Plagioclase").addDustItems()
         .setRGB(193, 186, 178)
         .setColor(Dyes.dyeWhite)
-        .setMaterialList(
-            new MaterialStack(Sodium, 1),
-            new MaterialStack(Aluminium, 1),
-            new MaterialStack(Silicon, 3),
-            new MaterialStack(Oxygen, 8))
+        .addMaterial(Materials.Sodium, 1)
+        .addMaterial(Materials.Aluminium, 1)
+        .addMaterial(Materials.Silicon, 3)
+        .addMaterial(Materials.Oxygen, 8)
         .constructMaterial();
     public static Materials Epidote = new MaterialBuilder(862, TextureSet.SET_DULL, "Epidote").addDustItems()
         .setRGB(140, 177, 33)
         .setColor(Dyes.dyeLime)
-        .setMaterialList(
-            new MaterialStack(Calcium, 2),
-            new MaterialStack(Aluminium, 3),
-            new MaterialStack(SiliconDioxide, 3),
-            new MaterialStack(Oxygen, 1),
-            new MaterialStack(Hydrogen, 1))
+        .addMaterial(Materials.Calcium, 2)
+        .addMaterial(Materials.Aluminium, 3)
+        .addMaterial(Materials.SiliconDioxide, 3)
+        .addMaterial(Materials.Oxygen, 1)
+        .addMaterial(Materials.Hydrogen, 1)
         .constructMaterial();
 
     private static void initSubTags() {
