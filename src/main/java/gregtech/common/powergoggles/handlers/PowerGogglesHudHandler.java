@@ -1,4 +1,4 @@
-package gregtech.common.handlers;
+package gregtech.common.powergoggles.handlers;
 
 import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
@@ -30,7 +30,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.items.ItemPowerGoggles;
+import gregtech.common.powergoggles.PowerGogglesUtil;
 
 public class PowerGogglesHudHandler {
 
@@ -39,7 +39,7 @@ public class PowerGogglesHudHandler {
     private final static int SECONDS = 20 * TICKS;
     private final static int MINUTES = 60 * SECONDS;
     static List<Text> hudList = new ArrayList<>();
-    static LinkedList<BigInteger> measurements = new LinkedList<>();
+    public static LinkedList<BigInteger> measurements = new LinkedList<>();
     static Minecraft mc = Minecraft.getMinecraft();
     public static final int ticksBetweenMeasurements = 100;
     static final int measurementCount5m = 5 * MINUTES / ticksBetweenMeasurements;
@@ -47,9 +47,9 @@ public class PowerGogglesHudHandler {
     static BigInteger currentEU = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
-    static long capacity = 0; // If this is higher than 0 there's a linked LSC
-    static int change5mColor;
-    static int change1hColor;
+    public static long capacity = 0; // If this is higher than 0 there's a linked LSC
+    static int change5mColor = PowerGogglesConfigHandler.textOkColor;
+    static int change1hColor = PowerGogglesConfigHandler.textOkColor;
 
     static String storage = "";
     static String change5mString = "";
@@ -65,7 +65,7 @@ public class PowerGogglesHudHandler {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL || mc.gameSettings.showDebugInfo
             || (PowerGogglesConfigHandler.hideWhenChatOpen && mc.currentScreen instanceof GuiChat)) return;
 
-        if (ItemPowerGoggles.getEquippedPowerGoggles(mc.thePlayer) == null) return;
+        if (!PowerGogglesUtil.isPlayerWearingGoggles(mc.thePlayer)) return;
         ScaledResolution resolution = event.resolution;
         int screenHeight = resolution.getScaledHeight();
         int screenWidth = resolution.getScaledWidth();
