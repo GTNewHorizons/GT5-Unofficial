@@ -964,7 +964,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setMaceratingInto();
         setArcSmeltingInto();
         setReRegistration();
-        setSmeltingIntoOld();
         setDirectSmelting();
         setMultipliers();
         setEnchantments();
@@ -1406,22 +1405,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             material.mArcSmeltInto = material.mPendingArcSmeltingInto.get().mMaterialInto.mArcSmeltInto;
             material.mPendingArcSmeltingInto = null;
         }
-    }
-
-    @Deprecated
-    private static void setSmeltingIntoOld() {
-        SamariumMagnetic.setArcSmeltingInto(Samarium);
-        NeodymiumMagnetic.setArcSmeltingInto(Neodymium);
-        SteelMagnetic.setArcSmeltingInto(Steel);
-        Iron.setArcSmeltingInto(WroughtIron);
-        AnyIron.setArcSmeltingInto(WroughtIron);
-        PigIron.setArcSmeltingInto(WroughtIron);
-        WroughtIron.setArcSmeltingInto(WroughtIron);
-        IronMagnetic.setArcSmeltingInto(WroughtIron);
-        Copper.setArcSmeltingInto(AnnealedCopper);
-        AnyCopper.setArcSmeltingInto(AnnealedCopper);
-        AnnealedCopper.setArcSmeltingInto(AnnealedCopper);
-        TengamAttuned.setArcSmeltingInto(TengamPurified);
     }
 
     private static void setDirectSmelting() {
@@ -2078,15 +2061,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
     public Materials setOreReplacement(Materials aMaterial) {
         if (aMaterial != null) mOreReplacement = aMaterial.mMaterialInto.mOreReplacement;
-        return this;
-    }
-
-    /**
-     * This Material arc smelts always into an instance of aMaterial. Used for Wrought Iron.
-     */
-    @SuppressWarnings("UnusedReturnValue") // Maintains signature
-    public Materials setArcSmeltingInto(Materials aMaterial) {
-        if (aMaterial != null) mArcSmeltInto = aMaterial.mMaterialInto.mArcSmeltInto;
         return this;
     }
 

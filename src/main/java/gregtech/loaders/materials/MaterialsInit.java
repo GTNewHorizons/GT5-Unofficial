@@ -831,6 +831,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 3)
             .addOreByproduct(() -> Materials.Nickel)
             .addOreByproduct(() -> Materials.Tin)
+            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
@@ -2237,6 +2238,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Copper)
             .setMaceratingInto(() -> Materials.Copper)
+            .setArcSmeltingInto(() -> Materials.AnnealedCopper)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -2248,6 +2250,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Iron)
             .setMaceratingInto(() -> Materials.Iron)
+            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -5927,6 +5930,7 @@ public class MaterialsInit {
             .addGearItems()
             .addCentrifugeRecipe()
             .addMaterial(Materials.Copper, 1)
+            .setArcSmeltingInto(() -> Materials.AnnealedCopper)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .constructMaterial();
@@ -7282,6 +7286,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Iron)
             .setSmeltingInto(() -> Materials.Iron)
             .setMaceratingInto(() -> Materials.Iron)
+            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
@@ -8016,6 +8021,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .setSmeltingInto(() -> Materials.TengamPurified)
             .setMaceratingInto(() -> Materials.TengamPurified)
+            .setArcSmeltingInto(() -> Materials.TengamPurified)
             .addAspect(TCAspects.MAGNETO, 4)
             .addAspect(TCAspects.ELECTRUM, 1)
             .addSubTag(SubTag.METAL)
@@ -10902,6 +10908,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .setSmeltingInto(() -> Materials.Iron)
             .setMaceratingInto(() -> Materials.Iron)
+            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.METAL)
@@ -11229,6 +11236,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Neodymium, 1)
             .setSmeltingInto(() -> Materials.Neodymium)
             .setMaceratingInto(() -> Materials.Neodymium)
+            .setArcSmeltingInto(() -> Materials.Neodymium)
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.MAGNETO, 3)
             .addSubTag(SubTag.METAL)
@@ -11576,6 +11584,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Samarium, 1)
             .setSmeltingInto(() -> Materials.Samarium)
             .setMaceratingInto(() -> Materials.Samarium)
+            .setArcSmeltingInto(() -> Materials.Samarium)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addAspect(TCAspects.MAGNETO, 10)
@@ -11678,6 +11687,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Steel, 1)
             .setSmeltingInto(() -> Materials.Steel)
             .setMaceratingInto(() -> Materials.Steel)
+            .setArcSmeltingInto(() -> Materials.Steel)
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.ORDO, 1)
             .addAspect(TCAspects.MAGNETO, 1)
