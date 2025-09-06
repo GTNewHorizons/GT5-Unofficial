@@ -38,6 +38,8 @@ public class MaterialBuilder {
     private int toolQuality = 0;
     private Enchantment toolEnchantment;
     private int toolEnchantmentLevel = 1;
+    private Enchantment armorEnchantment;
+    private int armorEnchantmentLevel = 1;
     private int types = 0;
     private int argb = 0x00ffffff;
     private int argbMolten = 0x00ffffff;
@@ -97,6 +99,7 @@ public class MaterialBuilder {
             argbMolten,
             toolDurability, toolQuality, toolSpeed,
             toolEnchantment, toolEnchantmentLevel,
+            armorEnchantment, armorEnchantmentLevel,
             steamMultiplier, gasMultiplier, plasmaMultiplier,
             fuelType.getIndex(), fuelPower,
             hasFluid,
@@ -230,6 +233,12 @@ public class MaterialBuilder {
     public MaterialBuilder setToolEnchantment(Enchantment enchantment, int level) {
         this.toolEnchantment = enchantment;
         this.toolEnchantmentLevel = level;
+        return this;
+    }
+
+    public MaterialBuilder setArmorEnchantment(Enchantment enchantment, int level) {
+        this.armorEnchantment = enchantment;
+        this.armorEnchantmentLevel = level;
         return this;
     }
 

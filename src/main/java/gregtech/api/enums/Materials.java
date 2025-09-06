@@ -1082,6 +1082,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int argbMolten,
         int toolDurability, int toolQuality, float toolSpeed,
         @Nullable Enchantment toolEnchantment, int toolEnchantmentLevel,
+        @Nullable Enchantment armorEnchantment, int armorEnchantmentLevel,
         float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
         int fuelType, int fuelPower,
         boolean hasFluid,
@@ -1151,6 +1152,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mToolQuality = (byte) toolQuality;
         mEnchantmentTools = toolEnchantment;
         mEnchantmentToolsLevel = (byte) toolEnchantmentLevel;
+        mEnchantmentArmors = armorEnchantment;
+        mEnchantmentArmorsLevel = (byte) armorEnchantmentLevel;
 
         // Set turbine properties
         mSteamMultiplier = steamMultiplier;
