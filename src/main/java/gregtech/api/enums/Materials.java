@@ -965,7 +965,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setDirectSmelting();
         setReRegistration();
         setMultipliers();
-        setEnchantments();
+        setArmorEnchantments();
     }
 
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 };
@@ -1490,40 +1490,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(4);
         Coal.setOreMultiplier(2)
             .setByProductMultiplier(2);
-    }
-
-    private static void setEnchantmentSharpnessTools() {
-        Iron.setEnchantmentForTools(Enchantment.sharpness, 1);
-        Bronze.setEnchantmentForTools(Enchantment.sharpness, 1);
-        Brass.setEnchantmentForTools(Enchantment.sharpness, 2);
-        HSLA.setEnchantmentForTools(Enchantment.sharpness, 2);
-        Steel.setEnchantmentForTools(Enchantment.sharpness, 2);
-        WroughtIron.setEnchantmentForTools(Enchantment.sharpness, 2);
-        StainlessSteel.setEnchantmentForTools(Enchantment.sharpness, 3);
-        Knightmetal.setEnchantmentForTools(Enchantment.sharpness, 3);
-        ShadowIron.setEnchantmentForTools(Enchantment.sharpness, 3);
-        ShadowSteel.setEnchantmentForTools(Enchantment.sharpness, 4);
-        BlackSteel.setEnchantmentForTools(Enchantment.sharpness, 4);
-        RedSteel.setEnchantmentForTools(Enchantment.sharpness, 4);
-        BlueSteel.setEnchantmentForTools(Enchantment.sharpness, 5);
-        DamascusSteel.setEnchantmentForTools(Enchantment.sharpness, 5);
-        InfusedEntropy.setEnchantmentForTools(Enchantment.sharpness, 5);
-        TungstenCarbide.setEnchantmentForTools(Enchantment.sharpness, 5);
-        HSSE.setEnchantmentForTools(Enchantment.sharpness, 5);
-        HSSG.setEnchantmentForTools(Enchantment.sharpness, 4);
-        HSSS.setEnchantmentForTools(Enchantment.sharpness, 5);
-    }
-
-    /**
-     * DO NOT ADD MORE THAN 1 TOOL AND ARMOR ENCHANTMENT PER MATERIAL! It will get overwritten!
-     */
-    private static void setEnchantments() {
-        setToolEnchantments();
-        setArmorEnchantments();
-    }
-
-    private static void setToolEnchantments() {
-        setEnchantmentSharpnessTools();
     }
 
     private static void setArmorEnchantments() {
