@@ -43,6 +43,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static boolean failedInit = false;
     private static int u_Color = -1, u_ModelMatrix = -1, u_Gamma = -1;
     private final Matrix4fStack starModelMatrix = new Matrix4fStack(3);
+    private final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     private static ShaderProgram beamProgram;
     private static int a_VertexID = -1;
@@ -53,6 +54,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static int maxSegments = -1;
     private static final int beamSegmentQuads = 16;
     private static final Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
+    private final FloatBuffer beamMatrixBuffer = BufferUtils.createFloatBuffer(16);
 
     private VertexBuffer ringOne, ringTwo, ringThree;
     // These are nudges/translations for each ring to align with the structure
@@ -61,7 +63,10 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static final Vector3f ringThreeNudge = new Vector3f(.5f, -1, 0);
 
     private static ShaderProgram fadeBypassProgram;
-    private static TextureUpdateRequester textureUpdater;
+
+    private final Vector4f reusableStarColor = new Vector4f();
+    private final Vector3f reusableRotationAxis = new Vector3f();
+    private Vector4f reusableCameraPosition = new Vector4f();
 
     private void init() {
         try {
@@ -151,38 +156,48 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             "shaders/fadebypass.vert.glsl",
             "shaders/fadebypass.frag.glsl");
 
-        textureUpdater = ringStructure.getTextureUpdateRequestor();
+        TextureUpdateRequester textureUpdater = ringStructure.getTextureUpdateRequestor();
+        textureUpdater.requestUpdate();
     }
 
     public void RenderStarLayer(Vector4f color, ResourceLocation texture, float size, Vector3f rotationAxis,
         float degrees) {
         starModelMatrix.pushMatrix();
-        starModelMatrix.rotate((degrees / 180f * ((float) Math.PI)), rotationAxis.x, rotationAxis.y, rotationAxis.z);
+        starModelMatrix.rotate((degrees / 180f * (float) Math.PI), rotationAxis.x, rotationAxis.y, rotationAxis.z);
         starModelMatrix.scale(size, size, size);
 
         this.bindTexture(texture);
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean depthTest = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+        boolean depthMask = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
 
         // Enable transparency if needed
-        if (color.w < 1 && color.w > 0) {
+        if (color.w < 1.0f) {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glDepthMask(false); // Disable depth writing for transparency
         }
 
-        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+        matrixBuffer.clear();
         GL20.glUniformMatrix4(u_ModelMatrix, false, starModelMatrix.get(matrixBuffer));
         GL20.glUniform4f(u_Color, color.x, color.y, color.z, color.w);
         starModel.renderAll();
-        GL11.glPopAttrib();
+
+        if (color.w < 1.0f) {
+            if (!blend) GL11.glDisable(GL11.GL_BLEND);
+            if (!depthTest) GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GL11.glDepthMask(depthMask);
+        }
+
         starModelMatrix.popMatrix();
     }
 
     public void RenderEntireStar(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_LIGHTING);
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
 
         starProgram.use();
 
@@ -199,27 +214,31 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         float r = tile.getColorR(), g = tile.getColorG(), b = tile.getColorB();
         GL20.glUniform1f(u_Gamma, tile.getGamma());
+
         RenderStarLayer(
-            new Vector4f(r, g, b, 1f),
+            reusableStarColor.set(r, g, b, 1f),
             STAR_LAYER_0,
             size,
-            new Vector3f(0F, 1F, 1).normalize(),
+            reusableRotationAxis.set(0F, 1F, 1F)
+                .normalize(),
             130 + (timer) % 360000);
         RenderStarLayer(
-            new Vector4f(r, g, b, 0.4f),
+            reusableStarColor.set(r, g, b, 0.4f),
             STAR_LAYER_1,
             size * 1.02f,
-            new Vector3f(1F, 1F, 0F).normalize(),
+            reusableRotationAxis.set(1F, 1F, 0F)
+                .normalize(),
             -49 + (timer) % 360000);
         RenderStarLayer(
-            new Vector4f(r, g, b, 0.2f),
+            reusableStarColor.set(r, g, b, 0.2f),
             STAR_LAYER_2,
             size * 1.04f,
-            new Vector3f(1F, 0F, 1F).normalize(),
+            reusableRotationAxis.set(1F, 0F, 1F)
+                .normalize(),
             67 + (timer) % 360000);
 
         ShaderProgram.clear();
-        GL11.glPopAttrib();
+        if (lighting) GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     public void bufferSoftBeam(TileEntityForgeOfGods tile) {
@@ -227,8 +246,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         float angle = tile.getStartAngle();
         float radius = tile.getStarRadius() * 1.1f;
-        float startx = -radius * ((float) Math.cos(angle));
-        float starty = radius * ((float) Math.sin(angle));
+        float startx = -radius * (float) Math.cos(angle);
+        float starty = radius * (float) Math.sin(angle);
 
         buffer.put(starty);
         buffer.put(startx);
@@ -252,8 +271,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(maxSegments * 3);
         float angle = tile.getStartAngle();
         float radius = tile.getStarRadius() * 1.05f;
-        float startx = -radius * ((float) Math.cos(angle));
-        float starty = radius * ((float) Math.sin(angle));
+        float startx = -radius * (float) Math.cos(angle);
+        float starty = radius * (float) Math.sin(angle);
 
         // first lens means the one closest to the star
         int firstLens = tile.getRingCount() - 1;
@@ -298,11 +317,18 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     }
 
     public void RenderBeamSegment(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        // GL11.glDisable(GL11.GL_TEXTURE_2D);
-        // GL11.glDisable(GL11.GL_CULL_FACE);
+        boolean alpha = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
+        boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean depthTest = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+        boolean depthMask = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         this.bindTexture(new ResourceLocation(Reference.MODID, "models/spaceLayer.png"));
 
@@ -313,7 +339,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         beamModelMatrix.translate(cx, cy, cz);
 
         beamModelMatrix.rotate(
-            tile.getRotAngle() / 180 * ((float) Math.PI),
+            tile.getRotAngle() / 180 * (float) Math.PI,
             tile.getRotAxisX(),
             tile.getRotAxisY(),
             tile.getRotAxisZ());
@@ -321,26 +347,20 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         beamProgram.use();
 
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthMask(false); // Disable depth writing for transparency
-
         bufferSoftBeam(tile);
 
-        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-        GL20.glUniformMatrix4(u_BeamModelMatrix, false, beamModelMatrix.get(matrixBuffer));
+        beamMatrixBuffer.clear();
+        GL20.glUniformMatrix4(u_BeamModelMatrix, false, beamModelMatrix.get(beamMatrixBuffer));
 
         beamModelMatrix.invert();
+        reusableCameraPosition.set(ActiveRenderInfo.objectX, ActiveRenderInfo.objectY, ActiveRenderInfo.objectZ, 1);
+        reusableCameraPosition = beamModelMatrix.transform(reusableCameraPosition);
+        GL20.glUniform3f(
+            u_CameraPosition,
+            reusableCameraPosition.x,
+            reusableCameraPosition.y,
+            reusableCameraPosition.z);
 
-        Vector4f cameraPosition = new Vector4f(
-            ActiveRenderInfo.objectX,
-            ActiveRenderInfo.objectY,
-            ActiveRenderInfo.objectZ,
-            1);
-        cameraPosition = beamModelMatrix.transform(cameraPosition);
-        GL20.glUniform3f(u_CameraPosition, cameraPosition.x, cameraPosition.y, cameraPosition.z);
         GL20.glUniform3f(u_BeamColor, tile.getColorR(), tile.getColorG(), tile.getColorB());
         GL20.glUniform1f(u_BeamIntensity, 2);
         GL20.glUniform1f(u_BeamTime, timer);
@@ -358,16 +378,21 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL20.glDisableVertexAttribArray(a_VertexID);
         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
 
-        GL11.glPopAttrib();
         ShaderProgram.clear();
+
+        if (alpha) GL11.glEnable(GL11.GL_ALPHA_TEST);
+        if (lighting) GL11.glEnable(GL11.GL_LIGHTING);
+        if (!blend) GL11.glDisable(GL11.GL_BLEND);
+        if (!depthTest) GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(depthMask);
     }
 
     private void RenderRings(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        bindTexture(TextureMap.locationBlocksTexture);
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        textureUpdater.requestUpdate();
+
+        bindTexture(TextureMap.locationBlocksTexture);
         fadeBypassProgram.use();
 
         GL11.glPushMatrix();
@@ -398,7 +423,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             }
         }
         ShaderProgram.clear();
-        GL11.glPopAttrib();
+        if (!blend) GL11.glDisable(GL11.GL_BLEND);
     }
 
     @Override
