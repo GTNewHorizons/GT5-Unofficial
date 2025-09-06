@@ -1492,15 +1492,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(2);
     }
 
-    private static void setEnchantmentSmiteTools() {
-        BlackBronze.setEnchantmentForTools(Enchantment.smite, 2);
-        Gold.setEnchantmentForTools(Enchantment.smite, 3);
-        RoseGold.setEnchantmentForTools(Enchantment.smite, 4);
-        Platinum.setEnchantmentForTools(Enchantment.smite, 5);
-        InfusedVis.setEnchantmentForTools(Enchantment.smite, 5);
-        Ichorium.setEnchantmentForTools(Enchantment.smite, 8);
-    }
-
     private static void setEnchantmentBaneOfArthropodsTools() {
         Lead.setEnchantmentForTools(Enchantment.baneOfArthropods, 2);
         Nickel.setEnchantmentForTools(Enchantment.baneOfArthropods, 2);
@@ -1543,7 +1534,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setToolEnchantments() {
-        setEnchantmentSmiteTools();
         setEnchantmentBaneOfArthropodsTools();
         setEnchantmentSharpnessTools();
     }
