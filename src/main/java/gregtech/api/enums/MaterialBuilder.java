@@ -327,12 +327,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Ore values are no longer used. Remove if encountered. */
-    @Deprecated
-    public MaterialBuilder setOreValue(int oreValue) {
-        return this;
-    }
-
     public MaterialBuilder setDensity(int multiplier, int divider) {
         this.densityMultiplier = multiplier;
         this.densityDivider = divider;
