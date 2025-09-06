@@ -1492,15 +1492,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(2);
     }
 
-    private static void setEnchantmentSilkTouchTools() {
-        Force.setEnchantmentForTools(Enchantment.silkTouch, 1);
-        Amber.setEnchantmentForTools(Enchantment.silkTouch, 1);
-        EnderPearl.setEnchantmentForTools(Enchantment.silkTouch, 1);
-        Enderium.setEnchantmentForTools(Enchantment.silkTouch, 1);
-        NetherStar.setEnchantmentForTools(Enchantment.silkTouch, 1);
-        InfusedOrder.setEnchantmentForTools(Enchantment.silkTouch, 1);
-    }
-
     private static void setEnchantmentSmiteTools() {
         BlackBronze.setEnchantmentForTools(Enchantment.smite, 2);
         Gold.setEnchantmentForTools(Enchantment.smite, 3);
@@ -1552,7 +1543,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setToolEnchantments() {
-        setEnchantmentSilkTouchTools();
         setEnchantmentSmiteTools();
         setEnchantmentBaneOfArthropodsTools();
         setEnchantmentSharpnessTools();
