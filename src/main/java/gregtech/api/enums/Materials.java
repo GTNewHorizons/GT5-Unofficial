@@ -1398,34 +1398,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     @Deprecated
     private static void setSmeltingIntoOld() {
-        Peanutwood.setMaceratingInto(Wood);
-        WoodSealed.setMaceratingInto(Wood);
-        NetherBrick.setMaceratingInto(Netherrack);
-        AnyRubber.setMaceratingInto(Rubber);
-        SamariumMagnetic.setMaceratingInto(Samarium)
-            .setArcSmeltingInto(Samarium);
-        NeodymiumMagnetic.setMaceratingInto(Neodymium)
-            .setArcSmeltingInto(Neodymium);
-        SteelMagnetic.setMaceratingInto(Steel)
-            .setArcSmeltingInto(Steel);
-        Iron.setMaceratingInto(Iron)
-            .setArcSmeltingInto(WroughtIron);
-        AnyIron.setMaceratingInto(Iron)
-            .setArcSmeltingInto(WroughtIron);
-        PigIron.setMaceratingInto(Iron)
-            .setArcSmeltingInto(WroughtIron);
-        WroughtIron.setMaceratingInto(WroughtIron)
-            .setArcSmeltingInto(WroughtIron);
-        IronMagnetic.setMaceratingInto(Iron)
-            .setArcSmeltingInto(WroughtIron);
-        Copper.setMaceratingInto(Copper)
-            .setArcSmeltingInto(AnnealedCopper);
-        AnyCopper.setMaceratingInto(Copper)
-            .setArcSmeltingInto(AnnealedCopper);
-        AnnealedCopper.setMaceratingInto(AnnealedCopper)
-            .setArcSmeltingInto(AnnealedCopper);
-        TengamAttuned.setMaceratingInto(TengamPurified)
-            .setArcSmeltingInto(TengamPurified);
+        SamariumMagnetic.setArcSmeltingInto(Samarium);
+        NeodymiumMagnetic.setArcSmeltingInto(Neodymium);
+        SteelMagnetic.setArcSmeltingInto(Steel);
+        Iron.setArcSmeltingInto(WroughtIron);
+        AnyIron.setArcSmeltingInto(WroughtIron);
+        PigIron.setArcSmeltingInto(WroughtIron);
+        WroughtIron.setArcSmeltingInto(WroughtIron);
+        IronMagnetic.setArcSmeltingInto(WroughtIron);
+        Copper.setArcSmeltingInto(AnnealedCopper);
+        AnyCopper.setArcSmeltingInto(AnnealedCopper);
+        AnnealedCopper.setArcSmeltingInto(AnnealedCopper);
+        TengamAttuned.setArcSmeltingInto(TengamPurified);
     }
 
     private static void setDirectSmelting() {
@@ -2091,17 +2075,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @SuppressWarnings("UnusedReturnValue") // Maintains signature
     public Materials setArcSmeltingInto(Materials aMaterial) {
         if (aMaterial != null) mArcSmeltInto = aMaterial.mMaterialInto.mArcSmeltInto;
-        return this;
-    }
-
-    /**
-     * This Material macerates always into an instance of aMaterial.
-     * 
-     * @deprecated Use {@link MaterialBuilder#setMaceratingInto(Supplier)} on {@link MaterialBuilder} instead.
-     */
-    @Deprecated
-    public Materials setMaceratingInto(Materials aMaterial) {
-        if (aMaterial != null) mMacerateInto = aMaterial.mMaterialInto.mMacerateInto;
         return this;
     }
 

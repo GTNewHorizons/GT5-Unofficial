@@ -2236,6 +2236,7 @@ public class MaterialsInit {
             .setChemicalFormula("Cu")
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Copper)
+            .setMaceratingInto(() -> Materials.Copper)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -2246,6 +2247,7 @@ public class MaterialsInit {
             .setChemicalFormula("Fe")
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Iron)
+            .setMaceratingInto(() -> Materials.Iron)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -2254,6 +2256,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("AnyRubber")
             .setDefaultLocalName("AnyRubber")
             .setIconSet(TextureSet.SET_SHINY)
+            .setMaceratingInto(() -> Materials.Rubber)
             .constructMaterial();
     }
 
@@ -4266,6 +4269,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeRed)
             .setARGB(0x00640000)
             .addDustItems()
+            .setMaceratingInto(() -> Materials.Netherrack)
             .addAspect(TCAspects.IGNIS, 1)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
@@ -4405,6 +4409,7 @@ public class MaterialsInit {
     private static Materials loadPeanutwood() {
         return new MaterialBuilder().setName("Peanutwood")
             .setDefaultLocalName("Peanut Wood")
+            .setMaceratingInto(() -> Materials.Wood)
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
@@ -7276,6 +7281,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .addOreByproduct(() -> Materials.Iron)
             .setSmeltingInto(() -> Materials.Iron)
+            .setMaceratingInto(() -> Materials.Iron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
@@ -8009,6 +8015,7 @@ public class MaterialsInit {
             .addMetalItems()
             .addToolHeadItems()
             .setSmeltingInto(() -> Materials.TengamPurified)
+            .setMaceratingInto(() -> Materials.TengamPurified)
             .addAspect(TCAspects.MAGNETO, 4)
             .addAspect(TCAspects.ELECTRUM, 1)
             .addSubTag(SubTag.METAL)
@@ -10894,6 +10901,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Iron, 1)
             .setSmeltingInto(() -> Materials.Iron)
+            .setMaceratingInto(() -> Materials.Iron)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.METAL)
@@ -11220,6 +11228,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Neodymium, 1)
             .setSmeltingInto(() -> Materials.Neodymium)
+            .setMaceratingInto(() -> Materials.Neodymium)
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.MAGNETO, 3)
             .addSubTag(SubTag.METAL)
@@ -11566,6 +11575,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Samarium, 1)
             .setSmeltingInto(() -> Materials.Samarium)
+            .setMaceratingInto(() -> Materials.Samarium)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addAspect(TCAspects.MAGNETO, 10)
@@ -11667,6 +11677,7 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Steel, 1)
             .setSmeltingInto(() -> Materials.Steel)
+            .setMaceratingInto(() -> Materials.Steel)
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.ORDO, 1)
             .addAspect(TCAspects.MAGNETO, 1)
@@ -12071,6 +12082,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .addMaterial(Materials.Wood, 1)
+            .setMaceratingInto(() -> Materials.Wood)
             .addAspect(TCAspects.ARBOR, 2)
             .addAspect(TCAspects.FABRICO, 1)
             .addSubTag(SubTag.FLAMMABLE)
