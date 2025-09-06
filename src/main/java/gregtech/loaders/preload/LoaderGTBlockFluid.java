@@ -64,6 +64,7 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
@@ -74,6 +75,7 @@ import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
+import gregtech.common.blocks.BlockModularSolidifierRenderer;
 import gregtech.common.blocks.BlockNanoForgeRenderer;
 import gregtech.common.blocks.BlockOres;
 import gregtech.common.blocks.BlockReinforced;
@@ -100,6 +102,7 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 
@@ -704,6 +707,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings12 = new BlockCasings12();
         GregTechAPI.sBlockCasings13 = new BlockCasings13();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
+        GregTechAPI.sBlockCasingsFoundry = new BlockCasingsFoundry();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
@@ -717,6 +721,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
         GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
+        GregTechAPI.modularSolidifierRender = new BlockModularSolidifierRenderer();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -856,6 +861,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the NanoForgeRender.");
         GameRegistry.registerTileEntity(TileEntityNanoForgeRenderer.class, "NanoForgeRender");
+
+        GTLog.out.println("GTMod: Registering the ModularSolidifierRender.");
+        GameRegistry.registerTileEntity(TileEntityModularSolidifierRenderer.class, "ModularSolidifierRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
