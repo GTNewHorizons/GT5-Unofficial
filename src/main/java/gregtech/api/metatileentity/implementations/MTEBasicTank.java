@@ -1,5 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -8,9 +11,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -307,6 +314,26 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
                 new TextWidget().setStringSupplier(() -> numberFormat.format(mFluid != null ? mFluid.amount : 0))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30));
+    }
+
+    protected Widget createMuffleButton() {
+        return new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (getBaseMetaTileEntity().isClientSide()) return;
+            getBaseMetaTileEntity().setMuffler(!getBaseMetaTileEntity().hasMufflerUpgrade());
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (getBaseMetaTileEntity().hasMufflerUpgrade()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
+                } else {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
+            .setPos(5, 5)
+            .setSize(9, 9);
     }
 
     protected FluidSlotWidget createFluidSlot() {
