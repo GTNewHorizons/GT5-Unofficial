@@ -30,7 +30,6 @@ public class MaterialsBotania {
         MaterialsBotania.ManaDiamond = loadManaDiamond();
         MaterialsBotania.BotaniaDragonstone = loadBotaniaDragonstone();
 
-        Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         ManaDiamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         BotaniaDragonstone.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -166,6 +165,10 @@ public class MaterialsBotania {
             .addGearItems()
             .addAspect(TCAspects.ARBOR, 4)
             .addAspect(TCAspects.VICTUS, 2)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.WOOD)
             .constructMaterial();
     }
 
