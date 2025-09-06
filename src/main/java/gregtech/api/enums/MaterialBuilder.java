@@ -5,6 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.minecraft.enchantment.Enchantment;
+
 import gregtech.api.objects.MaterialStack;
 
 public class MaterialBuilder {
@@ -34,6 +36,8 @@ public class MaterialBuilder {
     private float toolSpeed = 1.0f;
     private int toolDurability = 0;
     private int toolQuality = 0;
+    private Enchantment toolEnchantment;
+    private int toolEnchantmentLevel = 1;
     private int types = 0;
     private int argb = 0x00ffffff;
     private int argbMolten = 0x00ffffff;
@@ -92,6 +96,7 @@ public class MaterialBuilder {
             argb,
             argbMolten,
             toolDurability, toolQuality, toolSpeed,
+            toolEnchantment, toolEnchantmentLevel,
             steamMultiplier, gasMultiplier, plasmaMultiplier,
             fuelType.getIndex(), fuelPower,
             hasFluid,
@@ -222,6 +227,19 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder setToolEnchantment(Enchantment enchantment, int level) {
+        this.toolEnchantment = enchantment;
+        this.toolEnchantmentLevel = level;
+        return this;
+    }
+
+    public MaterialBuilder setTurbine(float steamMultiplier, float gasMultiplier, float plasmaMultiplier) {
+        this.steamMultiplier = steamMultiplier;
+        this.gasMultiplier = gasMultiplier;
+        this.plasmaMultiplier = plasmaMultiplier;
+        return this;
+    }
+
     public MaterialBuilder setFuel(FuelType fuelType, int fuelPower) {
         this.fuelType = fuelType;
         this.fuelPower = fuelPower;
@@ -321,13 +339,6 @@ public class MaterialBuilder {
 
     public MaterialBuilder setCanBeCracked(boolean canBeCracked) {
         this.canBeCracked = canBeCracked;
-        return this;
-    }
-
-    public MaterialBuilder setTurbine(float steamMultiplier, float gasMultiplier, float plasmaMultiplier) {
-        this.steamMultiplier = steamMultiplier;
-        this.gasMultiplier = gasMultiplier;
-        this.plasmaMultiplier = plasmaMultiplier;
         return this;
     }
 }
