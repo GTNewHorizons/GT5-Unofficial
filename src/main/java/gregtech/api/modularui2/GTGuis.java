@@ -25,7 +25,7 @@ public final class GTGuis {
      *
      * @see CommonMetaTileEntity#useMui2
      */
-    public static boolean GLOBAL_SWITCH_MUI2 = false;
+    public static boolean GLOBAL_SWITCH_MUI2 = true;
 
     /**
      * Creates builder object for MetaTileEntity GUI template. Call {@link GTBaseGuiBuilder#build} to retrieve panel.
