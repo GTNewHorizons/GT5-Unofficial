@@ -56,9 +56,4 @@ public class DynamicItemElement extends WidgetElement<DynamicItemElement> implem
         //spotless:on
         return yOff;
     }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 3;
-    }
 }

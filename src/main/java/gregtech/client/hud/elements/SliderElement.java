@@ -114,9 +114,4 @@ public class SliderElement extends WidgetElement<SliderElement> implements Confi
         //spotless:on
         return yOff;
     }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 6;
-    }
 }

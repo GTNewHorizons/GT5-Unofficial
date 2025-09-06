@@ -149,9 +149,4 @@ public class DroplistElement extends WidgetElement<DroplistElement> implements C
         //spotless:on
         return yOff;
     }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 4;
-    }
 }

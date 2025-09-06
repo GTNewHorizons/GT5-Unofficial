@@ -121,9 +121,4 @@ public class TextInputElement extends WidgetElement<TextInputElement> implements
 
         return yOff;
     }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 4;
-    }
 }

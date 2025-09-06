@@ -119,17 +119,13 @@ public class GraphElement extends WidgetElement<GraphElement> implements Configu
         yOff = HUDGui.GuiConfigureElement.createBooleanConfig(gui, "Render Dots", renderDots, this::setRenderDots, yOff);
         yOff = HUDGui.GuiConfigureElement.createBooleanConfig(gui, "Render Lines", renderLines, this::setRenderLines, yOff);
         yOff = HUDGui.GuiConfigureElement.createBooleanConfig(gui, "Dynamic Color", dynamicColor, this::setDynamicColor, yOff);
-        yOff = HUDGui.GuiConfigureElement.createFloatConfig(gui, "Graph R:", graphRed, val -> this.graphRed = (float) val, yOff);
-        yOff = HUDGui.GuiConfigureElement.createFloatConfig(gui, "Graph G:", graphGreen, val -> this.graphGreen = (float) val, yOff);
-        yOff = HUDGui.GuiConfigureElement.createFloatConfig(gui, "Graph B:", graphBlue, val -> this.graphBlue = (float) val, yOff);
-        yOff = HUDGui.GuiConfigureElement.createFloatConfig(gui, "Graph A:", graphAlpha, val -> this.graphAlpha = (float) val, yOff);
+        yOff = HUDGui.GuiConfigureElement.createColorConfig(gui, "Color", this.red, this.green, this.blue, this.alpha,
+            val -> { this.red = (float) val; updateAfterConfigChange(); },
+            val -> { this.green = (float) val; updateAfterConfigChange(); },
+            val -> { this.blue = (float) val; updateAfterConfigChange(); },
+            val -> { this.alpha = (float) val; updateAfterConfigChange(); }, yOff);
         // spotless:on
         return yOff;
-    }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 13;
     }
 
     private enum GraphColorState {

@@ -66,9 +66,4 @@ public class TextElement extends WidgetElement<TextElement> implements Configura
         //spotless:on
         return yOff;
     }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 4;
-    }
 }

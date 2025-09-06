@@ -98,9 +98,4 @@ public class ColumnElement extends WidgetElement<ColumnElement> implements Confi
         //spotless:on
         return yOff;
     }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 8;
-    }
 }

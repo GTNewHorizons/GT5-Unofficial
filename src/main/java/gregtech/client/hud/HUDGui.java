@@ -194,24 +194,98 @@ public class HUDGui {
         public static int createBooleanConfig(HUDGui.GuiConfigureElement gui, String label, boolean currentValue,
             Consumer<Boolean> setter, int yOff) {
             gui.addConfigElement(
-                new CheckboxElement(label, currentValue, setter).pos(UIConstants.CONFIG_BUTTON_OFFSET_X, yOff)
-                    .size(12, 12));
+                new TextElement(label).colorSupplier(() -> UIConstants.TEXT_COLOR)
+                    .pos(UIConstants.CONFIG_BUTTON_OFFSET_X, yOff));
+
+            CheckboxElement checkbox = new CheckboxElement(label, currentValue, setter)
+                .pos(100, yOff - UIConstants.TEXT_INPUT_HEIGHT_ADJUST)
+                .size(UIConstants.TEXT_INPUT_HEIGHT, UIConstants.TEXT_INPUT_HEIGHT);
+
+            gui.addConfigElement(checkbox);
+
             return yOff + UIConstants.CONFIG_BUTTON_SPACING;
         }
 
         public static int createStringConfig(HUDGui.GuiConfigureElement gui, String label, String currentValue,
-            Consumer<String> onChange, int yOff) {
-            TextInputElement input = new TextInputElement(onChange)
-                .pos(
-                    HUDManager.UIConstants.CONFIG_BUTTON_OFFSET_X,
-                    yOff - HUDManager.UIConstants.TEXT_INPUT_HEIGHT_ADJUST)
-                .size(HUDManager.UIConstants.TEXT_INPUT_WIDTH, HUDManager.UIConstants.TEXT_INPUT_HEIGHT);
+            Consumer<String> setter, int yOff) {
+            gui.addConfigElement(
+                new TextElement(label).colorSupplier(() -> UIConstants.TEXT_COLOR)
+                    .pos(UIConstants.CONFIG_BUTTON_OFFSET_X, yOff));
 
-            input.text = currentValue;
+            TextInputElement input = new TextInputElement(setter).pos(100, yOff - UIConstants.TEXT_INPUT_HEIGHT_ADJUST)
+                .size(UIConstants.TEXT_INPUT_WIDTH, UIConstants.TEXT_INPUT_HEIGHT);
+
+            input.text = String.valueOf(currentValue);
             gui.addConfigElement(input);
             gui.addInput(input);
 
-            return yOff + HUDManager.UIConstants.CONFIG_BUTTON_SPACING;
+            return yOff + UIConstants.CONFIG_BUTTON_SPACING;
+        }
+
+        public static int createColorConfig(HUDGui.GuiConfigureElement gui, String label, float red, float green,
+            float blue, float alpha, DoubleConsumer redSetter, DoubleConsumer greenSetter, DoubleConsumer blueSetter,
+            DoubleConsumer alphaSetter, int yOff) {
+            // Add label for color components
+            gui.addConfigElement(
+                new TextElement(label + " (R G B A)").colorSupplier(() -> UIConstants.TEXT_COLOR)
+                    .pos(UIConstants.CONFIG_BUTTON_OFFSET_X, yOff));
+
+            final int inputWidth = UIConstants.TEXT_INPUT_WIDTH / 5 * 3;
+            final int inputSpacing = 2;
+
+            // Add text input for red
+            TextInputElement redInput = new TextInputElement(text -> {
+                try {
+                    redSetter.accept(Float.parseFloat(text));
+                } catch (NumberFormatException ignored) {}
+            }).pos(
+                UIConstants.CONFIG_BUTTON_OFFSET_X,
+                yOff + UIConstants.CONFIG_BUTTON_SPACING - UIConstants.TEXT_INPUT_HEIGHT_ADJUST)
+                .size(inputWidth, UIConstants.TEXT_INPUT_HEIGHT);
+            redInput.text = String.valueOf(red);
+            gui.addConfigElement(redInput);
+            gui.addInput(redInput);
+
+            // Add text input for green
+            TextInputElement greenInput = new TextInputElement(text -> {
+                try {
+                    greenSetter.accept(Float.parseFloat(text));
+                } catch (NumberFormatException ignored) {}
+            }).pos(
+                UIConstants.CONFIG_BUTTON_OFFSET_X + inputWidth + inputSpacing,
+                yOff + UIConstants.CONFIG_BUTTON_SPACING - UIConstants.TEXT_INPUT_HEIGHT_ADJUST)
+                .size(inputWidth, UIConstants.TEXT_INPUT_HEIGHT);
+            greenInput.text = String.valueOf(green);
+            gui.addConfigElement(greenInput);
+            gui.addInput(greenInput);
+
+            // Add text input for blue
+            TextInputElement blueInput = new TextInputElement(text -> {
+                try {
+                    blueSetter.accept(Float.parseFloat(text));
+                } catch (NumberFormatException ignored) {}
+            }).pos(
+                UIConstants.CONFIG_BUTTON_OFFSET_X + (inputWidth + inputSpacing) * 2,
+                yOff + UIConstants.CONFIG_BUTTON_SPACING - UIConstants.TEXT_INPUT_HEIGHT_ADJUST)
+                .size(inputWidth, UIConstants.TEXT_INPUT_HEIGHT);
+            blueInput.text = String.valueOf(blue);
+            gui.addConfigElement(blueInput);
+            gui.addInput(blueInput);
+
+            // Add text input for alpha
+            TextInputElement alphaInput = new TextInputElement(text -> {
+                try {
+                    alphaSetter.accept(Float.parseFloat(text));
+                } catch (NumberFormatException ignored) {}
+            }).pos(
+                UIConstants.CONFIG_BUTTON_OFFSET_X + (inputWidth + inputSpacing) * 3,
+                yOff + UIConstants.CONFIG_BUTTON_SPACING - UIConstants.TEXT_INPUT_HEIGHT_ADJUST)
+                .size(inputWidth, UIConstants.TEXT_INPUT_HEIGHT);
+            alphaInput.text = String.valueOf(alpha);
+            gui.addConfigElement(alphaInput);
+            gui.addInput(alphaInput);
+
+            return yOff + UIConstants.CONFIG_BUTTON_SPACING * 2;
         }
 
         public GuiConfigureElement(Object target) {
@@ -226,103 +300,117 @@ public class HUDGui {
         @Override
         public void initGui() {
             Mouse.setGrabbed(false);
-            int panelHeight = calculatePanelHeight();
+
+            int panelHeight = calculateConfigPanelHeight();
+
             configPanel = new CompositeWidget(
-                width / 2 - HUDManager.UIConstants.CONFIG_PANEL_WIDTH / 2,
+                width / 2 - UIConstants.CONFIG_PANEL_WIDTH / 2,
                 height / 2 - panelHeight / 2).addElement(
-                    new RectElement().size(HUDManager.UIConstants.CONFIG_PANEL_WIDTH, panelHeight)
+                    new RectElement().size(UIConstants.CONFIG_PANEL_WIDTH, panelHeight)
                         .colorRGBA(
-                            HUDManager.UIConstants.MODAL_BG_R,
-                            HUDManager.UIConstants.MODAL_BG_G,
-                            HUDManager.UIConstants.MODAL_BG_B,
-                            HUDManager.UIConstants.MODAL_BG_ALPHA));
+                            UIConstants.MODAL_BG_R,
+                            UIConstants.MODAL_BG_G,
+                            UIConstants.MODAL_BG_B,
+                            UIConstants.MODAL_BG_ALPHA));
 
-            int yOff = HUDManager.UIConstants.CONFIG_BUTTON_OFFSET_Y;
+            int yOff = UIConstants.CONFIG_PANEL_PADDING;
 
-            List<WidgetElement<?>> subElements;
-            String title;
-            if (target instanceof CompositeWidget) {
-                subElements = ((CompositeWidget) target).elements;
-                title = "Elements:";
-            } else {
-                subElements = ((WidgetElement<?>) target).children;
-                title = "Child Elements:";
-            }
-            yOff = addSubElementButtons(yOff, title, subElements);
-
-            if (target instanceof WidgetElement<?>element && element instanceof Configurable) {
-                yOff = ((Configurable) element).configure(this, yOff);
+            if (!navigationStack.isEmpty()) {
+                yOff = addBackButton(yOff);
             }
 
-            configPanel.addElement(new ButtonElement("Back", () -> {
-                if (navigationStack.isEmpty()) {
-                    if (target instanceof WidgetElement<?> && HUDManager.getInstance()
-                        .getWidgets()
-                        .stream()
-                        .anyMatch(widget -> widget.elements.contains(target) && widget.getIsConfigurable())) {
-                        mc.displayGuiScreen(
-                            new GuiWidgetManager(
-                                HUDManager.getInstance()
-                                    .getWidgets()
-                                    .stream()
-                                    .filter(w -> w.elements.contains(target))
-                                    .findFirst()
-                                    .orElse(null)));
-                    } else {
-                        mc.displayGuiScreen(null);
-                    }
-                } else {
-                    Object parent = navigationStack.remove(navigationStack.size() - 1);
-                    mc.displayGuiScreen(new GuiConfigureElement(parent, navigationStack));
-                }
-            }).pos(
-                HUDManager.UIConstants.CONFIG_BUTTON_WIDTH / 2,
-                panelHeight - HUDManager.UIConstants.CONFIG_BUTTON_SPACING
-                    - HUDManager.UIConstants.CONFIG_BUTTON_HEIGHT / 2)
-                .size(HUDManager.UIConstants.CONFIG_BUTTON_WIDTH / 2, HUDManager.UIConstants.CONFIG_BUTTON_HEIGHT));
+            yOff = addCloseButton(yOff);
+
+            yOff = addSubElements(yOff);
+
+            if (target instanceof Configurable configurable) {
+                yOff = configurable.configure(this, yOff);
+            }
         }
 
-        private int addSubElementButtons(int yOff, String title, List<WidgetElement<?>> subElements) {
-            if (!subElements.isEmpty()) {
-                addConfigElement(
-                    new TextElement(title).colorSupplier(() -> HUDManager.UIConstants.TEXT_COLOR)
-                        .pos(HUDManager.UIConstants.CONFIG_BUTTON_OFFSET_X, yOff));
-                yOff += HUDManager.UIConstants.CONFIG_BUTTON_SPACING;
-                for (int i = 0; i < subElements.size(); i++) {
-                    WidgetElement<?> e = subElements.get(i);
-                    String label = e.getClass()
-                        .getSimpleName() + " ["
-                        + i
-                        + "]";
-                    addConfigElement(new ButtonElement(label, () -> {
-                        List<Object> newStack = new ArrayList<>(navigationStack);
+        private int addBackButton(int yOff) {
+            configPanel.addElement(
+                new ButtonElement(
+                    "Back",
+                    () -> mc.displayGuiScreen(
+                        new GuiConfigureElement(
+                            navigationStack.get(navigationStack.size() - 1),
+                            navigationStack.subList(0, navigationStack.size() - 1))))
+                                .pos(UIConstants.CONFIG_BUTTON_OFFSET_X, yOff)
+                                .size(UIConstants.CONFIG_BUTTON_WIDTH / 2 - 2, UIConstants.CONFIG_BUTTON_HEIGHT));
+            return yOff + UIConstants.CONFIG_BUTTON_SPACING;
+        }
+
+        private int addCloseButton(int yOff) {
+            configPanel.addElement(
+                new ButtonElement("Close", () -> mc.displayGuiScreen(null))
+                    .pos(UIConstants.CONFIG_BUTTON_OFFSET_X + UIConstants.CONFIG_BUTTON_WIDTH / 2 + 2, yOff)
+                    .size(UIConstants.CONFIG_BUTTON_WIDTH / 2 - 2, UIConstants.CONFIG_BUTTON_HEIGHT));
+            return yOff + UIConstants.CONFIG_BUTTON_SPACING;
+        }
+
+        private int addSubElements(int yOff) {
+            List<WidgetElement<?>> subElements = null;
+            if (target instanceof CompositeWidget widget) {
+                subElements = widget.elements;
+            } else if (target instanceof WidgetElement<?>element) {
+                subElements = element.children;
+            }
+
+            int subCount = subElements != null ? subElements.size() : 0;
+            if (subCount > 0) {
+                configPanel.addElement(
+                    new TextElement("Sub-elements:").colorSupplier(() -> UIConstants.TEXT_COLOR)
+                        .pos(UIConstants.CONFIG_BUTTON_OFFSET_X, yOff));
+                yOff += UIConstants.CONFIG_BUTTON_SPACING;
+
+                for (int i = 0; i < subCount; i++) {
+                    WidgetElement<?> child = subElements.get(i);
+                    List<Object> newStack = new ArrayList<>(navigationStack);
+                    if (target instanceof CompositeWidget) {
                         newStack.add(target);
-                        mc.displayGuiScreen(new GuiConfigureElement(e, newStack));
-                    }).pos(HUDManager.UIConstants.CONFIG_BUTTON_OFFSET_X, yOff)
-                        .size(HUDManager.UIConstants.CONFIG_BUTTON_WIDTH, HUDManager.UIConstants.CONFIG_BUTTON_HEIGHT));
-                    yOff += HUDManager.UIConstants.CONFIG_BUTTON_SPACING;
+                    } else {
+                        newStack.addAll(navigationStack);
+                        newStack.add(target);
+                    }
+                    configPanel.addElement(
+                        new ButtonElement(
+                            child.getClass()
+                                .getSimpleName() + " ["
+                                + i
+                                + "]",
+                            () -> mc.displayGuiScreen(new GuiConfigureElement(child, newStack)))
+                                .pos(UIConstants.CONFIG_BUTTON_OFFSET_X, yOff)
+                                .size(UIConstants.CONFIG_BUTTON_WIDTH, UIConstants.CONFIG_BUTTON_HEIGHT));
+                    yOff += UIConstants.CONFIG_BUTTON_SPACING;
                 }
             }
             return yOff;
         }
 
-        private int calculatePanelHeight() {
-            int height = HUDManager.UIConstants.CONFIG_PANEL_PADDING * 2 + HUDManager.UIConstants.CONFIG_BUTTON_HEIGHT;
+        private int calculateConfigPanelHeight() {
+            int height = UIConstants.CONFIG_PANEL_PADDING * 2
+                + UIConstants.CONFIG_BUTTON_SPACING * (navigationStack.isEmpty() ? 1 : 2);
+
             int subCount = 0;
-            int configSpacings = 0;
             if (target instanceof CompositeWidget widget) {
                 subCount = widget.elements.size();
             } else if (target instanceof WidgetElement<?>element) {
                 subCount = element.children.size();
-                if (element instanceof Configurable) {
-                    configSpacings = ((Configurable) element).getConfigSpacingCount();
-                }
             }
+
             if (subCount > 0) {
                 height += subCount * HUDManager.UIConstants.CONFIG_BUTTON_SPACING
                     + HUDManager.UIConstants.CONFIG_BUTTON_SPACING;
             }
-            height += configSpacings * HUDManager.UIConstants.CONFIG_BUTTON_SPACING;
+
+            int configHeight = 0;
+            if (target instanceof Configurable configurable) {
+                GuiConfigureElement dummy = new DummyConfigure(target, navigationStack);
+                configHeight = configurable.configure(dummy, 0);
+            }
+            height += configHeight;
+
             return height + HUDManager.UIConstants.CONFIG_PANEL_HEIGHT_BUFFER;
         }
 
@@ -444,6 +532,23 @@ public class HUDGui {
         @Override
         public boolean doesGuiPauseGame() {
             return false;
+        }
+    }
+
+    private static class DummyConfigure extends GuiConfigureElement {
+
+        protected DummyConfigure(Object target, List<Object> navigationStack) {
+            super(target, navigationStack);
+        }
+
+        @Override
+        public void addConfigElement(WidgetElement<?> element) {
+            // Do nothing
+        }
+
+        @Override
+        public void addInput(TextInputElement input) {
+            // Do nothing
         }
     }
 

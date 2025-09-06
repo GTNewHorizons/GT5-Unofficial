@@ -14,6 +14,7 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.client.hud.CompositeWidget;
 import gregtech.client.hud.HUDGui;
 import gregtech.client.hud.HUDManager;
+import gregtech.client.hud.elements.ChamferedRectElement;
 import gregtech.client.hud.elements.CheckboxElement;
 import gregtech.client.hud.elements.DroplistElement;
 import gregtech.client.hud.elements.GraphElement;
@@ -104,6 +105,11 @@ public class ItemDashboardTool extends GTGenericItem {
                         "Enable feature",
                         false,
                         checked -> System.out.println("Checkbox: " + checked))));
+        hud.addWidget(
+            new CompositeWidget(10, 300).isConfigurable()
+                .addElement(
+                    new ChamferedRectElement().size(200, 200)
+                        .setCornerCut(20)));
     }
 
 }

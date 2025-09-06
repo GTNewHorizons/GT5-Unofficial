@@ -110,12 +110,8 @@ public class CheckboxElement extends WidgetElement<CheckboxElement> implements C
         yOff = HUDGui.GuiConfigureElement.createIntConfig(gui, "Offset Horizontal:", this.offsetHorizontal, val -> { this.offsetHorizontal = val; updateAfterConfigChange(); }, yOff);
         yOff = HUDGui.GuiConfigureElement.createIntConfig(gui, "Offset Vertical:", this.offsetVertical, val -> { this.offsetVertical = val; updateAfterConfigChange(); }, yOff);
         yOff = HUDGui.GuiConfigureElement.createStringConfig(gui, "Text:", this.label, val -> { setLabel(val); updateAfterConfigChange(); }, yOff);
+
         //spotless:on
         return yOff;
-    }
-
-    @Override
-    public int getConfigSpacingCount() {
-        return 5;
     }
 }
