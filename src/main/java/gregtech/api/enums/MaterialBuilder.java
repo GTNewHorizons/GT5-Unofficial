@@ -67,6 +67,7 @@ public class MaterialBuilder {
     private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
     private final List<Supplier<Materials>> pendingOreByproducts = new ArrayList<>();
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
+    private Supplier<Materials> pendingSmeltingInto;
     private boolean hasFluid = false;
     private boolean hasGas = false;
     private boolean canBeCracked = false;
@@ -117,6 +118,7 @@ public class MaterialBuilder {
             materialList,
             aspects,
             pendingOreByproducts,
+            pendingSmeltingInto,
             subTags
             // spotless:on
         ).setCanBeCracked(canBeCracked);
@@ -410,6 +412,11 @@ public class MaterialBuilder {
 
     public MaterialBuilder addOreByproduct(Supplier<Materials> material) {
         pendingOreByproducts.add(material);
+        return this;
+    }
+
+    public MaterialBuilder setSmeltingInto(Supplier<Materials> material) {
+        pendingSmeltingInto = material;
         return this;
     }
 

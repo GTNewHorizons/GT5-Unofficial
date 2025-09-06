@@ -960,9 +960,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     static {
         setOreByproducts();
+        setSmeltingInto();
         setReRegistration();
         setMaceratingInto();
-        setSmeltingInto();
+        setSmeltingIntoOld();
         setDirectSmelting();
         setMultipliers();
         setEnchantments();
@@ -1025,6 +1026,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Materials mDirectSmelting = this;
     public Materials mOreReplacement = this;
     public Materials mMacerateInto = this;
+    private Supplier<Materials> mPendingSmeltingInto;
     public Materials mSmeltInto = this;
     public Materials mArcSmeltInto = this;
     public Materials mHandleMaterial = this;
@@ -1093,6 +1095,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         List<MaterialStack> materialList,
         List<TCAspects.TC_AspectStack> aspects,
         List<Supplier<Materials>> pendingOreByproducts,
+        Supplier<Materials> pendingSmeltingInto,
         LinkedHashSet<SubTag> subTags
         // spotless:on
     ) {
@@ -1163,6 +1166,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // Set what materials this material is composed of
         mMaterialList = materialList;
         mPendingOreByproducts = pendingOreByproducts;
+        mPendingSmeltingInto = pendingSmeltingInto;
 
         // Set material density
         mDensityMultiplier = densityMultiplier;
@@ -1374,6 +1378,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setSmeltingInto() {
+        for (Materials material : MATERIALS_MAP.values()) {
+            if (material.mPendingSmeltingInto == null) continue;
+            material.mSmeltInto = material.mPendingSmeltingInto.get().mMaterialInto.mSmeltInto;
+            material.mPendingSmeltingInto = null;
+        }
+    }
+
+    @Deprecated
+    private static void setSmeltingIntoOld() {
         SamariumMagnetic.setSmeltingInto(Samarium)
             .setMaceratingInto(Samarium)
             .setArcSmeltingInto(Samarium);
