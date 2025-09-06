@@ -30,7 +30,6 @@ public class MaterialsBotania {
         MaterialsBotania.ManaDiamond = loadManaDiamond();
         MaterialsBotania.BotaniaDragonstone = loadBotaniaDragonstone();
 
-        ManaDiamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         BotaniaDragonstone.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         GaiaSpirit.add(SubTag.SOFT);
 
@@ -200,6 +199,9 @@ public class MaterialsBotania {
             .setTool(2_560, 8, 16.0f)
             .addDustItems()
             .addGemItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
