@@ -13,10 +13,15 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -42,13 +47,14 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Textures;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -58,9 +64,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
-public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower> implements ISurvivalConstructable {
+public class MTEMegaDistillTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillTower>
+    implements ISurvivalConstructable {
 
-    protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_TOP_HINT = "top";
@@ -71,78 +77,50 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .withCount(MTEMegaDistillTower::getCurrentLayerOutputHatchCount)
             .withAdder(MTEMegaDistillTower::addLayerOutputHatch);
         STRUCTURE_DEFINITION = StructureDefinition.<MTEMegaDistillTower>builder()
+            // spotless:off
             .addShape(
                 STRUCTURE_PIECE_BASE,
                 transpose(
-                    new String[][] { { "bbbbbbb~bbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb",
-                        "bbbbbbbbbbbbbbb" }, }))
+                    new String[][] { { "bbbbbbb~bbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb" }}))
             .addShape(
                 STRUCTURE_PIECE_LAYER,
                 transpose(
                     new String[][] {
-                        { "lllllllllllllll", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl",
-                            "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl",
-                            "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl",
-                            "lcccccccccccccl", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" }, }))
+                        { "lllllllllllllll", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lcccccccccccccl", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" }}))
             .addShape(
                 STRUCTURE_PIECE_TOP_HINT,
                 transpose(
                     new String[][] {
-                        { "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll",
-                            "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll",
-                            "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll",
-                            "lllllllllllllll", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" },
-                        { "lllllllllllllll", "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "l=============l", "l=============l", "l=============l",
-                            "l=============l", "lllllllllllllll" }, }))
-            .addElement('=', StructureElementAirNoHint.getInstance())
+                        { "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" },
+                        { "lllllllllllllll", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "l-------------l", "lllllllllllllll" }}))
+            // spotless:on
             .addElement(
                 'b',
                 buildHatchAdder(MTEMegaDistillTower.class)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(Casings.CleanStainlessSteelCasing.textureId)
                     .dot(1)
                     .buildAndChain(
-                        onElementPass(MTEMegaDistillTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+                        onElementPass(
+                            MTEMegaDistillTower::onCasingFound,
+                            Casings.CleanStainlessSteelCasing.asElement())))
             .addElement(
                 'l',
                 buildHatchAdder(MTEMegaDistillTower.class)
                     .atLeast(layeredOutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(Casings.CleanStainlessSteelCasing.textureId)
                     .dot(1)
                     .buildAndChain(
-                        onElementPass(MTEMegaDistillTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+                        onElementPass(
+                            MTEMegaDistillTower::onCasingFound,
+                            Casings.CleanStainlessSteelCasing.asElement())))
             .addElement('c', (IStructureElementCheckOnly<MTEMegaDistillTower>) (t, world, x, y, z) -> {
                 if (world.isAirBlock(x, y, z)) {
                     if (t.mTopState < 1) {
@@ -159,7 +137,8 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
                 t.mTopState = 1;
                 // hatch adder
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity instanceof IGregTechTileEntity entity && t.addLayerOutputHatch(entity, CASING_INDEX)) {
+                if (tileEntity instanceof IGregTechTileEntity entity
+                    && t.addLayerOutputHatch(entity, Casings.CleanStainlessSteelCasing.textureId)) {
                     t.onTopLayerFound(false);
                     return true;
                 }
@@ -222,7 +201,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Casings.CleanStainlessSteelCasing.getCasingTexture(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()
@@ -232,7 +211,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+            return new ITexture[] { Casings.CleanStainlessSteelCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
                 .extFacing()
                 .build(),
@@ -242,7 +221,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { Casings.CleanStainlessSteelCasing.getCasingTexture() };
     }
 
     @Override
@@ -399,28 +378,10 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
 
     @Override
     public boolean canDumpFluidToME() {
-
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        for (List<MTEHatchOutput> tLayerOutputHatches : this.mOutputHatchesByLayer) {
-
-            boolean foundMEHatch = false;
-
-            for (IFluidStore tHatch : tLayerOutputHatches) {
-                if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canFillFluid()) {
-                        foundMEHatch = true;
-                        break;
-                    }
-                }
-            }
-
-            // Exit if we didn't find a valid hatch on this layer.
-            if (!foundMEHatch) {
-                return false;
-            }
-        }
-
-        return true;
+        return mOutputHatchesByLayer.stream()
+            .allMatch(
+                layer -> layer.stream()
+                    .anyMatch(hatch -> hatch instanceof MTEHatchOutputME meHatch && meHatch.canFillFluid()));
     }
 
     @Override
