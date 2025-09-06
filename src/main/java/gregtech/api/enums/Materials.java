@@ -1784,15 +1784,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum
      */
-    @Deprecated
-    public static Materials valueOf(String aMaterialName) {
-        return getMaterialsMap().get(aMaterialName);
-    }
-
-    /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
-     * materials enum
-     */
     public static Materials[] values() {
         return MATERIALS_ARRAY;
     }
