@@ -1,4 +1,4 @@
-package gregtech.common.items.gui;
+package gregtech.common.powergoggles.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.gtnewhorizons.modularui.api.math.Color;
 
-import gregtech.common.handlers.PowerGogglesConfigHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 /**
  * Created by brandon3055 on 11/2/2016.
@@ -48,11 +48,10 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
             + (int) (fontRenderer.FONT_HEIGHT * 2 * PowerGogglesConfigHandler.subTextScaling)
             + borderRadius;
         dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX
-            + PowerGogglesConfigHandler.rectangleWidth * PowerGogglesConfigHandler.hudScale
+            + (PowerGogglesConfigHandler.rectangleWidth + borderRadius) * PowerGogglesConfigHandler.hudScale
             - 1));
-        dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY
-            - PowerGogglesConfigHandler.rectangleHeight)
-            + (rectangleHeightToBorderBottom) * (1 - PowerGogglesConfigHandler.hudScale));
+
+        dragCenterY = (int) (height - PowerGogglesConfigHandler.mainOffsetY);
         dragWidth = (int) (10 * PowerGogglesConfigHandler.hudScale);
         dragHeight = (int) (10 * PowerGogglesConfigHandler.hudScale);
 
