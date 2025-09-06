@@ -286,13 +286,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setDensity(int, int)} instead. */
-    @Deprecated
-    public MaterialBuilder setDensityDivider(int densityDivider) {
-        this.densityDivider = densityDivider;
-        return this;
-    }
-
     public MaterialBuilder addElectrolyzerRecipe() {
         extraData = extraData | 1;
         return this;
