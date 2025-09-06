@@ -1492,16 +1492,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(2);
     }
 
-    private static void setEnchantmentFireAspectTools() {
-        Flint.setEnchantmentForTools(Enchantment.fireAspect, 1);
-        DarkIron.setEnchantmentForTools(Enchantment.fireAspect, 2);
-        Firestone.setEnchantmentForTools(Enchantment.fireAspect, 3);
-        FierySteel.setEnchantmentForTools(Enchantment.fireAspect, 3);
-        Pyrotheum.setEnchantmentForTools(Enchantment.fireAspect, 3);
-        Blaze.setEnchantmentForTools(Enchantment.fireAspect, 3);
-        InfusedFire.setEnchantmentForTools(Enchantment.fireAspect, 3);
-    }
-
     private static void setEnchantmentSilkTouchTools() {
         Force.setEnchantmentForTools(Enchantment.silkTouch, 1);
         Amber.setEnchantmentForTools(Enchantment.silkTouch, 1);
@@ -1562,7 +1552,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setToolEnchantments() {
-        setEnchantmentFireAspectTools();
         setEnchantmentSilkTouchTools();
         setEnchantmentSmiteTools();
         setEnchantmentBaneOfArthropodsTools();
