@@ -33,7 +33,6 @@ import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
@@ -1373,11 +1372,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setOreByproducts() {
         for (Materials material : MATERIALS_MAP.values()) {
-            material.mPendingOreByproducts.stream()
-                .flatMap(GTStreamUtil::ofSupplier)
+            if (material.mPendingOreByproducts == null) continue;
+
+            material.mOreByProducts = material.mPendingOreByproducts.stream()
+                .map(Supplier::get)
                 .map(byproduct -> byproduct.mMaterialInto)
-                .filter(byproduct -> !material.mOreByProducts.contains(byproduct))
-                .forEachOrdered(material.mOreByProducts::add);
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
 
             material.mPendingOreByproducts = null;
         }
