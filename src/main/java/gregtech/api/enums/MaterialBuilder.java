@@ -68,6 +68,7 @@ public class MaterialBuilder {
     private final List<Supplier<Materials>> pendingOreByproducts = new ArrayList<>();
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private Supplier<Materials> pendingSmeltingInto;
+    private Supplier<Materials> pendingMaceratingInto;
     private boolean hasFluid = false;
     private boolean hasGas = false;
     private boolean canBeCracked = false;
@@ -119,6 +120,7 @@ public class MaterialBuilder {
             aspects,
             pendingOreByproducts,
             pendingSmeltingInto,
+            pendingMaceratingInto,
             subTags
             // spotless:on
         ).setCanBeCracked(canBeCracked);
@@ -417,6 +419,11 @@ public class MaterialBuilder {
 
     public MaterialBuilder setSmeltingInto(Supplier<Materials> material) {
         pendingSmeltingInto = material;
+        return this;
+    }
+
+    public MaterialBuilder setMaceratingInto(Supplier<Materials> material) {
+        pendingMaceratingInto = material;
         return this;
     }
 

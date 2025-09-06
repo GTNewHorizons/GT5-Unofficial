@@ -961,8 +961,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     static {
         setOreByproducts();
         setSmeltingInto();
-        setReRegistration();
         setMaceratingInto();
+        setReRegistration();
         setSmeltingIntoOld();
         setDirectSmelting();
         setMultipliers();
@@ -1025,9 +1025,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Element mElement = null;
     public Materials mDirectSmelting = this;
     public Materials mOreReplacement = this;
-    public Materials mMacerateInto = this;
     private Supplier<Materials> mPendingSmeltingInto;
     public Materials mSmeltInto = this;
+    private Supplier<Materials> mPendingMaceratingInto;
+    public Materials mMacerateInto = this;
     public Materials mArcSmeltInto = this;
     public Materials mHandleMaterial = this;
     public Materials mMaterialInto;
@@ -1096,6 +1097,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         List<TCAspects.TC_AspectStack> aspects,
         List<Supplier<Materials>> pendingOreByproducts,
         Supplier<Materials> pendingSmeltingInto,
+        Supplier<Materials> pendingMaceratingInto,
         LinkedHashSet<SubTag> subTags
         // spotless:on
     ) {
@@ -1167,6 +1169,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mMaterialList = materialList;
         mPendingOreByproducts = pendingOreByproducts;
         mPendingSmeltingInto = pendingSmeltingInto;
+        mPendingMaceratingInto = pendingMaceratingInto;
 
         // Set material density
         mDensityMultiplier = densityMultiplier;
@@ -1385,8 +1388,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
     }
 
+    private static void setMaceratingInto() {
+        for (Materials material : MATERIALS_MAP.values()) {
+            if (material.mPendingMaceratingInto == null) continue;
+            material.mMacerateInto = material.mPendingMaceratingInto.get().mMaterialInto.mMacerateInto;
+            material.mPendingMaceratingInto = null;
+        }
+    }
+
     @Deprecated
     private static void setSmeltingIntoOld() {
+        Peanutwood.setMaceratingInto(Wood);
+        WoodSealed.setMaceratingInto(Wood);
+        NetherBrick.setMaceratingInto(Netherrack);
+        AnyRubber.setMaceratingInto(Rubber);
         SamariumMagnetic.setMaceratingInto(Samarium)
             .setArcSmeltingInto(Samarium);
         NeodymiumMagnetic.setMaceratingInto(Neodymium)
@@ -1625,13 +1640,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         InfusedOrder.setEnchantmentForArmors(Enchantment.projectileProtection, 4);
         InfusedDull.setEnchantmentForArmors(Enchantment.blastProtection, 4);
         InfusedVis.setEnchantmentForArmors(Enchantment.protection, 4);
-    }
-
-    private static void setMaceratingInto() {
-        Peanutwood.setMaceratingInto(Wood);
-        WoodSealed.setMaceratingInto(Wood);
-        NetherBrick.setMaceratingInto(Netherrack);
-        AnyRubber.setMaceratingInto(Rubber);
     }
 
     private static void setReRegistration() {
@@ -2088,7 +2096,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     /**
      * This Material macerates always into an instance of aMaterial.
+     * 
+     * @deprecated Use {@link MaterialBuilder#setMaceratingInto(Supplier)} on {@link MaterialBuilder} instead.
      */
+    @Deprecated
     public Materials setMaceratingInto(Materials aMaterial) {
         if (aMaterial != null) mMacerateInto = aMaterial.mMaterialInto.mMacerateInto;
         return this;
