@@ -288,13 +288,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setFuel(FuelType, int)} instead. */
-    @Deprecated
-    public MaterialBuilder setFuelType(int fuelType) {
-        this.fuelType = FuelType.fromIndex(fuelType);
-        return this;
-    }
-
     public MaterialBuilder setMeltingPoint(int meltingPoint) {
         this.meltingPoint = meltingPoint;
         return this;
