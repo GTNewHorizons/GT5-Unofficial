@@ -275,13 +275,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setTool(int, int, float)} instead. */
-    @Deprecated
-    public MaterialBuilder setToolSpeed(float toolSpeed) {
-        this.toolSpeed = toolSpeed;
-        return this;
-    }
-
     public MaterialBuilder setFuel(FuelType fuelType, int fuelPower) {
         this.fuelType = fuelType;
         this.fuelPower = fuelPower;
