@@ -36,7 +36,6 @@ public enum MetaGeneratedItemIDs {
     TransmissionComponent_ZPM(148),
     TransmissionComponent_UV(149),
     TransmissionComponent_UHV(150),
-    Distillus_Upgrade_Chip(151),
     Maceration_Upgrade_Chip(152);
 
     public final int ID;
