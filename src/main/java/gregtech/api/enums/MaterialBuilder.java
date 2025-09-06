@@ -404,13 +404,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#addAspect(TCAspects, int)} instead. */
-    @Deprecated
-    public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
-        this.aspects = aspects;
-        return this;
-    }
-
     public MaterialBuilder addSubTag(SubTag subTag) {
         this.subTags.add(subTag);
         return this;
