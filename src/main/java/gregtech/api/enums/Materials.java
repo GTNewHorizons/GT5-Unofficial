@@ -1843,6 +1843,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * Adds a SubTag to this Material
      */
     @Override
+    @Deprecated
     public ISubTagContainer add(SubTag... aTags) {
         if (aTags != null) for (SubTag aTag : aTags) if (aTag != null && !contains(aTag)) {
             aTag.addContainerToList(this);
