@@ -1387,46 +1387,29 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     @Deprecated
     private static void setSmeltingIntoOld() {
-        SamariumMagnetic.setSmeltingInto(Samarium)
-            .setMaceratingInto(Samarium)
+        SamariumMagnetic.setMaceratingInto(Samarium)
             .setArcSmeltingInto(Samarium);
-        NeodymiumMagnetic.setSmeltingInto(Neodymium)
-            .setMaceratingInto(Neodymium)
+        NeodymiumMagnetic.setMaceratingInto(Neodymium)
             .setArcSmeltingInto(Neodymium);
-        SteelMagnetic.setSmeltingInto(Steel)
-            .setMaceratingInto(Steel)
+        SteelMagnetic.setMaceratingInto(Steel)
             .setArcSmeltingInto(Steel);
-        Iron.setSmeltingInto(Iron)
-            .setMaceratingInto(Iron)
+        Iron.setMaceratingInto(Iron)
             .setArcSmeltingInto(WroughtIron);
-        AnyIron.setSmeltingInto(Iron)
-            .setMaceratingInto(Iron)
+        AnyIron.setMaceratingInto(Iron)
             .setArcSmeltingInto(WroughtIron);
-        PigIron.setSmeltingInto(Iron)
-            .setMaceratingInto(Iron)
+        PigIron.setMaceratingInto(Iron)
             .setArcSmeltingInto(WroughtIron);
-        WroughtIron.setSmeltingInto(WroughtIron)
-            .setMaceratingInto(WroughtIron)
+        WroughtIron.setMaceratingInto(WroughtIron)
             .setArcSmeltingInto(WroughtIron);
-        IronMagnetic.setSmeltingInto(Iron)
-            .setMaceratingInto(Iron)
+        IronMagnetic.setMaceratingInto(Iron)
             .setArcSmeltingInto(WroughtIron);
-        Copper.setSmeltingInto(Copper)
-            .setMaceratingInto(Copper)
+        Copper.setMaceratingInto(Copper)
             .setArcSmeltingInto(AnnealedCopper);
-        AnyCopper.setSmeltingInto(Copper)
-            .setMaceratingInto(Copper)
+        AnyCopper.setMaceratingInto(Copper)
             .setArcSmeltingInto(AnnealedCopper);
-        AnnealedCopper.setSmeltingInto(AnnealedCopper)
-            .setMaceratingInto(AnnealedCopper)
+        AnnealedCopper.setMaceratingInto(AnnealedCopper)
             .setArcSmeltingInto(AnnealedCopper);
-        Netherrack.setSmeltingInto(NetherBrick);
-        MeatRaw.setSmeltingInto(MeatCooked);
-        Sand.setSmeltingInto(Glass);
-        Ice.setSmeltingInto(Water);
-        Snow.setSmeltingInto(Water);
-        TengamAttuned.setSmeltingInto(TengamPurified)
-            .setMaceratingInto(TengamPurified)
+        TengamAttuned.setMaceratingInto(TengamPurified)
             .setArcSmeltingInto(TengamPurified);
     }
 
@@ -2125,7 +2108,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     /**
      * This Material smelts always into an instance of aMaterial. Used for Magnets.
+     * 
+     * @deprecated Use {@link MaterialBuilder#setSmeltingInto(Supplier)} on {@link MaterialBuilder} instead.
      */
+    @Deprecated
     public Materials setSmeltingInto(Materials aMaterial) {
         if (aMaterial != null) mSmeltInto = aMaterial.mMaterialInto.mSmeltInto;
         return this;

@@ -2235,6 +2235,7 @@ public class MaterialsInit {
             .setDefaultLocalName("AnyCopper")
             .setChemicalFormula("Cu")
             .setIconSet(TextureSet.SET_SHINY)
+            .setSmeltingInto(() -> Materials.Copper)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -2244,6 +2245,7 @@ public class MaterialsInit {
             .setDefaultLocalName("AnyIron")
             .setChemicalFormula("Fe")
             .setIconSet(TextureSet.SET_SHINY)
+            .setSmeltingInto(() -> Materials.Iron)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -4512,6 +4514,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Sand")
             .setDefaultLocalName("Sand")
             .setColor(Dyes.dyeYellow)
+            .setSmeltingInto(() -> Materials.Glass)
             .addSubTag(SubTag.NO_RECYCLING)
             .constructMaterial();
     }
@@ -5293,6 +5296,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyePink)
             .setARGB(0x00ff6464)
             .addDustItems()
+            .setSmeltingInto(() -> Materials.MeatCooked)
             .addSubTag(SubTag.FOOD)
             .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
@@ -5612,6 +5616,7 @@ public class MaterialsInit {
             .setARGB(0x00c80000)
             .addDustItems()
             .addOreByproduct(() -> Materials.Sulfur)
+            .setSmeltingInto(() -> Materials.NetherBrick)
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
@@ -6797,6 +6802,7 @@ public class MaterialsInit {
             .addCell()
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
+            .setSmeltingInto(() -> Materials.Water)
             .addAspect(TCAspects.GELUM, 2)
             .addSubTag(SubTag.FOOD)
             .addSubTag(SubTag.NO_RECYCLING)
@@ -7269,6 +7275,7 @@ public class MaterialsInit {
             .addCentrifugeRecipe()
             .addMaterial(Materials.Iron, 1)
             .addOreByproduct(() -> Materials.Iron)
+            .setSmeltingInto(() -> Materials.Iron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
@@ -7729,6 +7736,7 @@ public class MaterialsInit {
             .addCell()
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
+            .setSmeltingInto(() -> Materials.Water)
             .addAspect(TCAspects.GELUM, 1)
             .addSubTag(SubTag.NO_RECYCLING)
             .addSubTag(SubTag.NO_SMASHING)
@@ -8000,6 +8008,7 @@ public class MaterialsInit {
             .addGearItems()
             .addMetalItems()
             .addToolHeadItems()
+            .setSmeltingInto(() -> Materials.TengamPurified)
             .addAspect(TCAspects.MAGNETO, 4)
             .addAspect(TCAspects.ELECTRUM, 1)
             .addSubTag(SubTag.METAL)
@@ -10884,6 +10893,7 @@ public class MaterialsInit {
             .setDensity(51, 50)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Iron, 1)
+            .setSmeltingInto(() -> Materials.Iron)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.METAL)
@@ -11209,6 +11219,7 @@ public class MaterialsInit {
             .setDensity(51, 50)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Neodymium, 1)
+            .setSmeltingInto(() -> Materials.Neodymium)
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.MAGNETO, 3)
             .addSubTag(SubTag.METAL)
@@ -11554,6 +11565,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Samarium, 1)
+            .setSmeltingInto(() -> Materials.Samarium)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addAspect(TCAspects.MAGNETO, 10)
@@ -11654,6 +11666,7 @@ public class MaterialsInit {
             .setDensity(51, 50)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Steel, 1)
+            .setSmeltingInto(() -> Materials.Steel)
             .addAspect(TCAspects.METALLUM, 1)
             .addAspect(TCAspects.ORDO, 1)
             .addAspect(TCAspects.MAGNETO, 1)
