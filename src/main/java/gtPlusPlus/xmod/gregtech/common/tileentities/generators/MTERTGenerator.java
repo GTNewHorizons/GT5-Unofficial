@@ -239,7 +239,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[getTier()] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[getTier() + 1] };
     }
 
     @Override
@@ -279,7 +279,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
             .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
             .glow()
-            .build(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[getTier()] };
+            .build(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[getTier() + 1] };
     }
 
     @Override
