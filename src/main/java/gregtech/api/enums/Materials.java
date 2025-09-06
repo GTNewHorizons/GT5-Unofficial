@@ -962,6 +962,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setOreByproducts();
         setSmeltingInto();
         setMaceratingInto();
+        setArcSmeltingInto();
         setReRegistration();
         setSmeltingIntoOld();
         setDirectSmelting();
@@ -1029,6 +1030,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Materials mSmeltInto = this;
     private Supplier<Materials> mPendingMaceratingInto;
     public Materials mMacerateInto = this;
+    private Supplier<Materials> mPendingArcSmeltingInto;
     public Materials mArcSmeltInto = this;
     public Materials mHandleMaterial = this;
     public Materials mMaterialInto;
@@ -1098,6 +1100,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         List<Supplier<Materials>> pendingOreByproducts,
         Supplier<Materials> pendingSmeltingInto,
         Supplier<Materials> pendingMaceratingInto,
+        Supplier<Materials> pendingArcSmeltingInto,
         LinkedHashSet<SubTag> subTags
         // spotless:on
     ) {
@@ -1170,6 +1173,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mPendingOreByproducts = pendingOreByproducts;
         mPendingSmeltingInto = pendingSmeltingInto;
         mPendingMaceratingInto = pendingMaceratingInto;
+        mPendingArcSmeltingInto = pendingArcSmeltingInto;
 
         // Set material density
         mDensityMultiplier = densityMultiplier;
@@ -1393,6 +1397,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             if (material.mPendingMaceratingInto == null) continue;
             material.mMacerateInto = material.mPendingMaceratingInto.get().mMaterialInto.mMacerateInto;
             material.mPendingMaceratingInto = null;
+        }
+    }
+
+    private static void setArcSmeltingInto() {
+        for (Materials material : MATERIALS_MAP.values()) {
+            if (material.mPendingArcSmeltingInto == null) continue;
+            material.mArcSmeltInto = material.mPendingArcSmeltingInto.get().mMaterialInto.mArcSmeltInto;
+            material.mPendingArcSmeltingInto = null;
         }
     }
 
