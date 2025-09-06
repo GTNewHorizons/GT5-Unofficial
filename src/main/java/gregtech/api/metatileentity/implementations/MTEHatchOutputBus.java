@@ -4,7 +4,10 @@ import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.util.GTUtility.areStacksEqual;
 import static gregtech.api.util.GTUtility.isStackInvalid;
+import static gregtech.api.util.GTUtility.isStackValid;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
+
+import java.util.BitSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,17 +25,22 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 
-public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable {
+public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable, IOutputBus {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -171,21 +179,9 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         return DATA_STICK_DATA_TYPE;
     }
 
-    public boolean storePartial(ItemStack aStack) {
-        return storePartial(aStack, false);
-    }
-
-    /**
-     * Attempt to store as many items as possible into the internal inventory of this output bus. If you need atomicity
-     * you should use {@link gregtech.api.interfaces.tileentity.IHasInventory#addStackToSlot(int, ItemStack)}
-     *
-     * @param stack    The stack to insert. Will be modified by this method (will contain whatever items could not be
-     *                 inserted; stackSize will be 0 when everything was inserted).
-     * @param simulate When true this bus will not be modified.
-     * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
-     */
+    @Override
     public boolean storePartial(ItemStack stack, boolean simulate) {
-        markDirty();
+        if (!simulate) markDirty();
 
         if (lockedItem != null && !lockedItem.isItemEqual(stack)) return false;
 
@@ -201,7 +197,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
             int inSlot = slot == null ? 0 : slot.stackSize;
 
             int toInsert = Math
-                .min(Math.min(getInventoryStackLimit(), stack.getMaxStackSize() - inSlot), stack.stackSize);
+                .min(Math.min(getInventoryStackLimit(), getStackSizeLimit(i, slot) - inSlot), stack.stackSize);
 
             if (toInsert == 0) continue;
 
@@ -326,5 +322,134 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     @Override
     public boolean acceptsItemLock() {
         return true;
+    }
+
+    @Override
+    public boolean isFiltered() {
+        return isLocked();
+    }
+
+    @Override
+    public boolean isFilteredToItem(GTUtility.ItemId id) {
+        if (lockedItem == null) return false;
+
+        return id.matches(lockedItem);
+    }
+
+    @Override
+    public IOutputBusTransaction createTransaction() {
+        return new StandardOutputBusTransaction();
+    }
+
+    @Override
+    public OutputBusType getBusType() {
+        return lockedItem == null ? OutputBusType.StandardUnfiltered : OutputBusType.StandardFiltered;
+    }
+
+    /**
+     * Gets the max stack size limit for a slot and a stack.
+     *
+     * @param slot  The slot, or -1 for a general 'lowest slot' query.
+     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
+     */
+    public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
+    }
+
+    class StandardOutputBusTransaction implements IOutputBusTransaction {
+
+        private final ItemStack[] inventory;
+
+        private final BitSet availableSlots = new BitSet();
+
+        private boolean active = true;
+
+        StandardOutputBusTransaction() {
+            inventory = GTDataUtils.mapToArray(mInventory, ItemStack[]::new, GTUtility::copy);
+
+            for (int i = 0, inventoryLength = inventory.length; i < inventoryLength; i++) {
+                ItemStack stack = inventory[i];
+
+                int capacity = getStackSizeLimit(i, stack);
+
+                if (stack == null || stack.stackSize < capacity) {
+                    availableSlots.set(i);
+                }
+            }
+        }
+
+        @Override
+        public IOutputBus getBus() {
+            return MTEHatchOutputBus.this;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+
+            int maxStackSize = getStackSizeLimit(-1, stack);
+
+            for (int i = availableSlots.nextSetBit(0); i >= 0; i = availableSlots.nextSetBit(i + 1)) {
+                if (stack.stackSize <= 0) break;
+
+                @Nullable
+                ItemStack slot = inventory[i];
+
+                // the slot has an item and the stacks can't be merged; ignore it
+                if (isStackValid(slot) && !areStacksEqual(slot, stack)) continue;
+
+                int inSlot = slot == null ? 0 : slot.stackSize;
+
+                int toInsert = Math.min(Math.min(getInventoryStackLimit(), maxStackSize - inSlot), stack.stackSize);
+
+                if (toInsert == 0) continue;
+
+                // if the slot is invalid create an empty stack in it
+                if (isStackInvalid(slot)) inventory[i] = slot = stack.splitStack(0);
+
+                slot.stackSize += toInsert;
+                stack.stackSize -= toInsert;
+
+                if (slot.stackSize == maxStackSize) {
+                    availableSlots.clear(i);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public void completeItem(GTUtility.ItemId id) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+
+            for (int i = 0, invLength = inventory.length; i < invLength; i++) {
+                if (!availableSlots.get(i)) continue;
+
+                @Nullable
+                ItemStack slot = inventory[i];
+
+                if (isStackValid(slot) && id.matches(slot)) {
+                    availableSlots.clear(i);
+                }
+            }
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            return !availableSlots.isEmpty();
+        }
+
+        @Override
+        public void commit() {
+            assert mInventory.length == inventory.length;
+
+            System.arraycopy(inventory, 0, mInventory, 0, inventory.length);
+
+            MTEHatchOutputBus.this.markDirty();
+
+            active = false;
+        }
     }
 }

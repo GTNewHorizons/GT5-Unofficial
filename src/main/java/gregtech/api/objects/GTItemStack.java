@@ -2,9 +2,13 @@ package gregtech.api.objects;
 
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.util.Objects;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.Hash;
@@ -31,6 +35,25 @@ public class GTItemStack {
             if (a == b) return true;
             if (a == null || b == null) return false;
             return a.getItem() == b.getItem() && Items.feather.getDamage(a) == Items.feather.getDamage(b);
+        }
+    };
+
+    public static final Hash.Strategy<ItemStack> ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE = new Hash.Strategy<>() {
+
+        @Override
+        public int hashCode(ItemStack o) {
+            int hash = Fnv1a32.initialState();
+
+            hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getItem()));
+            hash = Fnv1a32.hashStep(hash, Items.feather.getDamage(o));
+            hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getTagCompound()));
+
+            return hash;
+        }
+
+        @Override
+        public boolean equals(ItemStack a, ItemStack b) {
+            return GTUtility.areStacksEqual(a, b, false);
         }
     };
 
