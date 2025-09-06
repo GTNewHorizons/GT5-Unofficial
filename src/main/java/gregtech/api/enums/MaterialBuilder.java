@@ -50,8 +50,8 @@ public class MaterialBuilder {
     private int densityDivider = 1;
     private Dyes color = Dyes._NULL;
     private int extraData = 0;
-    private List<MaterialStack> materialList = new ArrayList<>();
-    private List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
+    private final List<MaterialStack> materialList = new ArrayList<>();
+    private final List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
     private final List<Supplier<Materials>> pendingOreByproducts = new ArrayList<>();
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private Supplier<Materials> pendingSmeltingInto;
