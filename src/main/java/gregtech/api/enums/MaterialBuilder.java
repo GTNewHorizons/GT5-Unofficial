@@ -210,13 +210,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setARGB(int)} instead. */
-    @Deprecated
-    public MaterialBuilder setRGB(int r, int g, int b) {
-        this.argb = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
-        return this;
-    }
-
     public MaterialBuilder setColor(Dyes color) {
         this.color = color;
         return this;

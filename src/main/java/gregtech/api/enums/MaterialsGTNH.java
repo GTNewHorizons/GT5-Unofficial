@@ -593,7 +593,7 @@ public class MaterialsGTNH implements IMaterialHandler {
 
     // Deepslate stuff
     public static Materials Chlorite = new MaterialBuilder(167, TextureSet.SET_SHINY, "Chlorite").addDustItems()
-        .setRGB(96, 125, 108)
+        .setARGB(0x00607d6c)
         .setColor(Dyes.dyeLime)
         .addMaterial(Materials.Iron, 3)
         .addMaterial(Materials.Magnesium, 2)
@@ -603,7 +603,7 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Oxygen, 5)
         .constructMaterial();
     public static Materials Staurolite = new MaterialBuilder(168, TextureSet.SET_DULL, "Staurolite").addDustItems()
-        .setRGB(63, 40, 22)
+        .setARGB(0x003f2816)
         .setColor(Dyes.dyeBrown)
         .addMaterial(Materials.Iron, 2)
         .addMaterial(Materials.Aluminium, 9)
@@ -612,7 +612,7 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Hydrogen, 1)
         .constructMaterial();
     public static Materials Cordierite = new MaterialBuilder(169, TextureSet.SET_SHINY, "Cordierite").addDustItems()
-        .setRGB(67, 75, 130)
+        .setARGB(0x00434b82)
         .setColor(Dyes.dyePurple)
         .addMaterial(Materials.Iron, 1)
         .addMaterial(Materials.Magnesium, 1)
@@ -621,7 +621,7 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Oxygen, 5)
         .constructMaterial();
     public static Materials Datolite = new MaterialBuilder(170, TextureSet.SET_SHINY, "Datolite").addDustItems()
-        .setRGB(234, 196, 206)
+        .setARGB(0x00eac4ce)
         .setColor(Dyes.dyeWhite)
         .addMaterial(Materials.Calcium, 1)
         .addMaterial(Materials.Boron, 1)
@@ -633,11 +633,11 @@ public class MaterialsGTNH implements IMaterialHandler {
         171,
         TextureSet.SET_DULL,
         "Metamorphic Mineral Mixture").addDustItems()
-            .setRGB(108, 130, 148)
+            .setARGB(0x006c8294)
             .setColor(Dyes.dyeCyan)
             .constructMaterial();
     public static Materials Plagioclase = new MaterialBuilder(172, TextureSet.SET_SHINY, "Plagioclase").addDustItems()
-        .setRGB(193, 186, 178)
+        .setARGB(0x00c1bab2)
         .setColor(Dyes.dyeWhite)
         .addMaterial(Materials.Sodium, 1)
         .addMaterial(Materials.Aluminium, 1)
@@ -645,7 +645,7 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Oxygen, 8)
         .constructMaterial();
     public static Materials Epidote = new MaterialBuilder(862, TextureSet.SET_DULL, "Epidote").addDustItems()
-        .setRGB(140, 177, 33)
+        .setARGB(0x008cb121)
         .setColor(Dyes.dyeLime)
         .addMaterial(Materials.Calcium, 2)
         .addMaterial(Materials.Aluminium, 3)
