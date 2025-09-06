@@ -25,18 +25,6 @@ public class MaterialBuilder {
             this.index = index;
         }
 
-        public static FuelType fromIndex(int index) {
-            return switch (index) {
-                case 0 -> Diesel;
-                case 1 -> Gas;
-                case 2 -> Thermal;
-                case 3 -> SemiFluid;
-                case 4 -> Plasma;
-                case 5 -> Magic;
-                default -> throw new IllegalStateException("Invalid FuelType: " + index);
-            };
-        }
-
         public int getIndex() {
             return index;
         }
