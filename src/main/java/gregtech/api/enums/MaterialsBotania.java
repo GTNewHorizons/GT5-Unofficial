@@ -30,8 +30,6 @@ public class MaterialsBotania {
         MaterialsBotania.ManaDiamond = loadManaDiamond();
         MaterialsBotania.BotaniaDragonstone = loadBotaniaDragonstone();
 
-        GaiaSpirit.add(SubTag.SOFT);
-
         // Botania native items
         ingot.mNotGeneratedItems.add(Manasteel);
         ingot.mNotGeneratedItems.add(Terrasteel);
@@ -147,6 +145,7 @@ public class MaterialsBotania {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
+            .addSubTag(SubTag.SOFT)
             .constructMaterial();
     }
 
