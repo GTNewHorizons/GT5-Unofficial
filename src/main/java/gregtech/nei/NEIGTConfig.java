@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -65,6 +66,33 @@ public class NEIGTConfig implements IConfigureNEI {
 
     public static boolean sIsAdded = true;
 
+    // ugly initialization where people can add metaid and recipe map
+    // to remove ghost items from catalysts
+    private static final ImmutableMap<Integer, ImmutableList<String>> RECIPE_CATALYST_REMOVAL_LIST_SIMPLE_MAP = ImmutableMap
+        .<Integer, ImmutableList<String>>builder()
+        .put(
+            108, // Bronze Blast Furnace
+            ImmutableList.of(RecipeMaps.primitiveBlastRecipes.unlocalizedName))
+        .put(
+            960, // ghost item in Diesel
+            ImmutableList.of(RecipeMaps.dieselFuels.unlocalizedName))
+        .put(
+            961, // ghost item in Gas
+            ImmutableList.of(RecipeMaps.gasTurbineFuels.unlocalizedName))
+        .put(
+            860, // LPF
+            ImmutableList.of(
+                RecipeMaps.laserEngraverRecipes.unlocalizedName,
+                RecipeMaps.polarizerRecipes.unlocalizedName,
+                RecipeMaps.compressorRecipes.unlocalizedName,
+                RecipeMaps.autoclaveRecipes.unlocalizedName,
+                RecipeMaps.latheRecipes.unlocalizedName,
+                RecipeMaps.fermentingRecipes.unlocalizedName,
+                RecipeMaps.fluidExtractionRecipes.unlocalizedName,
+                RecipeMaps.fluidSolidifierRecipes.unlocalizedName,
+                RecipeMaps.extractorRecipes.unlocalizedName))
+        .build();
+
     private static void addHandler(TemplateRecipeHandler handler) {
         FMLInterModComms.sendRuntimeMessage(
             GTMod.GT,
@@ -114,10 +142,11 @@ public class NEIGTConfig implements IConfigureNEI {
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
 
         // Remove the ones already registered by NEI assets
-        // Bronze Blast Furnace
-        API.removeRecipeCatalyst(
-            new ItemStack(GregTechAPI.sBlockMachines, 1, 108),
-            RecipeMaps.primitiveBlastRecipes.unlocalizedName);
+        // With the removal of LPF and ghost catalysts in Diesel and Gas fuels
+        // this was changed to iterable map to save up(?) space
+        RECIPE_CATALYST_REMOVAL_LIST_SIMPLE_MAP.forEach(
+            (key, value) -> value
+                .forEach((name) -> API.removeRecipeCatalyst(new ItemStack(GregTechAPI.sBlockMachines, 1, key), name)));
     }
 
     private void registerItemEntries() {
