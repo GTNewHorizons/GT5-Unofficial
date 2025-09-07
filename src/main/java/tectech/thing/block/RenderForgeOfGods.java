@@ -43,6 +43,9 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static boolean failedInit = false;
     private static int u_Color = -1, u_ModelMatrix = -1, u_Gamma = -1;
     private final Matrix4fStack starModelMatrix = new Matrix4fStack(3);
+
+    // Size must be 'segment_size * 3' (and segment_size is always 10)
+    private final FloatBuffer segmentMatrixBuffer = BufferUtils.createFloatBuffer(30);
     private final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     private static ShaderProgram beamProgram;
@@ -242,33 +245,32 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     }
 
     public void bufferSoftBeam(TileEntityForgeOfGods tile) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(maxSegments * 3);
-
         float angle = tile.getStartAngle();
         float radius = tile.getStarRadius() * 1.1f;
         float startx = -radius * (float) Math.cos(angle);
         float starty = radius * (float) Math.sin(angle);
 
-        buffer.put(starty);
-        buffer.put(startx);
-        buffer.put(0);
+        segmentMatrixBuffer.clear();
+
+        segmentMatrixBuffer.put(starty);
+        segmentMatrixBuffer.put(startx);
+        segmentMatrixBuffer.put(0);
 
         for (int i = tile.getRingCount() - 1; i >= 0; i--) {
-            buffer.put(tile.getLenRadius(i));
-            buffer.put(tile.getLensDistance(i));
-            buffer.put(1f);
+            segmentMatrixBuffer.put(tile.getLenRadius(i));
+            segmentMatrixBuffer.put(tile.getLensDistance(i));
+            segmentMatrixBuffer.put(1f);
         }
 
-        buffer.put(TileEntityForgeOfGods.BACK_PLATE_RADIUS);
-        buffer.put(TileEntityForgeOfGods.BACK_PLATE_DISTANCE);
-        buffer.put(-.05f);
+        segmentMatrixBuffer.put(TileEntityForgeOfGods.BACK_PLATE_RADIUS);
+        segmentMatrixBuffer.put(TileEntityForgeOfGods.BACK_PLATE_DISTANCE);
+        segmentMatrixBuffer.put(-.05f);
 
-        buffer.rewind();
-        GL20.glUniform3(u_SegmentArray, buffer);
+        segmentMatrixBuffer.rewind();
+        GL20.glUniform3(u_SegmentArray, segmentMatrixBuffer);
     }
 
     public void bufferIntenseBeam(TileEntityForgeOfGods tile) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(maxSegments * 3);
         float angle = tile.getStartAngle();
         float radius = tile.getStarRadius() * 1.05f;
         float startx = -radius * (float) Math.cos(angle);
@@ -283,15 +285,17 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float backx = Math.max(-radius, (nextx + radius) / 2);
         float backy = TileEntityForgeOfGods.interpolate(startx, nextx, starty, nexty, backx);
 
-        buffer.put(backy);
-        buffer.put(backx);
-        buffer.put(0);
+        segmentMatrixBuffer.clear();
+
+        segmentMatrixBuffer.put(backy);
+        segmentMatrixBuffer.put(backx);
+        segmentMatrixBuffer.put(0);
 
         float transparency = .2f;
         for (int i = tile.getRingCount() - 1; i >= 0; i--) {
-            buffer.put(tile.getLenRadius(i) / 2);
-            buffer.put(tile.getLensDistance(i));
-            buffer.put(transparency);
+            segmentMatrixBuffer.put(tile.getLenRadius(i) / 2);
+            segmentMatrixBuffer.put(tile.getLensDistance(i));
+            segmentMatrixBuffer.put(transparency);
             transparency += .3f;
         }
 
@@ -303,16 +307,16 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float midx = lastx + 8f;
         float midy = TileEntityForgeOfGods.interpolate(currx, lastx, curry, lasty, midx);
 
-        buffer.put(midy);
-        buffer.put(midx);
-        buffer.put(transparency);
+        segmentMatrixBuffer.put(midy);
+        segmentMatrixBuffer.put(midx);
+        segmentMatrixBuffer.put(transparency);
 
-        buffer.put(lasty);
-        buffer.put(lastx);
-        buffer.put(0f);
+        segmentMatrixBuffer.put(lasty);
+        segmentMatrixBuffer.put(lastx);
+        segmentMatrixBuffer.put(0f);
 
-        buffer.rewind();
-        GL20.glUniform3(u_SegmentArray, buffer);
+        segmentMatrixBuffer.rewind();
+        GL20.glUniform3(u_SegmentArray, segmentMatrixBuffer);
         // return buffer;
     }
 
