@@ -57,7 +57,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static int maxSegments = -1;
     private static final int beamSegmentQuads = 16;
     private static final Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
-    private final FloatBuffer beamMatrixBuffer = BufferUtils.createFloatBuffer(16);
 
     private VertexBuffer ringOne, ringTwo, ringThree;
     // These are nudges/translations for each ring to align with the structure
@@ -353,8 +352,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         bufferSoftBeam(tile);
 
-        beamMatrixBuffer.clear();
-        GL20.glUniformMatrix4(u_BeamModelMatrix, false, beamModelMatrix.get(beamMatrixBuffer));
+        matrixBuffer.clear();
+        GL20.glUniformMatrix4(u_BeamModelMatrix, false, beamModelMatrix.get(matrixBuffer));
 
         beamModelMatrix.invert();
         reusableCameraPosition.set(ActiveRenderInfo.objectX, ActiveRenderInfo.objectY, ActiveRenderInfo.objectZ, 1);
