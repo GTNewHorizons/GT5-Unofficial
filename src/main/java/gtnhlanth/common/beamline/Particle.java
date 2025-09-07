@@ -16,9 +16,9 @@ public enum Particle {
     ELECTRON(true, 5, 0.511f, 5000, "electron", "e\u207B", -1, null),
     MUON(true, 6, 105.66f, 0, "muon", "\u03BC \u207B", -1, null),
     TAU(true, 7, 1776.89f, 0, "tau", "\u03C4 \u207B", -1, null),
-    ELECTRONNEUTRINO(false, 8, 0f, 0, "electron neutrino", "\u03BD e", 0, null),
-    MUONNEUTRINO(false, 9, 0f, 0, "muon neutrino", "\u03BD \u03BC", 0, null),
-    TAUNEUTRINO(false, 10, 0f, 0, "tau neutrino", "\u03BD \u03C4", 0, null),
+    ELECTRONNEUTRINO(false, 8, 0, 0, "electron neutrino", "\u03BD e", 0, null),
+    MUONNEUTRINO(false, 9, 0, 0, "muon neutrino", "\u03BD \u03BC", 0, null),
+    TAUNEUTRINO(false, 10, 0, 0, "tau neutrino", "\u03BD \u03C4", 0, null),
     // Baryons
     PROTON(true, 11, 938.27f, 15000, "proton", "p\u207A", 1, null),
     NEUTRON(false, 12, 939.57f, 15000, "neutron", "n\u2070", 0, null),

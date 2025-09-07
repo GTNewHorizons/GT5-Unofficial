@@ -32,6 +32,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -42,6 +45,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 
 public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELargeHadronCollider>
@@ -1788,7 +1792,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "CCCCCCCCCCC",
                 "CCDDDCDDDCC",
                 "CBCCCCCCCBC",
-                "CBCGCBCGCBC",
+                "CBC1CBC1CBC",
                 "CBCCCCCCCBC",
                 "CCDDDCDDDCC",
                 "CCCCCCCCCCC",
@@ -2047,7 +2051,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "CCCCCCCCCCC",
                 "CCDDDCDDDCC",
                 "CKCCCCCCCKC",
-                "CKCGC CGCKC",
+                "CKC2C C2CKC",
                 "CKCCCCCCCKC",
                 "CCDDDCDDDCC",
                 "CCCCCCCCCCC",
@@ -2102,7 +2106,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "CMMMMMMMMMC",
                 "DCMMCCCMMCD",
                 "CMMC   CMMC",
-                "CMMC   CMMG",
+                "CMMC   CMM3",
                 "CMMC   CMMC",
                 "DCMMCCCMMCD",
                 "CMMMMMMMMMC",
@@ -2150,7 +2154,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "CMMMMMMMMMC",
                 "DCMMCCCMMCD",
                 "CMMC   CMMC",
-                "CMMC   CMMG",
+                "CMMC   CMM3",
                 "CMMC   CMMC",
                 "DCMMCCCMMCD",
                 "CMMMMMMMMMC",
@@ -2241,7 +2245,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C         C",
                 "DC  CCC  CD",
                 "C  C   C  C",
-                "G  C   C  C",
+                "4  C   C  C",
                 "C  C   C  C",
                 "DC  CCC  CD",
                 "C         C",
@@ -2289,7 +2293,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C         C",
                 "DC  CCC  CD",
                 "C  C   C  C",
-                "G  C   C  C",
+                "4  C   C  C",
                 "C  C   C  C",
                 "DC  CCC  CD",
                 "C         C",
@@ -2350,9 +2354,19 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         .addElement('F', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(2)
             .adder(MTELargeHadronCollider::addBeamLineInputHatch).build()) // beamline input hatch
-        .addElement('G', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+        .addElement('1', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(3)
-            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // beam output hatch
+            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // EM beam output hatch
+        .addElement('2', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+            .casingIndex(CASING_INDEX_CENTRE).dot(4)
+            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // Weak beam output hatch
+        .addElement('3', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+            .casingIndex(CASING_INDEX_CENTRE).dot(5)
+            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // Strong beam output hatch
+        .addElement('4', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+            .casingIndex(CASING_INDEX_CENTRE).dot(6)
+            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // Grav beam output hatch
+        // todo: make "advanced beamline output hatch"
 
         .addElement('B', ofBlock(GregTechAPI.sBlockMetal6, 5)) // block of samarium
         .addElement('I', ofBlock(GregTechAPI.sBlockCasings13, 10)) // coils - tiered? // todo
@@ -2563,6 +2577,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         float inputEnergy = inputInfo.getEnergy();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
         int inputRate = inputInfo.getRate();
+
         if (inputEnergy == 0) return CheckRecipeResultRegistry.NO_RECIPE;
         float inputFocus = inputInfo.getFocus();
 
@@ -2581,15 +2596,20 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         //todo: same^ // this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier);
 
 
-        this.outputParticleID = (int) 15; // todo: randomize
+        // Generate output particle:
 
+        // 1. Determine output energy (= collision energy)
+        this.outputEnergy = (float) (inputEnergy)/2; // output energy = collision energy = input energy * 0.5
+
+        // 2. Use collision energy to generate particle ID
+        this.outputParticleID = GenerateOutputParticleID(this.outputEnergy);
+
+        // 3. Use input rate and output particle rest mass to determine output rate
         Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
-
-        this.outputEnergy = (float) (inputEnergy)/2;
-
         float outputMass = outputParticle.getMass();
-        this.outputRate = (int) max(0,(1 - (outputMass/this.outputEnergy))*(inputRate)); // * type_probability // use mass of particles
+        this.outputRate = (int) max(0,(1 - (outputMass/this.outputEnergy))*(inputRate));
 
+        // 4. Focus is unused
         this.outputFocus = (int) (inputFocus);
 
         if (this.outputRate == 0) {
@@ -2599,6 +2619,50 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         outputPacketAfterRecipe();
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private int GenerateOutputParticleID(float collisionEnergy){
+
+        // restMass is in MeV
+        // beamline energies are in keV
+        // :(
+
+        double collisionEnergyMeV = collisionEnergy/1000;
+
+        int n = Particle.VALUES.length;
+
+        double[] weights = new double[n];
+        double totalWeight = 0.0;
+
+        for (int i=0; i < n; i++) {
+            Particle p = Particle.getParticleFromId(i);
+            double thresholdMeV = max(p.getMass(),0.5); // massless particles have a threshold of 0.5 (arbitrary).
+                                                        // massive particles have a threshold equal to their rest mass.
+            double w = (collisionEnergyMeV < thresholdMeV) ? 0.0
+                : (collisionEnergyMeV / thresholdMeV);
+
+            if (w < 0 || Double.isNaN(w) || Double.isInfinite(w)) w = 0.0;
+
+            weights[i] = w;
+            totalWeight += w;
+        }
+        if (totalWeight <= 0.0) {
+            return 0; // default to photons
+        }
+
+        double[] cumulative = new double[n];
+        double run = 0.0;
+        for (int i = 0; i < n; i++) {
+            run += weights[i];
+            cumulative[i] = run;
+        }
+        double r = Math.random() * totalWeight;
+        int idx = java.util.Arrays.binarySearch(cumulative, r);
+        if (idx < 0) idx = -idx - 1;            // insertion point
+        if (idx >= n) idx = n - 1;              // safety clamp
+
+        return idx;
+
     }
 
     private BeamInformation getInputInformation() {
@@ -2617,10 +2681,5 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             }
         }
     }
-    //todo:
-    //@Override
-    //public String[] getInfoData() {}
-
-
 
 }
