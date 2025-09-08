@@ -53,7 +53,7 @@ public class PacketEIC extends GTPacket {
             if (!(te instanceof IGregTechTileEntity)) return;
             IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
             if (!(mte instanceof MTEElectricImplosionCompressor)) return;
-            if (this.bool && !((IGregTechTileEntity) te).hasMufflerUpgrade())
+            if (this.bool && !((IGregTechTileEntity) te).isMuffled())
                 ((IGregTechTileEntity) te).addMufflerUpgrade();
         }
     }

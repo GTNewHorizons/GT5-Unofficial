@@ -319,12 +319,12 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     protected Widget createMuffleButton() {
         return new ButtonWidget().setOnClick((clickData, widget) -> {
             if (getBaseMetaTileEntity().isClientSide()) return;
-            getBaseMetaTileEntity().setMuffler(!getBaseMetaTileEntity().hasMufflerUpgrade());
+            getBaseMetaTileEntity().setMuffler(!getBaseMetaTileEntity().isMuffled());
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                if (getBaseMetaTileEntity().hasMufflerUpgrade()) {
+                if (getBaseMetaTileEntity().isMuffled()) {
                     ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
                 } else {
                     ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);

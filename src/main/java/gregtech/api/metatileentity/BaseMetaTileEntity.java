@@ -1653,13 +1653,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean hasMufflerUpgrade() {
+    public boolean isMuffled() {
         return mMuffler;
     }
 
     @Override
     public boolean isMufflerUpgradable() {
-        return isUpgradable() && !hasMufflerUpgrade();
+        return isUpgradable() && !isMuffled();
     }
 
     @Override
