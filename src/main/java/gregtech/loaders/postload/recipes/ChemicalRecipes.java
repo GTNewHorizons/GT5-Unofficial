@@ -1914,13 +1914,13 @@ public class ChemicalRecipes implements Runnable {
         // NaOH + HCl = NaCl + H2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(Materials.SodiumHydroxide.getDust(3), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Salt.getDust(2))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(2 * SECONDS)
             .eut(8)
-            .addTo(chemicalReactorRecipes);
+            .addTo(UniversalChemical);
 
         // C3H6 + 2Cl = HCl + C3H5Cl
 
