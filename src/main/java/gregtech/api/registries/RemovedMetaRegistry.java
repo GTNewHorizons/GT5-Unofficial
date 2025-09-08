@@ -19,12 +19,18 @@ public class RemovedMetaRegistry {
     /**
      *
      * @param itemID item id to be removed
+     * @param meta   metadata value of item to be removed
      */
     private static void addItem(short itemID, int meta) {
         var key = _registry.computeIfAbsent(itemID, (key1 -> new IntOpenHashSet()));
         key.add(meta);
     }
 
+    /**
+     * @param itemID
+     * @param meta
+     * @return if itemID + meta is in registry
+     */
     public static boolean contains(short itemID, int meta) {
         if (!_registry.containsKey(itemID)) return false;
 
