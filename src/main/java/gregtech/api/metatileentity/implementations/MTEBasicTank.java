@@ -332,8 +332,8 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
                 return ret.toArray(new IDrawable[0]);
             })
             .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
-            .setPos(5, 5)
-            .setSize(9, 9);
+            .setPos(getGUIWidth() - 16, 4)
+            .setSize(12, 12);
     }
 
     protected FluidSlotWidget createFluidSlot() {
