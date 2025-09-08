@@ -2593,6 +2593,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
+    @Override
+    public boolean isMuffled() {
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity != null) {
+            return baseMetaTileEntity.hasMufflerUpgrade();
+        }
+        return false;
+    }
+
+    @Override
+    public void setMuffled(boolean value) {
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity != null) {
+            baseMetaTileEntity.setMuffler(value);
+        }
+    }
+
     public ItemStack getControllerSlot() {
         return mInventory[getControllerSlotIndex()];
     }
@@ -2933,6 +2950,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             setMachineModeIcons();
         }
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createModeSwitchButton(builder))
