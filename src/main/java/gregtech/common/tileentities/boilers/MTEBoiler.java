@@ -595,6 +595,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 new SlotWidget(inventoryHandler, 1).setAccess(true, false)
                     .setPos(43, 61)
                     .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
+            .widget(createMuffleButton())
             .widget(createFuelSlotMui1())
             .widget(createAshSlotMui1())
             .widget(
