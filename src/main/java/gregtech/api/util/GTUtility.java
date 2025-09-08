@@ -3448,7 +3448,7 @@ public class GTUtility {
             if (tTileEntity instanceof IUpgradableMachine upgradableMachine) {
                 rEUAmount += 500;
                 if (upgradableMachine.isMuffled()) tList.add(
-                    EnumChatFormatting.GREEN + GTUtility.trans("177", "Has Muffler Upgrade")
+                    EnumChatFormatting.GREEN + GTUtility.trans("177", "Is Muffled")
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
