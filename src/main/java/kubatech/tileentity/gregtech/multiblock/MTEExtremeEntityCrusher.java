@@ -851,7 +851,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private void playWeaponBreakSound() {
         final IGregTechTileEntity tMTE = this.getBaseMetaTileEntity();
 
-        if (tMTE == null || tMTE.hasMufflerUpgrade()) return;
+        if (tMTE == null || tMTE.isMuffled()) return;
 
         // A little muffled and modulated, helps simulate a Low-Pass filter
         GTUtility.sendSoundToPlayers(
