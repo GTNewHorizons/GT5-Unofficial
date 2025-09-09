@@ -556,6 +556,7 @@ public class MTEMultiBlockBaseGui {
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
+        // TODO: add powerfail disable checkbox
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)
