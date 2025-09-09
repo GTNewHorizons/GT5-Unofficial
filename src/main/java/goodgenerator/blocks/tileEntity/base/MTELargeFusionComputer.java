@@ -296,8 +296,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         this.getBaseMetaTileEntity()
                             .decreaseStoredEnergyUnits(-lEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null)
-                                for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
+                            if (mOutputItems != null) addItemOutputs(mOutputItems);
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math

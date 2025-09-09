@@ -69,6 +69,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
@@ -437,49 +438,38 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         int productAmount = MathHelper.floor_double(storedProduct + EPSILON);
 
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+
         // eject any stored product dusts
         if (productAmount > 0 && remainingIOQuota > 0) {
-            ItemStack output = product.copy();
-
             int toEject = Math.min(productAmount, remainingIOQuota);
 
-            output.stackSize = toEject;
-            addOutputPartial(output, true);
+            int ejected = ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(toEject, product));
 
-            int insertable = toEject - output.stackSize;
+            if (ejected > 0) {
+                storedProduct -= ejected;
+                remainingIOQuota -= ejected;
+                lEUt -= EU_PER_IO * ejected;
 
-            if (insertable > 0) {
-                output.stackSize = insertable;
-                storedProduct -= insertable;
-                remainingIOQuota -= insertable;
-                lEUt -= EU_PER_IO * insertable;
-
-                outputs.add(output);
+                outputs.add(GTUtility.copyAmountUnsafe(ejected, product));
             }
         }
 
-        // eject any isotope dusts if we're in export mode and haven't already exported something
-        // we can only export one thing at a time, to prevent voiding
-        if (machineMode == MODE_EXPORT && outputs.isEmpty() && remainingIOQuota > 0 && isotope != null) {
+        // eject any isotope dusts if we're in export mode
+        if (machineMode == MODE_EXPORT && remainingIOQuota > 0 && isotope != null) {
             int isotopeAmount = MathHelper.floor_double(storedIsotope + EPSILON);
 
             if (isotopeAmount > 0) {
-                ItemStack output = isotope.copy();
-
                 int toEject = Math.min(isotopeAmount, remainingIOQuota);
 
-                output.stackSize = toEject;
-                addOutputPartial(output, true);
+                int ejected = ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(toEject, isotope));
 
-                int insertable = toEject - output.stackSize;
+                if (ejected > 0) {
+                    storedIsotope -= ejected;
+                    remainingIOQuota -= ejected;
+                    lEUt -= EU_PER_IO * ejected;
 
-                if (insertable > 0) {
-                    output.stackSize = insertable;
-                    storedIsotope -= insertable;
-                    remainingIOQuota -= insertable;
-                    lEUt -= EU_PER_IO * insertable;
-
-                    outputs.add(output);
+                    outputs.add(GTUtility.copyAmountUnsafe(ejected, isotope));
                 }
             }
         }
