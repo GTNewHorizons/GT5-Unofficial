@@ -876,8 +876,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null
-            && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null && !getBaseMetaTileEntity().isMuffled()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -2575,7 +2574,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean isMuffled() {
         final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         if (baseMetaTileEntity != null) {
-            return baseMetaTileEntity.hasMufflerUpgrade();
+            return baseMetaTileEntity.isMuffled();
         }
         return false;
     }
