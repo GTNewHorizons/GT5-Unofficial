@@ -197,13 +197,13 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public final void sendSound(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.DO_SOUND, aIndex);
         }
     }
 
     public final void sendLoopStart(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
         }
         mSoundRequests++;
@@ -211,7 +211,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.STOP_SOUND_LOOP, aIndex);
         }
     }
