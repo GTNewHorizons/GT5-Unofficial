@@ -520,7 +520,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             if (!isInRitualMode) return;
             if (wosRitual == null) return;
             if (mMaxProgresstime == 0) return;
-            if (event.mrs.equals(wosRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
+            if (event.mrs.equals(wosRitual)) {
                 Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
                 if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
                     event.setCanceled(true); // we will handle that
