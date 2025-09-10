@@ -386,7 +386,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Operating Mode:")
             .addInfo("- NORMAL:")
-            .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
             .addInfo("  - Processing time: 5 seconds")
             .addInfo("  - Uses 1 " + voltageTooltipFormatted(6) + " amp per queen")
             .addInfo("  - All bees are accelerated 64 times")

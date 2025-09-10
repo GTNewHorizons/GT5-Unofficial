@@ -319,12 +319,12 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     protected Widget createMuffleButton() {
         return new ButtonWidget().setOnClick((clickData, widget) -> {
             if (getBaseMetaTileEntity().isClientSide()) return;
-            getBaseMetaTileEntity().setMuffler(!getBaseMetaTileEntity().hasMufflerUpgrade());
+            getBaseMetaTileEntity().setMuffler(!getBaseMetaTileEntity().isMuffled());
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                if (getBaseMetaTileEntity().hasMufflerUpgrade()) {
+                if (getBaseMetaTileEntity().isMuffled()) {
                     ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
                 } else {
                     ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);
@@ -332,8 +332,8 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
                 return ret.toArray(new IDrawable[0]);
             })
             .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
-            .setPos(5, 5)
-            .setSize(9, 9);
+            .setPos(getGUIWidth() - 16, 4)
+            .setSize(12, 12);
     }
 
     protected FluidSlotWidget createFluidSlot() {
