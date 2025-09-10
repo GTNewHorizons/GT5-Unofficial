@@ -7,8 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.net.GTPacketUpdateItem;
 
 /**
- * Together with {@link GTPacketUpdateItem} you can request server side to update item in hand with a
- * NBT tag.
+ * Together with {@link GTPacketUpdateItem} you can request server side to update item in hand with a NBT tag.
  * <p>
  * Usual NBT tag size limit applies.
  */

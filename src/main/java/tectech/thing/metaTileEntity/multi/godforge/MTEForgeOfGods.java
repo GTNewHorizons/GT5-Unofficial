@@ -2815,17 +2815,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Stellar Forge")
-            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short.")
+            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short")
             .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo("A massive structure harnessing the thermal, gravitational and")
-            .addInfo("kinetic energy of a stabilised neutron star for material processing.")
+            .addInfo("kinetic energy of a stabilised neutron star for material processing")
             .addInfo(
                 "This multiblock can house " + EnumChatFormatting.RED
                     + "up to 16 modules "
                     + EnumChatFormatting.GRAY
                     + "which utilize the star to energize materials")
-            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration.")
-            .addInfo("EU requirements for all modules are handled via wireless energy directly.")
+            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration")
+            .addInfo("EU requirements for all modules are handled via wireless energy directly")
             .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo(
                 "This multiblock has an " + EnumChatFormatting.GOLD
@@ -2849,14 +2849,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + ". "
                     + EnumChatFormatting.GRAY
                     + "These upgrades can be unlocked by reaching")
-            .addInfo("certain milestones and/or spending materials.")
+            .addInfo("certain milestones and/or spending materials")
             .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo(
                 EnumChatFormatting.GREEN
                     + "Clicking on the logo in the controller gui opens an extensive information window"
                     + EnumChatFormatting.GRAY
                     + ",")
-            .addInfo("explaining everything there is to know about this multiblock.")
+            .addInfo("explaining everything there is to know about this multiblock")
             .beginStructureBlock(127, 29, 186, false)
             .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
             .addStructureInfo(

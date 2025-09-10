@@ -3,7 +3,11 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.mEUtoRF;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cofh.api.energy.IEnergyContainerItem;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -32,7 +37,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import tectech.loader.ConfigHandler;
-import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -62,12 +66,11 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 7))
         .addElement(
             'C',
-            ofHatchAdderOptional(
-                MTEEnergyInfuser::addClassicToMachineList,
-                BlockGTCasingsTT.textureOffset,
-                1,
-                TTCasingsContainer.sBlockCasingsTT,
-                0))
+            buildHatchAdder(MTEEnergyInfuser.class)
+                .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, InputBus, OutputBus)
+                .casingIndex(Casings.HighPowerCasing.getTextureId())
+                .dot(1)
+                .buildAndChain(Casings.HighPowerCasing.asElement()))
         .build();
     // endregion
 
@@ -107,14 +110,12 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
 
     private long doChargeItemStack(IElectricItem item, ItemStack stack) {
         try {
-            double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
-            long remove = (long) Math.ceil(
-                ElectricItem.manager.charge(
-                    stack,
-                    Math.min(euDiff, getAverageInputVoltage() * getMaxInputAmps()),
-                    item.getTier(stack),
-                    true,
-                    false));
+            final double missingItemCharge = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
+            final double availablePower = getAverageInputVoltage() * getMaxInputAmps();
+            final double availableEnergy = getEUVar();
+            final double charge = Math.min(Math.min(missingItemCharge, availablePower), availableEnergy);
+            long remove = (long) Math
+                .ceil(ElectricItem.manager.charge(stack, charge, item.getTier(stack), true, false));
             setEUVar(getEUVar() - remove);
             if (getEUVar() < 0) {
                 setEUVar(0);
@@ -154,7 +155,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 1, 2, 0);
+        return structureCheck_EM("main", 1, 2, 0) && mInputBusses.size() > 0
+            && mOutputBusses.size() > 0
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -172,8 +175,10 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                         this.depleteInput(itemStackInBus);
                     }
                 } else {
+                    if (getEUVar() <= 0) {
+                        return SimpleCheckRecipeResult.ofFailure("insufficient_power_no_val");
+                    }
                     mEfficiencyIncrease = 10000;
-                    mMaxProgresstime = 20;
                     return SimpleCheckRecipeResult.ofSuccess("charging");
                 }
             }
@@ -265,6 +270,10 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             // Maintenance Hatch: Any High Power Casing
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            // Input Bus: Any High Power Casing
+            .addInputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            // Output Bus: Any High Power Casing
+            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -274,12 +283,65 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         return SoundResource.TECTECH_MACHINES_FX_WHOOUM;
     }
 
+    private boolean isElectricItem(Item item) {
+        // Null means false as well
+        return (item instanceof IElectricItem) || (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem);
+    }
+
+    private boolean canChargeSomething(MTEHatchInputBus inputBus) {
+        for (ItemStack stack : inputBus.mInventory) {
+            if (stack == null || stack.stackSize != 1 || isItemStackFullyCharged(stack)) continue;
+            if (isElectricItem(stack.getItem())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ItemStack findFirstStackedChargeable(MTEHatchInputBus inputBus) {
+        for (ItemStack stack : inputBus.mInventory) {
+            if (stack == null || stack.stackSize <= 1) continue; // Only want stacked items
+            // Fully charged items can't stack, no need to check for that
+            if (isElectricItem(stack.getItem())) {
+                return stack;
+            }
+        }
+        return null;
+    }
+
+    private int findFirstFreeSlot(MTEHatchInputBus inputBus) {
+        for (int i = 0; i < inputBus.mInventory.length; i++) {
+            ItemStack stack = inputBus.mInventory[i];
+            if (stack == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void tryUnstackChargeable(MTEHatchInputBus inputBus) {
+        // Only unstack if we otherwise can't work
+        if (canChargeSomething(inputBus)) return;
+
+        ItemStack stackOriginal = findFirstStackedChargeable(inputBus);
+        int freeSlot = findFirstFreeSlot(inputBus);
+        if (stackOriginal == null || freeSlot == -1) {
+            return; // Nothing to do
+        }
+
+        ItemStack stackCopy = stackOriginal.copy();
+        inputBus.mInventory[freeSlot] = stackCopy;
+        stackOriginal.stackSize--;
+        stackCopy.stackSize = 1;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!this.isAllowedToWork()) return;
         for (MTEHatchInputBus inputBus : mInputBusses) {
             if (inputBus instanceof MTEHatchInputBusME) continue;
+            tryUnstackChargeable(inputBus);
             for (ItemStack stack : inputBus.mInventory) {
                 if (stack == null || stack.stackSize != 1 || isItemStackFullyCharged(stack)) continue;
 

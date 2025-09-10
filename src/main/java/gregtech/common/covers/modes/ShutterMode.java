@@ -1,8 +1,7 @@
 package gregtech.common.covers.modes;
 
 /**
- * Encodes the operation mode of a shutter cover using the enum ordinal.
- * TODO: Stop using ordinal values directly
+ * Encodes the operation mode of a shutter cover using the enum ordinal. TODO: Stop using ordinal values directly
  */
 public enum ShutterMode {
 

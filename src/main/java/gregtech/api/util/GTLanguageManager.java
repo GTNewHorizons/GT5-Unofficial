@@ -36,13 +36,13 @@ public class GTLanguageManager {
      */
     private static final Map<String, String> LANGMAP = new HashMap<>();
     /**
-     * Config file handler bound to GregTech.lang or GregTech_(locale_name).lang. Even though it says English file,
-     * it's not necessarily English, but on system it's always treated as English (as in, "default" language.)
+     * Config file handler bound to GregTech.lang or GregTech_(locale_name).lang. Even though it says English file, it's
+     * not necessarily English, but on system it's always treated as English (as in, "default" language.)
      */
     public static Configuration sEnglishFile;
     /**
-     * If the game is running with en_US language. This does not get updated when user changes language in game;
-     * GT lang system cannot handle that anyway.
+     * If the game is running with en_US language. This does not get updated when user changes language in game; GT lang
+     * system cannot handle that anyway.
      */
     public static boolean isEN_US;
     /**
@@ -81,8 +81,8 @@ public class GTLanguageManager {
     }
 
     /**
-     * @deprecated Parameter aWriteIntoLangFile is no longer used,
-     *             use {@link #addStringLocalization(String, String)} or consider migrating to MC lang system instead.
+     * @deprecated Parameter aWriteIntoLangFile is no longer used, use {@link #addStringLocalization(String, String)} or
+     *             consider migrating to MC lang system instead.
      */
     @Deprecated
     public static synchronized String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {

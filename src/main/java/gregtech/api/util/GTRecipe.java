@@ -69,9 +69,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public FluidStack[] mFluidInputs, mFluidOutputs;
     /**
      * This array describes the % chance of obtention of each output, the values should range from 1 to 10000, 10000
-     * being 100% chance. If the array is null, the chances for all items default to 100%.
-     * If you change the amount of Array-Items inside the Output Array then the length of this Array must be larger or
-     * equal to the Output Array.
+     * being 100% chance. If the array is null, the chances for all items default to 100%. If you change the amount of
+     * Array-Items inside the Output Array then the length of this Array must be larger or equal to the Output Array.
      */
     @Nullable
     public int[] mChances;
@@ -670,8 +669,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     /**
      * Gets metadata associated with this recipe. Can return null. Use
-     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)}
-     * if you want to specify default value.
+     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)} if you want to specify default value.
      */
     @Nullable
     public <T> T getMetadata(RecipeMetadataKey<T> key) {

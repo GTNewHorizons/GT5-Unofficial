@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -85,9 +86,10 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Grind ores.")
+            .addInfo(EnumChatFormatting.GREEN + "G.O.G, Grinds Ores Good")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
@@ -256,17 +258,15 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                 if (aFoundEntity instanceof EntityPlayer aPlayer) {
                     if (!aPlayer.capabilities.isCreativeMode && !aPlayer.capabilities.disableDamage) {
                         if (aFoundEntity.getHealth() > 0) {
-                            EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
+                            aFoundEntity.attackEntityFrom(mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
                             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                                 generateParticles(aFoundEntity);
                             }
                         }
                     }
                 } else if (aFoundEntity.getHealth() > 0) {
-                    EntityUtils.doDamage(
-                        aFoundEntity,
-                        mIsaMillDamageSource,
-                        Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+                    aFoundEntity
+                        .attackEntityFrom(mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
                     if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                         generateParticles(aFoundEntity);
                     }

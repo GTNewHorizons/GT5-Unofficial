@@ -1083,7 +1083,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     protected static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
-        strings.add("Advanced item input for Multiblocks");
+        strings.add("Next-gen item input for Multiblocks");
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 3] + VN[autoPullAvailable ? 6 : 3]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 item types in stock");
