@@ -89,6 +89,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -885,6 +886,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return false;
     }
 
+    @Nullable
     private TileEntity getTileEntityAtRelativePosition(int @NotNull [] relativePosition) {
 
         if (relativePosition.length < 3) return null;
@@ -902,7 +904,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 worldCoords.posZ + relativeCoords[2]);
     }
 
-    private static boolean isWellOfSufferingRitual(TileEntity tileEntity) {
+    private static boolean isWellOfSufferingRitual(@Nullable TileEntity tileEntity) {
         return tileEntity != null && !tileEntity.isInvalid()
             && tileEntity instanceof TEMasterStone ritualTE
             && ritualTE.getCurrentRitual()
