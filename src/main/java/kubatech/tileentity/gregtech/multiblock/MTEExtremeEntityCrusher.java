@@ -232,7 +232,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     private static final int[][] VALID_RITUAL_POSITIONS = { { 0, -8, 2 }, { 0, -7, 2 } };
 
-    private TileEntity wosRitual = null;
+    private TileEntity masterStoneRitual = null;
     private TileEntity tileAltar = null;
     private boolean isInRitualMode = false;
     private int mCasing = 0;
@@ -518,9 +518,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         @SubscribeEvent(priority = EventPriority.LOWEST)
         public void onRitualPerform(RitualRunEvent event) {
             if (!isInRitualMode) return;
-            if (wosRitual == null) return;
+            if (masterStoneRitual == null) return;
             if (mMaxProgresstime == 0) return;
-            if (event.mrs.equals(wosRitual)) {
+            if (event.mrs.equals(masterStoneRitual)) {
                 Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
                 if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
                     event.setCanceled(true); // we will handle that
@@ -872,16 +872,16 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     private boolean connectToRitual() {
-        if (wosRitual == null) {
+        if (masterStoneRitual == null) {
             if (!BloodMagic.isModLoaded()) return false;
 
             for (int[] ritualRelativePos : VALID_RITUAL_POSITIONS) {
-                wosRitual = getTileEntityAtRelativePosition(ritualRelativePos);
-                if (isWellOfSufferingRitual(wosRitual)) return true;
+                masterStoneRitual = getTileEntityAtRelativePosition(ritualRelativePos);
+                if (isWellOfSufferingRitual(masterStoneRitual)) return true;
             }
-        } else if (BloodMagic.isModLoaded() && isWellOfSufferingRitual(wosRitual)) return true;
+        } else if (BloodMagic.isModLoaded() && isWellOfSufferingRitual(masterStoneRitual)) return true;
 
-        wosRitual = null;
+        masterStoneRitual = null;
         return false;
     }
 
