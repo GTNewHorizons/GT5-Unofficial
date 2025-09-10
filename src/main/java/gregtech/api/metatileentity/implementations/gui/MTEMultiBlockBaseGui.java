@@ -99,7 +99,7 @@ public class MTEMultiBlockBaseGui {
         this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
     }
 
- // unsure to swap to initCustomIcons()
+    // unsure to swap to initCustomIcons()
     protected void initShutdownMaps() {
         this.shutdownReasonTextureMap
             .put(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(), GTGuiTextures.OVERLAY_STRUCTURE_INCOMPLETE);
