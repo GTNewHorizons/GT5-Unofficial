@@ -238,8 +238,7 @@ public class MTEBoilerBronze extends MTEBoiler {
     }
 
     /**
-     * The upper bound for the chance to get ash from combustion
-     * <br>
+     * The upper bound for the chance to get ash from combustion <br>
      * Ash chance scales based on burn time from 14% at 0 up to 50% at 2000
      *
      * @param burnTime number assumed to be positive

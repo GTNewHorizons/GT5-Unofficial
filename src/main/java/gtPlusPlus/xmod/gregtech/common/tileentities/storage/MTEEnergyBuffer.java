@@ -89,7 +89,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
     }
 
     public ITexture[] getBack(final byte aColor) {
@@ -114,7 +114,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
     }
 
     public ITexture[] getBackActive(final byte aColor) {

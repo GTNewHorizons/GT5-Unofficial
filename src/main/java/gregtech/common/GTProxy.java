@@ -102,6 +102,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -136,6 +137,7 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;
@@ -153,6 +155,7 @@ import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
+import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -682,6 +685,7 @@ public class GTProxy implements IFuelHandler {
     private Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
+    public GTPowerfailTracker powerfailTracker;
     public TetherManager tetherManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
@@ -866,6 +870,13 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
+        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
+        ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
+        ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
+        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
+        ItemList.IC2_Plutonium_Small.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
+        ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
+        ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
         ItemList.IC2_Food_Can_Filled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 0));
         ItemList.IC2_Food_Can_Spoiled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 1));
@@ -1142,6 +1153,7 @@ public class GTProxy implements IFuelHandler {
         // server, but it's just convenient to be able to write GUI code without side check. This will be reworked with
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
+        GTUtility.loadDimensionNames();
         CALImprintRecipe.register();
     }
 
@@ -1157,9 +1169,12 @@ public class GTProxy implements IFuelHandler {
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
         spawnEventHandler = new GTSpawnEventHandler();
+        powerfailTracker = new GTPowerfailTracker();
         tetherManager = new TetherManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
+        FMLCommonHandler.instance().bus().register(powerfailTracker);
+        MinecraftForge.EVENT_BUS.register(powerfailTracker);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
@@ -1215,19 +1230,24 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerStopped(FMLServerStoppedEvent event) {
         // spotless:off
+        if (wirelessChargerManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
+        }
         if (spawnEventHandler != null) {
             MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+        }
+        if (powerfailTracker != null) {
+            FMLCommonHandler.instance().bus().unregister(powerfailTracker);
+            MinecraftForge.EVENT_BUS.unregister(powerfailTracker);
         }
         if (tetherManager != null) {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
         }
-        if (wirelessChargerManager != null) {
-            FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
-        }
-        spawnEventHandler = null;
-        tetherManager = null;
         wirelessChargerManager = null;
+        spawnEventHandler = null;
+        powerfailTracker = null;
+        tetherManager = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
@@ -1923,9 +1943,11 @@ public class GTProxy implements IFuelHandler {
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
+                RunnableMachineUpdate.onBeforeTickLockLocked();
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
+                RunnableMachineUpdate.onAfterTickLockReleased();
                 GTMusicSystem.ServerSystem.tick();
             }
         }
@@ -2026,12 +2048,11 @@ public class GTProxy implements IFuelHandler {
         }
 
         int tCount = 64;
-        for (int i = 0; i < 36; i++) {
-            final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
+        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
+        for (ItemStack tStack : mainInventory) {
             if (tStack == null) {
                 continue;
             }
-
             if (!aEvent.player.capabilities.isCreativeMode) {
                 GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
                 final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
@@ -2051,8 +2072,8 @@ public class GTProxy implements IFuelHandler {
             }
 
         }
-        final ItemStack[] inventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : inventory) {
+        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
+        for (final ItemStack tStack : armorInventory) {
             if (tStack == null) {
                 continue;
             }
@@ -2445,7 +2466,7 @@ public class GTProxy implements IFuelHandler {
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerLoggedIn(PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2459,7 +2480,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void playerMap$onPlayerLeft(PlayerLoggedOutEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2473,7 +2494,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerChangeDim(PlayerChangedDimensionEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2487,7 +2508,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerRespawn(PlayerRespawnEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2502,8 +2523,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     /**
-     * This method allows fast lookup of EntityPlayerMp from UUID.
-     * It should only ever be called from the ServerThread and while the Server is running.
+     * This method allows fast lookup of EntityPlayerMp from UUID. It should only ever be called from the ServerThread
+     * and while the Server is running.
      *
      * @param uuid - uuid of the EntityPlayerMP
      */
@@ -2522,8 +2543,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     /**
-     * This method allows fast lookup of player UUID from their name.
-     * It should only ever be called from the ServerThread and while the Server is running.
+     * This method allows fast lookup of player UUID from their name. It should only ever be called from the
+     * ServerThread and while the Server is running.
      *
      * @param playername - the name of the player as returned by getCommandSenderName()
      */

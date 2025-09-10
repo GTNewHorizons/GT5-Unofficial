@@ -52,38 +52,41 @@ public interface IVoidable {
     List<ItemStack> getItemOutputSlots(ItemStack[] toOutput);
 
     /**
+     * @return List of items that can be voided.
+     */
+    List<ItemStack> getVoidOutputSlots();
+
+    /**
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
      */
     List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput);
 
     /**
-     * @return How many slots of items this machine can output per recipe. Item outputs whose slot number
-     *         exceeding this limit will be voided.
+     * @return How many slots of items this machine can output per recipe. Item outputs whose slot number exceeding this
+     *         limit will be voided.
      */
     default int getItemOutputLimit() {
         return Integer.MAX_VALUE;
     }
 
     /**
-     * @return How many slots of fluids this machine can output per recipe. Fluid outputs whose slot number
-     *         exceeding this limit will be voided.
+     * @return How many slots of fluids this machine can output per recipe. Fluid outputs whose slot number exceeding
+     *         this limit will be voided.
      */
     default int getFluidOutputLimit() {
         return Integer.MAX_VALUE;
     }
 
     /**
-     * @return If this machine has ability to dump item outputs to ME network.
-     *         This doesn't need to check if it can actually dump to ME,
-     *         as this might be called every tick and cause lag.
+     * @return If this machine has ability to dump item outputs to ME network. This doesn't need to check if it can
+     *         actually dump to ME, as this might be called every tick and cause lag.
      */
     boolean canDumpItemToME();
 
     /**
-     * @return If this machine has ability to dump fluid outputs to ME network.
-     *         This doesn't need to check if it can actually dump to ME,
-     *         as this might be called every tick and cause lag.
+     * @return If this machine has ability to dump fluid outputs to ME network. This doesn't need to check if it can
+     *         actually dump to ME, as this might be called every tick and cause lag.
      */
     boolean canDumpFluidToME();
 }

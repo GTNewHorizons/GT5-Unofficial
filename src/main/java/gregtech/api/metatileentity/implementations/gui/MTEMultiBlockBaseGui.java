@@ -99,7 +99,7 @@ public class MTEMultiBlockBaseGui {
         this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
     }
 
-    // unsure to swap to initCustomIcons()
+ // unsure to swap to initCustomIcons()
     protected void initShutdownMaps() {
         this.shutdownReasonTextureMap
             .put(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(), GTGuiTextures.OVERLAY_STRUCTURE_INCOMPLETE);
@@ -120,6 +120,8 @@ public class MTEMultiBlockBaseGui {
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
 
     }
+
+    // TODO: Add Muffle button
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
@@ -586,6 +588,7 @@ public class MTEMultiBlockBaseGui {
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
+        // TODO: add powerfail disable checkbox
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)
