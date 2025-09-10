@@ -8,7 +8,7 @@ import ic2.api.reactor.IReactor;
 public class ItemDepletedCell extends ItemRadioactiveCellIC {
 
     public ItemDepletedCell(String aUnlocalized, String aEnglish, int aRadiation) {
-        super(aUnlocalized, aEnglish, 1, 1, 0, aRadiation, 0, null, false);
+        super(aUnlocalized, aEnglish, 1, 1, 0, aRadiation, 0, null, false, 0F);
     }
 
     @Override
