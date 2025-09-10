@@ -53,8 +53,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                     StatCollector
                         .translateToLocal(aMox ? "GT5U.nei.nuclear.model.mox" : "GT5U.nei.nuclear.model.uranium"),
                     StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.neutron_pulse", aCellcount),
-                    aCellcount == 1 ? StatCollector
-                        .translateToLocalFormatted("GT5U.nei.nuclear.heat.0", aHeat / 2f)
+                    aCellcount == 1 ? StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.heat.0", aHeat / 2f)
                         : StatCollector.translateToLocalFormatted(
                             "GT5U.nei.nuclear.heat.1",
                             aHeat * aCellcount / 2f,
