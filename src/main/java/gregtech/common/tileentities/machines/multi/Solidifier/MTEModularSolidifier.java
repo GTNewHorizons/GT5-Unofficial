@@ -804,28 +804,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
             }
 
-            // for cribuffers/proxies?
-            @Override
-            public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
-                if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
-                    activeDualInv = inv;
-                    return true;
-                }
 
-                GTDualInputPattern inputs = inv.getPatternInputs();
-                setInputItems(inputs.inputItems);
-                setInputFluids(inputs.inputFluid);
-                Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
-                    .collect(Collectors.toSet());
-                if (!recipes.isEmpty()) {
-                    dualInvWithPatternToRecipeCache.put(inv, recipes);
-                    activeDualInv = inv;
-                    return true;
-                }
-                return false;
-            }
-
-        };
+        }.setUnlimitedTierSkips();
     }
 
     @Override
