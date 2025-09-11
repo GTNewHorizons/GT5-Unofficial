@@ -1532,13 +1532,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 if (!getCoverAtSide(side).isGUIClickable()) return false;
 
                 if (isUpgradable() && tCurrentItem != null) {
-                    if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
-                        if (addMufflerUpgrade()) {
-                            sendSoundToPlayers(SoundResource.GTCEU_OP_CLICK, 1.0F, 1);
-                            if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
-                        }
-                        return true;
-                    }
                     if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
                         if (isUpgradable() && !mLockUpgrade) {
                             mLockUpgrade = true;
@@ -1653,13 +1646,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean hasMufflerUpgrade() {
+    public boolean isMuffled() {
         return mMuffler;
     }
 
     @Override
     public boolean isMufflerUpgradable() {
-        return isUpgradable() && !hasMufflerUpgrade();
+        return isUpgradable() && !isMuffled();
     }
 
     @Override
