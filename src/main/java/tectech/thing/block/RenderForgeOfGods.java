@@ -189,7 +189,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     }
 
     public void RenderEntireStar(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
+
         GL11.glDisable(GL11.GL_LIGHTING);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
 
@@ -219,7 +220,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             130 + (timer) % 360000);
 
         // Setup for TRANSPARENT layers
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -241,7 +241,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
                 .normalize(),
             67 + (timer) % 360000);
 
-        GL11.glPopAttrib();
         ShaderProgram.clear();
         GL11.glPopAttrib();
     }
