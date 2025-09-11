@@ -20,17 +20,22 @@ import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.AbstractCollection;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -42,6 +47,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -94,6 +101,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
@@ -178,6 +186,7 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2Potion;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
@@ -297,6 +306,82 @@ public class GTUtility {
         return null;
     }
 
+    public static Object callPublicMethod(Object aObject, String aMethod, Object... aParameters) {
+        return callMethod(aObject, aMethod, false, false, true, aParameters);
+    }
+
+    public static Object callPrivateMethod(Object aObject, String aMethod, Object... aParameters) {
+        return callMethod(aObject, aMethod, true, false, true, aParameters);
+    }
+
+    public static Object callMethod(Object aObject, String aMethod, boolean aPrivate, boolean aUseUpperCasedDataTypes,
+        boolean aLogErrors, Object... aParameters) {
+        try {
+            Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
+            for (byte i = 0; i < aParameters.length; i++) {
+                if (aParameters[i] instanceof Class) {
+                    tParameterTypes[i] = (Class<?>) aParameters[i];
+                    aParameters[i] = null;
+                } else {
+                    tParameterTypes[i] = aParameters[i].getClass();
+                }
+                if (!aUseUpperCasedDataTypes) {
+                    if (tParameterTypes[i] == Boolean.class) tParameterTypes[i] = boolean.class;
+                    else if (tParameterTypes[i] == Byte.class) tParameterTypes[i] = byte.class;
+                    else if (tParameterTypes[i] == Short.class) tParameterTypes[i] = short.class;
+                    else if (tParameterTypes[i] == Integer.class) tParameterTypes[i] = int.class;
+                    else if (tParameterTypes[i] == Long.class) tParameterTypes[i] = long.class;
+                    else if (tParameterTypes[i] == Float.class) tParameterTypes[i] = float.class;
+                    else if (tParameterTypes[i] == Double.class) tParameterTypes[i] = double.class;
+                }
+            }
+
+            Method tMethod = (aObject instanceof Class) ? ((Class<?>) aObject).getMethod(aMethod, tParameterTypes)
+                : aObject.getClass()
+                    .getMethod(aMethod, tParameterTypes);
+            if (aPrivate) tMethod.setAccessible(true);
+            return tMethod.invoke(aObject, aParameters);
+        } catch (Throwable e) {
+            if (aLogErrors) e.printStackTrace(GTLog.err);
+        }
+        return null;
+    }
+
+    public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject,
+        boolean aLogErrors, Object... aParameters) {
+        if (aConstructorIndex < 0) {
+            try {
+                for (Constructor<?> tConstructor : aClass.getConstructors()) {
+                    try {
+                        return tConstructor.newInstance(aParameters);
+                    } catch (Throwable e) {
+                        if (D1) e.printStackTrace(GTLog.err);
+                    }
+                }
+            } catch (Throwable e) {
+                if (aLogErrors) e.printStackTrace(GTLog.err);
+            }
+        } else {
+            try {
+                return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
+            } catch (Throwable e) {
+                if (aLogErrors) e.printStackTrace(GTLog.err);
+            }
+        }
+        return aReplacementObject;
+    }
+
+    public static <T> T getFieldValue(Class<?> clazz, String name) {
+        try {
+            Field field = clazz.getDeclaredField(name);
+            field.setAccessible(true);
+            // noinspection unchecked
+            return (T) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static String capitalizeString(String s) {
         if (s != null && !s.isEmpty()) {
             return s.substring(0, 1)
@@ -407,9 +492,10 @@ public class GTUtility {
         return "(" + GTValues.VN[getTier(voltage)] + ")";
     }
 
-    public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
-        if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
-            aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
+    public static void sendChatToPlayer(EntityPlayer player, String message) {
+        if (message != null) {
+            message = processFormatStacks(message);
+            player.addChatComponentMessage(new ChatComponentText(message));
         }
     }
 
@@ -427,6 +513,99 @@ public class GTUtility {
         MinecraftServer.getServer()
             .getConfigurationManager()
             .sendChatMsg(chatComponent);
+    }
+
+    /** Uses thread analysis, works on dedicated servers. */
+    public static boolean isServer() {
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer();
+    }
+
+    /** Uses thread analysis, works on dedicated servers. */
+    public static boolean isClient() {
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient();
+    }
+
+    private static final char FORMAT_ESCAPE = '§';
+    public static final String FORMAT_PUSH_STACK = FORMAT_ESCAPE + "s";
+    public static final String FORMAT_POP_STACK = FORMAT_ESCAPE + "t";
+
+    /**
+     * Pre-processes a localized chat message with custom format push/pop instructions. This allows nested localizations
+     * to set their own format without clobbering whatever came before, without needing any extra context info.
+     * <p>
+     * </p>
+     * Example: {@code §a§lHello §s§eWorld§t!} is transformed into {@code §a§lHello §eWorld§a§l!}
+     */
+    public static String processFormatStacks(String message) {
+        // Short circuit if there aren't any pops, because pops mutate while pushes don't.
+        // Invalid codes are ignored by the font renderer so it won't cause problems if we ignore erroneous pushes.
+        if (!message.contains(FORMAT_POP_STACK)) return message;
+
+        StringBuilder out = new StringBuilder();
+        out.ensureCapacity(message.length() * 6 / 5);
+
+        int len = message.length();
+
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        String currentFormat = "";
+
+        int start = 0;
+
+        while (start < len) {
+            // Find the next format escape char
+            int end = message.indexOf(FORMAT_ESCAPE, start);
+
+            // If we hit the end of the string, push the rest of the input and stop
+            if (end == -1) {
+                out.append(message, start, len);
+                break;
+            }
+
+            // If there was any text from the end of the previous code to the start of this one, add it to the output
+            // buffer
+            if (end > start) {
+                out.append(message, start, end);
+            }
+
+            // If the current format escape char has a code after it, check it
+            if (end < len - 1) {
+                char code = message.charAt(end + 1);
+
+                if (code >= '0' && code <= '9' || code >= 'a' && code <= 'f') {
+                    // Colours, use as-is and erase the previous format
+                    currentFormat = "" + FORMAT_ESCAPE + code;
+                    out.append(FORMAT_ESCAPE)
+                        .append(code);
+                } else if (code >= 'k' && code <= 'o') {
+                    // Styles, use as-is and append to the colour style (note: this may act up with repeated style
+                    // codes but it shouldn't break anything).
+                    currentFormat = currentFormat + FORMAT_ESCAPE + code;
+                    out.append(FORMAT_ESCAPE)
+                        .append(code);
+                } else if (code == 'r') {
+                    // Reset, use as-is and clear the format
+                    currentFormat = "";
+                    out.append(FORMAT_ESCAPE)
+                        .append(code);
+                } else if (code == 's') {
+                    // Push, save the current format and don't emit to the output buffer
+                    stack.push(currentFormat);
+                } else if (code == 't') {
+                    // Pop, restore the top format and don't emit to the output buffer
+                    currentFormat = stack.isEmpty() ? "" : stack.pop();
+                    out.append(currentFormat);
+                }
+
+                // Skip the format escape along with its code
+                start = end + 2;
+            }
+        }
+
+        return out.toString();
     }
 
     public static void checkAvailabilities() {
@@ -2948,6 +3127,32 @@ public class GTUtility {
             && DimensionManager.isDimensionRegistered(aDimensionID);
     }
 
+    private static final Int2ObjectOpenHashMap<String> DIMENSION_NAMES = new Int2ObjectOpenHashMap<>();
+
+    public static void loadDimensionNames() {
+        Hashtable<Integer, Integer> dimensions = getFieldValue(DimensionManager.class, "dimensions");
+
+        for (var e : dimensions.entrySet()) {
+            if (DimensionManager.isDimensionRegistered(e.getKey()));
+
+            WorldProvider p = DimensionManager.createProviderFor(e.getKey());
+
+            DIMENSION_NAMES.put((int) e.getKey(), p.getDimensionName());
+        }
+    }
+
+    public static String getDimensionName(int dimId) {
+        String name = DIMENSION_NAMES.get(dimId);
+
+        String key = "gtnop.world." + name;
+
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        } else {
+            return name;
+        }
+    }
+
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,
         double aZ) {
         // Credit goes to BrandonCore Author :!:
@@ -3447,9 +3652,8 @@ public class GTUtility {
         try {
             if (tTileEntity instanceof IUpgradableMachine upgradableMachine) {
                 rEUAmount += 500;
-                if (upgradableMachine.hasMufflerUpgrade()) tList.add(
-                    EnumChatFormatting.GREEN + GTUtility.trans("177", "Has Muffler Upgrade")
-                        + EnumChatFormatting.RESET);
+                if (upgradableMachine.isMuffled()) tList
+                    .add(EnumChatFormatting.GREEN + GTUtility.trans("177", "Is Muffled") + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
             tList.add("§cAn exception was thrown while fetching this device's upgrades.§r");
@@ -3604,50 +3808,52 @@ public class GTUtility {
         float modY = (aY % 1.0f + 1.0f) % 1.0f;
         float modZ = (aZ % 1.0f + 1.0f) % 1.0f;
         ForgeDirection tBack = side.getOpposite();
+        // The = here is necessary; Since the hitVec only has a precision of 1/16th on MP and gets rounded down,
+        // a value of 0.8 would be 0.75 on MP, which is not > 0.75, returning false.
         switch (side) {
             case DOWN, UP -> {
                 if (modX < 0.25) {
                     if (modZ < 0.25) return tBack;
-                    if (modZ > 0.75) return tBack;
+                    if (modZ >= 0.75) return tBack;
                     return WEST;
                 }
-                if (modX > 0.75) {
+                if (modX >= 0.75) {
                     if (modZ < 0.25) return tBack;
-                    if (modZ > 0.75) return tBack;
+                    if (modZ >= 0.75) return tBack;
                     return EAST;
                 }
                 if (modZ < 0.25) return NORTH;
-                if (modZ > 0.75) return SOUTH;
+                if (modZ >= 0.75) return SOUTH;
                 return side;
             }
             case NORTH, SOUTH -> {
                 if (modX < 0.25) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return WEST;
                 }
-                if (modX > 0.75) {
+                if (modX >= 0.75) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return EAST;
                 }
                 if (modY < 0.25) return DOWN;
-                if (modY > 0.75) return UP;
+                if (modY >= 0.75) return UP;
                 return side;
             }
             case WEST, EAST -> {
                 if (modZ < 0.25) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return NORTH;
                 }
-                if (modZ > 0.75) {
+                if (modZ >= 0.75) {
                     if (modY < 0.25) return tBack;
-                    if (modY > 0.75) return tBack;
+                    if (modY >= 0.75) return tBack;
                     return SOUTH;
                 }
                 if (modY < 0.25) return DOWN;
-                if (modY > 0.75) return UP;
+                if (modY >= 0.75) return UP;
                 return side;
             }
         }
@@ -4406,6 +4612,32 @@ public class GTUtility {
         return Math.min(hi, Math.max(val, lo));
     }
 
+    public static double clamp(double val, double lo, double hi) {
+        return Math.min(hi, Math.max(val, lo));
+    }
+
+    public static int map(int x, int in_min, int in_max, int out_min, int out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static long map(long x, long in_min, long in_max, long out_min, long out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static float map(float x, float in_min, float in_max, float out_min, float out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static double map(double x, double in_min, double in_max, double out_min, double out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static double linearCurve(double x, double x1, double y1, double x2, double y2) {
+        x = GTUtility.clamp(x, Math.min(x1, x2), Math.max(x1, x2));
+
+        return map(x, x1, x2, y1, y2);
+    }
+
     public static int min(int first, int... rest) {
         for (int i = 0; i < rest.length; i++) {
             int l = rest[i];
@@ -4499,8 +4731,10 @@ public class GTUtility {
      * Computes base raised to non-negative integer exponent.
      */
     private static double powBySquaring(double base, int exp) {
-        if (base == 2) return 1 << exp;
-        if (base == 4) return 1 << 2 * exp;
+        // IEEE 754 double: 1 sign bit, 11 exponent bits, 52 mantissa bits. Exponent is stored with offset 1023.
+        // The result is directly constructed for bases 2 and 4 from the exponent bits.
+        if (base == 2) return exp > 1023 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp + 1023L << 52);
+        if (base == 4) return exp > 511 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp * 2L + 1023L << 52);
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;
@@ -4524,8 +4758,10 @@ public class GTUtility {
      * Computes base raised to non-negative long exponent.
      */
     private static double powBySquaring(double base, long exp) {
-        if (base == 2) return 1 << exp;
-        if (base == 4) return 1 << 2 * exp;
+        // IEEE 754 double: 1 sign bit, 11 exponent bits, 52 mantissa bits. Exponent is stored with offset 1023.
+        // The result is directly constructed for bases 2 and 4 from the exponent bits.
+        if (base == 2) return exp > 1023 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp + 1023L << 52);
+        if (base == 4) return exp > 511 ? Double.POSITIVE_INFINITY : Double.longBitsToDouble(exp * 2L + 1023L << 52);
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;
@@ -4711,6 +4947,40 @@ public class GTUtility {
             (b, t) -> b.put(keyMapper.apply(t), valueMapper.apply(t)),
             (b1, b2) -> b1.putAll(b2.build()),
             ImmutableMap.Builder::build);
+    }
+
+    public static <NBT extends NBTBase> Collector<NBT, ?, NBTTagList> toNBTTagList() {
+        return new Collector<NBT, NBTTagList, NBTTagList>() {
+
+            @Override
+            public Supplier<NBTTagList> supplier() {
+                return NBTTagList::new;
+            }
+
+            @Override
+            public BiConsumer<NBTTagList, NBT> accumulator() {
+                return NBTTagList::appendTag;
+            }
+
+            @Override
+            public BinaryOperator<NBTTagList> combiner() {
+                return (from, to) -> {
+                    to.tagList.addAll(from.tagList);
+
+                    return to;
+                };
+            }
+
+            @Override
+            public Function<NBTTagList, NBTTagList> finisher() {
+                return Function.identity();
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return new HashSet<>(Arrays.asList(Characteristics.IDENTITY_FINISH));
+            }
+        };
     }
 
     public static boolean isArrayEmptyOrNull(Object[] arr) {
