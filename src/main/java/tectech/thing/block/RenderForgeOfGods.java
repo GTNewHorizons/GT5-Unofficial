@@ -57,6 +57,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static int maxSegments = -1;
     private static final int beamSegmentQuads = 16;
     private static final Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
+    private static final ResourceLocation beamTexture = new ResourceLocation(Reference.MODID, "models/spaceLayer.png");
 
     private VertexBuffer ringOne, ringTwo, ringThree;
     // These are nudges/translations for each ring to align with the structure
@@ -328,7 +329,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        this.bindTexture(new ResourceLocation(Reference.MODID, "models/spaceLayer.png"));
+        this.bindTexture(beamTexture);
 
         float cx = (float) x + .5f;
         float cy = (float) y + .5f;
