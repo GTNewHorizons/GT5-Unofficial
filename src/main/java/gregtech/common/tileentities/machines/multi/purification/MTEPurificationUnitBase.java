@@ -445,8 +445,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private void onRecipeFail() {
         // Possibly output lower quality water.
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
-        FluidStack outputWater = getDegradedOutputWater();
-        this.addOutput(outputWater);
+        if (mOutputFluids != null) {
+            FluidStack outputWater = getDegradedOutputWater();
+            this.addOutput(outputWater);
+        }
     }
 
     /**
