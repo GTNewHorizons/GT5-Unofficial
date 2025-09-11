@@ -417,20 +417,14 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEOilDrill1(MULTIBLOCK_PUMP_MKI_CONTROLLER.ID, "multimachine.oildrill1", "Fluid Drilling Rig")
                 .getStackForm(1));
         ItemList.OilDrill2.set(
-            new MTEOilDrill2(
-                MULTILOCK_PUMP_MKII_CONTROLLER.ID,
-                "multimachine.oildrill2",
-                "Fluid Drilling Rig II").getStackForm(1));
+            new MTEOilDrill2(MULTILOCK_PUMP_MKII_CONTROLLER.ID, "multimachine.oildrill2", "Fluid Drilling Rig II")
+                .getStackForm(1));
         ItemList.OilDrill3.set(
-            new MTEOilDrill3(
-                MULTILOCK_PUMP_MKIII_CONTROLLER.ID,
-                "multimachine.oildrill3",
-                "Fluid Drilling Rig III").getStackForm(1));
+            new MTEOilDrill3(MULTILOCK_PUMP_MKIII_CONTROLLER.ID, "multimachine.oildrill3", "Fluid Drilling Rig III")
+                .getStackForm(1));
         ItemList.OilDrill4.set(
-            new MTEOilDrill4(
-                MULTILOCK_PUMP_MKIV_CONTROLLER.ID,
-                "multimachine.oildrill4",
-                "Fluid Drilling Rig IV").getStackForm(1));
+            new MTEOilDrill4(MULTILOCK_PUMP_MKIV_CONTROLLER.ID, "multimachine.oildrill4", "Fluid Drilling Rig IV")
+                .getStackForm(1));
         ItemList.OilDrillInfinite.set(
             new MTEOilDrillInfinite(
                 MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
