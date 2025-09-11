@@ -170,9 +170,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         this.bindTexture(texture);
 
-        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean depthTest = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
-        boolean depthMask = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 
         // Enable transparency if needed
         if (color.w < 1.0f) {
@@ -187,17 +185,12 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL20.glUniform4f(u_Color, color.x, color.y, color.z, color.w);
         starModel.renderAll();
 
-        if (color.w < 1.0f) {
-            if (!blend) GL11.glDisable(GL11.GL_BLEND);
-            if (!depthTest) GL11.glDisable(GL11.GL_DEPTH_TEST);
-            GL11.glDepthMask(depthMask);
-        }
-
+        GL11.glPopAttrib();
         starModelMatrix.popMatrix();
     }
 
     public void RenderEntireStar(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
 
@@ -240,7 +233,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             67 + (timer) % 360000);
 
         ShaderProgram.clear();
-        if (lighting) GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glPopAttrib();
     }
 
     public void bufferSoftBeam(TileEntityForgeOfGods tile) {
@@ -320,11 +313,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     }
 
     public void RenderBeamSegment(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        boolean alpha = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
-        boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean depthTest = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
-        boolean depthMask = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -383,15 +372,11 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         ShaderProgram.clear();
 
-        if (alpha) GL11.glEnable(GL11.GL_ALPHA_TEST);
-        if (lighting) GL11.glEnable(GL11.GL_LIGHTING);
-        if (!blend) GL11.glDisable(GL11.GL_BLEND);
-        if (!depthTest) GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthMask(depthMask);
+        GL11.glPopAttrib();
     }
 
     private void RenderRings(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -426,7 +411,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             }
         }
         ShaderProgram.clear();
-        if (!blend) GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopAttrib();
     }
 
     @Override
