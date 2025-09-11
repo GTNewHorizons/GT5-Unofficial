@@ -71,6 +71,9 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private final Vector3f reusableRotationAxis = new Vector3f();
     private Vector4f reusableCameraPosition = new Vector4f();
 
+    private float cachedRadius = -1f;
+    private int cachedRingCount = -1;
+
     private void init() {
         try {
             starProgram = new ShaderProgram(Reference.MODID, "shaders/star.vert.glsl", "shaders/star.frag.glsl");
@@ -319,7 +322,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         // return buffer;
     }
 
-    public void RenderBeamSegment(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
+    public void RenderBeamSegment(TileEntityForgeOfGods tile, double x, double y, double z, float timer,
+        boolean needsBeamUpdate) {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -346,7 +350,9 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         beamProgram.use();
 
-        bufferSoftBeam(tile);
+        if (needsBeamUpdate) {
+            bufferSoftBeam(tile);
+        }
 
         matrixBuffer.clear();
         GL20.glUniformMatrix4(u_BeamModelMatrix, false, beamModelMatrix.get(matrixBuffer));
@@ -371,7 +377,11 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         GL20.glUniform3f(u_BeamColor, 1, 1, 1);
         GL20.glUniform1f(u_BeamIntensity, 4);
-        bufferIntenseBeam(tile);
+
+        if (needsBeamUpdate) {
+            bufferIntenseBeam(tile);
+        }
+
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * 6);
 
         GL20.glDisableVertexAttribArray(a_VertexID);
@@ -451,10 +461,17 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         forgeTile.incrementColors();
 
+        boolean needsBeamUpdate = false;
+        if (forgeTile.getStarRadius() != this.cachedRadius || forgeTile.getRingCount() != this.cachedRingCount) {
+            needsBeamUpdate = true;
+            this.cachedRadius = forgeTile.getStarRadius();
+            this.cachedRingCount = forgeTile.getRingCount();
+        }
+
         RenderEntireStar(forgeTile, x, y, z, timer);
         RenderRings(forgeTile, x, y, z, timer);
 
-        RenderBeamSegment(forgeTile, x, y, z, timer);
+        RenderBeamSegment(forgeTile, x, y, z, timer, needsBeamUpdate);
 
     }
 
