@@ -162,6 +162,12 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         textureUpdater.requestUpdate();
     }
 
+    /**
+     * <strong>WARNING:</strong> This method is a "dumb" renderer. It doesn't handle its own GL state
+     * for transparency (blend, depth mask, etc...). The caller (RenderEntireStar) is responsible
+     * for setting all that up beforehand. We're doing it this way to batch the state
+     * changes and improve performance.
+     */
     public void RenderStarLayer(Vector4f color, ResourceLocation texture, float size, Vector3f rotationAxis,
         float degrees) {
         starModelMatrix.pushMatrix();
@@ -170,22 +176,11 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         this.bindTexture(texture);
 
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
-
-        // Enable transparency if needed
-        if (color.w < 1.0f) {
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GL11.glDepthMask(false); // Disable depth writing for transparency
-        }
-
         matrixBuffer.clear();
         GL20.glUniformMatrix4(u_ModelMatrix, false, starModelMatrix.get(matrixBuffer));
         GL20.glUniform4f(u_Color, color.x, color.y, color.z, color.w);
         starModel.renderAll();
 
-        GL11.glPopAttrib();
         starModelMatrix.popMatrix();
     }
 
@@ -210,6 +205,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float r = tile.getColorR(), g = tile.getColorG(), b = tile.getColorB();
         GL20.glUniform1f(u_Gamma, tile.getGamma());
 
+        // Render OPAQUE layer
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 1f),
             STAR_LAYER_0,
@@ -217,6 +213,15 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             reusableRotationAxis.set(0F, 1F, 1F)
                 .normalize(),
             130 + (timer) % 360000);
+
+        // Setup for TRANSPARENT layers
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
+
+        // Render for TRANSPARENT layers
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 0.4f),
             STAR_LAYER_1,
@@ -232,6 +237,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
                 .normalize(),
             67 + (timer) % 360000);
 
+        GL11.glPopAttrib();
         ShaderProgram.clear();
         GL11.glPopAttrib();
     }
