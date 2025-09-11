@@ -25,9 +25,10 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
     public final float sHeat;
     public final ItemStack sDepleted;
     public final boolean sMox;
+    public final float sHeatBonus;
 
     public ItemRadioactiveCellIC(String aUnlocalized, String aEnglish, int aCellcount, int maxDamage, float aEnergy,
-        int aRadiation, float aHeat, ItemStack aDepleted, boolean aMox) {
+        int aRadiation, float aHeat, ItemStack aDepleted, boolean aMox, float aHeatBonus) {
         super(aUnlocalized, aEnglish, aCellcount);
         setMaxStackSize(64);
         this.maxDmg = maxDamage;
@@ -37,6 +38,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
         this.sHeat = aHeat;
         this.sDepleted = aDepleted;
         this.sMox = aMox;
+        this.sHeatBonus = aHeatBonus;
         if (aDepleted != null && aEnergy > 0 && aHeat > 0) {
             // avoid adding depleted cells to recipe map
 
@@ -161,7 +163,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
         if (!heatrun) {
             if (sMox) {
                 float breedereffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();
-                float ReaktorOutput = 1.5F * breedereffectiveness + 1.0F;
+                float ReaktorOutput = this.sHeatBonus * breedereffectiveness + 1.0F;
                 reactor.addOutput(ReaktorOutput * this.sEnergy);
             } else {
                 reactor.addOutput(1.0F * this.sEnergy);
