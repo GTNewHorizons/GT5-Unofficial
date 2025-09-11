@@ -1502,7 +1502,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         private int getHint(ItemStack stack) {
             return Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
-                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length)].getMinimalGlassTier() + 1;
+                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length - 1)].getMinimalGlassTier() + 1;
         }
 
         @Override
@@ -1522,31 +1522,20 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             ItemStack trigger, AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + 2;
+            // 0 is None in the Capacitors; So we start at 1; Glasstier -3 since the LSC allows capacitor to be at most
+            // 3 levels underneath the glass level
+            int capacitorTier = Math.max(1, Math.min(Capacitor.VALUES_BY_TIER.length - 1, glassTier - 3));
             ItemStack targetStack;
-            // if user specified a capacitor tier, use it.
-            // otherwise scan for any capacitor that can be used
-            if (GTStructureChannels.LSC_CAPACITOR.hasValue(trigger)) {
-                int capacitorTier = GTStructureChannels.LSC_CAPACITOR
-                    .getValueClamped(trigger, 0, Capacitor.VALUES_BY_TIER.length);
-                if (Capacitor.VALUES_BY_TIER[capacitorTier].getMinimalGlassTier() > glassTier) {
-                    env.getChatter()
-                        .accept(new ChatComponentTranslation("kekztech.structure.glass_incompatible"));
-                    return PlaceResult.REJECT;
-                }
-                targetStack = new ItemStack(LSC_PART_ITEM, 1, Capacitor.VALUES_BY_TIER[capacitorTier].ordinal() + 1);
-                if (!env.getSource()
-                    .takeOne(targetStack, true)) return PlaceResult.REJECT;
-            } else {
-                targetStack = env.getSource()
-                    .takeOne(
-                        s -> s != null && s.stackSize >= 0
-                            && s.getItem() == LSC_PART_ITEM
-                            && s.getItemDamage() != 0 // LSC casing, not a capacitor
-                            && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
-                                .getMinimalGlassTier() > glassTier,
-                        true);
+
+            if (Capacitor.VALUES_BY_TIER[capacitorTier].getMinimalGlassTier() > glassTier) {
+                env.getChatter()
+                    .accept(new ChatComponentTranslation("kekztech.structure.glass_incompatible"));
+                return PlaceResult.REJECT;
             }
-            if (targetStack == null) return PlaceResult.REJECT;
+            targetStack = new ItemStack(LSC_PART_ITEM, 1, Capacitor.VALUES_BY_TIER[capacitorTier].ordinal() + 1);
+            if (!env.getSource()
+                .takeOne(targetStack, true)) return PlaceResult.REJECT;
+
             return StructureUtility.survivalPlaceBlock(
                 targetStack,
                 NBTMode.EXACT,
