@@ -125,8 +125,4 @@ public class PowerGogglesEventHandler {
     public Map<UUID, PowerGogglesClient> getClients() {
         return clients;
     }
-
-    public Map<UUID, PowerGogglesClient> getClients() {
-        return CLIENTS;
-    }
 }
