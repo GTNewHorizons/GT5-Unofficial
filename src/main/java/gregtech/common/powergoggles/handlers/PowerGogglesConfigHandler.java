@@ -1,4 +1,4 @@
-package gregtech.common.handlers;
+package gregtech.common.powergoggles.handlers;
 
 import java.io.File;
 

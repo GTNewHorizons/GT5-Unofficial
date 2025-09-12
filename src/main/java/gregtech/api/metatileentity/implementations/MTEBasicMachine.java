@@ -849,7 +849,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected void updateSounds(SoundResource activitySound) {
         if (activitySound == null) return;
 
-        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
