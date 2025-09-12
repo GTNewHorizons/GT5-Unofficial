@@ -4520,7 +4520,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBasicMachineWithRecipe(
                 ELECTRIC_FURNACE_IV.ID,
                 "basicmachine.e_furnace.tier.05",
-                "Electron Exitement Processor",
+                "Electron Excitement Processor",
                 5,
                 MachineType.ELECTRIC_FURNACE.tooltipDescription(),
                 RecipeMaps.furnaceRecipes,
