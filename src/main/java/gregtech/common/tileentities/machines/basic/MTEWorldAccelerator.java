@@ -470,19 +470,19 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     /**
      * This method makes it easier for other mods to get the WA's bonus
-     * 
+     *
      * @return the acceleration bonus of the TE
      */
-    public static int getWABonusForTE(TileEntity pTile) {
-        return isTEBlackListed(pTile) ? 0 : getWABonusForTEUnsafe(pTile);
+    public static int getAccelerationForTE(TileEntity pTile) {
+        return isTEBlackListed(pTile) ? 0 : getAccelerationForTEUnsafe(pTile);
     }
 
     /**
      * Same as the method above, but now without the TE check. Only use this is you're 100% sure what type the TE is.
-     * 
+     *
      * @return the acceleration bonus of the TE
      */
-    public static int getWABonusForTEUnsafe(TileEntity pTile) {
+    public static int getAccelerationForTEUnsafe(TileEntity pTile) {
         final int x = pTile.xCoord;
         final int y = pTile.yCoord;
         final int z = pTile.zCoord;
