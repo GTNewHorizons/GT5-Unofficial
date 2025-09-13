@@ -44,9 +44,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static int u_Color = -1, u_ModelMatrix = -1, u_Gamma = -1;
     private final Matrix4fStack starModelMatrix = new Matrix4fStack(3);
 
-    // Size must be 'segment_size * 3' (and segment_size is always 10)
-    private final FloatBuffer softBeamSegmentMatrixBuffer = BufferUtils.createFloatBuffer(30);
-    private final FloatBuffer intenseBeamSegmentMatrixBuffer = BufferUtils.createFloatBuffer(30);
+    private final FloatBuffer softBeamSegmentMatrixBuffer = BufferUtils.createFloatBuffer(maxSegments * 3);
+    private final FloatBuffer intenseBeamSegmentMatrixBuffer = BufferUtils.createFloatBuffer(maxSegments * 3);
     private final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     private static ShaderProgram beamProgram;
@@ -55,7 +54,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static int u_CameraPosition = -1, u_SegmentArray = -1, u_SegmentQuads = -1;
     private static int u_BeamIntensity = -1, u_BeamColor = -1, u_BeamTime = -1;
     private static int beam_vboID = -1;
-    private static int maxSegments = -1;
+    private static final int maxSegments = 10;
     private static final int beamSegmentQuads = 16;
     private static final Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
     private static final ResourceLocation beamTexture = new ResourceLocation(Reference.MODID, "models/spaceLayer.png");
@@ -112,7 +111,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         beamProgram.use();
         GL20.glUniform1f(u_SegmentQuads, (float) beamSegmentQuads);
-        maxSegments = 10;// GL20.glGetActiveUniformSize(beamProgram.getProgram(), u_SegmentArray);
 
         FloatBuffer buffer = BufferUtils.createFloatBuffer(maxSegments * beamSegmentQuads * 6 * 3);
 
