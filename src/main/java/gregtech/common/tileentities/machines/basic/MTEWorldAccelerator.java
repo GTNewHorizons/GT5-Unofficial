@@ -279,6 +279,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
         float aY, float aZ, ItemStack aTool) {
         incSpeedTierOverride();
+        getBaseMetaTileEntity().issueTileUpdate();
 
         markDirty();
         PlayerChatHelper.SendInfo(
@@ -344,6 +345,21 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         } catch (Exception e) {
             GTLog.err.println("MTEWorldAccelerator.onPostTick.crash\n" + e.getMessage());
         }
+    }
+
+    /**
+     * Send the acceleration value to the client
+     */
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("acceleration", getSpeedTierOverride());
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        this._mSpeedTierOverride = data.getInteger("acceleration");
     }
 
     private void doAccelerateTileEntities(IGregTechTileEntity pBaseMetaTileEntity, World pWorld) {
