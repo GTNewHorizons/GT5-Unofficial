@@ -82,7 +82,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings8;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -475,17 +474,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
                     busScan: for (int i = 0; i < mInputBusses.size(); i++) {
                         MTEHatchInputBus inputBus = mInputBusses.get(i);
-                        ItemStack[] busInventory = inputBus.getRealInventory();
-                        for (int j = 0; j < busInventory.length; j++) {
-                            ItemStack inputItem = null;
-                            if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                if (j == 18) {
-                                    break;
-                                }
-                                inputItem = meBus.getRealInventory()[j + 16];
-                            } else {
-                                inputItem = inputBus.getStackInSlot(j);
-                            }
+                        int invSize = inputBus.getSizeInventory();
+
+                        for (int j = 0; j < invSize; j++) {
+                            ItemStack inputItem = inputBus.getStackInSlot(j);
+
                             if (inputItem != null) {
                                 ItemData data = GTOreDictUnificator.getAssociation(inputItem);
                                 if (data == null) {
