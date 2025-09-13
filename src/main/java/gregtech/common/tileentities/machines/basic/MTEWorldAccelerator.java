@@ -26,6 +26,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
@@ -59,12 +60,12 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     private int _mRadiusTierOverride = -1;
     private int _mSpeedTierOverride = -1;
 
-    private int getRadiusTierOverride() {
+    public final int getRadiusTierOverride() {
         if (_mRadiusTierOverride == -1) _mRadiusTierOverride = mTier;
         return _mRadiusTierOverride;
     }
 
-    private int getSpeedTierOverride() {
+    public final int getSpeedTierOverride() {
         if (_mSpeedTierOverride == -1) _mSpeedTierOverride = mTier;
         return _mSpeedTierOverride;
     }
@@ -89,7 +90,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Active;
-    private static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
+    public static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
         512 };
     private static final int AMPERAGE_NORMAL = 3;
     private static final int AMPERAGE_TE = 6;
@@ -371,7 +372,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     // Inspired by ChromatiCraft's TileAccelerator
-    private boolean isTEBlackListed(TileEntity pTile) {
+    public static boolean isTEBlackListed(TileEntity pTile) {
         if (pTile == null) {
             return true; // Obvious
         }
@@ -465,5 +466,37 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         } catch (Exception e) {
             GTLog.err.println("MTEWorldAccelerator.tryTickBlock.crash\n" + e.getMessage());
         }
+    }
+
+    /**
+     * This method makes it easier for other mods to get the WA's bonus
+     * 
+     * @return the acceleration bonus of the TE
+     */
+    public static int getWABonusForTE(TileEntity pTile) {
+        return isTEBlackListed(pTile) ? 0 : getWABonusForTEUnsafe(pTile);
+    }
+
+    /**
+     * Same as the method above, but now without the TE check. Only use this is you're 100% sure what type the TE is.
+     * 
+     * @return the acceleration bonus of the TE
+     */
+    public static int getWABonusForTEUnsafe(TileEntity pTile) {
+        final int x = pTile.xCoord;
+        final int y = pTile.yCoord;
+        final int z = pTile.zCoord;
+        final World worldObj = pTile.getWorldObj();
+
+        int acceleration = 0;
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            final TileEntity te = worldObj.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+            if (te instanceof BaseMetaTileEntity mte) {
+                if (mte.getMetaTileEntity() instanceof MTEWorldAccelerator accelerator) {
+                    acceleration += mAccelerateStatic[accelerator.getSpeedTierOverride()];
+                }
+            }
+        }
+        return acceleration;
     }
 }
