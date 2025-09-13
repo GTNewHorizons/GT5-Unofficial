@@ -45,7 +45,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private final Matrix4fStack starModelMatrix = new Matrix4fStack(3);
 
     // Size must be 'segment_size * 3' (and segment_size is always 10)
-    private final FloatBuffer segmentMatrixBuffer = BufferUtils.createFloatBuffer(30);
+    private final FloatBuffer softBeamSegmentMatrixBuffer = BufferUtils.createFloatBuffer(30);
+    private final FloatBuffer intenseBeamSegmentMatrixBuffer = BufferUtils.createFloatBuffer(30);
     private final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     private static ShaderProgram beamProgram;
@@ -251,24 +252,23 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float startx = -radius * (float) Math.cos(angle);
         float starty = radius * (float) Math.sin(angle);
 
-        segmentMatrixBuffer.clear();
+        softBeamSegmentMatrixBuffer.clear();
 
-        segmentMatrixBuffer.put(starty);
-        segmentMatrixBuffer.put(startx);
-        segmentMatrixBuffer.put(0);
+        softBeamSegmentMatrixBuffer.put(starty);
+        softBeamSegmentMatrixBuffer.put(startx);
+        softBeamSegmentMatrixBuffer.put(0);
 
         for (int i = tile.getRingCount() - 1; i >= 0; i--) {
-            segmentMatrixBuffer.put(tile.getLenRadius(i));
-            segmentMatrixBuffer.put(tile.getLensDistance(i));
-            segmentMatrixBuffer.put(1f);
+            softBeamSegmentMatrixBuffer.put(tile.getLenRadius(i));
+            softBeamSegmentMatrixBuffer.put(tile.getLensDistance(i));
+            softBeamSegmentMatrixBuffer.put(1f);
         }
 
-        segmentMatrixBuffer.put(TileEntityForgeOfGods.BACK_PLATE_RADIUS);
-        segmentMatrixBuffer.put(TileEntityForgeOfGods.BACK_PLATE_DISTANCE);
-        segmentMatrixBuffer.put(-.05f);
+        softBeamSegmentMatrixBuffer.put(TileEntityForgeOfGods.BACK_PLATE_RADIUS);
+        softBeamSegmentMatrixBuffer.put(TileEntityForgeOfGods.BACK_PLATE_DISTANCE);
+        softBeamSegmentMatrixBuffer.put(-.05f);
 
-        segmentMatrixBuffer.rewind();
-        GL20.glUniform3(u_SegmentArray, segmentMatrixBuffer);
+        softBeamSegmentMatrixBuffer.rewind();
     }
 
     public void bufferIntenseBeam(TileEntityForgeOfGods tile) {
@@ -286,17 +286,17 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float backx = Math.max(-radius, (nextx + radius) / 2);
         float backy = TileEntityForgeOfGods.interpolate(startx, nextx, starty, nexty, backx);
 
-        segmentMatrixBuffer.clear();
+        intenseBeamSegmentMatrixBuffer.clear();
 
-        segmentMatrixBuffer.put(backy);
-        segmentMatrixBuffer.put(backx);
-        segmentMatrixBuffer.put(0);
+        intenseBeamSegmentMatrixBuffer.put(backy);
+        intenseBeamSegmentMatrixBuffer.put(backx);
+        intenseBeamSegmentMatrixBuffer.put(0);
 
         float transparency = .2f;
         for (int i = tile.getRingCount() - 1; i >= 0; i--) {
-            segmentMatrixBuffer.put(tile.getLenRadius(i) / 2);
-            segmentMatrixBuffer.put(tile.getLensDistance(i));
-            segmentMatrixBuffer.put(transparency);
+            intenseBeamSegmentMatrixBuffer.put(tile.getLenRadius(i) / 2);
+            intenseBeamSegmentMatrixBuffer.put(tile.getLensDistance(i));
+            intenseBeamSegmentMatrixBuffer.put(transparency);
             transparency += .3f;
         }
 
@@ -308,17 +308,15 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float midx = lastx + 8f;
         float midy = TileEntityForgeOfGods.interpolate(currx, lastx, curry, lasty, midx);
 
-        segmentMatrixBuffer.put(midy);
-        segmentMatrixBuffer.put(midx);
-        segmentMatrixBuffer.put(transparency);
+        intenseBeamSegmentMatrixBuffer.put(midy);
+        intenseBeamSegmentMatrixBuffer.put(midx);
+        intenseBeamSegmentMatrixBuffer.put(transparency);
 
-        segmentMatrixBuffer.put(lasty);
-        segmentMatrixBuffer.put(lastx);
-        segmentMatrixBuffer.put(0f);
+        intenseBeamSegmentMatrixBuffer.put(lasty);
+        intenseBeamSegmentMatrixBuffer.put(lastx);
+        intenseBeamSegmentMatrixBuffer.put(0f);
 
-        segmentMatrixBuffer.rewind();
-        GL20.glUniform3(u_SegmentArray, segmentMatrixBuffer);
-        // return buffer;
+        intenseBeamSegmentMatrixBuffer.rewind();
     }
 
     public void RenderBeamSegment(TileEntityForgeOfGods tile, double x, double y, double z, float timer,
@@ -351,6 +349,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         if (needsBeamUpdate) {
             bufferSoftBeam(tile);
+            bufferIntenseBeam(tile);
         }
 
         matrixBuffer.clear();
@@ -365,22 +364,22 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             reusableCameraPosition.y,
             reusableCameraPosition.z);
 
-        GL20.glUniform3f(u_BeamColor, tile.getColorR(), tile.getColorG(), tile.getColorB());
-        GL20.glUniform1f(u_BeamIntensity, 2);
-        GL20.glUniform1f(u_BeamTime, timer);
-
         GL20.glEnableVertexAttribArray(a_VertexID);
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
+        // Render Soft Beam
+        GL20.glUniform3f(u_BeamColor, tile.getColorR(), tile.getColorG(), tile.getColorB());
+        GL20.glUniform1f(u_BeamIntensity, 2);
+        GL20.glUniform1f(u_BeamTime, timer);
+        softBeamSegmentMatrixBuffer.rewind();
+        GL20.glUniform3(u_SegmentArray, softBeamSegmentMatrixBuffer);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * 6);
 
+        // Render Intense Beam
         GL20.glUniform3f(u_BeamColor, 1, 1, 1);
         GL20.glUniform1f(u_BeamIntensity, 4);
-
-        if (needsBeamUpdate) {
-            bufferIntenseBeam(tile);
-        }
-
+        intenseBeamSegmentMatrixBuffer.rewind();
+        GL20.glUniform3(u_SegmentArray, intenseBeamSegmentMatrixBuffer);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * 6);
 
         GL20.glDisableVertexAttribArray(a_VertexID);
