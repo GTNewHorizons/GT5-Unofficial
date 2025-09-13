@@ -492,7 +492,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             final TileEntity te = worldObj.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
             if (te instanceof BaseMetaTileEntity mte) {
-                if (mte.getMetaTileEntity() instanceof MTEWorldAccelerator accelerator) {
+                if (mte.getMetaTileEntity() instanceof MTEWorldAccelerator accelerator && mte.isActive()) {
                     acceleration += mAccelerateStatic[accelerator.getSpeedTierOverride()];
                 }
             }
