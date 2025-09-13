@@ -38,29 +38,29 @@ public class MTEWetTransformer extends MTETransformer {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte b = -1; b < 16; b++) {
             rTextures[0][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[1][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[2][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[3][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[4][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[5][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[6][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[7][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[8][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[9][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
             rTextures[10][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
             rTextures[11][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
         }
         return rTextures;
     }

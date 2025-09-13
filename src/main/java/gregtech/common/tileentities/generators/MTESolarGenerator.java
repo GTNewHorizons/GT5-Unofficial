@@ -66,7 +66,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         }
         if (sideDirection == facingDirection) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                OVERLAYS_ENERGY_OUT[mTier] };
+                OVERLAYS_ENERGY_OUT[mTier + 1] };
         }
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
     }

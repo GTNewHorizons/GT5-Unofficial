@@ -76,7 +76,7 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-            (side == facing) ? POLLUTOR : Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier] };
+            (side == facing) ? POLLUTOR : Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
     }
 
     @Override
