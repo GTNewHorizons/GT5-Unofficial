@@ -22,23 +22,16 @@ import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.common.render.IMTERenderer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -63,7 +56,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -76,8 +68,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
-import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
+import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -186,28 +177,28 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addShape(SolidifierModules.EFFICIENT_OC.structureID, transpose(new String[][]{
                 {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
                 {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                {"     onnno     ","   ooo   ooo   ","  oo       oo  "," oo         oo "," o           o ","oo           oo","n             n","n             n","n             n","oo           oo"," o           o "," oo         oo ","  oo       oo  ","   ooo   ooo   ","     onnno     "},
-                {"     pmmmp     ","   ppp d ppp   ","  pp   d   pp  "," pp         pp "," p           p ","pp           pp","m             m","mdd         ddm","m             m","pp           pp"," p           p "," pp         pp ","  pp   d   pp  ","   ppp d ppp   ","     pmmmp     "},
-                {"     onnno     ","   ooo   ooo   ","  oo       oo  "," oo         oo "," o           o ","oo           oo","n             n","n             n","n             n","oo           oo"," o           o "," oo         oo ","  oo       oo  ","   ooo   ooo   ","     onnno     "},
+                {"     oFrFo     ","   roo   oor   ","  ro       or  "," ro         or "," o           o ","oo           oo","F             F","r             r","F             F","oo           oo"," o           o "," ro         or ","  ro       or  ","   roo   oor   ","     oFrFo     "},
+                {"     ArrrA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","r             r","r             r","r             r","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     ArrrA     "},
+                {"     oFrFo     ","   roo   oor   ","  ro       or  "," ro         or "," o           o ","oo           oo","F             F","r             r","F             F","oo           oo"," o           o "," ro         or ","  ro       or  ","   roo   oor   ","     oFrFo     "},
                 {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
                 {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
             }
         ))
         .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
-            {"     gghgg     ","   ggg d ggg   ","  gg   d   gg  "," gg         gg "," g           g ","gg           gg","g             g","hdd         ddh","g             g","gg           gg"," g           g "," gg         gg ","  gg   d   gg  ","   ggg d ggg   ","     gghgg     "},
-            {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
+                {"     gghgg     ","   ggg   ggg   ","  gg       gg  "," gg         gg "," g           g ","gg           gg","g             g","h             h","g             g","gg           gg"," g           g "," gg         gg ","  gg       gg  ","   ggg   ggg   ","     gghgg     "},
+                {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+            }
         ))
         .addShape(SolidifierModules.HYPERCOOLER.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
-            {"     AbcbA     ","   AAA d AAA   ","  AA   d   AA  "," AA         AA "," A           A ","AA           AA","b             b","cdd         ddc","b             b","AA           AA"," A           A "," AA         AA ","  AA   d   AA  ","   AAA d AAA   ","     AbcbA     "},
+            {"     AbcbA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","b             b","c             c","b             b","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AbcbA     "},
             {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
@@ -216,7 +207,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"               ","      K K      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      K K      ","               "},
             {"      j j      ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","      j j      "},
             {"     ljijl     ","   lll   lll   ","  ll       ll  "," ll         ll "," l           l ","ll           ll","l             l","l             l","l             l","ll           ll"," l           l "," ll         ll ","  ll       ll  ","   lll   lll   ","     ljijl     "},
-            {"      jkj      ","       d       ","       d       ","               ","               ","               ","l             l","kdd         ddk","l             l","               ","               ","               ","       d       ","       d       ","      jkj      "},
+            {"      jkj      ","               ","               ","               ","               ","               ","l             l","k             k","l             l","               ","               ","               ","               ","               ","      jkj      "},
             {"     ljijl     ","   lll   lll   ","  ll       ll  "," ll         ll "," l           l ","ll           ll","l             l","l             l","l             l","ll           ll"," l           l "," ll         ll ","  ll       ll  ","   lll   lll   ","     ljijl     "},
             {"      j j      ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","      j j      "},
             {"               ","      K K      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      K K      ","               "}
@@ -224,30 +215,32 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         .addShape(SolidifierModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","      qqq      ","               ","               ","               ","               "," q           q "," q           q "," q           q ","               ","               ","               ","               ","      qqq      ","               "},
-            {"     qHHHq     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","qH           Hq","H             H","H             H","H             H","qH           Hq"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     qHHHq     "},
-            {"     AqCqA     ","   AAA d AAA   ","  AA   d   AA  "," AA         AA "," A           A ","AA           AA","q             q","Cdd         ddC","q             q","AA           AA"," A           A "," AA         AA ","  AA   d   AA  ","   AAA d AAA   ","     AqCqA     "},
-            {"     qHHHq     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","qH           Hq","H             H","H             H","H             H","qH           Hq"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     qHHHq     "},
-            {"               ","      qqq      ","               ","               ","               ","               "," q           q "," q           q "," q           q ","               ","               ","               ","               ","      qqq      ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"     qHHHq     ","   qqq   qqq   ","  qq       qq  "," qq         qq "," q           q ","qq           qq","H             H","H             H","H             H","qq           qq"," q           q "," qq         qq ","  qq       qq  ","   qqq   qqq   ","     qHHHq     "},
+            {"     AHHHA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","H             H","H             H","H             H","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AHHHA     "},
+            {"     qHHHq     ","   qqq   qqq   ","  qq       qq  "," qq         qq "," q           q ","qq           qq","H             H","H             H","H             H","qq           qq"," q           q "," qq         qq ","  qq       qq  ","   qqq   qqq   ","     qHHHq     "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+
         }))
         .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"     sHHHs     ","   sss   sss   ","  ss       ss  "," ss         ss "," s           s ","ss           ss","H             H","H             H","H             H","ss           ss"," s           s "," ss         ss ","  ss       ss  ","   sss   sss   ","     sHHHs     "},
+            {"     AHHHA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","H             H","H             H","H             H","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AHHHA     "},
+            {"     sHHHs     ","   sss   sss   ","  ss       ss  "," ss         ss "," s           s ","ss           ss","H             H","H             H","H             H","ss           ss"," s           s "," ss         ss ","  ss       ss  ","   sss   sss   ","     sHHHs     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
         .addShape(SolidifierModules.POWER_EFFICIENT_SUBSYSTEMS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"     tHHHt     ","   ttt   ttt   ","  tt       tt  "," tt         tt "," t           t ","tt           tt","H             H","H             H","H             H","tt           tt"," t           t "," tt         tt ","  tt       tt  ","   ttt   ttt   ","     tHHHt     "},
+            {"     AHHHA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","H             H","H             H","H             H","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AHHHA     "},
+            {"     tHHHt     ","   ttt   ttt   ","  tt       tt  "," tt         tt "," t           t ","tt           tt","H             H","H             H","H             H","tt           tt"," t           t "," tt         tt ","  tt       tt  ","   ttt   ttt   ","     tHHHt     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+
         }))
         .addShape(SolidifierModules.UNSET.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -287,7 +280,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0)))) // placeholder
         .addElement('b', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('c', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
-        .addElement('d', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc, 14)))
         .addElement('e', ofBlock(GregTechAPI.sBlockFrames, 581))
         .addElement('f', ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))
         .addElement('g', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
@@ -302,6 +294,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('o', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
         .addElement('p', lazy(() -> ofBlock(Loaders.compactFusionCoil, 4)))
         .addElement('q', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8))
+        .addElement('r', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
+        .addElement('s', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10))
+        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6))
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -804,7 +799,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
             }
 
-
         }.setUnlimitedTierSkips();
     }
 
@@ -812,8 +806,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fluidSolidifierRecipes;
     }
-
-
 
     /*
      * things to consider with processing math
@@ -912,6 +904,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         checkSolidifierModules();
         return 2 + ocFactorAdditive + " : 4";
     }
+
     public String coolingStrOrder(String val1, String val2, String val3) {
         return EnumChatFormatting.BLUE + val1
             + "/"
@@ -923,22 +916,22 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             + EnumChatFormatting.GRAY;
     }
 
-    //Render code
+    // Render code
     private boolean renderDisabled = false;
     private boolean renderInitialized;
+
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
-        if(renderDisabled) return;
+        if (renderDisabled) return;
 
-        if(!renderInitialized)
-        {
+        if (!renderInitialized) {
             initializeRender();
-            if(!renderInitialized) return;
+            if (!renderInitialized) return;
         }
 
     }
 
-    private void initializeRender(){
+    private void initializeRender() {
         // spotless:off
         renderInitialized = true;
         // spotless:on
@@ -953,7 +946,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
     }
 
-    //data class
+    // data class
     private static class CoolingFluid {
 
         public Materials material;
