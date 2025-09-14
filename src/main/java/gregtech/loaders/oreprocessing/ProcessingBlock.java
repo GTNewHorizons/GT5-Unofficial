@@ -125,13 +125,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
 
-        if (tStack1 != null) GTModHandler
-            .removeRecipeDelayed(tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1);
-        if (tStack2 != null) GTModHandler
-            .removeRecipeDelayed(tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2);
+        if (tStack1 != null) {
+            GTModHandler.removeRecipeDelayed(tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1);
+        }
+        if (tStack2 != null) {
+            GTModHandler.removeRecipeDelayed(tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2);
+        }
         if (tStack3 != null) {
-            GTModHandler
-                .removeRecipeDelayed(tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3);
+            GTModHandler.removeRecipeDelayed(tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3);
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
