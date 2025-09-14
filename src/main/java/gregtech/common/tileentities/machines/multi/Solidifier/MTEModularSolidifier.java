@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -65,6 +67,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.misc.GTStructureChannels;
@@ -82,6 +85,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         new CoolingFluid(MaterialsUEVplus.SpaceTime, 2, 50),
         new CoolingFluid(MaterialsUEVplus.Eternity, 3, 25));
 
+    private final ArrayList<MTEHatchInput> mCoolantInputHatches = new ArrayList<>();
     private CoolingFluid currentCoolingFluid = null;
     private static int horizontalOffset = 7;
     private static int verticalOffset = 43;
@@ -198,7 +202,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
-            {"     AbcbA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","b             b","c             c","b             b","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AbcbA     "},
+            {"     AbdbA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","b             b","d             d","b             b","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AbdbA     "},
             {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
@@ -280,6 +284,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0)))) // placeholder
         .addElement('b', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('c', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
+        .addElement(
+            'd',
+            buildHatchAdder(MTEModularSolidifier.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEModularSolidifier::addCoolantInputToMachineList)
+                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
+                .dot(2)
+                .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('e', ofBlock(GregTechAPI.sBlockFrames, 581))
         .addElement('f', ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))
         .addElement('g', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
@@ -633,6 +644,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mTier = -1;
+        mCoolantInputHatches.clear();
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && mCasingAmount >= 14) {
             return checkModules();
         }
@@ -649,13 +661,27 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 moduleDepthOffsets[i])) {
                 return false;
             }
+            if (m == SolidifierModules.HYPERCOOLER && mCoolantInputHatches.size() != 1) return false;
         }
         return true;
 
     }
 
+    public boolean addCoolantInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchInput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
+            mCoolantInputHatches.add((MTEHatchInput) aMetaTileEntity);
+            return true;
+        }
+        return false;
+    }
+
     public CoolingFluid findCoolingFluid() {
-        for (MTEHatchInput hatch : mInputHatches) {
+        for (MTEHatchInput hatch : mCoolantInputHatches) {
             Optional<CoolingFluid> fluid = COOLING_FLUIDS.stream()
                 .filter(candidate -> drain(hatch, candidate.getStack(), false))
                 .findFirst();
@@ -698,24 +724,25 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     break;
                 case EFFICIENT_OC:
                     effOCPresent = true;
-                    ocFactorAdditive += 0.2F;
+                    ocFactorAdditive += 0.35F;
                     break;
                 case ACTIVE_TIME_DILATION_SYSTEM:
                     if (tdsPresent) break;
                     tdsPresent = true;
-                    euEffMultiplier *= 6;
+                    euEffMultiplier *= 8;
                     speedMultiplier *= 6;
                     break;
                 case STREAMLINED_CASTERS:
-                    parallelScaleMultiplier *= 0.5F;
-                    speedMultiplier *= 1.5F;
+                    parallelScaleMultiplier *= 0.8F;
+                    speedMultiplier *= 1.75F;
                     break;
                 case EXTRA_CASTING_BASINS:
-                    parallelScaleAdditive += 12;
+                    parallelScaleAdditive += 10;
                     break;
                 case POWER_EFFICIENT_SUBSYSTEMS:
-                    euEffAdditive -= 0.2F;
-                    speedMultiplier *= (2F / 3F);
+                    euEffAdditive -= 0.1f;
+                    euEffMultiplier *= 0.8f;
+                    speedMultiplier *= 0.9f;
                     break;
             }
         }
@@ -737,7 +764,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         logic.setEuModifier(euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
-        logic.setMaxTierSkips(3); // capped at 3 for now (current solidifier can do the same)
+        logic.setUnlimitedTierSkips(); // capped at 3 for now (current solidifier can do the same)
     }
 
     @Nonnull
@@ -793,13 +820,29 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
-                    .setMaxRegularOverclocks(
-                        additionaloverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
+                    .setMaxOverclocks(additionaloverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
                     .setDurationDecreasePerOC(ocFactorBase + ocFactorAdditive);
 
             }
 
-        }.setUnlimitedTierSkips();
+        };
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.runMachine(aBaseMetaTileEntity, aTick);
+        if (mMaxProgresstime > 0 && aTick % 20 == 0 && hypercoolerPresent) {
+            if (this.currentCoolingFluid != null) {
+                FluidStack fluid = this.currentCoolingFluid.getStack();
+                for (MTEHatchInput hatch : mCoolantInputHatches) {
+                    if (drain(hatch, fluid, false)) {
+                        drain(hatch, fluid, true);
+                        return;
+                    }
+                }
+                stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+            }
+        }
     }
 
     @Override
