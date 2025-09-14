@@ -162,11 +162,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(5 * SECONDS)
                 .eut(24)
                 .addTo(hammerRecipes);
-            if (tStack3 != null)
-                GTModHandler.addShapelessCraftingRecipe(tStack3, new Object[] { OrePrefixes.block.get(aMaterial) });
-            GTModHandler.addShapelessCraftingRecipe(tStack2, new Object[] { OrePrefixes.block.get(aMaterial) });
-            if (tStack1 != null)
-                GTModHandler.addShapelessCraftingRecipe(tStack1, new Object[] { OrePrefixes.block.get(aMaterial) });
         }
 
         if (tStack1 != null && !OrePrefixes.block.isIgnored(aMaterial) && aMaterial != Materials.Obsidian) {
