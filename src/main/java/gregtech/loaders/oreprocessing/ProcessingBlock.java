@@ -169,7 +169,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTModHandler.addShapelessCraftingRecipe(tStack1, new Object[] { OrePrefixes.block.get(aMaterial) });
         }
 
-        if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null && aMaterial != Materials.Obsidian) {
+        if (tStack1 != null && !OrePrefixes.block.isIgnored(aMaterial) && aMaterial != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
