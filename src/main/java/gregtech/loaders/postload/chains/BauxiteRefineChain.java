@@ -151,6 +151,39 @@ public class BauxiteRefineChain {
                 .duration(2 * SECONDS)
                 .eut(100)
                 .addTo(mixerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(ore, Materials.Sapphire, 9),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1),
+                    GTUtility.getIntegratedCircuit(9))
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
+                .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(9_000))
+                .duration(3 * SECONDS)
+                .eut(400)
+                .addTo(mixerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(ore, Materials.GreenSapphire, 9),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1),
+                    GTUtility.getIntegratedCircuit(9))
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
+                .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(9_000))
+                .duration(3 * SECONDS)
+                .eut(900)
+                .addTo(mixerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(ore, Materials.Ruby, 9),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1),
+                    GTUtility.getIntegratedCircuit(9))
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
+                .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(9_000))
+                .duration(3 * SECONDS)
+                .eut(900)
+                .addTo(mixerRecipes);
         }
 
         GTValues.RA.stdBuilder()
