@@ -119,20 +119,20 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
 
-        ItemStack tStack1 = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
-        ItemStack tStack2 = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
-        ItemStack tStack3 = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
+        ItemStack ingot = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
+        ItemStack gem = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
+        ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
         GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
 
-        if (tStack1 != null) {
-            GTModHandler.removeRecipeDelayed(tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1);
+        if (ingot != null) {
+            GTModHandler.removeRecipeDelayed(ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
         }
-        if (tStack2 != null) {
-            GTModHandler.removeRecipeDelayed(tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2);
+        if (gem != null) {
+            GTModHandler.removeRecipeDelayed(gem, gem, gem, gem, gem, gem, gem, gem, gem);
         }
-        if (tStack3 != null) {
-            GTModHandler.removeRecipeDelayed(tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3);
+        if (dust != null) {
+            GTModHandler.removeRecipeDelayed(dust, dust, dust, dust, dust, dust, dust, dust, dust);
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
@@ -151,20 +151,20 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
 
-        if (tStack1 != null) tStack1.stackSize = 9;
-        if (tStack2 != null) tStack2.stackSize = 9;
-        if (tStack3 != null) tStack3.stackSize = 9;
+        if (ingot != null) ingot.stackSize = 9;
+        if (gem != null) gem.stackSize = 9;
+        if (dust != null) dust.stackSize = 9;
 
-        if (tStack2 != null) {
+        if (gem != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(aStack)
-                .itemOutputs(tStack2)
+                .itemOutputs(gem)
                 .duration(5 * SECONDS)
                 .eut(24)
                 .addTo(hammerRecipes);
         }
 
-        if (tStack1 != null && !OrePrefixes.block.isIgnored(aMaterial) && aMaterial != Materials.Obsidian) {
+        if (ingot != null && !OrePrefixes.block.isIgnored(aMaterial) && aMaterial != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
