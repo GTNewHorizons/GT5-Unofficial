@@ -374,8 +374,9 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                     continue;
                 }
 
-                long tMaxTime = System.nanoTime() + 1000000;
-                for (int j = 0; j < mAccelerateStatic[getSpeedTierOverride()]; j++) {
+                final long tMaxTime = System.nanoTime() + 1000000;
+                final int iterations = mAccelerateStatic[getSpeedTierOverride()];
+                for (int j = 0; j < iterations; j++) {
                     tTile.updateEntity();
                     if (System.nanoTime() > tMaxTime) {
                         break;
