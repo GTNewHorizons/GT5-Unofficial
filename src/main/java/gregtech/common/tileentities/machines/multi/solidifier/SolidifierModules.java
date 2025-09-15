@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.Solidifier;
+package gregtech.common.tileentities.machines.multi.solidifier;
 
 import net.minecraft.item.ItemStack;
 

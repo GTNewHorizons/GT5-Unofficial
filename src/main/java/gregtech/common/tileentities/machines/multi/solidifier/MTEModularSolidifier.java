@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.Solidifier;
+package gregtech.common.tileentities.machines.multi.solidifier;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;

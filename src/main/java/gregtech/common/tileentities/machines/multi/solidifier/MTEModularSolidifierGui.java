@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.Solidifier;
+package gregtech.common.tileentities.machines.multi.solidifier;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
