@@ -115,7 +115,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 tryFindDroneCenter();
             }
 
-            if (center != null && center.getBaseMetaTileEntity()
+            if (hasConnection() && center.getBaseMetaTileEntity()
                 .isActive()) {
                 doNormalMaintain();
             }
@@ -288,8 +288,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
-        tag.setBoolean("connected", center != null);
-        if (center != null) {
+        tag.setBoolean("connected", hasConnection());
+        if (hasConnection()) {
             tag.setInteger(
                 "x",
                 center.getCoords()
@@ -302,11 +302,11 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 "z",
                 center.getCoords()
                     .get2());
-        }
 
-        DroneConnection firstConnection = getFirstConnection();
-        if (firstConnection != null) {
-            tag.setString("name", firstConnection.customName);
+            DroneConnection firstConnection = getFirstConnection();
+            if (firstConnection != null && firstConnection.customName != null) {
+                tag.setString("name", firstConnection.customName);
+            }
         }
     }
 
