@@ -160,7 +160,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
                 .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(9_000))
                 .duration(3 * SECONDS)
-                .eut(400)
+                .eut(480)
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -171,7 +171,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
                 .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(9_000))
                 .duration(3 * SECONDS)
-                .eut(400)
+                .eut(480)
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -182,7 +182,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
                 .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(9_000))
                 .duration(3 * SECONDS)
-                .eut(400)
+                .eut(480)
                 .addTo(mixerRecipes);
         }
 
