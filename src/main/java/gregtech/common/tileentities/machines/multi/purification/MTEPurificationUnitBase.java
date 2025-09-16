@@ -244,6 +244,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                     amountAvailable += fluid.amount;
                 }
             }
+
             // Determine effective parallel
             effectiveParallel = (int) Math.min(maxParallel, Math.floorDiv(amountAvailable, waterInput.amount));
             // This should not happen, throw an error
@@ -370,7 +371,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
         for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
             fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
-            fluidOutputs[i].amount *= effectiveParallel;
+            // Clamp the fluid output to max int to avoid overflow at extreme parallels
+            fluidOutputs[i].amount = (int) Math
+                .min((long) effectiveParallel * fluidOutputs[i].amount, Integer.MAX_VALUE);
         }
 
         ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
@@ -442,8 +445,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private void onRecipeFail() {
         // Possibly output lower quality water.
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
-        FluidStack outputWater = getDegradedOutputWater();
-        this.addOutput(outputWater);
+        if (mOutputFluids != null) {
+            FluidStack outputWater = getDegradedOutputWater();
+            this.addOutput(outputWater);
+        }
     }
 
     /**
