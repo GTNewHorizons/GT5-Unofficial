@@ -223,15 +223,6 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return aDidAdd;
     }
 
-    @Override
-    public boolean addInputBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
-        return super.addInputBusToMachineList(aTileEntity, aBaseCasingIndex);
-    }
-
     /*
      * Handle I/O with custom hatches
      */
@@ -591,6 +582,11 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCheckSteamBusInput() {
         return false;
     }
 }

@@ -34,6 +34,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -533,7 +536,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      * @param context Generic data blob that is synced with the client.
      */
     protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-
+        if (shouldCheckSteamBusInput()) {
+            if (!mInputBusses.isEmpty()) {
+                for (MTEHatchInputBus inputBus : mInputBusses) {
+                    if (inputBus instanceof MTEHatchSteamBusInput) {
+                        errors.add(StructureError.CANT_USE_STEAM_HATCH);
+                        NBTTagCompound errorTag = new NBTTagCompound();
+                        GregtechItemList.Hatch_Input_Bus_Steam.get(1).writeToNBT(errorTag);
+                        context.setTag("cantUseHatch", errorTag);
+                        return;
+                    }
+                }
+            }
+            if (!mOutputBusses.isEmpty()) {
+                for (MTEHatchOutputBus inputBus : mOutputBusses) {
+                    if (inputBus instanceof MTEHatchSteamBusOutput) {
+                        errors.add(StructureError.CANT_USE_STEAM_HATCH);
+                        NBTTagCompound errorTag = new NBTTagCompound();
+                        GregtechItemList.Hatch_Output_Bus_Steam.get(1).writeToNBT(errorTag);
+                        context.setTag("cantUseHatch", errorTag);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -550,7 +576,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      */
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
         List<String> lines) {
-
+        if (errors.contains(StructureError.CANT_USE_STEAM_HATCH)) {
+            NBTTagCompound errorTag = context.getCompoundTag("cantUseHatch");
+            ItemStack stack = ItemStack.loadItemStackFromNBT(errorTag);
+            lines.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.cant_use_hatch",
+                    stack.getDisplayName()));
+        }
     }
 
     /**
@@ -3627,6 +3660,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
+    }
+
+    public boolean shouldCheckSteamBusInput() {
+        return true;
     }
 
     public void setMaxParallelForPanel(int parallel) {
