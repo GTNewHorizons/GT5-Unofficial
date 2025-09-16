@@ -41,8 +41,6 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus implements IMEM
 
     private final Map<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<>();
 
-    private static final BaseActionSource ACTION_SOURCE = new BaseActionSource();
-
     public MTEHatchInputBusCompressed(int id, String name, String nameRegional, int tier, int slots,
         int stackCapacity) {
         super(
@@ -96,6 +94,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus implements IMEM
         return slotCount;
     }
 
+    @Override
     public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
         return GTUtility.longToInt((stack == null ? 64 : stack.getMaxStackSize()) * (long) stackCapacity);
     }
