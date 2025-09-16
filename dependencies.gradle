@@ -50,9 +50,9 @@ dependencies {
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.11.20:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.4-GTNH:dev")
     compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.17:dev")
-    implementation('com.github.GTNewHorizons:Baubles-Expanded:2.1.13-GTNH:dev') {transitive=false}
+    implementation('com.github.GTNewHorizons:Baubles-Expanded:2.1.14-GTNH:dev') {transitive=false}
     // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
-    compileOnly('com.github.GTNewHorizons:Baubles-Expanded:2.1.13-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Baubles-Expanded:2.1.14-GTNH:dev') {transitive=false}
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.10.3-GTNH:dev")
 
@@ -80,7 +80,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.19:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.6.103:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.6.104:dev")
     compileOnly('com.github.GTNewHorizons:Botania:1.12.25-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.5-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
@@ -88,7 +88,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.19-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
-    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.13-GTNH:dev') {transitive =  false}
+    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.14-GTNH:dev') {transitive =  false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.7.50:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.2:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
@@ -141,7 +141,7 @@ project.getConfigurations()
         final DependencySubstitutions ds = c.getResolutionStrategy()
             .getDependencySubstitution();
         ds.substitute(ds.module("com.github.GTNewHorizons:Baubles"))
-            .using(ds.module("com.github.GTNewHorizons:Baubles-Expanded:2.1.13-GTNH"))
+            .using(ds.module("com.github.GTNewHorizons:Baubles-Expanded:2.1.14-GTNH"))
             .withClassifier("dev")
             .because("Baubles-Expanded replaces Baubles");
     });
