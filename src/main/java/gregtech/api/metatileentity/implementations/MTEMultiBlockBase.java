@@ -34,9 +34,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -149,6 +146,9 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
@@ -542,7 +542,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     if (inputBus instanceof MTEHatchSteamBusInput) {
                         errors.add(StructureError.CANT_USE_STEAM_HATCH);
                         NBTTagCompound errorTag = new NBTTagCompound();
-                        GregtechItemList.Hatch_Input_Bus_Steam.get(1).writeToNBT(errorTag);
+                        GregtechItemList.Hatch_Input_Bus_Steam.get(1)
+                            .writeToNBT(errorTag);
                         context.setTag("cantUseHatch", errorTag);
                         return;
                     }
@@ -553,7 +554,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     if (inputBus instanceof MTEHatchSteamBusOutput) {
                         errors.add(StructureError.CANT_USE_STEAM_HATCH);
                         NBTTagCompound errorTag = new NBTTagCompound();
-                        GregtechItemList.Hatch_Output_Bus_Steam.get(1).writeToNBT(errorTag);
+                        GregtechItemList.Hatch_Output_Bus_Steam.get(1)
+                            .writeToNBT(errorTag);
                         context.setTag("cantUseHatch", errorTag);
                         return;
                     }
@@ -579,10 +581,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (errors.contains(StructureError.CANT_USE_STEAM_HATCH)) {
             NBTTagCompound errorTag = context.getCompoundTag("cantUseHatch");
             ItemStack stack = ItemStack.loadItemStackFromNBT(errorTag);
-            lines.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.cant_use_hatch",
-                    stack.getDisplayName()));
+            lines.add(StatCollector.translateToLocalFormatted("GT5U.gui.cant_use_hatch", stack.getDisplayName()));
         }
     }
 
