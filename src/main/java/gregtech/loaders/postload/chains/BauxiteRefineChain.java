@@ -127,7 +127,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
                 .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1_000))
                 .duration(2 * SECONDS)
-                .eut(100)
+                .eut(TierEU.RECIPE_MV)
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -138,7 +138,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
                 .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1_000))
                 .duration(2 * SECONDS)
-                .eut(100)
+                .eut(TierEU.RECIPE_MV)
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -149,7 +149,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
                 .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1_000))
                 .duration(2 * SECONDS)
-                .eut(100)
+                .eut(TierEU.RECIPE_MV)
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -160,7 +160,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
                 .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(9_000))
                 .duration(3 * SECONDS)
-                .eut(400)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -171,7 +171,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
                 .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(9_000))
                 .duration(3 * SECONDS)
-                .eut(400)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -182,7 +182,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(9_000))
                 .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(9_000))
                 .duration(3 * SECONDS)
-                .eut(400)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
         }
 
