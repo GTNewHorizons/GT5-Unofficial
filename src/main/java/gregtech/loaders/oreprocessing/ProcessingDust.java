@@ -113,7 +113,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     if ((!OrePrefixes.block.isIgnored(aMaterial))
                         && (null == GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
                         && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null
-                        && (aMaterial != Materials.Clay)) {
+                        && (aMaterial != Materials.Clay)
+                        && (aMaterial != Materials.Netherrack)) {
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, aStack))
@@ -313,6 +314,19 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(4, aStack))
                             .itemOutputs(
                                 ItemList.IC2_Industrial_Diamond.get(3L),
+                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L))
+                            .duration(1 * SECONDS)
+                            .eut(TierEU.RECIPE_LV)
+                            .metadata(ADDITIVE_AMOUNT, 32)
+                            .addTo(implosionRecipes);
+                    }
+                        break;
+                    case "ManaDiamond":
+                    case "BotaniaDragonstone": {
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(GTUtility.copyAmount(4, aStack))
+                            .itemOutputs(
+                                GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L),
                                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)

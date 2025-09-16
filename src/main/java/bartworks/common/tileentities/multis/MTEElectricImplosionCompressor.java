@@ -307,7 +307,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         if (pistonEnabled && aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
             if (aBaseMetaTileEntity.isClientSide()) this.animatePiston(aBaseMetaTileEntity);
-            else if (aBaseMetaTileEntity.hasMufflerUpgrade()) GTValues.NW.sendPacketToAllPlayersInRange(
+            else if (aBaseMetaTileEntity.isMuffled()) GTValues.NW.sendPacketToAllPlayersInRange(
                 aBaseMetaTileEntity.getWorld(),
                 new PacketEIC(
                     new Coords(
@@ -369,7 +369,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (!aBaseMetaTileEntity.getWorld().isRemote) return;
 
         if (!this.getBaseMetaTileEntity()
-            .hasMufflerUpgrade())
+            .isMuffled())
             GTUtility.doSoundAtClient(
                 sound,
                 10,
