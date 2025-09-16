@@ -1,7 +1,6 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -15,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.Arrays;
 import java.util.List;
@@ -71,7 +71,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
-        .addElement('g', ofBlockAdder(MTEDissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
+        .addElement('g', chainAllGlasses())
         .build();
 
     public MTEDissolutionTank(String name) {
@@ -232,13 +232,13 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
-            .addCasingInfoExactly("Titanium Reinforced Borosilicate Glass", 24, false)
+            .addCasingInfoExactly("Any Borosilicate Glass", 24, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 9, false)
-            .addInputHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addOutputHatch("Hint block with dot 1")
-            .addOutputBus("Hint block with dot 1")
-            .addMaintenanceHatch("Hint block with dot 1")
+            .addInputHatch("Any Stainless Steel Casing")
+            .addInputBus("Any Stainless Steel Casing")
+            .addOutputHatch("Any Stainless Steel Casing")
+            .addOutputBus("Any Stainless Steel Casing")
+            .addMaintenanceHatch("Any Stainless Steel Casing")
             .toolTipFinisher();
 
         return tt;
