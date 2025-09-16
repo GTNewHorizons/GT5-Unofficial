@@ -146,7 +146,6 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
@@ -2077,7 +2076,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
             mSmartInputHatches.add(hatch);
         }
