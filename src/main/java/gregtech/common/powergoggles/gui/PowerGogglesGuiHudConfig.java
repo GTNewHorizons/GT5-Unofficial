@@ -1,4 +1,4 @@
-package gregtech.common.items.gui;
+package gregtech.common.powergoggles.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.gtnewhorizons.modularui.api.math.Color;
 
-import gregtech.common.handlers.PowerGogglesConfigHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 /**
  * Created by brandon3055 on 11/2/2016.
