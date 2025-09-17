@@ -70,12 +70,12 @@ public enum Particle {
 
     private final int LHCWeight;
 
+    private final int id;
+
     Particle(boolean canAcc, int id, float restMass, float maxSourceEnergy, String name, String shortName, float charge,
-             String chargeSpecial, int lhcWeight) { // ID
-        // is
-        // symbolic
-        // only
+             String chargeSpecial, int lhcWeight) {
         this.canAcc = canAcc;
+        this.id = id;
         this.restMass = restMass;
         this.maxSourceEnergy = maxSourceEnergy;
         this.name = name;
@@ -84,6 +84,8 @@ public enum Particle {
         this.chargeSpecial = chargeSpecial;
         this.LHCWeight = lhcWeight;
     }
+
+    public int getId() { return this.id; }
 
     public float getMass() {
         return this.restMass;

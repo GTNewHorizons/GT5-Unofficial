@@ -14,6 +14,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -22,11 +23,12 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
+import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -59,20 +61,18 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_E = "e";
-    private static final String STRUCTURE_PIECE_W = "w";
-    private static final String STRUCTURE_PIECE_S = "s";
-    private static final String STRUCTURE_PIECE_G = "g";
+    private static final String STRUCTURE_PIECE_EM = "e";
+    private static final String STRUCTURE_PIECE_WEAK = "w";
+    private static final String STRUCTURE_PIECE_STRONG = "s";
+    private static final String STRUCTURE_PIECE_GRAV = "g";
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private ArrayList<MTEHatchAdvancedOutputBeamline> mOutputBeamline = new ArrayList<>();
     @Nullable
     private HeatingCoilLevel mCoilLevel = null;
     @Nullable
     private Byte mSolenoidLevel = null;
-
-
 
     private float outputEnergy;
     private int outputRate;
@@ -81,6 +81,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     private static final IStructureDefinition<MTELargeHadronCollider> STRUCTURE_DEFINITION = StructureDefinition
         .<MTELargeHadronCollider>builder()
+
         //<editor-fold desc="main structure">
         .addShape(
             STRUCTURE_PIECE_MAIN,
@@ -1799,7 +1800,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="electromagnetism module">
         .addShape(
-            STRUCTURE_PIECE_E,
+            STRUCTURE_PIECE_EM,
             new String[][]{{
                 "           ",
                 "           ",
@@ -1938,7 +1939,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="weak module">
         .addShape(
-            STRUCTURE_PIECE_W,
+            STRUCTURE_PIECE_WEAK,
             new String[][]{{
                 "           ",
                 "           ",
@@ -2077,7 +2078,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="strong module">
         .addShape(
-            STRUCTURE_PIECE_S,
+            STRUCTURE_PIECE_STRONG,
             new String[][]{{
                 "  CCCCCCC  ",
                 " CCC   CCC ",
@@ -2216,7 +2217,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="gravity module">
         .addShape(
-            STRUCTURE_PIECE_G,
+            STRUCTURE_PIECE_GRAV,
             new String[][]{{
                 "  CCCCCCC  ",
                 " CCC   CCC ",
@@ -2368,19 +2369,18 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         .addElement('F', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(2)
             .adder(MTELargeHadronCollider::addBeamLineInputHatch).build()) // beamline input hatch
-        .addElement('1', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+        .addElement('1', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(3)
-            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // EM beam output hatch
-        .addElement('2', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+            .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatch).build()) // EM beam output hatch
+        .addElement('2', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(4)
-            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // Weak beam output hatch
-        .addElement('3', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+            .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatch).build()) // Weak beam output hatch
+        .addElement('3', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(5)
-            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // Strong beam output hatch
-        .addElement('4', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchOutputBeamline.class)
+            .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatch).build()) // Strong beam output hatch
+        .addElement('4', buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
             .casingIndex(CASING_INDEX_CENTRE).dot(6)
-            .adder(MTELargeHadronCollider::addBeamlineOutputHatch).build()) // Grav beam output hatch
-        // todo: make "advanced beamline output hatch"
+            .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatch).build()) // Grav beam output hatch
 
         .addElement('B', ofBlock(GregTechAPI.sBlockMetal6, 5)) // block of samarium
         .addElement(
@@ -2441,17 +2441,17 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         return false;
     }
 
-    private boolean addBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex) {
+    private boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex) {
+
         if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
+        IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
+            this.mOutputBeamline.add((MTEHatchAdvancedOutputBeamline) aMetaTileEntity);
+            return true;
         }
-
         return false;
+
     }
 
 
@@ -2522,15 +2522,15 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 54, 4, 1);
-        buildPiece(STRUCTURE_PIECE_E, stackSize, hintsOnly, 5, -1, -113);
+        buildPiece(STRUCTURE_PIECE_EM, stackSize, hintsOnly, 5, -1, -113);
         if (stackSize.stackSize > 1) {
-            buildPiece(STRUCTURE_PIECE_W, stackSize, hintsOnly, 5, -1, -9);
+            buildPiece(STRUCTURE_PIECE_WEAK, stackSize, hintsOnly, 5, -1, -9);
         }
         if (stackSize.stackSize > 2) {
-            buildPiece(STRUCTURE_PIECE_S, stackSize, hintsOnly, 57, -1, -61);
+            buildPiece(STRUCTURE_PIECE_STRONG, stackSize, hintsOnly, 57, -1, -61);
         }
         if (stackSize.stackSize > 3) {
-            buildPiece(STRUCTURE_PIECE_G, stackSize, hintsOnly, -47, -1, -61);
+            buildPiece(STRUCTURE_PIECE_GRAV, stackSize, hintsOnly, -47, -1, -61);
         }
     }
 
@@ -2539,10 +2539,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         int built = 0;
 
         built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 54, 4, 1, elementBudget, env, false, true);
-        built += survivalBuildPiece(STRUCTURE_PIECE_E, stackSize, 5, -1, -113, elementBudget, env, false, true);
+        built += survivalBuildPiece(STRUCTURE_PIECE_EM, stackSize, 5, -1, -113, elementBudget, env, false, true);
         if (stackSize.stackSize > 1) {
             built += survivalBuildPiece(
-                STRUCTURE_PIECE_W,
+                STRUCTURE_PIECE_WEAK,
                 stackSize,
                 5,
                 -1,
@@ -2554,7 +2554,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         }
         if (stackSize.stackSize > 2) {
             built += survivalBuildPiece(
-                STRUCTURE_PIECE_S,
+                STRUCTURE_PIECE_STRONG,
                 stackSize,
                 57,
                 -1,
@@ -2566,7 +2566,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         }
         if (stackSize.stackSize > 3) {
             built += survivalBuildPiece(
-                STRUCTURE_PIECE_G,
+                STRUCTURE_PIECE_GRAV,
                 stackSize,
                 -47,
                 -1,
@@ -2579,18 +2579,23 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         return built;
     }
 
-    private int mCasingAmount;
+    public boolean emEnabled;
+    public boolean weakEnabled;
+    public boolean strongEnabled;
+    public boolean gravEnabled;
 
-    private void onCasingAdded() {
-        mCasingAmount++;
-    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        checkPiece(STRUCTURE_PIECE_E,5, -1, -113);
-        checkPiece(STRUCTURE_PIECE_W,5, -1, -9);
-        checkPiece(STRUCTURE_PIECE_S,57, -1, -61);
-        checkPiece(STRUCTURE_PIECE_G,-47, -1, -61);
+
+        mInputBeamline.clear();
+        mOutputBeamline.clear();
+
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM,5, -1, -113);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK,5, -1, -9);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG,57, -1, -61);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV,-47, -1, -61);
+
         return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1);
 
     }
@@ -2626,9 +2631,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.mEfficiency = 10000; //todo: verify what this means. this means the efficiency is always 100.00%, right?
-        this.mEfficiencyIncrease = 10000; // todo: dunno what this does
+        this.mEfficiency = 10000 ;
+        this.mEfficiencyIncrease = 10000;
         this.mMaxProgresstime = TickTime.SECOND;
+
         //todo: // energy this.lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] * this.getMaxInputAmps();
 
         //todo: same^ // long voltage = this.getMaxInputEu();
@@ -2716,8 +2722,13 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         if (!this.mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
-                o.dataPacket = packet;
+            for (MTEHatchAdvancedOutputBeamline o : this.mOutputBeamline) {
+                if (o.hasBlacklist()) {
+                    if (o.getBlacklist().contains(this.outputParticleID)) {
+                        continue;
+                    }
+                    o.dataPacket = packet;
+                }
             }
         }
     }
