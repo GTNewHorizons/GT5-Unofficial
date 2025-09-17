@@ -393,7 +393,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addBulkMachineInfo(16, speedModifierBase, 1.0f)
+            .addBulkMachineInfo(parallelScaleBase, speedModifierBase, euEffBase)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
                     + "not"
@@ -589,6 +589,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = 0;
         built += survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
@@ -596,7 +597,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             horizontalOffset,
             verticalOffset,
             depthOffset,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -609,7 +610,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     moduleHorizontalOffsets[i],
                     moduleVerticalOffsets[i],
                     moduleDepthOffsets[i],
-                    elementBudget,
+                    realBudget,
                     env,
                     false,
                     true);
@@ -733,8 +734,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     speedMultiplier *= 6;
                     break;
                 case STREAMLINED_CASTERS:
-                    parallelScaleMultiplier *= 0.8F;
-                    speedMultiplier *= 1.75F;
+                    parallelScaleMultiplier *= 0.9F;
+                    speedMultiplier *= 1.6F;
                     break;
                 case EXTRA_CASTING_BASINS:
                     parallelScaleAdditive += 10;
@@ -764,7 +765,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         logic.setEuModifier(euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
-        logic.setUnlimitedTierSkips(); // capped at 3 for now (current solidifier can do the same)
+        logic.setUnlimitedTierSkips();
     }
 
     @Nonnull
@@ -868,7 +869,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     @Override
-    public boolean supportsInputSeparation() {
+    public boolean isInputSeparationEnabled() {
         return true;
     }
 
