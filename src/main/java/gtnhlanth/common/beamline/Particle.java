@@ -50,6 +50,8 @@ public enum Particle {
     // Nuclei
     ALPHA(true, 18, 3727.38f, 8000, "alpha",
         "\u03B1", 2, null,0);
+    //todo: quantum anomaly
+    //todo: gregs boson
 
     // The IDs must be in order.
 
@@ -119,7 +121,9 @@ public enum Particle {
         return StatCollector.translateToLocal("particle." + this.name) + " (" + this.shortName + ")";
     }
 
+    private static final Particle[] ParticleArray = values();
+
     public static Particle getParticleFromId(int id) {
-        return Particle.values()[id];
+        return ParticleArray[id];
     }
 }
