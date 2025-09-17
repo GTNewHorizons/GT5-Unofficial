@@ -236,7 +236,6 @@ public class HatchElementBuilder<T> {
         mHatchItemFilter = (t, s) -> aHatchItemFilter.apply(t);
         return this;
     }
-    // this one comes up ^^^^
 
     public HatchElementBuilder<T> hatchItemFilterAnd(
         Function<? super T, ? extends Predicate<ItemStack>> aHatchItemFilter) {
