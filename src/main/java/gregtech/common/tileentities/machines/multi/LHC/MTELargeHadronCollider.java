@@ -6,6 +6,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
@@ -19,6 +20,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -31,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +47,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -57,8 +64,15 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     private static final String STRUCTURE_PIECE_S = "s";
     private static final String STRUCTURE_PIECE_G = "g";
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    @Nullable
+    private HeatingCoilLevel mCoilLevel = null;
+    @Nullable
+    private Byte mSolenoidLevel = null;
+
+
 
     private float outputEnergy;
     private int outputRate;
@@ -2369,8 +2383,21 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         // todo: make "advanced beamline output hatch"
 
         .addElement('B', ofBlock(GregTechAPI.sBlockMetal6, 5)) // block of samarium
-        .addElement('I', ofBlock(GregTechAPI.sBlockCasings13, 10)) // coils - tiered? // todo
-        .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 10)) // superconductor coils - tiered? // todo
+        .addElement(
+            'I',
+            GTStructureChannels.HEATING_COIL.use(
+                activeCoils(
+                    ofCoil(
+                        MTELargeHadronCollider::setCoilLevel,
+                        MTELargeHadronCollider::getCoilLevel)))
+        )
+        .addElement(
+            'J',
+            GTStructureChannels.SOLENOID.use(
+                ofSolenoidCoil(
+                    MTELargeHadronCollider::setSolenoidLevel,
+                    MTELargeHadronCollider::getSolenoidLevel))
+        )
         .addElement('K', ofBlock(GregTechAPI.sBlockMetal3, 6)) // block of gallium
         .addElement('L', ofBlock(GregTechAPI.sBlockMetal5, 2)) // block of neutronium
         .addElement('M', ofBlock(GregTechAPI.sBlockCasings13, 10)) // block of infinity // todo
@@ -2385,6 +2412,20 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     public MTELargeHadronCollider(String aName) {
         super(aName);
+    }
+    private void setCoilLevel(HeatingCoilLevel level) {
+        mCoilLevel = level;
+    }
+    private HeatingCoilLevel getCoilLevel() {
+        return mCoilLevel;
+    }
+
+    private Byte getSolenoidLevel() {
+        return mSolenoidLevel;
+    }
+
+    private void setSolenoidLevel(byte level) {
+        mSolenoidLevel = level;
     }
 
     private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
@@ -2499,7 +2540,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 54, 4, 1, elementBudget, env, false, true);
         built += survivalBuildPiece(STRUCTURE_PIECE_E, stackSize, 5, -1, -113, elementBudget, env, false, true);
-        if (built >= 0) return built;
         if (stackSize.stackSize > 1) {
             built += survivalBuildPiece(
                 STRUCTURE_PIECE_W,
@@ -2546,13 +2586,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) { // todo: modify to allow lower than max tier structure
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)) return false;
-        if (!checkPiece(STRUCTURE_PIECE_E, 5,-1,-113)) return false;
-        if (!checkPiece(STRUCTURE_PIECE_W, 5, -1, -9)) return false;
-        if (!checkPiece(STRUCTURE_PIECE_S, 57, -1, -61)) return false;
-        return checkPiece(STRUCTURE_PIECE_G, -47, -1, -61);
+        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1);
+
     }
 
 
@@ -2586,7 +2623,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000); // todo: dunno what this does
+        this.mEfficiency = 10000; //todo: verify what this means. this means the efficiency is always 100.00%, right?
         this.mEfficiencyIncrease = 10000; // todo: dunno what this does
         this.mMaxProgresstime = TickTime.SECOND;
         //todo: // energy this.lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] * this.getMaxInputAmps();
