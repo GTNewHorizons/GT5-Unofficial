@@ -231,7 +231,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
         IGregTechTileEntity tMte = getBaseMetaTileEntity();
 
-        if (tMte == null || tMte.hasMufflerUpgrade()) return;
+        if (tMte == null || tMte.isMuffled()) return;
 
         if (mMaintenanceSound == null) {
             setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
