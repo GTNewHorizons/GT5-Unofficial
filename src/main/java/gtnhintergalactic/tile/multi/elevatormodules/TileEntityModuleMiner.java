@@ -121,7 +121,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** Flag if the user modified the filter */
     protected boolean wasFilterModified;
 
-    protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
+    protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutpost");
 
     // region Parameters
 
@@ -994,6 +994,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        // Standard machine checks and filter updates
         if (!super.checkMachine_EM(aBaseMetaTileEntity, aStack)) {
             return false;
         }
@@ -1001,11 +1002,22 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             wasFilterModified = false;
             generateOreConfigurationList();
         }
-        if (SpaceProjectManager.teamHasProject(getBaseMetaTileEntity().getOwnerUuid(), ASTEROID_OUTPOST)) {
-            ISpaceProject proj = SpaceProjectManager
-                .getTeamProject(getBaseMetaTileEntity().getOwnerUuid(), SolarSystem.KuiperBelt, "AsteroidOutpost");
-            if (proj.isFinished()) {
-                asteroidOutpost = (ProjectAsteroidOutpost) proj;
+
+        // Always reset the outpost status before checking to ensure it's up to date.
+        asteroidOutpost = null;
+
+        // This adds a list to all the palyers that have the space project module upgrade, I dont know if theres a better apporch 
+        ArrayList<ISpaceProject> projects = new ArrayList<>(
+            SpaceProjectManager.getTeamSpaceProjects(getBaseMetaTileEntity().getOwnerUuid()));
+
+        System.out.println("DEBUG: Found " + projects.size() + " team projects");
+
+        // Loop through the projects to find the first completed Asteroid Outpost.
+        // This provides the intended global bonus from any completed outpost.
+        for (ISpaceProject proj : projects) {
+            if ("AsteroidOutpost".equals(proj.getProjectName()) && proj.isFinished()) {
+                asteroidOutpost = new ProjectAsteroidOutpost();
+                break;
             }
         }
         return true;
