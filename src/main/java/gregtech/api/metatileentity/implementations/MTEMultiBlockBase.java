@@ -67,7 +67,6 @@ import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.FluidDrawable;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -98,6 +97,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.widgets.CheckboxWidget;
 import gregtech.api.gui.widgets.StructureErrorSyncer;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
@@ -184,6 +184,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     protected int powerPanelMaxParallel = 1;
     protected boolean alwaysMaxParallel = true;
     protected int maxParallel = 1;
+    protected boolean makePowerfailEvents = true;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -345,6 +346,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
         aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
         aNBT.setBoolean("alwaysMaxParallel", alwaysMaxParallel);
+        aNBT.setBoolean("makePowerfailEvents", makePowerfailEvents);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
     }
 
@@ -363,6 +365,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         // If the key doesn't exist it should default true
         alwaysMaxParallel = !aNBT.hasKey("alwaysMaxParallel") || aNBT.getBoolean("alwaysMaxParallel");
         powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
+        makePowerfailEvents = !aNBT.hasKey("makePowerfailEvents") || aNBT.getBoolean("makePowerfailEvents");
 
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
         if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
@@ -572,8 +575,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public void setErrorDisplayID(int errorID) {
         this.errorDisplayID = errorID;
     }
-
-    private boolean wereCoilsActive = false;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -876,8 +877,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null
-            && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null && !getBaseMetaTileEntity().isMuffled()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -1289,11 +1289,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mProgresstime = 0;
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
-        getBaseMetaTileEntity().disableWorking();
-        getBaseMetaTileEntity().setShutDownReason(reason);
-        getBaseMetaTileEntity().setShutdownStatus(true);
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+        igte.disableWorking();
+        igte.setShutDownReason(reason);
+        igte.setShutdownStatus(true);
         if (reason.wasCritical()) {
             sendSound(INTERRUPT_SOUND_INDEX);
+        }
+        if (makePowerfailEvents && reason == ShutDownReasonRegistry.POWER_LOSS) {
+            GTMod.proxy.powerfailTracker.createPowerfailEvent(igte);
         }
     }
 
@@ -2456,12 +2460,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
+    protected void onGuiOpened(EntityPlayer player) {
+        super.onGuiOpened(player);
+
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+            GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
+        }
+    }
+
+    @Override
     public void onRemoval() {
         super.onRemoval();
         // Deactivate mufflers
         setMufflers(false);
 
         deactivateCoilLease();
+
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+            GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
+        }
     }
 
     @Override
@@ -2575,7 +2596,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean isMuffled() {
         final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         if (baseMetaTileEntity != null) {
-            return baseMetaTileEntity.hasMufflerUpgrade();
+            return baseMetaTileEntity.isMuffled();
         }
         return false;
     }
@@ -2983,6 +3004,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         builder
             .widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
         builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val));
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> makePowerfailEvents, val -> makePowerfailEvents = val));
 
         // "Max parallel" header text
         builder.widget(
@@ -3011,37 +3033,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     alwaysMaxParallel ? translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
                         : translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(70, 18)
+            .setSize(72, 18)
             .setPos(12, 40)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
 
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox(textField));
 
+        builder.widget(
+            new TextWidget("Powerfail Events").setPos(7, 59)
+                .setSize(85, 16));
+        builder.widget(
+            new CheckboxWidget(() -> makePowerfailEvents, (_cb, checked) -> makePowerfailEvents = checked)
+                .setPos(92, 59)
+                .setSize(16, 16));
+
         return builder.build();
     }
 
     public ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+        Widget button = new CheckboxWidget(() -> alwaysMaxParallel, (_cb, checked) -> {
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
-            alwaysMaxParallel = !alwaysMaxParallel;
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (alwaysMaxParallel) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
-                } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
+            alwaysMaxParallel = checked;
+        }).addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(88, 41)
+            .setPos(92, 41)
             .setSize(16, 16);
         return (ButtonWidget) button;
     }

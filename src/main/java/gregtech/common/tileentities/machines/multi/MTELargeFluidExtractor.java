@@ -273,8 +273,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
             .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
             .addInfo(String.format(
-                "Every coil tier gives a +%s speed bonus and a %s EU/t discount (multiplicative)",
-                TooltipHelper.speedText((float) SPEED_PER_COIL),
+                "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
+                TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
                 TooltipHelper.effText((float) (1-HEATING_COIL_EU_MULTIPLIER))
             ))
             .addInfo(String.format(
