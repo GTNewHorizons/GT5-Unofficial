@@ -228,7 +228,10 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
-        aCurrentOutputAmperage = aNBT.getByte("aCurrentOutputAmperage");
+        if (aNBT.hasKey("aCurrentOutputAmperage")) {
+            aCurrentOutputAmperage = aNBT.getByte("aCurrentOutputAmperage");
+        }
+
         if (aNBT.hasKey("aStoredEU")) {
             this.setEUVar(aNBT.getLong("aStoredEU"));
         }
