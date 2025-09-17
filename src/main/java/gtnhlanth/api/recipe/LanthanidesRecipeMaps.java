@@ -70,7 +70,7 @@ public class LanthanidesRecipeMaps {
 
                 StatCollector.translateToLocal("beamline.energy") + ": <="
                     + GTUtility.formatNumbers(Math.min(maxEnergy, particle.maxSourceEnergy()))
-                    + " keV",
+                    + " keV", //todo: make this look nicer for GeV
 
                 StatCollector.translateToLocal("beamline.focus") + ": " + GTUtility.formatNumbers(focus),
 

@@ -2587,7 +2587,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
+        checkPiece(STRUCTURE_PIECE_E,5, -1, -113);
+        checkPiece(STRUCTURE_PIECE_W,5, -1, -9);
+        checkPiece(STRUCTURE_PIECE_S,57, -1, -61);
+        checkPiece(STRUCTURE_PIECE_G,-47, -1, -61);
         return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1);
 
     }
@@ -2676,7 +2679,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             double thresholdMeV = max(p.getMass(),0.5); // massless particles have a threshold of 0.5 (arbitrary).
                                                         // massive particles have a threshold equal to their rest mass.
             double w = (collisionEnergyMeV < thresholdMeV) ? 0.0
-                : (collisionEnergyMeV / thresholdMeV);
+                : p.getLHCWeight();
 
             if (w < 0 || Double.isNaN(w) || Double.isInfinite(w)) w = 0.0;
 
