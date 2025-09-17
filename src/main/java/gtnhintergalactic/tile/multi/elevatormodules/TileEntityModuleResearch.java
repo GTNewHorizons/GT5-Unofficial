@@ -24,7 +24,7 @@ import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
  *
  * @author minecraft7771
  *
- * RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
+ *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
  */
 public class TileEntityModuleResearch extends TileEntityModuleBase {
 

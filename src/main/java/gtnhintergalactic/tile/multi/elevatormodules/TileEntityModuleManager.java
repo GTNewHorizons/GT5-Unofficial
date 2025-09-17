@@ -61,7 +61,7 @@ import tectech.thing.gui.TecTechUITextures;
  *
  * @author minecraft7771
  *
- * RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
+ *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
  */
 public class TileEntityModuleManager extends TileEntityModuleBase {
 
