@@ -131,7 +131,7 @@ public class NetheriteRecipes {
                 .addTo(multiblockChemicalReactorRecipes);
 
             GTValues.RA.stdBuilder() // Precipitation
-                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(42))
+                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(48))
                 .itemOutputs(ItemList.Prismarine_Precipitate.get(8))
                 .fluidInputs(Materials.PrismarineRichNitrobenzeneSolution.getFluid(16000))
                 .fluidOutputs(
