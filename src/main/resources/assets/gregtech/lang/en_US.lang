@@ -1656,6 +1656,39 @@ GT5U.gui.circuit.timer.description=Pulses Redstone
 GT5U.gui.circuit.timer.data_description.pulses=Pulses
 GT5U.gui.circuit.timer.data_description.time=Time
 
+GT5U.gui.text.second=%s second
+GT5U.gui.text.second.plural=%s seconds
+GT5U.gui.text.minute=%s minute
+GT5U.gui.text.minute.plural=%s minutes
+GT5U.gui.text.hour=%s hour
+GT5U.gui.text.hour.plural=%s hours
+GT5U.gui.text.day=%s day
+GT5U.gui.text.day.plural=%s days
+
+GT5U.gui.text.show-powerfail-layer=Show Powerfails
+GT5U.gui.chat.powerfail=%s at %s in %s powerfailed %s time %s ago
+GT5U.gui.chat.powerfail.plural=%s at %s in %s powerfailed %s times %s ago
+GT5U.gui.chat.powerfail.waypoint=%s (%s time, %s ago)
+GT5U.gui.chat.powerfail.waypoint.plural=%s (%s times, %s ago)
+
+GT5U.gui.chat.powerfail.waypoint.tooltip=Machine: %s\nLocation: %s\nCount: %s\nLast Occurrence: %s\nPress %s to clear
+
+GT5U.gui.chat.powerfail.hint=§7Use /powerfails help for more info.
+
+GT5U.gui.chat.powerfail.login=You have %s uncleared powerfail.
+GT5U.gui.chat.powerfail.login.plural=You have %s uncleared powerfails.
+
+GT5U.gui.chat.powerfail.cleared=Cleared all of your powerfails.
+GT5U.gui.chat.powerfail.cleared-dim=Cleared all of your powerfails in the current dimension.
+
+GT5U.gui.chat.powerfail.list.none=No powerfails have occurred.
+GT5U.gui.chat.powerfail.list.uncleared-header=Uncleared powerfails:
+GT5U.gui.chat.powerfail.list.entry=- %s
+GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
+
+GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
+GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -2396,7 +2429,7 @@ achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item 
 achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
 achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
-achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Oil/Gas/Fluid Drilling Rig
+achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Fluid Drilling Rig
 achievement.gt.blockmachines.multimachine.oildrillinfinite.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.oreprocessor=Integrated Ore Factory
 achievement.gt.blockmachines.multimachine.oreprocessor.desc=Processing all those ores.

@@ -90,12 +90,13 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
-import gregtech.common.handlers.PowerGogglesConfigHandler;
 import gregtech.common.misc.GTCommand;
+import gregtech.common.misc.GTPowerfailCommand;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
@@ -718,6 +719,7 @@ public class GTMod {
         event.registerServerCommand(new SPCommand());
         event.registerServerCommand(new SPMCommand());
         event.registerServerCommand(new SpaceProjectCommand());
+        event.registerServerCommand(new GTPowerfailCommand());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         RunnableMachineUpdate.initExecutorService();
     }

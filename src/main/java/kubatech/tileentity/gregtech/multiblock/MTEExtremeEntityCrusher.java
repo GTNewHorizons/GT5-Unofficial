@@ -89,6 +89,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -229,6 +230,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             ExtraUtilities.isModLoaded() ? ofBlock(Block.getBlockFromName("ExtraUtilities:spike_base_diamond"), 0)
                 : isAir())
         .build();
+
+    private static final int[][] VALID_RITUAL_POSITIONS = { { 0, -8, 2 }, { 0, -7, 2 } };
 
     private TileEntity masterStoneRitual = null;
     private TileEntity tileAltar = null;
@@ -518,7 +521,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             if (!isInRitualMode) return;
             if (masterStoneRitual == null) return;
             if (mMaxProgresstime == 0) return;
-            if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
+            if (event.mrs.equals(masterStoneRitual)) {
                 Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
                 if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
                     event.setCanceled(true); // we will handle that
@@ -872,27 +875,40 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private boolean connectToRitual() {
         if (masterStoneRitual == null) {
             if (!BloodMagic.isModLoaded()) return false;
-            ChunkCoordinates coords = this.getBaseMetaTileEntity()
-                .getCoords();
-            int[] abc = new int[] { 0, -8, 2 };
-            int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing()
-                .getWorldOffset(abc, xyz);
-            xyz[0] += coords.posX;
-            xyz[1] += coords.posY;
-            xyz[2] += coords.posZ;
-            masterStoneRitual = this.getBaseMetaTileEntity()
-                .getTileEntity(xyz[0], xyz[1], xyz[2]);
-        }
 
-        if (masterStoneRitual != null && !masterStoneRitual.isInvalid()
-            && masterStoneRitual instanceof TEMasterStone tRitualTe) {
-            if (tRitualTe.getCurrentRitual()
-                .equals(WellOfSufferingRitualName)) return true;
-        }
+            for (int[] ritualRelativePos : VALID_RITUAL_POSITIONS) {
+                masterStoneRitual = getTileEntityAtRelativePosition(ritualRelativePos);
+                if (isWellOfSufferingRitual(masterStoneRitual)) return true;
+            }
+        } else if (BloodMagic.isModLoaded() && isWellOfSufferingRitual(masterStoneRitual)) return true;
 
         masterStoneRitual = null;
         return false;
+    }
+
+    @Nullable
+    private TileEntity getTileEntityAtRelativePosition(int @NotNull [] relativePosition) {
+
+        if (relativePosition.length < 3) return null;
+
+        int[] relativeCoords = new int[] { 0, 0, 0 };
+        this.getExtendedFacing()
+            .getWorldOffset(relativePosition, relativeCoords);
+        ChunkCoordinates worldCoords = this.getBaseMetaTileEntity()
+            .getCoords();
+
+        return this.getBaseMetaTileEntity()
+            .getTileEntity(
+                worldCoords.posX + relativeCoords[0],
+                worldCoords.posY + relativeCoords[1],
+                worldCoords.posZ + relativeCoords[2]);
+    }
+
+    private static boolean isWellOfSufferingRitual(@Nullable TileEntity tileEntity) {
+        return tileEntity != null && !tileEntity.isInvalid()
+            && tileEntity instanceof TEMasterStone ritualTE
+            && ritualTE.getCurrentRitual()
+                .equals(WellOfSufferingRitualName);
     }
 
     @Override
