@@ -130,6 +130,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
                     ofChain(
                         buildHatchAdder(MTEIndustrialVacuumFreezer.class)
                             .adder(MTEIndustrialVacuumFreezer::addCryotheumHatch)
+                            .shouldReject(x -> !x.mCryotheumHatches.isEmpty())
                             .hatchId(MetaTileEntityIDs.Hatch_Input_Cryotheum.ID)
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
