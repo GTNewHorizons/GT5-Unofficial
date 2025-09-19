@@ -282,6 +282,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
+import gregtech.common.powergoggles.ItemPowerGoggles;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;

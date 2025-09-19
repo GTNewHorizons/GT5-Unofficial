@@ -106,8 +106,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
-            .setPos(174, 112)
-            .setSize(16, 16);
+            .setPos(200, 0)
+            .setSize(12, 12);
     }
 
     Pos2d getVoidingModeButtonPos();

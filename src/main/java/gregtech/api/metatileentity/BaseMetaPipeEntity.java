@@ -1181,7 +1181,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean hasMufflerUpgrade() {
+    public boolean isMuffled() {
         return false;
     }
 
