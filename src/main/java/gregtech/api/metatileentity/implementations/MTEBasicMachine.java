@@ -1037,7 +1037,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("Mothership");
     }
 
     /**
