@@ -296,7 +296,7 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    protected IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
