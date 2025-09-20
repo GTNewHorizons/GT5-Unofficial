@@ -1275,7 +1275,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
                         builder,
                         (widget, val) -> widget.notifyTooltipChange())
-                    .setPos(163, 5)
+                    .setPos(163, 19)
                     .setSize(7, 18))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {

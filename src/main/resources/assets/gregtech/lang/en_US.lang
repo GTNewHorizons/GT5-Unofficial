@@ -727,7 +727,7 @@ GT5U.power_goggles_config.text_good=Good Text Color
 GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
 
 GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pylon
-GT5U.maglevHarness.pylons=§4YOU MUST CONSTRUCT ADDITIONAL PYLONS!
+GT5U.maglevHarness.pylons=§9YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
