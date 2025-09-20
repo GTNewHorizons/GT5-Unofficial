@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -28,18 +29,24 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -55,6 +62,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -92,7 +100,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static int depthOffset = 0;
 
     public boolean terminalSwitch = false;
-    private int mTier = 0; // 1 - UEV , 2 - ~UI0oV, 3 - ~UXV
+    private int tier = 0; // 1 - UEV , 2 - ~UI0oV, 3 - ~UXV
     private final float speedModifierBase = 2.5F;
     private final float euEffBase = 1F;
     private final int parallelScaleBase = 16;
@@ -321,23 +329,23 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mTier = aNBT.getInteger("multiTier");
+        tier = aNBT.getInteger("multiTier");
         modules[0] = SolidifierModules.getModule(aNBT.getInteger("module1OR"));
         modules[1] = SolidifierModules.getModule(aNBT.getInteger("module2OR"));
         modules[2] = SolidifierModules.getModule(aNBT.getInteger("module3OR"));
         modules[3] = SolidifierModules.getModule(aNBT.getInteger("module4OR"));
-        renderDisabled = aNBT.getBoolean("renderDisabled");
+        shouldRender = aNBT.getBoolean("shouldRender");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("multiTier", mTier);
+        aNBT.setInteger("multiTier", tier);
         aNBT.setInteger("module1OR", modules[0].ordinal());
         aNBT.setInteger("module2OR", modules[1].ordinal());
         aNBT.setInteger("module3OR", modules[2].ordinal());
         aNBT.setInteger("module4OR", modules[3].ordinal());
-        aNBT.setBoolean("renderDisabled", renderDisabled);
+        aNBT.setBoolean("shouldRender", shouldRender);
     }
 
     @Override
@@ -572,7 +580,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
-        for (int i = 0; i < 2 + (mTier - 1); i++) {
+        for (int i = 0; i < 2 + (tier - 1); i++) {
             SolidifierModules m = modules[i];
             if (m != SolidifierModules.UNSET) {
                 buildPiece(
@@ -601,7 +609,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             env,
             false,
             true);
-        for (int i = 0; i < 2 + (mTier - 1); i++) {
+        for (int i = 0; i < 2 + (tier - 1); i++) {
             SolidifierModules m = modules[i];
             if (m != SolidifierModules.UNSET) {
                 built += survivalBuildPiece(
@@ -627,11 +635,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     private void setMachineTier(int tier) {
-        mTier = tier;
+        this.tier = tier;
     }
 
     private int getMachineTier() {
-        return mTier;
+        return tier;
     }
 
     @Nullable
@@ -644,7 +652,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        mTier = -1;
+        tier = -1;
         mCoolantInputHatches.clear();
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && mCasingAmount >= 14) {
             return checkModules();
@@ -653,7 +661,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     private boolean checkModules() {
-        for (int i = 0; i < 2 + (mTier - 1); i++) {
+        for (int i = 0; i < 2 + (tier - 1); i++) {
             SolidifierModules m = modules[i];
             if (!checkPiece(
                 m.structureID,
@@ -712,7 +720,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public void checkSolidifierModules() {
         resetParameters();
         // loop through each module. based on tier. 2 - 4 modules.
-        for (int i = 0; i < 2 + (mTier - 1); i++) {
+        for (int i = 0; i < 2 + (tier - 1); i++) {
             SolidifierModules checkedModule = modules[i];
             switch (checkedModule) {
                 case UNSET:
@@ -961,33 +969,108 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     // Render code
-    private boolean renderDisabled = false;
+    private boolean shouldRender = true;
     private boolean renderInitialized;
+    private static ResourceLocation ringTexture;
+    private static IModelCustomExt ring1;
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
-        if (renderDisabled) return;
+
+        if (!shouldRender) return;
 
         if (!renderInitialized) {
             initializeRender();
             if (!renderInitialized) return;
         }
+        final TextureManager textureManager = Minecraft.getMinecraft()
+            .getTextureManager();
+        textureManager.bindTexture(ringTexture);
+
+        renderRingOne(x, y, z, timeSinceLastTick, modules[0].rgbArr);
+        renderRingTwo(x, y, z, timeSinceLastTick, modules[1].rgbArr);
+        renderRingThree(x, y, z, timeSinceLastTick, modules[2].rgbArr);
+        renderRingFour(x, y, z, timeSinceLastTick, modules[3].rgbArr);
 
     }
 
     private void initializeRender() {
         // spotless:off
         renderInitialized = true;
+        ring1 = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
+         ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
         // spotless:on
+    }
+
+    private void renderRingOne(double x, double y, double z, float timer, float[] rgba) {
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushMatrix();
+        GL11.glTranslated(x + 0.5f, y + 9.5f, z + 7.5F);
+        GL11.glScalef(1.2f, 0.6f, 1.2f);
+        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring1.renderAllVBO();
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
+    }
+
+    private void renderRingTwo(double x, double y, double z, float timer, float[] rgba) {
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushMatrix();
+        GL11.glTranslated(x + 0.5f, y + 17.5f, z + 7.5F);
+        GL11.glScalef(1.2f, 0.6f, 1.2f);
+        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring1.renderAllVBO();
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
+    }
+
+    private void renderRingThree(double x, double y, double z, float timer, float[] rgba) {
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushMatrix();
+        GL11.glTranslated(x + 0.5f, y + 25.5f, z + 7.5F);
+        GL11.glScalef(1.2f, 0.6f, 1.2f);
+        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring1.renderAllVBO();
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
+    }
+
+    private void renderRingFour(double x, double y, double z, float timer, float[] rgba) {
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushMatrix();
+        GL11.glTranslated(x + 0.5f, y + 33.5f, z + 7.5F);
+        GL11.glScalef(1.2f, 0.6f, 1.2f);
+        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring1.renderAllVBO();
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
     }
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        renderDisabled = !renderDisabled;
+        shouldRender = !shouldRender;
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
+            StatCollector.translateToLocal("GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled")));
+
+    }
+
+    private static final byte renderOnBitMap = 0b1;
+
+    @Override
+    public byte getUpdateData() {
+        byte returnVal = 0;
+        if (shouldRender) returnVal = renderOnBitMap;
+        return returnVal;
+    }
+
+    @Override
+    public void receiveClientEvent(byte eventID, byte value) {
+        if (eventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) {
+            shouldRender = (value == renderOnBitMap);
+        }
     }
 
     // data class
