@@ -28,12 +28,18 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import gregtech.GTMod;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -82,6 +88,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import org.lwjgl.opengl.GL20;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -974,10 +981,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static ResourceLocation ringTexture;
     private static IModelCustomExt ring1;
 
+    //TODO: figure out why isActive doesnt send to client by default???
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
 
-        if (!shouldRender) return;
+        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         if (!renderInitialized) {
             initializeRender();
@@ -998,7 +1006,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         // spotless:off
         renderInitialized = true;
         ring1 = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
-         ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
+        ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
         // spotless:on
     }
 
@@ -1008,6 +1016,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glTranslated(x + 0.5f, y + 9.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
         GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL11.glDisable(GL11.GL_LIGHTING);
         ring1.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
@@ -1019,6 +1028,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glTranslated(x + 0.5f, y + 17.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
         GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.f, 240.f);
         ring1.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
@@ -1030,6 +1041,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glTranslated(x + 0.5f, y + 25.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
         GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.f, 240.f);
         ring1.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
@@ -1041,6 +1054,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glTranslated(x + 0.5f, y + 33.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
         GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.f, 240.f);
         ring1.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
@@ -1050,27 +1065,24 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         shouldRender = !shouldRender;
-        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        getBaseMetaTileEntity().issueTileUpdate();
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled")));
 
     }
 
-    private static final byte renderOnBitMap = 0b1;
-
     @Override
-    public byte getUpdateData() {
-        byte returnVal = 0;
-        if (shouldRender) returnVal = renderOnBitMap;
-        return returnVal;
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("shouldRender", shouldRender);
+        return tag;
     }
 
     @Override
-    public void receiveClientEvent(byte eventID, byte value) {
-        if (eventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) {
-            shouldRender = (value == renderOnBitMap);
-        }
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        if (data.hasKey("shouldRender")) shouldRender = data.getBoolean("shouldRender");
     }
 
     // data class
