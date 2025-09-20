@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -27,7 +28,7 @@ public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)
                 .coverChildren()
