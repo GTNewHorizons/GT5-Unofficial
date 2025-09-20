@@ -102,9 +102,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     private final ArrayList<MTEHatchInput> mCoolantInputHatches = new ArrayList<>();
     private CoolingFluid currentCoolingFluid = null;
-    private static int horizontalOffset = 7;
-    private static int verticalOffset = 43;
-    private static int depthOffset = 0;
+    private static final int horizontalOffset = 7;
+    private static final int verticalOffset = 43;
+    private static final int depthOffset = 0;
 
     public boolean terminalSwitch = false;
     private int tier = 0; // 1 - UEV , 2 - ~UI0oV, 3 - ~UXV
@@ -135,9 +135,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     // array of ordinals for nbt saving purposes
     public SolidifierModules[] modules = { SolidifierModules.UNSET, SolidifierModules.UNSET, SolidifierModules.UNSET,
         SolidifierModules.UNSET };
-    private int[] moduleHorizontalOffsets = { 7, 7, 7, 7 };
-    private int[] moduleVerticalOffsets = { 12, 20, 28, 36 };
-    private int[] moduleDepthOffsets = { 0, 0, 0, 0 };
+    private final int[] moduleHorizontalOffsets = { 7, 7, 7, 7 };
+    private final int[] moduleVerticalOffsets = { 12, 20, 28, 36 };
+    private final int[] moduleDepthOffsets = { 0, 0, 0, 0 };
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
