@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.ITexture;
@@ -27,10 +29,18 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        setLockedFluidName(
+        super.setLockedFluidName(
             MaterialsUEVplus.Antimatter.getFluid(1)
                 .getFluid()
                 .getName());
+    }
+
+    @Override
+    public void setLockedFluidName(String lockedFluidName) {
+        this.lockedFluidName = MaterialsUEVplus.Antimatter.getFluid(1)
+            .getFluid()
+            .getName();
+        markDirty();
     }
 
     @Override
@@ -71,5 +81,10 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     @Override
     public boolean isLiquidOutput(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    protected FluidSlotWidget createFluidSlot() {
+        return super.createFluidSlot().setFilter(f -> f == MaterialsUEVplus.Antimatter.mFluid);
     }
 }
