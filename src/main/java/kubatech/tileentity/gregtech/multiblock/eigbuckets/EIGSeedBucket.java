@@ -251,7 +251,7 @@ public class EIGSeedBucket extends EIGBucket {
             this.x = x;
             this.y = y;
             this.z = z;
-            this.rand = new EIGSeedBucket.GreenHouseRandom();
+            this.rand = new Random();
         }
 
         @Override
@@ -302,15 +302,4 @@ public class EIGSeedBucket extends EIGBucket {
             return true;
         }
     }
-
-    private static class GreenHouseRandom extends Random {
-
-        private static final long serialVersionUID = -387271808935248890L;
-
-        @Override
-        public int nextInt(int bound) {
-            return 0;
-        }
-    }
-
 }
