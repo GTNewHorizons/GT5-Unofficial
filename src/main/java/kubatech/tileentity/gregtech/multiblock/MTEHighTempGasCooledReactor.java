@@ -306,26 +306,27 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor, HTGR")
-            .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
-            .addInfo("Needs a constant supply of coolant while running")
-            .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
-            .addInfo("Consumes up to 2.5% of total Fuel Pellets per Operation depending on efficiency")
-            .addInfo("Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
-            .addInfo("and affects total recipe time (at 100% eff, -50% total recipe time")
-            .addInfo(
-                "Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
-            .addInfo("Uses " + GTUtility.formatNumbers(POWER_USAGE) + " EU/t")
-            .addInfo("One Operation takes 1 hour")
+            .addInfo("TBD You can clear internal buffer by changing the mode with a screwdriver")
+            .addInfo("TBD Needs a constant supply of coolant while running")
+            .addInfo("TBD Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
+            .addInfo("TBD Consumes up to 2.5% of total Fuel Pellets per Operation depending on efficiency")
+            .addInfo("TBD Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
+            .addInfo("TBD and affects total recipe time (at 100% eff, -50% total recipe time")
+            .addInfo("TBD Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
+            .addInfo("Uses " + GTUtility.formatNumbers(POWER_USAGE) + " EU/t increasing when lacking Helium Gas")
+            .addInfo("One Operation takes variable amount of time based on reactor fill level")
             .beginStructureBlock(11, 12, 11, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Europium Reinforced Radiation Proof Casings", 500, false)
-            .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-            .addInputBus("Any top layer casing", 2)
-            .addInputHatch("Any top layer casing", 2)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("Any bottom layer casing", 1)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addController("Front center")
+            .addInputHatch("Top of the Pump", 1)
+            .addEnergyHatch("Top of the Pump", 1)
+            .addMaintenanceHatch("Top of the Pump", 1)
+            .addInputBus("Top of the Reactor", 2)
+            .addOutputBus("Bottom of the Reactor", 3)
+            .addInputHatch("Bottom of the first Coolant Tower", 4)
+            .addOutputHatch("Top of the first Coolant Tower", 5)
+            .addInputHatch("Top of the second Coolant Tower", 6)
+            .addOutputHatch("Bottom of the second Coolant Tower", 7)
+
             .toolTipFinisher(AuthorKuba);
         return tt;
     }
@@ -343,7 +344,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mCasing = 0;
-        return this.checkPiece("main", 16, 13, 3) && this.mCasing >= 500
+        return this.checkPiece("main", 16, 13, 3)
             && this.mMaintenanceHatches.size() == 1
             && !this.mInputHatches.isEmpty()
             && !this.mOutputHatches.isEmpty()
