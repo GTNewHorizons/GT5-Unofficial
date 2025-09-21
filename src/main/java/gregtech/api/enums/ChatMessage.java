@@ -77,7 +77,8 @@ public enum ChatMessage {
             } else {
                 StringBuilder sb = new StringBuilder();
 
-                char[] charArray = args[pluralIndex].toString().toCharArray();
+                char[] charArray = args[pluralIndex].toString()
+                    .toCharArray();
 
                 for (int i = 0, charArrayLength = charArray.length; i < charArrayLength; i++) {
                     char c = charArray[i];
