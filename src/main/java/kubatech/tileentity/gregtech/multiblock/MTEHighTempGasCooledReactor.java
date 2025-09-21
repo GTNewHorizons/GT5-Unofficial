@@ -310,9 +310,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .addInfo("TBD Needs a constant supply of coolant while running")
             .addInfo("TBD Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
             .addInfo("TBD Consumes up to 2.5% of total Fuel Pellets per Operation depending on efficiency")
-            .addInfo("TBD Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
+            .addInfo(
+                "TBD Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
             .addInfo("TBD and affects total recipe time (at 100% eff, -50% total recipe time")
-            .addInfo("TBD Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
+            .addInfo(
+                "TBD Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
             .addInfo("Uses " + GTUtility.formatNumbers(POWER_USAGE) + " EU/t increasing when lacking Helium Gas")
             .addInfo("One Operation takes variable amount of time based on reactor fill level")
             .beginStructureBlock(11, 12, 11, true)
@@ -344,13 +346,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mCasing = 0;
-        return this.checkPiece("main", 16, 13, 1)
-            && this.mMaintenanceHatches.size() == 1
-            && !this.mInputHatches.isEmpty()
-            && !this.mOutputHatches.isEmpty()
+        return this.checkPiece("main", 16, 13, 1) && this.mMaintenanceHatches.size() == 1
             && !this.mInputBusses.isEmpty()
             && !this.mOutputBusses.isEmpty()
-            && !this.mEnergyHatches.isEmpty();
+            && !this.mEnergyHatches.isEmpty()
+            && this.heliumInputHatch != null
+            && this.coolantInputHatch != null
+            && this.coolantOutputHatch != null
+            && this.waterInputHatch != null
+            && this.steamOutputHatch != null;
     }
 
     @Override
