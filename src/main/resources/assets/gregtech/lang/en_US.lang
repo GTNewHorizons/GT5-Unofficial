@@ -759,7 +759,7 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
-GT5U.MBTT.MachineType=Machine Type: §e%s§r
+GT5U.MBTT.MachineType=Machine Type: §e
 GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=§fDimensions: §6%d§7x§6%d§7x§6%d §7(§6W§7x§6H§7x§6L§7) %s
 GT5U.MBTT.DimensionsVariable=§fDimensions: §6%d-%d§7x§6%d-%d§7x§6%d-%d §7(§6W§7x§6H§7x§6L§7) %s
@@ -769,6 +769,9 @@ GT5U.MBTT.Controller=§fController: §7%s
 GT5U.MBTT.Minimum= (minimum)
 GT5U.MBTT.Tiered= (tiered)
 GT5U.MBTT.PartInfo=§f%s: §7%s
+GT5U.MBTT.PartInfoHint=Hint block with dot %d
+GT5U.MBTT.AnyGlass=Any Glass
+GT5U.MBTT.AnyCasing=Any Casing
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
@@ -794,7 +797,7 @@ GT5U.MBTT.Produces=Produces
 GT5U.MBTT.PPS=Pollution per second
 GT5U.MBTT.HoldDisplay=Hold §l[LSHIFT]§7 to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
-GT5U.MBTT.Mod=Added by
+GT5U.MBTT.Authors=Added by §a%s
 GT5U.MBTT.Air=Mandatory Air
 GT5U.MBTT.ParallelBase=Processes %s items per %s Tier
 GT5U.MBTT.ParallelBase_Singular=Processes %s item per %s Tier
@@ -868,7 +871,7 @@ GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
 GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 GT5U.MBTT.SuperChest=Super/Quantum Chest
 
-GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+GT5U.MBTT.subchannel=Uses sub channel §6%s§7 for §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
@@ -3583,18 +3586,42 @@ achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[A
 achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 
-# Multiblock Descriptions and stuff
+#-----------------------------------#
+# Multiblock Descriptions and stuff #
+#-----------------------------------#
+# Used in addSubChannelUsage, replaces the second placeholder of
+# GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+#
+# CONTEXT: Uses sub channel (subchannel) for (channelpurpose)
+# (subchannel) is provided by the code and shouldn't be localized
+channelpurpose.glass_tier=Glass Tier
+
+# Used in addMachineType
+# CONTEXT: Machine type: (machtype)
+machtype.purif_plant=Purification Plant
+machtype.wpp=WPP
+machtype.fluid_tank=Fluid Tank
+machtype.mega_apiary=Mega Apiary
+machtype.mapiary=Mapiary
+
+# Used in addController. These are some commonly used shared ones
+# CONTEXT: Controller: (corepos)
+gt.mb.corepos.fs=Front center
+gt.mb.corepos.fbm=Front bottom middle
+
+gt.mb.hint_block=Hint block with dot %d
+
 mb.bw.windmill.desc1=A primitive Grinder powered by Kinetic energy
 mb.bw.windmill.desc2=Speed and output will be affected by wind speed, recipe and rotor
 mb.bw.windmill.desc3=Please use the Primitive Rotor
 mb.bw.windmill.desc4=Macerates %s items at a time
 
-gt.mb.purification_plant.desc.1=Main controller block for the Water Purification Plant.\nFreely place §ePurification Units§7 within §4%d§7 blocks along each axis.\nLeft click this controller with a data stick, then right click a purification unit to link.\nSupplies power to linked purification units.
-gt.mb.purification_plant.desc.2=Works in fixed time processing cycles of §4%d§7 seconds.\nAll linked units follow this cycle.
-gt.mb.purification_plant.desc.3=Every recipe has a base chance of success. Success rate can be boosted\nby using a portion of the target output as a secondary input.\n§4%d%%§7 of output yield will be consumed in exchange for an\nadditive §4%d%%§7 increase to success.\nOn recipe failure, each purification unit has a §450%%§7 chance\nto return water of the same quality as the input or lower.
-gt.mb.purification_plant.desc.4=Every purification unit has a configuration window to configure maximum parallel amount.\nThis will only scale purified water input, ALL fluid output and power usage.\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O.
-gt.mb.purification_plant.desc.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
-gt.mb.purification_plant.desc.6=Requires water to be placed in the tank.
+gt.purification_plant.tips.1=Main controller block for the Water Purification Plant\nFreely place §ePurification Units§7 within §4%s§7 blocks along each axis\nLeft click this controller with a data stick, then right click a purification unit to link\nSupplies power to linked purification units.
+gt.purification_plant.desc.2=Works in fixed time processing cycles of §4%s§7 seconds\nAll linked units follow this cycle.
+gt.purification_plant.desc.3=Every recipe has a base chance of success. Success rate can be boosted\nby using a portion of the target output as a secondary input\n§4%s%%§7 of output yield will be consumed in exchange for an\nadditive §4%s%%§7 increase to success\nOn recipe failure, each purification unit has a §450%%§7 chance\nto return water of the same quality as the input or lower
+gt.purification_plant.desc.4=Every purification unit has a configuration window to configure maximum parallel amount\nThis will only scale purified water input, ALL fluid output and power usage\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O
+gt.purification_plant.desc.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
+gt.purification_plant.stips.1=Requires water to be placed in the tank
 
 # Fission Fuels
 item.gt.rodLithium.name=Fuel Rod (Lithium)
