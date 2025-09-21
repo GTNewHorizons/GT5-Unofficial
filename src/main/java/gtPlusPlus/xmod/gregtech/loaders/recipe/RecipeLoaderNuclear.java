@@ -3,8 +3,8 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
@@ -13,7 +13,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -30,7 +29,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -55,7 +53,6 @@ public class RecipeLoaderNuclear {
     private static void createRecipes() {
         autoclave();
         blastFurnace();
-        centrifugeRecipes();
         chemicalBathRecipes();
         chemicalReactorRecipes();
         dehydratorRecipes();
@@ -97,72 +94,6 @@ public class RecipeLoaderNuclear {
             .eut(340)
             .metadata(COIL_HEAT, 300)
             .addTo(blastFurnaceRecipes);
-    }
-
-    private static void centrifugeRecipes() {
-
-        // Process Used Fuel Rods for Krypton
-
-        // Uranium
-        for (ItemStack depletedRod : new ItemStack[] {
-            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 8),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumDualdepleted", 4),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 2) }) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
-                .itemOutputs(
-                    ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L),
-                    MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
-                    MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
-                    GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
-                .outputChances(10000, 10000, 1000, 1000, 1000, 500)
-                .fluidOutputs(FluidUtils.getFluidStack("krypton", 60))
-                .duration(4 * MINUTES + 10 * SECONDS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(centrifugeRecipes);
-        }
-
-        // Mox
-        for (ItemStack depletedRod : new ItemStack[] {
-            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXSimpledepleted", 8),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXDualdepleted", 4),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXQuaddepleted", 2) }) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
-                .itemOutputs(
-                    ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
-                    MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
-                .outputChances(10000, 10000, 500, 500, 500, 500)
-                .fluidOutputs(FluidUtils.getFluidStack("krypton", 90))
-                .duration(6 * MINUTES + 15 * SECONDS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(centrifugeRecipes);
-        }
-
-        // Thorium
-        for (ItemStack depletedRod : new ItemStack[] { ItemList.Depleted_Thorium_1.get(8),
-            ItemList.Depleted_Thorium_2.get(4), ItemList.Depleted_Thorium_4.get(2) }) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
-                .itemOutputs(
-                    ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
-                    MaterialsElements.getInstance().THORIUM232.getDust(1),
-                    GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),
-                    MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
-                    MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
-                .outputChances(10000, 10000, 5000, 5000, 5000, 2500)
-                .fluidOutputs(FluidUtils.getFluidStack("krypton", 30))
-                .duration(2 * MINUTES + 5 * SECONDS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(centrifugeRecipes);
-        }
     }
 
     private static void chemicalBathRecipes() {
@@ -291,6 +222,9 @@ public class RecipeLoaderNuclear {
             .addTo(UniversalChemical);
 
         // Sodium Fluoride
+
+        // Circuit 15 causes recipes added to UniversalChemical to be single-block only, so we manually circumvent this
+        // logic here instead of changing the circuit
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
@@ -298,7 +232,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
@@ -307,7 +241,25 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1_000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 
     private static void dehydratorRecipes() {

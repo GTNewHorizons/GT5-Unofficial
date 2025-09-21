@@ -79,6 +79,11 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     @Override
+    public int getHarvestLevel(ItemStack stack, String toolClass) {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
         if (!ElectricItem.manager.canUse(stack, baseCost)) {
             return 0.0F;
@@ -195,7 +200,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         return true;
     }
 
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     private boolean isUnformedRCMulti(TileEntity tileEntity) {
         return tileEntity instanceof TileMultiBlock tmb && !tmb.isStructureValid();
     }

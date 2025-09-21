@@ -147,7 +147,7 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond;
+        return GTMod.proxy.mPollutionImplosionCompressorPerSecond;
     }
 
     @Override

@@ -142,7 +142,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             })
             .setPlayClickSound(false)
             .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_LOAF_MODE)
-            .addTooltip("Debug Window")
+            .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 91)
             .setSize(16, 16);
@@ -183,7 +183,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                     if (val) enableWorking();
                     else disableWorking();
                 }), builder)
-                .addTooltip("multi-step")
+                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.multi_step"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(4, 40)
                 .setSize(16, 16));
@@ -196,7 +196,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 .setTextAlignment(Alignment.Center)
                 .setTextColor(Color.WHITE.normal)
                 .setPos(3, 18)
-                .addTooltip("fusion tier")
+                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.fusion_tier"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16)
                 .setPos(4, 20)
@@ -210,7 +210,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 .setTextAlignment(Alignment.Center)
                 .setTextColor(Color.WHITE.normal)
                 .setPos(3, 18)
-                .addTooltip("parallel")
+                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.parallel"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(70, 16)
                 .setPos(4, 4)
@@ -263,14 +263,14 @@ public class MTEPlasmaModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Fabricator")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for extreme temperature matter ionization.")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for extreme temperature matter ionization")
             .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
             .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
-            .addInfo("right away, some of them require certain upgrades to be unlocked.")
-            .addInfo("This module is specialized towards energy and overclock efficiency.")
+            .addInfo("right away, some of them require certain upgrades to be unlocked")
+            .addInfo("This module is specialized towards energy and overclock efficiency")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"

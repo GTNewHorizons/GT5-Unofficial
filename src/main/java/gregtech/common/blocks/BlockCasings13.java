@@ -20,7 +20,11 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(2, ItemList.Casing_Insulated_Fluid_Pipe, "Insulated Fluid Pipe Casing");
         register(3, ItemList.Casing_Beryllium_Integrated_Reactor, "Beryllium Integrated Reactor Casing");
         register(4, ItemList.Casing_Refined_Graphite, "Refined Graphite Block");
-
+        register(5, ItemList.PrecisionFieldSyncCasing, "Precision Field Sync Casing");
+        register(6, ItemList.MagneticAnchorCasing, "Magnetic Anchor Casing");
+        register(7, ItemList.FieldEnergyAbsorberCasing, "Field Energy Absorber Casing");
+        register(8, ItemList.LoadbearingDistributionCasing, "Loadbearing Distribution Casing");
+        register(9, ItemList.NaniteFramework, "Nanite Replication Framework");
     }
 
     @Override
@@ -36,8 +40,13 @@ public class BlockCasings13 extends BlockCasingsAbstract {
             case 1 -> Textures.BlockIcons.MACHINE_CASING_GRAPHITE_MODERATOR.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_INSULATED_FLUID_PIPE.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_BERYLLIUM_INTEGRATED_REACTOR.getIcon();
-            default -> Textures.BlockIcons.MACHINE_CASING_REFINED_GRAPHITE.getIcon();
-
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_REFINED_GRAPHITE.getIcon();
+            case 5 -> Textures.BlockIcons.NANO_FORGE_CASING_1.getIcon();
+            case 6 -> Textures.BlockIcons.NANO_FORGE_CASING_2.getIcon();
+            case 7 -> Textures.BlockIcons.NANO_FORGE_CASING_3.getIcon();
+            case 8 -> Textures.BlockIcons.NANO_FORGE_CASING_4.getIcon();
+            case 9 -> Textures.BlockIcons.NANITE_CORE.getIcon();
+            default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
 }

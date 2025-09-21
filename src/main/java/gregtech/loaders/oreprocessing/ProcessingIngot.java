@@ -25,7 +25,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -102,7 +101,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     && aMaterial.contains(SubTag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
                 }
                 if (!aNoSmashing) {

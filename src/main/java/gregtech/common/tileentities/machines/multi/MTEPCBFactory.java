@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -33,8 +32,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -93,6 +95,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -232,29 +235,42 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         {"RGGGR","GGGGG","GGSGG","GGGGG","RGGGR"}
                         //spotless:on
                 }))
-        .addElement('E', ofFrame(Materials.DamascusSteel))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
-        .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
+        .addElement(
+            'C',
+            withChannel(
+                "enableBioUpgrade",
+                ofBlocksTiered(
+                    (block, meta) -> block == GregTechAPI.sBlockCasings8 && meta == 11 ? 1 : null,
+                    ImmutableList.of(Pair.of(GregTechAPI.sBlockCasings8, 11)),
+                    -1,
+                    (t, m) -> {},
+                    t -> -1)))
+        .addElement(
+            'D',
+            withChannel(
+                "enableOCTier1",
+                ofBlocksTiered(
+                    (block, meta) -> block == GregTechAPI.sBlockReinforced && meta == 2 ? 1 : null,
+                    ImmutableList.of(Pair.of(GregTechAPI.sBlockReinforced, 2)),
+                    -1,
+                    (t, m) -> {},
+                    t -> -1)))
+        .addElement('E', ofFrame(Materials.DamascusSteel))
         .addElement('F', ofFrame(Materials.VibrantAlloy))
         .addElement(
-            'P',
-            buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(
-                    InputHatch,
-                    OutputBus,
-                    InputBus,
-                    Maintenance,
-                    Energy.or(ExoticEnergy),
-                    SpecialHatchElement.NaniteBus)
-                .dot(1)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
-                .buildAndChain(GregTechAPI.sBlockCasings8, 11))
+            'G',
+            withChannel(
+                "enableOCTier2",
+                ofBlocksTiered(
+                    (block, meta) -> block == GregTechAPI.sBlockCasings8 && meta == 12 ? 1 : null,
+                    ImmutableList.of(Pair.of(GregTechAPI.sBlockCasings8, 12)),
+                    -1,
+                    (t, m) -> {},
+                    t -> -1)))
         .addElement('H', ofFrame(Materials.Duranium))
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
         .addElement('I', ofBlock(GregTechAPI.sBlockCasings8, 13))
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement(
             'J',
             buildHatchAdder(MTEPCBFactory.class)
@@ -268,6 +284,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement('L', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
@@ -279,14 +296,27 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))
         .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
         .addElement(
+            'P',
+            buildHatchAdder(MTEPCBFactory.class)
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
+                .dot(1)
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 11))
+        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
+        .addElement('R', ofFrame(Materials.Americium))
+        .addElement(
             'S',
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEPCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 12))
-        .addElement('R', ofFrame(Materials.Americium))
-        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('T', ofBlock(GregTechAPI.sBlockCasings1, 15))
         .build();
 
@@ -611,7 +641,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     private double getDurationMultiplierFromRoughness() {
-        return Math.pow(mRoughnessMultiplier, 2);
+        return mRoughnessMultiplier * mRoughnessMultiplier;
     }
 
     private int ticker = 0;
@@ -843,20 +873,40 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo(
                 EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
                     + "IMPORTANT!"
-                    + " Check the configuration menu before building.")
-            .addInfo("Tier of the machine determines the available recipes.")
-            .addInfo("Machine tier (1-3) is set in the controller GUI.")
-            .addInfo("The configuration menu can be used to add upgrades.")
-            .addInfo("Each tier and upgrade requires additional structures.")
-            .addInfo("Power consumption is multiplied by Sqrt(structures).")
-            .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
-            .addInfo("Nanites have to be placed in a Nanite Containment Bus.")
-            .addInfo("The formula for parallels is the amount of nanites^0.75, rounded up.")
-            .addInfo("Maximum parallel is 256.")
-            .addInfo("Recipes require a cooling upgrade to be overclocked.")
-            .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
-            .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
-            .addInfo("Trace size can be changed to modify the material usage and machine speed.")
+                    + " Check the configuration menu before building!")
+            .addInfo("Tier of the machine determines the available recipes")
+            .addInfo("Machine tier (1-3) is set in the controller GUI")
+            .addInfo("The configuration menu can be used to add upgrades")
+            .addInfo("Each tier and upgrade requires additional structures")
+            .addInfo("Power consumption is multiplied by Sqrt(structures)")
+            .addInfo("Tier 2 and 3 allow parallel by using extra nanites")
+            .addInfo("Nanites have to be placed in a Nanite Containment Bus")
+            .addInfo(
+                "The formula for parallels is the " + TooltipHelper.parallelText("amount of nanites^0.75")
+                    + ", rounded up")
+            .addInfo("Maximum parallel is " + TooltipHelper.parallelText("256"))
+            .addInfo("Recipes require a cooling upgrade to be overclocked")
+            .addInfo(
+                "Liquid Cooling uses " + EnumChatFormatting.BLUE
+                    + "10 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of "
+                    + EnumChatFormatting.BLUE
+                    + "distilled water"
+                    + EnumChatFormatting.GRAY
+                    + " and enables default overclocks")
+            .addInfo(
+                "Thermosink uses " + EnumChatFormatting.AQUA
+                    + "10 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of "
+                    + EnumChatFormatting.AQUA
+                    + "Super Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " and enables "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "perfect overclocks")
+            .addInfo("Trace size can be changed to modify the material usage and machine speed")
             .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
@@ -871,7 +921,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " TT energy hatch.",
+                    + " TT energy hatch",
                 1)
             .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
@@ -896,7 +946,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + "):")
             .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Reinforced Glass")
+            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithography Framework Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
@@ -928,7 +978,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Clean Stainless Steel Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
+            .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -1003,7 +1053,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
+        return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 
     @Override
@@ -1085,7 +1135,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
-            .widget(new TextWidget("GT5U.MBTT.ConfigMenu").setPos(25, 9))
+            .widget(new TextWidget(translateToLocal("GT5U.MBTT.ConfigMenu")).setPos(25, 9))
             .widget(
                 ButtonWidget.closeWindowButton(true)
                     .setPos(185, 3))
@@ -1326,5 +1376,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSetTier = trigger.stackSize;
+        if (ChannelDataAccessor.hasSubChannel(trigger, "enableBioUpgrade")) {
+            buildPiece(bioUpgrade, trigger, false, -5, 6, 0);
+        }
+        if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier2")) {
+            buildPiece(ocTier2Upgrade, trigger, false, 2, 9, -11);
+        } else if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier1")) {
+            buildPiece(ocTier1Upgrade, trigger, false, 2, 9, -11);
+        }
     }
 }

@@ -13,8 +13,6 @@ import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.tile.TileEvent;
-import appeng.tile.events.TileEventType;
 import goodgenerator.util.ItemRefer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -26,10 +24,14 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     private AENetworkProxy gridProxy = null;
     private IMEEssentiaMonitor monitor = null;
     private final MachineSource asMachineSource = new MachineSource(this);
+    public long mTickTimer = 0;
 
     @Override
     public void updateEntity() {
-        getProxy();
+        AENetworkProxy gp = getProxy();
+        if (mTickTimer++ == 0 && gp != null) {
+            gp.onReady();
+        }
         super.updateEntity();
     }
 
@@ -45,32 +47,29 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
         this.onChunkUnloadAE();
     }
 
-    @TileEvent(TileEventType.WORLD_NBT_READ)
-    public void readFromNBT_AENetwork(final NBTTagCompound data) {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) getProxy().readFromNBT(data);
+    @Override
+    public void readFromNBT(NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
+        getProxy().readFromNBT(aNBT);
     }
 
-    @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    public void writeToNBT_AENetwork(final NBTTagCompound data) {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.writeToNBT(data);
+    @Override
+    public void writeToNBT(NBTTagCompound aNBT) {
+        super.writeToNBT(aNBT);
+        getProxy().writeToNBT(aNBT);
     }
 
     void onChunkUnloadAE() {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.onChunkUnload();
+        getProxy().onChunkUnload();
     }
 
     void invalidateAE() {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.invalidate();
+        getProxy().invalidate();
     }
 
     @Override
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
-        AENetworkProxy gp = getProxy();
-        return gp != null ? gp.getNode() : null;
+        return getProxy().getNode();
     }
 
     @Override
@@ -88,7 +87,6 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", ItemRefer.Essentia_Output_Hatch_ME.get(1), true);
-            gridProxy.onReady();
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
         }
         return this.gridProxy;
@@ -101,8 +99,7 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
 
     @Override
     public IGridNode getActionableNode() {
-        AENetworkProxy gp = getProxy();
-        return gp != null ? gp.getNode() : null;
+        return getProxy().getNode();
     }
 
     @Override

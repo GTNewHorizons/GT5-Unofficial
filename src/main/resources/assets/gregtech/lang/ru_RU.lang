@@ -1175,7 +1175,6 @@ GT5U.MULTI_MACHINE_CONFIG.LOAD=Загружены настройки шлюзо�
 GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Не удается загрузить настройки шлюзов/люков мультиблока
 GT5U.DEHP.mode.0=Прямой пар
 GT5U.DEHP.mode.1=Нагрев хладагента
-GT5U.machines.oreprocessor1=§eРежим работы:
 GT5U.machines.oreprocessor2=§cВремя: %s с
 GT5U.machines.oreprocessor.void=§eУдаление каменной пыли: %s
 GT5U.machines.oreprocessor.Macerate=Дробитель
@@ -1322,10 +1321,13 @@ GT5U.gui.button.voiding_mode_none=Ничего не удалять
 GT5U.gui.button.voiding_mode_item=§7Уничтожение излишек §6предметов
 GT5U.gui.button.voiding_mode_fluid=§7Уничтожение излишек §9жидкостей
 GT5U.gui.button.voiding_mode_all=§7Уничтожение излишек §6предметов §7и §9жидкостей
-GT5U.gui.button.input_separation=Разделение входов
+GT5U.gui.button.input_separation_on=Разделение входов: ВКЛ
+GT5U.gui.button.input_separation_off=Разделение входов: ВЫКЛ
 GT5U.gui.button.mode_switch=Переключатель режимов
-GT5U.gui.button.batch_mode=Пакетный режим
-GT5U.gui.button.lock_recipe=Зафиксировать рецепт
+GT5U.gui.button.batch_mode_on=Пакетный режим: ВКЛ
+GT5U.gui.button.batch_mode_off=Пакетный режим: ВЫКЛ
+GT5U.gui.button.lock_recipe_on=Блокировка рецепта: ВКЛ
+GT5U.gui.button.lock_recipe_off=Блокировка рецепта: ВЫКЛ
 GT5U.gui.button.structure_update=Обновить структуру
 GT5U.gui.button.down_tier=Понизить тир
 GT5U.gui.button.tier=Тир:
@@ -1558,7 +1560,7 @@ gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Команда
 gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
 gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
 
-gt.behaviour.switch_mode.tooltip=Для смены режима нажмите Shift+ПКМ
+gt.behaviour.switch_mode.tooltip=Для смены режима нажмите [%s]
 
 GT5U.hatch.disableFilter.true=Входной фильтр §cОткл.§r
 GT5U.hatch.disableFilter.false=Входной фильтр §aВкл.§r
@@ -1598,6 +1600,7 @@ GT5U.multiblock.fluidPipeTier=Тир жидкостной трубы
 GT5U.multiblock.itemPipeTier=Тир предметной трубы
 GT5U.multiblock.coilLevel=Тир нагревательной катушки
 GT5U.multiblock.preciseassemblercasing=Вольтаж ограничен тиром корпуса: %s
+GT5U.multiblock.runningMode=§eРежим работы:
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Теплоёмкость: %s K (%s)
@@ -1699,8 +1702,9 @@ GT5U.interface.coverTabs.redstone.west=запад
 GT5U.interface.coverTabs.redstone.east=восток
 GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
-GT5U.steam_variant.bronze=Бронза
-GT5U.steam_variant.steel=Сталь
+# NEI Display
+GT5U.nei.display.steam_variant.bronze=Бронза
+GT5U.nei.display.steam_variant.steel=Сталь
 
 GT5U.biomes.humidity=Влажность:
 
@@ -1737,7 +1741,7 @@ GT5U.waila.stocking_bus.auto_pull.disabled=Авто-подача из МЭ: От
 GT5U.waila.stocking_bus.min_stack_size=Мин. размер стака: %s
 GT5U.waila.stocking_hatch.min_amount=Мин. количество: %s
 GT5U.waila.drone_downlink.noConnection=Не подключено
-GT5U.waila.drone_downlink.connection=Connect to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
 GT5U.waila.drone_downlink.connectionCount=Количество подключений:
 GT5U.waila.drone_downlink.droneLevel=Уровень дрона:
 GT5U.waila.producing=Производит:

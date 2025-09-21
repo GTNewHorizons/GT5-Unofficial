@@ -154,10 +154,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Fuel Refinery")
             .addInfo("But at what cost?")
-            .addInfo("Produces naquadah fuels.")
-            .addInfo("Needs field restriction coils to control the fatal radiation.")
-            .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
+            .addInfo("Produces naquadah fuels")
+            .addInfo("Needs field restriction coils to control the fatal radiation")
+            .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)

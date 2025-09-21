@@ -31,6 +31,20 @@ public class CompressorRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.GraniteBlack, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 3))
+            .duration(5 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.GraniteRed, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 3))
+            .duration(5 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 4))
             .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.netherrack, 3)))
             .duration(5 * SECONDS)
@@ -256,8 +270,7 @@ public class CompressorRecipes implements Runnable {
 
         /*
          * GT_Values.RA.stdBuilder() .itemInputs( new ItemStack(Items.wheat, 9, 0) ) .itemOutputs( new
-         * ItemStack(Blocks.hay_block, 1, 0) ) .duration(15 * SECONDS) .eut(2)
-         * .addTo(sCompressorRecipes);
+         * ItemStack(Blocks.hay_block, 1, 0) ) .duration(15 * SECONDS) .eut(2) .addTo(sCompressorRecipes);
          */
 
         GTValues.RA.stdBuilder()

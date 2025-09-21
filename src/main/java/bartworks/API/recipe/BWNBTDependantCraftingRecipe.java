@@ -10,16 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import bartworks.util.BWUtil;
 
 public class BWNBTDependantCraftingRecipe implements IRecipe {
 
     ItemStack result;
+    @NotNull
     Map<Character, ItemStack> charToStackMap = new HashMap<>(9, 1);
     String[] shape;
 
     @SuppressWarnings({ "SuspiciousSystemArraycopy" })
-    public BWNBTDependantCraftingRecipe(ItemStack result, Object... recipe) {
+    public BWNBTDependantCraftingRecipe(ItemStack result, Object @NotNull... recipe) {
         this.result = result;
         this.shape = new String[3];
         System.arraycopy(recipe, 0, this.shape, 0, 3);
@@ -48,7 +51,7 @@ public class BWNBTDependantCraftingRecipe implements IRecipe {
     }
 
     @Override
-    public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_) {
+    public boolean matches(@NotNull InventoryCrafting p_77569_1_, World p_77569_2_) {
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
                 ItemStack toCheck = p_77569_1_.getStackInRowAndColumn(y, x);
@@ -60,7 +63,7 @@ public class BWNBTDependantCraftingRecipe implements IRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
+    public @NotNull ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
         return this.result.copy();
     }
 

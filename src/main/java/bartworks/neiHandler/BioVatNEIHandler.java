@@ -23,7 +23,7 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import gregtech.api.enums.GTValues;
+import gregtech.GTMod;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.nei.GTNEIDefaultHandler;
 
@@ -33,7 +33,7 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
         super(recipeCategory);
         if (!NEIBWConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
-                GTValues.GT,
+                GTMod.GT,
                 "NEIPlugins",
                 "register-crafting-handler",
                 "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());

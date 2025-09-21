@@ -12,6 +12,7 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
@@ -31,7 +32,7 @@ public abstract class BaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public float dropGainChance() {
-        return (float) Math.pow(0.95D, (float) this.tier());
+        return (float) GTUtility.powInt(0.95D, this.tier());
     }
 
     @Override

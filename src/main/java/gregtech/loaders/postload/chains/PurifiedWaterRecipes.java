@@ -115,7 +115,7 @@ public class PurifiedWaterRecipes {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     Materials.Grade1PurifiedWater.getFluid(1_000),
-                    Materials.Ozone.getGas(1000 * (long) Math.pow(2, (tier + 6))))
+                    Materials.Ozone.getGas(1000 * (long) GTUtility.powInt(2, (tier + 6))))
                 .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900))
                 .itemOutputs(Materials.Manganese.getDust(1), Materials.Iron.getDust(1), Materials.Sulfur.getDust(1))
                 .outputChances(500, 500, 500)
@@ -234,7 +234,8 @@ public class PurifiedWaterRecipes {
                 .itemOutputs(catalystInputs[i])
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
-                // Not sure how I feel about it being in the laser engraver, but I don't see a better multi for it right
+                // Not sure how I feel about it being in the laser engraver, but I don't see a better multi for it
+                // right
                 // now,
                 // and we can't really add a new one specifically for this (... for now)
                 .addTo(laserEngraverRecipes);

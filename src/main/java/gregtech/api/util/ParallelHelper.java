@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.XSTR;
@@ -51,8 +52,8 @@ public class ParallelHelper {
      */
     protected int maxParallel = 1;
     /**
-     * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
-     * parallel, but also duration
+     * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible parallel, but also
+     * duration
      */
     protected int batchModifier = 1;
     /**
@@ -201,8 +202,8 @@ public class ParallelHelper {
     }
 
     /**
-     * Sets the multiplier that is applied on output chances. 1 does nothing. 0.9 is 10% less. 1.1 is 10% more.
-     * Only useful for item outputs for sure.
+     * Sets the multiplier that is applied on output chances. 1 does nothing. 0.9 is 10% less. 1.1 is 10% more. Only
+     * useful for item outputs for sure.
      */
     @Nonnull
     public ParallelHelper setChanceMultiplier(double chanceMultiplier) {
@@ -376,10 +377,10 @@ public class ParallelHelper {
             return;
         }
         if (itemInputs == null) {
-            itemInputs = new ItemStack[0];
+            itemInputs = GTValues.emptyItemStackArray;
         }
         if (fluidInputs == null) {
-            fluidInputs = new FluidStack[0];
+            fluidInputs = GTValues.emptyFluidStackArray;
         }
 
         if (!consume) {
@@ -425,10 +426,10 @@ public class ParallelHelper {
 
         final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
             ? Arrays.copyOfRange(recipe.mOutputs, 0, Math.min(machine.getItemOutputLimit(), recipe.mOutputs.length))
-            : new ItemStack[0];
+            : GTValues.emptyItemStackArray;
         final FluidStack[] truncatedFluidOutputs = recipe.mFluidOutputs != null ? Arrays
             .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
-            : new FluidStack[0];
+            : GTValues.emptyFluidStackArray;
 
         SingleRecipeCheck recipeCheck = null;
         SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;

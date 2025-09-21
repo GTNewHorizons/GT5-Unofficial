@@ -28,7 +28,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.OreDrill4.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 4L),
                 Materials.Europium.getPlates(3),
                 ItemList.Electric_Motor_LuV.get(9L),
                 ItemList.Sensor_LuV.get(9L),

@@ -31,7 +31,7 @@ import gregtech.api.render.TextureFactory;
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
     public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, new String[] {}, aTextures);
+        super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray, aTextures);
     }
 
     public MTEAcidGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -62,7 +62,7 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override

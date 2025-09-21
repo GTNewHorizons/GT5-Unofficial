@@ -16,11 +16,11 @@ import net.minecraft.world.chunk.IChunkProvider;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.StringUtils;
 import gregtech.common.blocks.BlockOres;
 import gregtech.common.blocks.TileEntityOres;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import toxiceverglades.dimension.DimensionEverglades;
 
 public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
@@ -207,12 +207,11 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
                     + " cY="
                     + tMinY);
         }
+        double dx = aChunkX / 16 - aSeedX / 16;
+        double dz = aChunkZ / 16 - aSeedZ / 16;
         // Adjust the density down the more chunks we are away from the oreseed. The 5 chunks surrounding the seed
         // should always be max density due to truncation of Math.sqrt().
-        int localDensity = (Math.max(
-            1,
-            this.mDensity / ((int) Math
-                .sqrt(2 + Math.pow(aChunkX / 16 - aSeedX / 16, 2) + Math.pow(aChunkZ / 16 - aSeedZ / 16, 2)))));
+        int localDensity = (Math.max(1, this.mDensity / (int) Math.sqrt(2 + dx * dx + dz * dz)));
 
         // To allow for early exit due to no ore placed in the bottom layer (probably because we are in the sky), unroll
         // 1 pass through the loop
@@ -397,22 +396,22 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         // Set GT ORE
         if (aMetaData instanceof BlockOres) {
             if (ore1String.equals("unset")) {
-                ore1String = Utils.sanitizeString(
+                ore1String = StringUtils.sanitizeString(
                     this.mPrimary.getLocalizedName()
                         .toLowerCase());
             }
             if (ore2String.equals("unset")) {
-                ore2String = Utils.sanitizeString(
+                ore2String = StringUtils.sanitizeString(
                     this.mSecondaryMeta.getLocalizedName()
                         .toLowerCase());
             }
             if (ore3String.equals("unset")) {
-                ore3String = Utils.sanitizeString(
+                ore3String = StringUtils.sanitizeString(
                     this.mBetweenMeta.getLocalizedName()
                         .toLowerCase());
             }
             if (ore4String.equals("unset")) {
-                ore4String = Utils.sanitizeString(
+                ore4String = StringUtils.sanitizeString(
                     this.mSporadicMeta.getLocalizedName()
                         .toLowerCase());
             }
@@ -421,7 +420,7 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
             if (this.mPrimaryMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
+                        gtOreMap.put(f, StringUtils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore1String)) {
@@ -435,7 +434,7 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
             if (this.mSecondaryMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
+                        gtOreMap.put(f, StringUtils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore2String)) {
@@ -449,7 +448,7 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
             if (this.mBetweenMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
+                        gtOreMap.put(f, StringUtils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore3String)) {
@@ -463,7 +462,7 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
             if (this.mSporadicMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
+                        gtOreMap.put(f, StringUtils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore4String)) {

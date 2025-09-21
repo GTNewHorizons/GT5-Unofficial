@@ -5,8 +5,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -34,8 +37,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -87,11 +92,11 @@ import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler>
-    implements ICraftingProvider, IActionHost, IGridProxyable {
+    implements ICraftingProvider, IActionHost, IGridProxyable, ISurvivalConstructable {
 
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
-    private static final String MACHINE_TYPE = "Molecular Assembler";
+    private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
     private static final int EU_PER_TICK_BASIC = 16;
     private static final int EU_PER_TICK_CRAFTING = 64;
     private static final int CASING_INDEX = 48;
@@ -115,7 +120,10 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'C',
             ofChain(
-                ofHatchAdder(MTELargeMolecularAssembler::addToLargeMolecularAssemblerList, CASING_INDEX, 1),
+                buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .build(),
                 onElementPass(it -> it.casing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement(
             'G',
@@ -188,7 +196,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             mMaxProgresstime = 20;
             long craftingProgressTime = 20;
             long craftingEUt = EU_PER_TICK_CRAFTING;
-            mEUt = -EU_PER_TICK_BASIC;
+            lEUt = -EU_PER_TICK_BASIC;
             // Tier EU_PER_TICK_CRAFTING == 2
             int extraTier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()) - 2);
             // The first two Overclocks reduce the Finish time to 0.5s and 0.25s
@@ -306,6 +314,16 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", MIN_CASING_COUNT, false)
+            .addCasingInfoExactly(
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .quartzVibrantGlass()
+                    .maybeBlock()
+                    .get()
+                    .getLocalizedName(),
+                54,
+                false)
             .addInputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
@@ -339,6 +357,21 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             STRUCTURE_HORIZONTAL_OFFSET,
             STRUCTURE_VERTICAL_OFFSET,
             STRUCTURE_DEPTH_OFFSET);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            STRUCTURE_HORIZONTAL_OFFSET,
+            STRUCTURE_VERTICAL_OFFSET,
+            STRUCTURE_DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -382,7 +415,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (dataTitle == null || dataTitle.isEmpty()) {
             dataTitle = DATA_ORB_TITLE;
             BehaviourDataOrb.setDataName(dataOrb, dataTitle);
-            BehaviourDataOrb.setNBTInventory(dataOrb, new ItemStack[0]);
+            BehaviourDataOrb.setNBTInventory(dataOrb, GTValues.emptyItemStackArray);
         }
         if (!dataTitle.equals(DATA_ORB_TITLE)) {
             cachedDataOrb = null;
@@ -689,7 +722,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 .setSize(16, 16));
     }
 
-    @SuppressWarnings("all")
     private static class CraftingDisplayPoint {
 
         private final World w;

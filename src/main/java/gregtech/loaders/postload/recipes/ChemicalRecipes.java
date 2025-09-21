@@ -719,6 +719,14 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1))
+            .fluidInputs(Materials.Chlorine.getGas(4_000))
+            .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
+
         // 4Na + 2MgCl2 = 2Mg + 4NaCl
 
         GTValues.RA.stdBuilder()
@@ -1900,6 +1908,17 @@ public class ChemicalRecipes implements Runnable {
             .itemOutputs(Materials.HydrochloricAcid.getCells(1))
             .fluidInputs(Materials.Chlorine.getGas(1_000))
             .duration(3 * SECONDS)
+            .eut(8)
+            .addTo(UniversalChemical);
+
+        // NaOH + HCl = NaCl + H2O
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumHydroxide.getDust(3), GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(Materials.Salt.getDust(2))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
+            .fluidOutputs(Materials.Water.getFluid(1000))
+            .duration(2 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);
 
@@ -3782,7 +3801,8 @@ public class ChemicalRecipes implements Runnable {
         // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
         GTValues.RA.stdBuilder()
-            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar is prohibited now,
+            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar
+                         // is prohibited now,
                 // and i don't feel like reworking GT++ cell registration for now
                 GameRegistry.findItemStack(GTPlusPlus.ID, "Formaldehyde", 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
@@ -5058,7 +5078,7 @@ public class ChemicalRecipes implements Runnable {
         // 2CH3COOH = CH3COCH3 + CO2 + H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, Materials.Calcium.getDust(1)), GTUtility.getIntegratedCircuit(24))
+            .itemInputs(GTUtility.copyAmount(0, Materials.Calcium.getDust(1)), GTUtility.getIntegratedCircuit(3))
             .fluidInputs(Materials.AceticAcid.getFluid(2_000))
             .fluidOutputs(
                 Materials.Acetone.getFluid(1_000),

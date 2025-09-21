@@ -51,10 +51,8 @@ public class TCLoader {
 
     public static void init() {
         /*
-         * ResearchCategories.registerCategory(
-         * TCCategoryKey,
-         * new ResourceLocation(Tags.MODID, "textures/gui/green_tea.png"),
-         * new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+         * ResearchCategories.registerCategory( TCCategoryKey, new ResourceLocation(Tags.MODID,
+         * "textures/gui/green_tea.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
          */
         if (!NewHorizonsCoreMod.isModLoaded() || !DraconicEvolution.isModLoaded()) return;
         registerRecipe();

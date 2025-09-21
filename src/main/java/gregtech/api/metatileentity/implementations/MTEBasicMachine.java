@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -58,8 +59,11 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
@@ -87,6 +91,7 @@ import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -119,6 +124,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
     protected final OverclockDescriber overclockDescriber;
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop activitySoundLoop;
 
     /**
      * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have
@@ -344,11 +351,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
-    }
-
-    @Override
     public long maxAmperesIn() {
         return ((long) mEUt * 2L) / V[mTier] + 1L;
     }
@@ -448,7 +450,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (!GTMod.gregtechproxy.mForceFreeFace) {
+        if (!GTMod.proxy.mForceFreeFace) {
             openGui(aPlayer);
             return true;
         }
@@ -466,7 +468,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public void initDefaultModes(NBTTagCompound aNBT) {
         mMainFacing = ForgeDirection.UNKNOWN;
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            final GTClientPreference tPreference = GTMod.gregtechproxy
+            final GTClientPreference tPreference = GTMod.proxy
                 .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) {
                 mDisableFilter = !tPreference.isSingleBlockInitialFilterEnabled();
@@ -539,10 +541,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             doDisplayThings();
 
             boolean tSucceeded = false;
+            boolean isActive = mMaxProgresstime > 0;
 
-            if (mMaxProgresstime > 0 && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
+            if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
-                aBaseMetaTileEntity.setActive(true);
+                if (mProgresstime > 0) aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
@@ -651,9 +654,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             } else {
                 if (!mStuttering) {
                     stutterProcess();
+                    aBaseMetaTileEntity.setActive(false);
                     mStuttering = true;
                 }
             }
+        } else {
+            updateSounds(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -828,6 +834,49 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     /**
+     * Returns the sound resource to use for the activity loop.
+     * Subclasses can override to provide their own.
+     */
+    @SideOnly(Side.CLIENT)
+    protected SoundResource getActivitySoundLoop() {
+        return null;
+    }
+
+    /**
+     * Starts the activity sound loop if it isn't already playing.
+     */
+    @SideOnly(Side.CLIENT)
+    protected void updateSounds(SoundResource activitySound) {
+        if (activitySound == null) return;
+
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new GTSoundLoop(
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
+            }
+        } else {
+            stopActivitySound();
+        }
+    }
+
+    /**
+     * Stops the activity sound loop if playing.
+     */
+    @SideOnly(Side.CLIENT)
+    protected void stopActivitySound() {
+        if (activitySoundLoop != null) {
+            activitySoundLoop.setFadeMe(true);
+            activitySoundLoop = null;
+        }
+    }
+
+    /**
      * If this Machine can have the Insufficient Energy Line Problem
      */
     public boolean canHaveInsufficientEnergy() {
@@ -988,7 +1037,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("Mothership");
     }
 
     /**
@@ -1020,7 +1073,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
         if (tRecipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (GTMod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
+        if (GTMod.proxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
@@ -1254,6 +1307,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
         addProgressBar(builder, uiProperties);
 
+        builder.widget(createMuffleButton());
+
         builder.widget(
             createErrorStatusArea(
                 builder,
@@ -1382,7 +1437,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     protected SlotWidget createChargerSlot(int x, int y) {
         if (isSteampowered()) {
-            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
+            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, GTValues.emptyStringArray)
                 .setBackground(getGUITextureSet().getItemSlot());
         } else {
             return super.createChargerSlot(x, y);

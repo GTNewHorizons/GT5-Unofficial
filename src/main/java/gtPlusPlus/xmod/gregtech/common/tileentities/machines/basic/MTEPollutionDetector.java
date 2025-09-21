@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -20,7 +21,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEPollutionDetector extends MTETieredMachineBlock {
@@ -211,11 +211,11 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     }
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!GTMod.gregtechproxy.mPollution) {
-            PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
+        if (!GTMod.proxy.mPollution) {
+            GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
-            PlayerUtils.messagePlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");
-            PlayerUtils.messagePlayer(playerIn, "Emit Redstone at pollution level: " + this.mRedstoneLevel);
+            GTUtility.sendChatToPlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");
+            GTUtility.sendChatToPlayer(playerIn, "Emit Redstone at pollution level: " + this.mRedstoneLevel);
         }
     }
 
@@ -257,7 +257,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override

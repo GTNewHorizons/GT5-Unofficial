@@ -419,6 +419,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
         setInventorySlotContents(getCircuitSlot(), circuit);
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
         return true;
     }
 
@@ -431,6 +435,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
 
         NBTTagList stockingItems = new NBTTagList();
@@ -991,7 +996,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     protected static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
-        strings.add("Advanced item input for Multiblocks");
+        strings.add("Next-gen item input for Multiblocks");
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 3] + VN[autoPullAvailable ? 6 : 3]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 item types in stock");
