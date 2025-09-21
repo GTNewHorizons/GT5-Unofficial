@@ -344,7 +344,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mCasing = 0;
-        return this.checkPiece("main", 16, 13, 3)
+        return this.checkPiece("main", 16, 13, 1)
             && this.mMaintenanceHatches.size() == 1
             && !this.mInputHatches.isEmpty()
             && !this.mOutputHatches.isEmpty()
