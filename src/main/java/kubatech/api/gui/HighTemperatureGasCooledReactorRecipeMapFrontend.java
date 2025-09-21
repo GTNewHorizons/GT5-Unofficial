@@ -1,6 +1,7 @@
 package kubatech.api.gui;
 
 import static gregtech.api.enums.Mods.KubaTech;
+import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import kubatech.api.enums.ItemList;
-import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.HTGRLoader;
 
 public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapFrontend {
@@ -42,7 +42,7 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                 .progressBarPos(new Pos2d(3, 3))
                 .progressBarDirection(ProgressBar.Direction.DOWN)
                 .logoPos(new Pos2d(150, 237))
-                .logo(KubaTechGTMultiBlockBase.PICTURE_KUBATECH_LOGO)
+                .logo(PICTURE_KUBATECH_LOGO)
                 .logoSize(new Size(13, 15)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 245))
                 .handlerInfoCreator(

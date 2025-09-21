@@ -23,7 +23,6 @@ package kubatech.tileentity.gregtech.multiblock;
 import static bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
@@ -35,22 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.blocks.BlockCasings13;
-import gregtech.common.blocks.BlockCasings2;
-import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
-import gregtech.common.tileentities.machines.ISmartInputHatch;
-import gregtech.common.tileentities.machines.MTEHatchInputME;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -72,7 +60,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -81,6 +72,11 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.HTGRLoader;
 
@@ -372,12 +368,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public void updateSlots() {
         super.updateSlots();
         for (MTEHatch hatch : validMTEList(mCustomHatches)) {
-            if(hatch instanceof MTEHatchInput input)
-                input.updateSlots();
+            if (hatch instanceof MTEHatchInput input) input.updateSlots();
         }
     }
 
-    private FluidStack getInputFromHatch(MTEHatchInput hatch, FluidStack filter){
+    private FluidStack getInputFromHatch(MTEHatchInput hatch, FluidStack filter) {
         if (hatch == null || !hatch.isValid()) return null;
         if (hatch instanceof MTEHatchInputME meHatch) {
             for (FluidStack tFluid : meHatch.getStoredFluids()) {
