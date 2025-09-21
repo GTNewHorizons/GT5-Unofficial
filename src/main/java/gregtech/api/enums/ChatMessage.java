@@ -101,7 +101,12 @@ public enum ChatMessage {
                 try {
                     value = Integer.parseInt(numbersOnly);
                 } catch (NumberFormatException e) {
-                    GTMod.GT_FML_LOGGER.warn("Could not parse ChatMessage value to check if the index is plural. Lang Key (Singular)={}, Index={}, Value={}", singular, pluralIndex, args[pluralIndex], new Exception());
+                    GTMod.GT_FML_LOGGER.warn(
+                        "Could not parse ChatMessage value to check if the index is plural. Lang Key (Singular)={}, Index={}, Value={}",
+                        singular,
+                        pluralIndex,
+                        args[pluralIndex],
+                        new Exception());
                     value = 2;
                 }
             }
