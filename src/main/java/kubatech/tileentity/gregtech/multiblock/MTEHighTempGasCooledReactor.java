@@ -90,6 +90,19 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     // spotless:off
 
+
+    /* TODO MERGE CONFLICT
+    buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(OutputHatch, OutputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
+                    buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(InputHatch, InputBus)
+                    .dot(2)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
+                    implements ISurvivalConstructable
+     */
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEHighTempGasCooledReactor>builder()
@@ -288,7 +301,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Breeder Reactor")
+        tt.addMachineType("Breeder Reactor, HTGR")
             .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
@@ -502,7 +515,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         // 1 - Math.pow(1 - x, 3)
 
-        double eff = (0.1d + (1d - Math.pow(1 - (this.fuelsupply / MAX_CAPACITY), 3)) * 0.9d)
+        double eff = (0.1d + (1d - GTUtility.powInt(1 - (this.fuelsupply / MAX_CAPACITY), 3)) * 0.9d)
             - (this.getIdealStatus() - this.getRepairStatus()) / 10d;
 
         if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
