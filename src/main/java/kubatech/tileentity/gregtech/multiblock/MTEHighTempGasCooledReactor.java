@@ -22,14 +22,15 @@ package kubatech.tileentity.gregtech.multiblock;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,10 +54,12 @@ import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,6 +74,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings13;
@@ -122,46 +126,51 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     {"                             ","               A~A           ","               AIA           ","               AAA           ","                             ","                             ","  P       P                  "," P         P FFJJJFFFFFFFF   ","      D      F               ","             F PPPPP   PPPPP ","             F P   P   P   P ","         FFFFF P   P   P   P ","               P   P   P   P ","               PPPPP   PPPPP ","                             "," P         P                 ","  P       P                  ","                             "},
                     {"                             ","               AAA           ","      DDDDDDDDDDAA           ","      D        ADA           ","      D         D            ","      D         D            ","  PP  D  PP     D            "," P    D    P C KDK C  C  C   "," P    D    P                 ","             C P   P   P   P ","                             ","         C C C               ","                             ","               P   P   P   P "," P         P                 "," P         P                 ","  PP     PP                  ","                             "},
                     {"OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO"}
-                }))
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 5))                         //IV Machine Casing
-        //.addElement('B', ofBlock(GregTechAPI.sSolenoidCoilCasings, 6))                            //UV Solenoid Superconductor Coil
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 3))                        //Pressure Containment Casing
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings13, 0))                        //Cable Casing
-        .addElement('E', ofBlock(GregTechAPI.sBlockCasings13, 1))                        //Graphite Moderator Casing
-        .addElement('F', ofBlock(GregTechAPI.sBlockCasings13, 2))                        //Insulated Fluid Pipe Casing
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings13, 3))                        //Beryllium Integrated Reactor Casing
-        .addElement('H', ofBlock(GregTechAPI.sBlockCasings13, 4))                        //Refined Graphite Block
-        .addElement('I', ofBlock(GregTechAPI.sBlockCasings2, 6))                         //Processor Machine Casing
-        .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 10))                        //Pump Machine Casing
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings2, 11))                        //Motor Machine Casing
-        .addElement('L', ofBlock(GregTechAPI.sBlockCasings2, 13))                        //Steel Pipe Casing
-        .addElement('M', ofBlock(GregTechAPI.sBlockCasings2, 14))                        //Titanium Pipe Casing
-        .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))                        //Tungstensteel Pipe Casing
-        .addElement('O', ofBlock(GregTechAPI.sBlockConcretes, 8))                        //Light Concrete
-        .addElement('P', ofBlock(GregTechAPI.sBlockFrames, 81))                          //Tungsten Frame Box
-        //.addElement('R', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 31776))         //Rebolted Carbon Casing
-        //.addElement('S', ofBlock(WerkstoffLoader.BWBlockCasings, 31847))                 //Bolted Tungsten Casing
+                })) // spotless:on
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 5)) // IV Machine Casing
+        // .addElement('B', ofBlock(GregTechAPI.sSolenoidCoilCasings, 6)) //UV Solenoid Superconductor Coil
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 3)) // Pressure Containment Casing
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings13, 0)) // Cable Casing
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings13, 1)) // Graphite Moderator Casing
+        .addElement('F', ofBlock(GregTechAPI.sBlockCasings13, 2)) // Insulated Fluid Pipe Casing
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings13, 3)) // Beryllium Integrated Reactor Casing
+        .addElement('H', ofBlock(GregTechAPI.sBlockCasings13, 4)) // Refined Graphite Block
+        .addElement('I', ofBlock(GregTechAPI.sBlockCasings2, 6)) // Processor Machine Casing
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 10)) // Pump Machine Casing
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasings2, 11)) // Motor Machine Casing
+        .addElement('L', ofBlock(GregTechAPI.sBlockCasings2, 13)) // Steel Pipe Casing
+        .addElement('M', ofBlock(GregTechAPI.sBlockCasings2, 14)) // Titanium Pipe Casing
+        .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15)) // Tungstensteel Pipe Casing
+        .addElement('O', ofBlock(GregTechAPI.sBlockConcretes, 8)) // Light Concrete
+        .addElement('P', ofBlock(GregTechAPI.sBlockFrames, 81)) // Tungsten Frame Box
+        // .addElement('R', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 31776)) //Rebolted Carbon Casing
+        // .addElement('S', ofBlock(WerkstoffLoader.BWBlockCasings, 31847)) //Bolted Tungsten Casing
         .addElement(
             'e',
-            ofChain(
-                ofHatchAdder(MTEHighTempGasCooledReactor::addHeliumInputToMachineList, ((BlockCasings2)GregTechAPI.sBlockCasings2).getTextureIndex(11), 1),
-                ofHatchAdder(MTEHighTempGasCooledReactor::addMaintenanceToMachineList, ((BlockCasings2)GregTechAPI.sBlockCasings2).getTextureIndex(11), 1),
-                ofHatchAdder(MTEHighTempGasCooledReactor::addEnergyInputToMachineList, ((BlockCasings2)GregTechAPI.sBlockCasings2).getTextureIndex(11), 1)))
+            buildHatchAdder(MTEHighTempGasCooledReactor.class)
+                .atLeast(HTGRHatches.HeliumInputHatch, HatchElement.Maintenance, HatchElement.Energy)
+                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(11))
+                .dot(1)
+                .build())
         .addElement(
-            'f', ofHatchAdder(MTEHighTempGasCooledReactor::addInputBusToMachineList, ((BlockCasings13)GregTechAPI.sBlockCasings13).getTextureIndex(3), 2))
+            'f',
+            HatchElement.InputBus.newAny(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(3), 2))
         .addElement(
-            'v', ofHatchAdder(MTEHighTempGasCooledReactor::addOutputBusToMachineList, ((BlockCasings13)GregTechAPI.sBlockCasings13).getTextureIndex(3), 3))
+            'v',
+            HatchElement.OutputBus.newAny(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(3), 3))
         .addElement(
-            'c', ofHatchAdder(MTEHighTempGasCooledReactor::addCoolantInputToMachineList, ((BlockCasings10)GregTechAPI.sBlockCasings10).getTextureIndex(3), 4))
+            'c',
+            HTGRHatches.CoolantInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 4))
         .addElement(
-            'h', ofHatchAdder(MTEHighTempGasCooledReactor::addCoolantOutputToMachineList, ((BlockCasings10)GregTechAPI.sBlockCasings10).getTextureIndex(3), 5))
+            'h',
+            HTGRHatches.CoolantOutputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 5))
         .addElement(
-            'w', ofHatchAdder(MTEHighTempGasCooledReactor::addWaterInputToMachineList, ((BlockCasings10)GregTechAPI.sBlockCasings10).getTextureIndex(3), 6))
+            'w',
+            HTGRHatches.WaterInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 6))
         .addElement(
-            's', ofHatchAdder(MTEHighTempGasCooledReactor::addSteamOutputToMachineList, ((BlockCasings10)GregTechAPI.sBlockCasings10).getTextureIndex(3), 7))
+            's',
+            HTGRHatches.SteamOutputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 7))
         .build();
-
-    // spotless:on
 
     private MTEHatchInput heliumInputHatch;
     private MTEHatchInput coolantInputHatch;
@@ -758,6 +767,70 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    private enum HTGRHatches implements IHatchElement<MTEHighTempGasCooledReactor> {
+
+        CoolantInputHatch(MTEHighTempGasCooledReactor::addCoolantInputToMachineList, MTEHatchInput.class) {
+
+            @Override
+            public long count(MTEHighTempGasCooledReactor t) {
+                if (t.coolantInputHatch == null) return 0;
+                return 1;
+            }
+        },
+        HeliumInputHatch(MTEHighTempGasCooledReactor::addHeliumInputToMachineList, MTEHatchInput.class) {
+
+            @Override
+            public long count(MTEHighTempGasCooledReactor t) {
+                if (t.heliumInputHatch == null) return 0;
+                return 1;
+            }
+        },
+        WaterInputHatch(MTEHighTempGasCooledReactor::addWaterInputToMachineList, MTEHatchInput.class) {
+
+            @Override
+            public long count(MTEHighTempGasCooledReactor t) {
+                if (t.waterInputHatch == null) return 0;
+                return 1;
+            }
+        },
+        CoolantOutputHatch(MTEHighTempGasCooledReactor::addCoolantOutputToMachineList, MTEHatchOutput.class) {
+
+            @Override
+            public long count(MTEHighTempGasCooledReactor t) {
+                if (t.coolantOutputHatch == null) return 0;
+                return 1;
+            }
+        },
+        SteamOutputHatch(MTEHighTempGasCooledReactor::addSteamOutputToMachineList, MTEHatchOutput.class) {
+
+            @Override
+            public long count(MTEHighTempGasCooledReactor t) {
+                if (t.steamOutputHatch == null) return 0;
+                return 1;
+            }
+        },;
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEHighTempGasCooledReactor> adder;
+
+        @SafeVarargs
+        HTGRHatches(IGTHatchAdder<MTEHighTempGasCooledReactor> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEHighTempGasCooledReactor> adder() {
+            return adder;
+        }
+
     }
 
     // TODO: Wypierdolić
