@@ -979,7 +979,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private boolean shouldRender = true;
     private boolean renderInitialized;
     private static ResourceLocation ringTexture;
-    private static IModelCustomExt ring1;
+    private static IModelCustomExt ring;
+    private static ShaderProgram ringProgram;
+    private int uGlowColor;
 
     //TODO: figure out why isActive doesnt send to client by default???
     @Override
@@ -1004,61 +1006,72 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     private void initializeRender() {
         // spotless:off
-        renderInitialized = true;
-        ring1 = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
+        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
         ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
+
+        try{
+            ringProgram = new ShaderProgram(GregTech.resourceDomain, "shaders/foundry.vert.glsl","shaders/foundry.frag.glsl");
+            uGlowColor = ringProgram.getUniformLocation("u_Color");
+        } catch (Exception e) {
+            GTMod.GT_FML_LOGGER.error(e.getMessage());
+            return;
+        }
+        renderInitialized = true;
         // spotless:on
     }
 
     private void renderRingOne(double x, double y, double z, float timer, float[] rgba) {
+        ringProgram.use();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 9.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        ring1.renderAllVBO();
+        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
+        ShaderProgram.clear();
     }
 
     private void renderRingTwo(double x, double y, double z, float timer, float[] rgba) {
+        ringProgram.use();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 17.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.f, 240.f);
-        ring1.renderAllVBO();
+        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
+        ShaderProgram.clear();
+
     }
 
     private void renderRingThree(double x, double y, double z, float timer, float[] rgba) {
+        ringProgram.use();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 25.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.f, 240.f);
-        ring1.renderAllVBO();
+        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
+        ShaderProgram.clear();
+
     }
 
     private void renderRingFour(double x, double y, double z, float timer, float[] rgba) {
+        ringProgram.use();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 33.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.f, 240.f);
-        ring1.renderAllVBO();
+        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
+        ShaderProgram.clear();
     }
 
     @Override
