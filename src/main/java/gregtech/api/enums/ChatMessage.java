@@ -81,7 +81,7 @@ public enum ChatMessage {
                     trimmed = trimmed.substring(0, trimmed.indexOf('.'));
                 }
 
-                String numbersOnly = "";
+                StringBuilder sb = new StringBuilder();
 
                 char[] charArray = trimmed.toCharArray();
 
@@ -94,12 +94,12 @@ public enum ChatMessage {
                     }
 
                     if (c >= '0' && c <= '9') {
-                        numbersOnly += c;
+                        sb.append(c);
                     }
                 }
 
                 try {
-                    value = Integer.parseInt(numbersOnly);
+                    value = Integer.parseInt(sb.toString());
                 } catch (NumberFormatException e) {
                     GTMod.GT_FML_LOGGER.warn(
                         "Could not parse ChatMessage value to check if the index is plural. Lang Key (Singular)={}, Index={}, Value={}",
