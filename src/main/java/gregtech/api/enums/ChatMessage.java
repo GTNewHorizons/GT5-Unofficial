@@ -75,15 +75,9 @@ public enum ChatMessage {
             if (args[pluralIndex] instanceof Integer i) {
                 value = i;
             } else {
-                String trimmed = args[pluralIndex].toString();
-
-                if (trimmed.contains(".")) {
-                    trimmed = trimmed.substring(0, trimmed.indexOf('.'));
-                }
-
                 StringBuilder sb = new StringBuilder();
 
-                char[] charArray = trimmed.toCharArray();
+                char[] charArray = args[pluralIndex].toString().toCharArray();
 
                 for (int i = 0, charArrayLength = charArray.length; i < charArrayLength; i++) {
                     char c = charArray[i];
