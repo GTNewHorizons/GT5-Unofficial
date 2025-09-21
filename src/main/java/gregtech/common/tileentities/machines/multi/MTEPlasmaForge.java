@@ -90,7 +90,7 @@ import tectech.thing.gui.TecTechUITextures;
 public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge> implements ISurvivalConstructable {
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
-    private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
+    private static final double max_efficiency_time_in_ticks = 10d * 20d; // 3600d * 8d * 20d;
     // Multiplier for the efficiency decay rate
     private static final double efficiency_decay_rate = 100;
     private static final double maximum_discount = 0.5d;
