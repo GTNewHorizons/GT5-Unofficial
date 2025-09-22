@@ -319,15 +319,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor, HTGR")
-            .addInfo("TODO")
-            .addInfo("TODO")
-
-            .addInfo("TODO")
-
             .addInfo(
                 "Uses up to " + GTUtility.formatNumbers(CONVERSION_FACTOR * 100)
                     + "% of fuel per operation, 10% of this value is flat and 90% dependent on easeOutCubic formula")
-            .addInfo("The conversion rate is also decreased by maintenance")
+            .addInfo("Maintenance problems decrease the efficiency of cooling by 20% for each issue")
             .addInfo(
                 "Uses " + GTUtility.formatNumbers(POWER_USAGE)
                     + " EU/t increasing by up to "
@@ -586,8 +581,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         // 1 - Math.pow(1 - x, 3)
 
-        double eff = (0.1d + (1d - GTUtility.powInt(1 - (this.fuelsupply / MAX_CAPACITY), 3)) * 0.9d)
-            - (this.getIdealStatus() - this.getRepairStatus()) / 10d;
+        double eff = (0.1d + (1d - GTUtility.powInt(1 - (this.fuelsupply / MAX_CAPACITY), 3)) * 0.9d);
 
         if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
@@ -626,9 +620,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             this.mOutputItems = toOutput.toArray(new ItemStack[0]);
         }
 
-        this.coolanttaking = (int) (COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED);
+        this.coolanttaking = (int) ((COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d));
 
-        this.watertaking = (int) (WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED);
+        this.watertaking = (int) ((WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d));
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
@@ -709,11 +705,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 addOutputToHatch(coolantOutputHatch, FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
                 double eff = drainedamount / ((double) this.coolanttaking);
-                int addedTime = (int) (this.mMaxProgresstime * COOLANT_SPEEDUP
+                double addedTime = (int) (this.mMaxProgresstime * COOLANT_SPEEDUP
                     * eff
                     * this.heliumSupply
                     / HELIUM_NEEDED);
-                if (addedTime > 0) this.mProgresstime += addedTime;
+                addedTime *= (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d);
+                if (addedTime > 0) this.mProgresstime += (int) addedTime;
             }
         }
         {
@@ -731,8 +728,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 addOutputToHatch(steamOutputHatch, Materials.Steam.getGas(drainedamount * 160L));
 
                 double eff = drainedamount / ((double) this.watertaking);
-                int addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP * eff * this.heliumSupply / HELIUM_NEEDED);
-                if (addedTime > 0) this.mProgresstime += addedTime;
+                double addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP
+                    * eff
+                    * this.heliumSupply
+                    / HELIUM_NEEDED);
+                addedTime *= (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d);
+                if (addedTime > 0) this.mProgresstime += (int) addedTime;
             }
         }
 
