@@ -287,7 +287,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private boolean empty;
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
-    private int mCasing = 0;
 
     public MTEHighTempGasCooledReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -345,7 +344,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        this.mCasing = 0;
         return this.checkPiece("main", 16, 13, 1) && this.mMaintenanceHatches.size() == 1
             && !this.mInputBusses.isEmpty()
             && !this.mOutputBusses.isEmpty()
@@ -597,11 +595,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.emptyticksnodiff++;
                 return true;
             }
-            if (this.heliumSupply > 0) {
-                this.addOutput(Materials.Helium.getGas(this.heliumSupply));
-                this.heliumSupply = 0;
-            }
+//            if (this.heliumSupply > 0) {
+//                this.addOutput(Materials.Helium.getGas(this.heliumSupply));
+//                this.heliumSupply = 0;
+//            }
             if (this.fuelsupply > 0) {
+                // TODO
                 // ItemStack iStack = new ItemStack(
                 // HTGRMaterials.aHTGR_Materials,
                 // this.fuelsupply,
@@ -632,14 +631,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         int takecoolant = this.coolanttaking;
         int drainedamount = 0;
 
-        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-            FluidStack tLiquid = tHatch.getFluid();
-            if (tLiquid != null && tLiquid.isFluidEqual(GTModHandler.getIC2Coolant(1))) {
-                FluidStack drained = tHatch.drain(takecoolant, true);
-                takecoolant -= drained.amount;
-                drainedamount += drained.amount;
-                if (takecoolant <= 0) break;
-            }
+        FluidStack tLiquid = getInputFromHatch(coolantInputHatch, GTModHandler.getIC2Coolant(1));
+        if (tLiquid != null) {
+            int toDrain = Math.min(takecoolant, tLiquid.amount);
+            FluidStack drained = coolantInputHatch.drain(toDrain, true);
+            drainedamount += drained.amount;
         }
 
         if (drainedamount > 0) {
