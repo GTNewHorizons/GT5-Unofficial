@@ -1034,6 +1034,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         enoughCatalyst = true;
         int needed = (validFuelStack.amount + extraCatalystNeeded) / 2;
         for (FluidStack stack : inputFluids) {
+            if (needed <= 0) {
+                break;
+            }
+
             if (stack.isFluidEqual(validFuelStack)) {
                 needed -= stack.amount;
             }
