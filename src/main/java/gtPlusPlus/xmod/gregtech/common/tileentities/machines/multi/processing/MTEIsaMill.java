@@ -254,8 +254,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
         ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
 
-        if (aEntities.isEmpty()) return;
-
         for (EntityLivingBase aFoundEntity : aEntities) {
             if (aFoundEntity.getHealth() <= 0) continue;
 
