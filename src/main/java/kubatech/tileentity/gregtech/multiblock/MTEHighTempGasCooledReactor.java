@@ -46,7 +46,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.items.SimpleSubItemClass;
@@ -81,10 +83,12 @@ import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.HTGRLoader;
 
-public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor> {
+public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor>
+    implements ISurvivalConstructable {
 
     private static final int BASECASINGINDEX = 181;
 
@@ -98,17 +102,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
        TODO Scanner
        TODO GUI Info
        TODO Tooltip
-
-
-    buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(OutputHatch, OutputBus, Maintenance, Energy)
-                    .dot(1)
-                    .casingIndex(BASECASINGINDEX)
-                    .build(),
-                    buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(InputHatch, InputBus)
-                    .dot(2)
-                    .casingIndex(BASECASINGINDEX)
-                    .build(),
-                    implements ISurvivalConstructable
      */
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -287,8 +280,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private static final int MAX_CAPACITY = 10000;
 
     private static final int MIN_CAPACITY = MAX_CAPACITY / 100;
-    private static final double COOLANT_SPEEDUP = 0.07d;
-    private static final double WATER_SPEEDUP = 0.03d;
+    private static final double COOLANT_SPEEDUP = 0.07d / 20d;
+    private static final double WATER_SPEEDUP = 0.03d / 20d;
 
     private int heliumSupply;
     private double fuelsupply = 0;
@@ -297,6 +290,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private boolean empty;
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
+    private int watertaking = 0;
 
     public MTEHighTempGasCooledReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -342,6 +336,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece("main", stackSize, hintsOnly, 16, 13, 1);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece("main", stackSize, 16, 13, 1, elementBudget, env, false, true);
     }
 
     @Override
@@ -408,6 +408,22 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
         }
         return null;
+    }
+
+    private boolean addOutputToHatch(MTEHatchOutput hatch, FluidStack fluidStack) {
+        if (!hatch.canStoreFluid(fluidStack)) return false;
+
+        if (hatch instanceof MTEHatchOutputME tMEHatch) {
+            if (!tMEHatch.canFillFluid()) return false;
+        }
+
+        int tAmount = hatch.fill(fluidStack, false);
+        if (tAmount >= fluidStack.amount) {
+            return hatch.fill(fluidStack, true) >= fluidStack.amount;
+        } else if (tAmount > 0) {
+            fluidStack.amount = fluidStack.amount - hatch.fill(fluidStack, true);
+        }
+        return false;
     }
 
     @Override
@@ -564,6 +580,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
 
         this.coolanttaking = (int) (10d * this.fuelsupply);
+        this.watertaking = this.coolanttaking;
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
@@ -583,7 +600,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     @Override
     protected long getActualEnergyUsage() {
-        return lEUt;
+        return -lEUt;
     }
 
     @Override
@@ -629,29 +646,46 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             return true;
         }
 
-        // if (this.runningtick % 20 == 0) {
-        int takecoolant = this.coolanttaking;
-        int drainedamount = 0;
+        {
+            int takecoolant = this.coolanttaking;
+            int drainedamount = 0;
 
-        FluidStack tLiquid = getInputFromHatch(coolantInputHatch, GTModHandler.getIC2Coolant(1));
-        if (tLiquid != null) {
-            int toDrain = Math.min(takecoolant, tLiquid.amount);
-            FluidStack drained = coolantInputHatch.drain(toDrain, true);
-            drainedamount += drained.amount;
+            FluidStack tLiquid = getInputFromHatch(coolantInputHatch, GTModHandler.getIC2Coolant(1));
+            if (tLiquid != null) {
+                int toDrain = Math.min(takecoolant, tLiquid.amount);
+                FluidStack drained = coolantInputHatch.drain(toDrain, true);
+                drainedamount += drained.amount;
+            }
+
+            if (drainedamount > 0) {
+                addOutputToHatch(coolantOutputHatch, FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+
+                double eff = drainedamount / ((double) this.coolanttaking);
+                int addedTime = (int) (this.mMaxProgresstime * COOLANT_SPEEDUP * eff);
+                if (addedTime > 0) this.mProgresstime += addedTime;
+            }
         }
+        {
+            int takewater = this.watertaking;
+            int drainedamount = 0;
 
-        if (drainedamount > 0) {
-            this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+            FluidStack tLiquid = getInputFromHatch(waterInputHatch, GTModHandler.getDistilledWater(1));
+            if (tLiquid != null) {
+                int toDrain = Math.min(takewater, tLiquid.amount);
+                FluidStack drained = waterInputHatch.drain(toDrain, true);
+                drainedamount += drained.amount;
+            }
 
-            double eff = drainedamount / ((double) this.coolanttaking);
-            int addedTime = (int) (this.mMaxProgresstime * this.COOLANT_SPEEDUP / 20d * eff);
-            if (addedTime > 0) this.mProgresstime += addedTime;
+            if (drainedamount > 0) {
+                addOutputToHatch(steamOutputHatch, Materials.Steam.getGas(drainedamount * 160L));
+
+                double eff = drainedamount / ((double) this.watertaking);
+                int addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP * eff);
+                if (addedTime > 0) this.mProgresstime += addedTime;
+            }
         }
 
         this.updateSlots();
-
-        // if (takecoolant > 0) this.stopMachine(SimpleShutDownReason.ofNormal("no_coolant"));
-        // }
 
         return true;
     }
