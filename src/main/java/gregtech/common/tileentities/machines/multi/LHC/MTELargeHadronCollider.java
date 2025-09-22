@@ -22,13 +22,10 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
-import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -38,9 +35,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -2445,7 +2439,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
-            hatch.setAcceptedInputs(LHCModules.EM.acceptedParticles);
+            hatch.setInitialParticleList(LHCModules.EM.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
         }
@@ -2459,7 +2453,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
-            hatch.setAcceptedInputs(LHCModules.Weak.acceptedParticles);
+            hatch.setInitialParticleList(LHCModules.Weak.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
         }
@@ -2472,7 +2466,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
-            hatch.setAcceptedInputs(LHCModules.Strong.acceptedParticles);
+            hatch.setInitialParticleList(LHCModules.Strong.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
         }
@@ -2485,7 +2479,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
-            hatch.setAcceptedInputs(LHCModules.Grav.acceptedParticles);
+            hatch.setInitialParticleList(LHCModules.Grav.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
         }
