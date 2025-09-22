@@ -252,7 +252,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             }
         }
 
-        ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
+        final ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
+        final boolean generateParticles = (aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive());
 
         for (EntityLivingBase aFoundEntity : aEntities) {
             if (aFoundEntity.getHealth() <= 0) continue;
@@ -267,9 +268,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                 aFoundEntity.attackEntityFrom(mIsaMillDamageSource, damage);
             }
 
-            if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
-                generateParticles(aFoundEntity);
-            }
+            if (generateParticles) generateParticles(aFoundEntity);
         }
     }
 
