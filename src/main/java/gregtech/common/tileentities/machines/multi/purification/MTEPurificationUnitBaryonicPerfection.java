@@ -486,7 +486,7 @@ public class MTEPurificationUnitBaryonicPerfection
                         this.insertedCatalysts.add(singleStack);
                     }
                     // Then deplete the entire stack
-                    this.depleteInput(stack);
+                    stack.stackSize = 0;
                 }
             }
             endRecipeProcessing();
