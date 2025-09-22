@@ -132,12 +132,7 @@ public class HTGRLoader {
 
         GameRegistry.registerItem(HTGR_ITEM, "htgr_item");
 
-        /*
-         * .inputs(Silver, 2)
-         * .outputs(Silver, 1, Indium, 1)
-         * .fuel(Uranium 235, 2, 1, Plutonium, 241, 3, 2)
-         * .TRISO(Inner Layer, Middle Layer, Outer layer)
-         */
+        //silver to indium
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 2L))
@@ -157,21 +152,19 @@ public class HTGRLoader {
             .eut(1)
             .addTo(HTGRRecipes);
 
-        /*
-         * .inputs(Uranium 235, 1)
-         * .outputs(Plutonium 239, 3, Uranium 238, 2)
-         * .fuel(Uranium 238, 5)
-         * .TRISO(Inner Layer, Middle Layer, Outer layer)
-         */
+        // plutonium breeding
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 3L))
+            .outputChances(10000,10000,500,10000)
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 5L), 1) })
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 5L), 1) })
             .metadata(
                 SHELL,
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
@@ -181,21 +174,97 @@ public class HTGRLoader {
             .eut(1)
             .addTo(HTGRRecipes);
 
-        /*
-         * .inputs(Plutonium 239, 1)
-         * .outputs(Plutonium 239, 3, Uranium 238, 2)
-         * .fuel(Uranium 238, 5)
-         * .TRISO(Inner Layer, Middle Layer, Outer layer)
-         */
+        // plutonium 241 breeding
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 4L))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 5L), 1) })
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 5L), 2) })
+            .metadata(
+                SHELL,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .duration(1)
+            .eut(1)
+            .addTo(HTGRRecipes);
+
+        //thorium to lutetium
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 5L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L))
+            .metadata(
+                FUEL,
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L), 0) })
+            .metadata(
+                SHELL,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .duration(1)
+            .eut(1)
+            .addTo(HTGRRecipes);
+
+        //tungsten to osmium
+        //makes me hungry for a kebab
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 5L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 2L))
+            .metadata(
+                FUEL,
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 3L), 0) })
+            .metadata(
+                SHELL,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .duration(1)
+            .eut(1)
+            .addTo(HTGRRecipes);
+
+        //praseodymium to promethium
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Promethium, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 3L))
+            .metadata(
+                FUEL,
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 3L), 0) })
+            .metadata(
+                SHELL,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .duration(1)
+            .eut(1)
+            .addTo(HTGRRecipes);
+
+        //lanthanum to praseodymium
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 3L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 3L))
+            .metadata(
+                FUEL,
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 3L), 0) })
             .metadata(
                 SHELL,
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
