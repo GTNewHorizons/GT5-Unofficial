@@ -279,9 +279,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private static final int MAX_CAPACITY = 10000;
 
-    private static final int MIN_CAPACITY = MAX_CAPACITY / 100;
-    private static final double COOLANT_SPEEDUP = 0.07d / 20d;
-    private static final double WATER_SPEEDUP = 0.03d / 20d;
+    private static final int MIN_CAPACITY = MAX_CAPACITY / 100;     //min 1% reactor fill to start
+
+    private static final double COOLANT_SPEEDUP = 0.07d / 20d;      // 7% recipe time per second if supplied with 100% of all needed coolant
+
+    private static final double WATER_SPEEDUP = 0.03d / 20d;        // 3% recipe time per second if supplied with 100% of all needed water
 
     private int heliumSupply;
     private double fuelsupply = 0;
