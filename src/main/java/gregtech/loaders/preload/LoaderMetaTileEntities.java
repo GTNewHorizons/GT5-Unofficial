@@ -416,28 +416,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         // Converter recipes in case you had old one lying around
         ItemList.OilDrill1.set(
-            new MTEOilDrill1(MULTIBLOCK_PUMP_MKI_CONTROLLER.ID, "multimachine.oildrill1", "Oil/Gas/Fluid Drilling Rig")
+            new MTEOilDrill1(MULTIBLOCK_PUMP_MKI_CONTROLLER.ID, "multimachine.oildrill1", "Fluid Drilling Rig")
                 .getStackForm(1));
         ItemList.OilDrill2.set(
-            new MTEOilDrill2(
-                MULTILOCK_PUMP_MKII_CONTROLLER.ID,
-                "multimachine.oildrill2",
-                "Oil/Gas/Fluid Drilling Rig II").getStackForm(1));
+            new MTEOilDrill2(MULTILOCK_PUMP_MKII_CONTROLLER.ID, "multimachine.oildrill2", "Fluid Drilling Rig II")
+                .getStackForm(1));
         ItemList.OilDrill3.set(
-            new MTEOilDrill3(
-                MULTILOCK_PUMP_MKIII_CONTROLLER.ID,
-                "multimachine.oildrill3",
-                "Oil/Gas/Fluid Drilling Rig III").getStackForm(1));
+            new MTEOilDrill3(MULTILOCK_PUMP_MKIII_CONTROLLER.ID, "multimachine.oildrill3", "Fluid Drilling Rig III")
+                .getStackForm(1));
         ItemList.OilDrill4.set(
-            new MTEOilDrill4(
-                MULTILOCK_PUMP_MKIV_CONTROLLER.ID,
-                "multimachine.oildrill4",
-                "Oil/Gas/Fluid Drilling Rig IV").getStackForm(1));
+            new MTEOilDrill4(MULTILOCK_PUMP_MKIV_CONTROLLER.ID, "multimachine.oildrill4", "Fluid Drilling Rig IV")
+                .getStackForm(1));
         ItemList.OilDrillInfinite.set(
             new MTEOilDrillInfinite(
                 MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
                 "multimachine.oildrillinfinite",
-                "Infinite Oil/Gas/Fluid Drilling Rig").getStackForm(1));
+                "Infinite Fluid Drilling Rig").getStackForm(1));
 
         ItemList.ConcreteBackfiller1.set(
             new MTEConcreteBackfiller1(
@@ -4534,7 +4528,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBasicMachineWithRecipe(
                 ELECTRIC_FURNACE_IV.ID,
                 "basicmachine.e_furnace.tier.05",
-                "Electron Exitement Processor",
+                "Electron Excitement Processor",
                 5,
                 MachineType.ELECTRIC_FURNACE.tooltipDescription(),
                 RecipeMaps.furnaceRecipes,
