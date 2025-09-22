@@ -24,6 +24,7 @@ import static bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
+import static gregtech.api.enums.GTValues.AuthorPxx500;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -372,7 +373,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .addInputHatch("Top of the second Coolant Tower", 6)
             .addOutputHatch("Bottom of the second Coolant Tower", 7)
 
-            .toolTipFinisher(AuthorKuba);
+            .toolTipFinisher(AuthorKuba, AuthorPxx500);
         return tt;
     }
 
