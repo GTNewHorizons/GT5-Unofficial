@@ -1660,7 +1660,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             ItemStack stackInFirstSlot = baseMetaTileEntity.getStackInSlot(0);
             if (GTUtility.areStacksEqual(aStack, stackInFirstSlot)) {
                 if (stackInFirstSlot.stackSize >= aStack.stackSize) {
-                    baseMetaTileEntity.decrStackSize(0, aStack.stackSize);
+                    stackInFirstSlot.stackSize -= aStack.stackSize;
+                    tHatch.updateSlots();
                     return true;
                 }
             }
@@ -1672,7 +1673,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
                 if (GTUtility.areStacksEqual(aStack, stackInSlot)) {
                     if (stackInSlot.stackSize >= aStack.stackSize) {
-                        baseMetaTileEntity.decrStackSize(i, aStack.stackSize);
+                        stackInFirstSlot.stackSize -= aStack.stackSize;
+                        tHatch.updateSlots();
                         return true;
                     }
                 }
