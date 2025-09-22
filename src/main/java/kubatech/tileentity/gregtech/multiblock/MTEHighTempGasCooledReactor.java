@@ -315,39 +315,76 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor, HTGR")
             .addInfo(
-                "Uses up to " + GTUtility.formatNumbers(CONVERSION_FACTOR * 100)
-                    + "% of fuel per operation, 10% of this value is flat and 90% dependent on easeOutCubic formula")
-            .addInfo("Maintenance problems decrease the efficiency of cooling by 20% for each issue")
+                "Uses up to " + EnumChatFormatting.RED
+                    + GTUtility.formatNumbers(CONVERSION_FACTOR * 100)
+                    + EnumChatFormatting.GRAY
+                    + "% of fuel per operation, "
+                    + EnumChatFormatting.RED
+                    + "10"
+                    + EnumChatFormatting.GRAY
+                    + "% of this value is flat and "
+                    + EnumChatFormatting.RED
+                    + "90"
+                    + EnumChatFormatting.GRAY
+                    + "% dependent on easeOutCubic formula")
             .addInfo(
-                "Uses " + GTUtility.formatNumbers(POWER_USAGE)
+                "Maintenance problems decrease the efficiency of cooling by " + EnumChatFormatting.RED
+                    + "20"
+                    + EnumChatFormatting.GRAY
+                    + "% for each issue")
+            .addInfo(
+                "Uses " + EnumChatFormatting.RED
+                    + GTUtility.formatNumbers(POWER_USAGE)
+                    + EnumChatFormatting.GRAY
                     + " EU/t increasing by up to "
+                    + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1)
+                    + EnumChatFormatting.GRAY
                     + " times when lacking Helium Gas")
-            .addInfo("Helium gas increases effectiveness of heat exchangers linearly up to 100% at max capacity")
             .addInfo(
-                "The Reactor loses " + GTUtility.formatNumbers(HELIUM_LOST_PER_CYCLE * 100)
+                "Helium gas increases effectiveness of heat exchangers linearly up to " + EnumChatFormatting.RED
+                    + "100"
+                    + EnumChatFormatting.GRAY
+                    + "% at max capacity")
+            .addInfo(
+                "The Reactor loses " + EnumChatFormatting.RED
+                    + GTUtility.formatNumbers(HELIUM_LOST_PER_CYCLE * 100)
+                    + EnumChatFormatting.GRAY
                     + "% helium per operation and requires at least "
+                    + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED)
+                    + EnumChatFormatting.GRAY
                     + "% helium to start operation")
             .addInfo(
-                "One Operation takes longer based on reactor fill level (between "
+                "One Operation takes longer based on reactor fill level (between " + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(BASE_PROCESSING_TIME / 20)
+                    + EnumChatFormatting.GRAY
                     + "s and "
+                    + EnumChatFormatting.RED
                     + GTUtility.formatNumbers((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20)
+                    + EnumChatFormatting.GRAY
                     + "s)")
             .addInfo(
-                "Providing coolant/water/both speeds up recipe by "
+                "Providing coolant/water/both speeds up recipe by " + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(COOLANT_SPEEDUP * 20 * 100)
+                    + EnumChatFormatting.GRAY
                     + "%/"
+                    + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(WATER_SPEEDUP * 20 * 100)
+                    + EnumChatFormatting.GRAY
                     + "%/"
+                    + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100))
+                    + EnumChatFormatting.GRAY
                     + "% total recipe time/second")
             .addInfo(
-                "The amount of necessary fluid for maximum bonus speed scales with pellets, "
+                "The amount of necessary fluid for maximum bonus speed scales with pellets, " + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(COOLANT_PER_PELLET)
+                    + EnumChatFormatting.GRAY
                     + " coolant/tick/pellet and "
+                    + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(WATER_PER_PELLET)
+                    + EnumChatFormatting.GRAY
                     + " water/tick/pellet")
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front center")
