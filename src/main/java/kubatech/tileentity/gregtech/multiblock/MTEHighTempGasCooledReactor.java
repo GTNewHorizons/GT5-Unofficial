@@ -320,8 +320,45 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor, HTGR")
             .addInfo("TODO")
-            .addInfo("Uses " + GTUtility.formatNumbers(POWER_USAGE) + " EU/t increasing when lacking Helium Gas")
-            .addInfo("One Operation takes variable amount of time based on reactor fill level")
+            .addInfo("TODO")
+
+            .addInfo("TODO")
+
+            .addInfo(
+                "Uses up to " + GTUtility.formatNumbers(CONVERSION_FACTOR * 100)
+                    + "% of fuel per operation, 10% of this value is flat and 90% dependent on easeOutCubic formula")
+            .addInfo("The conversion rate is also decreased by maintenance")
+            .addInfo(
+                "Uses " + GTUtility.formatNumbers(POWER_USAGE)
+                    + " EU/t increasing by up to "
+                    + GTUtility.formatNumbers(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1)
+                    + " times when lacking Helium Gas")
+            .addInfo("Helium gas increases effectiveness of heat exchangers linearly up to 100% at max capacity")
+            .addInfo(
+                "The Reactor loses " + GTUtility.formatNumbers(HELIUM_LOST_PER_CYCLE * 100)
+                    + "% helium per operation and requires at least "
+                    + GTUtility.formatNumbers(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED)
+                    + "% helium to start operation")
+            .addInfo(
+                "One Operation takes longer based on reactor fill level (between "
+                    + GTUtility.formatNumbers(BASE_PROCESSING_TIME / 20)
+                    + "s and "
+                    + GTUtility.formatNumbers((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20)
+                    + "s)")
+            .addInfo(
+                "Providing coolant/water/both speeds up recipe by "
+                    + GTUtility.formatNumbers(COOLANT_SPEEDUP * 20 * 100)
+                    + "%/"
+                    + GTUtility.formatNumbers(WATER_SPEEDUP * 20 * 100)
+                    + "%/"
+                    + GTUtility.formatNumbers(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100))
+                    + "% total recipe time/second")
+            .addInfo(
+                "The amount of necessary fluid for maximum bonus speed scales with pellets, "
+                    + GTUtility.formatNumbers(COOLANT_PER_PELLET)
+                    + " coolant/tick/pellet and "
+                    + GTUtility.formatNumbers(WATER_PER_PELLET)
+                    + " water/tick/pellet")
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front center")
             .addInputHatch("Top of the Pump", 1)
@@ -590,7 +627,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
 
         this.coolanttaking = (int) (COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED);
-        
+
         this.watertaking = (int) (WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED);
 
         this.mEfficiency = (int) (eff * 10000D);
