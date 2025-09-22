@@ -98,21 +98,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private static final int BASECASINGINDEX = 181;
 
-    // spotless:off
-
-
-    /*
-       TODO Scanner
-       TODO GUI Info
-       TODO Tooltip
-     */
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEHighTempGasCooledReactor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            transpose(
+            transpose( // spotless:off
                 new String[][]{
                     {"                             ","                             ","                             ","                             ","                             ","                             ","                             ","                             ","                             ","                 C           ","                CCC          ","               CCChC         ","                CCC          ","                 C           ","                             ","                             ","                             ","                             "},
                     {"                             ","                             ","                             ","                             ","                             ","                             ","                             ","                             ","                             ","                CCC          ","               C   C         ","               C  MC         ","               C   C         ","                CCC          ","                             ","                             ","                             ","                             "},
@@ -132,7 +123,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     {"OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO"}
                 })) // spotless:on
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 5)) // IV Machine Casing
-        // .addElement('B', ofBlock(GregTechAPI.sSolenoidCoilCasings, 6)) //UV Solenoid Superconductor Coil
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 3)) // Pressure Containment Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings13, 0)) // Cable Casing
         .addElement('E', ofBlock(GregTechAPI.sBlockCasings13, 1)) // Graphite Moderator Casing
@@ -147,8 +137,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15)) // Tungstensteel Pipe Casing
         .addElement('O', ofBlock(GregTechAPI.sBlockConcretes, 8)) // Light Concrete
         .addElement('P', ofBlock(GregTechAPI.sBlockFrames, 81)) // Tungsten Frame Box
-        // .addElement('R', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 31776)) //Rebolted Carbon Casing
-        // .addElement('S', ofBlock(WerkstoffLoader.BWBlockCasings, 31847)) //Bolted Tungsten Casing
         .addElement(
             'e',
             buildHatchAdder(MTEHighTempGasCooledReactor.class)
@@ -176,12 +164,62 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             HTGRHatches.SteamOutputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 7))
         .build();
 
+    private static final int HELIUM_NEEDED = 512000;
+
+    private static final int MIN_HELIUM_NEEDED = HELIUM_NEEDED / 10;
+
+    // conversion factor per operation ππππππππππππππππππππππππππππππππππππππππππππππππππππππππ
+    private static final double CONVERSION_FACTOR = 0.00141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964429d;
+
+    private static final long POWER_USAGE = (long) (TierEU.RECIPE_IV * 0.2d); // Minimum power usage
+    private static final double POWER_PENALTY_WHEN_MINIMUM_HELIUM = 39d; // When minimum Helium power usage by the pump
+                                                                         // will be multiplied by this number+1
+
+    private static final double BASE_PROCESSING_TIME = 2000d; // Minimum operation time
+    private static final double SCALING_PROCESSING_TIME = 18000; // Scaling operation time with amount of pellets in
+                                                                 // the reactor
+
+    private static final int MAX_CAPACITY = 10000; // Max pellets in reactor
+    private static final int MIN_CAPACITY = MAX_CAPACITY / 100; // min 1% reactor fill to start
+
+    private static final double COOLANT_SPEEDUP = 0.07d / 20d; // 7% recipe time per second if supplied with 100% of all
+                                                               // needed coolant
+    private static final double WATER_SPEEDUP = 0.03d / 20d; // 3% recipe time per second if supplied with 100% of all
+                                                             // needed water
+
+    private static final double COOLANT_PER_PELLET = 0.5d; // coolant needed per tick to cool one pellet
+    private static final double WATER_PER_PELLET = 0.1d; // water needed per tick to cool one pellet
+
+    private static final double HELIUM_LOST_PER_CYCLE = 0.0005d; // Helium lost per one operation
+
+    private int heliumSupply;
+    private double fuelsupply = 0;
+    private final HashMap<Materials, Double> mStoredFuels = new HashMap<>();
+    private final HashMap<Materials, Double> mStoredBurnedFuels = new HashMap<>();
+    private boolean empty;
+    private int emptyticksnodiff = 0;
+    private int coolanttaking = 0;
+    private int watertaking = 0;
+
     private MTEHatchInput heliumInputHatch;
     private MTEHatchInput coolantInputHatch;
     private MTEHatchOutput coolantOutputHatch;
     private MTEHatchInput waterInputHatch;
     private MTEHatchOutput steamOutputHatch;
     private final ArrayList<MTEHatch> mCustomHatches = new ArrayList<>(5);
+
+    public MTEHighTempGasCooledReactor(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    private MTEHighTempGasCooledReactor(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IStructureDefinition<MTEHighTempGasCooledReactor> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
 
     private boolean addHeliumInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (heliumInputHatch != null) return false;
@@ -269,56 +307,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         waterInputHatch = null;
         steamOutputHatch = null;
         mCustomHatches.clear();
-    }
-
-    private static final int HELIUM_NEEDED = 512000;
-
-    private static final int MIN_HELIUM_NEEDED = HELIUM_NEEDED / 10;
-
-    // conversion factor per operation ππππππππππππππππππππππππππππππππππππππππππππππππππππππππ
-    private static final double CONVERSION_FACTOR = 0.00141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964429d;
-
-    private static final long POWER_USAGE = (long) (TierEU.RECIPE_IV * 0.2d); // Minimum power usage
-    private static final double POWER_PENALTY_WHEN_MINIMUM_HELIUM = 39d; // When minimum Helium power usage by the pump
-                                                                         // will be multiplied by this number+1
-
-    private static final double BASE_PROCESSING_TIME = 2000d; // Minimum operation time
-    private static final double SCALING_PROCESSING_TIME = 18000; // Scaling operation time with amount of pellets in
-                                                                 // the reactor
-
-    private static final int MAX_CAPACITY = 10000; // Max pellets in reactor
-    private static final int MIN_CAPACITY = MAX_CAPACITY / 100; // min 1% reactor fill to start
-
-    private static final double COOLANT_SPEEDUP = 0.07d / 20d; // 7% recipe time per second if supplied with 100% of all
-                                                               // needed coolant
-    private static final double WATER_SPEEDUP = 0.03d / 20d; // 3% recipe time per second if supplied with 100% of all
-                                                             // needed water
-
-    private static final double COOLANT_PER_PELLET = 0.5d; // coolant needed per tick to cool one pellet
-    private static final double WATER_PER_PELLET = 0.1d; // water needed per tick to cool one pellet
-
-    private static final double HELIUM_LOST_PER_CYCLE = 0.0005d; // Helium lost per one operation
-
-    private int heliumSupply;
-    private double fuelsupply = 0;
-    private final HashMap<Materials, Double> mStoredFuels = new HashMap<>();
-    private final HashMap<Materials, Double> mStoredBurnedFuels = new HashMap<>();
-    private boolean empty;
-    private int emptyticksnodiff = 0;
-    private int coolanttaking = 0;
-    private int watertaking = 0;
-
-    public MTEHighTempGasCooledReactor(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-    }
-
-    private MTEHighTempGasCooledReactor(String aName) {
-        super(aName);
-    }
-
-    @Override
-    public IStructureDefinition<MTEHighTempGasCooledReactor> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -565,7 +553,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        // Only for visual
         return HTGRLoader.HTGRRecipes;
     }
 
@@ -576,7 +563,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-
         if (this.empty) {
             if (this.heliumSupply > 0 || this.fuelsupply > 0) {
                 this.mEfficiency = 10000;
@@ -649,8 +635,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private int runningtick = 0;
-
     @Override
     protected long getActualEnergyUsage() {
         return -lEUt;
@@ -658,8 +642,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        this.runningtick++;
-
         super.onRunningTick(aStack);
 
         if (this.empty) {
