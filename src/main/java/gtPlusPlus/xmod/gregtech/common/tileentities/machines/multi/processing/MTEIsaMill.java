@@ -300,31 +300,35 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                 aChunksToCheck.add(aLocalChunk);
             }
         }
-        if (!aChunksToCheck.isEmpty()) {
-            ArrayList<EntityLivingBase> aEntitiesFound = new ArrayList<>();
-            for (Chunk aChunk : aChunksToCheck) {
-                if (aChunk.isChunkLoaded) {
-                    List[] aEntityLists = aChunk.entityLists;
-                    for (List aEntitySubList : aEntityLists) {
-                        for (Object aEntity : aEntitySubList) {
-                            if (aEntity instanceof EntityLivingBase aPlayer) {
-                                aEntitiesFound.add(aPlayer);
-                            }
-                        }
+        // early exit
+        if (aChunksToCheck.isEmpty()) return aEntities;
+
+        ArrayList<EntityLivingBase> aEntitiesFound = new ArrayList<>();
+        for (Chunk aChunk : aChunksToCheck) {
+            if (!aChunk.isChunkLoaded) continue;
+
+            List[] aEntityLists = aChunk.entityLists;
+            for (List aEntitySubList : aEntityLists) {
+                for (Object aEntity : aEntitySubList) {
+                    if (aEntity instanceof EntityLivingBase aPlayer) {
+                        aEntitiesFound.add(aPlayer);
                     }
                 }
             }
-            if (!aEntitiesFound.isEmpty()) {
-                for (EntityLivingBase aEntity : aEntitiesFound) {
-                    BlockPos aPlayerPos = EntityUtils.findBlockPosOfEntity(aEntity);
-                    for (BlockPos aBlockSpaceToCheck : aPositionsToCheck) {
-                        if (aBlockSpaceToCheck.equals(aPlayerPos)) {
-                            aEntities.add(aEntity);
-                        }
-                    }
+
+        }
+
+        if (aEntitiesFound.isEmpty()) return aEntities;
+
+        for (EntityLivingBase aEntity : aEntitiesFound) {
+            BlockPos aPlayerPos = EntityUtils.findBlockPosOfEntity(aEntity);
+            for (BlockPos aBlockSpaceToCheck : aPositionsToCheck) {
+                if (aBlockSpaceToCheck.equals(aPlayerPos)) {
+                    aEntities.add(aEntity);
                 }
             }
         }
+
         return aEntities;
     }
 
