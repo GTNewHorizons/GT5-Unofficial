@@ -275,18 +275,26 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     // conversion factor per operation ππππππππππππππππππππππππππππππππππππππππππππππππππππππππ
     private static final double CONVERSION_FACTOR = 0.00141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964429d;
 
-    private static final long POWER_USAGE = (long) (TierEU.RECIPE_IV * 0.2d);
+    private static final long POWER_USAGE = (long) (TierEU.RECIPE_IV * 0.2d); // Minimum power usage
+    private static final double POWER_PENALTY_WHEN_MINIMUM_HELIUM = 39d; // When minimum Helium power usage by the pump
+                                                                         // will be multiplied by this number+1
 
-    private static final int MAX_CAPACITY = 10000;
+    private static final double BASE_PROCESSING_TIME = 2000d; // Minimum operation time
+    private static final double SCALING_PROCESSING_TIME = 18000; // Scaling operation time with amount of pellets in
+                                                                 // the reactor
 
-    private static final int MIN_CAPACITY = MAX_CAPACITY / 100;     //min 1% reactor fill to start
+    private static final int MAX_CAPACITY = 10000; // Max pellets in reactor
+    private static final int MIN_CAPACITY = MAX_CAPACITY / 100; // min 1% reactor fill to start
 
-    private static final double COOLANT_SPEEDUP = 0.07d / 20d;      // 7% recipe time per second if supplied with 100% of all needed coolant
+    private static final double COOLANT_SPEEDUP = 0.07d / 20d; // 7% recipe time per second if supplied with 100% of all
+                                                               // needed coolant
+    private static final double WATER_SPEEDUP = 0.03d / 20d; // 3% recipe time per second if supplied with 100% of all
+                                                             // needed water
 
-    private static final double WATER_SPEEDUP = 0.03d / 20d;        // 3% recipe time per second if supplied with 100% of all needed water
+    private static final double COOLANT_PER_PELLET = 0.5d; // coolant needed per tick to cool one pellet
+    private static final double WATER_PER_PELLET = 0.1d; // water needed per tick to cool one pellet
 
-    private static final double COOLANT_PER_PELLET = 0.5;
-    private static final double WATER_PER_PELLET = 0.1;
+    private static final double HELIUM_LOST_PER_CYCLE = 0.0002d; // Helium lost per one operation
 
     private int heliumSupply;
     private double fuelsupply = 0;
@@ -585,19 +593,19 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
 
         this.coolanttaking = (int) (COOLANT_PER_PELLET * this.fuelsupply);
-        this.watertaking =   (int) (WATER_PER_PELLET * this.fuelsupply);
+        this.watertaking = (int) (WATER_PER_PELLET * this.fuelsupply);
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
         this.lEUt = (long) -(POWER_USAGE + POWER_USAGE
             * (1d - (double) (this.heliumSupply - MIN_HELIUM_NEEDED) / (HELIUM_NEEDED - MIN_HELIUM_NEEDED))
-            * 39d);
+            * POWER_PENALTY_WHEN_MINIMUM_HELIUM);
 
-        this.heliumSupply = (int) ((double) this.heliumSupply * (1d - 0.0002d));
+        this.heliumSupply = (int) ((double) this.heliumSupply * (1d - HELIUM_LOST_PER_CYCLE));
 
         this.updateSlots();
 
-        this.mMaxProgresstime = 2000 + (int) (18000d * eff);
+        this.mMaxProgresstime = (int) BASE_PROCESSING_TIME + (int) (SCALING_PROCESSING_TIME * eff);
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -666,7 +674,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 addOutputToHatch(coolantOutputHatch, FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
                 double eff = drainedamount / ((double) this.coolanttaking);
-                int addedTime = (int) (this.mMaxProgresstime * COOLANT_SPEEDUP * eff * this.heliumSupply/HELIUM_NEEDED);
+                int addedTime = (int) (this.mMaxProgresstime * COOLANT_SPEEDUP
+                    * eff
+                    * this.heliumSupply
+                    / HELIUM_NEEDED);
                 if (addedTime > 0) this.mProgresstime += addedTime;
             }
         }
@@ -685,7 +696,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 addOutputToHatch(steamOutputHatch, Materials.Steam.getGas(drainedamount * 160L));
 
                 double eff = drainedamount / ((double) this.watertaking);
-                int addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP * eff * this.heliumSupply/HELIUM_NEEDED);
+                int addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP * eff * this.heliumSupply / HELIUM_NEEDED);
                 if (addedTime > 0) this.mProgresstime += addedTime;
             }
         }
