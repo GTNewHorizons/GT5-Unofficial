@@ -92,6 +92,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
 
     /* TODO MERGE CONFLICT
+       TODO Cooling efficiency based on Helium level
+       TODO Balance helium usage per second instead of per operation?
+       TODO Slow down the reactor a bit?
+       TODO Scanner
+       TODO GUI Info
+       TODO Tooltip
+
+
     buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(OutputHatch, OutputBus, Maintenance, Energy)
                     .dot(1)
                     .casingIndex(BASECASINGINDEX)
@@ -305,15 +313,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor, HTGR")
-            .addInfo("TBD You can clear internal buffer by changing the mode with a screwdriver")
-            .addInfo("TBD Needs a constant supply of coolant while running")
-            .addInfo("TBD Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
-            .addInfo("TBD Consumes up to 2.5% of total Fuel Pellets per Operation depending on efficiency")
-            .addInfo(
-                "TBD Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
-            .addInfo("TBD and affects total recipe time (at 100% eff, -50% total recipe time")
-            .addInfo(
-                "TBD Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
+            .addInfo("TODO")
             .addInfo("Uses " + GTUtility.formatNumbers(POWER_USAGE) + " EU/t increasing when lacking Helium Gas")
             .addInfo("One Operation takes variable amount of time based on reactor fill level")
             .beginStructureBlock(11, 12, 11, true)
