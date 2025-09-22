@@ -2772,9 +2772,9 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 16),
-                new Object[] { "dyeRed", 2 },
-                new Object[] { "dyeGreen", 2 },
-                new Object[] { "dyeBlue", 2 })
+                ItemList.DYE_ONLY_ITEMS[1].get(1),
+                ItemList.DYE_ONLY_ITEMS[2].get(1),
+                ItemList.DYE_ONLY_ITEMS[4].get(1))
             .itemOutputs(ItemList.Casing_Cable.get(1))
             .duration(10 * SECONDS)
             .eut(16)
