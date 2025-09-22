@@ -253,26 +253,34 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         }
 
         ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
-        if (!aEntities.isEmpty()) {
-            for (EntityLivingBase aFoundEntity : aEntities) {
-                if (aFoundEntity instanceof EntityPlayer aPlayer) {
-                    if (!aPlayer.capabilities.isCreativeMode && !aPlayer.capabilities.disableDamage) {
-                        if (aFoundEntity.getHealth() > 0) {
-                            aFoundEntity.attackEntityFrom(mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
-                            if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
-                                generateParticles(aFoundEntity);
-                            }
-                        }
-                    }
-                } else if (aFoundEntity.getHealth() > 0) {
-                    aFoundEntity
-                        .attackEntityFrom(mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
-                    if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
-                        generateParticles(aFoundEntity);
-                    }
+
+        if (aEntities.isEmpty()) return;
+
+        for (EntityLivingBase aFoundEntity : aEntities) {
+            if (aFoundEntity instanceof EntityPlayer aPlayer) {
+                if (aPlayer.capabilities.isCreativeMode || aPlayer.capabilities.disableDamage) continue;
+
+                if (aFoundEntity.getHealth() <= 0) continue;
+
+                aFoundEntity.attackEntityFrom(mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
+
+                if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+                    generateParticles(aFoundEntity);
                 }
+                // entity processed, moving to next one
+                continue;
             }
+
+            // not a player
+            if (aFoundEntity.getHealth() <= 0) continue;
+
+            aFoundEntity.attackEntityFrom(mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+            if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+                generateParticles(aFoundEntity);
+            }
+
         }
+
     }
 
     // 20 armor points add 80% damage reduction, more points add more damage reduction
