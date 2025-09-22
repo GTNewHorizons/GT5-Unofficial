@@ -257,24 +257,17 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (aEntities.isEmpty()) return;
 
         for (EntityLivingBase aFoundEntity : aEntities) {
-            if (aFoundEntity instanceof EntityPlayer aPlayer) {
-                if (aPlayer.capabilities.isCreativeMode || aPlayer.capabilities.disableDamage) continue;
-
-                if (aFoundEntity.getHealth() <= 0) continue;
-
-                aFoundEntity.attackEntityFrom(mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
-
-                if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
-                    generateParticles(aFoundEntity);
-                }
-                // entity processed, moving to next one
+            if (aFoundEntity instanceof EntityPlayer aPlayer
+                && (aPlayer.capabilities.isCreativeMode || aPlayer.capabilities.disableDamage)) {
                 continue;
             }
 
-            // not a player
             if (aFoundEntity.getHealth() <= 0) continue;
 
-            aFoundEntity.attackEntityFrom(mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+            float damageAmount = (aFoundEntity instanceof EntityPlayer aPlayer) ? getPlayerDamageValue(aPlayer, 10)
+                : Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3));
+
+            aFoundEntity.attackEntityFrom(mIsaMillDamageSource, damageAmount);
             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                 generateParticles(aFoundEntity);
             }
