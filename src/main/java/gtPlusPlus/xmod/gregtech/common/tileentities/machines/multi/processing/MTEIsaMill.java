@@ -257,23 +257,22 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (aEntities.isEmpty()) return;
 
         for (EntityLivingBase aFoundEntity : aEntities) {
-            if (aFoundEntity instanceof EntityPlayer aPlayer
-                && (aPlayer.capabilities.isCreativeMode || aPlayer.capabilities.disableDamage)) {
-                continue;
-            }
-
             if (aFoundEntity.getHealth() <= 0) continue;
 
-            float damageAmount = (aFoundEntity instanceof EntityPlayer aPlayer) ? getPlayerDamageValue(aPlayer, 10)
-                : Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3));
+            if (aFoundEntity instanceof EntityPlayer aPlayer) {
+                if (aPlayer.capabilities.isCreativeMode) continue;
+                if (aPlayer.capabilities.disableDamage) continue;
+                final int damage = getPlayerDamageValue(aPlayer, 10);
+                aFoundEntity.attackEntityFrom(mIsaMillDamageSource, damage);
+            } else {
+                final int damage = Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3));
+                aFoundEntity.attackEntityFrom(mIsaMillDamageSource, damage);
+            }
 
-            aFoundEntity.attackEntityFrom(mIsaMillDamageSource, damageAmount);
             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                 generateParticles(aFoundEntity);
             }
-
         }
-
     }
 
     // 20 armor points add 80% damage reduction, more points add more damage reduction
