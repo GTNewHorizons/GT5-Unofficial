@@ -38,6 +38,7 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -50,6 +51,11 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
@@ -453,6 +459,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     }
 
     private boolean addOutputToHatch(MTEHatchOutput hatch, FluidStack fluidStack) {
+        if (hatch == null || !hatch.isValid()) return false;
         if (!hatch.canStoreFluid(fluidStack)) return false;
 
         if (hatch instanceof MTEHatchOutputME tMEHatch) {
@@ -475,6 +482,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         this.fuelsupply = aNBT.getDouble("fuelsupply");
         this.empty = aNBT.getBoolean("EmptyMode");
         this.coolanttaking = aNBT.getInteger("coolanttaking");
+        this.watertaking = aNBT.getInteger("watertaking");
         int fuels = aNBT.getInteger("fuels");
         int burnedfuels = aNBT.getInteger("burnedfuels");
         for (int i = 0; i < fuels; i++) {
@@ -502,6 +510,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         aNBT.setDouble("fuelsupply", this.fuelsupply);
         aNBT.setBoolean("EmptyMode", this.empty);
         aNBT.setInteger("coolanttaking", this.coolanttaking);
+        aNBT.setInteger("watertaking", this.watertaking);
         aNBT.setInteger("fuels", this.mStoredFuels.size());
         aNBT.setInteger("burnedfuels", this.mStoredBurnedFuels.size());
         int i = 0;
@@ -747,66 +756,60 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         return new MTEHighTempGasCooledReactor(this.mName);
     }
 
-    @Override
-    public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htgr.mode",
-                this.empty ? StatCollector.translateToLocal("BW.infoData.htgr.mode.emptying")
-                    : StatCollector.translateToLocal("BW.infoData.htgr.mode.normal")),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htgr.progress",
-                GTUtility.formatNumbers(this.mProgresstime / 20),
-                GTUtility.formatNumbers(this.mMaxProgresstime / 20)),
-            // StatCollector.translateToLocalFormatted(
-            // "BW.infoData.htgr.fuel_type",
-            // this.fueltype == -1 ? StatCollector.translateToLocal("BW.infoData.htgr.fuel_type.none")
-            // : StatCollector.translateToLocalFormatted(
-            // "BW.infoData.htgr.fuel_type.triso",
-            // // TODO: check how to get fuel type localized name
-            // HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish)),
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.htgr.fuel_amount", GTUtility.formatNumbers(this.fuelsupply)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.helium_level",
-                GTUtility.formatNumbers(this.heliumSupply),
-                GTUtility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)),
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.htgr.coolant", GTUtility.formatNumbers(this.coolanttaking)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.problems",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
-    }
-
-    @Override
-    public String generateCurrentRecipeInfoString() {
+    private String getReactorInfoText() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Stored Fuel: ");
+        sb.append(EnumChatFormatting.WHITE + "Stored Fuel: \n");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
             sb.append(
                 entry.getKey()
-                    .getLocalizedNameForItem("- %material"))
-                .append(": ")
+                    .getLocalizedNameForItem(EnumChatFormatting.WHITE + "- " + EnumChatFormatting.AQUA + "%material"))
+                .append(EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD)
                 .append(GTUtility.formatNumbers(entry.getValue()))
                 .append("\n");
         }
-        sb.append("Burned Fuel: ");
+        sb.append(EnumChatFormatting.WHITE + "Burned Fuel: \n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
                 entry.getKey()
-                    .getLocalizedNameForItem("- %material"))
-                .append(": ")
-                .append(GTUtility.formatNumbers(entry.getValue()))
+                    .getLocalizedNameForItem(EnumChatFormatting.WHITE + "- " + EnumChatFormatting.AQUA + "%material"))
+                .append(EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD)
+                .append(GTUtility.formatNumbers(entry.getValue() * 100d) + "% to output")
                 .append("\n");
         }
-        sb.append("Helium Supply: ")
-            .append(GTUtility.formatNumbers(this.heliumSupply))
+        sb.append(EnumChatFormatting.WHITE + "Helium Supply: ")
+            .append(EnumChatFormatting.GOLD + GTUtility.formatNumbers(this.heliumSupply))
             .append("\n");
-        sb.append("Coolant Taking: ")
-            .append(GTUtility.formatNumbers(this.coolanttaking))
+        sb.append(EnumChatFormatting.WHITE + "Coolant per tick: ")
+            .append(EnumChatFormatting.GOLD + GTUtility.formatNumbers(this.coolanttaking))
             .append("\n");
-
+        sb.append(EnumChatFormatting.WHITE + "Water per tick: ")
+            .append(EnumChatFormatting.GOLD + GTUtility.formatNumbers(this.watertaking))
+            .append("\n");
         return sb.toString();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> ll = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        // TODO localize
+        ll.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htgr.mode",
+                this.empty ? StatCollector.translateToLocal("BW.infoData.htgr.mode.emptying")
+                    : StatCollector.translateToLocal("BW.infoData.htgr.mode.normal")));
+        ll.addAll(Arrays.asList(getReactorInfoText().split("\n")));
+        return ll.toArray(new String[0]);
+    }
+
+    @Override
+    protected Widget generateCurrentRecipeInfoWidget() {
+        DynamicPositionedColumn w = (DynamicPositionedColumn) super.generateCurrentRecipeInfoWidget();
+
+        w.widget(new DynamicTextWidget(() -> {
+            String sb = getReactorInfoText();
+            return new Text(sb);
+        }).setTextAlignment(Alignment.CenterLeft));
+        return w;
     }
 
     @Override
@@ -851,11 +854,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         GTUtility.sendChatToPlayer(
             aPlayer,
             "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
     }
 
     private enum HTGRHatches implements IHatchElement<MTEHighTempGasCooledReactor> {
