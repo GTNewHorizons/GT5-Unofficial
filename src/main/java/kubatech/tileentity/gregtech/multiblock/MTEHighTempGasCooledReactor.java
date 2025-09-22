@@ -287,6 +287,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private static final int MAX_CAPACITY = 10000;
 
     private static final int MIN_CAPACITY = MAX_CAPACITY / 100;
+    private static final double COOLANT_SPEEDUP = 0.07d;
+    private static final double WATER_SPEEDUP = 0.03d;
 
     private int heliumSupply;
     private double fuelsupply = 0;
@@ -642,7 +644,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
             double eff = drainedamount / ((double) this.coolanttaking);
-            int addedTime = (int) (this.mMaxProgresstime * 0.0035d * eff);
+            int addedTime = (int) (this.mMaxProgresstime * this.COOLANT_SPEEDUP / 20d * eff);
             if (addedTime > 0) this.mProgresstime += addedTime;
         }
 
