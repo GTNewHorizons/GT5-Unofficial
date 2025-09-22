@@ -595,10 +595,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.emptyticksnodiff++;
                 return true;
             }
-//            if (this.heliumSupply > 0) {
-//                this.addOutput(Materials.Helium.getGas(this.heliumSupply));
-//                this.heliumSupply = 0;
-//            }
+            // if (this.heliumSupply > 0) {
+            // this.addOutput(Materials.Helium.getGas(this.heliumSupply));
+            // this.heliumSupply = 0;
+            // }
             if (this.fuelsupply > 0) {
                 // TODO
                 // ItemStack iStack = new ItemStack(
