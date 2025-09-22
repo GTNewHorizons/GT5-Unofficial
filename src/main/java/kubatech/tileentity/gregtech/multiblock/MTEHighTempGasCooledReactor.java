@@ -95,10 +95,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     // spotless:off
 
 
-    /* TODO MERGE CONFLICT
-       TODO Cooling efficiency based on Helium level
-       TODO Balance helium usage per second instead of per operation?
-       TODO Slow down the reactor a bit?
+    /*
        TODO Scanner
        TODO GUI Info
        TODO Tooltip
@@ -294,7 +291,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private static final double COOLANT_PER_PELLET = 0.5d; // coolant needed per tick to cool one pellet
     private static final double WATER_PER_PELLET = 0.1d; // water needed per tick to cool one pellet
 
-    private static final double HELIUM_LOST_PER_CYCLE = 0.0002d; // Helium lost per one operation
+    private static final double HELIUM_LOST_PER_CYCLE = 0.0005d; // Helium lost per one operation
 
     private int heliumSupply;
     private double fuelsupply = 0;
@@ -592,8 +589,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             this.mOutputItems = toOutput.toArray(new ItemStack[0]);
         }
 
-        this.coolanttaking = (int) (COOLANT_PER_PELLET * this.fuelsupply);
-        this.watertaking = (int) (WATER_PER_PELLET * this.fuelsupply);
+        this.coolanttaking = (int) (COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED);
+        
+        this.watertaking = (int) (WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED);
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
