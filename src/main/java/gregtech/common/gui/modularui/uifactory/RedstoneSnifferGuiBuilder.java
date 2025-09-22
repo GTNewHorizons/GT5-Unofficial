@@ -191,9 +191,9 @@ public class RedstoneSnifferGuiBuilder {
         GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new SnifferEntryListSyncHandler(
             () -> {
                 List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
-                if(NetworkUtils.isClient()){
+                if (NetworkUtils.isClient()) {
                     return result;
-                };
+                } ;
                 GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
                     if (playerIsOpSyncer.getValue() || canSeeCovers(guiData, uuid)) {
                         String owner = uuid.equals("null") ? "Public"
