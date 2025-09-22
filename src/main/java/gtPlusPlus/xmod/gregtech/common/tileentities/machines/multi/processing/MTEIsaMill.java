@@ -253,7 +253,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         }
 
         final ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
-        final boolean generateParticles = (aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive());
+        final boolean generateParticles = aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive();
 
         for (EntityLivingBase aFoundEntity : aEntities) {
             if (aFoundEntity.getHealth() <= 0) continue;
