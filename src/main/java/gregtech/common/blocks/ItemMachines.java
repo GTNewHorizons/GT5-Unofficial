@@ -2,6 +2,8 @@ package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.MultiblockTooltipBuilder.TAB;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
 import java.util.ArrayList;
@@ -23,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -87,7 +88,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
                         aList.add(
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "gt.tileentity.eup_in",
                                 GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(inputTier)));
@@ -95,19 +96,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (tTileEntity.getOutputVoltage() > 0L) {
                         final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
                         aList.add(
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "gt.tileentity.eup_out",
                                 GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(outputTier)));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "gt.tileentity.eup_amount",
                                 GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
                     }
                     aList.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "gt.tileentity.eup_store",
                             GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
                 }
@@ -115,20 +116,20 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             final NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(StatCollector.translateToLocal("gt.tileentity.has_muffler"));
+                    aList.add(translateToLocal("gt.tileentity.has_muffler"));
                 }
                 if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(StatCollector.translateToLocal("gt.tileentity.has_steam_upgrade"));
+                    aList.add(translateToLocal("gt.tileentity.has_steam_upgrade"));
                 }
                 int tAmount;
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(StatCollector.translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
+                    aList.add(translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
                 }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
                     aList.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "gt.tileentity.colored",
                             Dyes.get(aNBT.getByte("mColor") - 1).formatting,
                             Dyes.get(aNBT.getByte("mColor") - 1).mName));
@@ -153,16 +154,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 List<Object> tParamsLoc = new ArrayList<>();
                 for (int j = 1; j < tSplitStrings.length; j++) {
                     String param = tSplitStrings[j];
-                    String translated = StatCollector.translateToLocal(param);
+                    String translated = translateToLocal(param);
                     tParamsLoc.add(translated.equals(param) ? param : translated);
                 }
 
                 final String tTranslated = (tKey.startsWith(TAB) ? TAB : "")
-                    + StatCollector.translateToLocalFormatted(removeStart(tKey, TAB), tParamsLoc.toArray());
+                    + translateToLocalFormatted(removeStart(tKey, TAB), tParamsLoc.toArray());
                 if (aList != null) aList.add(tTranslated);
             } else {
                 final String tTranslated = (tDescLine.startsWith(TAB) ? TAB : "")
-                    + StatCollector.translateToLocal(removeStart(tDescLine, TAB));
+                    + translateToLocal(removeStart(tDescLine, TAB));
                 if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
             }
         }
