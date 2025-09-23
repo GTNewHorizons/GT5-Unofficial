@@ -310,7 +310,8 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
 
                     boolean isAir = tBlock == Blocks.air || tBlock == Blocks.flowing_water;
 
-                    boolean isCOFHCore = Mods.COFHCore.isModLoaded() && (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater);
+                    boolean isCOFHCore = Mods.COFHCore.isModLoaded()
+                        && (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater);
                     boolean isWater = (tBlock == Blocks.water) || isCOFHCore;
 
                     // not a valid source block to transform
@@ -321,7 +322,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                     ArrayList<FluidStack> storedFluids = this.getStoredFluids();
 
                     // can't find fluid to convert water source, so next ones will also fail
-                    if (storedFluids== null) return false;
+                    if (storedFluids == null) return false;
 
                     boolean waterSourceProcessed = false;
 
@@ -334,8 +335,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                         Block fluidUsed;
                         if (isAir) { // first conversion from empty/flowing water to regular water source
                             fluidUsed = Blocks.water;
-                        }
-                        else{ // second conversion from regular water source to distilled
+                        } else { // second conversion from regular water source to distilled
                             fluidUsed = DISTILLED_WATER_BLOCK;
                         }
                         aBaseMetaTileEntity.getWorld()
