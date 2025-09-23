@@ -125,16 +125,97 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Works as fast as 32 Large Heat Exchangers")
+            .addInfo(
+                "Inputs are" + EnumChatFormatting.RED
+                    + " Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.RED
+                    + " Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.RED
+                    + " Hot Solar Salt")
+            .addInfo(
+                "Outputs are" + EnumChatFormatting.BLUE
+                    + " Pahoehoe Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.BLUE
+                    + " IC2 Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.BLUE
+                    + " Cold Solar Salt")
+            .addInfo(
+                "Converts Distilled Water into" + EnumChatFormatting.WHITE
+                    + " Steam"
+                    + EnumChatFormatting.GRAY
+                    + " or"
+                    + EnumChatFormatting.WHITE
+                    + " SH Steam"
+                    + EnumChatFormatting.GRAY
+                    + " in the process")
+            .addInfo(
+                "Outputs" + EnumChatFormatting.WHITE
+                    + " SH Steam"
+                    + EnumChatFormatting.GRAY
+                    + " if the input rate of hot fluid is above a certain"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " threshold")
             .addSeparator()
-            .addInfo("Inputs are Lava, Hot Coolant, or Hot Solar Salt")
-            .addInfo("Outputs Pahoehoe Lava, IC2 Coolant, or Cold Solar Salt")
-            .addInfo("Converts Distilled Water into Steam/SH Steam in the process")
-            .addInfo("Outputs SH Steam if the input rate of hot fluid is above a certain threshold:")
-            .addInfo("Lava: 32,000 L/s, maximum 64,000 L/s, max output 5,120,000 SH Steam/s")
-            .addInfo("Hot Coolant: 25,600 L/s, maximum 51,200 L/s, max output 10,240,000 SH Steam/s")
-            .addInfo("Hot Solar Salt: 5,120 L/s, maximum 10,240 L/s, max output 10,240,000 SH Steam/s")
-            .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
-            .addInfo("3.75% reduced threshold and 1.5% reduced efficiency per circuit over 1")
+            .addInfo(
+                EnumChatFormatting.RED + "Lava"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 32,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 64,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 5,120,000 SH Steam/s")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 25,600 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 51,200 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 10,240,000 SH Steam/s")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Solar Salt"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 5,120 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 10,240 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 10,240,000 SH Steam/s")
+            .addSeparator()
+            .addInfo("A circuit in the controller lowers the SH threshold at the cost of steam")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "3.75%"
+                    + EnumChatFormatting.GRAY
+                    + " reduced SH threshold and"
+                    + EnumChatFormatting.WHITE
+                    + " 1.5%"
+                    + EnumChatFormatting.GRAY
+                    + " reduced steam per circuit over 1")
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
