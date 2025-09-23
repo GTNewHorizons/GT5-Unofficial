@@ -450,7 +450,7 @@ public class MultiblockTooltipBuilder {
      *
      * @param casingName Name of the Casing.
      * @param minCount   Minimum needed for valid structure check.
-     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils), not specified = false
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addCasingInfoMin(String casingName, int minCount, boolean isTiered) {
@@ -460,6 +460,10 @@ public class MultiblockTooltipBuilder {
             minCount,
             EnumChatFormatting.GOLD,
             isTiered);
+    }
+
+    public MultiblockTooltipBuilder addCasingInfoMin(String casingName, int minCount) {
+        return addCasingInfoMin(casingName, minCount, false);
     }
 
     /**
