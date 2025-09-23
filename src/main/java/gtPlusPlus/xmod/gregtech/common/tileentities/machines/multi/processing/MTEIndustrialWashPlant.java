@@ -304,38 +304,54 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                     if (tBlock == DISTILLED_WATER_BLOCK) {
                         continue;
                     }
+
+                    // if we ever hit this code, we know it's not fully distilled, so check must fail
                     failed = true;
+
                     boolean isAir = tBlock == Blocks.air || tBlock == Blocks.flowing_water;
-                    boolean isWater = tBlock == Blocks.water;
+
+                    boolean isCOFHCore = Mods.COFHCore.isModLoaded() && (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater);
+                    boolean isWater = (tBlock == Blocks.water) || isCOFHCore;
+
+                    // not a valid source block to transform
                     if (!isAir && !isWater) {
-                        if (Mods.COFHCore.isModLoaded()) {
-                            if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
-                                isWater = true;
-                            } else return false;
-                        } else {
-                            return false;
-                        }
+                        return false;
                     }
+
                     ArrayList<FluidStack> storedFluids = this.getStoredFluids();
-                    if (storedFluids != null) {
-                        for (FluidStack stored : storedFluids) {
-                            if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
-                                if (stored.amount >= 1000) {
-                                    stored.amount -= 1000;
-                                    Block fluidUsed = Blocks.water;
-                                    if (isWater) {
-                                        fluidUsed = DISTILLED_WATER_BLOCK;
-                                    }
-                                    aBaseMetaTileEntity.getWorld()
-                                        .setBlock(
-                                            aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                            aBaseMetaTileEntity.getYCoord() + h,
-                                            aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                            fluidUsed);
-                                }
-                            }
+
+                    // can't find fluid to convert water source, so next ones will also fail
+                    if (storedFluids== null) return false;
+
+                    boolean waterSourceProcessed = false;
+
+                    for (FluidStack stored : storedFluids) {
+                        if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+
+                        if (stored.amount < 1000) continue;
+
+                        stored.amount -= 1000;
+                        Block fluidUsed;
+                        if (isAir) { // first conversion from empty/flowing water to regular water source
+                            fluidUsed = Blocks.water;
                         }
+                        else{ // second conversion from regular water source to distilled
+                            fluidUsed = DISTILLED_WATER_BLOCK;
+                        }
+                        aBaseMetaTileEntity.getWorld()
+                            .setBlock(
+                                aBaseMetaTileEntity.getXCoord() + xDir + i,
+                                aBaseMetaTileEntity.getYCoord() + h,
+                                aBaseMetaTileEntity.getZCoord() + zDir + j,
+                                fluidUsed);
+
+                        waterSourceProcessed = true;
+                        break; // don't deplete other water sources
                     }
+
+                    // if no water source processed, we know we can't process next ones as well
+                    if (!waterSourceProcessed) return false;
+
                 }
             }
         }
