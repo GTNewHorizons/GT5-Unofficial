@@ -115,12 +115,14 @@ public class CuttingRecipes implements Runnable {
 
         // stone slab recipes
         {
-            recipeWithClassicFluids(
-                new ItemStack[] { new ItemStack(Blocks.stone, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 0) },
-                1 * SECONDS + 5 * TICKS,
-                8,
-                false);
+            if (EtFuturumRequiem.isModLoaded()) {
+                recipeWithClassicFluids(
+                    new ItemStack[] { getModItem(EtFuturumRequiem.ID, "smooth_stone", 1L, 0) },
+                    new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 0) },
+                    1 * SECONDS + 5 * TICKS,
+                    8,
+                    false);
+            }
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.sandstone, 1, 0) },

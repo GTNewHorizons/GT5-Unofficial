@@ -1175,7 +1175,6 @@ GT5U.MULTI_MACHINE_CONFIG.LOAD=Загружены настройки шлюзо�
 GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Не удается загрузить настройки шлюзов/люков мультиблока
 GT5U.DEHP.mode.0=Прямой пар
 GT5U.DEHP.mode.1=Нагрев хладагента
-GT5U.machines.oreprocessor1=§eРежим работы:
 GT5U.machines.oreprocessor2=§cВремя: %s с
 GT5U.machines.oreprocessor.void=§eУдаление каменной пыли: %s
 GT5U.machines.oreprocessor.Macerate=Дробитель
@@ -1601,6 +1600,7 @@ GT5U.multiblock.fluidPipeTier=Тир жидкостной трубы
 GT5U.multiblock.itemPipeTier=Тир предметной трубы
 GT5U.multiblock.coilLevel=Тир нагревательной катушки
 GT5U.multiblock.preciseassemblercasing=Вольтаж ограничен тиром корпуса: %s
+GT5U.multiblock.runningMode=§eРежим работы:
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Теплоёмкость: %s K (%s)
@@ -1741,7 +1741,7 @@ GT5U.waila.stocking_bus.auto_pull.disabled=Авто-подача из МЭ: От
 GT5U.waila.stocking_bus.min_stack_size=Мин. размер стака: %s
 GT5U.waila.stocking_hatch.min_amount=Мин. количество: %s
 GT5U.waila.drone_downlink.noConnection=Не подключено
-GT5U.waila.drone_downlink.connection=Connect to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
 GT5U.waila.drone_downlink.connectionCount=Количество подключений:
 GT5U.waila.drone_downlink.droneLevel=Уровень дрона:
 GT5U.waila.producing=Производит:

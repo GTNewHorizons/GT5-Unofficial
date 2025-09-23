@@ -79,6 +79,11 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     @Override
+    public int getHarvestLevel(ItemStack stack, String toolClass) {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
         if (!ElectricItem.manager.canUse(stack, baseCost)) {
             return 0.0F;

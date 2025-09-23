@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -85,9 +86,10 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Grind ores.")
+            .addInfo(EnumChatFormatting.GREEN + "G.O.G, Grinds Ores Good")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
@@ -250,28 +252,23 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             }
         }
 
-        ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
-        if (!aEntities.isEmpty()) {
-            for (EntityLivingBase aFoundEntity : aEntities) {
-                if (aFoundEntity instanceof EntityPlayer aPlayer) {
-                    if (!aPlayer.capabilities.isCreativeMode && !aPlayer.capabilities.disableDamage) {
-                        if (aFoundEntity.getHealth() > 0) {
-                            EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
-                            if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
-                                generateParticles(aFoundEntity);
-                            }
-                        }
-                    }
-                } else if (aFoundEntity.getHealth() > 0) {
-                    EntityUtils.doDamage(
-                        aFoundEntity,
-                        mIsaMillDamageSource,
-                        Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
-                    if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
-                        generateParticles(aFoundEntity);
-                    }
-                }
+        final ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
+        final boolean generateParticles = aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive();
+
+        for (EntityLivingBase aFoundEntity : aEntities) {
+            if (aFoundEntity.getHealth() <= 0) continue;
+
+            if (aFoundEntity instanceof EntityPlayer aPlayer) {
+                if (aPlayer.capabilities.isCreativeMode) continue;
+                if (aPlayer.capabilities.disableDamage) continue;
+                final int damage = getPlayerDamageValue(aPlayer, 10);
+                aFoundEntity.attackEntityFrom(mIsaMillDamageSource, damage);
+            } else {
+                final int damage = Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3));
+                aFoundEntity.attackEntityFrom(mIsaMillDamageSource, damage);
             }
+
+            if (generateParticles) generateParticles(aFoundEntity);
         }
     }
 
@@ -292,31 +289,28 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                 aChunksToCheck.add(aLocalChunk);
             }
         }
-        if (!aChunksToCheck.isEmpty()) {
-            ArrayList<EntityLivingBase> aEntitiesFound = new ArrayList<>();
-            for (Chunk aChunk : aChunksToCheck) {
-                if (aChunk.isChunkLoaded) {
-                    List[] aEntityLists = aChunk.entityLists;
-                    for (List aEntitySubList : aEntityLists) {
-                        for (Object aEntity : aEntitySubList) {
-                            if (aEntity instanceof EntityLivingBase aPlayer) {
-                                aEntitiesFound.add(aPlayer);
-                            }
-                        }
-                    }
-                }
-            }
-            if (!aEntitiesFound.isEmpty()) {
-                for (EntityLivingBase aEntity : aEntitiesFound) {
-                    BlockPos aPlayerPos = EntityUtils.findBlockPosOfEntity(aEntity);
+        // early exit
+        if (aChunksToCheck.isEmpty()) return aEntities;
+
+        for (Chunk aChunk : aChunksToCheck) {
+            if (!aChunk.isChunkLoaded) continue;
+
+            List[] aEntityLists = aChunk.entityLists;
+            for (List aEntitySubList : aEntityLists) {
+                for (Object aEntity : aEntitySubList) {
+                    if (!(aEntity instanceof EntityLivingBase aPlayer)) continue;
+
+                    BlockPos aPlayerPos = EntityUtils.findBlockPosOfEntity(aPlayer);
                     for (BlockPos aBlockSpaceToCheck : aPositionsToCheck) {
                         if (aBlockSpaceToCheck.equals(aPlayerPos)) {
-                            aEntities.add(aEntity);
+                            aEntities.add(aPlayer);
                         }
                     }
                 }
             }
+
         }
+
         return aEntities;
     }
 

@@ -45,6 +45,12 @@ public interface ITextureBuilder {
     ITextureBuilder setFromSide(final ForgeDirection side);
 
     /**
+     * @param iconContainer The {@link IIconContainer}s to add
+     * @return {@link ITextureBuilder} for chaining
+     */
+    ITextureBuilder addIcon(final IIconContainer iconContainer);
+
+    /**
      * @param iconContainers The {@link IIconContainer}s to add
      * @return {@link ITextureBuilder} for chaining
      */
@@ -55,6 +61,12 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder setRGBA(final short[] rgba);
+
+    /**
+     * @param iTexture The {@link ITexture} layer to add
+     * @return {@link ITextureBuilder} for chaining
+     */
+    ITextureBuilder addLayer(final ITexture iTexture);
 
     /**
      * @param iTextures The {@link ITexture} layers to add
