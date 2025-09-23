@@ -72,7 +72,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
 
     @Override
     public String getMachineType() {
-        return "Packager, Unpackager";
+        return "Packager, Unpackager, AWD";
     }
 
     @Override

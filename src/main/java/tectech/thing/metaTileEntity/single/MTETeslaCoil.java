@@ -190,9 +190,9 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
             rTextures[1][i + 1] = new ITexture[] { MACHINE_CASINGS[this.mTier][i + 1],
                 TextureFactory.of(Textures.BlockIcons.TESLA_TRANSCEIVER_TOP) };
             rTextures[2][i + 1] = new ITexture[] { MACHINE_CASINGS[this.mTier][i + 1],
-                this.mInventory.length == 16 ? OVERLAYS_ENERGY_OUT_MULTI_16A[this.mTier]
-                    : (this.mInventory.length > 4 ? OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier]
-                        : OVERLAYS_ENERGY_OUT[this.mTier]) };
+                this.mInventory.length == 16 ? OVERLAYS_ENERGY_OUT_MULTI_16A[this.mTier + 1]
+                    : (this.mInventory.length > 4 ? OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1]
+                        : OVERLAYS_ENERGY_OUT[this.mTier + 1]) };
         }
         return rTextures;
     }
