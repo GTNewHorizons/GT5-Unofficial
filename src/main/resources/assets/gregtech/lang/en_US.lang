@@ -3604,6 +3604,7 @@ machtype.fluid_tank=Fluid Tank
 machtype.mega_apiary=Mega Apiary
 machtype.mapiary=Mapiary
 machtype.grinding=Grinding Machine
+machtype.sparge=Gas Sparge Tower
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3629,6 +3630,10 @@ gt.isamill.tips.2=§aIt'sa mill!
 gt.isamill.info.1=5x, Inner Blocks
 gt.isamill.info.2=8x, ring around controller
 gt.isamill.stips.1=IsaMill Pipings must not be obstructed in front (only air blocks)
+
+gt.sparge_tower.tips.1=Runs gases through depleted molten salts to extract precious fluids\nWorks the same way as the Distillation Tower, but with a fixed height of 8\nFluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
+gt.sparge_tower.info.ihatch=2x, Any bottom layer casing
+gt.sparge_tower.info.ohatch=6x, At least one per layer except bottom layer
 
 # Fission Fuels
 item.gt.rodLithium.name=Fuel Rod (Lithium)
