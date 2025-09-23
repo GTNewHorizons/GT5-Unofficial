@@ -25,7 +25,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -86,21 +85,22 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(EnumChatFormatting.GREEN + "G.O.G, Grinds Ores Good")
+            .addInfo("gt.isamill.tips.1")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
+            .addInfo("gt.isamill.tips.2")
             .beginStructureBlock(3, 3, 7, false)
-            .addController("Front Center")
-            .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
-            .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
-            .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
-            .addOtherStructurePart("Ball Housing", "Any Casing")
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("fc")
+            .addCasingInfoMin("gtplusplus.blockcasings.5.0.name", 40, false)
+            .addOtherStructurePart("gtplusplus.blockcasings.5.2.name", "gt.isamill.info.1")
+            .addOtherStructurePart("gtplusplus.blockcasings.5.1.name", "gt.isamill.info.2")
+            .addStructureInfo("gt.isamill.stips.1")
+            .addOtherStructurePart("gt.blockmachines.hatch.milling.name", "GT5U.MBTT.AnyCasing")
+            .addInputBus("GT5U.MBTT.AnyCasing", 1)
+            .addOutputBus("GT5U.MBTT.AnyCasing", 1)
+            .addEnergyHatch("GT5U.MBTT.AnyCasing", 1)
+            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
+            .addMufflerHatch("GT5U.MBTT.AnyCasing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -396,7 +396,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public String getMachineType() {
-        return "Grinding Machine, IGM";
+        return "Grinding Machine";
     }
 
     /*
