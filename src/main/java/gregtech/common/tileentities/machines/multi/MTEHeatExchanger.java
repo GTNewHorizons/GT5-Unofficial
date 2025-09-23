@@ -114,10 +114,15 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, LHE")
-            .addInfo("More complicated than a Fusion Reactor. Seriously")
             .addInfo("Inputs are Lava, Hot Coolant, or Hot Solar Salt")
             .addInfo("Outputs Pahoehoe Lava, IC2 Coolant, or Cold Solar Salt")
             .addInfo("Converts Distilled Water into Steam/SH Steam in the process")
+            .addInfo("Outputs SH Steam if the input rate of hot fluid is above a certain threshold:")
+            .addInfo("Lava: 1,000 L/s, maximum 2,000 L/s, max output 160,000 SH Steam/s")
+            .addInfo("Hot Coolant: 800 L/s, maximum 1,600 L/s, max output 320,000 SH Steam/s")
+            .addInfo("Hot Solar Salt: 160 L/s, maximum 320 L/s, max output 320,000 SH Steam/s")
+            .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
+            .addInfo("3.75% reduced threshold and 1.5% reduced efficiency per circuit over 1")
             .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom")
             .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)

@@ -124,25 +124,25 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("More complicated than a Fusion Reactor. Seriously")
-            .addInfo("But you know this by now, right?")
             .addInfo("Works as fast as 32 Large Heat Exchangers")
             .addSeparator()
-            .addInfo("Inputs are Hot Coolant or Lava")
-            .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
-            .addInfo("Outputs SH Steam if input flow is equal to or above a certain value:")
-            .addInfo("Hot Coolant: 25,600 L/s, maximum 51,200 L/s, max output 10,240,000 SH Steam/s")
+            .addInfo("Inputs are Lava, Hot Coolant, or Hot Solar Salt")
+            .addInfo("Outputs Pahoehoe Lava, IC2 Coolant, or Cold Solar Salt")
+            .addInfo("Converts Distilled Water into Steam/SH Steam in the process")
+            .addInfo("Outputs SH Steam if the input rate of hot fluid is above a certain threshold:")
             .addInfo("Lava: 32,000 L/s, maximum 64,000 L/s, max output 5,120,000 SH Steam/s")
+            .addInfo("Hot Coolant: 25,600 L/s, maximum 51,200 L/s, max output 10,240,000 SH Steam/s")
+            .addInfo("Hot Solar Salt: 5,120 L/s, maximum 10,240 L/s, max output 10,240,000 SH Steam/s")
             .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
-            .addInfo("3.75% reduction and 1.5% efficiency loss per circuit config over 1")
+            .addInfo("3.75% reduced threshold and 1.5% reduced efficiency per circuit over 1")
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
             .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
             .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot fluid, bottom center", 2)
+            .addInputHatch("Hot fluid, bottom center casing", 2)
             .addInputHatch("Distilled water, any bottom layer casing", 1)
-            .addOutputHatch("Cold fluid, top center", 3)
+            .addOutputHatch("Cold fluid, top center casing", 3)
             .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
             .toolTipFinisher();
         return tt;
@@ -406,7 +406,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     public String getMachineType() {
-        return "Heat Exchanger";
+        return "Heat Exchanger, WWXL";
     }
 
     @Override
