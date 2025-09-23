@@ -3603,6 +3603,7 @@ machtype.wpp=WPP
 machtype.fluid_tank=Fluid Tank
 machtype.mega_apiary=Mega Apiary
 machtype.mapiary=Mapiary
+machtype.grinding=Grinding Machine
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3622,6 +3623,12 @@ gt.purification_plant.desc.3=Every recipe has a base chance of success. Success 
 gt.purification_plant.desc.4=Every purification unit has a configuration window to configure maximum parallel amount\nThis will only scale purified water input, ALL fluid output and power usage\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O
 gt.purification_plant.desc.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
 gt.purification_plant.stips.1=Requires water to be placed in the tank
+
+gt.isamill.tips.1=§aG.O.G, Grinds Ores Good
+gt.isamill.tips.2=§aIt'sa mill!
+gt.isamill.info.1=5x, Inner Blocks
+gt.isamill.info.2=8x, ring around controller
+gt.isamill.stips.1=IsaMill Pipings must not be obstructed in front (only air blocks)
 
 # Fission Fuels
 item.gt.rodLithium.name=Fuel Rod (Lithium)
