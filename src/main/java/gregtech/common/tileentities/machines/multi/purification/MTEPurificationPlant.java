@@ -175,7 +175,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.purif_plant", "machtype.wpp")
+        tt.addMachineType("machtype.purif_plant")
             .addInfo("gt.purification_plant.tips.1", MAX_UNIT_DISTANCE)
             .addTecTechHatchInfo()
             .addSeparator()
