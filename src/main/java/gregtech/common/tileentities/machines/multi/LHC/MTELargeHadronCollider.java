@@ -2436,9 +2436,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         if (te == null) return false;
         IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
+        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
             hatch.setInitialParticleList(LHCModules.EM.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
@@ -2450,9 +2449,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         if (te == null) return false;
         IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
+        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
             hatch.setInitialParticleList(LHCModules.Weak.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
@@ -2463,9 +2461,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         if (te == null) return false;
         IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
+        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
             hatch.setInitialParticleList(LHCModules.Strong.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
@@ -2476,9 +2473,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         if (te == null) return false;
         IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
+        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            MTEHatchAdvancedOutputBeamline hatch = (MTEHatchAdvancedOutputBeamline) aMetaTileEntity;
             hatch.setInitialParticleList(LHCModules.Grav.acceptedParticles);
             this.mOutputBeamline.add(hatch);
             return true;
@@ -2758,7 +2754,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
             for (MTEHatchAdvancedOutputBeamline o : this.mOutputBeamline) {
-                if (!o.acceptedInputs.contains(Particle.getParticleFromId(this.outputParticleID)) || o.getBlacklist().contains(this.outputParticleID)) {
+                if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID),false) == false) {
                     continue;
                 }
                 o.dataPacket = packet;
