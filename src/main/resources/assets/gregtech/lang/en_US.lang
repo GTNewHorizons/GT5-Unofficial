@@ -3603,6 +3603,7 @@ machtype.fluid_tank=Fluid Tank
 machtype.mega_apiary=Mega Apiary, Mapiary
 machtype.isamill=Grinding Machine, IGM
 machtype.sparge=Gas Sparge Tower
+machtype.cyclotron=Particle Accelerator
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3611,16 +3612,21 @@ gt.mb.corepos.fbm=Front bottom middle
 
 gt.mb.hint_block=Hint block with dot %d
 
+gt.cyclotron.tips.1=Super Magnetic Speed Shooter
+gt.cyclotron.tips.2=Particles are accelerated over 186 revolutions to 80% light speed\nCan produce a continuous beam current of 2.2 mA at 590 MeV,\nwhich will be extracted from the Isochronous Cyclotron
+gt.cyclotron.tips.3=Similar structure to the Fusion Reactor\nAny external casing can be a hatch/bus, unlike Fusion\nCyclotron Machine Casings around Cyclotron Coil Blocks
+
+# Windmill is To Be Ported
 mb.bw.windmill.desc1=A primitive Grinder powered by Kinetic energy
 mb.bw.windmill.desc2=Speed and output will be affected by wind speed, recipe and rotor
 mb.bw.windmill.desc3=Please use the Primitive Rotor
 mb.bw.windmill.desc4=Macerates %s items at a time
 
 gt.purification_plant.tips.1=Main controller block for the Water Purification Plant\nFreely place §ePurification Units§7 within §4%s§7 blocks along each axis\nLeft click this controller with a data stick, then right click a purification unit to link\nSupplies power to linked purification units.
-gt.purification_plant.desc.2=Works in fixed time processing cycles of §4%s§7 seconds\nAll linked units follow this cycle.
-gt.purification_plant.desc.3=Every recipe has a base chance of success. Success rate can be boosted\nby using a portion of the target output as a secondary input\n§4%s%%§7 of output yield will be consumed in exchange for an\nadditive §4%s%%§7 increase to success\nOn recipe failure, each purification unit has a §450%%§7 chance\nto return water of the same quality as the input or lower
-gt.purification_plant.desc.4=Every purification unit has a configuration window to configure maximum parallel amount\nThis will only scale purified water input, ALL fluid output and power usage\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O
-gt.purification_plant.desc.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
+gt.purification_plant.tips.2=Works in fixed time processing cycles of §4%s§7 seconds\nAll linked units follow this cycle.
+gt.purification_plant.tips.3=Every recipe has a base chance of success. Success rate can be boosted\nby using a portion of the target output as a secondary input\n§4%s%%§7 of output yield will be consumed in exchange for an\nadditive §4%s%%§7 increase to success\nOn recipe failure, each purification unit has a §450%%§7 chance\nto return water of the same quality as the input or lower
+gt.purification_plant.tips.4=Every purification unit has a configuration window to configure maximum parallel amount\nThis will only scale purified water input, ALL fluid output and power usage\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O
+gt.purification_plant.tips.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
 gt.purification_plant.stips.1=Requires water to be placed in the tank
 
 gt.isamill.tips.1=§aG.O.G, Grinds Ores Good
