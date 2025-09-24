@@ -1521,6 +1521,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         public PlaceResult survivalPlaceBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
             ItemStack trigger, AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+            // glass for LSC can be paired with capacitors up to 3 tiers higher
             int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + 2;
             ItemStack targetStack;
             // if user specified a capacitor tier, use it.
@@ -1545,8 +1546,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                         s -> s != null && s.stackSize >= 0
                             && s.getItem() == LSC_PART_ITEM
                             && s.getItemDamage() != 0 // LSC casing, not a capacitor
-                            && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
-                                .getMinimalGlassTier() > glassTier,
+                            && glassTier >= Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
+                                .getMinimalGlassTier(),
                         true);
             }
             if (targetStack == null) return PlaceResult.REJECT;
