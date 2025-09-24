@@ -769,7 +769,7 @@ GT5U.MBTT.Controller=§fController: §7%s
 GT5U.MBTT.Minimum= (minimum)
 GT5U.MBTT.Tiered= (tiered)
 GT5U.MBTT.PartInfo=§f%s: §7%s
-GT5U.MBTT.PartInfoHint=Hint block with dot %d
+GT5U.MBTT.PartInfoHint=Hint block with dot %s
 GT5U.MBTT.AnyGlass=Any Glass
 GT5U.MBTT.AnyCasing=Any Casing
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
@@ -3604,6 +3604,7 @@ machtype.mega_apiary=Mega Apiary, Mapiary
 machtype.isamill=Grinding Machine, IGM
 machtype.sparge=Gas Sparge Tower
 machtype.cyclotron=Particle Accelerator
+machtype.replicator=Replicator
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3611,6 +3612,9 @@ gt.mb.corepos.fs=Front center
 gt.mb.corepos.fbm=Front bottom middle
 
 gt.mb.hint_block=Hint block with dot %d
+
+gt.duplicator.tips.1=Produces Elemental Material from UU Matter
+gt.duplicator.tips.2=Maximum 1x of each bus/hatch\nRequires circuit 1-16 in your Data Orb Repository\ndepending on what Data Orb you want to prioritize
 
 gt.cyclotron.tips.1=Super Magnetic Speed Shooter
 gt.cyclotron.tips.2=Particles are accelerated over 186 revolutions to 80% light speed\nCan produce a continuous beam current of 2.2 mA at 590 MeV,\nwhich will be extracted from the Isochronous Cyclotron

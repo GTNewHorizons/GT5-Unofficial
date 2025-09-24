@@ -73,7 +73,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
     @Override
     public String getMachineType() {
-        return "Replicator";
+        return "machtype.replicator";
     }
 
     @Override
@@ -81,32 +81,27 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Produces Elemental Material from UU Matter")
+            .addInfo("gt.duplicator.tips.1")
             .addBulkMachineInfo(8, 2f, 1f)
-            .addInfo("Maximum 1x of each bus/hatch")
-            .addInfo("Requires circuit 1-16 in your Data Orb Repository")
-            .addInfo("depending on what Data Orb you want to prioritize")
+            .addInfo("gt.duplicator.tips.2")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
             .addController("Top Center")
-            .addCasingInfoMin("Elemental Confinement Shell", 120, false)
-            .addCasingInfoMin("Matter Fabricator Casing", 24, false)
-            .addCasingInfoMin("Particle Containment Casing", 24, false)
-            .addCasingInfoMin("Matter Generation Coil", 24, false)
-            .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
-            .addCasingInfoMin("Resonance Chamber III", 24, false)
-            .addCasingInfoMin("Modulator III", 16, false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "1x",
-                1)
-            .addInputHatch("Any 1 dot hint", 1)
-            .addOutputBus("Any 1 dot hint", 1)
-            .addOutputHatch("Any 1 dot hint", 1)
-            .addEnergyHatch("Any 1 dot hint", 1)
-            .addMaintenanceHatch("Any 1 dot hint", 1)
-            .addMufflerHatch("Any 1 dot hint", 1)
+            .addCasingInfoMin("gtplusplus.blockcasings.5.3.name", 120)
+            .addCasingInfoMin("miscutils.blockcasings.9.name", 24)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.13.name", 24)
+            .addCasingInfoMin("miscutils.blockcasings.8.name", 24)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.12.name", 20)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.3.2.name", 24)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.3.6.name", 16)
+            .addStructurePartHinted("GTPP.tooltip.structure.data_orb_repository", "1x", 1)
+            .addInputHatch("<hint>", 1)
+            .addOutputBus("<hint>", 1)
+            .addOutputHatch("<hint>", 1)
+            .addEnergyHatch("<hint>", 1)
+            .addMaintenanceHatch("<hint>", 1)
+            .addMufflerHatch("<hint>", 1)
             .toolTipFinisher();
         return tt;
     }
