@@ -95,7 +95,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
             .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
             .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
-            .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
             .addOtherStructurePart("Ball Housing", "Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -397,7 +396,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public String getMachineType() {
-        return "Grinding Machine";
+        return "Grinding Machine, IGM";
     }
 
     /*
