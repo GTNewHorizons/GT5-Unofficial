@@ -1027,11 +1027,13 @@ public class MultiblockTooltipBuilder {
     }
 
     private String hintLine(String info, int... dots) {
-        return info.equals("<hint>") ? String.format(
-            TT_partinfohint,
-            Joiner.on(SEPARATOR)
-                .join(Ints.asList(dots)))
-            : info;
+        if (!info.equals("<hint>")) {
+            return info;
+        }
+        String dotStr = (dots.length == 0) ? "???"
+            : Joiner.on(SEPARATOR)
+                .join(Ints.asList(dots));
+        return String.format(TT_partinfohint, dotStr);
     }
 
     @Desugar
