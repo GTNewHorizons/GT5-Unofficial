@@ -39,11 +39,14 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
                                                      // with id
     private final String NBT_VALUE_DESCRIPTOR = "VALUE"; // specifically for the Boolean value in the input map
 
+    private boolean initialized = false;
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         // save all entries in acceptedInputMap
         saveInputMapToNBT(aNBT, this.acceptedInputMap);
+        aNBT.setBoolean("init", initialized);
     }
 
     @Override
@@ -51,6 +54,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         super.loadNBTData(aNBT);
 
         loadInputMapFromNBT(aNBT, this.acceptedInputMap);
+        initialized = aNBT.getBoolean("init");
     }
 
     public void saveInputMapToNBT(NBTTagCompound aNBT, Map<Particle, Boolean> map) {
@@ -78,11 +82,14 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
     public void setInitialParticleList(List<Particle> initialParticleList) {
 
+        if (initialized) return;
+
         acceptedInputMap.clear();
 
         for (Particle p : initialParticleList) {
             acceptedInputMap.put(p, true);
         }
+        initialized = true;
 
     }
 
@@ -117,16 +124,31 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = super.getDescriptionData();
+        saveInputMapToNBT(data, acceptedInputMap);
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        loadInputMapFromNBT(data, acceptedInputMap);
+    }
+
+    private final int BUTTONS_PER_ROW = 6;
+    private final int PADDED_WIDTH_PER_BUTTON = 22;
+    private final int PADDED_HEIGHT_PER_BUTTON = 20;
+
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+
+        // gross hack to pre-sync map to client
+        if (getBaseMetaTileEntity().isServerSide()) getBaseMetaTileEntity().issueTileUpdate();
 
         syncManager.syncValue(
             "inputMap",
             new GenericSyncValue<>(() -> acceptedInputMap, this::setMap, new AcceptedInputMapAdapter()));
-        for (Particle p : acceptedInputMap.keySet()) {
-            syncManager.syncValue(
-                PARTICLE_IDENTIFIER + p.getId(),
-                new BooleanSyncValue(() -> acceptedInputMap.get(p), bool -> acceptedInputMap.replace(p, bool)));
-        }
 
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .doesAddGregTechLogo(false)
@@ -152,20 +174,18 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         ;
     }
 
-    private final String PARTICLE_IDENTIFIER = "PARTICLE";
-
     protected ListWidget<IWidget, ?> createBlacklistWidget(PanelSyncManager syncManager) {
         ListWidget<IWidget, ?> blacklistOptions = new ListWidget<>();
-        blacklistOptions.size(22 * 4, 20 * 3);
+        blacklistOptions.size(PADDED_WIDTH_PER_BUTTON * BUTTONS_PER_ROW, PADDED_HEIGHT_PER_BUTTON * 3);
         // for every four particles in the allowed particle list, make a new row
         // add each row to the blacklistOptions
         final Set<Particle> particleSet = acceptedInputMap.keySet();
 
-        int numRows = (int) Math.ceil((double) particleSet.size() / 4); // gross java math
+        int numRows = (int) Math.ceil((double) particleSet.size() / BUTTONS_PER_ROW); // gross java math
         for (int i = 0; i < numRows; i++) {
             blacklistOptions.addChild(
                 Flow.row()
-                    .size(20 * 4, 18)
+                    .size((PADDED_WIDTH_PER_BUTTON - 2) * 4, 18)
                     .marginBottom(4),
                 i);
         }
@@ -174,8 +194,8 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
         for (Particle p : particleSet) {
             final Flow currentParticleRow = (Flow) blacklistOptions.getChildren()
-                .get(runningCount / 4);
-            currentParticleRow.addChild(createButtonForParticle(syncManager, p), runningCount % 4);
+                .get(runningCount / BUTTONS_PER_ROW);
+            currentParticleRow.addChild(createButtonForParticle(syncManager, p), runningCount % BUTTONS_PER_ROW);
             runningCount++;
         }
 
@@ -183,9 +203,11 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     protected IWidget createButtonForParticle(PanelSyncManager syncManager, Particle particle) {
-        BooleanSyncValue syncer = (BooleanSyncValue) syncManager.getSyncHandler(PARTICLE_IDENTIFIER + particle.getId());
         return new ToggleButton().marginRight(2)
-            .value(syncer)
+            .value(
+                new BooleanSyncValue(
+                    () -> acceptedInputMap.get(particle),
+                    bool -> acceptedInputMap.replace(particle, bool)))
             .tooltipBuilder(t -> t.addLine(particle.getLocalisedName()));
     }
 
