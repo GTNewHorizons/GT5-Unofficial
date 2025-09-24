@@ -43,7 +43,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -127,6 +126,7 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import gregtech.common.tileentities.machines.multi.LHC.MTELargeHadronCollider;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
@@ -11028,7 +11028,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchAdvancedOutputBeamline(
                 HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
                 "hatch.advancedbeamlineoutput",
-                "Advanced Beamline Output Hatch",8).getStackForm(1));
+                "Advanced Beamline Output Hatch",
+                8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(
             new MTELargeMolecularAssembler(

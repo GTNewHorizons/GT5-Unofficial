@@ -44,7 +44,10 @@ public class BeamInformation {
             + ",Rate="
             + this.getRate()
             + ",Particle="
-            + Particle.getParticleFromId(this.getParticleId()) +"("+this.getParticleId()+")"
+            + Particle.getParticleFromId(this.getParticleId())
+            + "("
+            + this.getParticleId()
+            + ")"
             + ",Focus="
             + this.getFocus();
     }
