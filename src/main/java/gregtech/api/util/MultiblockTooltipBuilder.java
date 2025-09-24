@@ -1,8 +1,8 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
 import java.util.*;
@@ -57,8 +57,10 @@ import gregtech.api.util.tooltip.TooltipTier;
 public class MultiblockTooltipBuilder {
 
     public static final String TAB = "   ";
-    private static final String COLON = ": ";
-    private static final String SEPARATOR = ", ";
+    private static final String COLON = translateToLocal("gt.string.colon").equals(":") ? ": "
+        : translateToLocal("gt.string.colon");
+    private static final String SEPARATOR = translateToLocal("gt.string.separator").equals(",") ? ", "
+        : translateToLocal("gt.string.separator");
     private static final String TT_StaticParallels = translateToLocal("GT5U.MBTT.Parallel.Base");
     private static final String TT_StaticSpeed = translateToLocal("GT5U.MBTT.Speed.Base");
     private static final String TT_StaticEuEff = translateToLocal("GT5U.MBTT.EuDiscount.Base");
@@ -67,16 +69,6 @@ public class MultiblockTooltipBuilder {
     private static final String TT_DynamicSpeed = translateToLocal("GT5U.MBTT.Speed.Additional");
     private static final String TT_DynamicEuEff = translateToLocal("GT5U.MBTT.EuDiscount.Additional");
     private static final String TT_Steam_StaticSteamEff = translateToLocal("GT5U.MBTT.SteamDiscount.Base");
-    private static final String TT_maintenancehatch = translateToLocal("GT5U.MBTT.MaintenanceHatch");
-    private static final String TT_energyhatch = translateToLocal("GT5U.MBTT.EnergyHatch");
-    private static final String TT_dynamohatch = translateToLocal("GT5U.MBTT.DynamoHatch");
-    private static final String TT_mufflerhatch = translateToLocal("GT5U.MBTT.MufflerHatch");
-    private static final String TT_inputbus = translateToLocal("GT5U.MBTT.InputBus");
-    private static final String TT_inputhatch = translateToLocal("GT5U.MBTT.InputHatch");
-    private static final String TT_outputbus = translateToLocal("GT5U.MBTT.OutputBus");
-    private static final String TT_outputhatch = translateToLocal("GT5U.MBTT.OutputHatch");
-    private static final String TT_steaminputbus = translateToLocal("GTPP.MBTT.SteamInputBus");
-    private static final String TT_steamoutputbus = translateToLocal("GTPP.MBTT.SteamOutputBus");
     private static final String TT_structurehint = translateToLocal("GT5U.MBTT.StructureHint");
     private static final String TT_partinfohint = translateToLocal("GT5U.MBTT.PartInfoHint");
     private static final String TT_air = translateToLocal("GT5U.MBTT.Air");
@@ -402,18 +394,6 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Input Bus (Steam): info
-     *
-     * @param info Location where the bus goes
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addSteamInputBus(String info) {
-        addStructurePart(TT_steaminputbus, info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
      * (indent)countx casingName (tiered)
      *
      * @param casingName Name of the Casing.
@@ -568,7 +548,7 @@ public class MultiblockTooltipBuilder {
      * @param dots   The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      *
-     * @deprecated Use {@link #addStructurePart(String, String, int...)}
+     * @deprecated Use {@link #addStructurePartHinted(String, String, int...)}
      */
     @Deprecated
     public MultiblockTooltipBuilder addOtherStructurePart(String locKey, String info, int... dots) {
@@ -582,81 +562,9 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
-    public MultiblockTooltipBuilder addStructurePart(String locKey, String info, int... dots) {
-        addStructurePart(locKey, info);
+    public MultiblockTooltipBuilder addStructurePartHinted(String locKey, String info, int... dots) {
+        addStructurePart(locKey, hintLine(info, dots));
         for (int dot : dots) hBlocks.put(dot, translateToLocal(locKey));
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Maintenance Hatch: info
-     *
-     * @param info Positional information.
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addMaintenanceHatch(String info) {
-        addStructurePart("GT5U.MBTT.MaintenanceHatch", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Muffler Hatch: info
-     *
-     * @param info Location where the hatch goes
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addMufflerHatch(String info) {
-        addStructurePart("GT5U.MBTT.MufflerHatch", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Energy Hatch: info
-     *
-     * @param info Positional information.
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addEnergyHatch(String info) {
-        addStructurePart("GT5U.MBTT.EnergyHatch", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Dynamo Hatch: info
-     *
-     * @param info Positional information.
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addDynamoHatch(String info) {
-        addStructurePart("GT5U.MBTT.DynamoHatch", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Output Bus: info
-     *
-     * @param info Location where the bus goes
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addOutputBus(String info) {
-        addStructurePart("GT5U.MBTT.OutputBus", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Output Bus (Steam): info
-     *
-     * @param info Location where the bus goes
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addSteamOutputBus(String info) {
-        addStructurePart(TT_steamoutputbus, info);
         return this;
     }
 
@@ -764,141 +672,151 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Maintenance Hatch: info
+     * (indent)Maintenance Hatch: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Positional information.
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMaintenanceHatch(String info, int... dots) {
-        addMaintenanceHatch(info);
-        for (int dot : dots) hBlocks.put(dot, TT_maintenancehatch);
+        addStructurePartHinted("GT5U.MBTT.MaintenanceHatch", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Muffler Hatch: info
+     * (indent)Muffler Hatch: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Location where the hatch goes
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMufflerHatch(String info, int... dots) {
-        addMufflerHatch(info);
-        for (int dot : dots) hBlocks.put(dot, TT_mufflerhatch);
+        addStructurePartHinted("GT5U.MBTT.MufflerHatch", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Energy Hatch: info
+     * (indent)Energy Hatch: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Positional information.
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addEnergyHatch(String info, int... dots) {
-        addEnergyHatch(info);
-        for (int dot : dots) hBlocks.put(dot, TT_energyhatch);
+        addStructurePartHinted("GT5U.MBTT.EnergyHatch", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Dynamo Hatch: info
+     * (indent)Dynamo Hatch: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Positional information.
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamoHatch(String info, int... dots) {
-        addDynamoHatch(info);
-        for (int dot : dots) hBlocks.put(dot, TT_dynamohatch);
+        addStructurePartHinted("GT5U.MBTT.DynamoHatch", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Input Bus: info
+     * (indent)Input Bus: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Location where the bus goes
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addInputBus(String info, int... dots) {
-        addStructurePart("GT5U.MBTT.InputBus", hintLine(info, dots));
-        for (int dot : dots) hBlocks.put(dot, TT_inputbus);
+        addStructurePartHinted("GT5U.MBTT.InputBus", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Input Bus (Steam): info
+     * (indent)Input Bus (Steam): info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Location where the bus goes
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSteamInputBus(String info, int... dots) {
-        addStructurePart(TT_steaminputbus, info);
-        for (int dot : dots) hBlocks.put(dot, TT_steaminputbus);
+        addStructurePartHinted("GTPP.MBTT.SteamInputBus", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Input Hatch: info
+     * (indent)Input Hatch: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Location where the hatch goes
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addInputHatch(String info, int... dots) {
-        addStructurePart("GT5U.MBTT.InputHatch", hintLine(info, dots));
-        for (int dot : dots) hBlocks.put(dot, TT_inputhatch);
+        addStructurePartHinted("GT5U.MBTT.InputHatch", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Output Bus: info
+     * (indent)Output Bus: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Location where the bus goes
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addOutputBus(String info, int... dots) {
-        addOutputBus(info);
-        for (int dot : dots) hBlocks.put(dot, TT_outputbus);
+        addStructurePartHinted("GT5U.MBTT.OutputBus", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Output Bus (Steam): info
+     * (indent)Output Bus (Steam): info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Location where the bus goes
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSteamOutputBus(String info, int... dots) {
-        addStructurePart(TT_steamoutputbus, info);
-        for (int dot : dots) hBlocks.put(dot, TT_steamoutputbus);
+        addStructurePartHinted("GTPP.MBTT.SteamOutputBus", info, dots);
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Output Hatch: info
+     * (indent)Output Hatch: info<br>
+     * {@code "<hint>"} as info to make it look like<br>
+     * {@code (Hatch/Bus Type): Hint block with dot 1, 3, 5}
      *
      * @param info Location where the bus goes
      * @param dots The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addOutputHatch(String info, int... dots) {
-        addStructurePart("GT5U.MBTT.OutputHatch", hintLine(info, dots));
-        for (int dot : dots) hBlocks.put(dot, TT_outputhatch);
+        addStructurePartHinted("GT5U.MBTT.OutputHatch", info, dots);
         return this;
     }
 
@@ -964,7 +882,7 @@ public class MultiblockTooltipBuilder {
      */
     @Deprecated
     public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        addShiftInfo(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        addShiftInfo(TAB + translate("GT5U.MBTT.subchannel", channel, purpose));
         return this;
     }
 
@@ -977,7 +895,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
-        addShiftInfo(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
+        addShiftInfo(TAB + translate("GT5U.MBTT.subchannel", channel.get(), purpose));
         return this;
     }
 
@@ -989,8 +907,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
-        addShiftInfo(
-            TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
+        addShiftInfo(TAB + translate("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 
@@ -1058,7 +975,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int length,
         @Nullable String... authors) {
 
-        switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+        switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
             case 1 -> addInfo(" ");
             case 2 -> addInfo(separatorColor + "%SEPARATORLINE%");
