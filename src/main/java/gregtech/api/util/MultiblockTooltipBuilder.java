@@ -5,7 +5,11 @@ import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
