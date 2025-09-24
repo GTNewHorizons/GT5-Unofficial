@@ -1890,7 +1890,7 @@ GT5U.nei.display.usage.original=Original usage: %s EU/t %s
 GT5U.nei.display.usage.steam=Usage: %s L/s of Steam
 GT5U.nei.display.voltage=Voltage: %s EU/t %s
 GT5U.nei.display.amperage=Amperage: %s A
-GT5U.nei.display.overclock= (OC)
+GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
 
 GT5U.biomes.humidity=Humidity:
