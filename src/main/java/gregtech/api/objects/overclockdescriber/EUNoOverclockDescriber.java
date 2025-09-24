@@ -97,6 +97,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
             getTierNameWithParentheses(voltage, calculator));
 
     }
+
     protected String getTierNameWithParentheses(long voltage, OverclockCalculator calculator) {
         return GTUtility.getTierNameWithParentheses(voltage);
     }
