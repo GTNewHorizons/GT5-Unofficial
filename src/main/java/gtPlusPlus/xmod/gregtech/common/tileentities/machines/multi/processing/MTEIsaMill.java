@@ -13,6 +13,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -84,7 +85,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.grinding")
+        tt.addMachineType(getMachineType())
             .addInfo("gt.isamill.tips.1")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -94,7 +95,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addCasingInfoMin("gtplusplus.blockcasings.5.0.name", 40, false)
             .addStructurePart("gtplusplus.blockcasings.5.2.name", "gt.isamill.info.1")
             .addStructurePart("gtplusplus.blockcasings.5.1.name", "gt.isamill.info.2")
-            .addStructureInfo("gt.isamill.stips.1")
             .addStructurePart("gt.blockmachines.hatch.milling.name", "GT5U.MBTT.AnyCasing")
             .addInputBus("GT5U.MBTT.AnyCasing", 1)
             .addOutputBus("GT5U.MBTT.AnyCasing", 1)
@@ -396,7 +396,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public String getMachineType() {
-        return "Grinding Machine";
+        return translateToLocal("machtype.isamill");
     }
 
     /*

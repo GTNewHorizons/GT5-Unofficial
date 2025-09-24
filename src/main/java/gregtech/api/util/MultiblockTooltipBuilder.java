@@ -100,8 +100,12 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a line telling you what the machine type is. Usually, this will be the name of a SB version.<br>
-     * Machine Type: machine
+     * Add a line telling you what the machine type is. Usually, this will be the name of an SB version.<br>
+     * Machine Type: machine<br>
+     * Provide multiple params for multifunctional machines, divided by "|"<br>
+     * Acronyms should NOT be made a separate param. It should be like<br>
+     * Machine Type: Big Bad Machine, BBM | Furnace<br>
+     * but not Machine Type: Big Bad Machine | BBM | Furnace
      *
      * @param machLocKeys Localization keys to machine types
      *
