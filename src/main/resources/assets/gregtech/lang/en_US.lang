@@ -3706,3 +3706,7 @@ entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 
 #mui1
 mui.button.close=x
+
+# Misc strings
+gt.string.colon=:
+gt.string.separator=,
