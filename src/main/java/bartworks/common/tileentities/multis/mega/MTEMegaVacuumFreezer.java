@@ -30,6 +30,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -233,8 +234,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer, MVF")
-            .addInfo("Handles all things cooling!")
+            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"Handles all things cooling!\""), EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .addSeparator()
