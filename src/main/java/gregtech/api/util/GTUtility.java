@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -3129,19 +3128,17 @@ public class GTUtility {
 
     private static final Int2ObjectOpenHashMap<String> DIMENSION_NAMES = new Int2ObjectOpenHashMap<>();
 
-    public static void loadDimensionNames() {
-        Hashtable<Integer, Integer> dimensions = getFieldValue(DimensionManager.class, "dimensions");
-
-        for (var e : dimensions.entrySet()) {
-            if (DimensionManager.isDimensionRegistered(e.getKey()));
-
-            WorldProvider p = DimensionManager.createProviderFor(e.getKey());
-
-            DIMENSION_NAMES.put((int) e.getKey(), p.getDimensionName());
-        }
-    }
-
     public static String getDimensionName(int dimId) {
+        if (!DIMENSION_NAMES.containsKey(dimId)) {
+            WorldProvider p = DimensionManager.createProviderFor(dimId);
+
+            if (p != null) {
+                DIMENSION_NAMES.put(dimId, p.getDimensionName());
+            } else {
+                DIMENSION_NAMES.put(dimId, "[unknown dimension]");
+            }
+        }
+
         String name = DIMENSION_NAMES.get(dimId);
 
         String key = "gtnop.world." + name;
