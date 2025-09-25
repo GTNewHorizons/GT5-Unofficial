@@ -189,7 +189,9 @@ public class GT5OreLayerHelper {
                 || ((this.bwOres & 0b0001) != 0 && Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex);
         }
     }
-    public static class OreLayerWrapperTemp {//Bridge Materials init not so fast.
+
+    public static class OreLayerWrapperTemp {// Bridge Materials init not so fast.
+
         public final String veinName;
         public final ISubTagContainer primary;
         public final ISubTagContainer secondary;
@@ -199,6 +201,7 @@ public class GT5OreLayerHelper {
         public final List<String> allowedDimWithOrigNames = new ArrayList<>();
 
         private OreLayerWrapper wrapper;
+
         public OreLayerWrapperTemp(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
             ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
@@ -209,10 +212,15 @@ public class GT5OreLayerHelper {
             this.layer = layer;
         }
 
-        public OreLayerWrapper getWrapper(){//Should only runned once.
+        public OreLayerWrapper getWrapper() {// Should only runned once.
             if (this.wrapper == null) {
-                this.wrapper = new OreLayerWrapper(this.veinName, this.primary, this.secondary,
-                this.between, this.sporadic, this.layer);
+                this.wrapper = new OreLayerWrapper(
+                    this.veinName,
+                    this.primary,
+                    this.secondary,
+                    this.between,
+                    this.sporadic,
+                    this.layer);
                 for (String dim : this.allowedDimWithOrigNames) {
                     this.wrapper.addDimension(dim);
                 }
@@ -220,9 +228,8 @@ public class GT5OreLayerHelper {
             return this.wrapper;
         }
 
-        public boolean isLayerEqual(BWOreLayer layer){
-            return (this.layer.bwOres == layer.bwOres 
-                && this.layer.mPrimaryMeta == layer.mPrimaryMeta
+        public boolean isLayerEqual(BWOreLayer layer) {
+            return (this.layer.bwOres == layer.bwOres && this.layer.mPrimaryMeta == layer.mPrimaryMeta
                 && this.layer.mSecondaryMeta == layer.mSecondaryMeta
                 && this.layer.mBetweenMeta == layer.mBetweenMeta
                 && this.layer.mSporadicMeta == layer.mSporadicMeta
@@ -232,7 +239,7 @@ public class GT5OreLayerHelper {
                 && this.layer.mMinY == layer.mMinY
                 && this.layer.mMaxY == layer.mMaxY);
         }
-        
+
         public void addDimension(String dim) {
             this.allowedDimWithOrigNames.add(dim);
         }
