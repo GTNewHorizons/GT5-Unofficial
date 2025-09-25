@@ -167,7 +167,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addInfo(
                 "Steam - Outputs " +
                     TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
-                    + "more cracked fluid")
+                    + " more cracked fluid")
             .addInfo(TooltipHelper.italicText("In comparison with a chemical reactor"))
             .addSeparator()
             .addTecTechHatchInfo()
