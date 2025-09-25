@@ -221,7 +221,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         }
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
 
-        //TODO Delete this code after one update. Also, don't forget to delete the NbtTag - "migrationCircuitSlot".
+        // TODO Delete this code after one update. Also, don't forget to delete the NbtTag - "migrationCircuitSlot".
         if (allowSelectCircuit()) {
             if (!aNBT.hasKey("migrationCircuitSlot")) {
                 int newCircuitSlot = getSlots(mTier);
