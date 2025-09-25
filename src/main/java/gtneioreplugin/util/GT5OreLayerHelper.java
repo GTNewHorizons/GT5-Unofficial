@@ -43,7 +43,8 @@ public class GT5OreLayerHelper {
     public static void init() {
         for (OreMixes mix : OreMixes.values())
             mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
-        for (OreLayerWrapper layer : BWOreLayer.NEIList) {
+        for (OreLayerWrapperTemp layerTemp : BWOreLayer.NEIList) {
+            OreLayerWrapper layer = layerTemp.getWrapper();
             mapOreLayerWrapper.put(layer.veinName, layer);
         }
         for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {
@@ -186,6 +187,51 @@ public class GT5OreLayerHelper {
                 || ((this.bwOres & 0b0100) != 0 && Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex)
                 || ((this.bwOres & 0b0010) != 0 && Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex)
                 || ((this.bwOres & 0b0001) != 0 && Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex);
+        }
+    }
+    public static class OreLayerWrapperTemp {//Bridge Materials init not so fast.
+        public final String veinName;
+        public final ISubTagContainer primary;
+        public final ISubTagContainer secondary;
+        public final ISubTagContainer between;
+        public final ISubTagContainer sporadic;
+        public final BWOreLayer layer;
+        public final List<String> allowedDimWithOrigNames = new ArrayList<>();
+
+        public OreLayerWrapperTemp(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
+            ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
+            this.veinName = veinName;
+            this.primary = primary;
+            this.secondary = secondary;
+            this.between = between;
+            this.sporadic = sporadic;
+            this.layer = layer;
+        }
+
+        public OreLayerWrapper getWrapper(){//Should only runned once.
+            OreLayerWrapper wrapper = new OreLayerWrapper(this.veinName, this.primary, this.secondary,
+            this.between, this.sporadic, this.layer);
+            for (String dim : this.allowedDimWithOrigNames) {
+                wrapper.addDimension(dim);
+            }
+            return wrapper;
+        }
+
+        public bool isLayerEqual(BWOreLayer layer){
+            return (this.layer.bwOres == layer.bwOres 
+                && this.layer.mPrimaryMeta == layer.mPrimaryMeta
+                && this.layer.mSecondaryMeta == layer.mSecondaryMeta
+                && this.layer.mBetweenMeta == layer.mBetweenMeta
+                && this.layer.mSporadicMeta == layer.mSporadicMeta
+                && this.layer.mWeight == layer.mWeight
+                && this.layer.mDensity == layer.mDensity
+                && this.layer.mSize == layer.mSize
+                && this.layer.mMinY == layer.mMinY
+                && this.layer.mMaxY == layer.mMaxY);
+        }
+        
+        public void addDimension(String dim) {
+            this.allowedDimWithOrigNames.add(dim);
         }
     }
 }
