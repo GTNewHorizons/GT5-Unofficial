@@ -125,7 +125,7 @@ public class GT5OreLayerHelper {
         }
 
         private static Materials getMaterials (ISubTagContainer input){
-            if (input instanceof Werkstoff) return ((Werkstoff) material).getBridgeMaterial();
+            if (input instanceof Werkstoff) return ((Werkstoff) input).getBridgeMaterial();
             else return ((Materials) input); //If it cannot cast it will throw an error.
         }
         
