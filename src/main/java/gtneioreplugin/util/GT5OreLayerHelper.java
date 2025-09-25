@@ -80,10 +80,10 @@ public class GT5OreLayerHelper {
         public final short randomWeight, size, density;
         public final Map<String, Boolean> allowedDimWithOrigNames;
 
-        public final ISubTagContainer mPrimaryVeinMaterial;
-        public final ISubTagContainer mSecondaryMaterial;
-        public final ISubTagContainer mBetweenMaterial;
-        public final ISubTagContainer mSporadicMaterial;
+        public final Materials mPrimaryVeinMaterial;
+        public final Materials mSecondaryMaterial;
+        public final Materials mBetweenMaterial;
+        public final Materials mSporadicMaterial;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
@@ -134,10 +134,10 @@ public class GT5OreLayerHelper {
             this.Meta[3] = getMeta(sporadic);
             this.bwOres = getBwOres(primary, secondary, between, sporadic);
 
-            this.mPrimaryVeinMaterial = primary;
-            this.mSecondaryMaterial = secondary;
-            this.mBetweenMaterial = between;
-            this.mSporadicMaterial = sporadic;
+            this.mPrimaryVeinMaterial = primary.getBridgeMaterial();
+            this.mSecondaryMaterial = secondary.getBridgeMaterial();
+            this.mBetweenMaterial = between.getBridgeMaterial();
+            this.mSporadicMaterial = sporadic.getBridgeMaterial();
 
             this.size = (short) layer.mSize;
             this.density = (short) layer.mDensity;
