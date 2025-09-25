@@ -127,8 +127,8 @@ public class GT5OreLayerHelper {
 
         private static Materials getMaterials (ISubTagContainer input){
             if (input instanceof Werkstoff) return ((Werkstoff) input).getBridgeMaterial();
-            else if (input instanceof Materials) return ((Materials) input); //If it cannot cast it will throw an error.
-            else throw new ClassCastException("From GT5OreLayerHelper: " + input.class.getTypeName() + "cannot cast to " + Materials.class.getTypeName());
+            else if (input instanceof Materials) return ((Materials) input);
+            else throw new ClassCastException(); //If it cannot cast it will throw an error.
         }
         
         public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
