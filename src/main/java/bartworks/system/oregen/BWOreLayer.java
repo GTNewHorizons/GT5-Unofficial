@@ -40,7 +40,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.blocks.TileEntityOres;
-import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperTemp;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -48,7 +48,7 @@ import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 public abstract class BWOreLayer extends GTWorldgen {
 
     public static final List<BWOreLayer> sList = new ArrayList<>();
-    public static final List<OreLayerWrapper> NEIList = new ArrayList<>();
+    public static final List<OreLayerWrapperTemp> NEIList = new ArrayList<>();
     private static final boolean logOregenRoss128 = false;
     public static int sWeight;
     public byte bwOres;
@@ -97,21 +97,14 @@ public abstract class BWOreLayer extends GTWorldgen {
 
         this(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
 
-        for (OreLayerWrapper layer : NEIList) {
-            if (layer.bwOres == this.bwOres && layer.Meta[0] == this.mPrimaryMeta
-                && layer.Meta[1] == this.mSecondaryMeta
-                && layer.Meta[2] == this.mBetweenMeta
-                && layer.Meta[3] == this.mSporadicMeta
-                && layer.randomWeight == (short) aWeight
-                && layer.size == (short) aSize
-                && layer.density == (short) aDensity
-                && layer.worldGenHeightRange.equals(aMinY + "-" + aMaxY)) {
+        for (OreLayerWrapperTemp layer : NEIList) {
+            if (layer.isLayerEqual(this)) {
                 layer.addDimension(dim);
                 return;
             }
         }
 
-        OreLayerWrapper layer2 = new OreLayerWrapper(aName, top, bottom, between, sprinkled, this);
+        OreLayerWrapperTemp layer2 = new OreLayerWrapperTemp(aName, top, bottom, between, sprinkled, this);
         NEIList.add(layer2);
         layer2.addDimension(dim);
     }

@@ -43,7 +43,8 @@ public class GT5OreLayerHelper {
     public static void init() {
         for (OreMixes mix : OreMixes.values())
             mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
-        for (OreLayerWrapper layer : BWOreLayer.NEIList) {
+        for (OreLayerWrapperTemp layerTemp : BWOreLayer.NEIList) {
+            OreLayerWrapper layer = layerTemp.getWrapper();
             mapOreLayerWrapper.put(layer.veinName, layer);
         }
         for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {
@@ -80,10 +81,10 @@ public class GT5OreLayerHelper {
         public final short randomWeight, size, density;
         public final Map<String, Boolean> allowedDimWithOrigNames;
 
-        public final ISubTagContainer mPrimaryVeinMaterial;
-        public final ISubTagContainer mSecondaryMaterial;
-        public final ISubTagContainer mBetweenMaterial;
-        public final ISubTagContainer mSporadicMaterial;
+        public final Materials mPrimaryVeinMaterial;
+        public final Materials mSecondaryMaterial;
+        public final Materials mBetweenMaterial;
+        public final Materials mSporadicMaterial;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
@@ -124,6 +125,12 @@ public class GT5OreLayerHelper {
             return new ItemStack(WerkstoffLoader.BWOres, 1, Meta[veinLayer]);
         }
 
+        private static Materials getMaterials(ISubTagContainer input) {
+            if (input instanceof Werkstoff) return ((Werkstoff) input).getBridgeMaterial();
+            else if (input instanceof Materials) return ((Materials) input);
+            else throw new ClassCastException(); // If it cannot cast it will throw an error.
+        }
+
         public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
             ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
@@ -134,10 +141,10 @@ public class GT5OreLayerHelper {
             this.Meta[3] = getMeta(sporadic);
             this.bwOres = getBwOres(primary, secondary, between, sporadic);
 
-            this.mPrimaryVeinMaterial = primary;
-            this.mSecondaryMaterial = secondary;
-            this.mBetweenMaterial = between;
-            this.mSporadicMaterial = sporadic;
+            this.mPrimaryVeinMaterial = getMaterials(primary);
+            this.mSecondaryMaterial = getMaterials(secondary);
+            this.mBetweenMaterial = getMaterials(between);
+            this.mSporadicMaterial = getMaterials(sporadic);
 
             this.size = (short) layer.mSize;
             this.density = (short) layer.mDensity;
@@ -180,6 +187,61 @@ public class GT5OreLayerHelper {
                 || ((this.bwOres & 0b0100) != 0 && Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex)
                 || ((this.bwOres & 0b0010) != 0 && Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex)
                 || ((this.bwOres & 0b0001) != 0 && Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex);
+        }
+    }
+
+    public static class OreLayerWrapperTemp {// Bridge Materials init not so fast.
+
+        public final String veinName;
+        public final ISubTagContainer primary;
+        public final ISubTagContainer secondary;
+        public final ISubTagContainer between;
+        public final ISubTagContainer sporadic;
+        public final BWOreLayer layer;
+        public final List<String> allowedDimWithOrigNames = new ArrayList<>();
+
+        private OreLayerWrapper wrapper;
+
+        public OreLayerWrapperTemp(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
+            ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
+            this.veinName = veinName;
+            this.primary = primary;
+            this.secondary = secondary;
+            this.between = between;
+            this.sporadic = sporadic;
+            this.layer = layer;
+        }
+
+        public OreLayerWrapper getWrapper() {// Should only runned once.
+            if (this.wrapper == null) {
+                this.wrapper = new OreLayerWrapper(
+                    this.veinName,
+                    this.primary,
+                    this.secondary,
+                    this.between,
+                    this.sporadic,
+                    this.layer);
+                for (String dim : this.allowedDimWithOrigNames) {
+                    this.wrapper.addDimension(dim);
+                }
+            }
+            return this.wrapper;
+        }
+
+        public boolean isLayerEqual(BWOreLayer layer) {
+            return (this.layer.bwOres == layer.bwOres && this.layer.mPrimaryMeta == layer.mPrimaryMeta
+                && this.layer.mSecondaryMeta == layer.mSecondaryMeta
+                && this.layer.mBetweenMeta == layer.mBetweenMeta
+                && this.layer.mSporadicMeta == layer.mSporadicMeta
+                && this.layer.mWeight == layer.mWeight
+                && this.layer.mDensity == layer.mDensity
+                && this.layer.mSize == layer.mSize
+                && this.layer.mMinY == layer.mMinY
+                && this.layer.mMaxY == layer.mMaxY);
+        }
+
+        public void addDimension(String dim) {
+            this.allowedDimWithOrigNames.add(dim);
         }
     }
 }
