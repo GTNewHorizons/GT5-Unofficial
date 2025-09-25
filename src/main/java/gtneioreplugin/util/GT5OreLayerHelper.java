@@ -198,6 +198,7 @@ public class GT5OreLayerHelper {
         public final BWOreLayer layer;
         public final List<String> allowedDimWithOrigNames = new ArrayList<>();
 
+        private OreLayerWrapper wrapper;
         public OreLayerWrapperTemp(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
             ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
@@ -209,15 +210,17 @@ public class GT5OreLayerHelper {
         }
 
         public OreLayerWrapper getWrapper(){//Should only runned once.
-            OreLayerWrapper wrapper = new OreLayerWrapper(this.veinName, this.primary, this.secondary,
-            this.between, this.sporadic, this.layer);
-            for (String dim : this.allowedDimWithOrigNames) {
-                wrapper.addDimension(dim);
+            if (this.wrapper == null) {
+                this.wrapper = new OreLayerWrapper(this.veinName, this.primary, this.secondary,
+                this.between, this.sporadic, this.layer);
+                for (String dim : this.allowedDimWithOrigNames) {
+                    this.wrapper.addDimension(dim);
+                }
             }
-            return wrapper;
+            return this.wrapper;
         }
 
-        public bool isLayerEqual(BWOreLayer layer){
+        public boolean isLayerEqual(BWOreLayer layer){
             return (this.layer.bwOres == layer.bwOres 
                 && this.layer.mPrimaryMeta == layer.mPrimaryMeta
                 && this.layer.mSecondaryMeta == layer.mSecondaryMeta
