@@ -1,6 +1,5 @@
 package gtneioreplugin.util;
 
-import java.lang.ClassCastException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,12 +124,12 @@ public class GT5OreLayerHelper {
             return new ItemStack(WerkstoffLoader.BWOres, 1, Meta[veinLayer]);
         }
 
-        private static Materials getMaterials (ISubTagContainer input){
+        private static Materials getMaterials(ISubTagContainer input) {
             if (input instanceof Werkstoff) return ((Werkstoff) input).getBridgeMaterial();
             else if (input instanceof Materials) return ((Materials) input);
-            else throw new ClassCastException(); //If it cannot cast it will throw an error.
+            else throw new ClassCastException(); // If it cannot cast it will throw an error.
         }
-        
+
         public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
             ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
