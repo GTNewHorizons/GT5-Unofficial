@@ -15,7 +15,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,6 +51,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -268,26 +268,28 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, MABS")
-            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"all it does is make metals hot\""), EnumChatFormatting.DARK_GRAY))
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"all it does is make metals hot\""),
+                    EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                TooltipHelper.speedText("+5%")
-                    + " Speed per "
+                TooltipHelper.speedText("+5%") + " Speed per "
                     + TooltipHelper.tierText(TooltipTier.COIL)
                     + " Tier above TPV (additive)")
             .addInfo("      if the equivalent or better glass tier is present")
             .addInfo(
-                TooltipHelper.effText("-5%")
-                    + " EU Usage per "
+                TooltipHelper.effText("-5%") + " EU Usage per "
                     + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier above the recipe tier (multiplicative)"
-            )
+                    + " Tier above the recipe tier (multiplicative)")
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addUnlimitedTierSkips()
-            .addInfo(TooltipHelper.italicText("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"))
+            .addInfo(
+                TooltipHelper.italicText(
+                    "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addController("Mid of the fourth layer")

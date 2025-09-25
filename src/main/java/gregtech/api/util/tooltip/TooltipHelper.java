@@ -111,6 +111,7 @@ public class TooltipHelper {
 
     /**
      * Wraps input string in italic formatting
+     * 
      * @param text Text to be italicized
      * @return Italic String
      */

@@ -25,7 +25,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,6 +51,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalReactor>
@@ -71,8 +71,14 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"What molecule do you want to synthesize?\""), EnumChatFormatting.DARK_GRAY))
-            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"Or do you want to replace something in this molecule?\""),EnumChatFormatting.DARK_GRAY))
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"What molecule do you want to synthesize?\""),
+                    EnumChatFormatting.DARK_GRAY))
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"Or do you want to replace something in this molecule?\""),
+                    EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addPerfectOCInfo()
             .addSeparator()

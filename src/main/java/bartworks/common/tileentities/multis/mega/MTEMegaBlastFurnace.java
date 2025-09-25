@@ -159,11 +159,9 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         tt.addMachineType("Blast Furnace, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                TooltipHelper.effText("-5%")
-                    + " EU Usage per "
+                TooltipHelper.effText("-5%") + " EU Usage per "
                     + TooltipHelper.coloredText("900K", EnumChatFormatting.RED)
-                    + " above the recipe requirement"
-            )
+                    + " above the recipe requirement")
             .addSeparator()
             .addInfo(
                 "Increases Heat by " + EnumChatFormatting.RED
@@ -221,7 +219,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-                                          float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             this.inputSeparation = !this.inputSeparation;
             GTUtility.sendChatToPlayer(
@@ -240,9 +238,9 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-                                 int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[]{casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
                 .extFacing()
                 .build(),
@@ -250,8 +248,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
-            return new ITexture[]{casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
                 .extFacing()
                 .build(),
@@ -259,9 +257,9 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
+                    .build() };
         }
-        return new ITexture[]{casingTexturePages[0][CASING_INDEX]};
+        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
 
     @Override
@@ -277,11 +275,11 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
     @Override
     protected String[] getExtendedInfoData() {
-        return new String[]{StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+        return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
             + EnumChatFormatting.GREEN
             + GTUtility.formatNumbers(this.mHeatingCapacity)
             + EnumChatFormatting.RESET
-            + " K"};
+            + " K" };
     }
 
     @Override

@@ -80,21 +80,21 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
-                new String[][]{
-                    {" p         p ", "ppgggggggggpp", " pgggggggggp ", " pgggMMMgggp ", " pgggMMMgggp ",
-                        " pgggMMMgggp ", " pgggggggggp ", "ppgggggggggpp", " p         p "},
-                    {" p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
-                        " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p "},
-                    {" p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
-                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p "},
-                    {" p         p ", "pgggggggggggp", " g c c c c g ", " l c c c c r ", " l c c c c r ",
-                        " l c c c c r ", " g c c c c g ", "pgggggggggggp", " p         p "},
-                    {" p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
-                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p "},
-                    {" p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
-                        " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p "},
-                    {"ppmmmm~mmmmpp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp",
-                        "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppmmmmmmmmmpp"},}))
+                new String[][] {
+                    { " p         p ", "ppgggggggggpp", " pgggggggggp ", " pgggMMMgggp ", " pgggMMMgggp ",
+                        " pgggMMMgggp ", " pgggggggggp ", "ppgggggggggpp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
+                        " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
+                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l c c c c r ", " l c c c c r ",
+                        " l c c c c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
+                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
+                        " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { "ppmmmm~mmmmpp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp",
+                        "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppmmmmmmmmmpp" }, }))
         .addElement(
             'c',
             GTStructureChannels.HEATING_COIL
@@ -148,25 +148,23 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker, MOC")
-            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""), EnumChatFormatting.DARK_GRAY))
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
+                    EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                TooltipHelper.effText("-10%")
-                    + " EU Usage per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier")
+                TooltipHelper.effText("-10%") + " EU Usage per " + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
             .addInfo("       up to a maximum of " + TooltipHelper.effText("-50%") + " EU Usage")
             .addSeparator()
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
             .addInfo(
-                "Hydro - Consumes "
-                    + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
+                "Hydro - Consumes " + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
                     + " less Hydrogen and outputs "
                     + TooltipHelper.coloredText("25%", EnumChatFormatting.DARK_AQUA)
                     + " more cracked fluid")
             .addInfo(
-                "Steam - Outputs " +
-                    TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
+                "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
                     + " more cracked fluid")
             .addInfo(TooltipHelper.italicText("In comparison with a chemical reactor"))
             .addSeparator()
@@ -197,9 +195,9 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-                                 int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[]{casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -207,8 +205,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
-            return new ITexture[]{casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -216,9 +214,9 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
                     .extFacing()
                     .glow()
-                    .build()};
+                    .build() };
         }
-        return new ITexture[]{casingTexturePages[0][CASING_INDEX]};
+        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
 
     @Override
@@ -446,7 +444,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-                                          float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
