@@ -25,9 +25,11 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -69,13 +71,14 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo("What molecule do you want to synthesize ?")
-            .addInfo("Or you want to replace something in this molecule ?")
+            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"What molecule do you want to synthesize?\""), EnumChatFormatting.DARK_GRAY))
+            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"Or do you want to replace something in this molecule?\""),EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addGlassEnergyLimitInfo()
             .addPerfectOCInfo()
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 5, 9, false)
             .addController("Front center")
