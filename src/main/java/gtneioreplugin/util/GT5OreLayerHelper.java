@@ -124,6 +124,11 @@ public class GT5OreLayerHelper {
             return new ItemStack(WerkstoffLoader.BWOres, 1, Meta[veinLayer]);
         }
 
+        private static Materials getMaterials (ISubTagContainer input){
+            if (input instanceof Werkstoff) return (Werkstoff) material).getBridgeMaterial();
+            else return ((Materials) input); //If it cannot cast it will throw an error.
+        }
+        
         public OreLayerWrapper(String veinName, ISubTagContainer primary, ISubTagContainer secondary,
             ISubTagContainer between, ISubTagContainer sporadic, BWOreLayer layer) {
             this.veinName = veinName;
@@ -134,10 +139,10 @@ public class GT5OreLayerHelper {
             this.Meta[3] = getMeta(sporadic);
             this.bwOres = getBwOres(primary, secondary, between, sporadic);
 
-            this.mPrimaryVeinMaterial = primary.getBridgeMaterial();
-            this.mSecondaryMaterial = secondary.getBridgeMaterial();
-            this.mBetweenMaterial = between.getBridgeMaterial();
-            this.mSporadicMaterial = sporadic.getBridgeMaterial();
+            this.mPrimaryVeinMaterial = getMaterials(primary);
+            this.mSecondaryMaterial = getMaterials(secondary);
+            this.mBetweenMaterial = getMaterials(between);
+            this.mSporadicMaterial = getMaterials(sporadic);
 
             this.size = (short) layer.mSize;
             this.density = (short) layer.mDensity;
