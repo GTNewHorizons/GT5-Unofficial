@@ -10,9 +10,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.metatileentity.implementations.MTEFrame;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,8 +18,11 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.common.config.Gregtech;
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -186,8 +186,8 @@ public class RunnableMachineUpdate implements Runnable {
                 // Skip propagation through pipes\cables\etc, but save some BaseMetaPipeEntity data for later
                 if (Gregtech.features.speedupMachineUpdateThread) {
                     final boolean isBaseMetaPipeEntity = tTileEntity instanceof BaseMetaPipeEntity;
-                    final BMPEdata bmpeData = isBaseMetaPipeEntity ? new BMPEdata((BaseMetaPipeEntity) tTileEntity, posX, posY, posZ) : null;
                     if (isBaseMetaPipeEntity) {
+                        final BMPEdata bmpeData = new BMPEdata((BaseMetaPipeEntity) tTileEntity, posX, posY, posZ);
                         adjacentCableKeys.add(packedCoords);
                         adjacentCableList.add(bmpeData);
                         if (!bmpeData.isPotentialStructureBlock) continue;
@@ -247,7 +247,8 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     private static class BMPEdata {
-        final int x,y,z;
+
+        final int x, y, z;
         final BaseMetaPipeEntity baseMetaPipe;
         final IMetaTileEntity metaTile;
         final MetaPipeEntity metaPipe;
@@ -255,11 +256,13 @@ public class RunnableMachineUpdate implements Runnable {
         final boolean isPotentialStructureBlock;
 
         BMPEdata(BaseMetaPipeEntity bmpe, int x, int y, int z) {
-            this.x = x; this.y = y; this.z = z;
+            this.x = x;
+            this.y = y;
+            this.z = z;
             baseMetaPipe = bmpe;
             metaTile = baseMetaPipe.getMetaTileEntity();
             isMetaPipe = metaTile instanceof MetaPipeEntity;
-            metaPipe = isMetaPipe ? (MetaPipeEntity)metaTile : null;
+            metaPipe = isMetaPipe ? (MetaPipeEntity) metaTile : null;
             isPotentialStructureBlock = metaPipe instanceof MTEFrame;
         }
     }
