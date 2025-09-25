@@ -6,10 +6,6 @@ import static gregtech.api.util.GTUtility.areStacksEqual;
 import static gregtech.api.util.GTUtility.isStackInvalid;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -20,9 +16,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
@@ -30,13 +29,15 @@ import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.extensions.ArrayExt;
 
-public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable, IAddGregtechLogo {
+public class MTEHatchOutputBus extends MTEHatch
+    implements IAddUIWidgets, IItemLockable, IDataCopyable, IAddGregtechLogo {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -358,7 +359,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
                 .setSize(18, 18)
                 .setPos(152 + (mTier < 4 ? 0 : 2 * (mTier - 1)), 60 + (mTier < 4 ? 0 : 16 * (mTier - 1))));
     }
-
 
     @Override
     public int getGUIWidth() {
