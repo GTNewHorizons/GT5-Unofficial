@@ -6,6 +6,10 @@ import static gregtech.api.util.GTUtility.areStacksEqual;
 import static gregtech.api.util.GTUtility.isStackInvalid;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -32,7 +36,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.extensions.ArrayExt;
 
-public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable {
+public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable, IAddGregtechLogo {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -284,16 +288,35 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        switch (mTier) {
-            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            default -> getBaseMetaTileEntity().add4by4Slots(builder);
+        final int BUTTON_SIZE = 18;
+        int slotCount = getSizeInventory();
+        final int itemColumns = Math.max(1, mTier + 1);
+        final int itemRows = Math.max(1, mTier + 1);
+        final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
+        final int centerY = 14 - (mTier - 1);
+
+        switch (slotCount) {
+            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
+            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
+            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
+            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
+            default -> {
+                for (int row = 0; row < itemRows; row++) {
+                    for (int col = 0; col < itemColumns; col++) {
+                        int slotIndex = row * itemColumns + col;
+                        if (slotIndex < slotCount) {
+                            builder.widget(
+                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
+                                    .setPos(centerX + col * 18, centerY + row * 18));
+                        }
+                    }
+                }
+            }
         }
 
         if (acceptsItemLock()) {
             builder.widget(
-                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
+                new PhantomItemButton(this).setPos(6, 60 + (mTier < 4 ? 0 : 16 * (mTier - 1)))
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
@@ -326,5 +349,24 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     @Override
     public boolean acceptsItemLock() {
         return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(
+            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(18, 18)
+                .setPos(152 + (mTier < 4 ? 0 : 2 * (mTier - 1)), 60 + (mTier < 4 ? 0 : 16 * (mTier - 1))));
+    }
+
+
+    @Override
+    public int getGUIWidth() {
+        return super.getGUIWidth() + (mTier < 4 ? 0 : 2 * (mTier - 1));
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return super.getGUIHeight() + (mTier < 4 ? 0 : 16 * (mTier - 1));
     }
 }

@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -44,6 +50,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import org.jetbrains.annotations.NotNull;
 
 public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitSupport, IAddUIWidgets {
 
@@ -143,16 +150,6 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             .getByte("color") - 1);
         if (color >= 0 && color < 16) currenttip.add(
             "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
-    }
-
-    @Override
-    public int getCircuitSlotX() {
-        return 153;
-    }
-
-    @Override
-    public int getCircuitSlotY() {
-        return 63;
     }
 
     @Override
@@ -308,18 +305,32 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         buildContext.addCloseListener(() -> uiButtonCount = 0);
         addSortStacksButton(builder);
         addOneStackLimitButton(builder);
-        // Remove one for ghost circuit slot
         int slotCount = getSizeInventory();
         if (allowSelectCircuit()) {
             slotCount = slotCount - 1;
         }
-        // We do this to decouple slot count from tier in here, since there is no reason to do so.
+        final int itemColumns = Math.max(1, mTier + 1);
+        final int itemRows = Math.max(1, mTier + 1);
+        final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
+        final int centerY = 14 - (mTier - 1);
+
         switch (slotCount) {
             case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
             case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
             case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
             case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {}
+            default -> {
+                for (int row = 0; row < itemRows; row++) {
+                    for (int col = 0; col < itemColumns; col++) {
+                        int slotIndex = row * itemColumns + col;
+                        if (slotIndex < slotCount) {
+                            builder.widget(
+                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
+                                    .setPos(centerX + col * 18, centerY + row * 18));
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -329,8 +340,28 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             .setStaticTexture(picture)
             .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
+            .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + (mTier < 4 ? 0 : 16 * (mTier - 1)))
             .setSize(BUTTON_SIZE, BUTTON_SIZE)
             .setGTTooltip(tooltipDataSupplier);
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return super.getGUIWidth() + (mTier < 4 ? 0 : 2 * (mTier - 1));
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return super.getGUIHeight() + (mTier < 4 ? 0 : 16 * (mTier - 1));
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153 + (mTier < 4 ? 0 : 2 * (mTier - 1));
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 60 + (mTier < 4 ? 0 : 16 * (mTier - 1));
     }
 }
