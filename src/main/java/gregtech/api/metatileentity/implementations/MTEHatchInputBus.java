@@ -208,6 +208,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
         }
+        aNBT.setBoolean("migrationCircuitSlot", true);
     }
 
     @Override
@@ -219,6 +220,20 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             disableLimited = aNBT.getBoolean("disableLimited");
         }
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
+
+        //TODO Delete this code after one update. Also, don't forget to delete the NbtTag - "migrationCircuitSlot".
+        if (allowSelectCircuit()) {
+            if (!aNBT.hasKey("migrationCircuitSlot")) {
+                int newCircuitSlot = getSlots(mTier);
+                int oldCircuitSlot = mTier < 1 ? 1 : mTier == 1 ? 4 : mTier == 2 ? 9 : 16;
+                ItemStack oldCircuit = getStackInSlot(oldCircuitSlot);
+
+                if (oldCircuit != null && getStackInSlot(newCircuitSlot) == null) {
+                    setInventorySlotContents(newCircuitSlot, oldCircuit.copy());
+                    setInventorySlotContents(oldCircuitSlot, null);
+                }
+            }
+        }
     }
 
     @Override
