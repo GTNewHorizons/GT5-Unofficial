@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -267,32 +268,26 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, MABS")
+            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText("\"all it does is make metals hot\""), EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                "Gains a " + EnumChatFormatting.AQUA
-                    + "5%"
-                    + EnumChatFormatting.GRAY
-                    + " Speed Bonus per "
-                    + EnumChatFormatting.WHITE
-                    + "Heating Coil Tier")
-            .addInfo("Speed bonus is only applicable if equivalent or better glass tier is present")
-            .addInfo("Furthermore, a multiplicative energy discount is granted for using coils above the recipe tier")
-            .addDynamicEuEffInfo(0.05f, TooltipTier.COIL)
+                TooltipHelper.speedText("+5%")
+                    + " Speed per "
+                    + TooltipHelper.tierText(TooltipTier.COIL)
+                    + " Tier above TPV (additive)")
+            .addInfo("      if the equivalent or better glass tier is present")
             .addInfo(
-                EnumChatFormatting.ITALIC
-                    + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY)
-            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
+                TooltipHelper.effText("-5%")
+                    + " EU Usage per "
+                    + TooltipHelper.tierText(TooltipTier.COIL)
+                    + " Tier above the recipe tier (multiplicative)"
+            )
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addUnlimitedTierSkips()
-            .addInfo(
-                EnumChatFormatting.RED + ""
-                    + EnumChatFormatting.ITALIC
-                    + "\"all it does is make metals hot\""
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY)
+            .addInfo(TooltipHelper.italicText("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addController("Mid of the fourth layer")

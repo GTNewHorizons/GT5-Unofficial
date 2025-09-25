@@ -16,6 +16,7 @@ public class TooltipHelper {
     public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
     public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
+    public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     /**
@@ -71,7 +72,7 @@ public class TooltipHelper {
     /**
      * Wraps input string in EFF colors
      * Will have Dark Gray if value is unchanged standard
-     * 
+     *
      * @param eff Efficiency. {@link TooltipHelper#EFF_COLOR}
      * @return Colored String
      */
@@ -106,5 +107,14 @@ public class TooltipHelper {
         if (coloring.isColor() || coloring == EnumChatFormatting.GRAY)
             return String.format("%s%s%s", coloring, text, EnumChatFormatting.GRAY);
         return text;
+    }
+
+    /**
+     * Wraps input string in italic formatting
+     * @param text Text to be italicized
+     * @return Italic String
+     */
+    public static String italicText(String text) {
+        return String.format("%s%s%s", ITALIC, text, EnumChatFormatting.RESET);
     }
 }
