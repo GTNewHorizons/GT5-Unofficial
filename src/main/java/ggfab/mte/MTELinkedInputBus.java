@@ -370,6 +370,16 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
+    public int getGUIHeight() {
+        return 166;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 176;
+    }
+
+    @Override
     public NBTTagCompound getCopiedData(EntityPlayer player) {
         if (getChannel() == null) {
             return null;
