@@ -98,7 +98,7 @@ public abstract class BWOreLayer extends GTWorldgen {
         this(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
 
         for (OreLayerWrapperTemp layer : NEIList) {
-            if (layer.isLayerEqual(this) {
+            if (layer.isLayerEqual(this)) {
                 layer.addDimension(dim);
                 return;
             }
