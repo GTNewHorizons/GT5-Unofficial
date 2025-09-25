@@ -1,7 +1,5 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Materials.Glowstone;
-import static gregtech.api.enums.Materials.Netherrack;
 import static gregtech.api.enums.Materials.Obsidian;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -284,23 +282,23 @@ public class RecipesGeneral {
     }
 
     private static void addCompressedNetherrack() {
-        addCompressionRecipe(Netherrack.getBlocks(9), CompressedNetherrack.get(1));
+        addCompressionRecipe(new ItemStack(Blocks.netherrack, 9, 0), CompressedNetherrack.get(1));
         addCompressionRecipe(CompressedNetherrack.get(9), DoubleCompressedNetherrack.get(1));
         addCompressionRecipe(DoubleCompressedNetherrack.get(9), TripleCompressedNetherrack.get(1));
 
-        addDecompressionRecipe(CompressedNetherrack.get(1), Netherrack.getBlocks(9));
+        addDecompressionRecipe(CompressedNetherrack.get(1), new ItemStack(Blocks.netherrack, 9, 0));
         addDecompressionRecipe(DoubleCompressedNetherrack.get(1), CompressedNetherrack.get(9));
         addDecompressionRecipe(TripleCompressedNetherrack.get(1), DoubleCompressedNetherrack.get(9));
     }
 
     private static void addCompressedGlowstone() {
-        addCompressionRecipe(Glowstone.getBlocks(9), CompressedGlowstone.get(1));
+        addCompressionRecipe(new ItemStack(Blocks.glowstone, 9, 0), CompressedGlowstone.get(1));
         addCompressionRecipe(CompressedGlowstone.get(9), DoubleCompressedGlowstone.get(1));
         addCompressionRecipe(DoubleCompressedGlowstone.get(9), TripleCompressedGlowstone.get(1));
         addCompressionRecipe(TripleCompressedGlowstone.get(9), QuadrupleCompressedGlowstone.get(1));
         addCompressionRecipe(QuadrupleCompressedGlowstone.get(9), QuintupleCompressedGlowstone.get(1));
 
-        addDecompressionRecipe(CompressedGlowstone.get(1), Glowstone.getBlocks(9));
+        addDecompressionRecipe(CompressedGlowstone.get(1), new ItemStack(Blocks.glowstone, 9, 0));
         addDecompressionRecipe(DoubleCompressedGlowstone.get(1), CompressedGlowstone.get(9));
         addDecompressionRecipe(TripleCompressedGlowstone.get(1), DoubleCompressedGlowstone.get(9));
         addDecompressionRecipe(QuadrupleCompressedGlowstone.get(1), TripleCompressedGlowstone.get(9));
