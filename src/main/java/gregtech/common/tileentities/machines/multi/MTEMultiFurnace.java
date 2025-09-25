@@ -54,7 +54,6 @@ import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipTier;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
 
