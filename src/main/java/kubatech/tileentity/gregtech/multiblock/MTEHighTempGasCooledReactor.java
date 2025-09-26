@@ -20,12 +20,10 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
-import static bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.AuthorPxx500;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -967,7 +965,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
                 if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
                     aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
+                // aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
+                aList.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
                 super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
             }
         }
@@ -1079,25 +1078,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             for (LangEntry_ iName : aHTGR_Localizations)
                 GTLanguageManager.addStringLocalization(iName.sName, iName.sEnglish);
             GameRegistry.registerItem(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, "bw.HTGRMaterials");
-        }
-
-        public static void register_fake_THR_Recipes() {
-
-            int i = 0;
-            for (@SuppressWarnings("unused")
-            Fuel_ fuel : sHTGR_Fuel) {
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4))
-                    .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 5))
-                    .duration(1 * HOURS)
-                    .eut(POWER_USAGE)
-                    .ignoreCollision()
-                    .fake()
-                    .addTo(htgrFakeRecipes);
-
-                i += MATERIALS_PER_FUEL;
-            }
         }
     }
 }

@@ -17,7 +17,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
 public class Mixer implements Runnable {
 
@@ -32,18 +31,6 @@ public class Mixer implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
-
-        int i = 0;
-        for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(fuel.mainItem, fuel.secondaryItem, GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(mixerRecipes);
-
-            i += MTEHighTempGasCooledReactor.HTGRMaterials.MATERIALS_PER_FUEL;
-        }
 
         if (Gendustry.isModLoaded()) {
             GTValues.RA.stdBuilder()

@@ -140,8 +140,6 @@ tooltip.bw.tier.name=Тир:
 tooltip.bw.empty.name=Пусто
 tooltip.bw.mb_via.name=%s§7 через §2BartWorks
 
-tooltip.bw.high_temp_gas_cooled_reactor.material=Материал для высокотемпературного газоохлаждаемого реактора
-
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s

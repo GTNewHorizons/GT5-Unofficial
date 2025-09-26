@@ -86,7 +86,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
