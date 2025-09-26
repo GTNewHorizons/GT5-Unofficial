@@ -140,8 +140,6 @@ tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
-tooltip.bw.high_temp_gas_cooled_reactor.material=Material for High Temperature Gas-cooled Reactor
-
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s
