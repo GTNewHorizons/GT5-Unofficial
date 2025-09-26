@@ -199,7 +199,7 @@ public class RecipeLoader {
         GTModHandler.addCraftingRecipe(
             HighTemperatureGasCooledReactor.get(1),
             bitsd,
-            new Object[] { "BZB", "BRB", "BZB", 'B', new ItemStack(GregTechAPI.sBlockCasings8, 1, 5), 'R',
+            new Object[] { "BZB", "ZRZ", "BZB", 'B', gregtech.api.enums.ItemList.Casing_IV.get(1), 'R',
                 GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitMaster" });
 
         RegisterTeaLine();

@@ -386,7 +386,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + GTUtility.formatNumbers(WATER_PER_PELLET)
                     + EnumChatFormatting.GRAY
                     + " water/tick/pellet")
-            .beginStructureBlock(11, 12, 11, true)
+            .beginStructureBlock(29, 16, 18, true)
             .addController("Front center")
             .addInputHatch("Top of the Pump", 1)
             .addEnergyHatch("Top of the Pump", 1)
