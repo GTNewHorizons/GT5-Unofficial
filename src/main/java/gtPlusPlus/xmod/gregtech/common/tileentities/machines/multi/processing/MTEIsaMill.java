@@ -90,7 +90,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo("gt.isamill.tips.2")
             .beginStructureBlock(3, 3, 7, false)
-            .addController("fc")
+            .addController("front_center")
             .addCasingInfoMin("gtplusplus.blockcasings.5.0.name", 40, false)
             .addStructurePart("gtplusplus.blockcasings.5.2.name", "gt.isamill.info.1")
             .addStructurePart("gtplusplus.blockcasings.5.1.name", "gt.isamill.info.2")

@@ -87,7 +87,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
-            .addController("Top Center")
+            .addController("top_center")
             .addCasingInfoMin("gtplusplus.blockcasings.5.3.name", 120)
             .addCasingInfoMin("miscutils.blockcasings.9.name", 24)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.13.name", 24)
