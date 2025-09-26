@@ -1757,8 +1757,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setByProducts() {
-        Mytryl.addOreByProducts(Samarium, Samarium, Zinc, Zinc);
-        Rubracium.addOreByProducts(Samarium, Samarium, Samarium, Samarium);
+        Mytryl.addOreByProducts(Samarium, Zinc);
+        Rubracium.addOreByProducts(Samarium);
         Chalcopyrite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);
         Sphalerite.addOreByProducts(GarnetYellow, Cadmium, Gallium, Zinc);
         MeteoricIron.addOreByProducts(Iron, Nickel, Iridium, Platinum);
