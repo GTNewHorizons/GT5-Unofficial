@@ -2,9 +2,11 @@ package gtnhlanth.common.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import com.google.common.collect.ImmutableList;
-import gtnhlanth.common.beamline.Particle;
+import java.util.List;
+
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -14,8 +16,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
-
-import java.util.List;
 
 public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements IConnectsToBeamline {
 
