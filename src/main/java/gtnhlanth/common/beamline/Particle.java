@@ -1,6 +1,11 @@
 package gtnhlanth.common.beamline;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+
+import gtnhlanth.common.register.LanthItemList;
 
 public enum Particle {
 
@@ -54,6 +59,11 @@ public enum Particle {
     private final int LHCWeight;
 
     private final int id;
+
+    // TODO: change this to be a ItemDrawable unique to each particle with constructor, and create a public
+    // getItemDrawable method, replace createButtonForParticle call to match this accordingly.
+    public static final ItemDrawable itemDrawable = new ItemDrawable(
+        new ItemStack(LanthItemList.PARTICLE_ITEM, 1, Particle.PROTON.getId()));
 
     Particle(boolean canAcc, int id, float restMass, float maxSourceEnergy, String name, String shortName, float charge,
         String chargeSpecial, int lhcWeight) {
