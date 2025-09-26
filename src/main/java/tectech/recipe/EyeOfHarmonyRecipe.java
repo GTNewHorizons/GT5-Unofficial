@@ -358,12 +358,12 @@ public class EyeOfHarmonyRecipe {
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         }
 
-        if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT)) outputMap
-            .add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_MERCURY)) outputMap
-            .add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE)) outputMap
-            .add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+        else if (material.contains(SubTag.WASHING_MERCURY))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
