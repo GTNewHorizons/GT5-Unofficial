@@ -227,7 +227,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 onlyIf(
                     te -> te.topState != TopState.Top,
                     onElementPass(te -> te.topState = TopState.NotTop, CellElement.INSTANCE))))
-        .addElement('C', CellElement.INSTANCE)
+        .addElement('C', GTStructureChannels.LSC_CAPACITOR.use(CellElement.INSTANCE))
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -1509,6 +1509,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         public boolean spawnHint(MTELapotronicSuperCapacitor t, World world, int x, int y, int z, ItemStack trigger) {
             StructureLibAPI.hintParticle(world, x, y, z, LSC_PART, getHint(trigger));
             return true;
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor, World world,
+            int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            return BlocksToPlace.create(
+                new ItemStack(
+                    LSC_PART_ITEM,
+                    1,
+                    GTStructureChannels.LSC_CAPACITOR.getValueClamped(trigger, 1, Capacitor.VALUES_BY_TIER.length)));
         }
 
         @Override
