@@ -47,13 +47,13 @@ tile.kekztech_tfftstoragefield_block.desc=这不是流体储罐
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
 tile.kekztech_lapotronicenergyunit_block.0.name=兰波顿超级电容机械方块
-tile.kekztech_lapotronicenergyunit_block.1.name=兰波顿电容(IV)
-tile.kekztech_lapotronicenergyunit_block.2.name=兰波顿电容(LuV)
-tile.kekztech_lapotronicenergyunit_block.3.name=兰波顿电容(ZPM)
-tile.kekztech_lapotronicenergyunit_block.4.name=兰波顿电容(UV)
-tile.kekztech_lapotronicenergyunit_block.5.name=终极电容(UHV)
-tile.kekztech_lapotronicenergyunit_block.6.name=空电容(-)
-tile.kekztech_lapotronicenergyunit_block.7.name=兰波顿电容(EV)
+tile.kekztech_lapotronicenergyunit_block.1.name=空电容(-)
+tile.kekztech_lapotronicenergyunit_block.2.name=兰波顿电容(EV)
+tile.kekztech_lapotronicenergyunit_block.3.name=兰波顿电容(IV)
+tile.kekztech_lapotronicenergyunit_block.4.name=兰波顿电容(LuV)
+tile.kekztech_lapotronicenergyunit_block.5.name=兰波顿电容(ZPM)
+tile.kekztech_lapotronicenergyunit_block.6.name=兰波顿电容(UV)
+tile.kekztech_lapotronicenergyunit_block.7.name=终极电容(UHV)
 tile.kekztech_lapotronicenergyunit_block.desc=兰波顿超级电容库的组成部分
 
 # -------- Thaumium Reinforced Jar: Block
@@ -82,13 +82,13 @@ kekztech.research_page.ICHORJAR.0=就是这个!<BR><BR>将一点灵液注魔进�
 tile.kekztech_largehextile_block.name=大六角瓷砖
 
 # -------- Achievements
-achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=捡起这个物品以在NEI内查看配方
-achievement.tile.kekztech_lapotronicenergyunit_block.2=兰波顿电容(LuV)
-achievement.tile.kekztech_lapotronicenergyunit_block.3.desc=捡起这个物品以在NEI内查看配方
-achievement.tile.kekztech_lapotronicenergyunit_block.3=兰波顿电容(ZPM)
 achievement.tile.kekztech_lapotronicenergyunit_block.4.desc=捡起这个物品以在NEI内查看配方
-achievement.tile.kekztech_lapotronicenergyunit_block.4=兰波顿电容(UV)
+achievement.tile.kekztech_lapotronicenergyunit_block.4=兰波顿电容(LuV)
 achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=捡起这个物品以在NEI内查看配方
-achievement.tile.kekztech_lapotronicenergyunit_block.5=终极电容(UHV)
+achievement.tile.kekztech_lapotronicenergyunit_block.5=兰波顿电容(ZPM)
+achievement.tile.kekztech_lapotronicenergyunit_block.6.desc=捡起这个物品以在NEI内查看配方
+achievement.tile.kekztech_lapotronicenergyunit_block.6=兰波顿电容(UV)
+achievement.tile.kekztech_lapotronicenergyunit_block.7.desc=捡起这个物品以在NEI内查看配方
+achievement.tile.kekztech_lapotronicenergyunit_block.7=终极电容(UHV)
 
 kekztech.structure.glass_incompatible=玻璃不兼容

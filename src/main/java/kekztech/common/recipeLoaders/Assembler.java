@@ -28,8 +28,8 @@ public class Assembler implements Runnable {
 
     @Override
     public void run() {
-        // TFFT Casing
 
+        // TFFT Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -41,8 +41,8 @@ public class Assembler implements Runnable {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // TFFT Multi Hatch
 
+        // TFFT Multi Hatch
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1),
@@ -54,8 +54,8 @@ public class Assembler implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // TFFTStorageField1
 
+        // TFFTStorageField1
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -68,8 +68,8 @@ public class Assembler implements Runnable {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // TFFTStorageField2
 
+        // TFFTStorageField2
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -82,8 +82,8 @@ public class Assembler implements Runnable {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // TFFTStorageField3
 
+        // TFFTStorageField3
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -97,8 +97,8 @@ public class Assembler implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // TFFTStorageField4
 
+        // TFFTStorageField4
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -112,8 +112,8 @@ public class Assembler implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
-        // TFFTStorageField5
 
+        // TFFTStorageField5
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -127,8 +127,8 @@ public class Assembler implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
-        // LSC Casing
 
+        // LSC Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tantalum, 4),
@@ -139,78 +139,78 @@ public class Assembler implements Runnable {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // EV Capacitor alt recipe
 
+        // EV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
                 GTModHandler.getIC2Item("lapotronCrystal", 1L, WILDCARD),
                 GTUtility.getIntegratedCircuit(7))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // IV Capacitor alt recipe
 
+        // IV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
                 ItemList.Energy_LapotronicOrb.get(1L),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
-        // LuV Capacitor alt recipe
 
+        // LuV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_LapotronicOrb2.get(1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
                 GTUtility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
-        // ZPM Capacitor alt recipe
 
+        // ZPM Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_Module.get(1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
                 GTUtility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
-        // UV Capacitor alt recipe
 
+        // UV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_Cluster.get(1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
                 GTUtility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
-        // UHV Capacitor alt recipe
 
+        // UHV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM3.get(1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
                 GTUtility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7))
             .duration(5 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
-        // UEV Capacitor alt recipe
 
+        // UEV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM4.get(1),
@@ -221,8 +221,8 @@ public class Assembler implements Runnable {
             .duration(10 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
-        // UIV Capacitor alt recipe
 
+        // UIV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM5.get(1),
@@ -233,8 +233,8 @@ public class Assembler implements Runnable {
             .duration(10 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
-        // UMV Capacitor alt recipe
 
+        // UMV Capacitor alt recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM6.get(1),
@@ -249,7 +249,6 @@ public class Assembler implements Runnable {
         final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
         // YSZ Unit
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -262,8 +261,8 @@ public class Assembler implements Runnable {
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
-        // GDC Unit
 
+        // GDC Unit
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
@@ -278,8 +277,8 @@ public class Assembler implements Runnable {
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
-        // Hex Tiles
 
+        // Hex Tiles
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),

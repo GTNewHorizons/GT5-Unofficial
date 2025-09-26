@@ -142,7 +142,7 @@ public class AssemblyLine implements Runnable {
 
         // LuV Capacitor
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
+            .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
@@ -159,14 +159,14 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_TransistorASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .duration(50 * SECONDS)
             .eut(80_000)
             .addTo(AssemblyLine);
 
         // ZPM Capacitor
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
+            .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
@@ -183,14 +183,14 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(100_000)
             .addTo(AssemblyLine);
 
         // UV Capacitor
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
+            .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
@@ -207,7 +207,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
-            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
+            .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6))
             .eut(200_000)
             .duration(1 * MINUTES + 40 * SECONDS)
             .addTo(AssemblyLine);
