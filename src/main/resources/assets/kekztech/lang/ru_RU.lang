@@ -54,13 +54,13 @@ tile.kekztech_tfftstoragefield_block.hint.4=Подсказка 4 точки: EV+
 # -------- Lapotronic Super Capacitor: Structure Blocks
 tile.kekztech_lapotronicenergyunit_block.name=Лазуротроновый корпус/конденсатор
 tile.kekztech_lapotronicenergyunit_block.0.name=Лазуротроновый корпус суперконденсатора
-tile.kekztech_lapotronicenergyunit_block.1.name=Лазуротроновый конденсатор (IV)
-tile.kekztech_lapotronicenergyunit_block.2.name=Лазуротроновый конденсатор (LuV)
-tile.kekztech_lapotronicenergyunit_block.3.name=Лазуротроновый конденсатор (ZPM)
-tile.kekztech_lapotronicenergyunit_block.4.name=Лазуротроновый конденсатор (UV)
-tile.kekztech_lapotronicenergyunit_block.5.name=Совершенный конденсатор (UHV)
-tile.kekztech_lapotronicenergyunit_block.6.name=Пустой конденсатор (-)
-tile.kekztech_lapotronicenergyunit_block.7.name=Лазуротроновый конденсатор (EV)
+tile.kekztech_lapotronicenergyunit_block.1.name=Пустой конденсатор (-)
+tile.kekztech_lapotronicenergyunit_block.2.name=Лазуротроновый конденсатор (EV)
+tile.kekztech_lapotronicenergyunit_block.3.name=Лазуротроновый конденсатор (IV)
+tile.kekztech_lapotronicenergyunit_block.4.name=Лазуротроновый конденсатор (LuV)
+tile.kekztech_lapotronicenergyunit_block.5.name=Лазуротроновый конденсатор (ZPM)
+tile.kekztech_lapotronicenergyunit_block.6.name=Лазуротроновый конденсатор (UV)
+tile.kekztech_lapotronicenergyunit_block.7.name=Совершенный конденсатор (UHV)
 tile.kekztech_lapotronicenergyunit_block.8.name=Абсолютный суперконденсатор (UEV)
 tile.kekztech_lapotronicenergyunit_block.9.name=Безумный суперконденсатор (UIV)
 tile.kekztech_lapotronicenergyunit_block.10.name=Мега суперконденсатор (UMV)
@@ -94,14 +94,14 @@ kekztech.research_page.ICHORJAR.0=Вот оно!<BR><BR>Добавив в бан
 tile.kekztech_largehextile_block.name=Большая шестигранная плитка
 
 # -------- Achievements
-achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_lapotronicenergyunit_block.2=Лазуротроновый конденсатор (LuV)
-achievement.tile.kekztech_lapotronicenergyunit_block.3.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_lapotronicenergyunit_block.3=Лазуротроновый конденсатор (ZPM)
 achievement.tile.kekztech_lapotronicenergyunit_block.4.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_lapotronicenergyunit_block.4=Лазуротроновый конденсатор (UV)
+achievement.tile.kekztech_lapotronicenergyunit_block.4=Лазуротроновый конденсатор (LuV)
 achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_lapotronicenergyunit_block.5=Совершенный конденсатор (UHV)
+achievement.tile.kekztech_lapotronicenergyunit_block.5=Лазуротроновый конденсатор (ZPM)
+achievement.tile.kekztech_lapotronicenergyunit_block.6.desc=Просто посмотри рецепт в NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.6=Лазуротроновый конденсатор (UV)
+achievement.tile.kekztech_lapotronicenergyunit_block.7.desc=Просто посмотри рецепт в NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.7=Совершенный конденсатор (UHV)
 achievement.tile.kekztech_lapotronicenergyunit_block.8.desc=За гранью богов
 achievement.tile.kekztech_lapotronicenergyunit_block.8=Абсолютный суперконденсатор (UEV)
 achievement.tile.kekztech_lapotronicenergyunit_block.9.desc=Безумие продолжается!
@@ -159,4 +159,4 @@ kekztech.infodata.tank.tfft.per_fluid_capacity=По объему жидкост�
 kekztech.infodata.tank.tfft.running_cost=Расход при работе: %dEU/t
 kekztech.infodata.tank.tfft.auto_voiding=Авто-уничтожение: %b
 
-kekztech.structure.glass_incompatible=§cНесовместимая конфигурация стекла 
+kekztech.structure.glass_incompatible=§cНесовместимая конфигурация стекла

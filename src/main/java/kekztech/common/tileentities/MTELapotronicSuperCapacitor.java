@@ -130,14 +130,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     public enum Capacitor {
 
+        None(0, BigInteger.ZERO),
+        EV(1, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
         IV(2, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_cap_storage)),
         LuV(3, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
         ZPM(4, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_cap_storage)),
         UV(5, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_cap_storage)),
-        UHV(6, MAX_LONG),
-        None(0, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
-        UEV(7, MAX_LONG),
+        UHV(6, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UHV_cap_storage)),
+        UEV(7, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UEV_cap_storage)),
         UIV(8, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_cap_storage)),
         UMV(9, ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
 
@@ -227,7 +227,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 onlyIf(
                     te -> te.topState != TopState.Top,
                     onElementPass(te -> te.topState = TopState.NotTop, CellElement.INSTANCE))))
-        .addElement('C', CellElement.INSTANCE)
+        .addElement('C', GTStructureChannels.LSC_CAPACITOR.use(CellElement.INSTANCE))
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -325,7 +325,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private int getUHVCapacitorCount() {
-        return capacitors[4];
+        return capacitors[6];
     }
 
     private int getUEVCapacitorCount() {
@@ -341,7 +341,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private int wirelessCapableCapacitors() {
-        return capacitors[4] + capacitors[7] + capacitors[8] + capacitors[9];
+        return capacitors[6] + capacitors[7] + capacitors[8] + capacitors[9];
     }
 
     @Override
@@ -538,11 +538,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         // Check if enough (more than 50%) non-empty caps
-        if (capacitors[5] > capacitors[0] + capacitors[1]
-            + capacitors[2]
+        if (capacitors[0] > capacitors[1] + capacitors[2]
             + capacitors[3]
+            + capacitors[4]
+            + capacitors[5]
             + getUHVCapacitorCount()
-            + capacitors[6]
             + getUEVCapacitorCount()
             + getUIVCapacitorCount()
             + getUMVCapacitorCount()) return false;
@@ -1509,6 +1509,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         public boolean spawnHint(MTELapotronicSuperCapacitor t, World world, int x, int y, int z, ItemStack trigger) {
             StructureLibAPI.hintParticle(world, x, y, z, LSC_PART, getHint(trigger));
             return true;
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor, World world,
+            int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            return BlocksToPlace.create(
+                new ItemStack(
+                    LSC_PART_ITEM,
+                    1,
+                    GTStructureChannels.LSC_CAPACITOR.getValueClamped(trigger, 1, Capacitor.VALUES_BY_TIER.length)));
         }
 
         @Override
