@@ -100,9 +100,10 @@ public class MultiblockTooltipBuilder {
      * Add a line telling you what the machine type is. Usually, this will be the name of an SB version.<br>
      * Machine Type: machine<br>
      * Provide multiple params for multifunctional machines, divided by "|"<br>
-     * Acronyms should NOT be made a separate param. It should be like<br>
+     * Acronyms and aliases should NOT be made a separate param. It should be like<br>
      * Machine Type: Big Bad Machine, BBM | Furnace<br>
      * but not Machine Type: Big Bad Machine | BBM | Furnace
+     * Check if the machine has multiple recipe groups in NEI
      *
      * @param machLocKeys Localization keys to machine types
      *
@@ -390,8 +391,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addController(String info) {
         addStructurePart(
             "GT5U.MBTT.Controller",
-            canTranslate(info) ? translateToLocal(info) : translateToLocal("gt.mb.corepos." + info)
-        );
+            canTranslate(info) ? translateToLocal(info) : translateToLocal("gt.mb.corepos." + info));
         return this;
     }
 
