@@ -18,8 +18,8 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.BoolValue;
+import com.cleanroommc.modularui.value.sync.GenericMapSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -120,7 +120,8 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     private void setMap(Map<Particle, Boolean> inMap) {
-        acceptedInputMap = inMap;
+        acceptedInputMap.clear();
+        acceptedInputMap.putAll(inMap);
     }
 
     @Override
@@ -143,17 +144,14 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
 
-        /*
-         * The whole issueTileUpdate, DescriptionPacket, and GenericSyncValue should be replaced with the
-         * GenericMapSyncValue object instead.
-         * However, that has an immutable map which is an issue, to be resolved later perhaps, but this works for now.
-         */
-        // gross hack to pre-sync map to client
-        if (getBaseMetaTileEntity().isServerSide()) getBaseMetaTileEntity().issueTileUpdate();
+        GenericMapSyncHandler<Particle, Boolean> mapSyncHandler = new GenericMapSyncHandler.Builder<Particle, Boolean>()
+            .getter(() -> acceptedInputMap)
+            .setter(this::setMap)
+            .valueAdapter(new ValueBooleanAdapter())
+            .keyAdapter(new KeyParticleAdapter())
+            .build();
 
-        syncManager.syncValue(
-            "inputMap",
-            new GenericSyncValue<>(() -> acceptedInputMap, this::setMap, new AcceptedInputMapAdapter()));
+        syncManager.syncValue("inputMap", mapSyncHandler);
 
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .doesAddGregTechLogo(false)
@@ -166,7 +164,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
                             .size(120, 18)
                             .padding(4, 0))
                     .child(
-                        createBlacklistWidget(syncManager).anchorLeft(4)
+                        createBlacklistWidget(mapSyncHandler).anchorLeft(4)
                             .paddingLeft(7))
                     .setEnabledIf(widget -> !acceptedInputMap.isEmpty()))
 
@@ -179,10 +177,10 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         ;
     }
 
-    protected ListWidget<IWidget, ?> createBlacklistWidget(PanelSyncManager syncManager) {
+    protected ListWidget<IWidget, ?> createBlacklistWidget(GenericMapSyncHandler<Particle, Boolean> map) {
         ListWidget<IWidget, ?> blacklistOptions = new ListWidget<>();
         blacklistOptions.size(PADDED_WIDTH_PER_BUTTON * BUTTONS_PER_ROW, PADDED_HEIGHT_PER_BUTTON * 3);
-        // for every four particles in the allowed particle list, make a new row
+        // for every 6 particles in the allowed particle list, make a new row
         // add each row to the blacklistOptions
         final Set<Particle> particleSet = acceptedInputMap.keySet();
 
@@ -200,47 +198,67 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         for (Particle p : particleSet) {
             final Flow currentParticleRow = (Flow) blacklistOptions.getChildren()
                 .get(runningCount / BUTTONS_PER_ROW);
-            currentParticleRow.addChild(createButtonForParticle(syncManager, p), runningCount % BUTTONS_PER_ROW);
+            currentParticleRow.addChild(createButtonForParticle(map, p), runningCount % BUTTONS_PER_ROW);
             runningCount++;
         }
 
         return blacklistOptions;
     }
 
+    private Map<Particle, Boolean> copyWith(Map<Particle, Boolean> syncedMap, Particle particle, Boolean bool) {
+        Map<Particle, Boolean> returnMap = new HashMap<>(syncedMap);
+        returnMap.replace(particle, bool);
+        return returnMap;
+    }
+
     /*
      * There is currently a bug with MUI2 and .overlay, it un-applies the theme after it was applied once, for some
      * reason. should be fixed and is not on me
      */
-    protected IWidget createButtonForParticle(PanelSyncManager syncManager, Particle particle) {
+    protected IWidget createButtonForParticle(GenericMapSyncHandler<Particle, Boolean> mapSyncHandler,
+        Particle particle) {
         return new ToggleButton().marginRight(2)
             .overlay(Particle.itemDrawable)
             .value(
-                new BooleanSyncValue(
-                    () -> acceptedInputMap.get(particle),
-                    bool -> acceptedInputMap.replace(particle, bool)))
+                new BoolValue.Dynamic(
+                    () -> mapSyncHandler.getValue()
+                        .get(particle),
+                    bool -> mapSyncHandler.setValue(copyWith(mapSyncHandler.getValue(), particle, bool))))
             .tooltipBuilder(t -> t.addLine(particle.getLocalisedName()));
     }
 
-    protected class AcceptedInputMapAdapter implements IByteBufAdapter<Map<Particle, Boolean>> {
+    protected static class KeyParticleAdapter implements IByteBufAdapter<Particle> {
 
         @Override
-        public Map<Particle, Boolean> deserialize(PacketBuffer buffer) throws IOException {
-            NBTTagCompound data = buffer.readNBTTagCompoundFromBuffer();
-            Map<Particle, Boolean> mapToReturn = new HashMap<>();
-            loadInputMapFromNBT(data, mapToReturn);
-            return mapToReturn;
+        public Particle deserialize(PacketBuffer buffer) throws IOException {
+            return Particle.getParticleFromId(buffer.readInt());
         }
 
         @Override
-        public void serialize(PacketBuffer buffer, Map<Particle, Boolean> u) throws IOException {
-
-            NBTTagCompound data = new NBTTagCompound();
-            saveInputMapToNBT(data, u);
-            buffer.writeNBTTagCompoundToBuffer(data);
+        public void serialize(PacketBuffer buffer, Particle u) throws IOException {
+            buffer.writeInt(u.getId());
         }
 
         @Override
-        public boolean areEqual(@NotNull Map<Particle, Boolean> t1, @NotNull Map<Particle, Boolean> t2) {
+        public boolean areEqual(@NotNull Particle t1, @NotNull Particle t2) {
+            return t1.getId() == t2.getId();
+        }
+    }
+
+    protected static class ValueBooleanAdapter implements IByteBufAdapter<Boolean> {
+
+        @Override
+        public Boolean deserialize(PacketBuffer buffer) throws IOException {
+            return buffer.readBoolean();
+        }
+
+        @Override
+        public void serialize(PacketBuffer buffer, Boolean u) throws IOException {
+            buffer.writeBoolean(u);
+        }
+
+        @Override
+        public boolean areEqual(@NotNull Boolean t1, @NotNull Boolean t2) {
             return t1.equals(t2);
         }
     }
