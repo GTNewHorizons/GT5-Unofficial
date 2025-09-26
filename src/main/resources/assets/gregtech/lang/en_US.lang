@@ -3605,13 +3605,33 @@ machtype.isamill=Grinding Machine, IGM
 machtype.sparge=Gas Sparge Tower
 machtype.cyclotron=Particle Accelerator
 machtype.replicator=Replicator
+machtype.wwxl=Heat Exchanger, WWXL
+machtype.reactor_processing_unit=Reactor Processing Unit
+machtype.cold_trap=Cold Trap
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
 gt.mb.corepos.fs=Front center
 gt.mb.corepos.fbm=Front bottom middle
+gt.mb.corepos.tc=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
+
+gt.nuclear_salt_processing_plant.tips.1=Processes depleted nuclear salts that come from the LFTR\nHandles the recipes of the Reactor Processor Unit and Cold Trap\nOnly Thermally Insulated Casings can be replaced with hatches\nMufflers on top, Energy Hatches on bottom, exactly 2 of each are required\nMaintenance Hatch goes on the back, opposite of the controller block\nInputs go on the left side of the multi, outputs on the right side
+gt.nuclear_salt_processing_plant.info.1=Left Half
+gt.nuclear_salt_processing_plant.info.2=Right Half
+gt.nuclear_salt_processing_plant.info.3=Top Side, 2 Required
+gt.nuclear_salt_processing_plant.info.4=Bottom Side, 2 Required
+gt.nuclear_salt_processing_plant.info.5=Back Side, Opposite of Controller
+
+gt.wwxl.tips.1=Works as fast as 32 Large Heat Exchangers\nInputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt\nOutputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt\nConverts Distilled Water into §fSteam §7or §fSH Steam §7in the process\nOutputs §fSH Steam §7if the input rate of hot fluid is above a certain §dthreshold
+gt.wwxl.tips.2=§cLava §7: SH Threshold §d32,000 L/s §7: Max Input §c64,000 L/s §7: Max Output §f5,120,000 SH Steam/s\n§cHot Coolant §7: SH Threshold §d25,600 L/s §7: Max Input §c51,200 L/s §7: Max Output §f10,240,000 SH Steam/s\n§cHot Solar Salt §7: SH Threshold §d5,120 L/s §7: Max Input §c10,240 L/s §7: Max Output §f10,240,000 SH Steam/s
+gt.wwxl.tips.3=A circuit in the controller lowers the SH threshold at the cost of steam\n§d3.75% §7reduced SH threshold and §f1.5% §7reduced steam per circuit over 1
+gt.wwxl.info.1=Center 3x5x3 (45 blocks)
+gt.wwxl.info.2=Hot fluid, bottom center casing
+gt.wwxl.info.3=Distilled water, any bottom layer casing
+gt.wwxl.info.4=Cold fluid, top center casing
+gt.wwxl.info.5=Steam/SH Steam, any bottom layer casing
 
 gt.duplicator.tips.1=Produces Elemental Material from UU Matter
 gt.duplicator.tips.2=Maximum 1x of each bus/hatch\nRequires circuit 1-16 in your Data Orb Repository\ndepending on what Data Orb you want to prioritize
@@ -3631,7 +3651,7 @@ gt.purification_plant.tips.2=Works in fixed time processing cycles of §4%s§7 s
 gt.purification_plant.tips.3=Every recipe has a base chance of success. Success rate can be boosted\nby using a portion of the target output as a secondary input\n§4%s%%§7 of output yield will be consumed in exchange for an\nadditive §4%s%%§7 increase to success\nOn recipe failure, each purification unit has a §450%%§7 chance\nto return water of the same quality as the input or lower
 gt.purification_plant.tips.4=Every purification unit has a configuration window to configure maximum parallel amount\nThis will only scale purified water input, ALL fluid output and power usage\nOther catalysts and outputs are unchanged.\nToggle debug mode to reduce cycle time to 30s but disable water I/O
 gt.purification_plant.tips.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate\n§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that\n§b§othe water is systematically purified through a series of increasingly precise and complex\n§b§opurification processes, and this multiblock is the heart of the operation.
-gt.purification_plant.stips.1=Requires water to be placed in the tank
+gt.purification_plant.info.1=Requires water to be placed in the tank
 
 gt.isamill.tips.1=§aG.O.G, Grinds Ores Good
 gt.isamill.tips.2=§aIt'sa mill!
