@@ -124,20 +124,20 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("gt.adv_heat_exchanger.tips.1")
+            .addInfo("gt.wwxl.tips.1")
             .addSeparator()
-            .addInfo("gt.adv_heat_exchanger.tips.2")
+            .addInfo("gt.wwxl.tips.2")
             .addSeparator()
-            .addInfo("gt.adv_heat_exchanger.tips.3")
+            .addInfo("gt.wwxl.tips.3")
             .beginStructureBlock(5, 9, 5, false)
             .addController("front_bottom_middle")
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.14.name", 90)
-            .addStructurePart("gt.blockcasings2.15.name", "gt.adv_heat_exchanger.info.1")
+            .addStructurePart("gt.blockcasings2.15.name", "gt.wwxl.info.1")
             .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
-            .addInputHatch("gt.adv_heat_exchanger.info.2", 2)
-            .addInputHatch("gt.adv_heat_exchanger.info.3", 1)
-            .addOutputHatch("gt.adv_heat_exchanger.info.4", 3)
-            .addOutputHatch("gt.adv_heat_exchanger.info.5", 1)
+            .addInputHatch("gt.wwxl.info.2", 2)
+            .addInputHatch("gt.wwxl.info.3", 1)
+            .addOutputHatch("gt.wwxl.info.4", 3)
+            .addOutputHatch("gt.wwxl.info.5", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -400,7 +400,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     public String getMachineType() {
-        return "machtype.adv_heat_exchanger";
+        return "machtype.wwxl";
     }
 
     @Override
