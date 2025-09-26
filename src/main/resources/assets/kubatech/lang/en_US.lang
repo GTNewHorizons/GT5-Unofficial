@@ -149,6 +149,15 @@ kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
 kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
 
+#HTGR
+kubatech.infodata.htgr.stored_fuel=Stored Fuel:
+kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s
+kubatech.infodata.htgr.burned_fuel=Burned Fuel:
+kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% to output
+kubatech.infodata.htgr.helium_supply=Helium Supply: §6%sL
+kubatech.infodata.htgr.coolant_per_tick=Coolant per tick: §6%sL
+kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
+
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
 kubatech.waila.eec.no_mob=None

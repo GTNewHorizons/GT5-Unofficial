@@ -687,34 +687,23 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.emptyticksnodiff++;
                 return true;
             }
-            // if (this.heliumSupply > 0) {
-            // this.addOutput(Materials.Helium.getGas(this.heliumSupply));
-            // this.heliumSupply = 0;
-            // }
-            if (this.fuelsupply > 0) {
-                // TODO
-                // ItemStack iStack = new ItemStack(
-                // HTGRMaterials.aHTGR_Materials,
-                // this.fuelsupply,
-                // HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
-                // boolean storedAll = false;
-                // for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
-                // if (tHatch.storePartial(iStack)) {
-                // storedAll = true;
-                // break;
-                // }
-                // }
-                // if (!storedAll) {
-                // if (this.fuelsupply == iStack.stackSize) this.emptyticksnodiff++;
-                // else {
-                // this.fuelsupply = iStack.stackSize;
-                // this.emptyticksnodiff = 0;
-                // }
-                // } else {
-                // this.fuelsupply = 0;
-                // this.fueltype = -1;
-                // this.coolanttaking = 0;
-                // }
+            if (this.fuelsupply >= 1d) {
+                for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+                    if (entry.getValue() >= 1d) {
+                        ItemStack fuelStack = HTGRLoader.HTGR_ITEM.createTRISOFuel(entry.getKey());
+                        int toOutput = (int) Math.floor(entry.getValue());
+                        int didOutput = 0;
+                        fuelStack.stackSize = Math.min(toOutput, 64);
+                        while (this.addOutput(fuelStack)) {
+                            toOutput -= fuelStack.stackSize;
+                            didOutput += fuelStack.stackSize;
+                            if (toOutput <= 0) break;
+                            fuelStack.stackSize = Math.min(toOutput, 64);
+                        }
+                        entry.setValue(entry.getValue() - didOutput);
+                        this.fuelsupply -= didOutput;
+                    }
+                }
             }
             return true;
         }
@@ -778,32 +767,47 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private String getReactorInfoText() {
         StringBuilder sb = new StringBuilder();
-        sb.append(EnumChatFormatting.WHITE + "Stored Fuel: \n");
+        sb.append(EnumChatFormatting.WHITE)
+            .append(StatCollector.translateToLocal("kubatech.infodata.htgr.stored_fuel"))
+            .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
             sb.append(
-                entry.getKey()
-                    .getLocalizedNameForItem(EnumChatFormatting.WHITE + "- " + EnumChatFormatting.AQUA + "%material"))
-                .append(EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD)
-                .append(GTUtility.formatNumbers(entry.getValue()))
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.stored_fuel_entry",
+                    entry.getKey()
+                        .getLocalizedNameForItem("%material"),
+                    GTUtility.formatNumbers(entry.getValue())))
                 .append("\n");
         }
-        sb.append(EnumChatFormatting.WHITE + "Burned Fuel: \n");
+        sb.append(EnumChatFormatting.WHITE)
+            .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))
+            .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
-                entry.getKey()
-                    .getLocalizedNameForItem(EnumChatFormatting.WHITE + "- " + EnumChatFormatting.AQUA + "%material"))
-                .append(EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD)
-                .append(GTUtility.formatNumbers(entry.getValue() * 100d) + "% to output")
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.stored_fuel_entry",
+                    entry.getKey()
+                        .getLocalizedNameForItem("%material"),
+                    GTUtility.formatNumbers(entry.getValue() * 100d)))
                 .append("\n");
         }
-        sb.append(EnumChatFormatting.WHITE + "Helium Supply: ")
-            .append(EnumChatFormatting.GOLD + GTUtility.formatNumbers(this.heliumSupply))
+        sb.append(EnumChatFormatting.WHITE)
+            .append(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.helium_supply",
+                    GTUtility.formatNumbers(this.heliumSupply)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE + "Coolant per tick: ")
-            .append(EnumChatFormatting.GOLD + GTUtility.formatNumbers(this.coolanttaking))
+        sb.append(EnumChatFormatting.WHITE)
+            .append(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.coolant_per_tick",
+                    GTUtility.formatNumbers(this.heliumSupply)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE + "Water per tick: ")
-            .append(EnumChatFormatting.GOLD + GTUtility.formatNumbers(this.watertaking))
+        sb.append(EnumChatFormatting.WHITE)
+            .append(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.water_per_tick",
+                    GTUtility.formatNumbers(this.heliumSupply)))
             .append("\n");
         return sb.toString();
     }
@@ -811,12 +815,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     public String[] getInfoData() {
         ArrayList<String> ll = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        // TODO localize
         ll.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htgr.mode",
-                this.empty ? StatCollector.translateToLocal("BW.infoData.htgr.mode.emptying")
-                    : StatCollector.translateToLocal("BW.infoData.htgr.mode.normal")));
+            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
+                + EnumChatFormatting.GOLD
+                + (empty ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
+                    : StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")));
         ll.addAll(Arrays.asList(getReactorInfoText().split("\n")));
         return ll.toArray(new String[0]);
     }
@@ -867,13 +870,19 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "HTGR mode cannot be changed while the machine is running.");
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("kubatech.chat.forbidden_while_running"));
             return;
         }
         this.empty = !this.empty;
         GTUtility.sendChatToPlayer(
             aPlayer,
             "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     private enum HTGRHatches implements IHatchElement<MTEHighTempGasCooledReactor> {

@@ -246,16 +246,6 @@ BW.infoData.BioVat.production=Production
 BW.infoData.htr.helium_level=Helium-Level: %sL / %sL
 BW.infoData.htr.problems=Problems: %s
 
-BW.infoData.htgr.mode=Mode: %s
-BW.infoData.htgr.mode.emptying=Emptying
-BW.infoData.htgr.mode.normal=Normal
-BW.infoData.htgr.progress=Progress: %ss / %ss
-BW.infoData.htgr.fuel_type=Fuel type: %s
-BW.infoData.htgr.fuel_type.none=NONE
-BW.infoData.htgr.fuel_type.triso=TRISO (%s)
-BW.infoData.htgr.fuel_amount=Fuel amount: %s pcs.
-BW.infoData.htgr.coolant=Coolant: %sL/s
-
 BW.infoData.thtr.progress=Progress: %ssecs / %ssecs
 BW.infoData.thtr.triso_pebbles=TRISO-Pebbles: %spcs. / %spcs.
 BW.infoData.thtr.coolant=Coolant/t: %sL/t

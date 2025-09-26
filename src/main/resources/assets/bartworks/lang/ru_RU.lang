@@ -246,16 +246,6 @@ BW.infoData.BioVat.production=Производство
 BW.infoData.htr.helium_level=Уровень гелия: %sЛ / %sЛ
 BW.infoData.htr.problems=Проблемы: %s
 
-BW.infoData.htgr.mode=Режим: %s
-BW.infoData.htgr.mode.emptying=Emptying
-BW.infoData.htgr.mode.normal=Normal
-BW.infoData.htgr.progress=Прогресс: %sс / %sс
-BW.infoData.htgr.fuel_type=Тип топлива: %s
-BW.infoData.htgr.fuel_type.none=NONE
-BW.infoData.htgr.fuel_type.triso=TRISO (%s)
-BW.infoData.htgr.fuel_amount=Количество топлива: %s шт.
-BW.infoData.htgr.coolant=Хладагент: %sЛ/с
-
 BW.infoData.thtr.progress=Прогресс: %sсек / %sсек
 BW.infoData.thtr.triso_pebbles=Пеллеты TRISO: %sшт. / %sшт.
 BW.infoData.thtr.coolant=Хладагент/t: %sЛ/t
