@@ -143,6 +143,11 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
 
+        /*
+         * The whole issueTileUpdate, DescriptionPacket, and GenericSyncValue should be replaced with the
+         * GenericMapSyncValue object instead.
+         * However, that has an immutable map which is an issue, to be resolved later perhaps, but this works for now.
+         */
         // gross hack to pre-sync map to client
         if (getBaseMetaTileEntity().isServerSide()) getBaseMetaTileEntity().issueTileUpdate();
 
@@ -202,6 +207,10 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         return blacklistOptions;
     }
 
+    /*
+     * There is currently a bug with MUI2 and .overlay, it un-applies the theme after it was applied once, for some
+     * reason. should be fixed and is not on me
+     */
     protected IWidget createButtonForParticle(PanelSyncManager syncManager, Particle particle) {
         return new ToggleButton().marginRight(2)
             .overlay(Particle.itemDrawable)
