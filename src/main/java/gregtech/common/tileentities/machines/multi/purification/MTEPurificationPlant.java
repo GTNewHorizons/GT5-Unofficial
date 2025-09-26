@@ -194,7 +194,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addSeparator()
             .addInfo("gt.purification_plant.tips.5")
             .beginStructureBlock(7, 9, 8, false)
-            .addController("fc")
+            .addController("front_center")
             .addCasingInfoExactly(
                 // TODO: Bring their displayed names away from the Manager
                 ItemList.BlockIndustrialStrengthConcrete.getInternalStack_unsafe()
@@ -220,7 +220,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addCasingInfoExactly("gt.blocktintedglass.name", 6, false)
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addStructureInfo("gt.purification_plant.stips.1")
+            .addStructureInfo("gt.purification_plant.info.1")
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }

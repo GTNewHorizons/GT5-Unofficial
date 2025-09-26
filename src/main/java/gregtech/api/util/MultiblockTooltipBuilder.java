@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
+import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
@@ -384,15 +385,13 @@ public class MultiblockTooltipBuilder {
      * (indent)Controller: info
      *
      * @param info Lang key to positional information.<br>
-     *             <b>Preset values:</b><br>
-     *             {@code "fc"}: {@code Front center}, e.g. Oil Cracker<br>
-     *             {@code "fbm"}: {@code Front bottom middle}, e.g. EBF
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addController(String info) {
         addStructurePart(
             "GT5U.MBTT.Controller",
-            info.equals("fc") ? "gt.mb.corepos.fc" : info.equals("fbm") ? "gt.mb.corepos.fbm" : info);
+            canTranslate(info) ? translateToLocal(info) : translateToLocal("gt.mb.corepos." + info)
+        );
         return this;
     }
 
