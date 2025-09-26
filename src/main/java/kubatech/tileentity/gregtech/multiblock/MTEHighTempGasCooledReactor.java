@@ -326,7 +326,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + EnumChatFormatting.RED
                     + "90"
                     + EnumChatFormatting.GRAY
-                    + "% dependent on easeOutCubic formula")
+                    + "% dependent on the formula y=1-(1-x)^3 (x is % of pellet fill level)")
             .addInfo(
                 "Maintenance problems decrease the efficiency of cooling by " + EnumChatFormatting.RED
                     + "20"
