@@ -113,6 +113,14 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Lutetium.getMolten(1 * NUGGETS), Materials.Promethium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Americium.getMolten(1 * NUGGETS))
+            .duration(12 * TICKS)
+            .eut(38764)
+            .metadata(FUSION_THRESHOLD, 200_000_000L)
+            .addTo(fusionRecipes); // FT2 - alternative americium
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium.getMolten(1 * NUGGETS), Materials.Thorium.getMolten(1 * NUGGETS))
             .fluidOutputs(Materials.Naquadah.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
