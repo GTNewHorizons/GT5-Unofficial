@@ -785,7 +785,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
                 StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.stored_fuel_entry",
+                    "kubatech.infodata.htgr.burned_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
                     GTUtility.formatNumbers(entry.getValue() * 100d)))
