@@ -200,7 +200,7 @@ public class RecipeLoader {
             HighTemperatureGasCooledReactor.get(1),
             bitsd,
             new Object[] { "BZB", "BRB", "BZB", 'B', new ItemStack(GregTechAPI.sBlockCasings8, 1, 5), 'R',
-                GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitSuperconductor" });
+                GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitMaster" });
 
         RegisterTeaLine();
     }
