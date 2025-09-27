@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
