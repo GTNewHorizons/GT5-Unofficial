@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -121,7 +120,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'C',
             ofChain(
-                ofHatchAdder(MTELargeMolecularAssembler::addToLargeMolecularAssemblerList, CASING_INDEX, 1),
                 buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
                     .casingIndex(CASING_INDEX)
                     .dot(1)

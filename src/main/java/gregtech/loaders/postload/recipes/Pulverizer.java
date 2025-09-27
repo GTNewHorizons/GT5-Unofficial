@@ -1,7 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.ProjectRedExploration;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -722,6 +724,24 @@ public class Pulverizer implements Runnable {
                 .outputChances(10000, 5000)
                 .duration(20 * SECONDS)
                 .eut(2)
+                .addTo(maceratorRecipes);
+        }
+
+        if (BiomesOPlenty.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(BiomesOPlenty.ID, "gemOre", 1, 5))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 9))
+                .duration(Materials.Olivine.getMass() * 9 * TICKS)
+                .eut(4)
+                .addTo(maceratorRecipes);
+        }
+
+        if (ProjectRedExploration.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(ProjectRedExploration.ID, "projectred.exploration.stone", 1, 7))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 9))
+                .duration(Materials.Olivine.getMass() * 9 * TICKS)
+                .eut(4)
                 .addTo(maceratorRecipes);
         }
 
