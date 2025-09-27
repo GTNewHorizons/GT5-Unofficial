@@ -227,7 +227,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 onlyIf(
                     te -> te.topState != TopState.Top,
                     onElementPass(te -> te.topState = TopState.NotTop, CellElement.INSTANCE))))
-        .addElement('C', CellElement.INSTANCE)
+        .addElement('C', GTStructureChannels.LSC_CAPACITOR.use(CellElement.INSTANCE))
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -1512,6 +1512,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         @Override
+        public BlocksToPlace getBlocksToPlace(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor, World world,
+            int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            return BlocksToPlace.create(
+                new ItemStack(
+                    LSC_PART_ITEM,
+                    1,
+                    GTStructureChannels.LSC_CAPACITOR.getValueClamped(trigger, 1, Capacitor.VALUES_BY_TIER.length)));
+        }
+
+        @Override
         public boolean placeBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z, ItemStack trigger) {
             world.setBlock(x, y, z, LSC_PART, getHint(trigger), 3);
             return true;
@@ -1521,6 +1531,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         public PlaceResult survivalPlaceBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
             ItemStack trigger, AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+            // glass for LSC can be paired with capacitors up to 3 tiers higher
             int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + 2;
             ItemStack targetStack;
             // if user specified a capacitor tier, use it.
@@ -1545,8 +1556,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                         s -> s != null && s.stackSize >= 0
                             && s.getItem() == LSC_PART_ITEM
                             && s.getItemDamage() != 0 // LSC casing, not a capacitor
-                            && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
-                                .getMinimalGlassTier() > glassTier,
+                            && glassTier >= Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
+                                .getMinimalGlassTier(),
                         true);
             }
             if (targetStack == null) return PlaceResult.REJECT;
