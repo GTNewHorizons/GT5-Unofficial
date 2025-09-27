@@ -102,12 +102,24 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         return false;
     }
 
+    private boolean checkingAdjacent = false;
+
     @Override
     public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof BaseTileEntity)) {
-            ((BaseTileEntity) tTileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+        // Hack to prevent StackOverflowExceptions on chunk loads when there are lots of adjacent GT machines.
+        // Each time a tile is put into the world, each adjacent block is updated, which calls this method, which forces
+        // this block's tile to be loaded, until you run out of stack space.
+        // checkingAdjacent will only be true when this happens, and since we're just clearing the adjacent TEs in this
+        // method we can just skip those nested operations.
+        if (checkingAdjacent) return;
+
+        checkingAdjacent = true;
+
+        if (aWorld.getTileEntity(aX, aY, aZ) instanceof BaseTileEntity base) {
+            base.onAdjacentBlockChange(aTileX, aTileY, aTileZ);
         }
+
+        checkingAdjacent = false;
     }
 
     @Override
