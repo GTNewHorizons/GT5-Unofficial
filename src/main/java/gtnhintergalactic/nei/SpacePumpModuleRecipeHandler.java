@@ -190,6 +190,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         if (fluid == null) return;
 
         for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES.entrySet()) {
+            if (entry.getValue() == null) continue;
             if (entry.getValue()
                 .isFluidEqual(new FluidStack(fluid, 0))) {
                 arecipes.add(
