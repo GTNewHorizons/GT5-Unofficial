@@ -190,11 +190,7 @@ ig.button.projects=Projects
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
-gt.blockmachines.multimachine.ig.siphon.desc1=Build on an Space Station orbiting a Gas Planet
-gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
-gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
-gt.blockmachines.multimachine.ig.siphon.desc4=EU/t: d*4^(t+2), t is the Space Station's tier and d the depth
-gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
+gt.blockmachines.multimachine.ig.siphon.desc1=Build on an Space Station orbiting a Gas Planet\nRequires a Programmed Circuit set to the depth you want to pump from (1 - 4)\nRequires 64x depth Mining Pipes\nEU/t: d*4^(t+2), t is the Space Station's tier and d the depth\nCan load the chunk it is in (toggle using a Soldering Iron)
 gt.blockmachines.multimachine.ig.siphon.lore0=333:Taking Space-Mining to another Level!
 gt.blockmachines.multimachine.ig.siphon.lore1=333:It's time to SUCC!
 gt.blockmachines.multimachine.ig.siphon.lore2=333:Trading EU -> Fluids
@@ -345,7 +341,6 @@ ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Front bottom
 ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing
 ig.siphon.structure.PillarMiddle=1x4x1 pillar in the middle
 ig.siphon.structure.Sides=Each pillar's side and 1x3x1 on top

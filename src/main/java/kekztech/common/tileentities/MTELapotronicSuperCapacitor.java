@@ -351,108 +351,52 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Energy Storage, LSC")
-            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours")
+        tt.addMachineType("machtype.energy_storage", "machtype.lsc")
             .addInfo(
-                "Capped at " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t passive loss per "
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + " capacitor")
-            .addInfo(
-                "The passive loss increases " + EnumChatFormatting.DARK_RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + "-fold"
-                    + " for every capacitor tier above")
-            .addInfo("Passive loss is multiplied by the number of maintenance issues present")
+                "gt.lapo_super_capacitor.tips.1",
+                GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap),
+                GTValues.TIER_COLORS[9],
+                GTValues.VN[9])
             .addSeparator()
-            .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
+            .addInfo("gt.lapo_super_capacitor.tips.2")
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo("Add more or better capacitors to increase capacity")
+            .addInfo("gt.lapo_super_capacitor.tips.3")
             .addSeparator()
-            .addInfo("Wireless mode can be enabled by right clicking with a screwdriver")
             .addInfo(
-                "This mode can only be enabled if you have a " + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + "+ capacitor in the multiblock.")
-            .addInfo(
-                "When enabled every " + EnumChatFormatting.BLUE
-                    + GTUtility
-                        .formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
-                    + EnumChatFormatting.GRAY
-                    + " ticks the LSC will attempt to re-balance against your")
-            .addInfo("wireless EU network.")
-            .addInfo(
-                "If there is less than " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap)
-                    + EnumChatFormatting.GRAY
-                    + "("
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + ") EU in the LSC")
-            .addInfo("it will withdraw from the network and add to the LSC.")
-            .addInfo(
-                "If there is more it will add " + EnumChatFormatting.DARK_RED
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "all excess"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " EU to the network, removing it from the LSC")
-            .addInfo("This can potentially brick your base, be careful")
-            .addInfo(
-                "The threshold increases " + EnumChatFormatting.DARK_RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + "-fold"
-                    + " for every capacitor tier above")
+                "gt.lapo_super_capacitor.tips.4",
+                GTValues.TIER_COLORS[9],
+                GTValues.VN[9],
+                GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
+                GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
-            .addStructureInfo("Modular height of 4-50 blocks.")
-            .addController("Front center bottom")
-            .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
-            .addOtherStructurePart(
-                "Lapotronic Capacitor (" + GTValues.TIER_COLORS[4]
-                    + GTValues.VN[4]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "), Ultimate Capacitor ("
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[12]
-                    + GTValues.VN[12]
-                    + EnumChatFormatting.GRAY
-                    + ")",
-                "Center 3x(1-47)x3 above base (9-423 blocks)")
-            .addStructureInfo(
-                "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
-            .addCasingInfoRange("Any Tiered Glass", 41, 777, true)
-            .addEnergyHatch("Any casing")
-            .addDynamoHatch("Any casing")
-            .addOtherStructurePart(
-                "Laser Target/Source Hatches",
-                "Any casing, must be using " + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass")
-            .addStructureInfo("You can have several I/O Hatches")
+            .addStructureInfo("gt.lapo_super_capacitor.info.1")
+            .addController("front_bottom_middle")
+            .addStructurePart("tile.kekztech_lapotronicenergyunit_block.0.name", "gt.lapo_super_capacitor.info.2")
+            .addStructurePart(
+                translateToLocalFormatted(
+                    "gt.lapo_super_capacitor.info.3",
+                    GTValues.TIER_COLORS[4],
+                    GTValues.VN[4],
+                    GTValues.TIER_COLORS[8],
+                    GTValues.VN[8],
+                    GTValues.TIER_COLORS[9],
+                    GTValues.VN[9],
+                    GTValues.TIER_COLORS[12],
+                    GTValues.VN[12]),
+                "gt.lapo_super_capacitor.info.4")
+            .addStructureInfo("gt.lapo_super_capacitor.info.5")
+            .addCasingInfoRange("GT5U.MBTT.AnyGlass", 41, 777, true)
+            .addEnergyHatch("GT5U.MBTT.AnyCasing")
+            .addDynamoHatch("GT5U.MBTT.AnyCasing")
+            .addStructurePart(
+                "gt.lapo_super_capacitor.info.6",
+                translateToLocalFormatted("gt.lapo_super_capacitor.info.7", GTValues.TIER_COLORS[8], GTValues.VN[8]))
+            .addStructureInfo("gt.lapo_super_capacitor.info.8")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(
-                GTStructureChannels.LSC_CAPACITOR,
-                "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
+            .addSubChannelUsage(GTStructureChannels.LSC_CAPACITOR, "gt.lapo_super_capacitor.info.9")
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("Any casing")
+            .addMaintenanceHatch("GT5U.MBTT.AnyCasing")
             .toolTipFinisher();
         return tt;
     }

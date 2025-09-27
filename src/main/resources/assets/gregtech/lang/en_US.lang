@@ -772,6 +772,7 @@ GT5U.MBTT.PartInfo=§f%s: §7%s
 GT5U.MBTT.PartInfoHint=Hint block with dot %s
 GT5U.MBTT.AnyGlass=Any Glass
 GT5U.MBTT.AnyCasing=Any Casing
+GT5U.MBTT.AnyBottomCasing=Any Bottom Casing
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
@@ -3124,17 +3125,6 @@ GTPP.monsterkiller.tooltip.4=Target Type:
 # 17/08/19
 GTPP.container.decaychest.name=Decayables
 
-
-
-
-
-
-
-
-
-
-
-
 # NEI INFORMATION
 GTPP.nei.info=Information
 GTPP.nei.eutick=Eu/t
@@ -3196,8 +3186,6 @@ GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when
 GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
 # GT structure hints
-GT5U.tooltip.structure.data_access_hatch=Data Access Hatch
-GT5U.tooltip.structure.electromagnet_housing=Electromagnet Housing
 GT5U.tooltip.structure.laser_source_hatch=Laser Source Hatch
 GT5U.tooltip.structure.heating_coil=Heating Coil
 GT5U.tooltip.structure.four_item_pipe_casings=4 Item Pipe Casings
@@ -3615,12 +3603,15 @@ gt.channelfor.time_dilation=Time Dilation Field Generator Tier
 gt.channelfor.gt_no_hatch=(disabled)
 gt.channelfor.field=Storage Field Tier
 gt.channelfor.piston_block=Metal Block Tier
-gt.channelfor.casing=Alchemical Casing Tier
+gt.channelfor.alchemical_casing=Alchemical Casing Tier
 gt.channelfor.construct=Alchemical Construct Tier
 gt.channelfor.super_chest=Super Chest Tier
 
 # Used in addMachineType
 # CONTEXT: Machine type: (machtype)
+machtype.ebf=Blast Furnace, EBF
+machtype.vf=Vacuum Freezer, VF
+machtype.lcr=Chemical Reactor, LCR
 machtype.purif_plant=Purification Plant, WPP
 machtype.fluid_tank=Fluid Tank
 machtype.mega_apiary=Mega Apiary, Mapiary
@@ -3631,14 +3622,88 @@ machtype.replicator=Replicator
 machtype.wwxl=Heat Exchanger, WWXL
 machtype.reactor_processing_unit=Reactor Processing Unit
 machtype.cold_trap=Cold Trap
+machtype.energy_storage=Energy Storage
+machtype.lsc=LSC
+machtype.gas_turbine=Gas Turbine
+machtype.adv_assline=Assembly Line, AAL
+machtype.fishtrap=Fish Trap
+machtype.flotation_cell=Flotation Cell, FCR
+machtype.chem_plant=Chemical Plant
+machtype.mega_abs=Fluid Alloy Cooker, MABS
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
-gt.mb.corepos.fs=Front center
-gt.mb.corepos.fbm=Front bottom middle
-gt.mb.corepos.tc=Top Center
+gt.mb.corepos.front_center=Front center
+gt.mb.corepos.front_bottom_middle=Front bottom middle
+gt.mb.corepos.top_center=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
+
+gt.mega_abs.tips.1=§8§o"all it does is make metals hot"
+gt.mega_abs.tips.2=§a-5%% §7Recipe Time per %1$s Tier above TPV (additive)\nif the equivalent or better %2$s is present\n§b-5%% §7EU Usage per %1$s Tier above the Recipe Tier (multiplicative)
+gt.mega_abs.tips.3=Recipe Tier limited by %s Tier, %s unlocks all\nCan also use normal ABS coils in their place instead, if you don't like the bonuses :)
+gt.mega_abs.info.1=Mid of the fourth layer
+gt.mega_abs.info.2=Around the controller
+gt.mega_abs.info.3=1 in the center of the top layer
+
+gt.multi_furnace.info.1=Middle layer
+gt.multi_furnace.info.2=Top Middle
+
+gt.vf.tips.1=Cools hot ingots and cells
+
+gt.exxonmobil.tips.1=Heavy Industry, now right at your doorstep!\nPlant tier is determined by casing tier\nHatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers
+gt.exxonmobil.tips.2=+20% chance of not damaging catalyst per %s Tier
+gt.exxonmobil.tips.3=Any catalyst must be placed in the catalyst housing\nAwakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable
+gt.exxonmobil.info.1=metal machine casing (minimum 70)
+
+gt.flotation_cell.tips.1=Process that milled ore!\nYou can only ever process one type of material per controller
+
+gt.zhuhai.tips.1=Can process (Tier + 1) * 2 recipes\nPut a numbered circuit into the input bus\nCircuit %s for Fish\nCircuit %s for Junk\nCircuit %s for Treasure\nNeeds to be filled with water\nWill automatically fill water from input hatch
+
+gt.lcr.tips.1=Accepts fluids instead of fluid cells
+gt.lcr.info.1=Center
+gt.lcr.info.2=Adjacent to the PTFE Pipe Machine Casing
+gt.lcr.info.3=You can have multiple hatches/buses
+
+gt.adv_assline.tips.1=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier
+gt.adv_assline.tips.2=Runs imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
+gt.adv_assline.info.1=From Bottom to Top, Left to Right\n   Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\n   Layer 2 - Glass, Assembly Line Casing, Glass\n   Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\n   Layer 4 - Empty, Solid Steel Machine Casing, Empty\n   Up to 16 repeating slices, each one allows for 1 more item in recipes
+gt.adv_assline.info.2=Either Grate on layer 3 of the first slice
+gt.adv_assline.info.3=Any layer 4 casing
+gt.adv_assline.info.4=Any layer 1 casing
+gt.adv_assline.info.5=As specified on layer 1
+gt.adv_assline.info.6=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
+gt.adv_assline.info.7=Any Grate Machine Casing NOT on the first slice
+
+gt.ebf.tips.1=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
+gt.ebf.info.1=Any bottom layer casing
+gt.ebf.info.2=Top middle
+gt.ebf.info.3=Any Heat Proof Machine Casing
+
+gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
+gt.mfe.info.1=1 Block Above/Behind Controller
+
+gt.so_fuel_cell_ii.tips.1=Oxidizes gas fuels to generate electricity without polluting the environment\nConsumes up to %sEU worth of fuel with up to 100%% efficiency each second\nNitrobenzene and other gas fuels above 1M EU/bucket are more efficient\nSteam production requires the SOFC to heat up completely first\nOutputs %sEU/t and %sL/s Superheated Steam\nAdditionally, requires %sL/s Oxygen gas
+gt.so_fuel_cell_ii.info.1=3x, Center 1x1x3
+gt.so_fuel_cell_ii.info.2=6x, touching the electrolyte units on the horizontal sides
+gt.so_fuel_cell_ii.info.3=Back center
+gt.so_fuel_cell_ii.info.4=Fuel, any casing
+gt.so_fuel_cell_ii.info.5=Oxygen, any casing
+gt.so_fuel_cell_ii.info.6=Superheated Steam, any casing
+
+gt.lapo_super_capacitor.tips.1=Loses energy equal to 1%% of the total capacity every 24 hours\nCapped at §c%s §7EU/t passive loss per %s%s §7capacitor\nThe passive loss increases §4100§7-fold for every capacitor tier above\nPassive loss is multiplied by the number of maintenance issues present
+gt.lapo_super_capacitor.tips.2=Glass shell has to be Tier - 3 of the highest capacitor tier
+gt.lapo_super_capacitor.tips.3=Add more or better capacitors to increase capacity
+gt.lapo_super_capacitor.tips.4=Wireless mode can be enabled by right clicking with a screwdriver\nThis mode can only be enabled if you have a %1$s%2$s§7+ capacitor in the multiblock\nWhen enabled every §9%3$s §7ticks the LSC will attempt to re-balance\nagainst your wireless EU network\nIf there is less than §c%4$s §7(%1$s%2$s§7) EU in the LSC\nit will withdraw from the network and add to the LSC\nIf there is more it will add §4§l§nall excess §r§7EU to the network, removing it from the LSC\nThis can potentially brick your base, be careful\nThe threshold increases §4100§7-fold for every capacitor tier above
+gt.lapo_super_capacitor.info.1=Modular height of 4-50 blocks
+gt.lapo_super_capacitor.info.2=5x2x5 base (at least 17x)
+gt.lapo_super_capacitor.info.3=Lapotronic Capacitor §7(%s%s§7-%s%s§7), §fUltimate Capacitor §7(%s%s§7-%s%s§7)
+gt.lapo_super_capacitor.info.4=Center 3x(1-47)x3 above base (9-423 blocks)
+gt.lapo_super_capacitor.info.5=You can also use the Empty Capacitor to save materials if you use it for less than half the blocks
+gt.lapo_super_capacitor.info.6=Laser Target/Source Hatches
+gt.lapo_super_capacitor.info.7=Any casing, must be using %s%s§7-tier glass
+gt.lapo_super_capacitor.info.8=You can have several I/O Hatches
+gt.lapo_super_capacitor.info.9=Capacitor Tier if specified. Otherwise pick any acceptable capacitor
 
 gt.nuclear_salt_processing_plant.tips.1=Processes depleted nuclear salts that come from the LFTR\nHandles the recipes of the Reactor Processor Unit and Cold Trap\nOnly Thermally Insulated Casings can be replaced with hatches\nMufflers on top, Energy Hatches on bottom, exactly 2 of each are required\nMaintenance Hatch goes on the back, opposite of the controller block\nInputs go on the left side of the multi, outputs on the right side
 gt.nuclear_salt_processing_plant.info.1=Left Half

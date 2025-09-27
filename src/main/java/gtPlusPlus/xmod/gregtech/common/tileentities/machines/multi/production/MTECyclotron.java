@@ -160,6 +160,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addSeparator()
             .addInfo("gt.cyclotron.tips.3")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addShiftInfo("GT5U.MBTT.Structure")
             .addCasingInfoMin("gtplusplus.blockcasings.2.10.name", 40)
             .addCasingInfoMin("gtplusplus.blockcasings.2.9.name", 32)
             .addInputBus("GT5U.MBTT.AnyCasing", 1)

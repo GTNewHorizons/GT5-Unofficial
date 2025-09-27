@@ -102,25 +102,23 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine")
-            .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+        tt.addMachineType("machtype.gas_turbine")
             .addInfo(
-                "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
-                    + "EU worth of fuel with up to 100% efficiency each second")
-            .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
-            .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Superheated Steam")
-            .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
+                "gt.so_fuel_cell_ii.tips.1",
+                GTUtility.formatNumbers(EU_PER_TICK * 20),
+                EU_PER_TICK,
+                STEAM_PER_SEC,
+                OXYGEN_PER_SEC)
             .beginStructureBlock(3, 3, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
-            .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-            .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Fuel, any casing", 1)
-            .addInputHatch("Oxygen, any casing", 1)
-            .addOutputHatch("Superheated Steam, any casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin("gt.blockcasings4.0.name", 12)
+            .addStructurePart("tile.kekztech_gdcceramicelectrolyteunit_block.name", "gt.so_fuel_cell_ii.info.1")
+            .addStructurePart("Material.reinforcedglass", "gt.so_fuel_cell_ii.info.2")
+            .addDynamoHatch("gt.so_fuel_cell_ii.info.3", 2)
+            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
+            .addInputHatch("gt.so_fuel_cell_ii.info.4", 1)
+            .addInputHatch("gt.so_fuel_cell_ii.info.5", 1)
+            .addOutputHatch("gt.so_fuel_cell_ii.info.6", 1)
             .toolTipFinisher();
         return tt;
     }

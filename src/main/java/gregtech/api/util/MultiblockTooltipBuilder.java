@@ -70,7 +70,6 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StaticSpeed = translateToLocal("GT5U.MBTT.Speed.Base");
     private static final String TT_StaticEuEff = translateToLocal("GT5U.MBTT.EuDiscount.Base");
     private static final String TT_DynamicParallels = translateToLocal("GT5U.MBTT.Parallel.Additional");
-    private static final String TT_SingularParallel = translateToLocal("GT5U.MBTT.Parallel.Singular");
     private static final String TT_DynamicSpeed = translateToLocal("GT5U.MBTT.Speed.Additional");
     private static final String TT_DynamicEuEff = translateToLocal("GT5U.MBTT.EuDiscount.Additional");
     private static final String TT_Steam_StaticSteamEff = translateToLocal("GT5U.MBTT.SteamDiscount.Base");
@@ -168,7 +167,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addDynamicParallelInfo(Integer parallels, TooltipTier tier) {
         addInfo(
-            parallels == 1 ? TT_SingularParallel : TT_DynamicParallels,
+            parallels == 1 ? "GT5U.MBTT.Parallel.Singular" : "GT5U.MBTT.Parallel.Additional",
             TooltipHelper.parallelText(parallels),
             tier.getValue());
         return this;
@@ -324,6 +323,11 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
+    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color) {
+        addSeparator(color, 0);
+        return this;
+    }
+
     /**
      * Add a line telling how much this machine pollutes.
      *
@@ -391,7 +395,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addController(String info) {
         addStructurePart(
             "GT5U.MBTT.Controller",
-            canTranslate(info) ? translateToLocal(info) : translateToLocal("gt.mb.corepos." + info));
+            canTranslate("gt.mb.corepos." + info) ? "gt.mb.corepos." + info : info);
         return this;
     }
 
@@ -426,7 +430,7 @@ public class MultiblockTooltipBuilder {
         int count, EnumChatFormatting countColor, boolean isTiered) {
         addStructureInfo(
             "" + countColor + count + "x " + textColor + "%s%s",
-            translateToLocal(casingName),
+            casingName,
             (isTiered ? "GT5U.MBTT.Tiered" : " "));
         return this;
     }
@@ -561,7 +565,11 @@ public class MultiblockTooltipBuilder {
     }
 
     public MultiblockTooltipBuilder addStructurePart(String locKey, String info) {
-        addStructureInfo("GT5U.MBTT.PartInfo", locKey, info);
+        addStructureInfo(
+            "GT5U.MBTT.PartInfo",
+            locKey,
+            info.equals("<casing>") ? "GT5U.MBTT.AnyCasing"
+                : info.equals("<bottom casing>") ? "GT5U.MBTT.AnyBottomCasing" : info);
         return this;
     }
 
