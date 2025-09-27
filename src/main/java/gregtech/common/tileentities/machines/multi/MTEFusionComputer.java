@@ -114,8 +114,9 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     'i',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(ImmutableMap.of(InputHatch.withAdder(MTEFusionComputer::addInjector), 1))
-                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.InputHatch.or(gregtech.api.enums.HatchElement.InputBus),
+                                gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(53)
                             .dot(1)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
@@ -236,16 +237,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         if (tHatch.mTier < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mEnergyHatches.add(tHatch);
-    }
-
-    private boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof MTEHatchInput tHatch)) return false;
-        if (tHatch.getTierForStructure() < tier()) return false;
-        tHatch.updateTexture(aBaseCasingIndex);
-        tHatch.mRecipeMap = getRecipeMap();
-        return mInputHatches.add(tHatch);
     }
 
     private boolean addExtractor(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
