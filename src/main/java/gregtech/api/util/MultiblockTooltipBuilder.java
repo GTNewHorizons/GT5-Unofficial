@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GTUtility.translate;
+import static gregtech.api.util.GTUtility.tryTranslate;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -885,7 +885,7 @@ public class MultiblockTooltipBuilder {
      */
     @Deprecated
     public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        addShiftInfo(TAB + translate("GT5U.MBTT.subchannel", channel, purpose));
+        addStructureInfo("GT5U.MBTT.subchannel", channel, purpose);
         return this;
     }
 
@@ -898,7 +898,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
-        addShiftInfo(TAB + translate("GT5U.MBTT.subchannel", channel.get(), purpose));
+        addStructureInfo("GT5U.MBTT.subchannel", channel.get(), purpose);
         return this;
     }
 
@@ -910,7 +910,10 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
-        addShiftInfo(TAB + translate("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
+        addStructureInfo(
+            "GT5U.MBTT.subchannel",
+            channel.get(),
+            tryTranslate("gt.channelfor." + channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 

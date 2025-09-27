@@ -3592,9 +3592,32 @@ achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this 
 # Used in addSubChannelUsage, replaces the second placeholder of
 # GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 #
-# CONTEXT: Uses sub channel (subchannel) for (channelpurpose)
+# CONTEXT: Uses sub channel (subchannel) for (channelfor)
 # (subchannel) is provided by the code and shouldn't be localized
-channelpurpose.glass_tier=Glass Tier
+gt.channelfor.manipulator=Manipulator Tier
+gt.channelfor.shielding=Shielding Tier
+gt.channelfor.coil=Heating Coils Tier
+gt.channelfor.glass=Glass Tier
+gt.channelfor.unit_casing=Precise Electronic Unit Casing Tier
+gt.channelfor.casing=Metal Machine Casing Tier
+gt.channelfor.machine_casing=Machine Casing Tier
+gt.channelfor.solenoid=Solenoid Tier
+gt.channelfor.capacitor=Capacitor Tier
+gt.channelfor.height=Structure Height
+gt.channelfor.length=Structure Length
+gt.channelfor.pipe=Pipe Casing Tier
+gt.channelfor.item_pipe=Item Pipe Casing Tier
+gt.channelfor.cell=Vanadium Redox Power Cell Tier
+gt.channelfor.antenna=Antenna Casing Tier
+gt.channelfor.spacetime_compression=Spacetime Compression Field Generator Tier
+gt.channelfor.stabilisation=Stabilisation Field Generator Tier
+gt.channelfor.time_dilation=Time Dilation Field Generator Tier
+gt.channelfor.gt_no_hatch=(disabled)
+gt.channelfor.field=Storage Field Tier
+gt.channelfor.piston_block=Metal Block Tier
+gt.channelfor.casing=Alchemical Casing Tier
+gt.channelfor.construct=Alchemical Construct Tier
+gt.channelfor.super_chest=Super Chest Tier
 
 # Used in addMachineType
 # CONTEXT: Machine type: (machtype)
