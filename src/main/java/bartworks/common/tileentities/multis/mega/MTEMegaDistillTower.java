@@ -260,8 +260,10 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery, MDT")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addSeparator()
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
+            .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
