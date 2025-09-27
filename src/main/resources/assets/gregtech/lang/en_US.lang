@@ -3457,14 +3457,30 @@ machtype.replicator=Replicator
 machtype.wwxl=Heat Exchanger, WWXL
 machtype.reactor_processing_unit=Reactor Processing Unit
 machtype.cold_trap=Cold Trap
+machtype.energy_storage=Energy Storage
+machtype.lsc=LSC
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
-gt.mb.corepos.fs=Front center
-gt.mb.corepos.fbm=Front bottom middle
-gt.mb.corepos.tc=Top Center
+gt.mb.corepos.front_center=Front center
+gt.mb.corepos.front_bottom_middle=Front bottom middle
+gt.mb.corepos.top_center=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
+
+gt.lapo_super_capacitor.tips.1=Loses energy equal to 1%% of the total capacity every 24 hours\nCapped at §c%s §7EU/t passive loss per %s%s §7capacitor\nThe passive loss increases §4100§7-fold for every capacitor tier above\nPassive loss is multiplied by the number of maintenance issues present
+gt.lapo_super_capacitor.tips.2=Glass shell has to be Tier - 3 of the highest capacitor tier
+gt.lapo_super_capacitor.tips.3=Add more or better capacitors to increase capacity
+gt.lapo_super_capacitor.tips.4=Wireless mode can be enabled by right clicking with a screwdriver\nThis mode can only be enabled if you have a %1$s%2$s§7+ capacitor in the multiblock\nWhen enabled every §9%3$s §7ticks the LSC will attempt to re-balance\nagainst your wireless EU network\nIf there is less than §c%4$s §7(%1$s%2$s§7) EU in the LSC\nit will withdraw from the network and add to the LSC\nIf there is more it will add §4§l§nall excess §r§7EU to the network, removing it from the LSC\nThis can potentially brick your base, be careful\nThe threshold increases §4100§7-fold for every capacitor tier above
+gt.lapo_super_capacitor.info.1=Modular height of 4-50 blocks
+gt.lapo_super_capacitor.info.2=5x2x5 base (at least 17x)
+gt.lapo_super_capacitor.info.3=Lapotronic Capacitor (%s%s§7-%s%s§7), Ultimate Capacitor (%s%s§7-%s%s§7)
+gt.lapo_super_capacitor.info.4=Center 3x(1-47)x3 above base (9-423 blocks)
+gt.lapo_super_capacitor.info.5=You can also use the Empty Capacitor to save materials if you use it for less than half the blocks
+gt.lapo_super_capacitor.info.6=Laser Target/Source Hatches
+gt.lapo_super_capacitor.info.7=Any casing, must be using %s%s§7-tier glass
+gt.lapo_super_capacitor.info.8=You can have several I/O Hatches
+gt.lapo_super_capacitor.info.9=Capacitor Tier if specified. Otherwise pick any acceptable capacitor
 
 gt.nuclear_salt_processing_plant.tips.1=Processes depleted nuclear salts that come from the LFTR\nHandles the recipes of the Reactor Processor Unit and Cold Trap\nOnly Thermally Insulated Casings can be replaced with hatches\nMufflers on top, Energy Hatches on bottom, exactly 2 of each are required\nMaintenance Hatch goes on the back, opposite of the controller block\nInputs go on the left side of the multi, outputs on the right side
 gt.nuclear_salt_processing_plant.info.1=Left Half
