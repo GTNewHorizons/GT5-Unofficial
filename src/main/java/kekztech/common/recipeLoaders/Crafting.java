@@ -56,17 +56,17 @@ public class Crafting implements Runnable {
         // Empty Capacitor
         final Object[] lcEmpty_recipe = { "SLS", "L L", "SLS", 'S', OrePrefixes.screw.get(Materials.Lapis), 'L',
             OrePrefixes.plate.get(Materials.Lapis) };
-        GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcEmpty_recipe);
+        GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6), lcEmpty_recipe);
 
         // EV Capacitor
         final Object[] lcEV_recipe = { "SLS", "LCL", "SLS", 'S', OrePrefixes.screw.get(Materials.Lapis), 'L',
             OrePrefixes.plate.get(Materials.Lapis), 'C', GTModHandler.getIC2Item("lapotronCrystal", 1L, WILDCARD) };
-        GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), lcEV_recipe);
+        GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), lcEV_recipe);
 
         // IV Capacitor
         final Object[] lcIV_recipe = { "SLS", "LOL", "SLS", 'S', OrePrefixes.screw.get(Materials.Lapis), 'L',
             OrePrefixes.plate.get(Materials.Lapis), 'O', ItemList.Energy_LapotronicOrb.get(1L) };
-        GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), lcIV_recipe);
+        GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
 
     }
 }

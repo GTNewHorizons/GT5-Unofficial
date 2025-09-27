@@ -118,23 +118,23 @@ public class Unpackager implements Runnable {
         {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
+                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7))
                 .itemOutputs(
                     GTModHandler.getIC2Item("lapotronCrystal", 1L, 26),
-                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
+                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
-                .itemOutputs(ItemList.Energy_LapotronicOrb.get(1L), new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
+                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
+                .itemOutputs(ItemList.Energy_LapotronicOrb.get(1L), new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
+                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
                 .itemOutputs(
                     ItemList.Energy_LapotronicOrb2.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24))
@@ -143,7 +143,7 @@ public class Unpackager implements Runnable {
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
+                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
                 .itemOutputs(
                     ItemList.Energy_Module.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24))
@@ -152,7 +152,7 @@ public class Unpackager implements Runnable {
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6))
+                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
                 .itemOutputs(
                     ItemList.Energy_Cluster.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24))
@@ -161,7 +161,7 @@ public class Unpackager implements Runnable {
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7))
+                .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
                 .itemOutputs(
                     ItemList.ZPM3.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24))
