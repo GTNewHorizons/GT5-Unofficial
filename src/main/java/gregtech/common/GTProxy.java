@@ -1155,7 +1155,6 @@ public class GTProxy implements IFuelHandler {
         // server, but it's just convenient to be able to write GUI code without side check. This will be reworked with
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
-        GTUtility.loadDimensionNames();
         CALImprintRecipe.register();
     }
 
@@ -1253,6 +1252,9 @@ public class GTProxy implements IFuelHandler {
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
+
+        PowerGogglesEventHandler.getInstance()
+            .onServerStopped(event);
     }
 
     /**
