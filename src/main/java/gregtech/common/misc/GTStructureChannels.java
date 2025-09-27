@@ -43,7 +43,7 @@ public enum GTStructureChannels implements IStructureChannels {
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
     EIC_PISTON("piston_block", "Metal Block Tier"),
-    ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
+    ALCHEMICAL_CASING("alchemical_casing", "Alchemical Casing Tier"),
     ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
     SUPER_CHEST("super_chest", "Super Chest Tier")
     //
