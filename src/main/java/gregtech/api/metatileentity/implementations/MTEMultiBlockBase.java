@@ -3043,7 +3043,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         builder.widget(createMaxParallelCheckBox(textField));
 
         builder.widget(
-            new TextWidget("Powerfail Events").setPos(7, 59)
+            new TextWidget(translateToLocal("GT5U.gui.text.PowerfailEvents")).setPos(7, 59)
                 .setSize(85, 16));
         builder.widget(
             new CheckboxWidget(() -> makePowerfailEvents, (_cb, checked) -> makePowerfailEvents = checked)
