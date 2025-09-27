@@ -391,7 +391,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addController(String info) {
         addStructurePart(
             "GT5U.MBTT.Controller",
-            canTranslate(info) ? translateToLocal(info) : translateToLocal("gt.mb.corepos." + info));
+            canTranslate(info) ? translateToLocal(info) : tryTranslate("gt.mb.corepos." + info, info));
         return this;
     }
 
