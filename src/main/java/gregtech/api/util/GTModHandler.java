@@ -53,6 +53,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
+import ganymedes01.etfuturum.recipes.SmokerRecipes;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -1654,6 +1656,34 @@ public class GTModHandler {
         if (aInput == null || aInput.stackSize < 1) return null;
         ItemStack rStack = GTOreDictUnificator.get(
             FurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRBlastingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            BlastFurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRSmokingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            SmokerRecipes.smelting()
                 .getSmeltingResult(aInput));
 
         if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
