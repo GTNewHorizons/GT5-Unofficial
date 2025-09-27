@@ -110,6 +110,12 @@ public final class CheckRecipeResultRegistry {
         .ofFailure("backfiller_no_concrete");
 
     /**
+     * ECCF recipe conditions are out of given range
+     */
+
+    public static final CheckRecipeResult RECIPE_CONDITIONS = SimpleCheckRecipeResult.ofFailure("conditions_range");
+
+    /**
      * Black Hole Compressor does not have an active black hole
      */
     public static final CheckRecipeResult NO_BLACK_HOLE = SimpleCheckRecipeResult.ofFailure("no_black_hole");
