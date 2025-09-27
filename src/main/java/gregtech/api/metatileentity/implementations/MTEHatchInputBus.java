@@ -21,11 +21,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -146,16 +148,6 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public int getCircuitSlotX() {
-        return 153;
-    }
-
-    @Override
-    public int getCircuitSlotY() {
-        return 63;
-    }
-
-    @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
             GTClientPreference tPreference = GTMod.proxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
@@ -216,6 +208,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
         }
+        aNBT.setBoolean("migrationCircuitSlot", true);
     }
 
     @Override
@@ -227,6 +220,20 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             disableLimited = aNBT.getBoolean("disableLimited");
         }
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
+
+        // TODO Delete this code after one update. Also, don't forget to delete the NbtTag - "migrationCircuitSlot".
+        if (allowSelectCircuit()) {
+            if (!aNBT.hasKey("migrationCircuitSlot")) {
+                int newCircuitSlot = getSlots(mTier);
+                int oldCircuitSlot = mTier < 1 ? 1 : mTier == 1 ? 4 : mTier == 2 ? 9 : 16;
+                ItemStack oldCircuit = getStackInSlot(oldCircuitSlot);
+
+                if (oldCircuit != null && getStackInSlot(newCircuitSlot) == null) {
+                    setInventorySlotContents(newCircuitSlot, oldCircuit.copy());
+                    setInventorySlotContents(oldCircuitSlot, null);
+                }
+            }
+        }
     }
 
     @Override
@@ -308,18 +315,32 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         buildContext.addCloseListener(() -> uiButtonCount = 0);
         addSortStacksButton(builder);
         addOneStackLimitButton(builder);
-        // Remove one for ghost circuit slot
         int slotCount = getSizeInventory();
         if (allowSelectCircuit()) {
             slotCount = slotCount - 1;
         }
-        // We do this to decouple slot count from tier in here, since there is no reason to do so.
+        final int itemColumns = Math.max(1, mTier + 1);
+        final int itemRows = Math.max(1, mTier + 1);
+        final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
+        final int centerY = 14 - (mTier - 1);
+
         switch (slotCount) {
             case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
             case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
             case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
             case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {}
+            default -> {
+                for (int row = 0; row < itemRows; row++) {
+                    for (int col = 0; col < itemColumns; col++) {
+                        int slotIndex = row * itemColumns + col;
+                        if (slotIndex < slotCount) {
+                            builder.widget(
+                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
+                                    .setPos(centerX + col * 18, centerY + row * 18));
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -329,8 +350,28 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             .setStaticTexture(picture)
             .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
+            .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + (mTier < 4 ? 0 : 16 * (mTier - 1)))
             .setSize(BUTTON_SIZE, BUTTON_SIZE)
             .setGTTooltip(tooltipDataSupplier);
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return super.getGUIWidth() + (mTier < 4 ? 0 : 2 * (mTier - 1));
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return super.getGUIHeight() + (mTier < 4 ? 0 : 16 * (mTier - 1));
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153 + (mTier < 4 ? 0 : 2 * (mTier - 1));
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 60 + (mTier < 4 ? 0 : 16 * (mTier - 1));
     }
 }
