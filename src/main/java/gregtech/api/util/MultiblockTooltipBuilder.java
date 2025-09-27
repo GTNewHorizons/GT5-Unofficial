@@ -561,7 +561,7 @@ public class MultiblockTooltipBuilder {
     }
 
     public MultiblockTooltipBuilder addStructurePart(String locKey, String info) {
-        addStructureInfo("GT5U.MBTT.PartInfo", locKey, info);
+        addStructureInfo("GT5U.MBTT.PartInfo", locKey, info.equals("<casing>") ? "GT5U.MBTT.AnyCasing" : info);
         return this;
     }
 
