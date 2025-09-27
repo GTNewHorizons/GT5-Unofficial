@@ -763,6 +763,7 @@ public class Textures {
         OVERLAY_ENERGY_IN_UMV,
         OVERLAY_ENERGY_IN_UXV,
         OVERLAY_ENERGY_IN_MAX,
+        OVERLAY_ENERGY_IN_MAXP,
 
         OVERLAY_ENERGY_IN_MULTI_2A,
         OVERLAY_ENERGY_IN_MULTI_2A_ULV,
@@ -780,6 +781,7 @@ public class Textures {
         OVERLAY_ENERGY_IN_MULTI_2A_UMV,
         OVERLAY_ENERGY_IN_MULTI_2A_UXV,
         OVERLAY_ENERGY_IN_MULTI_2A_MAX,
+        OVERLAY_ENERGY_IN_MULTI_2A_MAXP,
 
         OVERLAY_ENERGY_IN_MULTI_4A,
         OVERLAY_ENERGY_IN_MULTI_4A_ULV,
@@ -797,6 +799,7 @@ public class Textures {
         OVERLAY_ENERGY_IN_MULTI_4A_UMV,
         OVERLAY_ENERGY_IN_MULTI_4A_UXV,
         OVERLAY_ENERGY_IN_MULTI_4A_MAX,
+        OVERLAY_ENERGY_IN_MULTI_4A_MAXP,
 
         OVERLAY_ENERGY_IN_MULTI_16A,
         OVERLAY_ENERGY_IN_MULTI_16A_ULV,
@@ -814,6 +817,7 @@ public class Textures {
         OVERLAY_ENERGY_IN_MULTI_16A_UMV,
         OVERLAY_ENERGY_IN_MULTI_16A_UXV,
         OVERLAY_ENERGY_IN_MULTI_16A_MAX,
+        OVERLAY_ENERGY_IN_MULTI_16A_MAXP,
 
         OVERLAY_ENERGY_IN_MULTI_64A,
         OVERLAY_ENERGY_IN_MULTI_64A_ULV,
@@ -831,6 +835,7 @@ public class Textures {
         OVERLAY_ENERGY_IN_MULTI_64A_UMV,
         OVERLAY_ENERGY_IN_MULTI_64A_UXV,
         OVERLAY_ENERGY_IN_MULTI_64A_MAX,
+        OVERLAY_ENERGY_IN_MULTI_64A_MAXP,
 
         OVERLAY_ENERGY_IN_MULTI_LASER,
         OVERLAY_ENERGY_IN_MULTI_LASER_ULV,
@@ -848,6 +853,7 @@ public class Textures {
         OVERLAY_ENERGY_IN_MULTI_LASER_UMV,
         OVERLAY_ENERGY_IN_MULTI_LASER_UXV,
         OVERLAY_ENERGY_IN_MULTI_LASER_MAX,
+        OVERLAY_ENERGY_IN_MULTI_LASER_MAXP,
 
         OVERLAY_ENERGY_OUT,
         OVERLAY_ENERGY_OUT_ULV,
@@ -865,6 +871,25 @@ public class Textures {
         OVERLAY_ENERGY_OUT_UMV,
         OVERLAY_ENERGY_OUT_UXV,
         OVERLAY_ENERGY_OUT_MAX,
+        OVERLAY_ENERGY_OUT_MAXP,
+
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_ULV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_LV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_MV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_HV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_EV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_IV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_LuV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_ZPM,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_UV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_UHV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_UEV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_UIV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_UMV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_UXV,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_MAX,
+        OVERLAY_ENERGY_OUT_MULTI_BUFFER_MAXP,
 
         OVERLAY_ENERGY_OUT_MULTI_2A,
         OVERLAY_ENERGY_OUT_MULTI_2A_ULV,
@@ -882,6 +907,7 @@ public class Textures {
         OVERLAY_ENERGY_OUT_MULTI_2A_UMV,
         OVERLAY_ENERGY_OUT_MULTI_2A_UXV,
         OVERLAY_ENERGY_OUT_MULTI_2A_MAX,
+        OVERLAY_ENERGY_OUT_MULTI_2A_MAXP,
 
         OVERLAY_ENERGY_OUT_MULTI_4A,
         OVERLAY_ENERGY_OUT_MULTI_4A_ULV,
@@ -899,6 +925,7 @@ public class Textures {
         OVERLAY_ENERGY_OUT_MULTI_4A_UMV,
         OVERLAY_ENERGY_OUT_MULTI_4A_UXV,
         OVERLAY_ENERGY_OUT_MULTI_4A_MAX,
+        OVERLAY_ENERGY_OUT_MULTI_4A_MAXP,
 
         OVERLAY_ENERGY_OUT_MULTI_16A,
         OVERLAY_ENERGY_OUT_MULTI_16A_ULV,
@@ -916,6 +943,7 @@ public class Textures {
         OVERLAY_ENERGY_OUT_MULTI_16A_UMV,
         OVERLAY_ENERGY_OUT_MULTI_16A_UXV,
         OVERLAY_ENERGY_OUT_MULTI_16A_MAX,
+        OVERLAY_ENERGY_OUT_MULTI_16A_MAXP,
 
         OVERLAY_ENERGY_OUT_MULTI_64A,
         OVERLAY_ENERGY_OUT_MULTI_64A_ULV,
@@ -933,6 +961,7 @@ public class Textures {
         OVERLAY_ENERGY_OUT_MULTI_64A_UMV,
         OVERLAY_ENERGY_OUT_MULTI_64A_UXV,
         OVERLAY_ENERGY_OUT_MULTI_64A_MAX,
+        OVERLAY_ENERGY_OUT_MULTI_64A_MAXP,
 
         OVERLAY_ENERGY_OUT_MULTI_LASER,
         OVERLAY_ENERGY_OUT_MULTI_LASER_ULV,
@@ -950,6 +979,7 @@ public class Textures {
         OVERLAY_ENERGY_OUT_MULTI_LASER_UMV,
         OVERLAY_ENERGY_OUT_MULTI_LASER_UXV,
         OVERLAY_ENERGY_OUT_MULTI_LASER_MAX,
+        OVERLAY_ENERGY_OUT_MULTI_LASER_MAXP,
 
         OVERLAY_ENERGY_ON_WIRELESS,
         OVERLAY_ENERGY_ON_WIRELESS_ULV,
@@ -967,6 +997,7 @@ public class Textures {
         OVERLAY_ENERGY_ON_WIRELESS_UMV,
         OVERLAY_ENERGY_ON_WIRELESS_UXV,
         OVERLAY_ENERGY_ON_WIRELESS_MAX,
+        OVERLAY_ENERGY_ON_WIRELESS_MAXP,
 
         OVERLAY_ENERGY_ON_WIRELESS_4A,
         OVERLAY_ENERGY_ON_WIRELESS_4A_ULV,
@@ -984,6 +1015,7 @@ public class Textures {
         OVERLAY_ENERGY_ON_WIRELESS_4A_UMV,
         OVERLAY_ENERGY_ON_WIRELESS_4A_UXV,
         OVERLAY_ENERGY_ON_WIRELESS_4A_MAX,
+        OVERLAY_ENERGY_ON_WIRELESS_4A_MAXP,
 
         OVERLAY_ENERGY_ON_WIRELESS_16A,
         OVERLAY_ENERGY_ON_WIRELESS_16A_ULV,
@@ -1001,6 +1033,7 @@ public class Textures {
         OVERLAY_ENERGY_ON_WIRELESS_16A_UMV,
         OVERLAY_ENERGY_ON_WIRELESS_16A_UXV,
         OVERLAY_ENERGY_ON_WIRELESS_16A_MAX,
+        OVERLAY_ENERGY_ON_WIRELESS_16A_MAXP,
 
         OVERLAY_ENERGY_ON_WIRELESS_64A,
         OVERLAY_ENERGY_ON_WIRELESS_64A_ULV,
@@ -1018,6 +1051,7 @@ public class Textures {
         OVERLAY_ENERGY_ON_WIRELESS_64A_UMV,
         OVERLAY_ENERGY_ON_WIRELESS_64A_UXV,
         OVERLAY_ENERGY_ON_WIRELESS_64A_MAX,
+        OVERLAY_ENERGY_ON_WIRELESS_64A_MAXP,
 
         OVERLAY_ENERGY_ON_WIRELESS_LASER,
         OVERLAY_ENERGY_ON_WIRELESS_LASER_ULV,
@@ -1035,6 +1069,7 @@ public class Textures {
         OVERLAY_ENERGY_ON_WIRELESS_LASER_UMV,
         OVERLAY_ENERGY_ON_WIRELESS_LASER_UXV,
         OVERLAY_ENERGY_ON_WIRELESS_LASER_MAX,
+        OVERLAY_ENERGY_ON_WIRELESS_LASER_MAXP,
 
         OVERLAY_ENERGY_OFF_WIRELESS,
         OVERLAY_ENERGY_OFF_WIRELESS_ULV,
@@ -1052,6 +1087,7 @@ public class Textures {
         OVERLAY_ENERGY_OFF_WIRELESS_UMV,
         OVERLAY_ENERGY_OFF_WIRELESS_UXV,
         OVERLAY_ENERGY_OFF_WIRELESS_MAX,
+        OVERLAY_ENERGY_OFF_WIRELESS_MAXP,
 
         TESLA_TRANSCEIVER_TOP,
 
@@ -2059,7 +2095,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN_UV), TextureFactory.of(OVERLAY_ENERGY_IN_UHV),
             TextureFactory.of(OVERLAY_ENERGY_IN_UEV), TextureFactory.of(OVERLAY_ENERGY_IN_UIV),
             TextureFactory.of(OVERLAY_ENERGY_IN_UMV), TextureFactory.of(OVERLAY_ENERGY_IN_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_IN_MAX), TextureFactory.of(OVERLAY_ENERGY_IN_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_2A = { TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_ULV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_LV),
@@ -2069,7 +2105,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_UV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_UHV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_UEV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_UMV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_MAX), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_2A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_4A = { TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_ULV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_LV),
@@ -2079,7 +2115,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_UV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_UHV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_UEV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_UMV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_MAX), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_4A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_16A = { TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_ULV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_LV),
@@ -2089,7 +2125,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_UV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_UHV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_UEV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_UMV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_MAX), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_16A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_64A = { TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_ULV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_LV),
@@ -2099,7 +2135,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_UV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_UHV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_UEV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_UMV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_MAX), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_64A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_LASER = {
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_ULV),
@@ -2109,8 +2145,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_ZPM), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_UV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_UHV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_UEV),
             TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_UIV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_UMV),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_UXV), TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_IN_MULTI_LASER_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OUT = { TextureFactory.of(OVERLAY_ENERGY_OUT),
             TextureFactory.of(OVERLAY_ENERGY_OUT_ULV), TextureFactory.of(OVERLAY_ENERGY_OUT_LV),
@@ -2120,7 +2156,25 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_UHV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_UEV), TextureFactory.of(OVERLAY_ENERGY_OUT_UIV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_UMV), TextureFactory.of(OVERLAY_ENERGY_OUT_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MAX), TextureFactory.of(OVERLAY_ENERGY_OUT_MAXP), };
+
+        public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = {
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_ULV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_LV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_MV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_HV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_EV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_IV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_LuV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_ZPM),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_UV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_UHV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_UEV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_UIV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_UMV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_UXV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_2A = { TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_ULV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_LV),
@@ -2130,7 +2184,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_UHV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_UEV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_UMV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_MAX), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_2A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_4A = { TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_ULV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_LV),
@@ -2140,7 +2194,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_UHV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_UEV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_UMV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_MAX), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_4A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_16A = {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_ULV),
@@ -2150,7 +2204,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_ZPM), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_UV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_UHV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_UEV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_UIV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_UMV),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_UXV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_UXV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_16A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_64A = {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_ULV),
@@ -2160,7 +2215,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_ZPM), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UHV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UEV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UIV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UMV),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UXV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UXV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_LASER = {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_ULV),
@@ -2173,7 +2229,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_UIV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_UMV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_ON_WIRELESS = { TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_ULV), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LV),
@@ -2183,7 +2240,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_UV), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_UHV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_UEV), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_UIV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_UMV), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_MAX), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_ON_WIRELESS_4A = {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_ULV),
@@ -2193,8 +2250,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_ZPM), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_UV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_UHV), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_UEV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_UIV), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_UMV),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_UXV), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_4A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_ON_WIRELESS_16A = {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A_ULV),
@@ -2207,7 +2264,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A_UMV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_16A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_ON_WIRELESS_64A = {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A), TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A_ULV),
@@ -2220,7 +2278,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A_UIV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A_UMV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_64A_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_ON_WIRELESS_LASER = {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER),
@@ -2238,7 +2297,8 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER_UIV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER_UMV),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER_MAX),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER_MAXP), };
 
         public static final ITexture[] OVERLAYS_ENERGY_OFF_WIRELESS = { TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS),
             TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_ULV), TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_LV),
@@ -2248,7 +2308,7 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_UV), TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_UHV),
             TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_UEV), TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_UIV),
             TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_UMV), TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_UXV),
-            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_MAX), };
+            TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_MAX), TextureFactory.of(OVERLAY_ENERGY_OFF_WIRELESS_MAXP), };
 
         public static final ITexture[] LOCKERS = { TextureFactory.of(OVERLAY_LOCKER_000),
             TextureFactory.of(OVERLAY_LOCKER_001), TextureFactory.of(OVERLAY_LOCKER_002),

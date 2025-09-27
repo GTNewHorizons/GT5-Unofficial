@@ -82,10 +82,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -257,17 +255,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // For overclocking we'll allow all power to be used
-                return super.createOverclockCalculator(recipe)
-                    .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
-                    .setAmperage(1);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -307,7 +295,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         if (pistonEnabled && aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
             if (aBaseMetaTileEntity.isClientSide()) this.animatePiston(aBaseMetaTileEntity);
-            else if (aBaseMetaTileEntity.hasMufflerUpgrade()) GTValues.NW.sendPacketToAllPlayersInRange(
+            else if (aBaseMetaTileEntity.isMuffled()) GTValues.NW.sendPacketToAllPlayersInRange(
                 aBaseMetaTileEntity.getWorld(),
                 new PacketEIC(
                     new Coords(
@@ -369,7 +357,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (!aBaseMetaTileEntity.getWorld().isRemote) return;
 
         if (!this.getBaseMetaTileEntity()
-            .hasMufflerUpgrade())
+            .isMuffled())
             GTUtility.doSoundAtClient(
                 sound,
                 10,
