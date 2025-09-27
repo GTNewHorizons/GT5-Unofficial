@@ -3143,11 +3143,7 @@ public class GTUtility {
 
         String key = "gtnop.world." + name;
 
-        if (StatCollector.canTranslate(key)) {
-            return StatCollector.translateToLocal(key);
-        } else {
-            return name;
-        }
+        return tryTranslate(key, name);
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,
@@ -3912,6 +3908,10 @@ public class GTUtility {
 
     public static String translate(String key, Object... parameters) {
         return StatCollector.translateToLocalFormatted(key, parameters);
+    }
+
+    public static String tryTranslate(String key, String fallback, Object... parameters) {
+        return StatCollector.canTranslate(key) ? translate(key, parameters) : fallback;
     }
 
     /*
