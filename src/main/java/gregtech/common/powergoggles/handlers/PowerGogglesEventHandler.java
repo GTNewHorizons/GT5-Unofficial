@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -25,7 +26,7 @@ public class PowerGogglesEventHandler {
 
     private static final PowerGogglesEventHandler INSTANCE = new PowerGogglesEventHandler();
 
-    private final Map<UUID, PowerGogglesClient> clients = new HashMap<>();
+    private Map<UUID, PowerGogglesClient> clients = new HashMap<>();
     private int updateTicker = 0;
 
     private PowerGogglesEventHandler() {}
@@ -120,6 +121,10 @@ public class PowerGogglesEventHandler {
     public void updatePlayerLink(ItemStack itemstack, EntityPlayerMP player) {
         PowerGogglesClient client = clients.computeIfAbsent(player.getUniqueID(), uuid -> new PowerGogglesClient());
         client.updateLscLink(itemstack, player);
+    }
+
+    public void onServerStopped(FMLServerStoppedEvent event) {
+        this.clients = new HashMap<>();
     }
 
     public Map<UUID, PowerGogglesClient> getClients() {
