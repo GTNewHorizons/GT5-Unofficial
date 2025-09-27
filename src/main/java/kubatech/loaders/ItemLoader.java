@@ -53,6 +53,7 @@ import static kubatech.api.enums.ItemList.OolongTeaLeaf;
 import static kubatech.api.enums.ItemList.OxidizedTeaLeaf;
 import static kubatech.api.enums.ItemList.PartiallyOxidizedTeaLeaf;
 import static kubatech.api.enums.ItemList.PeppermintTea;
+import static kubatech.api.enums.ItemList.PlaceHolderItem;
 import static kubatech.api.enums.ItemList.PuerhTea;
 import static kubatech.api.enums.ItemList.PuerhTeaLeaf;
 import static kubatech.api.enums.ItemList.RolledTeaLeaf;
@@ -74,10 +75,12 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.loaders.item.kubaitem.ItemProxy;
 import kubatech.loaders.item.kubaitem.KubaItems;
+import kubatech.loaders.item.kubaitem.items.ItemPlaceHolder;
 import kubatech.loaders.item.kubaitem.items.ItemTea;
 import kubatech.loaders.item.kubaitem.items.ItemTeaCollection;
 import kubatech.loaders.item.kubaitem.items.ItemTeaIngredient;
 import kubatech.loaders.item.kubaitem.items.ItemTeaUltimate;
+import kubatech.loaders.tea.TeaLoader;
 
 public class ItemLoader {
 
@@ -149,5 +152,10 @@ public class ItemLoader {
         // Fake EEC button item
         KubaFakeItemEECVoid.set(kubaitems.registerProxyItem(new ItemProxy("fakeitem_eecvoid")))
             .hidden();
+
+        PlaceHolderItem.set(kubaitems.registerProxyItem(new ItemPlaceHolder()))
+            .hidden();
+
+        TeaLoader.run();
     }
 }
