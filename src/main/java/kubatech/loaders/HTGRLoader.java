@@ -33,6 +33,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
+import kubatech.api.utils.ModUtils;
 import kubatech.client.renderer.HTGRItemRenderer;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
@@ -129,7 +130,7 @@ public class HTGRLoader {
     public static void load() {
 
         GameRegistry.registerItem(HTGR_ITEM, "htgr_item");
-        MinecraftForgeClient.registerItemRenderer(HTGR_ITEM, new HTGRItemRenderer());
+        if (ModUtils.isClientSided) MinecraftForgeClient.registerItemRenderer(HTGR_ITEM, new HTGRItemRenderer());
 
         // silver to indium
 
