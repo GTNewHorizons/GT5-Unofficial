@@ -48,11 +48,10 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
             + (int) (fontRenderer.FONT_HEIGHT * 2 * PowerGogglesConfigHandler.subTextScaling)
             + borderRadius;
         dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX
-            + PowerGogglesConfigHandler.rectangleWidth * PowerGogglesConfigHandler.hudScale
+            + (PowerGogglesConfigHandler.rectangleWidth + borderRadius) * PowerGogglesConfigHandler.hudScale
             - 1));
-        dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY
-            - PowerGogglesConfigHandler.rectangleHeight)
-            + (rectangleHeightToBorderBottom) * (1 - PowerGogglesConfigHandler.hudScale));
+
+        dragCenterY = (int) (height - PowerGogglesConfigHandler.mainOffsetY);
         dragWidth = (int) (10 * PowerGogglesConfigHandler.hudScale);
         dragHeight = (int) (10 * PowerGogglesConfigHandler.hudScale);
 
