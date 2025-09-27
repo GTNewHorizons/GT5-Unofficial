@@ -28,8 +28,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.collect.ArrayListMultimap;
-
 import bartworks.MainMod;
 import bartworks.system.material.BWMetaGeneratedOres;
 import bartworks.system.material.BWMetaGeneratedSmallOres;
@@ -42,6 +40,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.blocks.TileEntityOres;
+import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapperTemp;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -49,7 +48,7 @@ import gregtech.common.blocks.TileEntityOres;
 public abstract class BWOreLayer extends GTWorldgen {
 
     public static final List<BWOreLayer> sList = new ArrayList<>();
-    public static final ArrayListMultimap<Short, BWOreLayer> NEIMAP = ArrayListMultimap.create();
+    public static final List<OreLayerWrapperTemp> NEIList = new ArrayList<>();
     private static final boolean logOregenRoss128 = false;
     public static int sWeight;
     public byte bwOres;
@@ -89,10 +88,25 @@ public abstract class BWOreLayer extends GTWorldgen {
         this.mSecondaryMeta = aSecondary;
         this.mBetweenMeta = aBetween;
         this.mSporadicMeta = aSporadic;
-        NEIMAP.put((short) this.mPrimaryMeta, this);
-        NEIMAP.put((short) this.mSecondaryMeta, this);
-        NEIMAP.put((short) this.mBetweenMeta, this);
-        NEIMAP.put((short) this.mSporadicMeta, this);
+
+    }
+
+    public BWOreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
+        ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled,
+        String dim) {
+
+        this(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
+
+        for (OreLayerWrapperTemp layer : NEIList) {
+            if (layer.isLayerEqual(this)) {
+                layer.addDimension(dim);
+                return;
+            }
+        }
+
+        OreLayerWrapperTemp layer2 = new OreLayerWrapperTemp(aName, top, bottom, between, sprinkled, this);
+        NEIList.add(layer2);
+        layer2.addDimension(dim);
     }
 
     public List<ItemStack> getStacks() {
