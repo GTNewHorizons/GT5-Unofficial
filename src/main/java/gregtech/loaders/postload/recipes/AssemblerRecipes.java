@@ -3252,7 +3252,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L),
                 GTUtility.copyAmount(8, ItemRegistry.energyDistributor[12]),
-                new ItemStack(lscLapotronicEnergyUnit, 1, 7),
+                new ItemStack(lscLapotronicEnergyUnit, 1, 5),
                 GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 6L),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1L))
             .itemOutputs(ItemList.LoadbearingDistributionCasing.get(1L))

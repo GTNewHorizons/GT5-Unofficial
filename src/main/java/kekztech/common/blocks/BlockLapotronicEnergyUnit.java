@@ -88,13 +88,13 @@ public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
         GameRegistry.registerBlock(INSTANCE, ItemBlockLapotronicEnergyUnit.class, blockName);
 
         int value = 1;
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 6), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 7), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 1), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 2), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 3), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 4), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 5), value++);
-        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 6), value++);
-        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 7), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 8), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 9), value++);
         GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 10), value++);
@@ -136,15 +136,15 @@ public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
         // Multi casing
         par3List.add(new ItemStack(par1, 1, 0));
         // Empty capacitor
-        par3List.add(new ItemStack(par1, 1, 1));
+        par3List.add(new ItemStack(par1, 1, 6));
         // Lapo capacitors EV - UV
+        par3List.add(new ItemStack(par1, 1, 7));
+        par3List.add(new ItemStack(par1, 1, 1));
         par3List.add(new ItemStack(par1, 1, 2));
         par3List.add(new ItemStack(par1, 1, 3));
         par3List.add(new ItemStack(par1, 1, 4));
-        par3List.add(new ItemStack(par1, 1, 5));
-        par3List.add(new ItemStack(par1, 1, 6));
         // Ultimate battery
-        par3List.add(new ItemStack(par1, 1, 7));
+        par3List.add(new ItemStack(par1, 1, 5));
         // UEV Cap
         par3List.add(new ItemStack(par1, 1, 8));
         // UIV Cap
@@ -155,19 +155,31 @@ public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return switch (meta) {
-            case 0 -> (side < 2) ? iconBaseTop : iconBaseSide;
-            case 1 -> (side < 2) ? iconLapoEmptyTop : iconLapoEmptySide;
-            case 2 -> (side < 2) ? iconLapoEVTop : iconLapoEVSide;
-            case 3 -> (side < 2) ? iconLapoIVTop : iconLapoIVSide;
-            case 4 -> (side < 2) ? iconLapoLuVTop : iconLapoLuVSide;
-            case 5 -> (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
-            case 6 -> (side < 2) ? iconLapoUVTop : iconLapoUVSide;
-            case 7 -> (side < 2) ? iconUltimateTop : iconUltimateSide;
-            case 8 -> (side < 2) ? iconUltimateExtremeTop : iconUltimateExtremeSide;
-            case 9 -> (side < 2) ? iconUltimateInsaneTop : iconUltimateInsaneSide;
-            case 10 -> (side < 2) ? iconUltimateMegaTop : iconUltimateMegaSide;
-            default -> iconUltimateTop;
-        };
+        switch (meta) {
+            case 0:
+                return (side < 2) ? iconBaseTop : iconBaseSide;
+            case 1:
+                return (side < 2) ? iconLapoIVTop : iconLapoIVSide;
+            case 2:
+                return (side < 2) ? iconLapoLuVTop : iconLapoLuVSide;
+            case 3:
+                return (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
+            case 4:
+                return (side < 2) ? iconLapoUVTop : iconLapoUVSide;
+            case 5:
+                return (side < 2) ? iconUltimateTop : iconUltimateSide;
+            case 6:
+                return (side < 2) ? iconLapoEmptyTop : iconLapoEmptySide;
+            case 7:
+                return (side < 2) ? iconLapoEVTop : iconLapoEVSide;
+            case 8:
+                return (side < 2) ? iconUltimateExtremeTop : iconUltimateExtremeSide;
+            case 9:
+                return (side < 2) ? iconUltimateInsaneTop : iconUltimateInsaneSide;
+            case 10:
+                return (side < 2) ? iconUltimateMegaTop : iconUltimateMegaSide;
+            default:
+                return iconUltimateTop;
+        }
     }
 }

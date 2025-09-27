@@ -28,7 +28,7 @@ public class ResearchableAssemblyLine implements Runnable {
     public void run() {
         // Ultimate Capacitor (UHV)
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
             12000,
             16,
             300000,
@@ -43,13 +43,13 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32 * INGOTS),
                 Materials.Naquadria.getMolten(1 * STACKS), GTModHandler.getIC2Coolant(32_000) },
-            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7),
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
             4000,
             1600000);
 
         // Extremely Ultimate Capacitor (UEV)
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7),
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
             1200000,
             128,
             (int) TierEU.RECIPE_UEV,

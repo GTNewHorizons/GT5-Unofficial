@@ -83,39 +83,30 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
         lines.add(StatCollector.translateToLocal("tile.kekztech_lapotronicenergyunit_block.desc"));
         switch (stack.getItemDamage()) {
             case 1:
-                lines.add(StatCollector.translateToLocal("tooltip.kekztech.lapotronic_energy_unit.capacity.none"));
-                break;
-            case 2:
-                lines.add(
-                    StatCollector.translateToLocalFormatted(
-                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        GTUtility.formatNumbers(EV_cap_storage)));
-                break;
-            case 3:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
                         GTUtility.formatNumbers(IV_cap_storage)));
                 break;
-            case 4:
+            case 2:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
                         GTUtility.formatNumbers(LuV_cap_storage)));
                 break;
-            case 5:
+            case 3:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
                         GTUtility.formatNumbers(ZPM_cap_storage)));
                 break;
-            case 6:
+            case 4:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
                         GTUtility.formatNumbers(UV_cap_storage)));
                 break;
-            case 7:
+            case 5:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
@@ -125,6 +116,15 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
                         GTUtility.formatNumbers(UHV_cap_eu_per_tick),
                         GTValues.TIER_COLORS[9] + GTValues.VN[9]));
+                break;
+            case 6:
+                lines.add(StatCollector.translateToLocal("tooltip.kekztech.lapotronic_energy_unit.capacity.none"));
+                break;
+            case 7:
+                lines.add(
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(EV_cap_storage)));
                 break;
             case 8:
                 lines.add(

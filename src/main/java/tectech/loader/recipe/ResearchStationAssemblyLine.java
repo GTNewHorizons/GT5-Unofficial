@@ -2938,7 +2938,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     // UV Solar panel
                     ItemList.Machine_UV_SolarPanel.get(1),
                     // UHV Capacitor block
-                    new ItemStack(lscLapotronicEnergyUnit, 1, 7),
+                    new ItemStack(lscLapotronicEnergyUnit, 1, 5),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 4),
 
                     CustomItemList.Machine_Multi_Transformer.get(16), ItemList.Wireless_Hatch_Energy_UMV.get(4),
