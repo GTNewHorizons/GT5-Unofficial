@@ -70,7 +70,6 @@ public class MaterialsBotania {
             .setBlastFurnaceRequired(true)
             .addAspect(TCAspects.METALLUM, 3)
             .addAspect(TCAspects.PRAECANTATIO, 1)
-            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -92,7 +91,6 @@ public class MaterialsBotania {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.TERRA, 1)
             .addAspect(TCAspects.PRAECANTATIO, 1)
-            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -114,7 +112,6 @@ public class MaterialsBotania {
             .addAspect(TCAspects.METALLUM, 3)
             .addAspect(TCAspects.PRAECANTATIO, 2)
             .addAspect(TCAspects.AURAM, 1)
-            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -146,6 +143,7 @@ public class MaterialsBotania {
             .addToolHeadItems()
             .addGearItems()
             .addSubTag(SubTag.SOFT)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -200,6 +198,7 @@ public class MaterialsBotania {
             .addSubTag(SubTag.CRYSTAL)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -215,6 +214,7 @@ public class MaterialsBotania {
             .addSubTag(SubTag.CRYSTAL)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 }
