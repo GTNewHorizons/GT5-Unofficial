@@ -489,6 +489,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     stack.stackSize = 0;
                 }
             }
+            updateSlots();
             endRecipeProcessing();
 
             // Only do this check if we didn't find a correct combination yet
