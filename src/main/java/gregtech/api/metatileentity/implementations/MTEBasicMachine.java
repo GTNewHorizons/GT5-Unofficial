@@ -545,7 +545,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
             if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
-                aBaseMetaTileEntity.setActive(true);
+                if (mProgresstime > 0) aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
@@ -654,11 +654,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             } else {
                 if (!mStuttering) {
                     stutterProcess();
+                    aBaseMetaTileEntity.setActive(false);
                     mStuttering = true;
                 }
             }
         } else {
-            doActivitySound(getActivitySoundLoop());
+            updateSounds(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -808,27 +809,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      * Called whenever the Machine successfully started a Process, useful for Sound Effects
      */
     public void startProcess() {
-        if (getBaseMetaTileEntity().getWorld().isRemote) {
-            doActivitySound(getActivitySoundLoop());
-        }
+        //
     }
 
     /**
      * Called whenever the Machine successfully finished a Process, useful for Sound Effects
      */
     public void endProcess() {
-        if (getBaseMetaTileEntity().getWorld().isRemote) {
-            stopActivitySound();
-        }
+        //
     }
 
     /**
      * Called whenever the Machine aborted a Process, useful for Sound Effects
      */
     public void abortProcess() {
-        if (getBaseMetaTileEntity().getWorld().isRemote) {
-            stopActivitySound();
-        }
+        //
     }
 
     /**
@@ -851,8 +846,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      * Starts the activity sound loop if it isn't already playing.
      */
     @SideOnly(Side.CLIENT)
-    protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
+    protected void updateSounds(SoundResource activitySound) {
+        if (activitySound == null) return;
+
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -874,6 +871,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @SideOnly(Side.CLIENT)
     protected void stopActivitySound() {
         if (activitySoundLoop != null) {
+            activitySoundLoop.setFadeMe(true);
             activitySoundLoop = null;
         }
     }
@@ -1039,7 +1037,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("Mothership");
     }
 
     /**
@@ -1304,6 +1306,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         builder.widget(createChargerSlot(79, 62));
 
         addProgressBar(builder, uiProperties);
+
+        builder.widget(createMuffleButton());
 
         builder.widget(
             createErrorStatusArea(

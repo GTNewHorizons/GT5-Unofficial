@@ -23,6 +23,9 @@ import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
  * Space Research project module of the Space Elevator
  *
  * @author minecraft7771
+ *
+ *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
+ *         BLOCK IS ALSO HIDDEN IN NEIGTNewHorizonsConfig.java IN COREMOD
  */
 public class TileEntityModuleResearch extends TileEntityModuleBase {
 

@@ -118,11 +118,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType("Pump, FDP")
+        tt.addMachineType("Pump, FDR")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
-            .addInfo("If total circuit # is greater than output amount it will halt. If it worked right.") // doesn't
+            .addInfo("If total circuit # is greater than output per operation, the machine will halt.") // doesn't
             // work
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
@@ -259,9 +259,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             Chunk tChunk = getBaseMetaTileEntity().getWorld()
                 .getChunkFromBlockCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
             int range = chunkRangeConfig;
-            int xChunk = Math.floorDiv(tChunk.xPosition, range) * range; // Java was written by idiots. For negative
-                                                                         // values, / returns rounded towards zero.
-            // Fucking morons.
+            int xChunk = Math.floorDiv(tChunk.xPosition, range) * range; // For negative values, / returns rounded
+                                                                         // towards zero.
             int zChunk = Math.floorDiv(tChunk.zPosition, range) * range;
             if (debugDriller) {
                 GTLog.out.println(

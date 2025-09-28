@@ -273,8 +273,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
             .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
             .addInfo(String.format(
-                "Every coil tier gives a +%s speed bonus and a %s EU/t discount (multiplicative)",
-                TooltipHelper.speedText((float) SPEED_PER_COIL),
+                "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
+                TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
                 TooltipHelper.effText((float) (1-HEATING_COIL_EU_MULTIPLIER))
             ))
             .addInfo(String.format(
@@ -284,7 +284,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 HEATING_COIL_EU_MULTIPLIER,
                 EnumChatFormatting.GRAY
             ))
-            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers.")
+            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)

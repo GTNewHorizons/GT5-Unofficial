@@ -129,7 +129,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")
             .addInfo("Hatches can be placed nearly anywhere")
             .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
-            .addInfo("Supports voltages >= UHV using MAX tier components.")
+            .addInfo("Supports voltages >= UHV using MAX tier components")
             .addController("Bottom Center")
             .addCasingInfoMin("Sub-Station External Casings", 10, false)
             .addDynamoHatch("Any Casing", 1)
@@ -155,8 +155,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         if (side == this.getBaseMetaTileEntity()
             .getBackFacing()) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[(int) this.getOutputTier()]
-                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[(int) this.getInputTier()] };
+                mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[(int) this.getOutputTier() + 1]
+                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[(int) this.getInputTier() + 1] };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(23)) };
     }

@@ -50,6 +50,8 @@ import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCL
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF;
 import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_ON;
+import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SPAWNER;
+import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SWORD;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -87,6 +89,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -96,7 +99,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -143,7 +145,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
@@ -161,7 +162,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public static final int MOB_SPAWN_INTERVAL = 55;
     public static final int MAX_LOOTING_LEVEL = 4;
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
-
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
@@ -230,6 +230,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             ExtraUtilities.isModLoaded() ? ofBlock(Block.getBlockFromName("ExtraUtilities:spike_base_diamond"), 0)
                 : isAir())
         .build();
+
+    private static final int[][] VALID_RITUAL_POSITIONS = { { 0, -8, 2 }, { 0, -7, 2 } };
 
     private TileEntity masterStoneRitual = null;
     private TileEntity tileAltar = null;
@@ -302,33 +304,49 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Spawns and kills monsters for you.")
-            .addInfo("You have to insert the powered spawner in the controller.")
-            .addInfo("Base energy usage: 1,920 EU/t")
-            .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
-            .addInfo("Recipe time is based on mob health.")
-            .addInfo("You can additionally put a weapon inside the GUI.")
+            .addInfo("Spawns and kills monsters for you!")
+            .addInfo(
+                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation")
+            .addInfo("Powered Spawner goes in Controller Slot")
+            .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
+            .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
+            .addSeparator()
+            .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
+            .addInfo("Recipe time is based on mob health")
+            .addInfo("You can additionally put a weapon inside the GUI")
             .addInfo(
                 "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
-                    + " levels).")
+                    + " levels)")
+            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
             .addInfo(
-                "If the weapon has durability it will be damaged in each run. In batch mode the damage is multiplied "
-                    + EnumChatFormatting.BLUE
-                    + "16x")
-            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit.")
-            .addInfo(
-                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output.")
+                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
-            .addInfo("Produces 120L of Liquid XP per operation.")
-            .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
-            .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
-            .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
-            .addInfo("You can enable ritual mode with a screwdriver.")
+            .addSeparator()
             .addInfo(
-                "When in ritual mode and the Well Of Suffering ritual is activated directly centered on top of the machine,")
-            .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
-            .addInfo("You can disable mob animation with a soldering iron.")
-            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
+                "If the mob spawns " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + ", it will drain 8 times more power!")
+            .addInfo(
+                "You can prevent " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " spawns by shift clicking with a screwdriver")
+            .addInfo(
+                "Mobs who are always " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " will ignore this factor")
+            .addSeparator()
+            .addInfo("You can enable ritual mode with a screwdriver")
+            .addInfo("When in ritual mode, can link to above Well of Suffering rituals")
+            .addInfo("The Ritual must be built directly centered above the machine")
+            .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
+            .addSeparator()
+            .addInfo("You can disable mob animation with a soldering iron")
+            .addInfo(
+                "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
+                    + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
@@ -503,7 +521,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             if (!isInRitualMode) return;
             if (masterStoneRitual == null) return;
             if (mMaxProgresstime == 0) return;
-            if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
+            if (event.mrs.equals(masterStoneRitual)) {
                 Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
                 if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
                     event.setCanceled(true); // we will handle that
@@ -779,10 +797,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         EECPlayer.currentWeapon = tWeaponCopy;
         for (int i = 0; i < aBatchModeMultiplier; i++) {
-            // Force max weapons at max damage to be considered broken,
+            // Force weapons at max damage to be considered broken,
             // even if they would survive a hit by having the Unbreaking enchantment.
-            // This prevents weapons from being effectively unbreakable due to the
-            // removal the chance-based chance of the weapon breaking.
+            // This prevents weapons from being effectively unbreakable due to being
+            // able to perfectly predict when a hit would or would not damage it.
             if (aPreventPerfectUnbreaking && tWeaponCopy.getItemDamage() == tWeaponCopy.getMaxDamage()) {
                 EECPlayer.currentWeapon = null;
                 return null;
@@ -836,7 +854,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private void playWeaponBreakSound() {
         final IGregTechTileEntity tMTE = this.getBaseMetaTileEntity();
 
-        if (tMTE == null || tMTE.hasMufflerUpgrade()) return;
+        if (tMTE == null || tMTE.isMuffled()) return;
 
         // A little muffled and modulated, helps simulate a Low-Pass filter
         GTUtility.sendSoundToPlayers(
@@ -857,26 +875,40 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private boolean connectToRitual() {
         if (masterStoneRitual == null) {
             if (!BloodMagic.isModLoaded()) return false;
-            ChunkCoordinates coords = this.getBaseMetaTileEntity()
-                .getCoords();
-            int[] abc = new int[] { 0, -8, 2 };
-            int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing()
-                .getWorldOffset(abc, xyz);
-            xyz[0] += coords.posX;
-            xyz[1] += coords.posY;
-            xyz[2] += coords.posZ;
-            masterStoneRitual = this.getBaseMetaTileEntity()
-                .getTileEntity(xyz[0], xyz[1], xyz[2]);
-        }
 
-        if (!masterStoneRitual.isInvalid() && masterStoneRitual instanceof TEMasterStone tRitualTe) {
-            if (tRitualTe.getCurrentRitual()
-                .equals(WellOfSufferingRitualName)) return true;
-        }
+            for (int[] ritualRelativePos : VALID_RITUAL_POSITIONS) {
+                masterStoneRitual = getTileEntityAtRelativePosition(ritualRelativePos);
+                if (isWellOfSufferingRitual(masterStoneRitual)) return true;
+            }
+        } else if (BloodMagic.isModLoaded() && isWellOfSufferingRitual(masterStoneRitual)) return true;
 
         masterStoneRitual = null;
         return false;
+    }
+
+    @Nullable
+    private TileEntity getTileEntityAtRelativePosition(int @NotNull [] relativePosition) {
+
+        if (relativePosition.length < 3) return null;
+
+        int[] relativeCoords = new int[] { 0, 0, 0 };
+        this.getExtendedFacing()
+            .getWorldOffset(relativePosition, relativeCoords);
+        ChunkCoordinates worldCoords = this.getBaseMetaTileEntity()
+            .getCoords();
+
+        return this.getBaseMetaTileEntity()
+            .getTileEntity(
+                worldCoords.posX + relativeCoords[0],
+                worldCoords.posY + relativeCoords[1],
+                worldCoords.posZ + relativeCoords[2]);
+    }
+
+    private static boolean isWellOfSufferingRitual(@Nullable TileEntity tileEntity) {
+        return tileEntity != null && !tileEntity.isInvalid()
+            && tileEntity instanceof TEMasterStone ritualTE
+            && ritualTE.getCurrentRitual()
+                .equals(WellOfSufferingRitualName);
     }
 
     @Override
@@ -1095,16 +1127,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         final SlotWidget spawnerSlot = new SlotWidget(inventoryHandler, 1);
         spawnerSlot.setBackground(
             GTUITextures.SLOT_DARK_GRAY,
-            UITexture.fullImage(Tags.MODID, "gui/slot/gray_spawner")
-                .withFixedSize(16, 16)
+            SLOT_EEC_SPAWNER.withFixedSize(16, 16)
                 .withOffset(1, 1));
         spawnerSlot.setFilter(stack -> stack.getItem() == poweredSpawnerItem);
         slotWidgets.add(spawnerSlot);
         final SlotWidget weaponSlot = new SlotWidget(weaponCache, 0);
         weaponSlot.setBackground(
             GTUITextures.SLOT_DARK_GRAY,
-            UITexture.fullImage(Tags.MODID, "gui/slot/gray_sword")
-                .withFixedSize(16, 16)
+            SLOT_EEC_SWORD.withFixedSize(16, 16)
                 .withOffset(1, 1));
         slotWidgets.add(weaponSlot);
     }

@@ -1,5 +1,6 @@
 {
   "gtceu.ArcLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "arc",
@@ -8,6 +9,7 @@
     ]
   },
   "gtceu.AssemblerLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "assembler",
@@ -16,6 +18,7 @@
     ]
   },
   "gtceu.BathLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "bath",
@@ -24,6 +27,7 @@
     ]
   },
   "gtceu.BoilerLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "boiler",
@@ -32,6 +36,7 @@
     ]
   },
   "gtceu.CentrifugeLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "centrifuge",
@@ -40,6 +45,7 @@
     ]
   },
   "gtceu.ChemicalLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "chemical",
@@ -48,6 +54,7 @@
     ]
   },
   "gtceu.ClickOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "click",
@@ -56,6 +63,7 @@
     ]
   },
   "gtceu.CompressorLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "compressor",
@@ -64,6 +72,7 @@
     ]
   },
   "gtceu.CoolingLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "cooling",
@@ -72,6 +81,7 @@
     ]
   },
   "gtceu.CutLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "cut",
@@ -80,6 +90,7 @@
     ]
   },
   "gtceu.ElectrolyzerLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "electrolyzer",
@@ -88,6 +99,7 @@
     ]
   },
   "gtceu.FileOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "file",
@@ -96,6 +108,7 @@
     ]
   },
   "gtceu.FireLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "fire",
@@ -104,6 +117,7 @@
     ]
   },
   "gtceu.ForgeHammerLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "forge_hammer",
@@ -112,6 +126,7 @@
     ]
   },
   "gtceu.FurnaceLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "furnace",
@@ -120,6 +135,7 @@
     ]
   },
   "gtceu.HumLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "hum",
@@ -128,6 +144,7 @@
     ]
   },
   "gtceu.MaceratorLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "macerator",
@@ -136,6 +153,7 @@
     ]
   },
   "gtceu.MinerLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "miner",
@@ -144,6 +162,7 @@
     ]
   },
   "gtceu.MixerLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "mixer",
@@ -152,6 +171,7 @@
     ]
   },
   "gtceu.MortarOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "mortar",
@@ -160,6 +180,7 @@
     ]
   },
   "gtceu.MotorLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "motor",
@@ -168,6 +189,7 @@
     ]
   },
   "gtceu.PlungerOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "plunger",
@@ -176,6 +198,7 @@
     ]
   },
   "gtceu.PortableScannerOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "portable_scanner",
@@ -184,6 +207,7 @@
     ]
   },
   "gtceu.PumpLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "pump",
@@ -192,6 +216,7 @@
     ]
   },
   "gtceu.ReplicatorLoop": {
+    "category": "block",
     "sounds": [
       {
         "name": "replicator",
@@ -200,6 +225,7 @@
     ]
   },
   "gtceu.SawOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "saw",
@@ -208,6 +234,7 @@
     ]
   },
   "gtceu.ScrewdriverOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "screwdriver",
@@ -216,6 +243,7 @@
     ]
   },
   "gtceu.SoftHammerOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "soft_hammer",
@@ -224,6 +252,7 @@
     ]
   },
   "gtceu.SprayCanOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "spray_can",
@@ -232,6 +261,7 @@
     ]
   },
   "gtceu.WirecutterOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "wirecutter",
@@ -240,6 +270,7 @@
     ]
   },
   "gtceu.WrenchOp": {
+    "category": "player",
     "sounds": [
       {
         "name": "wrench",

@@ -9,6 +9,12 @@ import kubatech.Tags;
 
 public class KubaTechUITextures {
 
+    public static final UITexture PICTURE_KUBATECH_LOGO = UITexture.fullImage(Tags.MODID, "gui/logo_13x15_dark");
+
+    public static final UITexture SLOT_EEC_SPAWNER = UITexture.fullImage(Tags.MODID, "gui/slot/gray_spawner");
+
+    public static final UITexture SLOT_EEC_SWORD = UITexture.fullImage(Tags.MODID, "gui/slot/gray_sword");
+
     public static final UITexture OVERLAY_BUTTON_EEC_RITUAL_MODE_ON = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_ritual_mode_on");
 
@@ -38,4 +44,9 @@ public class KubaTechUITextures {
 
     public static final UITexture OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF = UITexture
         .fullImage(Tags.MODID, "gui/overlay_button/machine_mode_eec_weapon_preservation_off");
+
+    public static final UITexture SLOT_FUSION_CRAFTER = UITexture.fullImage(Tags.MODID, "gui/slot/fusion_crafter");
+
+    public static final UITexture APIARY_INVENTORY_BACKGROUND = UITexture
+        .fullImage(Tags.MODID, "gui/apiary_inventory_background");
 }
