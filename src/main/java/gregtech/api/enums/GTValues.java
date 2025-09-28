@@ -13,6 +13,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -30,6 +31,7 @@ import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.GTChunkAssociatedData;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -450,6 +452,8 @@ public class GTValues {
     public static final String[] emptyStringArray = new String[0];
     public static final Object[] emptyObjectArray = new Object[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+    @SuppressWarnings("rawtypes")
+    public static final Iterator[] EMPTY_ITERATOR_ARRAY = new Iterator[0];
 
     /**
      * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran. If the
@@ -645,5 +649,10 @@ public class GTValues {
             return StatCollector.translateToLocal(unlocalizedName);
         }
         return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+    }
+
+    public static <T> Iterator<T>[] emptyIteratorArray() {
+        // noinspection unchecked
+        return EMPTY_ITERATOR_ARRAY;
     }
 }
