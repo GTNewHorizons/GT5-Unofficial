@@ -2634,7 +2634,15 @@ for.bees.species.fireessence=Fire Essence
 for.bees.species.unknownwater=Unknown Liquid
 for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
-for.bees.species.dragonblood=Dragonblood
+for.bees.species.manasteel=Manasteel
+for.bees.species.elvenelementium=Elven Elementium
+for.bees.species.terrasteel=Terrasteel
+for.bees.species.gaiaspirit=Gaia Spirit
+for.bees.species.mmm=M-M-M
+for.bees.species.dragonstone=Dragonstone
+
+for.bees.authority.mmm=ignThree
+for.bees.authority.gaia=ignThree
 
 for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Aditya & Noila
 
