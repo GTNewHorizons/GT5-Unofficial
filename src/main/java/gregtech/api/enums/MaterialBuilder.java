@@ -47,6 +47,7 @@ public class MaterialBuilder {
     private String defaultLocalName;
     private FuelType fuelType = FuelType.Diesel;
     private int fuelPower = 0;
+    private float heatDamage = 0.0f;
     private int meltingPoint = 0;
     private int blastFurnaceTemp = 0;
     private boolean blastFurnaceRequired = false;
@@ -107,6 +108,7 @@ public class MaterialBuilder {
             hasGas,
             types,
             extraData,
+            heatDamage,
             meltingPoint,
             blastFurnaceTemp,
             blastFurnaceRequired,
@@ -254,6 +256,12 @@ public class MaterialBuilder {
     public MaterialBuilder setFuel(FuelType fuelType, int fuelPower) {
         this.fuelType = fuelType;
         this.fuelPower = fuelPower;
+        return this;
+    }
+
+    /** Sets the Heat Damage for this Material (negative = frost) */
+    public MaterialBuilder setHeatDamage(float heatDamage) {
+        this.heatDamage = heatDamage;
         return this;
     }
 

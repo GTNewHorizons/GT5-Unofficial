@@ -1088,6 +1088,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         boolean hasGas,
         int types,
         int extraData,
+        float heatDamage,
         int meltingPoint,
         int blastFurnaceTemp,
         boolean blastFurnaceRequired,
@@ -1201,6 +1202,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if ((mTypes & 2) != 0) mSubTags.add(SubTag.SMELTING_TO_FLUID);
 
         // No clue what is going on here...
+        mHeatDamage = heatDamage;
         mMeltingPoint = meltingPoint;
 
         int numberOfComponents = 0;
@@ -1863,15 +1865,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Override
     public boolean remove(SubTag aTag) {
         return mSubTags.remove(aTag);
-    }
-
-    /**
-     * Sets the Heat Damage for this Material (negative = frost)
-     */
-    @SuppressWarnings("UnusedReturnValue") // Maintains signature
-    public Materials setHeatDamage(float aHeatDamage) {
-        mHeatDamage = aHeatDamage;
-        return this;
     }
 
     /**
