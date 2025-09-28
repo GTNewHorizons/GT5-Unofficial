@@ -374,6 +374,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
             if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
+            } else if (getEfficiencyIncrease() > 0 && mEfficiency < maxEff) {
+                mEfficiency = Math.max(0, Math.min(mEfficiency + getEfficiencyIncrease(), maxEff));
             }
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
