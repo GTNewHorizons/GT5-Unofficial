@@ -509,7 +509,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_SODIUMPERSULFATE)
-            .constructMaterial();
+            .constructMaterial()
+            .setHasCorrespondingPlasma(true);
     }
 
     private static Materials loadDesh() {
