@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -45,6 +42,8 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -198,13 +197,13 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public final void sendSound(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.DO_SOUND, aIndex);
         }
     }
 
     public final void sendLoopStart(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
         }
         mSoundRequests++;
@@ -212,7 +211,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.STOP_SOUND_LOOP, aIndex);
         }
     }
@@ -524,13 +523,13 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block block, int meta, RenderBlocks renderer) {
+    public boolean renderInInventory(ISBRInventoryContext ctx) {
         return false;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
+    public boolean renderInWorld(ISBRWorldContext ctx) {
         return false;
     }
 
@@ -581,6 +580,12 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         } else {
             GTUIInfos.openGTTileEntityUI(getBaseMetaTileEntity(), player);
         }
+
+        onGuiOpened(player);
+    }
+
+    protected void onGuiOpened(EntityPlayer player) {
+
     }
 
     /**

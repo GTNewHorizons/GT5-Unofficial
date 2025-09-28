@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
@@ -221,6 +222,9 @@ public class RecipeLoaderNuclear {
             .addTo(UniversalChemical);
 
         // Sodium Fluoride
+
+        // Circuit 15 causes recipes added to UniversalChemical to be single-block only, so we manually circumvent this
+        // logic here instead of changing the circuit
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
@@ -228,7 +232,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
@@ -237,7 +241,25 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1_000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 
     private static void dehydratorRecipes() {

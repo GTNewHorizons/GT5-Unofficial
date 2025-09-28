@@ -178,7 +178,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Plant, WPP")
-            .addInfo("Main controller block for the Water Purification Plant.")
+            .addInfo("Main controller block for the Water Purification Plant")
             .addInfo(
                 "Freely place " + EnumChatFormatting.YELLOW
                     + "Purification Units "
@@ -187,20 +187,20 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + EnumChatFormatting.RED
                     + MAX_UNIT_DISTANCE
                     + EnumChatFormatting.GRAY
-                    + " blocks along each axis.")
-            .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
-            .addInfo("Supplies power to linked purification units.")
+                    + " blocks along each axis")
+            .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
+            .addInfo("Supplies power to linked purification units")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED
                     + CYCLE_TIME_TICKS / SECONDS
                     + EnumChatFormatting.GRAY
-                    + " seconds.")
-            .addInfo("All linked units follow this cycle.")
+                    + " seconds")
+            .addInfo("All linked units follow this cycle")
             .addSeparator()
             .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
-            .addInfo("by using a portion of the target output as a secondary input.")
+            .addInfo("by using a portion of the target output as a secondary input")
             .addInfo(
                 EnumChatFormatting.RED + GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
                     + "%"
@@ -211,18 +211,18 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " increase to success.")
+                    + " increase to success")
             .addInfo(
                 "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
                     + "50%"
                     + EnumChatFormatting.GRAY
                     + " chance")
-            .addInfo("to return water of the same quality as the input or lower.")
+            .addInfo("to return water of the same quality as the input or lower")
             .addSeparator()
-            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount.")
+            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount")
             .addInfo(
-                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged.")
-            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O.")
+                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged")
+            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -239,7 +239,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "purification processes, and this multiblock is the heart of the operation.")
+                    + "purification processes, and this multiblock is the heart of the operation")
             .beginStructureBlock(7, 9, 8, false)
             .addController("Front center")
             .addCasingInfoExactlyColored(

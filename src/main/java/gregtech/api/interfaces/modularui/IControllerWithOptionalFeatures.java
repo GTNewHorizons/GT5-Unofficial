@@ -53,6 +53,10 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
 
     void enableWorking();
 
+    void setMuffled(boolean value);
+
+    boolean isMuffled();
+
     Pos2d getPowerSwitchButtonPos();
 
     default ButtonWidget createPowerSwitchButton(IWidgetBuilder<?> builder) {
@@ -84,6 +88,26 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .setPos(getPowerSwitchButtonPos())
             .setSize(16, 16);
         return (ButtonWidget) button;
+    }
+
+    default ButtonWidget createMuffleButton(IWidgetBuilder<?> builder) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setMuffled(!isMuffled()); })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isMuffled()) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
+            .setPos(200, 0)
+            .setSize(12, 12);
     }
 
     Pos2d getVoidingModeButtonPos();
@@ -185,20 +209,11 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
         if (!supportsMachineModeSwitch()) return null;
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (supportsMachineModeSwitch()) {
-                onMachineModeSwitchClick();
-                setMachineMode(nextMachineMode());
-            }
+            onMachineModeSwitchClick();
+            setMachineMode(nextMachineMode());
         })
-            .setPlayClickSound(supportsMachineModeSwitch())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (supportsMachineModeSwitch()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(getMachineModeIcon(getMachineMode()));
-                } else return null;
-                return ret.toArray(new IDrawable[0]);
-            })
+            .setPlayClickSound(true)
+            .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, getMachineModeIcon(getMachineMode()) })
             .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)

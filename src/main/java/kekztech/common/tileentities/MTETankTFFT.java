@@ -21,6 +21,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -146,7 +147,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
 
         private int getHint(ItemStack stack) {
-            return GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 0, Field.VALUES.length);
+            return GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 1, Field.VALUES.length);
         }
 
         @Override
@@ -166,12 +167,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int fieldTier = getHint(trigger);
+            boolean isPreview = !(env.getActor() instanceof EntityPlayerMP);
             ItemStack result = env.getSource()
                 .takeOne(
                     s -> s != null && s.stackSize >= 0
                         && s.getItem() == TFFT_FIELD_ITEM
                         && s.getItemDamage() != CASING_META
-                        && s.getItemDamage() <= fieldTier,
+                        && (isPreview ? s.getItemDamage() == fieldTier : s.getItemDamage() <= fieldTier),
                     true);
             if (result == null) return PlaceResult.REJECT;
 
@@ -340,13 +342,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
             .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+            .addInfo("Has 1/25th of the total capacity as capacity for each fluid")
+            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding")
+            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used")
             .addSeparator()
             .addInfo("Note on hatch locking:")
-            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
-            .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
+            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
+            .addInfo("The index of a stored fluid can be obtained through the Tricorder")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Top Center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
@@ -370,10 +372,12 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
-            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
-        for (int i = -1; i >= 1 - layer; i--) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, i);
-        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer);
+        for (int i = 1; i <= layer; i++) {
+            buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, -i);
+        }
+        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer - 1);
     }
 
     @Override
@@ -382,12 +386,12 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
-            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
-        for (int i = -1; i >= 1 - layer; i--) {
-            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
+        for (int i = 1; i <= layer; i++) {
+            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, -i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer - 1, elementBudget, env, false, true);
     }
 
     @Override
