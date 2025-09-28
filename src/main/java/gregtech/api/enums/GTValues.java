@@ -588,7 +588,6 @@ public class GTValues {
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
-        text("Author: "),
         animatedText(
             "Noc",
             0,
@@ -620,6 +619,7 @@ public class GTValues {
             EnumChatFormatting.WHITE + BOLD,
             EnumChatFormatting.BLUE + BOLD,
             EnumChatFormatting.GOLD + BOLD));
+
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
     private static final float[] EXPLOSION_LOOKUP_POWER = new float[] { 1.0F, 2.0F, 3.0F, 4.0F, 5.0F, 6.0F, 7.0F, 8.0F,

@@ -1919,13 +1919,14 @@ public class Textures {
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
         OVERLAY_NANITE_HATCH_GLOW,
-
+        MACHINE_CASING_CHAMBER_CENTRIFUGE,
+        SIEVE_MESH,
         NANO_FORGE_CASING_1,
         NANO_FORGE_CASING_2,
         NANO_FORGE_CASING_3,
         NANO_FORGE_CASING_4,
         NANITE_CORE,
-        NANITE_SHIELDING_FRAME,
+        NANITE_SHIELDING_FRAME
 
         // semicolon after the comment to reduce merge conflicts
         ;
