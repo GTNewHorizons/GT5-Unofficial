@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
-import java.util.stream.Stream;
 
 /**
  * Various util methods for managing raw data structures that are minecraft/gt agnostic.
@@ -113,6 +113,7 @@ public class GTDataUtils {
     public static <T> Iterable<T> singletonIterable(T object) {
         return () -> ObjectIterators.singleton(object);
     }
+
     public static <T> Stream<T> ofNullableStream(T value) {
         return value == null ? Stream.empty() : Stream.of(value);
     }
