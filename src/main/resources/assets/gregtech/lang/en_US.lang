@@ -3446,6 +3446,7 @@ gt.channelfor.super_chest=Super Chest Tier
 # Used in addMachineType
 # CONTEXT: Machine type: (machtype)
 machtype.ebf=Blast Furnace, EBF
+machtype.lcr=Chemical Reactor, LCR
 machtype.purif_plant=Purification Plant, WPP
 machtype.fluid_tank=Fluid Tank
 machtype.mega_apiary=Mega Apiary, Mapiary
@@ -3468,6 +3469,11 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
+
+gt.lcr.tips.1=Accepts fluids instead of fluid cells
+gt.lcr.info.1=Center
+gt.lcr.info.2=Adjacent to the PTFE Pipe Machine Casing
+gt.lcr.info.3=You can have multiple hatches/buses
 
 gt.adv_assline.tips.1=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier
 gt.adv_assline.tips.2=Runs imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
