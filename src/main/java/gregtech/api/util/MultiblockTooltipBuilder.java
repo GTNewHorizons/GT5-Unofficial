@@ -324,6 +324,11 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
+    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color) {
+        addSeparator(color, 0);
+        return this;
+    }
+
     /**
      * Add a line telling how much this machine pollutes.
      *
@@ -391,7 +396,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addController(String info) {
         addStructurePart(
             "GT5U.MBTT.Controller",
-            canTranslate(info) ? translateToLocal(info) : tryTranslate("gt.mb.corepos." + info, info));
+            canTranslate("gt.mb.corepos." + info) ? "gt.mb.corepos." + info : info);
         return this;
     }
 
@@ -426,7 +431,7 @@ public class MultiblockTooltipBuilder {
         int count, EnumChatFormatting countColor, boolean isTiered) {
         addStructureInfo(
             "" + countColor + count + "x " + textColor + "%s%s",
-            translateToLocal(casingName),
+            casingName,
             (isTiered ? "GT5U.MBTT.Tiered" : " "));
         return this;
     }

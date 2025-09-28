@@ -3022,8 +3022,6 @@ GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when
 GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
 # GT structure hints
-GT5U.tooltip.structure.data_access_hatch=Data Access Hatch
-GT5U.tooltip.structure.electromagnet_housing=Electromagnet Housing
 GT5U.tooltip.structure.laser_source_hatch=Laser Source Hatch
 GT5U.tooltip.structure.heating_coil=Heating Coil
 GT5U.tooltip.structure.four_item_pipe_casings=4 Item Pipe Casings
@@ -3461,6 +3459,7 @@ machtype.cold_trap=Cold Trap
 machtype.energy_storage=Energy Storage
 machtype.lsc=LSC
 machtype.gas_turbine=Gas Turbine
+machtype.adv_assline=Assembly Line, AAL
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3470,7 +3469,17 @@ gt.mb.corepos.top_center=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
 
-gt.ebf.tips.1=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5%% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100%% efficiency)
+gt.adv_assline.tips.1=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier
+gt.adv_assline.tips.2=Runs imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
+gt.adv_assline.info.1=From Bottom to Top, Left to Right\n   Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\n   Layer 2 - Glass, Assembly Line Casing, Glass\n   Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\n   Layer 4 - Empty, Solid Steel Machine Casing, Empty\n   Up to 16 repeating slices, each one allows for 1 more item in recipes
+gt.adv_assline.info.2=Either Grate on layer 3 of the first slice
+gt.adv_assline.info.3=Any layer 4 casing
+gt.adv_assline.info.4=Any layer 1 casing
+gt.adv_assline.info.5=As specified on layer 1
+gt.adv_assline.info.6=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
+gt.adv_assline.info.7=Any Grate Machine Casing NOT on the first slice
+
+gt.ebf.tips.1=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
 gt.ebf.info.1=Heating Coils
 gt.ebf.info.2=Any bottom layer casing
 gt.ebf.info.3=Top middle
