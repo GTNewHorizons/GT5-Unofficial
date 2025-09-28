@@ -48,6 +48,7 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
+import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -4111,7 +4112,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 MachineType.CUTTING_MACHINE.tooltipDescription(),
                 RecipeMaps.cutterRecipes,
-                1,
+                2,
                 2,
                 true,
                 SoundResource.GTCEU_LOOP_CUT,
@@ -7647,6 +7648,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
+    @Deprecated
     private void registerSlicingMachine() {
         ItemList.Machine_LV_Slicer.set(
             new MTEBasicMachineWithRecipe(
@@ -7654,7 +7656,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.01",
                 "Basic Slicing Machine",
                 1,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7669,7 +7673,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.02",
                 "Advanced Slicing Machine",
                 2,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7684,7 +7690,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.03",
                 "Advanced Slicing Machine II",
                 3,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7699,7 +7707,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.04",
                 "Advanced Slicing Machine III",
                 4,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7714,7 +7724,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.05",
                 "Advanced Slicing Machine IV",
                 5,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7729,7 +7741,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.06",
                 "Elite Slicing Machine",
                 6,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 slicerRecipes,
                 2,
                 1,
@@ -7744,7 +7758,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.07",
                 "Elite Slicing Machine II",
                 7,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 slicerRecipes,
                 2,
                 1,
@@ -7759,7 +7775,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.08",
                 "Ultimate Quantum Slicer",
                 8,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7774,7 +7793,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.09",
                 "Epic Quantum Slicer",
                 9,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7789,7 +7811,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.10",
                 "Epic Quantum Slicer II",
                 10,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7804,7 +7829,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.11",
                 "Epic Quantum Slicer III",
                 11,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7819,7 +7847,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.12",
                 "Epic Quantum Slicer IV",
                 12,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,

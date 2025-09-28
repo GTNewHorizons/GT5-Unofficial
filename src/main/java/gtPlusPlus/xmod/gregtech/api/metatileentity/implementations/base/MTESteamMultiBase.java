@@ -20,6 +20,7 @@ import java.util.Optional;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -74,7 +75,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
-    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles Speed and Steam Usage";
+    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles " + EnumChatFormatting.GREEN
+        + "Speed"
+        + EnumChatFormatting.GRAY
+        + " and "
+        + EnumChatFormatting.AQUA
+        + "Steam Usage";
 
     public MTESteamMultiBase(String aName) {
         super(aName);
@@ -394,6 +400,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    /*
+     * With batch mode enabled (True by default from config), HP steam multi processing times get rounded and look weird
+     * Setting them to false here will make it look normal again. (Steam multi's can't process every tick anyway)
+     * Batch mode is also now supported to account for players who wish to change this behavior
+     */
+
+    @Override
+    public boolean getDefaultBatchMode() {
         return false;
     }
 
