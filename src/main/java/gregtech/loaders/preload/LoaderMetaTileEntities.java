@@ -47,8 +47,9 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.enums.GTValues;
 import org.apache.commons.lang3.ArrayUtils;
+
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
