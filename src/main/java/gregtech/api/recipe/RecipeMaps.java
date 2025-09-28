@@ -555,9 +555,9 @@ public final class RecipeMaps {
         .useCustomFilterForNEI()
         .neiSpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE)
         .neiRecipeComparator(
-            Comparator
-                .<GTRecipe, Integer>comparing(
-                    recipe -> FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt))
+            Comparator.<GTRecipe, Integer>comparing(
+                recipe -> FusionSpecialValueFormatter
+                    .getFusionTier(recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L), recipe.mEUt))
                 .thenComparing(GTRecipe::compareTo))
         .frontend(FluidOnlyFrontend::new)
         .build();

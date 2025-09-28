@@ -82,8 +82,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Pellet Mold
     Pellet_Mold,
 
-    // Upgrade chip for Distillus
-    Distillus_Upgrade_Chip,
+    // Upgrade chip for Maceration Stack
     Maceration_Upgrade_Chip,
 
     // Milling Balls
@@ -332,7 +331,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Casing_RocketEngine,
     Controller_RocketEngine,
 
-    // Large Semi-Fluid
+    // Large Semifluid
     Controller_LargeSemifluidGenerator,
 
     // IsaMill
@@ -638,7 +637,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Transformer_HA_UV_ZPM,
     Transformer_HA_MAX_UV,
 
-    // Semi-Fluid generators
+    // Semifluid generators
     Generator_SemiFluid_LV,
     Generator_SemiFluid_MV,
     Generator_SemiFluid_HV,

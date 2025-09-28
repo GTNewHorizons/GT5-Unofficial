@@ -102,6 +102,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -154,14 +155,16 @@ import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
+import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.maglev.TetherManager;
-import gregtech.common.handlers.PowerGogglesEventHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.pollution.Pollution;
+import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
+import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -683,6 +686,7 @@ public class GTProxy implements IFuelHandler {
     private Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
+    public GTPowerfailTracker powerfailTracker;
     public TetherManager tetherManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
@@ -1027,13 +1031,14 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
+        MinecraftForge.EVENT_BUS.register(new PowerGogglesWorldSavedData());
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
         FMLCommonHandler.instance()
             .bus()
-            .register(new PowerGogglesEventHandler());
-        MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
+            .register(PowerGogglesEventHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(PowerGogglesEventHandler.getInstance());
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
             .registerGlobalListener(MetaGeneratedTool::switchToolMode);
@@ -1165,9 +1170,12 @@ public class GTProxy implements IFuelHandler {
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
         spawnEventHandler = new GTSpawnEventHandler();
+        powerfailTracker = new GTPowerfailTracker();
         tetherManager = new TetherManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
+        FMLCommonHandler.instance().bus().register(powerfailTracker);
+        MinecraftForge.EVENT_BUS.register(powerfailTracker);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
@@ -1223,22 +1231,30 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerStopped(FMLServerStoppedEvent event) {
         // spotless:off
+        if (wirelessChargerManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
+        }
         if (spawnEventHandler != null) {
             MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+        }
+        if (powerfailTracker != null) {
+            FMLCommonHandler.instance().bus().unregister(powerfailTracker);
+            MinecraftForge.EVENT_BUS.unregister(powerfailTracker);
         }
         if (tetherManager != null) {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
         }
-        if (wirelessChargerManager != null) {
-            FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
-        }
-        spawnEventHandler = null;
-        tetherManager = null;
         wirelessChargerManager = null;
+        spawnEventHandler = null;
+        powerfailTracker = null;
+        tetherManager = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
+
+        PowerGogglesEventHandler.getInstance()
+            .onServerStopped(event);
     }
 
     /**
@@ -2454,7 +2470,7 @@ public class GTProxy implements IFuelHandler {
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerLoggedIn(PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2468,7 +2484,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void playerMap$onPlayerLeft(PlayerLoggedOutEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2482,7 +2498,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerChangeDim(PlayerChangedDimensionEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2496,7 +2512,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerRespawn(PlayerRespawnEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
