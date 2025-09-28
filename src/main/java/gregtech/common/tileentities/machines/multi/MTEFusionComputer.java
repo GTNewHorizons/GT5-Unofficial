@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
@@ -113,9 +112,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     'i',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(
-                                gregtech.api.enums.HatchElement.InputHatch.or(gregtech.api.enums.HatchElement.InputBus),
-                                gregtech.api.enums.HatchElement.OutputHatch)
+                            .atLeast(gregtech.api.enums.HatchElement.InputHatch)
                             .casingIndex(53)
                             .dot(1)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
@@ -132,8 +129,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     'x',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(OutputHatch.withAdder(MTEFusionComputer::addExtractor))
-                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
+                            .atLeast(gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(53)
                             .dot(3)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
@@ -236,16 +232,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         if (tHatch.mTier < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mEnergyHatches.add(tHatch);
-    }
-
-    private boolean addExtractor(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        if (aBaseMetaTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof MTEHatchOutput tHatch)) return false;
-        if (tHatch.getTierForStructure() < tier()) return false;
-        tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatches.add(tHatch);
     }
 
     private boolean addDroneHatch(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
