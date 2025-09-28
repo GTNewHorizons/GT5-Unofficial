@@ -727,7 +727,7 @@ GT5U.power_goggles_config.text_good=Good Text Color
 GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
 
 GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pylon
-GT5U.maglevHarness.pylons=§4YOU MUST CONSTRUCT ADDITIONAL PYLONS!
+GT5U.maglevHarness.pylons=§9YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
@@ -1491,6 +1491,7 @@ GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
+GT5U.gui.text.powerfail_events=Powerfail Events
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
@@ -1890,7 +1891,7 @@ GT5U.nei.display.usage.original=Original usage: %s EU/t %s
 GT5U.nei.display.usage.steam=Usage: %s L/s of Steam
 GT5U.nei.display.voltage=Voltage: %s EU/t %s
 GT5U.nei.display.amperage=Amperage: %s A
-GT5U.nei.display.overclock= (OC)
+GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
 
 GT5U.biomes.humidity=Humidity:
