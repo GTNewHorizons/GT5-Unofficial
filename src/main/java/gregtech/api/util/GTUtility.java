@@ -252,6 +252,10 @@ public class GTUtility {
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
     }
 
+    public static int longToInt(long number) {
+        return (int) Math.min(Integer.MAX_VALUE, number);
+    }
+
     public static Field getField(Object aObject, String aField) {
         Field rField = null;
         try {
@@ -2107,6 +2111,19 @@ public class GTUtility {
             fluidStack = GTUtility.getFluidFromDisplayStack(stack);
         }
         return fluidStack;
+    }
+
+    public static Object2LongOpenHashMap<ItemId> getItemStackHistogram(Iterable<ItemStack> stacks) {
+        Object2LongOpenHashMap<ItemId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItem() == null) continue;
+            histogram.addTo(ItemId.create(stack), stack.stackSize);
+        }
+
+        return histogram;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -4057,6 +4074,32 @@ public class GTUtility {
         return new ValidMTEList<>(metaTileEntities);
     }
 
+    /**
+     * Filters a list of MTEs into a list of a subclass
+     *
+     * @param mtes     The original list of MTEs
+     * @param mteClass The MTE subclass to filter
+     * @return The filtered list of valid MTEs
+     * @param <MTESuper> The MTE superclass
+     * @param <MTEImpl>  The MTE implementation class/subclass
+     */
+    public static <MTESuper extends MetaTileEntity, MTEImpl extends MTESuper> List<MTEImpl> getMTEsOfType(
+        List<MTESuper> mtes, Class<MTEImpl> mteClass) {
+        List<MTEImpl> out = new ArrayList<>(mtes.size());
+
+        for (int i = 0, mtesSize = mtes.size(); i < mtesSize; i++) {
+            MTESuper mte = mtes.get(i);
+
+            if (mte != null && mte.isValid()) {
+                if (mteClass.isInstance(mte)) {
+                    out.add(mteClass.cast(mte));
+                }
+            }
+        }
+
+        return out;
+    }
+
     @Nullable
     public static IMetaTileEntity getMetaTileEntity(TileEntity tileEntity) {
         if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
@@ -5185,6 +5228,13 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        public boolean matches(ItemStack stack) {
+            if (item() != stack.getItem()) return false;
+            if (metaData() != Items.feather.getDamage(stack)) return false;
+
+            return Objects.equals(nbt(), stack.getTagCompound());
         }
     }
 

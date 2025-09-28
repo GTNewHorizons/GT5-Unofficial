@@ -71,7 +71,7 @@ public class TooltipHelper {
     /**
      * Wraps input string in EFF colors
      * Will have Dark Gray if value is unchanged standard
-     * 
+     *
      * @param eff Efficiency. {@link TooltipHelper#EFF_COLOR}
      * @return Colored String
      */

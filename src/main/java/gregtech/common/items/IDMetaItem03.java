@@ -202,6 +202,7 @@ public enum IDMetaItem03 {
     Prismatic_Crystal(249),
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet(250),
     Naquarite_Universal_Insulator_Foil(251),
+    Manafly(252),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
