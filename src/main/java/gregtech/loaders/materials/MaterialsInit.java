@@ -3634,7 +3634,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.NO_SMELTING)
             .constructMaterial();
     }
 
