@@ -10904,7 +10904,6 @@ public class MaterialsInit {
             .addAspect(TCAspects.TUTAMEN, 1)
             .addOreByproduct(() -> Materials.Biotite)
             .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
@@ -12512,7 +12511,6 @@ public class MaterialsInit {
             .addAspect(TCAspects.TUTAMEN, 1)
             .addOreByproduct(() -> Materials.PotassiumFeldspar)
             .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.STONE)
             .constructMaterial();
     }
