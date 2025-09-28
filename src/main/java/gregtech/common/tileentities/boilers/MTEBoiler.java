@@ -278,7 +278,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     @SideOnly(Side.CLIENT)
     protected void updateSoundLoops(boolean playBoiling) {
-        if (playBoiling && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (playBoiling && !getBaseMetaTileEntity().isMuffled()) {
             if (mBoilingSound == null) {
                 mBoilingSound = new GTSoundLoop(
                     SoundResource.GTCEU_LOOP_BOILER.resourceLocation,
@@ -295,7 +295,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 mBoilingSound = null;
             }
         }
-        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (mHeatingSound == null) {
                 mHeatingSound = new GTSoundLoop(
                     SoundResource.GTCEU_LOOP_FURNACE.resourceLocation,
@@ -595,6 +595,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 new SlotWidget(inventoryHandler, 1).setAccess(true, false)
                     .setPos(43, 61)
                     .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
+            .widget(createMuffleButton())
             .widget(createFuelSlotMui1())
             .widget(createAshSlotMui1())
             .widget(
