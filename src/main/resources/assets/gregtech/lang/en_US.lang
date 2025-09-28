@@ -1491,6 +1491,7 @@ GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
+GT5U.gui.text.powerfail_events=Powerfail Events
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
@@ -2633,7 +2634,15 @@ for.bees.species.fireessence=Fire Essence
 for.bees.species.unknownwater=Unknown Liquid
 for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
-for.bees.species.dragonblood=Dragonblood
+for.bees.species.manasteel=Manasteel
+for.bees.species.elvenelementium=Elven Elementium
+for.bees.species.terrasteel=Terrasteel
+for.bees.species.gaiaspirit=Gaia Spirit
+for.bees.species.mmm=M-M-M
+for.bees.species.dragonstone=Dragonstone
+
+for.bees.authority.mmm=ignThree
+for.bees.authority.gaia=ignThree
 
 for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Aditya & Noila
 
