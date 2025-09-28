@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -17,9 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,15 +40,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
@@ -74,7 +72,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
-    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles Speed and Steam Usage";
+    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles " + EnumChatFormatting.GREEN
+        + "Speed"
+        + EnumChatFormatting.GRAY
+        + " and "
+        + EnumChatFormatting.AQUA
+        + "Steam Usage";
 
     public MTESteamMultiBase(String aName) {
         super(aName);
@@ -323,67 +326,16 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) return false;
-        aStack = GTUtility.copyOrNull(aStack);
+    public List<IOutputBus> getOutputBusses() {
+        List<IOutputBus> output = new ArrayList<>(mSteamOutputs.size());
 
-        final List<MTEHatchSteamBusOutput> validBusses = filterValidMTEs(mSteamOutputs);
-        if (dumpItem(validBusses, aStack, true, false)) return true;
-        if (dumpItem(validBusses, aStack, false, false)) return true;
+        for (int i = 0, mOutputBussesSize = mSteamOutputs.size(); i < mOutputBussesSize; i++) {
+            MTEHatchSteamBusOutput outputBus = mSteamOutputs.get(i);
 
-        boolean outputSuccess = true;
-        final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
-        while (outputSuccess && aStack.stackSize > 0) {
-            outputSuccess = false;
-            ItemStack single = aStack.splitStack(1);
-            for (MTEHatchOutput tHatch : filteredHatches) {
-                if (!outputSuccess && tHatch.outputsItems()) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .addStackToSlot(1, single)) outputSuccess = true;
-                }
-            }
+            if (outputBus.isValid()) output.add(outputBus);
         }
-        return outputSuccess;
-    }
 
-    @Override
-    public ArrayList<ItemStack> getStoredOutputs() {
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
-            for (int i = tHatch.getBaseMetaTileEntity()
-                .getSizeInventory() - 1; i >= 0; i--) {
-                rList.add(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i));
-            }
-        }
-        return rList;
-    }
-
-    @Override
-    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
-        List<ItemStack> ret = new ArrayList<>();
-        for (final MTEHatch tBus : validMTEList(mSteamOutputs)) {
-            final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-            for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                ret.add(tBus.getStackInSlot(i));
-            }
-        }
-        return ret;
-    }
-
-    @Override
-    public List<ItemStack> getVoidOutputSlots() {
-        List<ItemStack> ret = new ArrayList<>();
-        for (final MTEHatch tBus : validMTEList(mSteamOutputs)) {
-            if (tBus instanceof MTEHatchVoidBus vBus && vBus.isLocked()) {
-                for (ItemStack lockedItem : vBus.getLockedItems()) {
-                    if (lockedItem == null) continue;
-                    ret.add(lockedItem.copy());
-                }
-            }
-        }
-        return ret;
+        return output;
     }
 
     @Override
@@ -394,6 +346,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    /*
+     * With batch mode enabled (True by default from config), HP steam multi processing times get rounded and look weird
+     * Setting them to false here will make it look normal again. (Steam multi's can't process every tick anyway)
+     * Batch mode is also now supported to account for players who wish to change this behavior
+     */
+
+    @Override
+    public boolean getDefaultBatchMode() {
         return false;
     }
 
