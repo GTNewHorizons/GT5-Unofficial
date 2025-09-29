@@ -265,29 +265,13 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadLuminite() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            1,
-            1 | 8,
-            250,
-            250,
-            250,
-            0,
-            "Luminite",
-            "Luminite",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes.dyeWhite);
+        return new MaterialBuilder().setName("Luminite")
+            .setDefaultLocalName("Luminite")
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00fafafa)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
     }
 
     private static Materials loadChlorite() {
