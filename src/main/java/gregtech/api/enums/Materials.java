@@ -61,10 +61,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     @Deprecated
     public static Collection<Materials> VALUES = new LinkedHashSet<>();
-    /**
-     * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a
-     * location where it shouldn't happen.
-     */
 
     // Elements
     public static Materials Aluminium;
