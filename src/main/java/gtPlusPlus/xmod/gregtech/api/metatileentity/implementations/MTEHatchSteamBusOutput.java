@@ -200,4 +200,9 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     public boolean isFilteredToItem(GTUtility.ItemId id) {
         return false;
     }
+
+    @Override
+    public boolean pushOutputInventory() {
+        return false;
+    }
 }
