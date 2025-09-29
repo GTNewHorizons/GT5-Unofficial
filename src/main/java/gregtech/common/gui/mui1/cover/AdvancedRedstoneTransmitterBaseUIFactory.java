@@ -55,8 +55,8 @@ public abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAd
                 coverData.setInverted(state);
                 return coverData;
             },
-            widget -> widget.addTooltip(0, StatCollector.translateToLocal("gt.interact.desc.normal"))
-                .addTooltip(1, StatCollector.translateToLocal("gt.interact.desc.inverted"))
+            widget -> widget.addTooltip(0, StatCollector.translateToLocal("gt.interact.desc.normal.tooltip"))
+                .addTooltip(1, StatCollector.translateToLocal("gt.interact.desc.inverted.tooltip"))
                 .setPos(spaceX * 9, spaceY * getButtonRow()));
     }
 }
