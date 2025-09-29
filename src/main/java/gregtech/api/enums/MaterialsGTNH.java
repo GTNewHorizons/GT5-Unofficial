@@ -131,29 +131,11 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadWimalite() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            2,
-            8,
-            255,
-            255,
-            255,
-            0,
-            "Wimalite",
-            "Wimalite",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes.dyeYellow);
+        return new MaterialBuilder().setName("Wimalite")
+            .setDefaultLocalName("Wimalite")
+            .setColor(Dyes.dyeYellow)
+            .addOreItems()
+            .constructMaterial();
     }
 
     private static Materials loadYellorite() {
