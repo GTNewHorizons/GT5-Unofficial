@@ -124,29 +124,10 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadLimePure() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            0,
-            0,
-            255,
-            255,
-            255,
-            0,
-            "LimePure",
-            "Pure Lime",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            1,
-            1,
-            1,
-            Dyes.dyeLime);
+        return new MaterialBuilder().setName("LimePure")
+            .setDefaultLocalName("Pure Lime")
+            .setColor(Dyes.dyeLime)
+            .constructMaterial();
     }
 
     private static Materials loadWimalite() {
