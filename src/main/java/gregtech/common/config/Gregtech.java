@@ -128,6 +128,11 @@ public class Gregtech {
         @Config.DefaultInt(4)
         @Config.RequiresMcRestart
         public int upgradeStackSize;
+
+        @Config.Comment("Speed up machine update thread by skipping cables. Warning: this can cause weird side effects.")
+        @Config.DefaultBoolean(false)
+        @Config.RequiresMcRestart
+        public boolean speedupMachineUpdateThread;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.general")

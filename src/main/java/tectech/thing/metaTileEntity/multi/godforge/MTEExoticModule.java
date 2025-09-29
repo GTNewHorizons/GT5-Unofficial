@@ -152,9 +152,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfItems != 0) {
-                        for (ItemStack itemStack : randomizedItemInput) {
-                            addOutput(itemStack);
-                        }
+                        addItemOutputs(randomizedItemInput);
                     }
 
                     recipeInProgress = true;
