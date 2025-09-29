@@ -1503,6 +1503,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         private int getHint(ItemStack stack) {
             return switch (Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
                 .getValueClamped(stack, 1, Capacitor.VALUES_BY_TIER.length) - 1].getMinimalGlassTier() + 1) {
+                // This is necessary for mapping from channel number to the correct capacitor tier
                 case 2 -> 7;
                 case 3 -> 1;
                 case 4 -> 2;
