@@ -53,8 +53,14 @@ public abstract class TeaItem extends Item {
     }
 
     public FluidStack getFluidStack(ItemStack stack, int amount) {
+        Tea tea = getTea(stack);
+        if (tea == null) return null;
+        return new FluidStack(tea.fluid, amount);
+    }
+
+    protected Tea getTea(ItemStack stack) {
         String t = Tea.metaToName.getOrDefault(stack.getItemDamage(), null);
         if (t == null) return null;
-        return new FluidStack(Tea.teas.get(t).fluid, amount);
+        return Tea.teas.get(t);
     }
 }
