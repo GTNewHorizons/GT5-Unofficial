@@ -20,8 +20,8 @@ public class Tea {
     protected static final HashMap<String, Tea> teas = new HashMap<>();
     public static final TeaItemCup cupItem = new TeaItemCup();
     public static final TeaItemBucket bucketItem = new TeaItemBucket();
-    private static final ItemStack EMPTY_CUP = new ItemStack(cupItem, 1, 0);
-    private static final ItemStack EMPTY_BUCKET = new ItemStack(bucketItem, 1, 0);
+    public static final ItemStack EMPTY_CUP = new ItemStack(cupItem, 1, 0);
+    public static final ItemStack EMPTY_BUCKET = new ItemStack(bucketItem, 1, 0);
 
     final String name;
     final TeaFluid fluid;
