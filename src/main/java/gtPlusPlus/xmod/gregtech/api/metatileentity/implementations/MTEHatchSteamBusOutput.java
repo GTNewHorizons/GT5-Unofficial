@@ -28,8 +28,8 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
             aName,
             aNameRegional,
             aTier,
-            new String[] { "Item Output for Steam Multiblocks", "Automatically export items",
-                "Capacity: 4 stacks", "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() },
+            new String[] { "Item Output for Steam Multiblocks", "Automatically export items", "Capacity: 4 stacks",
+                "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() },
             4);
     }
 
