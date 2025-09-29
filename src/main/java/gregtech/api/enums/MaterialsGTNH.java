@@ -245,29 +245,9 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadSolutionBlueVitriol() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            2,
-            0,
-            255,
-            255,
-            255,
-            0,
-            "SolutionBlueVitriol",
-            "Blue Vitriol Solution",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("SolutionBlueVitriol")
+            .setDefaultLocalName("Blue Vitriol Solution")
+            .constructMaterial();
     }
 
     private static Materials loadSolutionNickelSulfate() {
