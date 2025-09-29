@@ -58,11 +58,11 @@ public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
                     IKey.dynamic(() -> {
                         DetectionMode mode = detectionModeSyncValue.getValue();
                         if (mode == DetectionMode.MACHINE_ENABLED) {
-                            return StatCollector.translateToLocal("gt.interact.desc.MachineEnabled");
+                            return translateToLocal("gt.interact.desc.MachineEnabled");
                         } else if (mode == DetectionMode.MACHINE_IDLE) {
-                            return StatCollector.translateToLocal("gt.interact.desc.MachineIdle");
+                            return translateToLocal("gt.interact.desc.MachineIdle");
                         } else {
-                            return StatCollector.translateToLocal("gt.interact.desc.RecipeProgress");
+                            return translateToLocal("gt.interact.desc.RecipeProgress");
                         }
                     })
                         .asWidget())
