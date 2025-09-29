@@ -154,29 +154,11 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadTapazite() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            1,
-            1,
-            255,
-            255,
-            255,
-            0,
-            "Tapazite",
-            "Tapazite",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes.dyeGreen);
+        return new MaterialBuilder().setName("Tapazite")
+            .setDefaultLocalName("Tapazite")
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .constructMaterial();
     }
 
     private static Materials loadThyrium() {
