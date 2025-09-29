@@ -162,29 +162,12 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadThyrium() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            1,
-            1 | 2 | 8,
-            255,
-            255,
-            255,
-            0,
-            "Thyrium",
-            "Thyrium",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Thyrium")
+            .setDefaultLocalName("Thyrium")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
     }
 
     private static Materials loadTourmaline() {
