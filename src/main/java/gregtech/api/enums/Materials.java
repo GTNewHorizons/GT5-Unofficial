@@ -1244,18 +1244,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     @Deprecated
-    public Materials(Materials aMaterialInto, boolean aReRegisterIntoThis) {
-        mUnificatable = false;
-        mDefaultLocalName = aMaterialInto.mDefaultLocalName;
-        mName = aMaterialInto.mName;
-        mMaterialInto = aMaterialInto.mMaterialInto;
-        if (aReRegisterIntoThis) mMaterialInto.mOreReRegistrations.add(this);
-        mChemicalFormula = aMaterialInto.mChemicalFormula;
-        mMetaItemSubID = -1;
-        mIconSet = TextureSet.SET_NONE;
-    }
-
-    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1284,39 +1272,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aDensityDivider,
             aColor,
             "ore",
-            false,
-            "null");
-    }
-
-    @Deprecated
-    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
-        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection) {
-        this(
-            aMetaItemSubID,
-            aIconSet,
-            aToolSpeed,
-            aDurability,
-            aToolQuality,
-            aTypes,
-            aR,
-            aG,
-            aB,
-            aA,
-            aName,
-            aDefaultLocalName,
-            aFuelType,
-            aFuelPower,
-            aMeltingPoint,
-            aBlastFurnaceTemp,
-            aBlastFurnaceRequired,
-            aTransparent,
-            aOreValue,
-            aDensityMultiplier,
-            aDensityDivider,
-            aColor,
-            aConfigSection,
             false,
             "null");
     }
