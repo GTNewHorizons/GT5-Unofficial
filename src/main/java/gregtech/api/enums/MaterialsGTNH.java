@@ -171,29 +171,11 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadTourmaline() {
-        return new Materials(
-            -1,
-            TextureSet.SET_RUBY,
-            1.0F,
-            0,
-            1,
-            1,
-            255,
-            255,
-            255,
-            0,
-            "Tourmaline",
-            "Tourmaline",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Tourmaline")
+            .setDefaultLocalName("Tourmaline")
+            .setIconSet(TextureSet.SET_RUBY)
+            .addDustItems()
+            .constructMaterial();
     }
 
     private static Materials loadSpinel() {
