@@ -3605,3 +3605,6 @@ item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 
 # Entities
 entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
+
+#mui1
+mui.button.close=x
