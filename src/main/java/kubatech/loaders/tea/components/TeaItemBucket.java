@@ -19,11 +19,13 @@ public class TeaItemBucket extends TeaItem {
 
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
+        if (getTea(stack) == null) return EnumAction.none;
         return EnumAction.drink;
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer entity) {
+        if (getTea(stack) == null) return stack;
         entity.setItemInUse(stack, getMaxItemUseDuration(stack));
         return stack;
     }
