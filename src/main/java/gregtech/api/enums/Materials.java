@@ -1047,27 +1047,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private Fluid[] hydroCrackedFluids = new Fluid[3];
     private Fluid[] steamCrackedFluids = new Fluid[3];
 
-    /*
-     * DOCUMENTATION OUTDATED
-     * @param aMetaItemSubID the Sub-ID used in my own MetaItems. Range 0-1000. -1 for no Material
-     * @param aTypes which kind of Items should be generated. Bitmask as follows: 1 = Dusts of all kinds.
-     * 2 = Dusts, Ingots, Plates, Rods/Sticks, Machine Components and other Metal specific
-     * things. 4 = Dusts, Gems, Plates, Lenses (if transparent). 8 = Dusts, Impure Dusts,
-     * crushed Ores, purified Ores, centrifuged Ores etc. 16 = Cells 32 = Plasma Cells 64 =
-     * Tool Heads 128 = Gears 256 = Designates something as empty (only used for the Empty
-     * material)
-     * @param aR, aG, aB Color of the Material 0-255 each.
-     * @param aA transparency of the Material Texture. 0 = fully visible, 255 = Invisible.
-     * @param aName The Name used as Default for localization.
-     * @param aFuelType Type of Generator to get Energy from this Material.
-     * @param aFuelPower EU generated. Will be multiplied by 1000, also additionally multiplied by 2 for
-     * Gems.
-     * @param aMeltingPoint Used to determine the smelting Costs in furnace. >>>>**ADD 20000 to remove EBF
-     * recipes to add them MANUALLY ! :D**<<<<
-     * @param aBlastFurnaceTemp Used to determine the needed Heat capacity Costs in Blast Furnace.
-     * @param aBlastFurnaceRequired If this requires a Blast Furnace.
-     * @param aColor Vanilla MC Wool Color which comes the closest to this.
-     */
     protected Materials(
         // spotless:off
         String name,
