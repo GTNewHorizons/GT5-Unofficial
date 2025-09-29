@@ -201,29 +201,11 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadPrismarine() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            2,
-            1 | 4,
-            255,
-            255,
-            255,
-            0,
-            "Prismarine",
-            "Prismarine",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Prismarine")
+            .setDefaultLocalName("Prismarine")
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
     }
 
     private static Materials loadGraveyardDirt() {
