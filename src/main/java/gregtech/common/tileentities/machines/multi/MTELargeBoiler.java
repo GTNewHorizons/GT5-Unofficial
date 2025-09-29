@@ -278,8 +278,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 if (tFluid != null && tRecipe.mSpecialValue > 1) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                         this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                         this.mEUt = adjustEUtForConfig(getEUt());
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -290,9 +290,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 if (tFluid != null) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         this.mMaxProgresstime = adjustBurnTimeForConfig(
                             Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         this.mEUt = adjustEUtForConfig(getEUt());
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -374,8 +374,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
             if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
-            } else if (getEfficiencyIncrease() > 0 && mEfficiency < maxEff) {
-                mEfficiency = Math.max(0, Math.min(mEfficiency + getEfficiencyIncrease(), maxEff));
             }
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
