@@ -1201,25 +1201,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
     }
 
-    @Deprecated
-    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-        boolean aUnificatable, String aName, String aDefaultLocalName, String aConfigSection, boolean aCustomOre,
-        String aCustomID) {
-        mMetaItemSubID = aMetaItemSubID;
-        mDefaultLocalName = aDefaultLocalName;
-        mName = aName;
-        MATERIALS_MAP.put(mName, this);
-        mCustomOre = aCustomOre;
-        mCustomID = aCustomID;
-        mConfigSection = aConfigSection;
-        mUnificatable = aUnificatable;
-        mDurability = aDurability;
-        mToolSpeed = aToolSpeed;
-        mToolQuality = (byte) aToolQuality;
-        mMaterialInto = this;
-        mIconSet = aIconSet;
-    }
-
     private static void setOreByproducts() {
         for (Materials material : MATERIALS_MAP.values()) {
             if (material.mPendingOreByproducts == null) continue;
