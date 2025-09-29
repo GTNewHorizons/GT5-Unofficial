@@ -2020,18 +2020,18 @@ gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
 gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
 
 ## Energy Detector
-gt.interact.desc.Energy_Detector.universal=Universal
-gt.interact.desc.Energy_Detector.universal.tooltip=Universal Storage
-gt.interact.desc.Energy_Detector.electricity=Int. EU
-gt.interact.desc.Energy_Detector.electricity.tooltip=Electricity Storage
-gt.interact.desc.Energy_Detector.steam=Steam
-gt.interact.desc.Energy_Detector.steam.tooltip=Steam Storage
-gt.interact.desc.Energy_Detector.average_in=Avg. Input
-gt.interact.desc.Energy_Detector.average_in.tooltip=Average Electric Input
-gt.interact.desc.Energy_Detector.average_out=Avg. Output
-gt.interact.desc.Energy_Detector.average_out.tooltip=Average Electric Output
-gt.interact.desc.Energy_Detector.eu_stored=EU stored
-gt.interact.desc.Energy_Detector.eu_stored.tooltip=Electricity Storage(Including Batteries)
+gt.interact.desc.Energy_Detector.universal=§8Universal
+gt.interact.desc.Energy_Detector.universal.tooltip=§fUniversal Storage
+gt.interact.desc.Energy_Detector.electricity=§8Int. EU
+gt.interact.desc.Energy_Detector.electricity.tooltip=§fElectricity Storage
+gt.interact.desc.Energy_Detector.steam=§8Steam
+gt.interact.desc.Energy_Detector.steam.tooltip=§fSteam Storage
+gt.interact.desc.Energy_Detector.average_in=§8Avg. Input
+gt.interact.desc.Energy_Detector.average_in.tooltip=§fAverage Electric Input
+gt.interact.desc.Energy_Detector.average_out=§8Avg. Output
+gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
+gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
+gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
 
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
