@@ -231,7 +231,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
             list.remove(0);
             wasSomethingRemoved = true;
             for (ItemStack stack : toOutputNow) {
-                addOutput(stack);
+                addOutputPartial(stack);
             }
         }
         return wasSomethingRemoved;
