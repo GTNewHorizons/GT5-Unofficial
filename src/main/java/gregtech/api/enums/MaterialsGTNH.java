@@ -108,29 +108,11 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadDiamondCopper() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            2,
-            1 | 2,
-            255,
-            255,
-            255,
-            0,
-            "DiamondCopper",
-            "Diamond Copper",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("DiamondCopper")
+            .setDefaultLocalName("Diamond Copper")
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
     }
 
     private static Materials loadTarPitch() {
