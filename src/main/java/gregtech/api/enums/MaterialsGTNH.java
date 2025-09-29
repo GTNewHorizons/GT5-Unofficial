@@ -139,29 +139,11 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadYellorite() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            2,
-            8,
-            255,
-            255,
-            255,
-            0,
-            "Yellorite",
-            "Yellorite",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes.dyeYellow);
+        return new MaterialBuilder().setName("Yellorite")
+            .setDefaultLocalName("Yellorite")
+            .setColor(Dyes.dyeYellow)
+            .addOreItems()
+            .constructMaterial();
     }
 
     private static Materials loadTurquoise() {
