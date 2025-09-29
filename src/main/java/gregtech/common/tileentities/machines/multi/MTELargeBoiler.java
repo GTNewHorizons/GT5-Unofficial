@@ -281,6 +281,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                         this.mEUt = adjustEUtForConfig(getEUt());
+                        if (this.mEfficiencyIncrease > 5000) {
+                            this.mEfficiencyIncrease = 0;
+                            this.mSuperEfficencyIncrease = 20;
+                        }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -294,6 +298,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         this.mEUt = adjustEUtForConfig(getEUt());
+                        if (this.mEfficiencyIncrease > 5000) {
+                            this.mEfficiencyIncrease = 0;
+                            this.mSuperEfficencyIncrease = 20;
+                        }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
