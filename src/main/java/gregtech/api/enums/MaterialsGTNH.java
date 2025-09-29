@@ -194,29 +194,10 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadSugilite() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            1,
-            1,
-            255,
-            255,
-            255,
-            0,
-            "Sugilite",
-            "Sugilite",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Sugilite")
+            .setDefaultLocalName("Sugilite")
+            .addDustItems()
+            .constructMaterial();
     }
 
     private static Materials loadPrismarine() {
