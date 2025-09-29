@@ -348,6 +348,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials UMV; @Deprecated public static Materials Exotic;
     public static Materials UXV; @Deprecated public static Materials Cosmic;
     public static Materials MAX; @Deprecated public static Materials Transcendent;
+    // spotless:on
 
     // Circuitry
     public static Materials Resistor;
@@ -933,8 +934,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
-    /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.)*/
-    @Deprecated public static Collection<Materials> VALUES = new LinkedHashSet<>();
+    /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
+    @Deprecated
+    public static Collection<Materials> VALUES = new LinkedHashSet<>();
 
     private static final Map<String, Materials> MATERIALS_MAP = new LinkedHashMap<>();
     private static Materials[] MATERIALS_ARRAY = new Materials[] {};
