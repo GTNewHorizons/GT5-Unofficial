@@ -209,29 +209,10 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadGraveyardDirt() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            2,
-            1,
-            255,
-            255,
-            255,
-            0,
-            "GraveyardDirt",
-            "Graveyard Dirt",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("GraveyardDirt")
+            .setDefaultLocalName("Graveyard Dirt")
+            .addDustItems()
+            .constructMaterial();
     }
 
     private static Materials loadTennantite() {
