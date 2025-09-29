@@ -78,9 +78,6 @@ public class MaterialsGTNH implements IMaterialHandler {
         MaterialsGTNH.MetamorphicMineralMixture = loadMetamorphicMineralMixture();
         MaterialsGTNH.Plagioclase = loadPlagioclase();
         MaterialsGTNH.Epidote = loadEpidote();
-
-        SubTag.METAL.addTo(Signalum, Lumium, EnrichedCopper, DiamondCopper);
-        SubTag.NO_SMASHING.addTo(TarPitch);
     }
 
     private static Materials loadSignalum() {
@@ -88,6 +85,7 @@ public class MaterialsGTNH implements IMaterialHandler {
             .setDefaultLocalName("Signalum")
             .addDustItems()
             .addMetalItems()
+            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -96,6 +94,7 @@ public class MaterialsGTNH implements IMaterialHandler {
             .setDefaultLocalName("Lumium")
             .addDustItems()
             .addMetalItems()
+            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -104,6 +103,7 @@ public class MaterialsGTNH implements IMaterialHandler {
             .setDefaultLocalName("Enriched Copper")
             .addDustItems()
             .addMetalItems()
+            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -112,6 +112,7 @@ public class MaterialsGTNH implements IMaterialHandler {
             .setDefaultLocalName("Diamond Copper")
             .addDustItems()
             .addMetalItems()
+            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -120,6 +121,7 @@ public class MaterialsGTNH implements IMaterialHandler {
             .setDefaultLocalName("Tar Pitch")
             .addDustItems()
             .addMetalItems()
+            .addSubTag(SubTag.NO_SMASHING)
             .constructMaterial();
     }
 
