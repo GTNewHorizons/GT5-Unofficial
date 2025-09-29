@@ -77,16 +77,6 @@ public class MaterialBuilder {
 
     public MaterialBuilder() {}
 
-    /** @deprecated Use {@link MaterialBuilder#MaterialBuilder()} instead. */
-    @Deprecated
-    public MaterialBuilder(int metaItemSubID, TextureSet iconSet, String defaultLocalName) {
-        this.metaItemSubID = metaItemSubID;
-        this.iconSet = iconSet;
-        this.name = defaultLocalName.replace(" ", "")
-            .replace("-", "");
-        this.defaultLocalName = defaultLocalName;
-    }
-
     public Materials constructMaterial() {
         Materials material = new Materials(
             // spotless:off
