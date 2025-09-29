@@ -257,29 +257,11 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadLodestone() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            1,
-            1 | 8,
-            255,
-            255,
-            255,
-            0,
-            "Lodestone",
-            "Lodestone",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            1,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Lodestone")
+            .setDefaultLocalName("Lodestone")
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
     }
 
     private static Materials loadLuminite() {
