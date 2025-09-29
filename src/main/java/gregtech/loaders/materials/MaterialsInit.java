@@ -566,7 +566,7 @@ public class MaterialsInit {
             .setElement(Element._NULL)
             .setMetaItemSubID(0)
             .setARGB(0xffffffff)
-            .setTypes(256) // Only when needed
+            .addEmpty()
             .addAspect(TCAspects.VACUOS, 2)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();

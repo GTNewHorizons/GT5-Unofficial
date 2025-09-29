@@ -183,6 +183,11 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder addEmpty() {
+        types = types | 256;
+        return this;
+    }
+
     public MaterialBuilder addFluid() {
         this.hasFluid = true;
         return this;
@@ -190,13 +195,6 @@ public class MaterialBuilder {
 
     public MaterialBuilder addGas() {
         this.hasGas = true;
-        return this;
-    }
-
-    /** @deprecated Use `addXXX` methods instead. */
-    @Deprecated
-    public MaterialBuilder setTypes(int types) {
-        this.types = types;
         return this;
     }
 
