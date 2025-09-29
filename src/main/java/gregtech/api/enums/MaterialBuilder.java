@@ -205,6 +205,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Use after {@link MaterialBuilder#setARGB(int)} to override {@link MaterialBuilder#argbMolten}. */
     public MaterialBuilder setMoltenARGB(int argb) {
         this.argbMolten = argb;
         return this;
