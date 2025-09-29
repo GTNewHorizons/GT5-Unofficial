@@ -56,7 +56,7 @@ public class AdvancedRedstoneReceiverBaseUIFactory
     protected void addUIWidgets(ModularWindow.Builder builder) {
         super.addUIWidgets(builder);
         builder.widget(
-            new TextWidget(StatCollector.translateToLocal("Gate_Mode"))
+            new TextWidget(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.GateMode"))
                 .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
     }
 
