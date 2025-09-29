@@ -79,7 +79,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      */
     protected String getEUtDisplay(OverclockCalculator calculator) {
         String tier_displayed = shouldShowAmperage(calculator) ? ""
-            : GTUtility.getTierNameWithParentheses(calculator.getConsumption());
+            : getTierNameWithParentheses(calculator.getConsumption(), calculator);
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.usage",
             GTUtility.formatNumbers(calculator.getConsumption()),
@@ -94,8 +94,12 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.voltage",
             GTUtility.formatNumbers(voltage),
-            GTUtility.getTierNameWithParentheses(voltage));
+            getTierNameWithParentheses(voltage, calculator));
 
+    }
+
+    protected String getTierNameWithParentheses(long voltage, OverclockCalculator calculator) {
+        return GTUtility.getTierNameWithParentheses(voltage);
     }
 
     protected String getAmperageString(OverclockCalculator calculator) {

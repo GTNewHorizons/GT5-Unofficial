@@ -67,6 +67,8 @@ public class GTPowerfailRenderer {
                 if (elapsed > Client.render.powerfailNotificationTimeout * 1000L) continue;
             }
 
+            if (player.dimension != p.dim) continue;
+
             double x = p.x + 0.5d;
             double y = p.y + 0.5d;
             double z = p.z + 0.5d;
