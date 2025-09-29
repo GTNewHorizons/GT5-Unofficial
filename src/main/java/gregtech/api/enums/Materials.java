@@ -1203,23 +1203,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-        boolean aUnificatable, String aName, String aDefaultLocalName) {
-        this(
-            aMetaItemSubID,
-            aIconSet,
-            aToolSpeed,
-            aDurability,
-            aToolQuality,
-            aUnificatable,
-            aName,
-            aDefaultLocalName,
-            "ore",
-            false,
-            "null");
-    }
-
-    @Deprecated
-    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         boolean aUnificatable, String aName, String aDefaultLocalName, String aConfigSection, boolean aCustomOre,
         String aCustomID) {
         mMetaItemSubID = aMetaItemSubID;
