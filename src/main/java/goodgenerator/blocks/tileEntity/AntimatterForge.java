@@ -96,6 +96,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private final FluidStack[] upgradeFluids = { null, null, null, null };
     private final int[] fluidConsumptions = { 0, 0, 0, 0 };
 
+    private static final FluidStack ZERO_ANTIMATTER = MaterialsUEVplus.Antimatter.getFluid(0);
+
     public static final String MAIN_NAME = "antimatterForge";
     private final int speed = 20;
     private long rollingCost = 0L;
@@ -478,17 +480,21 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         FluidStack[] antimatterStored = new FluidStack[16];
         long totalAntimatterAmount = 0;
         long minAntimatterAmount = Long.MAX_VALUE;
+        boolean hatchEmpty = false;
         // Calculate the total amount of antimatter in all 16 hatches and the minimum amount found in any individual
         // hatch
         for (int i = 0; i < amOutputHatches.size(); i++) {
+            hatchEmpty = false;
             if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                .isValid()
-                || amOutputHatches.get(i)
-                    .getFluid() == null)
-                continue;
-            antimatterStored[i] = amOutputHatches.get(i)
-                .getFluid()
-                .copy();
+                .isValid()) continue;
+
+            if (amOutputHatches.get(i)
+                .getFluid() == null) hatchEmpty = true;
+
+            antimatterStored[i] = hatchEmpty ? ZERO_ANTIMATTER.copy()
+                : amOutputHatches.get(i)
+                    .getFluid()
+                    .copy();
             totalAntimatterAmount += antimatterStored[i].amount;
             minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
         }
@@ -578,11 +584,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     /*
-     * How much passive energy is drained every tick
-     * Base containment cost: 10M EU/t
-     * The containment cost ramps up by the amount of antimatter each tick, up to 1000 times
-     * If the current cost is more than 1000 times the amount of antimatter, or
-     * if no antimatter is in the hatches, the value will decay by 1% every tick
+     * How much passive energy is drained every tick Base containment cost: 10M EU/t The containment cost ramps up by
+     * the amount of antimatter each tick, up to 1000 times If the current cost is more than 1000 times the amount of
+     * antimatter, or if no antimatter is in the hatches, the value will decay by 1% every tick
      */
     private long calculateEnergyContainmentCost(long antimatterAmount) {
         if (antimatterAmount == 0) {

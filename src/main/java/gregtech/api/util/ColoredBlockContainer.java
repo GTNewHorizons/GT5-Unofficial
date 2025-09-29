@@ -66,8 +66,8 @@ public abstract class ColoredBlockContainer {
     /**
      * Get the color of the block.
      *
-     * @return an Optional with the color of the block inside, or {@link Optional#empty()} if the block is uncolored
-     *         or invalid
+     * @return an Optional with the color of the block inside, or {@link Optional#empty()} if the block is uncolored or
+     *         invalid
      */
     public abstract Optional<Integer> getColor();
 

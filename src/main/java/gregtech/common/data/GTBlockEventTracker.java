@@ -32,7 +32,7 @@ public class GTBlockEventTracker {
     public static void enqueue(World world, int xCoord, int yCoord, int zCoord, byte aID, byte aValue) {
         GTBlockEventTracker tracker = TRACKERS.computeIfAbsent(world, w -> new GTBlockEventTracker());
         tracker.packedCoordinates.add(CoordinatePacker.pack(xCoord, yCoord, zCoord));
-        tracker.idsAndValues.add((short) ((aID << 8) | aValue));
+        tracker.idsAndValues.add((short) ((aID << 8) | (aValue & 0xFF))); // Fix: Treat aValue as unsigned byte
     }
 
     @SubscribeEvent
