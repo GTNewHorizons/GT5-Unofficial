@@ -1580,7 +1580,7 @@ GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=§8>= 1 Issue
 GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=§8>= 2 Issues
 GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=§8>= 3 Issues
 GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=§8>= 4 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=§7>= 5 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=§8>= 5 Issues
 GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=§8Rotor < 20%
 GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=§8Rotor ≈ 0%
 
@@ -2007,9 +2007,9 @@ gt.interact.desc.Wireless_Activity.Enabled=§8Machine enabled
 gt.interact.desc.Wireless_Activity.Idle=§8Machine idle
 gt.interact.desc.Wireless_Activity.Recipe_Progress=§8Recipe progress
 
-gt.interact.tooltip.Wireless_Activity.Recipe_Progress=§8Recipe progress
-gt.interact.tooltip.Wireless_Activity.Idle=§8Machine idle
-gt.interact.tooltip.Wireless_Activity.Enabled=§8Machine enabled
+gt.interact.tooltip.Wireless_Activity.Recipe_Progress=Recipe progress
+gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
+gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
 
 ## Wireless Fluid Detector
 gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
@@ -2018,6 +2018,20 @@ gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
 gt.interact.desc.Item_Item_Detector.All=All
 gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
 gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
+
+## Energy Detector
+gt.interact.desc.Energy_Detector.universal=Universal
+gt.interact.desc.Energy_Detector.universal.tooltip=Universal Storage
+gt.interact.desc.Energy_Detector.electricity=Int. EU
+gt.interact.desc.Energy_Detector.electricity.tooltip=Electricity Storage
+gt.interact.desc.Energy_Detector.steam=Steam
+gt.interact.desc.Energy_Detector.steam.tooltip=Steam Storage
+gt.interact.desc.Energy_Detector.average_in=Avg. Input
+gt.interact.desc.Energy_Detector.average_in.tooltip=Average Electric Input
+gt.interact.desc.Energy_Detector.average_out=Avg. Output
+gt.interact.desc.Energy_Detector.average_out.tooltip=Average Electric Output
+gt.interact.desc.Energy_Detector.eu_stored=EU stored
+gt.interact.desc.Energy_Detector.eu_stored.tooltip=Electricity Storage(Including Batteries)
 
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
