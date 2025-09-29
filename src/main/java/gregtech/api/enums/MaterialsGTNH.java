@@ -239,29 +239,9 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadAquaRegia() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            2,
-            0,
-            255,
-            255,
-            255,
-            0,
-            "AquaRegia",
-            "Aqua Regia",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("AquaRegia")
+            .setDefaultLocalName("Aqua Regia")
+            .constructMaterial();
     }
 
     private static Materials loadSolutionBlueVitriol() {
