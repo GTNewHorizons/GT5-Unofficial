@@ -185,29 +185,12 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadStarconium() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            1,
-            1 | 2 | 8,
-            255,
-            255,
-            255,
-            0,
-            "Starconium",
-            "Starconium",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Starconium")
+            .setDefaultLocalName("Starconium")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
     }
 
     private static Materials loadSugilite() {
