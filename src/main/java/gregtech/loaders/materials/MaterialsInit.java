@@ -8116,8 +8116,8 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .setFuel(MaterialBuilder.FuelType.Gas, 160)
             .addCell()
-            .constructMaterial()
-            .setCanBeCracked(true);
+            .addCrackingRecipes()
+            .constructMaterial();
     }
 
     private static Materials loadHeavyFuel() {
@@ -8129,8 +8129,8 @@ public class MaterialsInit {
             .setARGB(0x00ffff00)
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 240)
             .addCell()
-            .constructMaterial()
-            .setCanBeCracked(true);
+            .addCrackingRecipes()
+            .constructMaterial();
     }
 
     private static Materials loadLightFuel() {
@@ -8142,8 +8142,8 @@ public class MaterialsInit {
             .setARGB(0x00ffff00)
             .setFuel(MaterialBuilder.FuelType.Diesel, 305)
             .addCell()
-            .constructMaterial()
-            .setCanBeCracked(true);
+            .addCrackingRecipes()
+            .constructMaterial();
     }
 
     private static Materials loadLPG() {
@@ -8167,8 +8167,8 @@ public class MaterialsInit {
             .setARGB(0x00ffff00)
             .setFuel(MaterialBuilder.FuelType.Gas, 220)
             .addCell()
-            .constructMaterial()
-            .setCanBeCracked(true);
+            .addCrackingRecipes()
+            .constructMaterial();
     }
 
     private static Materials loadNatruralGas() {

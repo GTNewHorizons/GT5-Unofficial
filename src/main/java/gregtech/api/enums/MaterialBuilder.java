@@ -97,6 +97,7 @@ public class MaterialBuilder {
             hasGas,
             types,
             extraData,
+            canBeCracked,
             heatDamage,
             meltingPoint,
             blastFurnaceTemp,
@@ -114,7 +115,7 @@ public class MaterialBuilder {
             pendingDirectSmelting,
             subTags
             // spotless:on
-        ).setCanBeCracked(canBeCracked);
+        );
 
         for (SubTag subTag : subTags) subTag.addContainerToList(material);
 
@@ -296,6 +297,11 @@ public class MaterialBuilder {
 
     public MaterialBuilder addCentrifugeRecipe() {
         extraData = extraData | 2;
+        return this;
+    }
+
+    public MaterialBuilder addCrackingRecipes() {
+        this.canBeCracked = true;
         return this;
     }
 

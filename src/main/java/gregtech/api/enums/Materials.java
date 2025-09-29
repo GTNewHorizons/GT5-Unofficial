@@ -1031,7 +1031,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Fluid mStandardMoltenFluid = null;
     private boolean hasCorrespondingFluid = false;
     private boolean hasCorrespondingGas = false;
-    private boolean canBeCracked = false;
+    private boolean mCanBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3];
     private Fluid[] steamCrackedFluids = new Fluid[3];
 
@@ -1054,6 +1054,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         boolean hasGas,
         int types,
         int extraData,
+        boolean canBeCracked,
         float heatDamage,
         int meltingPoint,
         int blastFurnaceTemp,
@@ -1133,6 +1134,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // Set auto-generated parts and recipes
         mTypes = types;
         mExtraData = extraData;
+        mCanBeCracked = canBeCracked;
         hasCorrespondingFluid = hasFluid;
         hasCorrespondingGas = hasGas;
         mBlastFurnaceRequired = blastFurnaceRequired;
@@ -1913,12 +1915,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public boolean canBeCracked() {
-        return canBeCracked;
-    }
-
-    public Materials setCanBeCracked(boolean canBeCracked) {
-        this.canBeCracked = canBeCracked;
-        return this;
+        return mCanBeCracked;
     }
 
     public int getLiquidTemperature() {
