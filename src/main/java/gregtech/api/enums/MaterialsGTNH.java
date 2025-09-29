@@ -147,29 +147,10 @@ public class MaterialsGTNH implements IMaterialHandler {
     }
 
     private static Materials loadTurquoise() {
-        return new Materials(
-            -1,
-            TextureSet.SET_NONE,
-            1.0F,
-            0,
-            1,
-            1,
-            255,
-            255,
-            255,
-            0,
-            "Turquoise",
-            "Turquoise",
-            0,
-            0,
-            -1,
-            0,
-            false,
-            false,
-            3,
-            1,
-            1,
-            Dyes._NULL);
+        return new MaterialBuilder().setName("Turquoise")
+            .setDefaultLocalName("Turquoise")
+            .addDustItems()
+            .constructMaterial();
     }
 
     private static Materials loadTapazite() {
