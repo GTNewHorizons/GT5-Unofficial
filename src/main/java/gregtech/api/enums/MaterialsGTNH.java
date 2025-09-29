@@ -592,7 +592,11 @@ public class MaterialsGTNH implements IMaterialHandler {
         Dyes.dyeWhite);
 
     // Deepslate stuff
-    public static Materials Chlorite = new MaterialBuilder(167, TextureSet.SET_SHINY, "Chlorite").addDustItems()
+    public static Materials Chlorite = new MaterialBuilder().setName("Chlorite")
+        .setDefaultLocalName("Chlorite")
+        .setMetaItemSubID(167)
+        .setIconSet(TextureSet.SET_SHINY)
+        .addDustItems()
         .setARGB(0x00607d6c)
         .setColor(Dyes.dyeLime)
         .addMaterial(Materials.Iron, 3)
@@ -602,7 +606,11 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Water, 4)
         .addMaterial(Materials.Oxygen, 5)
         .constructMaterial();
-    public static Materials Staurolite = new MaterialBuilder(168, TextureSet.SET_DULL, "Staurolite").addDustItems()
+    public static Materials Staurolite = new MaterialBuilder().setName("Staurolite")
+        .setDefaultLocalName("Staurolite")
+        .setMetaItemSubID(168)
+        .setIconSet(TextureSet.SET_DULL)
+        .addDustItems()
         .setARGB(0x003f2816)
         .setColor(Dyes.dyeBrown)
         .addMaterial(Materials.Iron, 2)
@@ -611,7 +619,11 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Oxygen, 16)
         .addMaterial(Materials.Hydrogen, 1)
         .constructMaterial();
-    public static Materials Cordierite = new MaterialBuilder(169, TextureSet.SET_SHINY, "Cordierite").addDustItems()
+    public static Materials Cordierite = new MaterialBuilder().setName("Cordierite")
+        .setDefaultLocalName("Cordierite")
+        .setMetaItemSubID(169)
+        .setIconSet(TextureSet.SET_SHINY)
+        .addDustItems()
         .setARGB(0x00434b82)
         .setColor(Dyes.dyePurple)
         .addMaterial(Materials.Iron, 1)
@@ -620,7 +632,11 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Aluminiumoxide, 1)
         .addMaterial(Materials.Oxygen, 5)
         .constructMaterial();
-    public static Materials Datolite = new MaterialBuilder(170, TextureSet.SET_SHINY, "Datolite").addDustItems()
+    public static Materials Datolite = new MaterialBuilder().setName("Datolite")
+        .setDefaultLocalName("Datolite")
+        .setMetaItemSubID(170)
+        .setIconSet(TextureSet.SET_SHINY)
+        .addDustItems()
         .setARGB(0x00eac4ce)
         .setColor(Dyes.dyeWhite)
         .addMaterial(Materials.Calcium, 1)
@@ -629,14 +645,19 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Oxygen, 3)
         .addMaterial(Materials.Hydrogen, 1)
         .constructMaterial();
-    public static Materials MetamorphicMineralMixture = new MaterialBuilder(
-        171,
-        TextureSet.SET_DULL,
-        "Metamorphic Mineral Mixture").addDustItems()
-            .setARGB(0x006c8294)
-            .setColor(Dyes.dyeCyan)
-            .constructMaterial();
-    public static Materials Plagioclase = new MaterialBuilder(172, TextureSet.SET_SHINY, "Plagioclase").addDustItems()
+    public static Materials MetamorphicMineralMixture = new MaterialBuilder().setName("MetamorphicMineralMixture")
+        .setDefaultLocalName("Metamorphic Mineral Mixture")
+        .setMetaItemSubID(171)
+        .setIconSet(TextureSet.SET_DULL)
+        .addDustItems()
+        .setARGB(0x006c8294)
+        .setColor(Dyes.dyeCyan)
+        .constructMaterial();
+    public static Materials Plagioclase = new MaterialBuilder().setName("Plagioclase")
+        .setDefaultLocalName("Plagioclase")
+        .setMetaItemSubID(172)
+        .setIconSet(TextureSet.SET_SHINY)
+        .addDustItems()
         .setARGB(0x00c1bab2)
         .setColor(Dyes.dyeWhite)
         .addMaterial(Materials.Sodium, 1)
@@ -644,7 +665,11 @@ public class MaterialsGTNH implements IMaterialHandler {
         .addMaterial(Materials.Silicon, 3)
         .addMaterial(Materials.Oxygen, 8)
         .constructMaterial();
-    public static Materials Epidote = new MaterialBuilder(862, TextureSet.SET_DULL, "Epidote").addDustItems()
+    public static Materials Epidote = new MaterialBuilder().setName("Epidote")
+        .setDefaultLocalName("Epidote")
+        .setMetaItemSubID(862)
+        .setIconSet(TextureSet.SET_DULL)
+        .addDustItems()
         .setARGB(0x008cb121)
         .setColor(Dyes.dyeLime)
         .addMaterial(Materials.Calcium, 2)
