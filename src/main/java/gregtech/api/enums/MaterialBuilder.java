@@ -211,6 +211,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Sets the Vanilla Minecraft color. Use the one that most closely resembles the color of the material. */
     public MaterialBuilder setColor(Dyes color) {
         this.color = color;
         return this;
