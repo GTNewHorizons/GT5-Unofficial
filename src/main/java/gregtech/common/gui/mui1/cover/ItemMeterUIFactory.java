@@ -73,8 +73,8 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverItemMeter::isInverted,
                         CoverItemMeter::setInverted,
-                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                             .setPos(0, 0))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),

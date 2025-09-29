@@ -45,8 +45,8 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverLiquidMeter::isInverted,
                         CoverLiquidMeter::setInverted,
-                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
