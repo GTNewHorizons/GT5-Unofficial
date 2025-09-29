@@ -9,7 +9,9 @@ import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.Werkstoff;
 import codechicken.nei.PositionedStack;
+import gregtech.api.util.GTLanguageManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -22,7 +24,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             for (OreLayerWrapper oreVein : getAllVeins()) {
-                addVeinWithLayers(oreVein, 7);
+                addVeinWithLayers(oreVein, oreVein.hasVariants ? 7 : 1);
             }
         } else super.loadCraftingRecipes(outputId, results);
     }
@@ -32,13 +34,24 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         if (stack.getUnlocalizedName()
             .startsWith("gt.blockores")) {
             loadMatchingVeins((short) (stack.getItemDamage() % 1000));
-        } else super.loadCraftingRecipes(stack);
+        } else if (stack.getUnlocalizedName()
+            .startsWith("bw.blockores")) {
+                loadMatchingVeinsBW((short) (stack.getItemDamage()));
+            } else super.loadCraftingRecipes(stack);
     }
 
     private void loadMatchingVeins(short oreId) {
         for (OreLayerWrapper oreVein : getAllVeins()) {
             if (oreVein.containsOre(oreId)) {
-                addVeinWithLayers(oreVein, getMaximumMaterialIndex(oreId, false));
+                addVeinWithLayers(oreVein, oreVein.hasVariants ? getMaximumMaterialIndex(oreId, false) : 1);
+            }
+        }
+    }
+
+    private void loadMatchingVeinsBW(short oreId) {
+        for (OreLayerWrapper oreVein : getAllVeins()) {
+            if (oreVein.containsOreBW(oreId)) {
+                addVeinWithLayers(oreVein, 1);
             }
         }
     }
@@ -105,12 +118,17 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 80);
     }
 
+    private static String getBWOreName(short meta) {
+        final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(meta, null);
+        return GTLanguageManager.getTranslation("bw.blocktype.ore")
+            .replace("%material", werkstoff.getLocalizedName());
+    }
+
     private static void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
-        drawLine(
-            OreVeinLayer.getOreVeinLayerName(veinLayer),
-            getGTOreLocalizedName(oreLayer.Meta[veinLayer]),
-            2,
-            height);
+        final String oreName;
+        if ((oreLayer.bwOres & 0b1000 >> veinLayer) != 0) oreName = getBWOreName(oreLayer.Meta[veinLayer]);
+        else oreName = getGTOreLocalizedName(oreLayer.Meta[veinLayer]);
+        drawLine(OreVeinLayer.getOreVeinLayerName(veinLayer), oreName, 2, height);
     }
 
     private static void drawVeinInfo(OreLayerWrapper oreLayer) {
