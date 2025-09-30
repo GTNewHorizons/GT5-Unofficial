@@ -411,7 +411,7 @@ public class MTEPurificationUnitBaryonicPerfection
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             if (correctStartIndex != -1 && (i == correctStartIndex || i == correctStartIndex + 1)) continue;
 
-            addOutput(insertedCatalysts.get(i));
+            addOutputPartial(insertedCatalysts.get(i));
         }
     }
 
@@ -489,6 +489,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     stack.stackSize = 0;
                 }
             }
+            updateSlots();
             endRecipeProcessing();
 
             // Only do this check if we didn't find a correct combination yet
