@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.VoltageIndex;
+
 /**
  * A list of helper methods that can be useful in creating tooltips.
  * Meant to simplify creating non-standard, repeated text in tooltips.
@@ -111,11 +114,23 @@ public class TooltipHelper {
 
     /**
      * Wraps input string in italic formatting
-     * 
+     *
      * @param text Text to be italicized
      * @return Italic String
      */
     public static String italicText(String text) {
         return String.format("%s%s%s", ITALIC, text, EnumChatFormatting.RESET);
+    }
+
+    /**
+     * Returns a voltage tier string with appropriate color formatting.
+     * Example: "§2MV-tier"
+     *
+     * @param voltageIndex The voltage index, as defined in {@link VoltageIndex}.
+     *                     Should be between 0 (ULV) and 13 (UXV).
+     * @return A formatted string representing the voltage tier.
+     */
+    public static String voltageText(int voltageIndex) {
+        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + "-tier";
     }
 }

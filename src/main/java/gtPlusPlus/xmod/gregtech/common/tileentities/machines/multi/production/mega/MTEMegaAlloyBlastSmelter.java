@@ -274,7 +274,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                TooltipHelper.speedText("+5%") + " Speed per "
+                TooltipHelper.speedText("-5%") + " Recipe Time per "
                     + TooltipHelper.tierText(TooltipTier.COIL)
                     + " Tier above TPV (additive)")
             .addInfo("      if the equivalent or better glass tier is present")
@@ -283,13 +283,14 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     + TooltipHelper.tierText(TooltipTier.COIL)
                     + " Tier above the recipe tier (multiplicative)")
             .addSeparator()
+            .addInfo(
+                "Glass Tier limits recipe tier. " + TooltipHelper.voltageText(VoltageIndex.UMV) + " unlocks all tiers.")
+            .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
+            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addUnlimitedTierSkips()
-            .addInfo(
-                TooltipHelper.italicText(
-                    "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addController("Mid of the fourth layer")
