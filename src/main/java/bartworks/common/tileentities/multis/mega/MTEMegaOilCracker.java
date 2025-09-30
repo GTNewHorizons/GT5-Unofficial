@@ -155,7 +155,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
                 TooltipHelper.effText("-10%") + " EU Usage per " + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
-            .addInfo("       up to a maximum of " + TooltipHelper.effText("-50%") + " EU Usage")
+            .addInfo("up to a maximum of " + TooltipHelper.effText("-50%") + " EU Usage")
             .addSeparator()
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
             .addInfo(
@@ -166,7 +166,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addInfo(
                 "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
                     + " more cracked fluid")
-            .addInfo(TooltipHelper.italicText("In comparison with a chemical reactor"))
+            .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)

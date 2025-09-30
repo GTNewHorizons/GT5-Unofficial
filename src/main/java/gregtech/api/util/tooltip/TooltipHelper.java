@@ -124,13 +124,14 @@ public class TooltipHelper {
 
     /**
      * Returns a voltage tier string with appropriate color formatting.
-     * Example: "§2MV-tier"
+     * <br>
+     * If the voltage index is out of range, it returns "Invalid Voltage Tier".
      *
      * @param voltageIndex The voltage index, as defined in {@link VoltageIndex}.
-     *                     Should be between 0 (ULV) and 13 (UXV).
      * @return A formatted string representing the voltage tier.
      */
     public static String voltageText(int voltageIndex) {
-        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + "-tier";
+        if (voltageIndex < VoltageIndex.ULV || voltageIndex >= VoltageIndex.MAX) return "Invalid Voltage Tier";
+        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + EnumChatFormatting.GRAY + "-tier";
     }
 }
