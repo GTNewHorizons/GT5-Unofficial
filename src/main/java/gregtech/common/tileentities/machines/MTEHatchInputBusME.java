@@ -730,7 +730,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         do {
             itemStack = getShadowItemStack(slotToCheck);
             slotToCheck++;
-        } while ((itemStack == null || !(hasToMatchGhost && lockedSlot.getItem() == itemStack.getItem()))
+        } while ((itemStack == null || (hasToMatchGhost && lockedSlot.getItem() != itemStack.getItem()))
             && slotToCheck < getSizeInventory());
         return itemStack;
     }
