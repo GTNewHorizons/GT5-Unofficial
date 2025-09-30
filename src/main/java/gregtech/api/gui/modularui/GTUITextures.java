@@ -412,7 +412,7 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_REPLACE_COBBLE_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_off");
     public static final UITexture OVERLAY_BUTTON_RETRACT_PIPE = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
+    .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
@@ -562,4 +562,6 @@ public class GTUITextures {
     public static final UITexture PICTURE_ITEM_OUT = UITexture.fullImage(GregTech.ID, "gui/picture/item_out");
     public static final UITexture PICTURE_FLUID_IN = UITexture.fullImage(GregTech.ID, "gui/picture/fluid_in");
     public static final UITexture PICTURE_FLUID_OUT = UITexture.fullImage(GregTech.ID, "gui/picture/fluid_out");
+    public static final UITexture SCREWDRIVER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/screwdriver");
 }

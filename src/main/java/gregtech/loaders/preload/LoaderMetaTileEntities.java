@@ -9230,6 +9230,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             11,
             16,
             1024);
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_5.ID,
+            "hatch.output-bus.tier.04",
+            "Compressed Output Bus (UMV)",
+            12,
+            16,
+            Integer.MAX_VALUE / 64);
     }
 
     private static void registerMufflerHatch() {

@@ -1,16 +1,21 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -22,6 +27,23 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import gregtech.api.enums.OutputBusType;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -34,6 +56,8 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
 
     public final int slotCount;
     public final int stackCapacity;
+
+    public int stackLimitOverride;
 
     private final IItemHandlerModifiable proxiedHandler;
 
@@ -65,6 +89,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         super(prototype.mName, prototype.mTier, prototype.slotCount, prototype.mDescriptionArray, prototype.mTextures);
         this.slotCount = prototype.slotCount;
         this.stackCapacity = prototype.stackCapacity;
+        this.stackLimitOverride = prototype.stackCapacity;
         this.proxiedHandler = new ProxiedItemHandlerModifiable(inventoryHandler) {
 
             @Override
@@ -81,12 +106,17 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
 
     @Override
     public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
-        return GTUtility.longToInt((stack == null ? 64 : stack.getMaxStackSize()) * (long) stackCapacity);
+        return GTUtility.longToInt((stack == null ? 64 : stack.getMaxStackSize()) * (long) Math.min(stackCapacity, stackLimitOverride));
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return 64 * stackCapacity;
+        return getStackSizeLimit(-1, null);
+    }
+
+    @Override
+    public OutputBusType getBusType() {
+        return lockedItem == null ? OutputBusType.CompressedUnfiltered : OutputBusType.CompressedFiltered;
     }
 
     @Override
@@ -114,13 +144,6 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         }
 
         return success;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-
-        // Arrays.fill(mInventory, null);
     }
 
     @Override
@@ -249,5 +272,83 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
                 new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
+
+        builder.widget(createSettingsButton());
+        buildContext.addSyncedWindow(SETTINGS_PANEL_WINDOW_ID, this::createSettingsPanel);
     }
+
+    private static final int SETTINGS_PANEL_WINDOW_ID = 8;
+
+    private ButtonWidget createSettingsButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (!widget.isClient()) {
+                    widget.getContext().openSyncedWindow(SETTINGS_PANEL_WINDOW_ID);
+                }
+            })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.SCREWDRIVER);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.compressed_bus_settings"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(new Pos2d(174, 91))
+            .setSize(16, 16);
+        return (ButtonWidget) button;
+    }
+
+    public ModularWindow createSettingsPanel(EntityPlayer player) {
+        final int w = 120;
+        final int h = 130;
+        final int parentW = getGUIWidth();
+        final int parentH = getGUIHeight();
+
+        ModularWindow.Builder builder = ModularWindow.builder(w, h);
+
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
+                        .add(w - 3, 0)));
+
+        // Window header
+        builder.widget(
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("GT5U.gui.text.bus_settings")).setPos(0, 2)
+                .setSize(120, 18));
+
+        // Syncing widgets
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> stackLimitOverride, val -> stackLimitOverride = val));
+
+        // "Max parallel" header text
+        builder.widget(
+            TextWidget.localised("GT5U.gui.text.stack_capacity")
+                .setPos(0, 24)
+                .setSize(120, 18));
+
+        // Max parallel setter text box
+        NumericWidget textField = (NumericWidget) new NumericWidget()
+            .setSetter(val -> stackLimitOverride = (int) val)
+            .setGetter(() -> stackLimitOverride)
+            .setValidator(val -> GTUtility.clamp((int) val, 1, stackCapacity))
+            .setDefaultValue(stackCapacity)
+            .setScrollValues(1, 4, 64)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .dynamicTooltip(
+                () -> Collections.singletonList(translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, stackCapacity)))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(72, 18)
+            .setPos(12, 40)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+
+        builder.widget(textField);
+
+        return builder.build();
+    }
+
 }
