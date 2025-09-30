@@ -788,7 +788,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     /**
      * Gets the first non-null extracted item stack.
      *
-     * @return The first shadow item stack, or null if this doesn't exist.
+     * @return The first extracted item stack, or null if it doesn't exist.
      */
     public ItemStack getFirstValidStack() {
         return getFirstValidStack(false);
@@ -798,7 +798,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
      * Gets the first non-null extracted item stack.
      *
      * @param slotsMustMatch When true, every slot in this input bus must be the same (ignores stack sizes).
-     * @return The first extracted item stack, or null if this doesn't exist.
+     * @return The first extracted item stack, or null if it doesn't exist.
      */
     public ItemStack getFirstValidStack(boolean slotsMustMatch) {
         if (slotsMustMatch) {
