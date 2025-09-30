@@ -786,7 +786,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     /**
-     * Gets the first non-null shadow item stack.
+     * Gets the first non-null extracted item stack.
      *
      * @return The first shadow item stack, or null if this doesn't exist.
      */
