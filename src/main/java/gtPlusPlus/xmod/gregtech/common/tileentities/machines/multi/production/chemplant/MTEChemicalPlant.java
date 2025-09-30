@@ -146,31 +146,27 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public String getMachineType() {
-        return "Chemical Plant";
+        return "machtype.chem_plant";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getMachineType())
-            .addInfo("Heavy Industry, now right at your doorstep!")
-            .addInfo("Plant tier is determined by casing tier")
-            .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
+            .addInfo("gt.exxonmobil.tips.1")
             .addDynamicParallelInfo(2, TooltipTier.PIPE_CASING)
-            .addInfo(
-                "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.PIPE_CASING) + " Tier")
+            .addInfo("gt.exxonmobil.tips.2", TooltipHelper.tierText(TooltipTier.PIPE_CASING))
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("Any catalyst must be placed in the catalyst housing")
-            .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
-            .addController("Bottom Center")
-            .addOtherStructurePart("Catalyst Housing", "Bottom Casing")
+            .addInfo("gt.exxonmobil.tips.3")
+            .addController("front_bottom_center")
+            .addStructurePart("gt.blockmachines.hatch.catalysts.name", "<bottom casing>")
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)
-            .addInputBus("Bottom Casing", 1)
-            .addOutputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addOutputHatch("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "metal machine casing (minimum 70)")
+            .addInputBus("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
+            .addInputHatch("<bottom casing>", 1)
+            .addOutputHatch("<bottom casing>", 1)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
+            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "gt.exxonmobil.info.1")
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.PIPE_CASING)

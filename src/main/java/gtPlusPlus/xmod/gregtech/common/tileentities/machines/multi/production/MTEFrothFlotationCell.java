@@ -83,11 +83,11 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
             .addController("front_center")
             .addCasingInfoMin("gtplusplus.blockcasings.3.1.name", 68)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.9.name", 52)
-            .addInputBus("gt.flotation.info.1", 1)
-            .addInputHatch("gt.flotation.info.1", 1)
-            .addOutputHatch("gt.flotation.info.1", 1)
-            .addEnergyHatch("gt.flotation.info.1", 1)
-            .addMaintenanceHatch("gt.flotation.info.1", 1)
+            .addInputBus("<bottom casing>", 1)
+            .addInputHatch("<bottom casing>", 1)
+            .addOutputHatch("<bottom casing>", 1)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
             .toolTipFinisher();
         return tt;
     }
