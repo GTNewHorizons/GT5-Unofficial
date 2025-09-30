@@ -24,9 +24,8 @@ import net.minecraft.tileentity.TileEntity;
 
 import bartworks.common.net.PacketBWMetaBlock;
 import gregtech.api.enums.GTValues;
-import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 
-public abstract class TileEntityMetaGeneratedBlock extends TileEntity implements ITexturedTileEntity {
+public abstract class TileEntityMetaGeneratedBlock extends TileEntity {
 
     public short mMetaData;
 

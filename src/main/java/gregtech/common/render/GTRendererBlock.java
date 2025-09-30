@@ -240,13 +240,13 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         block.setBlockBoundsForItemRender();
         ctx.setRenderBoundsFromBlock();
 
-        final IGregTechTileEntity igte = mte.getBaseMetaTileEntity();
-        ctx.renderNegativeYFacing(mte.getTexture(igte, DOWN, WEST, -1, true, false));
-        ctx.renderPositiveYFacing(mte.getTexture(igte, UP, WEST, -1, true, false));
-        ctx.renderNegativeZFacing(mte.getTexture(igte, NORTH, WEST, -1, true, false));
-        ctx.renderPositiveZFacing(mte.getTexture(igte, SOUTH, WEST, -1, true, false));
-        ctx.renderNegativeXFacing(mte.getTexture(igte, WEST, WEST, -1, true, false));
-        ctx.renderPositiveXFacing(mte.getTexture(igte, EAST, WEST, -1, true, false));
+        final IGregTechTileEntity igte = imte.getBaseMetaTileEntity();
+        ctx.renderNegativeYFacing(imte.getTexture(igte, DOWN, WEST, -1, true, false));
+        ctx.renderPositiveYFacing(imte.getTexture(igte, UP, WEST, -1, true, false));
+        ctx.renderNegativeZFacing(imte.getTexture(igte, NORTH, WEST, -1, true, false));
+        ctx.renderPositiveZFacing(imte.getTexture(igte, SOUTH, WEST, -1, true, false));
+        ctx.renderNegativeXFacing(imte.getTexture(igte, WEST, WEST, -1, true, false));
+        ctx.renderPositiveXFacing(imte.getTexture(igte, EAST, WEST, -1, true, false));
     }
 
     @Override
@@ -257,7 +257,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         final TileEntity tileEntity = ctx.getTileEntity();
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
 
-        if (block instanceof IBlockWithTextures texturedBlock) {
+        if (aBlock instanceof IBlockWithTextures texturedBlock) {
             final ITexture[][] texture = texturedBlock.getTextures(aWorld, aX, aY, aZ);
             if (texture == null) return false;
             renderStandardBlock(ctx, texture);

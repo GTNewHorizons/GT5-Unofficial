@@ -92,7 +92,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
     @Override
     public int getRenderType() {
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     @Override

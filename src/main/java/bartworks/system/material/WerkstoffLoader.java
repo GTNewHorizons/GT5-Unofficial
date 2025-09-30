@@ -117,7 +117,6 @@ import bartworks.util.EnumUtils;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.cls.CLSCompat;
 import codechicken.nei.api.API;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
