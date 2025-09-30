@@ -69,8 +69,8 @@ public class HTGRLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(items.toArray(new ItemStack[0]))
                 .itemOutputs(HTGR_ITEM.createTRISOMixture(material))
-                .eut(1337)
-                .duration(1337)
+                .eut(TierEU.RECIPE_EV)
+                .duration(100)
                 .nbtSensitive()
                 .addTo(mixerRecipes);
 
@@ -78,22 +78,22 @@ public class HTGRLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(HTGR_ITEM.createTRISOMixture(material), shells[0])
                 .itemOutputs(HTGR_ITEM.createIncompleteBISOFuel(material))
-                .eut(1337)
-                .duration(1337)
+                .eut(TierEU.RECIPE_EV)
+                .duration(50)
                 .nbtSensitive()
                 .addTo(formingPressRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(HTGR_ITEM.createIncompleteBISOFuel(material), shells[1])
                 .itemOutputs(HTGR_ITEM.createIncompleteTRISOFuel(material))
-                .eut(1337)
-                .duration(1337)
+                .eut(TierEU.RECIPE_EV)
+                .duration(50)
                 .nbtSensitive()
                 .addTo(formingPressRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(HTGR_ITEM.createIncompleteTRISOFuel(material), shells[2])
                 .itemOutputs(HTGR_ITEM.createTRISOFuel(material))
-                .eut(1337)
-                .duration(1337)
+                .eut(TierEU.RECIPE_EV)
+                .duration(50)
                 .nbtSensitive()
                 .addTo(formingPressRecipes);
 
@@ -120,8 +120,8 @@ public class HTGRLoader {
                 .itemInputs(HTGR_ITEM.createBurnedTRISOFuel(material))
                 .itemOutputs(items.toArray(new ItemStack[0]))
                 .outputChances(chances)
-                .eut(1337)
-                .duration(1337)
+                .eut(TierEU.RECIPE_EV)
+                .duration(300)
                 .nbtSensitive()
                 .addTo(centrifugeRecipes);
         })
@@ -161,7 +161,7 @@ public class HTGRLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 3L))
-            .outputChances(10000, 10000, 500, 10000)
+            .outputChances(10000, 10000, 2000, 10000)
             .metadata(FUEL, new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 5L), 1) })
             .metadata(
                 SHELL,
@@ -269,6 +269,32 @@ public class HTGRLoader {
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
+
+        // caesium to lanthanum
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 3L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 2L))
+            .metadata(
+                FUEL,
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 3L), 0) })
+            .metadata(
+                SHELL,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .duration(1)
+            .eut(1)
+            .addTo(HTGRRecipes);
+
+
+
+
+
+
 
         // Structure blocks and items for HTGR
 
