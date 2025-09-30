@@ -539,10 +539,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
         byte slotToCheck = 0;
         do {
+            if (slotToCheck >= getShadowStoredFluidsSize()) return null;
             fluidStack = getShadowFluidStack(slotToCheck);
             slotToCheck++;
-        } while ((fluidStack == null || (hasToMatchGhost && lockedSlot.getFluid() != fluidStack.getFluid()))
-            && slotToCheck < getShadowStoredFluidsSize());
+        } while ((fluidStack == null || (hasToMatchGhost && lockedSlot.getFluid() != fluidStack.getFluid())));
         return fluidStack;
     }
 
