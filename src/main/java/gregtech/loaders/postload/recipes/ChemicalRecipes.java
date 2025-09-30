@@ -3983,7 +3983,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
-                new FluidStack(aBasicMaterial, 14 * INGOTS),
+                new FluidStack(aBasicMaterial, 15 * INGOTS),
                 Materials.Air.getGas(7_500),
                 Materials.Titaniumtetrachloride.getFluid(100))
             .fluidOutputs(new FluidStack(aPolymer, 3_240))
@@ -3994,7 +3994,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
-                new FluidStack(aBasicMaterial, 14 * INGOTS),
+                new FluidStack(aBasicMaterial, 15 * INGOTS),
                 Materials.Oxygen.getGas(7_500),
                 Materials.Titaniumtetrachloride.getFluid(100))
             .fluidOutputs(new FluidStack(aPolymer, 4_320))

@@ -50,6 +50,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
+import gregtech.api.recipe.maps.EFRBlastingBackend;
+import gregtech.api.recipe.maps.EFRSmokingBackend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -184,6 +186,32 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FurnaceBackend> furnaceRecipes = RecipeMapBuilder
         .of("gt.recipe.furnace", FurnaceBackend::new)
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 9)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE : null)
+        .slotOverlaysSteam(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE_STEAM
+                : null)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .neiTransferRectId("smelting")
+        .disableRegisterNEI()
+        .build();
+    public static final RecipeMap<EFRBlastingBackend> efrBlastingRecipes = RecipeMapBuilder
+        .of("gt.recipe.efrblasting", EFRBlastingBackend::new)
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 9)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE : null)
+        .slotOverlaysSteam(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE_STEAM
+                : null)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .neiTransferRectId("smelting")
+        .disableRegisterNEI()
+        .build();
+    public static final RecipeMap<EFRSmokingBackend> efrSmokingRecipes = RecipeMapBuilder
+        .of("gt.recipe.efrsmelting", EFRSmokingBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 9)
         .slotOverlays(
