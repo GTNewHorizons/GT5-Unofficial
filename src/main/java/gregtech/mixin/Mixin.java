@@ -50,6 +50,12 @@ public enum Mixin implements IMixins {
             "minecraft.accessors.GuiTextFieldMixin",
             "minecraft.accessors.TessellatorMixin")
         .setPhase(Phase.EARLY)),
+    RemoveItemStack(new MixinBuilder()
+        .addCommonMixins(
+            "minecraft.ItemStackMixin_MetaItemRemover"
+        )
+        .setPhase(Phase.EARLY)
+    ),
     ItemMixinCoverFix(new MixinBuilder("Allow cover items to bypass sneak checks")
         .addCommonMixins("minecraft.ItemMixin")
         .setPhase(Phase.EARLY)),

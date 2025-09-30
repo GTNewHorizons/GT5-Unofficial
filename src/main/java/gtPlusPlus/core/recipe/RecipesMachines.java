@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
@@ -1130,7 +1131,18 @@ public class RecipesMachines {
             "craftingPiston",
             aBronzeBricks,
             GregtechItemList.Controller_SteamCompressorMulti.get(1));
-
+        // Steam Furnace Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 1),
+            MaterialsAlloy.TUMBAGA.getGear(1),
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 1),
+            EtFuturumRequiem.isModLoaded() ? getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0) : aBronzeBricks,
+            ItemList.Machine_HP_Furnace.get(1),
+            EtFuturumRequiem.isModLoaded() ? getModItem(EtFuturumRequiem.ID, "smoker", 1, 0) : aBronzeBricks,
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 1),
+            MaterialsAlloy.TUMBAGA.getFrameBox(1),
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 1),
+            GregtechItemList.Controller_SteamFurnaceMulti.get(1));
         // Steam Hatch
         RecipeUtils.addShapedGregtechRecipe(
             "plateBronze",
@@ -1284,9 +1296,9 @@ public class RecipesMachines {
             plateBronze,
             plateBronze,
             plateBronze,
-            "frameGtBronze",
+            "frameGtTPVAlloy",
             CI.gearboxCasing_Tier_1,
-            "frameGtBronze",
+            "frameGtTPVAlloy",
             plateBronze,
             plateBronze,
             plateBronze,
@@ -1296,9 +1308,9 @@ public class RecipesMachines {
             plateSteel,
             plateSteel,
             plateSteel,
-            "frameGtSteel",
+            "frameGtHSSS",
             CI.gearboxCasing_Tier_2,
-            "frameGtSteel",
+            "frameGtHSSS",
             plateSteel,
             plateSteel,
             plateSteel,
@@ -1575,7 +1587,7 @@ public class RecipesMachines {
             "plateDoubleGrisium",
             RECIPE_IndustrialMultiTankController);
 
-        // Semi-Fluid Generators
+        // Semifluid Generators
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(14),

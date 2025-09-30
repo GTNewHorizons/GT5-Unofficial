@@ -25,7 +25,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLO
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.resources.I18n;
@@ -53,7 +52,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
@@ -133,7 +131,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
         if (this.totalWeight != 0.f) {
             this.handleFluidConsumption();
-            this.handleOutputs();
             return true;
         } else {
             this.stopMachine(ShutDownReasonRegistry.NONE);
@@ -142,15 +139,30 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     @Override
+    protected void outputAfterRecipe() {
+        if (this.totalWeight != 0.f) this.handleOutputs();
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner")
             .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
             .addInfo(
-                "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                "Can be supplied with " + EnumChatFormatting.AQUA
+                    + "2 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of Noble gases to boost "
+                    + EnumChatFormatting.GOLD
+                    + "output")
+            .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+            .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+            .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+            .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
             .addInfo(
                 "Will output " + 2 * this.TIER_MULTIPLIER
                     + " Ores per Second depending on the Dimension it is build in")
+
             .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
             .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
             .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
@@ -185,22 +197,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @return the chosen ore
      */
     private ItemStack nextOre() {
-        float currentWeight = 0.f;
-        while (true) {
-            float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.dropMap.getInternalMap()
-                .entrySet()) {
-                currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
-            }
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.extraDropMap.getInternalMap()
-                .entrySet()) {
-                currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
-            }
-        }
+        return this.dropMap.nextOre()
+            .getItemStack();
     }
 
     /**
@@ -273,6 +271,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.extraDropMap = VoidMinerUtility.extraDropsByDimName
             .getOrDefault(dimensionDef.getDimensionName(), new VoidMinerUtility.DropMap());
 
+        this.dropMap.isDistributionCached(this.extraDropMap);
+
         this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
     }
 
@@ -292,7 +292,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             boolean matchesFilter = contains(inputOres, output);
 
             if (inputOres.isEmpty() || (this.mBlacklist ? !matchesFilter : matchesFilter)) {
-                this.addOutput(output);
+                this.addOutputPartial(output);
             }
         }
 
@@ -381,5 +381,16 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    protected String createGasString(EnumChatFormatting color, String gas, int boost) {
+        return String.format(
+            "%s%s%s : %s%dx%s",
+            color,
+            gas,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            boost,
+            EnumChatFormatting.GRAY);
     }
 }

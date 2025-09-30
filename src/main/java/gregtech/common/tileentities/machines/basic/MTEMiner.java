@@ -17,6 +17,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -394,5 +397,11 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
         return super.getUIProperties().toBuilder()
             .progressBarTexture(progressBarTexture)
             .build();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_MINER;
     }
 }

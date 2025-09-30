@@ -30,6 +30,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -161,10 +162,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public int getRenderType() {
-        if (GTRendererBlock.INSTANCE == null) {
-            return super.getRenderType();
-        }
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     @Override
@@ -174,7 +172,18 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public int getRenderBlockPass() {
-        return 1;
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both passes: cut-out and alpha-blended.<br>
+     *           Final choice on {@link ITexture} or {@link IIconContainer}.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
     }
 
     @Override

@@ -170,6 +170,9 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 });
 
             PENDING_SCANS.put(aPlayer, task);
+        } else {
+            // This tells minecraft that the item was used.
+            return aStack.copy();
         }
         return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
     }

@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -22,6 +24,7 @@ import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -38,7 +41,12 @@ public class VoidMinerUtility {
 
     public static class DropMap {
 
+        private boolean isAliasCached;
+        private DiscreteDistribution discreteDistribution;
+
         private float totalWeight;
+        private double[] oreWeights;
+        private GTUtility.ItemId[] ores;
         private final Object2FloatOpenHashMap<GTUtility.ItemId> internalMap;
 
         private final Set<String> voidMinerBlacklistedDrops;
@@ -112,12 +120,55 @@ public class VoidMinerUtility {
             totalWeight += weight;
         }
 
+        private void mergeDropMaps(DropMap dropMap) {
+            if (dropMap == null || dropMap.internalMap == null || dropMap.internalMap.isEmpty()) return;
+
+            for (Map.Entry<GTUtility.ItemId, Float> entry : dropMap.internalMap.entrySet()) {
+                // We cant be sure that the extraDropMap entries are intentional duplicates of this DropMap
+                this.internalMap.merge(entry.getKey(), entry.getValue(), Float::sum);
+                totalWeight += entry.getValue();
+            }
+        }
+
+        /**
+         * Method used to compute the ore distribution for the VM if it doesn't exist.
+         *
+         * @param extraDropMap the extraDropMap that is related to this DropMap
+         */
+        public void isDistributionCached(@Nullable DropMap extraDropMap) {
+            if (isAliasCached) return;
+            if (internalMap == null || internalMap.isEmpty()) {
+                if (extraDropMap == null || extraDropMap.internalMap == null || extraDropMap.internalMap.isEmpty())
+                    return;
+            }
+
+            // Merge a related extraDropMap if it exists
+            mergeDropMaps(extraDropMap);
+
+            ores = new GTUtility.ItemId[internalMap.size()];
+            oreWeights = new double[internalMap.size()];
+            int i = 0;
+
+            for (Map.Entry<GTUtility.ItemId, Float> entry : internalMap.entrySet()) {
+                ores[i] = entry.getKey();
+                oreWeights[i] = entry.getValue() / totalWeight;
+                i++;
+            }
+
+            discreteDistribution = new DiscreteDistribution(oreWeights);
+            isAliasCached = true;
+        }
+
         public float getTotalWeight() {
             return totalWeight;
         }
 
         public Map<GTUtility.ItemId, Float> getInternalMap() {
             return internalMap;
+        }
+
+        public GTUtility.ItemId nextOre() {
+            return ores[discreteDistribution.next()];
         }
     }
 

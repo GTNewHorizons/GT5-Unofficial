@@ -240,7 +240,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
     @Override
     public int getRenderType() {
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     /**
