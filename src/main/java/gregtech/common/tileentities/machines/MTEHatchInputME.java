@@ -646,16 +646,16 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     /**
-     * Gets the first non-null shadow fluid stack.
+     * Gets the first non-null extracted fluid stack.
      *
-     * @return The first shadow fluid stack, or null if this doesn't exist.
+     * @return The first extracted fluid stack, or null if this doesn't exist.
      */
     public FluidStack getFirstValidStack() {
         return getFirstValidStack(false);
     }
 
     /**
-     * Gets the first non-null shadow fluid stack.
+     * Gets the first non-null extracted fluid stack.
      *
      * @param slotsMustMatch When true, every fluid in this input hatch must be the same (ignores amounts).
      * @return The first extracted fluid stack, or null if this doesn't exist.
