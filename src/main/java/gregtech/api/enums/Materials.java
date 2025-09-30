@@ -1558,6 +1558,26 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return this;
     }
 
+    /**
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * materials enum
+     * 
+     * @deprecated Use {@link #getName()} instead, but realistically you should never even need the name..
+     */
+    @Deprecated
+    public String name() {
+        return mName;
+    }
+
+    /**
+     * Gets the 'mName' field of the Material.
+     * 
+     * @return mName
+     */
+    public String getName() {
+        return mName;
+    }
+
     public boolean isRadioactive() {
         if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
 
