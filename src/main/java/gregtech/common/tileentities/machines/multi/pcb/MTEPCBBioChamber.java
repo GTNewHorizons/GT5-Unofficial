@@ -10,9 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 

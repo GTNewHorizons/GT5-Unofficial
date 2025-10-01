@@ -4,8 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.*;
 
-import gregtech.api.util.recipe.Scanning;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBUpgradeBase;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -18,8 +16,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class Assembler implements Runnable {
 
@@ -171,7 +167,6 @@ public class Assembler implements Runnable {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
-
 
     }
 }

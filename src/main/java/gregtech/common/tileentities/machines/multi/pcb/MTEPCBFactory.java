@@ -27,14 +27,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -58,13 +50,19 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -74,6 +72,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -114,7 +113,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     // for backwards compatibility (upgrades don't need a controller in this mode)
     private CompatMode compatMode = new CompatMode();
     private static final String OCUpgradeCompat = "OCUpgradeCompat";
-
 
     private MTEPCBBioChamber mBioChamber;
     private int mBioChamberX;
@@ -184,14 +182,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     {" II~II ", "IIJJJII", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IIJJJII", " IIIII "}
                     //spotless:on
                 }))
-        .addShape(OCUpgradeCompat,
-            transpose(new String[][] {
-                // spotless:off
+        .addShape(
+            OCUpgradeCompat,
+            transpose(
+                new String[][] {
+                    // spotless:off
                 {"     ", "     ","  L  ","     ","     "}
                 //spotless:on
-            }
-            )
-            )
+                }))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
@@ -347,6 +345,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             return false;
         }
 
+        if (compatMode.isSet && compatMode.OCTier != 0) {
+            if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ)) return false;
+        }
+
         return true;
     }
 
@@ -417,10 +419,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 mMaxParallel = maxParallel;
 
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
-                if (requiredUpgrade == PCBFactoryUpgrade.BIO && mBioChamber == null
-                    || requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioChamber.isAllowedToWork())
-                    return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
-
+                if (!compatMode.isSet) {
+                    if (requiredUpgrade == PCBFactoryUpgrade.BIO && mBioChamber == null
+                        || requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioChamber.isAllowedToWork())
+                        return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
+                } else {
+                //TODO else do nothing?
+                }
                 int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
                 if (requiredPCBTier > mTier) return CheckRecipeResultRegistry.insufficientMachineTier(requiredPCBTier);
 
@@ -444,9 +449,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     }
                     if (compatMode.bioUpgrade) structures++;
                     return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
-                            .setEUtDiscount(Math.sqrt(structures))
-                            .setDurationModifier(getDurationMultiplierFromRoughness())
-                            .setDurationDecreasePerOC(compatMode.OCTier == 2 ? 4.0 : 2.0);
+                        .setEUtDiscount(Math.sqrt(structures))
+                        .setDurationModifier(getDurationMultiplierFromRoughness())
+                        .setDurationDecreasePerOC(compatMode.OCTier == 2 ? 4.0 : 2.0);
                 }
                 return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
                     .setEUtDiscount(Math.sqrt(structures))
@@ -464,8 +469,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 if (mCoolingTower != null) {
                     structures++;
                 }
-                return super.createParallelHelper(recipe)
-                    .setEUtModifier((float) Math.sqrt(structures))
+                return super.createParallelHelper(recipe).setEUtModifier((float) Math.sqrt(structures))
                     .setChanceMultiplier(mRoughnessMultiplier);
             }
         };
@@ -475,8 +479,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (compatMode.isSet && compatMode.OCTier != 0) {
             return true;
         }
-        if (mCoolingTower == null)
-            return false;
+        if (mCoolingTower == null) return false;
 
         return mCoolingTower.isAllowedToWork();
     }
@@ -497,8 +500,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             if (isOC()) {
                 if (compatMode.isSet && compatMode.OCTier != 0) {
                     if (compatMode.coolantHatch != null) {
-                        FluidStack tFluid = compatMode.OCTier == 1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
-                                : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                        FluidStack tFluid = compatMode.OCTier == 1
+                            ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
+                            : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
                         if (!drain(compatMode.coolantHatch, tFluid, true)) {
                             stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                         }
@@ -507,7 +511,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     }
                 } else {
                     FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
-                            : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                        : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
                     if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                         return false;
@@ -638,17 +642,16 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
 
-        builder
-            .widget(
-                new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                    .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
-                    .setBounds(50, 200)
-                    .setTextColor(Color.WHITE.normal)
-                    .setTextAlignment(Alignment.Center)
-                    .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .setSize(74, 16)
-                    .setPos(98,91));
+        builder.widget(
+            new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
+                .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
+                .setBounds(50, 200)
+                .setTextColor(Color.WHITE.normal)
+                .setTextAlignment(Alignment.Center)
+                .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                .setSize(74, 16)
+                .setPos(98, 91));
         super.addUIWidgets(builder, buildContext);
     }
 
@@ -882,10 +885,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void onBlockDestroyed() {
-        if (mBioChamber != null){
+        if (mBioChamber != null) {
             mBioChamber.removeController(this);
         }
-        if (mCoolingTower != null){
+        if (mCoolingTower != null) {
             mCoolingTower.removeController(this);
         }
 
@@ -908,6 +911,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             coolingTower.setInteger("y", mCoolingTowerY);
             coolingTower.setInteger("z", mCoolingTowerZ);
             aNBT.setTag("mCoolingTower", coolingTower);
+        }
+        if (compatMode.isSet) {
+            compatMode.saveNBTData(aNBT);
         }
         aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
         aNBT.setByte("mTier", mTier);
@@ -941,7 +947,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 compatMode.OCTier = 2;
             }
         }
-        //more backwards compatibility, but the NBT already contains the required data.
+        // more backwards compatibility, but the NBT already contains the required data.
         if (aNBT.hasKey("compatMode")) {
             compatMode = new CompatMode(aNBT);
         }
@@ -1107,7 +1113,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("compatMode")) {
             CompatMode compat = new CompatMode(tag);
             if (compat.isSet) {
-                currenttip.add(EnumChatFormatting.RED + "IN COMPAT MODE, PLEASE USE NEW COOLING TOWER AND BIO CHAMBER STRUCTURES");
+                currenttip.add(
+                    EnumChatFormatting.RED + "IN COMPAT MODE, PLEASE USE NEW COOLING TOWER AND BIO CHAMBER STRUCTURES");
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -1156,8 +1163,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return true;
     }
 
-
     private static class CompatMode {
+
         byte OCTier;
         int OCX;
         int OCZ;
@@ -1165,12 +1172,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
         boolean bioUpgrade;
 
-
         boolean isSet = false;
 
-        public CompatMode(){}
+        public CompatMode() {}
 
-        public CompatMode(NBTTagCompound aNBT){
+        public CompatMode(NBTTagCompound aNBT) {
             NBTTagCompound compat = aNBT.getCompoundTag("compatMode");
             isSet = true;
 
