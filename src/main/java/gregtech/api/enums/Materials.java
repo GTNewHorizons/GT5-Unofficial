@@ -968,8 +968,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public LinkedHashSet<SubTag> mSubTags = new LinkedHashSet<>();
     public List<Supplier<Materials>> mPendingOreByproducts = new ArrayList<>();
     public List<Materials> mOreByProducts = new ArrayList<>();
-    public Enchantment mEnchantmentTools = null;
-    public Enchantment mEnchantmentArmors = null;
+    public int mDurability = 0;
+    public byte mToolQuality = 0;
+    public float mToolSpeed = 1.0F;
+    private Supplier<Enchantment> mPendingToolEnchantment;
+    public Enchantment mToolEnchantment;
+    public byte mToolEnchantmentLevel = 0;
+    private Supplier<Enchantment> mPendingArmorEnchantment;
+    public Enchantment mArmorEnchantment;
+    public byte mArmorEnchantmentLevel = 0;
     public boolean mUnificatable;
     public boolean mBlastFurnaceRequired = false;
     public boolean mAutoGenerateBlastFurnaceRecipes = true;
@@ -987,14 +994,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private boolean mGenerateEmpty = false;
     public boolean mHasGas = false;
     public boolean mCustomOre = false;
-    public byte mEnchantmentToolsLevel = 0;
-    public byte mEnchantmentArmorsLevel = 0;
-    public byte mToolQuality = 0;
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
     public int mGasTemp = 0;
     public int mMetaItemSubID;
-    public int mDurability = 16;
     public int mFuelPower = 0;
     public int mFuelType = 0;
     public int mExtraData = 0;
@@ -1005,7 +1008,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public int mDensityDivider = 1;
     public int processingMaterialTierEU = 0;
     public long mDensity = M;
-    public float mToolSpeed = 1.0F;
     public float mHeatDamage = 0.0F;
     public float mSteamMultiplier = 1.0F;
     public float mGasMultiplier = 1.0F;
@@ -1055,8 +1057,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Dyes color,
         int argb, int argbMolten,
         int toolDurability, int toolQuality, float toolSpeed,
-        @Nullable Enchantment toolEnchantment, int toolEnchantmentLevel,
-        @Nullable Enchantment armorEnchantment, int armorEnchantmentLevel,
+        @Nullable Supplier<Enchantment> pendingToolEnchantment, int toolEnchantmentLevel,
+        @Nullable Supplier<Enchantment> pendingArmorEnchantment, int armorEnchantmentLevel,
         float steamMultiplier, float gasMultiplier, float plasmaMultiplier,
         int fuelType, int fuelPower,
         boolean generateDustItems,
@@ -1135,10 +1137,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mDurability = toolDurability;
         mToolSpeed = toolSpeed;
         mToolQuality = (byte) toolQuality;
-        mEnchantmentTools = toolEnchantment;
-        mEnchantmentToolsLevel = (byte) toolEnchantmentLevel;
-        mEnchantmentArmors = armorEnchantment;
-        mEnchantmentArmorsLevel = (byte) armorEnchantmentLevel;
+        mPendingToolEnchantment = pendingToolEnchantment;
+        mToolEnchantmentLevel = (byte) toolEnchantmentLevel;
+        mPendingArmorEnchantment = pendingArmorEnchantment;
+        mArmorEnchantmentLevel = (byte) armorEnchantmentLevel;
 
         // Set turbine properties
         mSteamMultiplier = steamMultiplier;
@@ -1328,15 +1330,38 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
     }
 
+    private static void setToolEnchantments() {
+        for (Materials material : MATERIALS_MAP.values()) {
+            if (material.mPendingToolEnchantment == null) continue;
+            material.mToolEnchantment = material.mPendingToolEnchantment.get();
+            material.mPendingToolEnchantment = null;
+        }
+    }
+
+    private static void setArmorEnchantments() {
+        for (Materials material : MATERIALS_MAP.values()) {
+            if (material.mPendingArmorEnchantment == null) continue;
+            material.mArmorEnchantment = material.mPendingArmorEnchantment.get();
+            material.mPendingArmorEnchantment = null;
+        }
+    }
+
     public static void init() {
+        setToolEnchantments();
+        setArmorEnchantments();
+
         new ProcessingConfig();
         if (!GTMod.proxy.mEnableAllMaterials) new ProcessingModSupport();
-        mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate
-        // materials
-        initMaterialProperties(); // No more material addition or manipulation should be done past this point!
+
+        // This is where addon mods can add/manipulate materials
+        mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit);
+
+        initMaterialProperties();
+        // No more material addition or manipulation should be done past this point!
+
+        // Generate standard object array. This is a lot faster to loop over.
         MATERIALS_ARRAY = MATERIALS_MAP.values()
-            .toArray(new Materials[0]); // Generate standard object array. This is a
-        // lot faster to loop over.
+            .toArray(new Materials[0]);
         VALUES = Arrays.asList(MATERIALS_ARRAY);
 
         disableUnusedHotIngots();
@@ -1443,11 +1468,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addEnchantmentValues(Materials aMaterial) {
-        String aEnchantmentName = aMaterial.mEnchantmentTools != null ? aMaterial.mEnchantmentTools.getName() : "";
-        if (aMaterial.mEnchantmentTools != null && !aEnchantmentName.equals(aMaterial.mEnchantmentTools.getName()))
+        String aEnchantmentName = aMaterial.mToolEnchantment != null ? aMaterial.mToolEnchantment.getName() : "";
+        if (aMaterial.mToolEnchantment != null && !aEnchantmentName.equals(aMaterial.mToolEnchantment.getName()))
             IntStream.range(0, Enchantment.enchantmentsList.length)
                 .filter(i -> aEnchantmentName.equals(Enchantment.enchantmentsList[i].getName()))
-                .forEach(i -> aMaterial.mEnchantmentTools = Enchantment.enchantmentsList[i]);
+                .forEach(i -> aMaterial.mToolEnchantment = Enchantment.enchantmentsList[i]);
     }
 
     private static void addHasGasFluid(Materials aMaterial) {
@@ -1731,19 +1756,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setToolEnchantment(Enchantment, int)} instead. */
+    /** @deprecated Use {@link MaterialBuilder#setToolEnchantment(Supplier, int)} instead. */
     @Deprecated
     public Materials setEnchantmentForTools(Enchantment aEnchantment, int aEnchantmentLevel) {
-        mEnchantmentTools = aEnchantment;
-        mEnchantmentToolsLevel = (byte) aEnchantmentLevel;
+        mToolEnchantment = aEnchantment;
+        mToolEnchantmentLevel = (byte) aEnchantmentLevel;
         return this;
     }
 
-    /** @deprecated Use {@link MaterialBuilder#setArmorEnchantment(Enchantment, int)} instead. */
+    /** @deprecated Use {@link MaterialBuilder#setArmorEnchantment(Supplier, int)} instead. */
     @Deprecated
     public Materials setEnchantmentForArmors(Enchantment aEnchantment, int aEnchantmentLevel) {
-        mEnchantmentArmors = aEnchantment;
-        mEnchantmentArmorsLevel = (byte) aEnchantmentLevel;
+        mArmorEnchantment = aEnchantment;
+        mArmorEnchantmentLevel = (byte) aEnchantmentLevel;
         return this;
     }
 

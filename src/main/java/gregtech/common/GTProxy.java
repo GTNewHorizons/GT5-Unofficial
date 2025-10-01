@@ -764,6 +764,7 @@ public class GTProxy implements IFuelHandler {
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
+        // Register previously registered oredict entries (from Forge) with the GT oredict handler.
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
                 registerOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
