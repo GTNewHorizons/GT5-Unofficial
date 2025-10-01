@@ -258,6 +258,12 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#cellPlasma}</li>
+     * </ul>
+     */
     public MaterialBuilder addPlasma() {
         this.generatePlasma = true;
         return this;
