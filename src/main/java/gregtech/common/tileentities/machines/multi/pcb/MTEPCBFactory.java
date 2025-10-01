@@ -578,7 +578,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return mTier;
     }
 
-    // TODO not used?
     private ExtendedFacing transformFacing(ExtendedFacing facing) {
         ForgeDirection curDirection = facing.getDirection();
         Rotation curRotation = facing.getRotation();
