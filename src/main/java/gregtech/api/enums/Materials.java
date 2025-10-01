@@ -1705,14 +1705,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * If this Ore gives multiple drops of its Main Material. Lapis Ore for example gives about 6 drops.
-     */
-    public Materials setOreMultiplier(int aOreMultiplier) {
-        if (aOreMultiplier > 0) mOreMultiplier = aOreMultiplier;
-        return this;
-    }
-
-    /**
      * If this Ore gives multiple drops of its Byproduct Material.
      */
     @SuppressWarnings("UnusedReturnValue") // Maintains signature

@@ -435,6 +435,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Sets the number of drops this ore yields for its main material. For example, Lapis Ore has a multiplier of 6. */
     public MaterialBuilder setOreMultiplier(int oreMultiplier) {
         this.oreMultiplier = oreMultiplier;
         return this;
