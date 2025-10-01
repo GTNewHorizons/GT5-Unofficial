@@ -19,8 +19,8 @@ public final class GTStreamUtil {
     }
 
     /**
-     * Returns a sequential ordered {@code Stream} whose elements are the specified values,
-     * if {@code condition} is true, otherwise returns an empty {@code Stream}.
+     * Returns a sequential ordered {@code Stream} whose elements are the specified values, if {@code condition} is
+     * true, otherwise returns an empty {@code Stream}.
      *
      * @param <T>    the type of stream elements
      * @param values the elements of the new stream

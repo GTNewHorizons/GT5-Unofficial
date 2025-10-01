@@ -351,7 +351,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Reactor, LNR")
             .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids.")
+            .addInfo("Generate power from high-energy liquids")
             .addInfo(
                 String.format(
                     "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
@@ -366,7 +366,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     + " ONE"
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
+            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
             .addSeparator()
             .addInfo(
                 "Can increase " + EnumChatFormatting.LIGHT_PURPLE
@@ -391,7 +391,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     + "consuming "
                     + EnumChatFormatting.RED
                     + "excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caseium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
             .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))

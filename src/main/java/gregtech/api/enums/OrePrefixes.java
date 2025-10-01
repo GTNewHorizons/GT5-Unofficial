@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -37,7 +39,7 @@ public enum OrePrefixes {
 
     // used for removed prefixes to prevent id shifts
     ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0,
-        1, -1),
+        64, -1),
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false,
@@ -181,7 +183,7 @@ public enum OrePrefixes {
     comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64,
         101),
     /** consisting out of a Bolt. */
-    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 9,
+    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8,
         64, 27),
     /** consisting out of 1/2 Stick. */
     ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28),
@@ -978,8 +980,8 @@ public enum OrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
     /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to
-     * get the Amounts in comparision to one Ingot. 0 = Null Negative = Undefined Amount
+     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to get the Amounts
+     * in comparision to one Ingot. 0 = Null Negative = Undefined Amount
      */
     public final long mMaterialAmount;
 
@@ -1182,13 +1184,23 @@ public enum OrePrefixes {
         return "";
     }
 
+    private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();
+
+    static {
+        for (OrePrefixes value : OrePrefixes.values()) {
+            NAME_TO_OREPREFIX.put(value.name(), value);
+        }
+    }
+
     public static OrePrefixes getPrefix(String aPrefixName) {
         return getPrefix(aPrefixName, null);
     }
 
     public static OrePrefixes getPrefix(String aPrefixName, OrePrefixes aReplacement) {
-        Object tObject = GTUtility.getFieldContent(OrePrefixes.class, aPrefixName, false, false);
-        if (tObject instanceof OrePrefixes) return (OrePrefixes) tObject;
+        final OrePrefixes value = NAME_TO_OREPREFIX.get(aPrefixName);
+        if (value != null) {
+            return value;
+        }
         return aReplacement;
     }
 

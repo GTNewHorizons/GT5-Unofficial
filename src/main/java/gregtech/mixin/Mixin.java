@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 import com.gtnewhorizon.gtnhmixins.builders.MixinBuilder;
 
-import bartworks.common.configs.Configuration;
 import gregtech.common.config.Gregtech;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -32,11 +31,6 @@ public enum Mixin implements IMixins {
     LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
         .addClientMixins("minecraft.LocaleMixin")
         .setPhase(Phase.EARLY)),
-    CacheCraftingManagerRecipes(
-        new MixinBuilder()
-            .addCommonMixins("minecraft.CraftingManagerMixin")
-            .setApplyIf(() -> Configuration.mixins.enableCraftingManagerRecipeCaching)
-            .setPhase(Phase.EARLY)),
     VANILLA_ACCESSORS(new MixinBuilder()
         .addCommonMixins(
             "minecraft.accessors.BlockStemMixin",
@@ -47,8 +41,21 @@ public enum Mixin implements IMixins {
             "minecraft.accessors.ForgeShapelessRecipeMixin",
             "minecraft.accessors.ItemArmorMixin",
             "minecraft.accessors.PotionMixin",
-            "minecraft.accessors.EntityPlayerMPMixin")
+            "minecraft.accessors.EntityPlayerMPMixin",
+            "minecraft.accessors.WeightedRandomFishableMixin",
+            "minecraft.accessors.EntityMixin",
+            "minecraft.accessors.LanguageRegistryMixin",
+            "minecraft.accessors.EntityItemMixin")
+        .addClientMixins(
+            "minecraft.accessors.GuiTextFieldMixin",
+            "minecraft.accessors.TessellatorMixin")
         .setPhase(Phase.EARLY)),
+    RemoveItemStack(new MixinBuilder()
+        .addCommonMixins(
+            "minecraft.ItemStackMixin_MetaItemRemover"
+        )
+        .setPhase(Phase.EARLY)
+    ),
     ItemMixinCoverFix(new MixinBuilder("Allow cover items to bypass sneak checks")
         .addCommonMixins("minecraft.ItemMixin")
         .setPhase(Phase.EARLY)),
@@ -76,7 +83,10 @@ public enum Mixin implements IMixins {
             .addCommonMixins("ic2.MixinIc2ReinforcedGlass")
             .addRequiredMod(TargetedMod.IC2)
             .setPhase(Phase.LATE)),
-
+    IC2_REMOVE_FISSION_FUELS(new MixinBuilder()
+        .addCommonMixins("ic2.MixinIc2FissionFuelRemoval")
+        .addRequiredMod(TargetedMod.IC2)
+        .setPhase(Phase.LATE)),
     // Hazmat armors
     IC2_HAZMAT(new MixinBuilder()
         .setPhase(Phase.LATE)

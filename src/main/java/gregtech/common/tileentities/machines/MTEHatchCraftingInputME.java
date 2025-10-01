@@ -8,6 +8,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -267,9 +268,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         /**
          * Try to refund the items and fluids back.
          * <p>
-         * Push all the items and fluids back to the AE network first.
-         * If shouldDrop is true, the remaining are dropped to the world (the fluids are dropped as AE2FC fluid drop).
-         * Otherwise, they are still left in the inventory.
+         * Push all the items and fluids back to the AE network first. If shouldDrop is true, the remaining are dropped
+         * to the world (the fluids are dropped as AE2FC fluid drop). Otherwise, they are still left in the inventory.
          */
         public void refund(AENetworkProxy proxy, BaseActionSource src, boolean shouldDrop) throws GridAccessException {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
@@ -426,6 +426,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     public List<ProcessingLogic> processingLogics = new ArrayList<>();
+    private List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -512,6 +513,30 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public void onColorChangeServer(byte aColor) {
         updateAE2ProxyColor();
+    }
+
+    public void addProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        if (!proxyHatches.contains(proxy)) proxyHatches.add(proxy);
+    }
+
+    public void removeProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        proxyHatches.remove(proxy);
+    }
+
+    public List<MTEHatchCraftingInputSlave> getProxyHatches() {
+        validateProxyHatchList();
+        return Collections.unmodifiableList(proxyHatches);
+    }
+
+    private long lastProxyHatchValidationTime = -1;
+
+    private void validateProxyHatchList() {
+        long currentTime = getBaseMetaTileEntity().getTimer();
+        if (currentTime != lastProxyHatchValidationTime) {
+            proxyHatches
+                .removeIf(hatch -> hatch == null || hatch.getBaseMetaTileEntity() == null || hatch.getMaster() != this);
+            lastProxyHatchValidationTime = currentTime;
+        }
     }
 
     public void updateAE2ProxyColor() {
@@ -730,7 +755,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
-        for (int i = 0; i < getSizeInventory(); i++) {
+        // Sync inventories to ensure that the real inventory matches what AE2 is seeing.
+        for (int i = 0; i < MAX_PATTERN_COUNT; i++) {
             if (internalInventory[i] == null) continue;
             mInventory[i] = internalInventory[i].pattern;
         }

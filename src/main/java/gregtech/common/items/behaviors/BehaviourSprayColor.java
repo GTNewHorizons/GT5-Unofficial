@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -68,7 +69,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         final float hitY, final float hitZ) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
 
-        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer)
+        if (ColoredBlockContainer.getInstance(aPlayer, aX, aY, aZ, side)
             .isValid()) {
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
         }
@@ -110,7 +111,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         int initialBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity initialTE = aWorld.getTileEntity(aX, aY, aZ);
         while ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, 1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SPRAY_CAN, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
             }
@@ -132,8 +133,8 @@ public class BehaviourSprayColor extends BehaviourNone {
             if (aWorld.getBlockMetadata(aX, aY, aZ) != initialBlockMeta) break;
 
             /*
-             * Check if the initial block had a TE and if the next one does, check if it's the same kind.
-             * else one does and the other doesn't, thus stop checking.
+             * Check if the initial block had a TE and if the next one does, check if it's the same kind. else one does
+             * and the other doesn't, thus stop checking.
              */
             TileEntity targetTE = aWorld.getTileEntity(aX, aY, aZ);
             if (initialTE == null ^ targetTE == null) break;
@@ -149,6 +150,15 @@ public class BehaviourSprayColor extends BehaviourNone {
         }
         setRemainingUses(aStack, tNBT, tUses);
         return rOutput;
+    }
+
+    @Override
+    public boolean onBlockPlacedWhileWieldingOffhanded(final BlockSnapshot blockSnapshot, final ItemStack itemStack, final EntityPlayer player) {
+        if (itemStack.getItem() instanceof final MetaBaseItem item) {
+            this.onItemUseFirst(item, itemStack, player, player.worldObj, blockSnapshot.x, blockSnapshot.y, blockSnapshot.z, ForgeDirection.SOUTH, 0, 0, 0);
+        }
+
+        return false;
     }
 
     @Override
@@ -189,7 +199,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
+        return ColoredBlockContainer.getInstance(player, aX, aY, aZ, side)
             .setColor(getColor());
     }
 

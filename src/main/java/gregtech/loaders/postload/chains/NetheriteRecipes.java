@@ -77,8 +77,8 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 24))
                 .fluidInputs(
-                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000), // Hydrogen Peroxide
-                    FluidUtils.getHydrofluoricAcid(4000)) // Industrial Strength Hydrofluoric Acid
+                    FluidUtils.getHydrofluoricAcid(4000), // Industrial Strength Hydrofluoric Acid
+                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000)) // Hydrogen Peroxide
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 4))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
@@ -131,7 +131,7 @@ public class NetheriteRecipes {
                 .addTo(multiblockChemicalReactorRecipes);
 
             GTValues.RA.stdBuilder() // Precipitation
-                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(42))
+                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(48))
                 .itemOutputs(ItemList.Prismarine_Precipitate.get(8))
                 .fluidInputs(Materials.PrismarineRichNitrobenzeneSolution.getFluid(16000))
                 .fluidOutputs(
@@ -172,7 +172,9 @@ public class NetheriteRecipes {
         // Naquarite
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(2),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
                 .fluidInputs(Materials.PrismaticAcid.getFluid(8000))
                 .fluidOutputs(Materials.PrismaticNaquadah.getMolten(2304))
                 .duration(20 * SECONDS)
@@ -213,7 +215,7 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Netherite, 8),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Netherite, 4),
                     ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(16))
                 .fluidInputs(Materials.Manyullyn.getMolten(1152))
                 .itemOutputs(ItemList.Naquarite_Universal_Insulator_Foil.get(8))
@@ -293,61 +295,65 @@ public class NetheriteRecipes {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(mixerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.TripleCompressedNetherrack.get(1),
-                getModItem(ThaumicTinkerer.ID, "kamiResource", 64, 6, missing))
-            .itemOutputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
-            .duration(1 * TICKS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(electricImplosionCompressorRecipes);
+        if (EtFuturumRequiem.isModLoaded()) {
+            if (ThaumicTinkerer.isModLoaded()) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        GregtechItemList.TripleCompressedNetherrack.get(1),
+                        getModItem(ThaumicTinkerer.ID, "kamiResource", 64, 6, missing))
+                    .itemOutputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
+                    .duration(1 * TICKS)
+                    .eut(TierEU.RECIPE_UEV)
+                    .addTo(electricImplosionCompressorRecipes);
+            }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 3, missing))
-            .fluidInputs(Materials.NefariousOil.getFluid(16_000))
-            .itemOutputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
-            .duration(1 * TICKS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(electricImplosionCompressorRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 3, missing))
+                .fluidInputs(Materials.NefariousOil.getFluid(16_000))
+                .itemOutputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(electricImplosionCompressorRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1, missing))
-            .itemOutputs(
-                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing),
-                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
-            .outputChances(10000, 2500)
-            .duration(27 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(hammerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1, missing))
+                .itemOutputs(
+                    getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing),
+                    getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
+                .outputChances(10000, 2500)
+                .duration(27 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(hammerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
-            .fluidInputs(Materials.Lava.getFluid(100))
-            .itemOutputs(ItemList.Hot_Netherite_Scrap.get(1))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(chemicalBathRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
+                .fluidInputs(Materials.Lava.getFluid(100))
+                .itemOutputs(ItemList.Hot_Netherite_Scrap.get(1))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(chemicalBathRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Hot_Netherite_Scrap.get(2))
-            .fluidInputs(Materials.RichNetherWaste.getFluid(2_000))
-            .itemOutputs(
-                ItemList.Netherite_Scrap_Seed.get(1),
-                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 2, missing))
-            .outputChances(1000, 10000)
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(autoclaveRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hot_Netherite_Scrap.get(2))
+                .fluidInputs(Materials.RichNetherWaste.getFluid(2_000))
+                .itemOutputs(
+                    ItemList.Netherite_Scrap_Seed.get(1),
+                    getModItem(EtFuturumRequiem.ID, "netherite_scrap", 2, missing))
+                .outputChances(1000, 10000)
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(autoclaveRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Hot_Netherite_Scrap.get(16), ItemList.Heavy_Hellish_Mud.get(16))
-            .fluidInputs(Materials.PoorNetherWaste.getFluid(8_000))
-            .itemOutputs(
-                ItemList.Brittle_Netherite_Scrap.get(3),
-                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 16, missing))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(chemicalBathRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hot_Netherite_Scrap.get(16), ItemList.Heavy_Hellish_Mud.get(16))
+                .fluidInputs(Materials.PoorNetherWaste.getFluid(8_000))
+                .itemOutputs(
+                    ItemList.Brittle_Netherite_Scrap.get(3),
+                    getModItem(EtFuturumRequiem.ID, "netherite_scrap", 16, missing))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(chemicalBathRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Netherite_Scrap_Seed.get(1))
@@ -366,7 +372,7 @@ public class NetheriteRecipes {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
+            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Netherite_Nanoparticles.get(1))
             .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
             .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -378,6 +384,7 @@ public class NetheriteRecipes {
         if (Forestry.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
+                    GTUtility.getIntegratedCircuit(2),
                     ItemList.Netherite_Nanoparticles.get(1),
                     GTBees.combs.getStackForType(CombType.NETHERITE, 32))
                 .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
@@ -402,16 +409,18 @@ public class NetheriteRecipes {
         addNetheritePartRecipe(OrePrefixes.bolt, 8, 1);
         addNetheritePartRecipe(OrePrefixes.screw, 8, 1);
         addNetheritePartRecipe(OrePrefixes.ring, 4, 1);
-        addNetheritePartRecipe(OrePrefixes.foil, 8, 1);
+        addNetheritePartRecipe(OrePrefixes.foil, 4, 1);
         addNetheritePartRecipe(OrePrefixes.itemCasing, 2, 1);
         addNetheritePartRecipe(OrePrefixes.gearGtSmall, 1, 1);
         addNetheritePartRecipe(OrePrefixes.rotor, 1, 5);
         addNetheritePartRecipe(OrePrefixes.stickLong, 1, 1);
         addNetheritePartRecipe(OrePrefixes.gearGt, 1, 4);
-        addNetheritePartRecipe(
-            GTOreDictUnificator.get(OrePrefixes.block, Materials.InfusedGold, 1),
-            getModItem(EtFuturumRequiem.ID, "netherite_block", 1, missing),
-            9);
+        if (EtFuturumRequiem.isModLoaded()) {
+            addNetheritePartRecipe(
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.InfusedGold, 1),
+                getModItem(EtFuturumRequiem.ID, "netherite_block", 1, missing),
+                9);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -446,12 +455,15 @@ public class NetheriteRecipes {
             .eut(TierEU.RECIPE_LV)
             .addTo(maceratorRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_block", 3, missing))
-            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_stairs", 4, missing))
-            .duration(1 * HOURS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(cutterRecipes);
+        if (EtFuturumRequiem.isModLoaded()) {
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_block", 3, missing))
+                .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_stairs", 4, missing))
+                .duration(1 * HOURS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(cutterRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -474,7 +486,7 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
-            .duration(34 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(plasmaArcFurnaceRecipes);
 

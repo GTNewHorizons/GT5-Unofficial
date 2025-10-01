@@ -465,6 +465,7 @@ import static tectech.thing.CustomItemList.eM_dynamoTunnel8_UMV;
 import static tectech.thing.CustomItemList.eM_dynamoTunnel8_UXV;
 import static tectech.thing.CustomItemList.eM_dynamoTunnel9001;
 import static tectech.thing.CustomItemList.eM_dynamoTunnel9_UXV;
+import static tectech.thing.CustomItemList.eM_dynamoWirelessMulti;
 import static tectech.thing.CustomItemList.eM_energyMulti16_EV;
 import static tectech.thing.CustomItemList.eM_energyMulti16_IV;
 import static tectech.thing.CustomItemList.eM_energyMulti16_LuV;
@@ -637,6 +638,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessComputationInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessComputationOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
+import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessMulti;
 import tectech.thing.metaTileEntity.multi.MTEActiveTransformer;
 import tectech.thing.metaTileEntity.multi.MTEDataBank;
@@ -1589,6 +1591,17 @@ public class MachineLoader implements Runnable {
                 "Legendary Laser Target Hatch",
                 13,
                 (int) V[13]).getStackForm(1L));
+
+        // ===================================================================================================
+        // Multi AMP Wireless OUTPUTS
+        // ===================================================================================================
+        eM_dynamoWirelessMulti.set(
+            new MTEHatchWirelessDynamoMulti(
+                MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGIZED.ID,
+                "hatch.wireless.transmitter.energized.tier.12",
+                "Energized Wireless Dynamo Hatch",
+                12,
+                65536).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Power OUTPUTS

@@ -17,7 +17,6 @@ import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -55,21 +54,19 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> result = new ArrayList<>();
             int recipeTier = recipeInfo.recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
-            result.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeTier));
+            result.add(GTUtility.translate("ig.nei.module", recipeTier));
 
             SpaceMiningData data = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
             if (data != null) {
                 result.add(
-                    GCCoreUtil.translate("ig.nei.spacemining.distance") + " "
+                    GTUtility.translate("ig.nei.spacemining.distance") + " "
                         + data.minDistance
                         + "-"
                         + data.maxDistance);
-                result.add(GCCoreUtil.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
+                result.add(GTUtility.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
                 result.add(
-                    GCCoreUtil.translateWithFormat(
-                        "tt.nei.research.min_computation",
-                        GTUtility.formatNumbers(data.computation)));
-                result.add(GCCoreUtil.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
+                    GTUtility.translate("tt.nei.research.min_computation", GTUtility.formatNumbers(data.computation)));
+                result.add(GTUtility.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
             }
             return result;
         }

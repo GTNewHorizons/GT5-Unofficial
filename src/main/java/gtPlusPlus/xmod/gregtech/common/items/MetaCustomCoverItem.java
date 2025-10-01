@@ -15,12 +15,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import org.apache.commons.lang3.StringUtils;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -40,7 +39,7 @@ public class MetaCustomCoverItem extends Item {
         super();
         icons = new IIcon[aTextureCount];
         mModID = aModId;
-        mTextureSetName = Utils.sanitizeString(aTextureSetName);
+        mTextureSetName = StringUtils.sanitizeString(aTextureSetName);
         mTextures = aTextures;
         mRGB = aRGB;
         this.setTextureName(GTPlusPlus.ID + ":" + "itemPlate");
