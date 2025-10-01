@@ -160,31 +160,146 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
+     * </ul>
+     */
     public MaterialBuilder addDustItems() {
         this.generateDustItems = true;
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#ingotHot}</li>
+     * <li>{@link OrePrefixes#ingot}</li>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
+     * <li>{@link OrePrefixes#nugget}</li>
+     * <li>{@link OrePrefixes#plateAlloy}</li>
+     * <li>{@link OrePrefixes#plateSteamcraft}</li>
+     * <li>{@link OrePrefixes#plateDense}</li>
+     * <li>{@link OrePrefixes#plateSuperdense}</li>
+     * <li>{@link OrePrefixes#plateQuintuple}</li>
+     * <li>{@link OrePrefixes#plateQuadruple}</li>
+     * <li>{@link OrePrefixes#plateTriple}</li>
+     * <li>{@link OrePrefixes#plateDouble}</li>
+     * <li>{@link OrePrefixes#plate}</li>
+     * <li>{@link OrePrefixes#itemCasing}</li>
+     * <li>{@link OrePrefixes#foil}</li>
+     * <li>{@link OrePrefixes#stickLong}</li>
+     * <li>{@link OrePrefixes#stick}</li>
+     * <li>{@link OrePrefixes#round}</li>
+     * <li>{@link OrePrefixes#bolt}</li>
+     * <li>{@link OrePrefixes#comb}</li>
+     * <li>{@link OrePrefixes#screw}</li>
+     * <li>{@link OrePrefixes#ring}</li>
+     * <li>{@link OrePrefixes#springSmall}</li>
+     * <li>{@link OrePrefixes#spring}</li>
+     * <li>{@link OrePrefixes#wireFine}</li>
+     * <li>{@link OrePrefixes#handleMallet}</li>
+     * </ul>
+     */
     public MaterialBuilder addMetalItems() {
         this.generateMetalItems = true;
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#gemChipped}</li>
+     * <li>{@link OrePrefixes#gemFlawed}</li>
+     * <li>{@link OrePrefixes#gemFlawless}</li>
+     * <li>{@link OrePrefixes#gemExquisite}</li>
+     * <li>{@link OrePrefixes#gem}</li>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
+     * <li>{@link OrePrefixes#plate}</li>
+     * <li>{@link OrePrefixes#itemCasing}</li>
+     * <li>{@link OrePrefixes#stickLong}</li>
+     * <li>{@link OrePrefixes#stick}</li>
+     * <li>{@link OrePrefixes#bolt}</li>
+     * <li>{@link OrePrefixes#comb}</li>
+     * <li>{@link OrePrefixes#screw}</li>
+     * <li>{@link OrePrefixes#crystal}</li>
+     * <li>{@link OrePrefixes#handleMallet}</li>
+     * </ul>
+     */
     public MaterialBuilder addGemItems() {
         this.generateGemItems = true;
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#oreBlackgranite}</li>
+     * <li>{@link OrePrefixes#oreRedgranite}</li>
+     * <li>{@link OrePrefixes#oreMarble}</li>
+     * <li>{@link OrePrefixes#oreBasalt}</li>
+     * <li>{@link OrePrefixes#oreNetherrack}</li>
+     * <li>{@link OrePrefixes#oreNether}</li>
+     * <li>{@link OrePrefixes#oreDense}</li>
+     * <li>{@link OrePrefixes#oreRich}</li>
+     * <li>{@link OrePrefixes#oreNormal}</li>
+     * <li>{@link OrePrefixes#oreSmall}</li>
+     * <li>{@link OrePrefixes#orePoor}</li>
+     * <li>{@link OrePrefixes#oreEndstone}</li>
+     * <li>{@link OrePrefixes#oreEnd}</li>
+     * <li>{@link OrePrefixes#ore}</li>
+     * <li>{@link OrePrefixes#crushedCentrifuged}</li>
+     * <li>{@link OrePrefixes#crushedPurified}</li>
+     * <li>{@link OrePrefixes#crushed}</li>
+     * <li>{@link OrePrefixes#rawOre}</li>
+     * <li>{@link OrePrefixes#shard}</li>
+     * <li>{@link OrePrefixes#clump}</li>
+     * <li>{@link OrePrefixes#reduced}</li>
+     * <li>{@link OrePrefixes#crystalline}</li>
+     * <li>{@link OrePrefixes#cleanGravel}</li>
+     * <li>{@link OrePrefixes#dirtyGravel}</li>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
+     * <li>{@link OrePrefixes#dustImpure}</li>
+     * <li>{@link OrePrefixes#dustRefined}</li>
+     * <li>{@link OrePrefixes#dustPure}</li>
+     * <li>{@link OrePrefixes#milled}</li>
+     * </ul>
+     */
     public MaterialBuilder addOreItems() {
         this.generateOreItems = true;
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#cell}</li>
+     * <li>{@link OrePrefixes#bucket}</li>
+     * <li>{@link OrePrefixes#bucketClay}</li>
+     * <li>{@link OrePrefixes#bottle}</li>
+     * <li>{@link OrePrefixes#capsule}</li>
+     * </ul>
+     */
     public MaterialBuilder addCell() {
         this.generateCell = true;
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#cellPlasma}</li>
+     * </ul>
+     */
     public MaterialBuilder addPlasma() {
         this.generatePlasma = true;
         return this;
@@ -195,6 +310,14 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#rotor}</li>
+     * <li>{@link OrePrefixes#gearGtSmall}</li>
+     * <li>{@link OrePrefixes#gearGt}</li>
+     * </ul>
+     */
     public MaterialBuilder addGearItems() {
         this.generateGearItems = true;
         return this;
