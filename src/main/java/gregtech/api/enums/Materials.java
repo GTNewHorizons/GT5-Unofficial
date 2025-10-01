@@ -1559,7 +1559,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum
      *
-     * @deprecated Use {@link #getName()} instead, but realistically you should never even need the name.
+     * @deprecated Use {@link Materials#getName()} instead, but realistically you should never even need the name.
      */
     @Deprecated
     public String name() {
