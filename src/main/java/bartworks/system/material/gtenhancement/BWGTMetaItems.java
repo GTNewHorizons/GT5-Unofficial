@@ -163,7 +163,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
             Materials material = Materials.values()[i];
             if (material == null) continue;
 
-            // This only falls through, returning false, when the material has no overlap with `materialGenerationBits`.
+            // This only falls through when the material has no overlap with `materialGenerationBits`.
             // spotless:off
             if ((materialGenerationBits & 1) == 0 || !material.hasDustItems())
                 if ((materialGenerationBits & 2) == 0 || !material.hasMetalItems())
@@ -195,7 +195,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                 Materials material = GTMetaItemEnhancer.NoMetaValue.get(i);
                 if (material == null) continue;
 
-                // This only falls through, returning false, when the material has no overlap with `materialGenerationBits`.
+                // This only falls through when the material has no overlap with `materialGenerationBits`.
                 // spotless:off
                 if ((materialGenerationBits & 1) == 0 || !material.hasDustItems())
                     if ((materialGenerationBits & 2) == 0 || !material.hasMetalItems())
