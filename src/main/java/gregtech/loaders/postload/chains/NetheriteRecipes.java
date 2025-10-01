@@ -172,7 +172,9 @@ public class NetheriteRecipes {
         // Naquarite
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(2),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
                 .fluidInputs(Materials.PrismaticAcid.getFluid(8000))
                 .fluidOutputs(Materials.PrismaticNaquadah.getMolten(2304))
                 .duration(20 * SECONDS)
