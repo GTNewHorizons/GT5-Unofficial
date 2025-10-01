@@ -160,6 +160,14 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     *   <li>{@link OrePrefixes#dustTiny}</li>
+     *   <li>{@link OrePrefixes#dustSmall}</li>
+     *   <li>{@link OrePrefixes#dust}</li>
+     * </ul>
+     */
     public MaterialBuilder addDustItems() {
         this.generateDustItems = true;
         return this;
