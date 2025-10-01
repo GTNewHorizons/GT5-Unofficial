@@ -36,9 +36,9 @@ public class MaterialBuilder {
     private float toolSpeed = 1.0f;
     private int toolDurability = 0;
     private int toolQuality = 0;
-    private Enchantment toolEnchantment;
+    private Supplier<Enchantment> pendingToolEnchantment;
     private int toolEnchantmentLevel = 1;
-    private Enchantment armorEnchantment;
+    private Supplier<Enchantment> pendingArmorEnchantment;
     private int armorEnchantmentLevel = 1;
     private int argb = 0x00ffffff;
     private int argbMolten = 0x00ffffff;
@@ -99,8 +99,8 @@ public class MaterialBuilder {
             color,
             argb, argbMolten,
             toolDurability, toolQuality, toolSpeed,
-            toolEnchantment, toolEnchantmentLevel,
-            armorEnchantment, armorEnchantmentLevel,
+            pendingToolEnchantment, toolEnchantmentLevel,
+            pendingArmorEnchantment, armorEnchantmentLevel,
             steamMultiplier, gasMultiplier, plasmaMultiplier,
             fuelType.getIndex(), fuelPower,
             generateDustItems,
@@ -368,14 +368,14 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setToolEnchantment(Enchantment enchantment, int level) {
-        this.toolEnchantment = enchantment;
+    public MaterialBuilder setToolEnchantment(Supplier<Enchantment> enchantment, int level) {
+        this.pendingToolEnchantment = enchantment;
         this.toolEnchantmentLevel = level;
         return this;
     }
 
-    public MaterialBuilder setArmorEnchantment(Enchantment enchantment, int level) {
-        this.armorEnchantment = enchantment;
+    public MaterialBuilder setArmorEnchantment(Supplier<Enchantment> enchantment, int level) {
+        this.pendingArmorEnchantment = enchantment;
         this.armorEnchantmentLevel = level;
         return this;
     }

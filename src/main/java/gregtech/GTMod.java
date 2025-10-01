@@ -292,6 +292,7 @@ public class GTMod {
         GTGuiTheme.registerThemes();
         GTWidgetThemes.register();
 
+        // Load enchantments
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();
