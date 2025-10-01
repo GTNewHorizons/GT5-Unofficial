@@ -441,6 +441,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Add hydro- and steam-cracking recipes for this material. */
     public MaterialBuilder addCrackingRecipes() {
         this.canBeCracked = true;
         return this;
@@ -456,21 +457,25 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Set the chemical formula of the material. This overrides auto-generated formulas. */
     public MaterialBuilder setChemicalFormula(String chemicalFormula) {
         this.chemicalFormula = chemicalFormula;
         return this;
     }
 
+    /** Adds the {@link TCAspects} to the material. */
     public MaterialBuilder addAspect(TCAspects aspect, int amount) {
         this.aspects.add(new TCAspects.TC_AspectStack(aspect, amount));
         return this;
     }
 
+    /** Adds the {@link SubTag} to the material and registers the material with the tag upon construction. */
     public MaterialBuilder addSubTag(SubTag subTag) {
         this.subTags.add(subTag);
         return this;
     }
 
+    /** Adds an {@link OrePrefixes} that should not be generated. */
     public MaterialBuilder addOrePrefixBlacklist(OrePrefixes prefix) {
         this.orePrefixBlacklist.add(prefix);
         return this;
@@ -481,16 +486,19 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Sets what this material smelts into. */
     public MaterialBuilder setSmeltingInto(Supplier<Materials> material) {
         pendingSmeltingInto = material;
         return this;
     }
 
+    /** Sets what this material macerates into. */
     public MaterialBuilder setMaceratingInto(Supplier<Materials> material) {
         pendingMaceratingInto = material;
         return this;
     }
 
+    /** Sets what this material arc smelts into. */
     public MaterialBuilder setArcSmeltingInto(Supplier<Materials> material) {
         pendingArcSmeltingInto = material;
         return this;
