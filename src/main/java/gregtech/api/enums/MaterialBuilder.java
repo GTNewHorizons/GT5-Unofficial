@@ -40,7 +40,6 @@ public class MaterialBuilder {
     private int toolEnchantmentLevel = 1;
     private Enchantment armorEnchantment;
     private int armorEnchantmentLevel = 1;
-    private int types = 0;
     private int argb = 0x00ffffff;
     private int argbMolten = 0x00ffffff;
     private String name;
@@ -66,8 +65,17 @@ public class MaterialBuilder {
     private Supplier<Materials> pendingMaceratingInto;
     private Supplier<Materials> pendingArcSmeltingInto;
     private Supplier<Materials> pendingDirectSmelting;
-    private boolean hasFluid = false;
-    private boolean hasGas = false;
+    private boolean generateDustItems = false;
+    private boolean generateMetalItems = false;
+    private boolean generateGemItems = false;
+    private boolean generateOreItems = false;
+    private boolean generateCell = false;
+    private boolean generatePlasma = false;
+    private boolean generateToolHeadItems = false;
+    private boolean generateGearItems = false;
+    private boolean generateEmpty = false;
+    private boolean generateFluid = false;
+    private boolean generateGas = false;
     private boolean canBeCracked = false;
     private Element element;
     private String chemicalFormula;
@@ -93,9 +101,17 @@ public class MaterialBuilder {
             armorEnchantment, armorEnchantmentLevel,
             steamMultiplier, gasMultiplier, plasmaMultiplier,
             fuelType.getIndex(), fuelPower,
-            hasFluid,
-            hasGas,
-            types,
+            generateDustItems,
+            generateMetalItems,
+            generateGemItems,
+            generateOreItems,
+            generateCell,
+            generatePlasma,
+            generateToolHeadItems,
+            generateGearItems,
+            generateEmpty,
+            generateFluid,
+            generateGas,
             extraData,
             canBeCracked,
             heatDamage,
@@ -143,57 +159,66 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder addDustItems() {
-        types = types | 1;
+        this.generateDustItems = true;
+        // types = types | 1;
         return this;
     }
 
     public MaterialBuilder addMetalItems() {
-        types = types | 2;
+        this.generateMetalItems = true;
+        // types = types | 2;
         return this;
     }
 
     public MaterialBuilder addGemItems() {
-        types = types | 4;
+        this.generateGemItems = true;
+        // types = types | 4;
         return this;
     }
 
     public MaterialBuilder addOreItems() {
-        types = types | 8;
+        this.generateOreItems = true;
+        // types = types | 8;
         return this;
     }
 
     public MaterialBuilder addCell() {
-        types = types | 16;
+        this.generateCell = true;
+        // types = types | 16;
         return this;
     }
 
     public MaterialBuilder addPlasma() {
-        types = types | 32;
+        this.generatePlasma = true;
+        // types = types | 32;
         return this;
     }
 
     public MaterialBuilder addToolHeadItems() {
-        types = types | 64;
+        this.generateToolHeadItems = true;
+        // types = types | 64;
         return this;
     }
 
     public MaterialBuilder addGearItems() {
-        types = types | 128;
+        this.generateGearItems = true;
+        // types = types | 128;
         return this;
     }
 
     public MaterialBuilder addEmpty() {
-        types = types | 256;
+        this.generateEmpty = true;
+        // types = types | 256;
         return this;
     }
 
     public MaterialBuilder addFluid() {
-        this.hasFluid = true;
+        this.generateFluid = true;
         return this;
     }
 
     public MaterialBuilder addGas() {
-        this.hasGas = true;
+        this.generateGas = true;
         return this;
     }
 

@@ -1245,11 +1245,27 @@ public enum OrePrefixes {
     }
 
     public boolean doGenerateItem(Materials aMaterial) {
-        return aMaterial != null && aMaterial != Materials._NULL
-            && ((aMaterial.mTypes & mMaterialGenerationBits) != 0 || mGeneratedItems.contains(aMaterial))
-            && !mNotGeneratedItems.contains(aMaterial)
-            && !mDisabledItems.contains(aMaterial)
-            && (mCondition == null || mCondition.isTrue(aMaterial));
+        if (aMaterial == null) return false;
+        if (aMaterial == Materials._NULL) return false;
+
+        // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
+        // spotless:off
+        if (!mGeneratedItems.contains(aMaterial))
+            if ((mMaterialGenerationBits & 1) == 0 || !aMaterial.hasDustItems())
+                if ((mMaterialGenerationBits & 2) == 0 || !aMaterial.hasMetalItems())
+                    if ((mMaterialGenerationBits & 4) == 0 || !aMaterial.hasGemItems())
+                        if ((mMaterialGenerationBits & 8) == 0 || !aMaterial.hasOresItems())
+                            if ((mMaterialGenerationBits & 16) == 0 || !aMaterial.hasCell())
+                                if ((mMaterialGenerationBits & 32) == 0 || !aMaterial.hasPlasma())
+                                    if ((mMaterialGenerationBits & 64) == 0 || !aMaterial.hasToolHeadItems())
+                                        if ((mMaterialGenerationBits & 128) == 0 || !aMaterial.hasGearItems())
+                                            if ((mMaterialGenerationBits & 256) == 0 || !aMaterial.hasEmpty())
+                                                return false;
+        // spotless:on
+
+        if (mNotGeneratedItems.contains(aMaterial)) return false;
+        if (mDisabledItems.contains(aMaterial)) return false;
+        return mCondition == null || mCondition.isTrue(aMaterial);
     }
 
     public boolean ignoreMaterials(Materials... aMaterials) {

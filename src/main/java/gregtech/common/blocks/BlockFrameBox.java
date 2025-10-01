@@ -65,7 +65,7 @@ public class BlockFrameBox extends BlockContainer {
 
         for (int meta = 1; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
             Materials material = GregTechAPI.sGeneratedMaterials[meta];
-            if (material != null && (material.mTypes & 0x02) != 0) {
+            if (material != null && material.hasMetalItems()) {
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + meta + DOT_NAME,
                     GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
@@ -182,7 +182,7 @@ public class BlockFrameBox extends BlockContainer {
         for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTechAPI.sGeneratedMaterials[i];
             // If material is not null and has a frame box item associated with it
-            if ((tMaterial != null) && ((tMaterial.mTypes & 0x02) != 0)) {
+            if (tMaterial != null && tMaterial.hasMetalItems()) {
                 aList.add(new ItemStack(aItem, 1, i));
             }
         }
