@@ -72,10 +72,8 @@ public class AssemblyLine implements Runnable {
                 ItemList.Casing_Coil_Superconductor.get(16L),
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L },
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.DamascusSteel, 16),
-                ItemList.Electric_Pump_UHV.get(1L),
-                // TODO figure out why this doesn't work? Cable does not show in recipe
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.SuperconductorUHV, 16),
-                ItemList.Sensor_UHV.get(4L),
+                ItemList.Electric_Pump_UV.get(1L),
+                ItemList.Sensor_UV.get(4L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 16),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 16))
             .fluidInputs(
@@ -98,8 +96,6 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Chip_Biocell.get(16),
                 ItemList.FluidRegulator_ZPM.get(1L),
                 ItemList.Electric_Pump_ZPM.get(1L),
-                // TODO figure out why this doesn't work? Cable does not show in recipe
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.SuperconductorUV, 32),
                 ItemList.Sensor_ZPM.get(4L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 16),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 16))
