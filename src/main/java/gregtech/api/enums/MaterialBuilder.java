@@ -61,6 +61,7 @@ public class MaterialBuilder {
     private final List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
     private final List<Supplier<Materials>> pendingOreByproducts = new ArrayList<>();
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
+    private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
     private Supplier<Materials> pendingSmeltingInto;
     private Supplier<Materials> pendingMaceratingInto;
     private Supplier<Materials> pendingArcSmeltingInto;
@@ -134,6 +135,7 @@ public class MaterialBuilder {
         );
 
         for (SubTag subTag : subTags) subTag.addContainerToList(material);
+        for (OrePrefixes prefix : orePrefixBlacklist) prefix.mNotGeneratedItems.add(material);
 
         return material;
     }
@@ -343,6 +345,11 @@ public class MaterialBuilder {
 
     public MaterialBuilder addSubTag(SubTag subTag) {
         this.subTags.add(subTag);
+        return this;
+    }
+
+    public MaterialBuilder addOrePrefixBlacklist(OrePrefixes prefix) {
+        this.orePrefixBlacklist.add(prefix);
         return this;
     }
 

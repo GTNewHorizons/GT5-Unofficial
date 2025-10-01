@@ -322,6 +322,11 @@ public class MaterialsUEVplus {
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
             .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefixBlacklist(OrePrefixes.cell)
+            .addOrePrefixBlacklist(OrePrefixes.turbineBlade)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefixBlacklist(OrePrefixes.dustSmall)
+            .addOrePrefixBlacklist(OrePrefixes.dustTiny)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UIV);
     }
@@ -419,6 +424,8 @@ public class MaterialsUEVplus {
             .addAspect(TCAspects.AQUA, 1)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefixBlacklist(OrePrefixes.frame)
+            .addOrePrefixBlacklist(OrePrefixes.frameGt) // disabled but shows up and is used in game
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
     }
@@ -675,7 +682,16 @@ public class MaterialsUEVplus {
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
-            .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addOrePrefixBlacklist(OrePrefixes.cell)
+            .addOrePrefixBlacklist(OrePrefixes.cellMolten)
+            .addOrePrefixBlacklist(OrePrefixes.turbineBlade)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefixBlacklist(OrePrefixes.dustSmall)
+            .addOrePrefixBlacklist(OrePrefixes.dustTiny)
+            .addOrePrefixBlacklist(OrePrefixes.spring)
+            .addOrePrefixBlacklist(OrePrefixes.springSmall)
+            .addOrePrefixBlacklist(OrePrefixes.itemCasing)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
     }
@@ -695,7 +711,16 @@ public class MaterialsUEVplus {
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
-            .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addOrePrefixBlacklist(OrePrefixes.cell)
+            .addOrePrefixBlacklist(OrePrefixes.cellMolten)
+            .addOrePrefixBlacklist(OrePrefixes.turbineBlade)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefixBlacklist(OrePrefixes.dustSmall)
+            .addOrePrefixBlacklist(OrePrefixes.dustTiny)
+            .addOrePrefixBlacklist(OrePrefixes.spring)
+            .addOrePrefixBlacklist(OrePrefixes.springSmall)
+            .addOrePrefixBlacklist(OrePrefixes.itemCasing)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
     }
@@ -730,6 +755,17 @@ public class MaterialsUEVplus {
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addOrePrefixBlacklist(OrePrefixes.cell)
+            .addOrePrefixBlacklist(OrePrefixes.cellMolten)
+            .addOrePrefixBlacklist(OrePrefixes.turbineBlade)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefixBlacklist(OrePrefixes.dustSmall)
+            .addOrePrefixBlacklist(OrePrefixes.dustTiny)
+            .addOrePrefixBlacklist(OrePrefixes.spring)
+            .addOrePrefixBlacklist(OrePrefixes.springSmall)
+            .addOrePrefixBlacklist(OrePrefixes.itemCasing)
+            .addOrePrefixBlacklist(OrePrefixes.plateSuperdense) // when Exo Halkonite is added, remove this.
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
     }
@@ -749,6 +785,17 @@ public class MaterialsUEVplus {
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addOrePrefixBlacklist(OrePrefixes.cell)
+            .addOrePrefixBlacklist(OrePrefixes.cellMolten)
+            .addOrePrefixBlacklist(OrePrefixes.turbineBlade)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefixBlacklist(OrePrefixes.dustSmall)
+            .addOrePrefixBlacklist(OrePrefixes.dustTiny)
+            .addOrePrefixBlacklist(OrePrefixes.spring)
+            .addOrePrefixBlacklist(OrePrefixes.springSmall)
+            .addOrePrefixBlacklist(OrePrefixes.itemCasing)
+            .addOrePrefixBlacklist(OrePrefixes.plateSuperdense) // when Exo Halkonite is added, remove this.
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
     }
