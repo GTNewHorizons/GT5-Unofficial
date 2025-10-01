@@ -101,13 +101,13 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
                                 .addTooltip(translateToLocal("gt.interact.desc.export.tooltip"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.channel"))
                     .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.set_perm")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.set_perm"))
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.set_io")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.set_io"))
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
     }
 

@@ -15,7 +15,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.redstone.CoverWirelessFluidDetector;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -64,7 +63,6 @@ public class WirelessFluidDetectorUIFactory
                                 ? StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.1")
                                 : StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.0")))
                     .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(startX + spaceX, 4 + startY + spaceY * 3)
                     .setSize(spaceX * 10, 12));
