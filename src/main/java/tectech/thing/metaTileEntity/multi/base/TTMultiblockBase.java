@@ -781,27 +781,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
-        if (!ShutDownReasonRegistry.isRegistered(reason.getID())) {
-            throw new RuntimeException(String.format("Reason %s is not registered for registry", reason.getID()));
-        }
+        super.stopMachine(reason);
+
         for (MTEHatchDataOutput data : eOutputData) {
             data.q = null;
         }
-        mLastWorkingTick = mTotalRunTime;
-        mOutputItems = null;
-        mOutputFluids = null;
-        mEfficiency = 0;
-        mEfficiencyIncrease = 0;
-        mProgresstime = 0;
-        mMaxProgresstime = 0;
+
         eAvailableData = 0;
         hatchesStatusUpdate_EM();
-        getBaseMetaTileEntity().disableWorking();
-        getBaseMetaTileEntity().setShutDownReason(reason);
-        getBaseMetaTileEntity().setShutdownStatus(true);
-        if (reason.wasCritical()) {
-            sendSound(INTERRUPT_SOUND_INDEX);
-        }
     }
 
     /**
@@ -1109,11 +1096,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected void addClassicOutputs_EM() {
         if (mOutputItems != null) {
-            for (ItemStack tStack : mOutputItems) {
-                if (tStack != null) {
-                    addOutput(tStack);
-                }
-            }
+            addItemOutputs(mOutputItems);
         }
         mOutputItems = null;
 

@@ -2,6 +2,8 @@ package gregtech.common.covers.gui;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -55,7 +57,7 @@ public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
     }
 
     private @NotNull Flow makeEnergyThresholdRow() {
-        return makeNamedColumn(IKey.str(GTUtility.trans("222.1", "Energy threshold"))).child(
+        return makeNamedColumn(IKey.str(StatCollector.translateToLocal("gt.interact.desc.EnergyTHR"))).child(
             makeNumberField(140).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold))
                 .setNumbersLong(
                     () -> 0L,

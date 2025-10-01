@@ -9,10 +9,12 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
+import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.math.BigInteger;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -319,7 +321,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!mRunningOnLoad
                     && recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L) > maxEUStore()) {
-                    return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(
+                        BigInteger.valueOf(recipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L)));
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -403,8 +406,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                         this.getBaseMetaTileEntity()
                             .decreaseStoredEnergyUnits(-mEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null)
-                                for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
+                            if (mOutputItems != null) addItemOutputs(mOutputItems);
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math
@@ -432,11 +434,13 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe()) {
-                                    if (this.mEUStore < this.mLastRecipe.mSpecialValue + this.mEUt) {
+                                    if (this.mEUStore
+                                        < this.mLastRecipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L) + this.mEUt) {
                                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
-                                    aBaseMetaTileEntity
-                                        .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.mEUt, true);
+                                    aBaseMetaTileEntity.decreaseStoredEnergyUnits(
+                                        this.mLastRecipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L) + this.mEUt,
+                                        true);
                                 }
                             }
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
