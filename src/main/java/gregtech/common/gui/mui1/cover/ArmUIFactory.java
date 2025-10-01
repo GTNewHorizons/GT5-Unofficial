@@ -14,7 +14,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
@@ -37,7 +36,7 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
         @Override
         public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
             if (number < 0) {
-                return toAppendTo.append(GTUtility.trans("ANY", "Any"));
+                return toAppendTo.append(translateToLocal("gt.interact.desc.arm.any"));
             } else {
                 return super.format(number, toAppendTo, pos);
             }
@@ -140,10 +139,10 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("254.1", "Internal slot#")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.arm.Internal_Slot"))
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(GTUtility.trans("255", "Adjacent slot#")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.arm.Adjacent_Slot"))
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2));
     }
 
