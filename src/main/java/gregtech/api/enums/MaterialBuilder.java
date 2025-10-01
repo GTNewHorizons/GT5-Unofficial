@@ -243,6 +243,16 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#cell}</li>
+     * <li>{@link OrePrefixes#bucket}</li>
+     * <li>{@link OrePrefixes#bucketClay}</li>
+     * <li>{@link OrePrefixes#bottle}</li>
+     * <li>{@link OrePrefixes#capsule}</li>
+     * </ul>
+     */
     public MaterialBuilder addCell() {
         this.generateCell = true;
         return this;
