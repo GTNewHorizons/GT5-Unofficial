@@ -1,7 +1,5 @@
 package bartworks.common.loaders.recipes;
 
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -9,20 +7,19 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsGTNH;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBUpgradeBase;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class AssemblyLine implements Runnable {
 
@@ -76,17 +73,15 @@ public class AssemblyLine implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L },
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.DamascusSteel, 16),
                 ItemList.Electric_Pump_UHV.get(1L),
-                //TODO figure out why this doesn't work? Cable does not show in recipe
+                // TODO figure out why this doesn't work? Cable does not show in recipe
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.SuperconductorUHV, 16),
                 ItemList.Sensor_UHV.get(4L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 16)
-            )
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 16))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"),8000),
-                Materials.SuperCoolant.getFluid(8000)
-            )
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
+                Materials.SuperCoolant.getFluid(8000))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
             .eut(TierEU.UV)
             .duration(300 * SECONDS)
@@ -103,17 +98,15 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Chip_Biocell.get(16),
                 ItemList.FluidRegulator_ZPM.get(1L),
                 ItemList.Electric_Pump_ZPM.get(1L),
-                //TODO figure out why this doesn't work? Cable does not show in recipe
+                // TODO figure out why this doesn't work? Cable does not show in recipe
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.SuperconductorUV, 32),
                 ItemList.Sensor_ZPM.get(4L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 16)
-            )
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 16))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
                 Materials.GrowthMediumSterilized.getFluid(27648),
-                Materials.BioMediumSterilized.getFluid(27648)
-            )
+                Materials.BioMediumSterilized.getFluid(27648))
             .itemOutputs(ItemList.PCBBioChamber.get(1L))
             .eut(TierEU.UV)
             .duration(300 * SECONDS)
