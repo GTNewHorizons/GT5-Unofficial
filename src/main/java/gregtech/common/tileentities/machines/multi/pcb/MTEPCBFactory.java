@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
