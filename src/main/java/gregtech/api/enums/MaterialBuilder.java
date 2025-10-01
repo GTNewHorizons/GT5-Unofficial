@@ -150,13 +150,15 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setDefaultLocalName(String defaultLocalName) {
-        this.defaultLocalName = defaultLocalName;
+    /** Sets the internal material name. */
+    public MaterialBuilder setName(String name) {
+        this.name = name;
         return this;
     }
 
-    public MaterialBuilder setName(String name) {
-        this.name = name;
+    /** Sets the default localized display name. */
+    public MaterialBuilder setDefaultLocalName(String defaultLocalName) {
+        this.defaultLocalName = defaultLocalName;
         return this;
     }
 
