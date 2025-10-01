@@ -105,7 +105,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     lazy(
                         x -> HatchElementBuilder.<MTELargeFusionComputer>builder()
                             .atLeast(
-                                gregtech.api.enums.HatchElement.InputHatch.or(gregtech.api.enums.HatchElement.InputBus),
+                                gregtech.api.enums.HatchElement.InputHatch,
                                 gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(x.textureIndex())
                             .dot(1)
