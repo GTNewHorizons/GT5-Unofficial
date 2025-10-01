@@ -5,9 +5,25 @@ import static gregtech.api.enums.MetaTileEntityIDs.LinkedInputBus;
 import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_MV;
-import static gregtech.api.enums.ToolDictNames.*;
-import static gregtech.common.items.IDMetaTool01.*;
+import static gregtech.api.enums.ToolDictNames.craftingToolCrowbar;
+import static gregtech.api.enums.ToolDictNames.craftingToolFile;
+import static gregtech.api.enums.ToolDictNames.craftingToolHardHammer;
+import static gregtech.api.enums.ToolDictNames.craftingToolSaw;
+import static gregtech.api.enums.ToolDictNames.craftingToolScrewdriver;
+import static gregtech.api.enums.ToolDictNames.craftingToolSoftMallet;
+import static gregtech.api.enums.ToolDictNames.craftingToolWireCutter;
+import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
+import static gregtech.common.items.IDMetaTool01.CROWBAR;
+import static gregtech.common.items.IDMetaTool01.FILE;
+import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
+import static gregtech.common.items.IDMetaTool01.SAW;
+import static gregtech.common.items.IDMetaTool01.SCREWDRIVER;
+import static gregtech.common.items.IDMetaTool01.SOFTMALLET;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
+import static gregtech.common.items.IDMetaTool01.WRENCH;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
+
+import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -24,11 +40,9 @@ import ggfab.mte.MTEAdvAssLine;
 import ggfab.mte.MTELinkedInputBus;
 import ggfab.util.GGUtils;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.util.GTModHandler;
 
 @Mod(
     modid = GGConstants.MODID,
@@ -63,13 +77,15 @@ public class GigaGramFab {
             GGItemList.LinkedInputBus.set(
                 new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
                     .getStackForm(1));
+
             GGItemList.ToolCast_MV.set(
                 new MTEBasicMachineWithRecipe(
                     ToolCast_MV.ID,
                     "ggfab.toolcast.tier.mv",
                     "Basic Tool Casting Machine",
                     2,
-                    "Cheap Crafting Tool for you!",
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
                     GGFabRecipeMaps.toolCastRecipes,
                     1,
                     4,
@@ -84,7 +100,8 @@ public class GigaGramFab {
                     "ggfab.toolcast.tier.hv",
                     "Advanced Tool Casting Machine",
                     3,
-                    "Cheap Crafting Tool for you!",
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
                     GGFabRecipeMaps.toolCastRecipes,
                     1,
                     4,
@@ -99,7 +116,8 @@ public class GigaGramFab {
                     "ggfab.toolcast.tier.ev",
                     "Master Tool Casting Machine",
                     4,
-                    "Cheap Crafting Tool for you!",
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
                     GGFabRecipeMaps.toolCastRecipes,
                     1,
                     4,
@@ -107,6 +125,7 @@ public class GigaGramFab {
                     SoundResource.NONE,
                     MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                     "TOOL_CAST").getStackForm(1L));
+
             long plate = OrePrefixes.plate.mMaterialAmount, ingot = OrePrefixes.ingot.mMaterialAmount,
                 screw = OrePrefixes.screw.mMaterialAmount, rod = OrePrefixes.stick.mMaterialAmount;
             GigaGramFabAPI.addSingleUseToolType(craftingToolFile, INSTANCE.mToolStats.get((short) FILE.ID), 2 * plate);
@@ -132,27 +151,6 @@ public class GigaGramFab {
                 2 * rod);
             GigaGramFabAPI.addSingleUseToolType(craftingToolSaw, INSTANCE.mToolStats.get((short) SAW.ID), 2 * plate);
 
-            GTModHandler.addMachineCraftingRecipe(
-                GGItemList.ToolCast_MV.get(1),
-                new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                    MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                    MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                    ItemList.Shape_Empty.get(1L) },
-                2);
-            GTModHandler.addMachineCraftingRecipe(
-                GGItemList.ToolCast_HV.get(1),
-                new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                    MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                    MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                    ItemList.Shape_Empty.get(1L) },
-                3);
-            GTModHandler.addMachineCraftingRecipe(
-                GGItemList.ToolCast_EV.get(1),
-                new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                    MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                    MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                    ItemList.Shape_Empty.get(1L) },
-                4);
         });
         GregTechAPI.sBeforeGTPostload.add(new ComponentRecipeLoader());
         GregTechAPI.sBeforeGTPostload.add(new SingleUseToolRecipeLoader());

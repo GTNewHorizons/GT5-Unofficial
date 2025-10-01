@@ -566,8 +566,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     /**
      * Gets items to be displayed for HoloInventory mod.
      *
-     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
-     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}. Otherwise, a list
+     *         of items to be displayed. Null element may be contained.
      */
     @Nullable
     public List<ItemStack> getItemsForHoloGlasses() {

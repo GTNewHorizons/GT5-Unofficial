@@ -53,6 +53,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
+import ganymedes01.etfuturum.recipes.SmokerRecipes;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -1489,21 +1491,31 @@ public class GTModHandler {
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
     public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
-        return getRecipeOutput(false, true, aRecipe);
-    }
-
-    public static ItemStack getRecipeOutputNoOreDict(ItemStack... aRecipe) {
         return getRecipeOutput(false, false, aRecipe);
     }
 
+    /**
+     * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection. If available, will choose a
+     * recipe that wasn't auto generated during OreDictionary registration. The OreDict recipe is still chosen if it is
+     * the only one that exists.
+     *
+     * For example: Many Planks -> Slab recipes may have a recipe to the corresponding slab, but also have another that
+     * results in Minecraft's default Oak Slab. This second recipe is generated automatically when the plank is
+     * registered as 'plankWood' in the OreDict. This method will select the former, regardless of the order they appear
+     * on the list.
+     */
+    public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... aRecipe) {
+        return getRecipeOutput(false, true, aRecipe);
+    }
+
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
-        return getRecipeOutput(aUncopiedStack, true, aRecipe);
+        return getRecipeOutput(aUncopiedStack, false, aRecipe);
     }
 
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean allowOreDict, ItemStack... aRecipe) {
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... aRecipe) {
         if (aRecipe == null || Arrays.stream(aRecipe)
             .noneMatch(Objects::nonNull)) return null;
 
@@ -1517,25 +1529,43 @@ public class GTModHandler {
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        boolean found = false;
+
+        boolean tOreDictRecipeFound = false;
+        ItemStack tOreDictOutput = null;
 
         for (IRecipe iRecipe : tList) {
-            found = false;
-            if (!allowOreDict && iRecipe instanceof ShapedOreRecipe) continue;
-
             if (iRecipe.matches(aCrafting, DW)) {
                 ItemStack tOutput = aUncopiedStack ? iRecipe.getRecipeOutput() : iRecipe.getCraftingResult(aCrafting);
+
+                if (aPreferNonOreDict && iRecipe instanceof ShapedOreRecipe) {
+                    if (!tOreDictRecipeFound) {
+                        tOreDictOutput = tOutput;
+                        tOreDictRecipeFound = true;
+                    }
+                    continue;
+                }
+
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
                     if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
                         "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                } else {
-                    if (aUncopiedStack) return tOutput;
-                    return GTUtility.copyOrNull(tOutput);
                 }
+
+                if (aUncopiedStack) return tOutput;
+                return GTUtility.copyOrNull(tOutput);
             }
         }
-        return null;
+
+        if (!tOreDictRecipeFound) return null;
+
+        if (tOreDictOutput == null || tOreDictOutput.stackSize <= 0) {
+            // Seriously, who would ever do that shit?
+            if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
+                "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+        }
+
+        if (aUncopiedStack) return tOreDictOutput;
+        return GTUtility.copyOrNull(tOreDictOutput);
     }
 
     private static List<IRecipe> bufferedRecipes = null;
@@ -1626,6 +1656,34 @@ public class GTModHandler {
         if (aInput == null || aInput.stackSize < 1) return null;
         ItemStack rStack = GTOreDictUnificator.get(
             FurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRBlastingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            BlastFurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRSmokingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            SmokerRecipes.smelting()
                 .getSmeltingResult(aInput));
 
         if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
@@ -2001,8 +2059,8 @@ public class GTModHandler {
          */
         public static final long BUFFERED = B[1];
         /**
-         * This is a special Tag I used for crafting Coins up and down.
-         * If all the input items have the same NBT, keep it in the output item.
+         * This is a special Tag I used for crafting Coins up and down. If all the input items have the same NBT, keep
+         * it in the output item.
          */
         public static final long KEEPNBT = B[2];
         /**
@@ -2056,18 +2114,16 @@ public class GTModHandler {
          */
         public static final long OVERWRITE_NBT = B[14];
         /**
-         * Combination of common bits.
-         * NOT_REMOVABLE, REVERSIBLE, and BUFFERED
+         * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */
         public static final long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
         /**
-         * Combination of common bits.
-         * NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
+         * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
          */
         public static final long BITSD = BITS | DISMANTLEABLE;
         /**
-         * Combination of common bits.
-         * DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL, NOT_REMOVABLE
+         * Combination of common bits. DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL,
+         * NOT_REMOVABLE
          */
         public static final long BITS_STD = DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED
             | ONLY_ADD_IF_RESULT_IS_NOT_NULL

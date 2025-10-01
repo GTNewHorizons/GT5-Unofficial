@@ -249,14 +249,14 @@ public class MTESmeltingModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for basic smelting operations at various temperatures.")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for basic smelting operations at various temperatures")
             .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("As the first of the Godforge modules, this module performs the most basic")
-            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
-            .addInfo("The desired method of processing can be selected in the gui.")
-            .addInfo("This module is specialized towards speed and high heat levels.")
+            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
+            .addInfo("The desired method of processing can be selected in the gui")
+            .addInfo("This module is specialized towards speed and high heat levels")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"

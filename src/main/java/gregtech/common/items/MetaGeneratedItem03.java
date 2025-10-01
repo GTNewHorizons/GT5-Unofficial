@@ -204,6 +204,7 @@ import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.Manafly;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -282,6 +283,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
+import gregtech.common.powergoggles.ItemPowerGoggles;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
@@ -403,11 +405,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
          * (normal+glowstone+naquadah) EBF, normal silicon no EBF need anymore wafer(normal+glowstone+naquadah) cut mono
-         * silicon ingot in cutting machine
-         * Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes) SoCs(2 sizes, high tier cheap low
-         * tech component) Power IC/High Power IC/Ultra High power
-         * nanotube interconnected circuit (H-IC + nanotubes)
-         * quantum chips
+         * silicon ingot in cutting machine Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes)
+         * SoCs(2 sizes, high tier cheap low tech component) Power IC/High Power IC/Ultra High power nanotube
+         * interconnected circuit (H-IC + nanotubes) quantum chips
          */
 
         final String RAW = "Raw Circuit";
@@ -1424,6 +1424,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        ItemList.ManaFly.set(
+            addItem(
+                Manafly.ID,
+                "Manafly",
+                "If you sift this, you're a monster",
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
+                new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();

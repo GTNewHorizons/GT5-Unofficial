@@ -18,8 +18,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -137,10 +134,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         LuV(3, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
         ZPM(4, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_cap_storage)),
         UV(5, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_cap_storage)),
-        UHV(6, MAX_LONG),
+        UHV(6, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UHV_cap_storage)),
         None(0, BigInteger.ZERO),
         EV(1, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
-        UEV(7, MAX_LONG),
+        UEV(7, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UEV_cap_storage)),
         UIV(8, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_cap_storage)),
         UMV(9, ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
 
@@ -230,7 +227,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 onlyIf(
                     te -> te.topState != TopState.Top,
                     onElementPass(te -> te.topState = TopState.NotTop, CellElement.INSTANCE))))
-        .addElement('C', CellElement.INSTANCE)
+        .addElement('C', GTStructureChannels.LSC_CAPACITOR.use(CellElement.INSTANCE))
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -351,7 +348,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Energy Storage, LSC")
-            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
+            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours")
             .addInfo(
                 "Capped at " + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap)
@@ -360,21 +357,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + GTValues.TIER_COLORS[9]
                     + GTValues.VN[9]
                     + EnumChatFormatting.GRAY
-                    + " capacitor.")
+                    + " capacitor")
             .addInfo(
                 "The passive loss increases " + EnumChatFormatting.DARK_RED
                     + "100"
                     + EnumChatFormatting.GRAY
                     + "-fold"
-                    + " for every capacitor tier above.")
-            .addInfo("Passive loss is multiplied by the number of maintenance issues present.")
+                    + " for every capacitor tier above")
+            .addInfo("Passive loss is multiplied by the number of maintenance issues present")
             .addSeparator()
-            .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
+            .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo("Add more or better capacitors to increase capacity.")
+            .addInfo("Add more or better capacitors to increase capacity")
             .addSeparator()
-            .addInfo("Wireless mode can be enabled by right clicking with a screwdriver.")
+            .addInfo("Wireless mode can be enabled by right clicking with a screwdriver")
             .addInfo(
                 "This mode can only be enabled if you have a " + GTValues.TIER_COLORS[9]
                     + GTValues.VN[9]
@@ -404,14 +401,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + "all excess"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " EU to the network, removing it from the LSC.")
-            .addInfo("This can potentially brick your base, be careful.")
+                    + " EU to the network, removing it from the LSC")
+            .addInfo("This can potentially brick your base, be careful")
             .addInfo(
                 "The threshold increases " + EnumChatFormatting.DARK_RED
                     + "100"
                     + EnumChatFormatting.GRAY
                     + "-fold"
-                    + " for every capacitor tier above.")
+                    + " for every capacitor tier above")
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("Modular height of 4-50 blocks.")
             .addController("Front center bottom")
@@ -830,12 +827,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getCapacityCache() {
-        return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(capacity)
+        return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(capacity)
             : numberFormat.format(capacity);
     }
 
     private String getStoredCache() {
-        return stored.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(stored)
+        return stored.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(stored)
             : numberFormat.format(stored);
     }
 
@@ -844,7 +841,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getWirelessStoredCache() {
-        return standardFormat.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid));
+        return GTUtility.scientificFormat(WirelessNetworkManager.getUserEU(global_energy_user_uuid));
     }
 
     private boolean isActiveCache() {
@@ -852,7 +849,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getPassiveDischargeAmountCache() {
-        return passiveDischargeAmount > 100_000_000_000L ? standardFormat.format(passiveDischargeAmount)
+        return passiveDischargeAmount > 100_000_000_000L ? GTUtility.scientificFormat(passiveDischargeAmount)
             : numberFormat.format(passiveDischargeAmount);
     }
 
@@ -972,14 +969,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);
-    }
-
-    protected static DecimalFormat standardFormat;
-
-    static {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        dfs.setExponentSeparator("e");
-        standardFormat = new DecimalFormat("0.00E0", dfs);
     }
 
     protected String capacityCache = "";
@@ -1140,21 +1129,27 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     this::getPassiveDischargeAmountCache,
                     val -> passiveDischargeAmountCache = val))
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> translateToLocalFormatted(
-                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
-                        EnumChatFormatting.GREEN + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
-                            : numberFormat.format(avgInCache)) + EnumChatFormatting.WHITE))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted(
+                            "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
+                            EnumChatFormatting.GREEN
+                                + (avgInCache > 100_000_000_000L ? GTUtility.scientificFormat(avgInCache)
+                                    : numberFormat.format(avgInCache))
+                                + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.LongSyncer(energyInputValues::avgLong, val -> avgInCache = val))
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> translateToLocalFormatted(
-                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
-                        EnumChatFormatting.RED + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
-                            : numberFormat.format(avgOutCache)) + EnumChatFormatting.WHITE))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted(
+                            "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
+                            EnumChatFormatting.RED
+                                + (avgOutCache > 100_000_000_000L ? GTUtility.scientificFormat(avgOutCache)
+                                    : numberFormat.format(avgOutCache))
+                                + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
@@ -1506,14 +1501,36 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         private int getHint(ItemStack stack) {
-            return Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
-                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length)].getMinimalGlassTier() + 1;
+            return switch (Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
+                .getValueClamped(stack, 1, Capacitor.VALUES_BY_TIER.length) - 1].getMinimalGlassTier() + 1) {
+                // This is necessary for mapping from channel number to the correct capacitor tier
+                case 2 -> 7;
+                case 3 -> 1;
+                case 4 -> 2;
+                case 5 -> 3;
+                case 6 -> 4;
+                case 7 -> 5;
+                case 8 -> 8;
+                case 9 -> 9;
+                case 10 -> 10;
+                default -> 6;
+            };
         }
 
         @Override
         public boolean spawnHint(MTELapotronicSuperCapacitor t, World world, int x, int y, int z, ItemStack trigger) {
             StructureLibAPI.hintParticle(world, x, y, z, LSC_PART, getHint(trigger));
             return true;
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor, World world,
+            int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            return BlocksToPlace.create(
+                new ItemStack(
+                    LSC_PART_ITEM,
+                    1,
+                    GTStructureChannels.LSC_CAPACITOR.getValueClamped(trigger, 1, Capacitor.VALUES_BY_TIER.length)));
         }
 
         @Override
@@ -1526,19 +1543,23 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         public PlaceResult survivalPlaceBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
             ItemStack trigger, AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+            // glass for LSC can be paired with capacitors up to 3 tiers higher
             int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + 2;
             ItemStack targetStack;
             // if user specified a capacitor tier, use it.
             // otherwise scan for any capacitor that can be used
             if (GTStructureChannels.LSC_CAPACITOR.hasValue(trigger)) {
                 int capacitorTier = GTStructureChannels.LSC_CAPACITOR
-                    .getValueClamped(trigger, 0, Capacitor.VALUES_BY_TIER.length);
-                if (Capacitor.VALUES_BY_TIER[capacitorTier].getMinimalGlassTier() > glassTier) {
+                    .getValueClamped(trigger, 1, Capacitor.VALUES_BY_TIER.length);
+                if (Capacitor.VALUES_BY_TIER[capacitorTier - 1].getMinimalGlassTier() > glassTier) {
                     env.getChatter()
                         .accept(new ChatComponentTranslation("kekztech.structure.glass_incompatible"));
                     return PlaceResult.REJECT;
                 }
-                targetStack = new ItemStack(LSC_PART_ITEM, 1, Capacitor.VALUES_BY_TIER[capacitorTier].ordinal() + 1);
+                targetStack = new ItemStack(
+                    LSC_PART_ITEM,
+                    1,
+                    Capacitor.VALUES_BY_TIER[capacitorTier - 1].ordinal() + 1);
                 if (!env.getSource()
                     .takeOne(targetStack, true)) return PlaceResult.REJECT;
             } else {
@@ -1547,8 +1568,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                         s -> s != null && s.stackSize >= 0
                             && s.getItem() == LSC_PART_ITEM
                             && s.getItemDamage() != 0 // LSC casing, not a capacitor
-                            && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
-                                .getMinimalGlassTier() > glassTier,
+                            && glassTier >= Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
+                                .getMinimalGlassTier(),
                         true);
             }
             if (targetStack == null) return PlaceResult.REJECT;

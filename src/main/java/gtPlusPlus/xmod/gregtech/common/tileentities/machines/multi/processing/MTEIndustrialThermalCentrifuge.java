@@ -65,9 +65,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("150% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 80% of the EU/t normally required")
-            .addInfo("Processes eight items per voltage tier")
+            .addBulkMachineInfo(8, 2.5f, 0.8f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 2, 3, false)
             .addController("Front Center")

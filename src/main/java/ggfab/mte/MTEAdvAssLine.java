@@ -444,8 +444,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     /**
-     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not
-     * loaded. also supports setting a stop reason
+     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not loaded.
+     * also supports setting a stop reason
      */
     private void criticalStopMachine(String reason) {
         int oMaxProgresstime = mMaxProgresstime;
@@ -1024,7 +1024,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 if (id + 1 >= currentInputLength) {
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
-                    if (addOutput(output) || !voidingMode.protectItem) reset();
+                    if (addOutputAtomic(output) || !voidingMode.protectItem) reset();
                     else stuck = true;
                 } else {
                     if (slices[id + 1].start()) reset();
