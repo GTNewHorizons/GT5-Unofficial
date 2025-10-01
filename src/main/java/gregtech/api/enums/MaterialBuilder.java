@@ -238,6 +238,42 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#oreBlackgranite}</li>
+     * <li>{@link OrePrefixes#oreRedgranite}</li>
+     * <li>{@link OrePrefixes#oreMarble}</li>
+     * <li>{@link OrePrefixes#oreBasalt}</li>
+     * <li>{@link OrePrefixes#oreNetherrack}</li>
+     * <li>{@link OrePrefixes#oreNether}</li>
+     * <li>{@link OrePrefixes#oreDense}</li>
+     * <li>{@link OrePrefixes#oreRich}</li>
+     * <li>{@link OrePrefixes#oreNormal}</li>
+     * <li>{@link OrePrefixes#oreSmall}</li>
+     * <li>{@link OrePrefixes#orePoor}</li>
+     * <li>{@link OrePrefixes#oreEndstone}</li>
+     * <li>{@link OrePrefixes#oreEnd}</li>
+     * <li>{@link OrePrefixes#ore}</li>
+     * <li>{@link OrePrefixes#crushedCentrifuged}</li>
+     * <li>{@link OrePrefixes#crushedPurified}</li>
+     * <li>{@link OrePrefixes#crushed}</li>
+     * <li>{@link OrePrefixes#rawOre}</li>
+     * <li>{@link OrePrefixes#shard}</li>
+     * <li>{@link OrePrefixes#clump}</li>
+     * <li>{@link OrePrefixes#reduced}</li>
+     * <li>{@link OrePrefixes#crystalline}</li>
+     * <li>{@link OrePrefixes#cleanGravel}</li>
+     * <li>{@link OrePrefixes#dirtyGravel}</li>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
+     * <li>{@link OrePrefixes#dustImpure}</li>
+     * <li>{@link OrePrefixes#dustRefined}</li>
+     * <li>{@link OrePrefixes#dustPure}</li>
+     * <li>{@link OrePrefixes#milled}</li>
+     * </ul>
+     */
     public MaterialBuilder addOreItems() {
         this.generateOreItems = true;
         return this;
