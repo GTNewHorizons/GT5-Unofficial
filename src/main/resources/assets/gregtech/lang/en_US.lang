@@ -3447,6 +3447,7 @@ gt.channelfor.super_chest=Super Chest Tier
 # Used in addMachineType
 # CONTEXT: Machine type: (machtype)
 machtype.ebf=Blast Furnace, EBF
+machtype.vf=Vacuum Freezer, VF
 machtype.lcr=Chemical Reactor, LCR
 machtype.purif_plant=Purification Plant, WPP
 machtype.fluid_tank=Fluid Tank
@@ -3474,6 +3475,11 @@ gt.mb.corepos.top_center=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
 
+gt.multi_furnace.info.1=Middle layer
+gt.multi_furnace.info.2=Top Middle
+
+gt.vf.tips.1=Cools hot ingots and cells
+
 gt.exxonmobil.tips.1=Heavy Industry, now right at your doorstep!\nPlant tier is determined by casing tier\nHatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers
 gt.exxonmobil.tips.2=+20% chance of not damaging catalyst per %s Tier
 gt.exxonmobil.tips.3=Any catalyst must be placed in the catalyst housing\nAwakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable
@@ -3499,10 +3505,9 @@ gt.adv_assline.info.6=Replaces Input Bus or Solid Steel Machine casing on layer 
 gt.adv_assline.info.7=Any Grate Machine Casing NOT on the first slice
 
 gt.ebf.tips.1=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
-gt.ebf.info.1=Heating Coils
-gt.ebf.info.2=Any bottom layer casing
-gt.ebf.info.3=Top middle
-gt.ebf.info.4=Any Heat Proof Machine Casing
+gt.ebf.info.1=Any bottom layer casing
+gt.ebf.info.2=Top middle
+gt.ebf.info.3=Any Heat Proof Machine Casing
 
 gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
 gt.mfe.info.1=1 Block Above/Behind Controller
