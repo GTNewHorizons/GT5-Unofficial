@@ -14,6 +14,7 @@ public enum TargetedMod implements ITargetMod {
     GT6("gregtech.asm.GT_ASM", "gregapi"),
     IC2("ic2.core.coremod.IC2core", "IC2"),
     OPTIFINE("optifine.OptiFineForgeTweaker", "Optifine"),
+    PAMS_NETHER(null, "harvestthenether"),
     RAILCRAFT(null, "Railcraft"),
     THAUMCRAFT(null, "Thaumcraft");
 
