@@ -211,6 +211,28 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#gemChipped}</li>
+     * <li>{@link OrePrefixes#gemFlawed}</li>
+     * <li>{@link OrePrefixes#gemFlawless}</li>
+     * <li>{@link OrePrefixes#gemExquisite}</li>
+     * <li>{@link OrePrefixes#gem}</li>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
+     * <li>{@link OrePrefixes#plate}</li>
+     * <li>{@link OrePrefixes#itemCasing}</li>
+     * <li>{@link OrePrefixes#stickLong}</li>
+     * <li>{@link OrePrefixes#stick}</li>
+     * <li>{@link OrePrefixes#bolt}</li>
+     * <li>{@link OrePrefixes#comb}</li>
+     * <li>{@link OrePrefixes#screw}</li>
+     * <li>{@link OrePrefixes#crystal}</li>
+     * <li>{@link OrePrefixes#handleMallet}</li>
+     * </ul>
+     */
     public MaterialBuilder addGemItems() {
         this.generateGemItems = true;
         return this;
