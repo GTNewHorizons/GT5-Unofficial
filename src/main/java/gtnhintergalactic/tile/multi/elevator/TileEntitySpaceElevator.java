@@ -43,9 +43,11 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -66,7 +68,6 @@ import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -635,29 +636,29 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.name"));
+        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.name"));
         if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
-        tt.addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc5"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc6"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc7"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc8"))
+        tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc5"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc6"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc7"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc8"))
             .addTecTechHatchInfo()
             .beginStructureBlock(35, 43, 35, false)
             .addOtherStructurePart(
-                GCCoreUtil.translate("ig.elevator.structure.ProjectModule"),
-                GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith2Dot"),
+                GTUtility.translate("ig.elevator.structure.ProjectModule"),
+                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith2Dot"),
                 2)
-            .addCasingInfoExactly(GCCoreUtil.translate("tile.DysonSwarmFloor.name"), 800, false)
-            .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 593, 785, false)
-            .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.1.name"), 620, false)
-            .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.2.name"), 360, false)
-            .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.cable.name"), 1, false)
-            .addCasingInfoExactly(GCCoreUtil.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
-            .addCasingInfoExactly(GCCoreUtil.translate("ig.elevator.structure.Motor"), 88, true)
-            .addEnergyHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addCasingInfoExactly(GTUtility.translate("tile.DysonSwarmFloor.name"), 800, false)
+            .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 593, 785, false)
+            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.1.name"), 620, false)
+            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.2.name"), 360, false)
+            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.cable.name"), 1, false)
+            .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
+            .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
+            .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
             .toolTipFinisher(GTValues.Authorminecraft7771);
         return tt;
     }
@@ -782,41 +783,9 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 .addTooltip(StatCollector.translateToLocal("ig.button.extension"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
 
-        // Teleportation button
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.getContext()
-                .isClient()) {
-                if (getBaseMetaTileEntity().isAllowedToWork() && motorTier > 0) {
-                    EntityPlayer player = widget.getContext()
-                        .getPlayer();
-                    if (player instanceof EntityPlayerMP playerBase) {
-                        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
-                        stats.coordsTeleportedFromX = playerBase.posX;
-                        stats.coordsTeleportedFromZ = playerBase.posZ;
-                        try {
-                            WorldUtil.toCelestialSelection(
-                                playerBase,
-                                stats,
-                                ElevatorUtil.getPlanetaryTravelTier(motorTier),
-                                GuiCelestialSelection.MapMode.TELEPORTATION);
-                        } catch (final Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(IG_UITextures.OVERLAY_BUTTON_PLANET_TELEPORT);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-            .setSize(16, 16)
-            .addTooltip(GCCoreUtil.translate("ig.button.travel"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+        if (Mods.GalacticraftCore.isModLoaded()) {
+            addTeleportationButton(builder);
+        }
 
         // Open contributor window button
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -867,6 +836,45 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 .widget(texts)
                 .build();
         });
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.GALACTICRAFT_CORE)
+    private void addTeleportationButton(ModularWindow.Builder builder) {
+        // Teleportation button
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.getContext()
+                .isClient()) {
+                if (getBaseMetaTileEntity().isAllowedToWork() && motorTier > 0) {
+                    EntityPlayer player = widget.getContext()
+                        .getPlayer();
+                    if (player instanceof EntityPlayerMP playerBase) {
+                        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
+                        stats.coordsTeleportedFromX = playerBase.posX;
+                        stats.coordsTeleportedFromZ = playerBase.posZ;
+                        try {
+                            WorldUtil.toCelestialSelection(
+                                playerBase,
+                                stats,
+                                ElevatorUtil.getPlanetaryTravelTier(motorTier),
+                                GuiCelestialSelection.MapMode.TELEPORTATION);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                ret.add(IG_UITextures.OVERLAY_BUTTON_PLANET_TELEPORT);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+            .setSize(16, 16)
+            .addTooltip(GTUtility.translate("ig.button.travel"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     /**

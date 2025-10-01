@@ -27,7 +27,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -52,25 +51,22 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillationTower>
     implements ISurvivalConstructable {
 
     private Mode mMode = Mode.DistillationTower;
-    private boolean mUpgraded = false;
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
     protected static final String STRUCTURE_PIECE_TOP_HINT = "topHint";
+    protected static final int DT_MODE_MAX_PARALLELS = 12;
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
@@ -175,13 +171,18 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Uses 85% less energy in distillery mode")
-            .addInfo("250%/100% faster in DT/distillery mode")
+            .addInfo("Stats dictated by tower mode")
             .addInfo("Right click the controller with screwdriver to change mode.")
-            .addInfo("Max parallel dictated by tower tier and mode")
-            .addInfo("DTower Mode: T1=4, T2=12")
-            .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
-            .addInfo("Distillery Mode require a full height tower")
+            .addSeparator()
+            .addInfo("Distillery Mode (requires full height tower)")
+            .addInfo(TooltipHelper.parallelText("8 * Voltage Tier") + " Parallels")
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(0.85f)
+            .addSeparator()
+            .addInfo("Distillation Tower Mode")
+            .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
+            .addStaticSpeedInfo(3.5f)
+            .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom")
@@ -293,14 +294,12 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("mMode", (byte) mMode.ordinal());
-        aNBT.setBoolean("mUpgraded", mUpgraded);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mMode = Mode.VALUES[aNBT.getByte("mMode")];
-        mUpgraded = aNBT.getBoolean("mUpgraded");
         super.loadNBTData(aNBT);
     }
 
@@ -370,14 +369,9 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getMaxParallelRecipes() {
         return switch (mMode) {
-            case DistillationTower -> getTierOfTower() == 1 ? 4 : 12;
-            case Distillery -> getTierOfTower() * (4 * GTUtility.getTier(this.getMaxInputVoltage()));
-            default -> 0;
+            case DistillationTower -> DT_MODE_MAX_PARALLELS;
+            case Distillery -> 8 * GTUtility.getTier(this.getMaxInputVoltage());
         };
-    }
-
-    private int getTierOfTower() {
-        return mUpgraded ? 2 : 1;
     }
 
     @Override
@@ -406,41 +400,12 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick % 20 == 0 && !mUpgraded) {
-            ItemStack aGuiStack = this.getControllerSlot();
-            if (aGuiStack != null) {
-                if (GTUtility.areStacksEqual(aGuiStack, GregtechItemList.Distillus_Upgrade_Chip.get(1))) {
-                    this.mUpgraded = true;
-                    mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
-                }
-            }
-        }
-    }
-
-    @Override
     public boolean canDumpFluidToME() {
         // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
                     .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
-    }
-
-    @Override
-    public void setItemNBT(NBTTagCompound aNBT) {
-        if (mUpgraded) aNBT.setBoolean("mUpgraded", true);
-        super.setItemNBT(aNBT);
-    }
-
-    @Override
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        super.addAdditionalTooltipInformation(stack, tooltip);
-        NBTTagCompound aNBT = stack.getTagCompound();
-        if (aNBT != null && aNBT.hasKey("mUpgraded")) {
-            tooltip.add(StatCollector.translateToLocal("tooltip.large_distill_tower.upgraded"));
-        }
     }
 
     private enum Mode {
@@ -468,19 +433,11 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", mMode.ordinal());
+        tag.setString("mode", getMachineModeName());
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + mMode.ordinal());
     }
 }

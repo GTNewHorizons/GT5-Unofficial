@@ -39,13 +39,12 @@ public class GTChunkManager
 
     /**
      * Determines if tickets should be kept. Based on if the ticket is a machine or a working-chunk ticket.
-     * Working-chunk tickets are tossed and recreated when the machine reactivates.
-     * Machine tickets are kept only if the config {@code alwaysReloadChunkloaders} is true.
-     * Otherwise, machine chunks are tossed and recreated only when the machine reactivates,
-     * similarly to a Passive Anchor.
+     * Working-chunk tickets are tossed and recreated when the machine reactivates. Machine tickets are kept only if the
+     * config {@code alwaysReloadChunkloaders} is true. Otherwise, machine chunks are tossed and recreated only when the
+     * machine reactivates, similarly to a Passive Anchor.
      *
-     * @param tickets        The tickets that you will want to select from.
-     *                       The list is immutable and cannot be manipulated directly. Copy it first.
+     * @param tickets        The tickets that you will want to select from. The list is immutable and cannot be
+     *                       manipulated directly. Copy it first.
      * @param world          The world
      * @param maxTicketCount The maximum number of tickets that will be allowed.
      * @return list of tickets
@@ -84,11 +83,11 @@ public class GTChunkManager
     /**
      * Determines if player tickets should be kept. This is where a ticket list per-player would be created and
      * maintained. When a player joins, an event occurs, their name/UUID/etc is compared against tickets on this list
-     * and those tickets are reactivated.
-     * Since that info would be maintained/dealt with on a per-player startup, the list returned back to Forge is empty.
+     * and those tickets are reactivated. Since that info would be maintained/dealt with on a per-player startup, the
+     * list returned back to Forge is empty.
      *
-     * @param tickets The tickets that you will want to select from.
-     *                The list is immutable and cannot be manipulated directly. Copy it first.
+     * @param tickets The tickets that you will want to select from. The list is immutable and cannot be manipulated
+     *                directly. Copy it first.
      * @param world   The world
      * @return the list of string-ticket paris
      */

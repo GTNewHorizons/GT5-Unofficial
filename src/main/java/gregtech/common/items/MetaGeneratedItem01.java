@@ -453,7 +453,6 @@ import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Used;
 import static gregtech.common.items.IDMetaItem01.Tool_Matches;
 import static gregtech.common.items.IDMetaItem01.Tool_Scanner;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Lock;
-import static gregtech.common.items.IDMetaItem01.Upgrade_Muffler;
 import static gregtech.common.items.IDMetaItem01.ZPM2;
 import static gregtech.common.items.IDMetaItem01.ZPM3;
 import static gregtech.common.items.IDMetaItem01.ZPM4;
@@ -2913,13 +2912,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 6L),
                 OreDictNames.craftingGrinder));
 
-        ItemList.Upgrade_Muffler.set(
-            addItem(
-                Upgrade_Muffler.ID,
-                "Muffler Upgrade",
-                "Makes Machines silent",
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Upgrade_Lock.set(
             addItem(
                 Upgrade_Lock.ID,
@@ -4062,8 +4054,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             int tier = i + 1;
             CoverRegistry.registerCover(
                 ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
-                TextureFactory
-                    .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
+                TextureFactory.of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[0]),
                 context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
                 CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }

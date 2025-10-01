@@ -201,12 +201,12 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Smeltery, LES")
-            .addInfo("Necessary evil.")
-            .addInfo("Advanced Essentia smelting technology.")
+            .addInfo("Necessary evil")
+            .addInfo("Advanced Essentia smelting technology")
             .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
-            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length.")
+            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
             .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon.")
+            .addInfo("You can find more information about this machine in the Thaumonomicon")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Front center")

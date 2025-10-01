@@ -95,6 +95,7 @@ public class MTEMultiBlockBaseGui {
         this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
     }
 
+    // TODO: Add Muffle button
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
@@ -295,7 +296,7 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    protected IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
@@ -555,6 +556,7 @@ public class MTEMultiBlockBaseGui {
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
+        // TODO: add powerfail disable checkbox
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)

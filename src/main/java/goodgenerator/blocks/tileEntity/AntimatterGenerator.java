@@ -135,7 +135,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public CheckRecipeResult checkProcessing() {
-        startRecipeProcessing();
         List<FluidStack> inputFluids = getStoredFluids();
         long containedAntimatter = 0;
         FluidStack catalystFluid = null;
@@ -163,7 +162,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             setAvgEff(0f);
         }
 
-        endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -465,7 +463,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_generator")
                 + " "
                 + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "

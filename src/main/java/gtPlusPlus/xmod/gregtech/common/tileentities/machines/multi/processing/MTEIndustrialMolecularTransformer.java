@@ -61,7 +61,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Changes the structure of items to produce new ones")
-            .addInfo("Maximum 1x of each bus/hatch.")
+            .addInfo("Maximum 1x of each bus/hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, false)
             .addController("Top Center")
