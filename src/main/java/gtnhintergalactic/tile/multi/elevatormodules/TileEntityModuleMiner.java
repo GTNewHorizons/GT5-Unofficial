@@ -60,7 +60,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -1006,7 +1005,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // Always reset the outpost status before checking to ensure it's up to date.
         asteroidOutpost = null;
 
-        // This adds a list to all the palyers that have the space project module upgrade, I dont know if theres a better apporch 
+        // This adds a list to all the palyers that have the space project module upgrade, I dont know if theres a
+        // better apporch
         ArrayList<ISpaceProject> projects = new ArrayList<>(
             SpaceProjectManager.getTeamSpaceProjects(getBaseMetaTileEntity().getOwnerUuid()));
 
