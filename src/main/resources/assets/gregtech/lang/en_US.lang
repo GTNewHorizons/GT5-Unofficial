@@ -1741,6 +1741,8 @@ gt.behaviour.paintspray.infinite.tooltip.pick=MMB: On a Surface block to Copy co
 gt.behaviour.paintspray.infinite.tooltip.lock=Sneak + MMB: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=MMB: Open color choice GUI
 gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s + MMB: Toggle Color Cycle Lock
+gt.behaviour.paintspray.infinite.tooltip.author_byline=§o"Try using this in your offhand!"§r -§cQuerns§r
+
 GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cycle Lock
 
 
