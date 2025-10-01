@@ -67,7 +67,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.13-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.33:dev") { transitive = false }
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
-    compileOnlyApi("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") {transitive=false}
+    compileOnlyApi("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Backhand:1.6.37:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
