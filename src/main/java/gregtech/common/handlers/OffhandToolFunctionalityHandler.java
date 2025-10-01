@@ -11,7 +11,6 @@ public class OffhandToolFunctionalityHandler {
 
     public OffhandToolFunctionalityHandler() {}
 
-    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onPlaceEvent(PlaceEvent event) {
         final ItemStack offhand = Backhand.getOffhandItem(event.player);
