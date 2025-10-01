@@ -164,7 +164,15 @@ public enum Mixin implements IMixins {
             .addCommonMixins("galacticraftcore.MixinGalacticraftRocketPollution")
             .setPhase(Phase.LATE)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE));
+            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)),
+
+    //Pam's nether
+    PAMS_NETHER(
+        new MixinBuilder("Fixes EIG interaction")
+            .addCommonMixins("pams_nether.MixinItemNetherSeed")
+            .setPhase(Phase.LATE)
+            .addRequiredMod(TargetedMod.PAMS_NETHER)
+        );
     // spotless:on
 
     private final MixinBuilder builder;
