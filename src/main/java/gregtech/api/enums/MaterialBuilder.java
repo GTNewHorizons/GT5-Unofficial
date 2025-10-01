@@ -160,55 +160,46 @@ public class MaterialBuilder {
 
     public MaterialBuilder addDustItems() {
         this.generateDustItems = true;
-        // types = types | 1;
         return this;
     }
 
     public MaterialBuilder addMetalItems() {
         this.generateMetalItems = true;
-        // types = types | 2;
         return this;
     }
 
     public MaterialBuilder addGemItems() {
         this.generateGemItems = true;
-        // types = types | 4;
         return this;
     }
 
     public MaterialBuilder addOreItems() {
         this.generateOreItems = true;
-        // types = types | 8;
         return this;
     }
 
     public MaterialBuilder addCell() {
         this.generateCell = true;
-        // types = types | 16;
         return this;
     }
 
     public MaterialBuilder addPlasma() {
         this.generatePlasma = true;
-        // types = types | 32;
         return this;
     }
 
     public MaterialBuilder addToolHeadItems() {
         this.generateToolHeadItems = true;
-        // types = types | 64;
         return this;
     }
 
     public MaterialBuilder addGearItems() {
         this.generateGearItems = true;
-        // types = types | 128;
         return this;
     }
 
     public MaterialBuilder addEmpty() {
         this.generateEmpty = true;
-        // types = types | 256;
         return this;
     }
 
