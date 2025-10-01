@@ -163,9 +163,9 @@ public class MaterialBuilder {
     /**
      * Adds:
      * <ul>
-     *   <li>{@link OrePrefixes#dustTiny}</li>
-     *   <li>{@link OrePrefixes#dustSmall}</li>
-     *   <li>{@link OrePrefixes#dust}</li>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
      * </ul>
      */
     public MaterialBuilder addDustItems() {
@@ -173,6 +173,39 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#ingotHot}</li>
+     * <li>{@link OrePrefixes#ingot}</li>
+     * <li>{@link OrePrefixes#dustTiny}</li>
+     * <li>{@link OrePrefixes#dustSmall}</li>
+     * <li>{@link OrePrefixes#dust}</li>
+     * <li>{@link OrePrefixes#nugget}</li>
+     * <li>{@link OrePrefixes#plateAlloy}</li>
+     * <li>{@link OrePrefixes#plateSteamcraft}</li>
+     * <li>{@link OrePrefixes#plateDense}</li>
+     * <li>{@link OrePrefixes#plateSuperdense}</li>
+     * <li>{@link OrePrefixes#plateQuintuple}</li>
+     * <li>{@link OrePrefixes#plateQuadruple}</li>
+     * <li>{@link OrePrefixes#plateTriple}</li>
+     * <li>{@link OrePrefixes#plateDouble}</li>
+     * <li>{@link OrePrefixes#plate}</li>
+     * <li>{@link OrePrefixes#itemCasing}</li>
+     * <li>{@link OrePrefixes#foil}</li>
+     * <li>{@link OrePrefixes#stickLong}</li>
+     * <li>{@link OrePrefixes#stick}</li>
+     * <li>{@link OrePrefixes#round}</li>
+     * <li>{@link OrePrefixes#bolt}</li>
+     * <li>{@link OrePrefixes#comb}</li>
+     * <li>{@link OrePrefixes#screw}</li>
+     * <li>{@link OrePrefixes#ring}</li>
+     * <li>{@link OrePrefixes#springSmall}</li>
+     * <li>{@link OrePrefixes#spring}</li>
+     * <li>{@link OrePrefixes#wireFine}</li>
+     * <li>{@link OrePrefixes#handleMallet}</li>
+     * </ul>
+     */
     public MaterialBuilder addMetalItems() {
         this.generateMetalItems = true;
         return this;
