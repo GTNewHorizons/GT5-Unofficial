@@ -25,36 +25,37 @@ public class FluidCannerBackend extends RecipeMapBackend {
 
     @Override
     protected GTRecipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
-        if (items.length == 0 || items[0] == null) {
-            return null;
-        }
+        for (ItemStack item : items) {
+            if (item == null) continue;
+            for (FluidStack fluid : fluids) {
+                if (fluid == null) continue;
+                ItemStack filledItem = GTUtility.fillFluidContainer(fluid, item, false, true);
+                FluidStack fluidToTake = GTUtility.getFluidForFilledItem(filledItem, true);
+                if (fluidToTake != null) {
+                    return GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, item))
+                        .itemOutputs(filledItem)
+                        .fluidInputs(fluidToTake)
+                        .duration(Math.max(fluidToTake.amount / 64, 16))
+                        .eut(1)
+                        .noBuffer()
+                        .build()
+                        .orElse(null);
+                }
 
-        if (fluids.length > 0 && fluids[0] != null) {
-            ItemStack filledItem = GTUtility.fillFluidContainer(fluids[0], items[0], false, true);
-            FluidStack fluidToTake = GTUtility.getFluidForFilledItem(filledItem, true);
-            if (fluidToTake != null) {
-                return GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, items[0]))
-                    .itemOutputs(filledItem)
-                    .fluidInputs(fluidToTake)
-                    .duration(Math.max(fluidToTake.amount / 64, 16))
-                    .eut(1)
-                    .noBuffer()
-                    .build()
-                    .orElse(null);
+                FluidStack drainedFluid = GTUtility.getFluidForFilledItem(item, true);
+                if (drainedFluid != null) {
+                    return GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, item))
+                        .itemOutputs(GTUtility.getContainerItem(item, true))
+                        .fluidOutputs(drainedFluid)
+                        .duration(Math.max(drainedFluid.amount / 64, 16))
+                        .eut(1)
+                        .noBuffer()
+                        .build()
+                        .orElse(null);
+                }
             }
-        }
-        FluidStack drainedFluid = GTUtility.getFluidForFilledItem(items[0], true);
-        if (drainedFluid != null) {
-            return GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, items[0]))
-                .itemOutputs(GTUtility.getContainerItem(items[0], true))
-                .fluidOutputs(drainedFluid)
-                .duration(Math.max(drainedFluid.amount / 64, 16))
-                .eut(1)
-                .noBuffer()
-                .build()
-                .orElse(null);
         }
         return null;
     }

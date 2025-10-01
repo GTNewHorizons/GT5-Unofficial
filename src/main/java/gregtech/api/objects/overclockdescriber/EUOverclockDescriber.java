@@ -48,12 +48,12 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     }
 
     @Override
-    protected String getVoltageString(OverclockCalculator calculator) {
-        String voltageString = super.getVoltageString(calculator);
+    protected String getTierNameWithParentheses(long voltage, OverclockCalculator calculator) {
+        String nameString = super.getTierNameWithParentheses(voltage, calculator);
         if (wasOverclocked(calculator)) {
-            voltageString += StatCollector.translateToLocal("GT5U.nei.display.overclock");
+            nameString = StatCollector.translateToLocal("GT5U.nei.display.overclock") + " " + nameString;
         }
-        return voltageString;
+        return nameString;
     }
 
     /**

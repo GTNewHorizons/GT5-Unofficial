@@ -737,11 +737,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         final PowerNodePath path = (PowerNodePath) base.getNodePath();
 
-        path.reloadLocks();
-
         if (path == null)
             return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.cable.failed")
                 + EnumChatFormatting.RESET };
+
+        path.reloadLocks();
 
         final long currAmp = path.getAmperage();
         final long currVoltage = path.getVoltage();

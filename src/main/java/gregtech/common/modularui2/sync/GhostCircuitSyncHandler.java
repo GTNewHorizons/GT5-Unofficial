@@ -18,8 +18,7 @@ import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
- * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget
- * GhostCircuitSlotWidget}.
+ * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget GhostCircuitSlotWidget}.
  */
 public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
 

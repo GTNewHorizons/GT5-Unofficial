@@ -16,20 +16,19 @@ import java.util.UUID;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
-import tectech.thing.metaTileEntity.Textures;
 
 public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
     private UUID owner_uuid;
 
     /***
-     * As opposed to the Energy Input equivalent, there is only one wireless dynamo multiamp.
-     * It has a maximum capacity of Long.MAX, meant to consolidate an LSC for power gen options.
-     * Takes in UMV amps 65k.
+     * As opposed to the Energy Input equivalent, there is only one wireless dynamo multiamp. It has a maximum capacity
+     * of Long.MAX, meant to consolidate an LSC for power gen options. Takes in UMV amps 65k.
      */
     public MTEHatchWirelessDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
@@ -73,12 +72,12 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier + 1] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier + 1] };
     }
 
     @Override

@@ -1,20 +1,15 @@
 package gregtech.api.enums;
 
 /**
- * An enum for all registered MetaTileEntities.
- * No more magic numbers about TE's IDs. Yay!!!
- * The entries are sorted by ID, so if you need to take one,
- * please, pretty please, insert it at the correct place.
+ * An enum for all registered MetaTileEntities. No more magic numbers about TE's IDs. Yay!!! The entries are sorted by
+ * ID, so if you need to take one, please, pretty please, insert it at the correct place.
  * <p/>
- * This does not list all used IDs. If you are looking for
- * a free ID, you can use the java arg `-Dgt.debug=true` to
- * list all that are in use.
+ * This does not list all used IDs. If you are looking for a free ID, you can use the java arg `-Dgt.debug=true` to list
+ * all that are in use.
  * <p/>
- * Additionally, some ID ranges are blocked for automatic
- * generation, do not use these:
+ * Additionally, some ID ranges are blocked for automatic generation, do not use these:
  * <p/>
- * 4096 - 5095 are used for GregTech Frames.
- * 5096 - 6099 are used for GregTech Pipes.
+ * 4096 - 5095 are used for GregTech Frames. 5096 - 6099 are used for GregTech Pipes.
  */
 
 public enum MetaTileEntityIDs {
@@ -651,6 +646,7 @@ public enum MetaTileEntityIDs {
     LARGE_STEEL_BOILER_CONTROLLER(1021),
     LARGE_TITANIUM_BOILER_CONTROLLER(1022),
     LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER(1023),
+    CHAMBER_CENTRIFUGE_CONTROLLER(1033),
     COMBUSTION_GENERATOR_LV(1110),
     COMBUSTION_GENERATOR_MV(1111),
     COMBUSTION_GENERATOR_HV(1112),
@@ -757,6 +753,8 @@ public enum MetaTileEntityIDs {
     SOLAR_PANEL_LuV(2738),
     SOLAR_PANEL_ZPM(2739),
     SOLAR_PANEL_UV(2740),
+    VENDING_MACHINE_CONTROLLER(2741),
+    VENDING_MACHINE_UPLINK_ME(2742),
     INDUSTRIAL_LASER_ENGRAVER_CONTROLLER(3004),
     INDUSTRIAL_COMPRESSOR_CONTROLLER(3005),
     HIP_COMPRESSOR_CONTROLLER(3006),
@@ -1853,6 +1851,7 @@ public enum MetaTileEntityIDs {
     Controller_SteamMixerMulti(31084),
     WaterPump(31085),
     Controller_SteamAlloySmelterMulti(31086),
+    Controller_SteamFurnaceMulti(31087),
     GT4_Electric_Auto_Workbench_LV(31091),
     GT4_Electric_Auto_Workbench_MV(31092),
     GT4_Electric_Auto_Workbench_HV(31093),

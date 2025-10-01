@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity.base;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -104,7 +105,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     lazy(
                         x -> HatchElementBuilder.<MTELargeFusionComputer>builder()
                             .atLeast(
-                                gregtech.api.enums.HatchElement.InputHatch.or(gregtech.api.enums.HatchElement.InputBus),
+                                gregtech.api.enums.HatchElement.InputHatch,
                                 gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(x.textureIndex())
                             .dot(1)
@@ -295,8 +296,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         this.getBaseMetaTileEntity()
                             .decreaseStoredEnergyUnits(-lEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null)
-                                for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
+                            if (mOutputItems != null) addItemOutputs(mOutputItems);
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math
@@ -316,13 +316,15 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 if (checkRecipe()) {
-                                    if (aBaseMetaTileEntity.getStoredEU() < this.lastRecipe.mSpecialValue + this.lEUt) {
+                                    if (aBaseMetaTileEntity.getStoredEU()
+                                        < this.lastRecipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L) + this.lEUt) {
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
                                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
-                                    getBaseMetaTileEntity()
-                                        .decreaseStoredEnergyUnits(this.lastRecipe.mSpecialValue + this.lEUt, false);
+                                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                                        this.lastRecipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L) + this.lEUt,
+                                        false);
                                 }
                             }
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
@@ -599,6 +601,21 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     @Override
     public boolean getDefaultBatchMode() {
         return true;
+    }
+
+    protected String createParallelText() {
+        return "Has " + EnumChatFormatting.WHITE
+            + "(1 + "
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "Machine Tier"
+            + EnumChatFormatting.WHITE
+            + " - "
+            + EnumChatFormatting.GREEN
+            + "Recipe Tier"
+            + EnumChatFormatting.WHITE
+            + ") * 64"
+            + EnumChatFormatting.GOLD
+            + " Parallels";
     }
 
     @Override

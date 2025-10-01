@@ -20,9 +20,9 @@ import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
  * To add new widget theme, follow these steps:
  * <ol>
  * <li>Define all the relevant texture IDs, typically at {@link GTTextureIds}.</li>
- * <li>Register {@link com.cleanroommc.modularui.drawable.UITexture UITexture}s, typically at
- * {@link GTGuiTextures}. Make sure to register texture ID with
- * {@link com.cleanroommc.modularui.drawable.UITexture.Builder#name(String) builder#name}.</li>
+ * <li>Register {@link com.cleanroommc.modularui.drawable.UITexture UITexture}s, typically at {@link GTGuiTextures}.
+ * Make sure to register texture ID with {@link com.cleanroommc.modularui.drawable.UITexture.Builder#name(String)
+ * builder#name}.</li>
  * <li>Define widget theme ID at this class.</li>
  * <li>Register widget theme at this class.</li>
  * <li>Register relevant information of the widget theme for each theme to use at {@link GTGuiThemes}.</li>

@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -15,7 +18,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
@@ -42,16 +44,14 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     @Override
     public synchronized String[] getDescription() {
-        mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L";
-        final String[] hatchTierString = new String[] { "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier) };
-
-        String[] aCustomTips = getCustomTooltip();
-        final String[] desc = new String[mDescriptionArray.length + aCustomTips.length + 2];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        System.arraycopy(hatchTierString, 0, desc, mDescriptionArray.length, 1);
-        System.arraycopy(aCustomTips, 0, desc, mDescriptionArray.length + 1, aCustomTips.length);
-        desc[mDescriptionArray.length + aCustomTips.length + 1] = GTPPCore.GT_Tooltip.get();
-        return desc;
+        return Stream
+            .concat(
+                Stream.of(
+                    mDescriptionArray[0],
+                    "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+                    "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier)),
+                Arrays.stream(getCustomTooltip()))
+            .toArray(String[]::new);
     }
 
     @Override

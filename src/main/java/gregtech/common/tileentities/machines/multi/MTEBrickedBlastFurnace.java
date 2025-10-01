@@ -12,6 +12,7 @@ import static gregtech.api.util.GTWaila.getMachineProgressString;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -50,6 +51,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -74,6 +76,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -109,6 +112,9 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     public int mUpdate = 5;
     public int mProgresstime = 0;
     public boolean mMachine = false;
+
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop activitySoundLoop;
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
 
@@ -281,16 +287,23 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         final int lavaX = aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1);
         final int lavaZ = aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1);
-        if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            if (aBaseMetaTileEntity.isActive() && activitySoundLoop == null) {
+                updateSound(aBaseMetaTileEntity);
+            } else if (!aBaseMetaTileEntity.isActive() && activitySoundLoop != null) {
+                activitySoundLoop = null;
+            }
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
-                .setIdentifier(ParticleFX.LARGE_SMOKE)
-                .setPosition(
-                    lavaX + XSTR_INSTANCE.nextFloat(),
-                    aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
-                    lavaZ + XSTR_INSTANCE.nextFloat())
-                .setWorld(getBaseMetaTileEntity().getWorld())
-                .run();
+            if (aBaseMetaTileEntity.isActive()) {
+                new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
+                    .setIdentifier(ParticleFX.LARGE_SMOKE)
+                    .setPosition(
+                        lavaX + XSTR_INSTANCE.nextFloat(),
+                        aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
+                        lavaZ + XSTR_INSTANCE.nextFloat())
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .run();
+            }
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mUpdated) {
@@ -350,6 +363,18 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateSound(IGregTechTileEntity aBaseMetaTileEntity) {
+        activitySoundLoop = new GTSoundLoop(
+            SoundResource.GTCEU_LOOP_FIRE.resourceLocation,
+            aBaseMetaTileEntity,
+            false,
+            true);
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(activitySoundLoop);
     }
 
     @Override

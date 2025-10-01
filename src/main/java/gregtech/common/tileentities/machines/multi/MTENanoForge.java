@@ -20,6 +20,9 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,6 +57,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -64,6 +68,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -77,7 +82,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings8;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -449,41 +453,57 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                drainedMagmatter = 0;
                 if (mSpecialTier >= 4) {
                     boolean foundNanite = false;
-                    ItemStack inputNanite = recipe.mOutputs[0];
+                    ItemStack outputNanite = recipe.mOutputs[0];
+                    List<MaterialStack> inputNaniteMats = new ArrayList<>();
+
+                    for (ItemStack input : recipe.mInputs) {
+                        ItemData data = GTOreDictUnificator.getAssociation(input);
+                        if (data == null) {
+                            continue;
+                        }
+                        if (data.mPrefix == OrePrefixes.nanite) {
+                            inputNaniteMats.add(data.mMaterial);
+                        }
+                    }
 
                     int busWithNaniteIndex = 0;
                     int slotWithNaniteIndex = 0;
 
-                    for (int i = 0; i < mInputBusses.size(); i++) {
-                        if (foundNanite) {
-                            break;
-                        }
+                    busScan: for (int i = 0; i < mInputBusses.size(); i++) {
                         MTEHatchInputBus inputBus = mInputBusses.get(i);
-                        ItemStack[] busInventory = inputBus.getRealInventory();
-                        for (int j = 0; j < busInventory.length; j++) {
-                            ItemStack inputItem = null;
-                            if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                if (j == 18) {
-                                    break;
+                        int invSize = inputBus.getSizeInventory();
+
+                        for (int j = 0; j < invSize; j++) {
+                            ItemStack inputItem = inputBus.getStackInSlot(j);
+
+                            if (inputItem != null) {
+                                ItemData data = GTOreDictUnificator.getAssociation(inputItem);
+                                if (data == null) {
+                                    continue;
                                 }
-                                inputItem = meBus.getRealInventory()[j + 16];
-                            } else {
-                                inputItem = inputBus.getStackInSlot(j);
-                            }
-                            if (inputItem != null && inputItem.isItemEqual(inputNanite)) {
-                                busWithNaniteIndex = i;
-                                slotWithNaniteIndex = j;
-                                foundNanite = true;
-                                break;
+                                if (data.mPrefix == OrePrefixes.nanite) {
+                                    if (inputItem.isItemEqual(outputNanite)) {
+                                        busWithNaniteIndex = i;
+                                        slotWithNaniteIndex = j;
+                                        foundNanite = true;
+                                    } else {
+                                        if (!inputNaniteMats
+                                            .contains(GTOreDictUnificator.getAssociation(inputItem).mMaterial)) {
+                                            foundNanite = false;
+                                            break busScan;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
 
                     if (renderActive) {
                         TileEntityNanoForgeRenderer tile = getRenderer();
-                        ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
+                        ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
                         if (data != null) {
                             Materials mat = data.mMaterial.mMaterial;
                             short[] color = mat.mRGBa;
@@ -507,10 +527,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                                 .decrStackSize(slotWithNaniteIndex, 1);
                         }
                     }
-                } else {
-                    drainedMagmatter = 0;
                 }
-                maxParallel = Math.max((int) (drainedMagmatter / (144 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
+                maxParallel = Math
+                    .max((int) (drainedMagmatter / (288 / GTUtility.powInt(2, 4 - recipe.mSpecialValue))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
             }
@@ -524,8 +543,15 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe)
-                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
+                // Perfect OC for recipes for struct tier 1-3 if recipe tier is lower than struct tier
+                // If struct is t4, only apply perfect OC if the parallel mechanic is used
+                double OCFactor = 2.0;
+                if ((mSpecialTier < 4 || recipe.mSpecialValue < 3) && mSpecialTier > recipe.mSpecialValue) {
+                    OCFactor = 4.0;
+                } else if (recipe.mSpecialValue == 3 && maxParallel > 1) {
+                    OCFactor = 4.0;
+                }
+                return super.createOverclockCalculator(recipe).setDurationDecreasePerOC(OCFactor)
                     .setDurationModifier(mSpecialTier >= 4 ? GTUtility.powInt(0.9999, maxParallel) : 1);
             }
         };
@@ -749,18 +775,21 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Nanite Fabricator")
-            .addInfo("Requires insane amounts of power to create nanites. Each tier")
-            .addInfo("requires some structural changes. The nanite in the")
-            .addInfo("controller slot controls the tier.")
-            .addInfo("Tier 4 has additional mechanics, check the controller.")
+            .addInfo("Requires insane amounts of power to create nanites")
+            .addInfo("Each tier requires some structural changes")
+            .addInfo("Machine tier depends on Nanite in controller slot")
+            .addInfo("Tier 4 has additional mechanics, check the controller")
             .addSeparator()
             .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_BLUE + 2)
             .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
             .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4)
             .addSeparator()
-            .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
-            .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
+            .addInfo(
+                "Performs " + EnumChatFormatting.LIGHT_PURPLE
+                    + "perfect overclocks"
+                    + EnumChatFormatting.GRAY
+                    + " on lower-tier recipes")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
@@ -773,13 +802,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 "Tier " + EnumChatFormatting.DARK_GREEN
                     + "4 "
                     + EnumChatFormatting.GRAY
-                    + "requires a whole new set of blocks.")
-            .addStructureInfo("Check the NEI preview for specifics.")
-            .addStructureInfo(
-                "Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN
-                    + "4"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "requires a whole new set of blocks")
+            .addStructureInfo("Check the NEI preview for specifics")
+            .addStructureInfo("Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN + "4")
             .addStructureInfoSeparator()
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
@@ -793,37 +818,37 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " TT energy hatch.")
+                    + " TT energy hatch")
             .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
+                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " input hatches.")
+                    + " input hatches")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 0
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " output hatches.")
+                    + " output hatches")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " input buses.")
+                    + " input buses")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " output buses.")
+                    + " output buses")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
@@ -885,13 +910,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.2")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 80)
+                    .setPos(0, 75)
                     .setSize(244, 60))
             .widget(
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.3")
                     .setDefaultColor(EnumChatFormatting.GREEN)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 140)
+                    .setPos(0, 135)
                     .setSize(244, 20))
             .widget(
                 TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.4")
@@ -910,7 +935,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     .setDefaultColor(EnumChatFormatting.GREEN)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(0, 230)
-                    .setSize(244, 20));
+                    .setSize(244, 20))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.7")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 255)
+                    .setSize(244, 50));
         builder.widget(
             scrollable.setSize(244, 244)
                 .setPos(3, 3))

@@ -163,14 +163,14 @@ public class MTEMoltenModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for high temperature material liquefaction.")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for high temperature material liquefaction")
             .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The second module of the Godforge, this module melts materials directly into")
             .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
-            .addInfo("as a regular solid instead.")
-            .addInfo("This module is specialized towards parallel processing.")
+            .addInfo("as a regular solid instead")
+            .addInfo("This module is specialized towards parallel processing")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"

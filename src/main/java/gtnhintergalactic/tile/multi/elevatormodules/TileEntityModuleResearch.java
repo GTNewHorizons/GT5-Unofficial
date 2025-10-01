@@ -13,16 +13,19 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.ResultNoSpaceProject;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Space Research project module of the Space Elevator
  *
  * @author minecraft7771
+ *
+ *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
+ *         BLOCK IS ALSO HIDDEN IN NEIGTNewHorizonsConfig.java IN COREMOD
  */
 public class TileEntityModuleResearch extends TileEntityModuleBase {
 
@@ -61,19 +64,19 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc0"))
+        tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.research.desc0"))
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.research.desc1"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
+                    + GTUtility.translate("gt.blockmachines.multimachine.project.ig.research.desc1"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
             .beginStructureBlock(1, 5, 2, false)
-            .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-            .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+            .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
             .toolTipFinisher();
         return tt;
     }

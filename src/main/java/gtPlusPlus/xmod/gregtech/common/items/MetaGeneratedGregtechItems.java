@@ -21,7 +21,6 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_O
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_IV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_LV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_MV;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Distillus_Upgrade_Chip;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Gregtech_Computer_Cube;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Laser_Lens_Special;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Laser_Lens_WoodsGlass;
@@ -291,9 +290,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                     new TC_AspectStack(TCAspects.MAGNETO, tier)));
         }
 
-        // Distillus Chip
-        GregtechItemList.Distillus_Upgrade_Chip.set(
-            this.addItem(Distillus_Upgrade_Chip.ID, "Distillus Upgrade Chip", "Used to upgrade Distillus to Tier 2"));
+        // Maceration Stack Upgrade Chip
         GregtechItemList.Maceration_Upgrade_Chip.set(
             this.addItem(
                 Maceration_Upgrade_Chip.ID,
