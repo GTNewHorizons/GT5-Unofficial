@@ -274,6 +274,14 @@ public class MaterialBuilder {
         return this;
     }
 
+    /**
+     * Adds:
+     * <ul>
+     * <li>{@link OrePrefixes#rotor}</li>
+     * <li>{@link OrePrefixes#gearGtSmall}</li>
+     * <li>{@link OrePrefixes#gearGt}</li>
+     * </ul>
+     */
     public MaterialBuilder addGearItems() {
         this.generateGearItems = true;
         return this;
