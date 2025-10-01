@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -68,12 +69,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -81,14 +76,11 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.ISmartInputHatch;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements IConstructable, ISurvivalConstructable {
@@ -131,33 +123,31 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                             { "CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC" } }))
                 .addElement(
                     'C',
-                    GTStructureChannels.PRASS_UNIT_CASING.use(
-                        HatchElementBuilder.<MTEPreciseAssembler>builder()
-                            .atLeast(
-                                InputBus,
-                                InputHatch,
-                                OutputHatch,
-                                OutputBus,
-                                Maintenance,
-                                Muffler,
-                                ExoticEnergy.or(Energy))
-                            .adder(MTEPreciseAssembler::addToPAssList)
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .buildAndChain(
-                                onElementPass(
-                                    x -> x.casingAmount++,
-                                    StructureUtility.ofBlocksTiered(
-                                        MTEPreciseAssembler::getCasingBlockTier,
-                                        ImmutableList.of(
-                                            Pair.of(Loaders.impreciseUnitCasing, 0),
-                                            Pair.of(Loaders.preciseUnitCasing, 0),
-                                            Pair.of(Loaders.preciseUnitCasing, 1),
-                                            Pair.of(Loaders.preciseUnitCasing, 2),
-                                            Pair.of(Loaders.preciseUnitCasing, 3)),
-                                        -3,
-                                        MTEPreciseAssembler::setCasingTier,
-                                        MTEPreciseAssembler::getCasingTier)))))
+                    buildHatchAdder(MTEPreciseAssembler.class)
+                        .atLeast(
+                            InputBus,
+                            InputHatch,
+                            OutputHatch,
+                            OutputBus,
+                            Maintenance,
+                            Muffler,
+                            ExoticEnergy.or(Energy))
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> x.casingAmount++,
+                                StructureUtility.ofBlocksTiered(
+                                    MTEPreciseAssembler::getCasingBlockTier,
+                                    ImmutableList.of(
+                                        Pair.of(Loaders.impreciseUnitCasing, 0),
+                                        Pair.of(Loaders.preciseUnitCasing, 0),
+                                        Pair.of(Loaders.preciseUnitCasing, 1),
+                                        Pair.of(Loaders.preciseUnitCasing, 2),
+                                        Pair.of(Loaders.preciseUnitCasing, 3)),
+                                    -3,
+                                    MTEPreciseAssembler::setCasingTier,
+                                    MTEPreciseAssembler::getCasingTier))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
                 .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
@@ -176,50 +166,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .build();
         }
         return multiDefinition;
-    }
-
-    public boolean addToPAssList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            // Only add them to be iterated if enabled for performance reasons
-            if (hatch.doFastRecipeCheck()) {
-                mSmartInputHatches.add(hatch);
-            }
-        }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof IDualInputHatch) {
-            return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInputBus) {
-            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
-            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMuffler) {
-            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            return mExoticEnergyHatches.add((MTEHatchEnergyMulti) aMetaTileEntity);
-        }
-        return false;
     }
 
     @Override
