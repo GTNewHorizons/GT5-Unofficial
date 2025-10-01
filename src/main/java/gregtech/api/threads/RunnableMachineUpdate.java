@@ -1,17 +1,8 @@
 package gregtech.api.threads;
 
 import java.util.HashMap;
-
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -39,7 +30,6 @@ public class RunnableMachineUpdate implements Runnable {
     protected final LongSet visited = new LongOpenHashSet();
     protected final LongArrayFIFOQueue tQueue = new LongArrayFIFOQueue();
     private final static HashMap<World, RunnableMachineUpdate> perWorldHandler = new HashMap<>();
-
 
     // This class should never be initiated outside of this class!
     protected RunnableMachineUpdate(World aWorld, int posX, int posY, int posZ) {
