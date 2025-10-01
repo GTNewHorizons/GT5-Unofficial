@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -18,11 +17,6 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
     public EnchantmentRadioactivity() {
         super(GTConfig.addIDConfig(ConfigCategories.IDs.enchantments, "Radioactivity", 14), 0, -1);
         GTLanguageManager.addStringLocalization(getName(), "Radioactivity");
-        Materials.Plutonium.setEnchantmentForArmors(this, 1);
-        Materials.Uranium235.setEnchantmentForArmors(this, 2);
-        Materials.Plutonium241.setEnchantmentForArmors(this, 3);
-        Materials.NaquadahEnriched.setEnchantmentForArmors(this, 4);
-        Materials.Naquadria.setEnchantmentForArmors(this, 5);
         INSTANCE = this;
     }
 
