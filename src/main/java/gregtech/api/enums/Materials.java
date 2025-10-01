@@ -1731,13 +1731,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setToolEnchantment(Enchantment, int)} instead. */
+    @Deprecated
     public Materials setEnchantmentForTools(Enchantment aEnchantment, int aEnchantmentLevel) {
         mEnchantmentTools = aEnchantment;
         mEnchantmentToolsLevel = (byte) aEnchantmentLevel;
         return this;
     }
 
-    @SuppressWarnings("UnusedReturnValue") // Maintains signature
+    /** @deprecated Use {@link MaterialBuilder#setArmorEnchantment(Enchantment, int)} instead. */
+    @Deprecated
     public Materials setEnchantmentForArmors(Enchantment aEnchantment, int aEnchantmentLevel) {
         mEnchantmentArmors = aEnchantment;
         mEnchantmentArmorsLevel = (byte) aEnchantmentLevel;
