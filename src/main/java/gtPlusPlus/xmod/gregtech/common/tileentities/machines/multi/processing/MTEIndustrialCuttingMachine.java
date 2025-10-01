@@ -10,24 +10,9 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
-import java.util.Arrays;
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,7 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,7 +35,6 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialCuttingMachineGui;
 
 public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable {
@@ -77,7 +60,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public String getMachineType() {
-        return "Cutting Machine, Slicing Machine, ICF";
+        return "Cutting Machine, ICF";
     }
 
     @Override
@@ -164,13 +147,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_CUTTER) ? RecipeMaps.cutterRecipes : RecipeMaps.slicerRecipes;
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.cutterRecipes, RecipeMaps.slicerRecipes);
+        return RecipeMaps.cutterRecipes;
     }
 
     @Override
@@ -212,53 +189,9 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
         return (byte) TAE.GTPP_INDEX(29);
     }
 
-    @Override
-    public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SLICING);
-    }
-
-    @Override
-    public String getMachineModeName() {
-        return translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + machineMode);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        // Migrates old NBT tag to the new one
-        if (aNBT.hasKey("mCuttingMode")) {
-            machineMode = aNBT.getBoolean("mCuttingMode") ? MACHINEMODE_CUTTER : MACHINEMODE_SLICER;
-        }
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("mode", getMachineModeName());
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_CUTTING_MACHINE_LOOP;
-    }
-
-    @Override
-    protected @NotNull MTEIndustrialCuttingMachineGui getGui() {
-        return new MTEIndustrialCuttingMachineGui(this);
     }
 }

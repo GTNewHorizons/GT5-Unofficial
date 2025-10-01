@@ -632,7 +632,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInputBus inputBus = mInputBusses.get(index);
         if (!inputBus.isValid()) return null;
         if (inputBus instanceof MTEHatchInputBusME meBus) {
-            ItemStack item = meBus.getFirstShadowItemStack(true);
+            ItemStack item = meBus.getFirstValidStack(true);
             if (item == null) return null;
             GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
             if (!curBatchItemsFromME.containsKey(id)) return null;
@@ -647,7 +647,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInput inputHatch = mInputHatches.get(index);
         if (!inputHatch.isValid()) return null;
         if (inputHatch instanceof MTEHatchInputME meHatch) {
-            FluidStack fluid = meHatch.getFirstShadowFluidStack(true);
+            FluidStack fluid = meHatch.getFirstValidStack(true);
             if (fluid == null) return null;
             if (!curBatchFluidsFromME.containsKey(fluid.getFluid())) return null;
             return curBatchFluidsFromME.get(fluid.getFluid());
@@ -1024,7 +1024,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 if (id + 1 >= currentInputLength) {
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
-                    if (addOutput(output) || !voidingMode.protectItem) reset();
+                    if (addOutputAtomic(output) || !voidingMode.protectItem) reset();
                     else stuck = true;
                 } else {
                     if (slices[id + 1].start()) reset();
