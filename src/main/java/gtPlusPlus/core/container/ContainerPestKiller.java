@@ -1,6 +1,5 @@
 package gtPlusPlus.core.container;
 
-import gtPlusPlus.core.block.machine.BlockPestKiller;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,11 +12,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.block.machine.BlockPestKiller;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
 import gtPlusPlus.core.slots.SlotGeneric;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ContainerPestKiller extends Container {
 

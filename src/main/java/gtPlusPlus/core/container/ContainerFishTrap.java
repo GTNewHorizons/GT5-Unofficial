@@ -1,6 +1,5 @@
 package gtPlusPlus.core.container;
 
-import gtPlusPlus.core.block.machine.BlockFishTrap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -8,10 +7,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import gtPlusPlus.core.block.machine.BlockFishTrap;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ContainerFishTrap extends Container {
 
