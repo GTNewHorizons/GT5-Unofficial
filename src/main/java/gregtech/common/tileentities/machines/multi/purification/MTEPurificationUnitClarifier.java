@@ -168,8 +168,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // Rotated sifter not allowed, water will flow out.
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @Override

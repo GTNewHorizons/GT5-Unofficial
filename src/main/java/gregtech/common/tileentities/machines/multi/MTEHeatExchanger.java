@@ -260,7 +260,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> !r.isUpsideDown() && !f.isVerticallyFliped();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @Override

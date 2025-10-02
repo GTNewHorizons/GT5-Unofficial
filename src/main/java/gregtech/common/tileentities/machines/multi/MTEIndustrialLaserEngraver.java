@@ -363,11 +363,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean isRotationChangeAllowed() {
-        return true;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return laserAmps;
     }

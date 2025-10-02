@@ -264,8 +264,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // don't rotate it, it's cursed.
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     public int getPollutionCleaningRatePerTick(float turbineEff, float multiEff, boolean isRateBoosted) {

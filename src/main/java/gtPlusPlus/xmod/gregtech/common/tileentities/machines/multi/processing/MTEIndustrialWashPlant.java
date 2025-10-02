@@ -168,8 +168,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // don't rotate a washer, water will flow out.
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @Override
