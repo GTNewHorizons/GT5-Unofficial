@@ -43,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTTextBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -225,6 +226,11 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
+    public boolean showMachineStatusInGUI() {
+        return false;
+    }
+
+    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aTick & 31) == 31) {
             ePowerPass = aBaseMetaTileEntity.isAllowedToWork();
@@ -297,6 +303,19 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         return GTUtility.formatNumbers(amps) + AMP_UNITS[unit];
     }
 
+    private static String formatUIEUt(double eut) {
+        if (eut < 1_000_000_000) return GTUtility.formatNumbers(eut);
+
+        int exp = 0;
+
+        while (eut > 1_000) {
+            eut /= 1000d;
+            exp += 3;
+        }
+
+        return GTUtility.formatNumbers(eut) + "e" + exp;
+    }
+
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
@@ -313,27 +332,36 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
         screenElements.widget(TextWidget.localised("GT5U.gui.text.at_eu_transferred"));
 
-        screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = formatUIAmperage(transferredLast5Secs / V[hatchTier.getValue()]);
-            String tier = TIER_COLORS[hatchTier.getValue()] + VN[hatchTier.getValue()];
+        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_past_5secs.header"));
 
-            return GTUtility.translate("GT5U.gui.text.at_past_5secs", amperage, tier);
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            return new GTTextBuilder("GT5U.gui.text.at_history.values").setBase(EnumChatFormatting.GRAY)
+                .addNumber(formatUIEUt(transferredLast5Secs))
+                .addNumber(formatUIAmperage(transferredLast5Secs / V[hatchTier.getValue()]))
+                .add(TIER_COLORS[hatchTier.getValue()], VN[hatchTier.getValue()])
+                .toString();
         })
             .setSynced(false));
 
-        screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = formatUIAmperage(transferredLast30Secs / V[hatchTier.getValue()]);
-            String tier = TIER_COLORS[hatchTier.getValue()] + VN[hatchTier.getValue()];
+        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_past_30secs.header"));
 
-            return GTUtility.translate("GT5U.gui.text.at_past_30secs", amperage, tier);
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            return new GTTextBuilder("GT5U.gui.text.at_history.values").setBase(EnumChatFormatting.GRAY)
+                .addNumber(formatUIEUt(transferredLast30Secs))
+                .addNumber(formatUIAmperage(transferredLast30Secs / V[hatchTier.getValue()]))
+                .add(TIER_COLORS[hatchTier.getValue()], VN[hatchTier.getValue()])
+                .toString();
         })
             .setSynced(false));
 
-        screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = formatUIAmperage(transferredLast1Min / V[hatchTier.getValue()]);
-            String tier = TIER_COLORS[hatchTier.getValue()] + VN[hatchTier.getValue()];
+        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_past_min.header"));
 
-            return GTUtility.translate("GT5U.gui.text.at_past_min", amperage, tier);
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            return new GTTextBuilder("GT5U.gui.text.at_history.values").setBase(EnumChatFormatting.GRAY)
+                .addNumber(formatUIEUt(transferredLast1Min))
+                .addNumber(formatUIAmperage(transferredLast1Min / V[hatchTier.getValue()]))
+                .add(TIER_COLORS[hatchTier.getValue()], VN[hatchTier.getValue()])
+                .toString();
         })
             .setSynced(false));
     }
