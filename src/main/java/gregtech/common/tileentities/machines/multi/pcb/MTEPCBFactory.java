@@ -421,7 +421,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         || requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioChamber.isAllowedToWork())
                         return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
                 } else {
-                    // TODO else do nothing?
+                    if (requiredUpgrade == PCBFactoryUpgrade.BIO && !compatMode.bioUpgrade) {
+                        return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
+                    }
                 }
                 int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
                 if (requiredPCBTier > mTier) return CheckRecipeResultRegistry.insufficientMachineTier(requiredPCBTier);
