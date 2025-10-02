@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
@@ -121,7 +122,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
                 EnumChatFormatting.GOLD,
                 false)
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
-            .toolTipFinisher(Authorguid118);
+            .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;
     }
 

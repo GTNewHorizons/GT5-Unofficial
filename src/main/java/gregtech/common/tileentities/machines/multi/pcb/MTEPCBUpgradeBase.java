@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
+import static gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory.UPGRADE_RANGE;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,12 +25,12 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -59,7 +61,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
      * Coordinates of the PCB Factories. These can be used to find the factories again on world
      * load.
      */
-    private final Set<Vec3Impl> controllerCoords = new HashSet<>();
+    protected final Set<Vec3Impl> controllerCoords = new HashSet<>();
 
     /**
      * Queue of all currently active factories, sorted by time left in their recipe.
@@ -148,16 +150,25 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         }
     }
 
+    /**
+     * Remove the given factory from the list of linked factories.
+     *
+     * @param factory factory to remove
+     */
+    public void removeController(MTEPCBFactory factory) {
+        IGregTechTileEntity BMTE = factory.getBaseMetaTileEntity();
+        controllerCoords.removeIf(
+            controllerCoord -> controllerCoord.get(1) == BMTE.getXCoord() && controllerCoord.get(1) == BMTE.getYCoord()
+                && controllerCoord.get(1) == BMTE.getZCoord());
+    }
+
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
         IGregTechTileEntity ourBaseMetaTileEntity = this.getBaseMetaTileEntity();
         // First check whether the controller we try to link to is within range. The range is defined
         // as a max distance in each axis.
-        if (Math.abs(ourBaseMetaTileEntity.getXCoord() - x) > MTEPurificationPlant.MAX_UNIT_DISTANCE)
-            return LinkResult.TOO_FAR;
-        if (Math.abs(ourBaseMetaTileEntity.getYCoord() - y) > MTEPurificationPlant.MAX_UNIT_DISTANCE)
-            return LinkResult.TOO_FAR;
-        if (Math.abs(ourBaseMetaTileEntity.getZCoord() - z) > MTEPurificationPlant.MAX_UNIT_DISTANCE)
-            return LinkResult.TOO_FAR;
+        if (Math.abs(ourBaseMetaTileEntity.getXCoord() - x) > UPGRADE_RANGE) return LinkResult.TOO_FAR;
+        if (Math.abs(ourBaseMetaTileEntity.getYCoord() - y) > UPGRADE_RANGE) return LinkResult.TOO_FAR;
+        if (Math.abs(ourBaseMetaTileEntity.getZCoord() - z) > UPGRADE_RANGE) return LinkResult.TOO_FAR;
 
         // Find the block at the requested coordinated and check if it is a purification plant controller.
         var tileEntity = getBaseMetaTileEntity().getWorld()
@@ -207,6 +218,16 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         }
 
         return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Right-clicking could be a data stick linking action, otherwise we can ignore, as this multi does not have a
+        // GUI.
+        if (tryLinkDataStick(aPlayer)) {
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
     // If the controller is broken this can be called to explicitly unlink the controller, so we don't have any
@@ -320,6 +341,23 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         return CheckRecipeResultRegistry.NONE;
+    }
+
+    /**
+     * removes any factories that are not there anymore, in case onBlockBreak didn't fire
+     */
+    protected void checkFactories() {
+        for (Vec3Impl coords : controllerCoords) {
+            TileEntity TE = this.getBaseMetaTileEntity()
+                .getWorld()
+                .getTileEntity(coords.get(0), coords.get(1), coords.get(2));
+            if (TE instanceof IGregTechTileEntity GTTE) {
+                IMetaTileEntity MTE = GTTE.getMetaTileEntity();
+                if (!(MTE instanceof MTEPCBFactory)) {
+                    controllerCoords.remove(coords);
+                }
+            } else controllerCoords.remove(coords);
+        }
     }
 
     @Override
