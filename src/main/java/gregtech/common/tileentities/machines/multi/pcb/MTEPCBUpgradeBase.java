@@ -152,7 +152,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
 
     /**
      * Remove the given factory from the list of linked factories.
-     * 
+     *
      * @param factory factory to remove
      */
     public void removeController(MTEPCBFactory factory) {
