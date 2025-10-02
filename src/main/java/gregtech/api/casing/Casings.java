@@ -30,6 +30,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockQuantumGlass;
@@ -266,6 +267,19 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings6Misc, 0, gtpp(3, 4)),
     AdvancedFusionCoilII
         (() -> ModBlocks.blockCasings6Misc, 1, gtpp(3, 5)),
+
+    HeatProofCasing
+        (() -> GregTechAPI.sBlockCasings1, 11, 11),
+    ChemicallyInertCasing
+        (() -> GregTechAPI.sBlockCasings8, 0, 176),
+    PipeCasingPTFE
+        (() -> GregTechAPI.sBlockCasings8, 1, -1),
+    CleanStainlessSteelCasing
+        (() -> GregTechAPI.sBlockCasings4, 1, 49),
+    InfinityCooledCasing
+        (() -> GregTechAPI.sBlockCasings8, 14, ((BlockCasingsAbstract) GregTechAPI.sBlockCasings8).getTextureIndex(14)),
+    FrostProofCasing
+        (() -> GregTechAPI.sBlockCasings2, 1, 17),
 
     MagicCasing
         (() -> Loaders.magicCasing, 0, -1),
