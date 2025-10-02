@@ -68,7 +68,7 @@ public class CoverGui<T extends Cover> {
      * Creates template panel for cover GUI. Called by {@link Cover#buildUI}. Override this method if you want to
      * implement more customized GUI. Otherwise, implement {@link #addUIWidgets} instead.
      *
-     * @param panelName the unique name of this panel in the context of your UI.
+     * @param panelName   the unique name of this panel in the context of your UI.
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */

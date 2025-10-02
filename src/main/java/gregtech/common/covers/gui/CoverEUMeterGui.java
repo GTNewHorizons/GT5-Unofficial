@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverEUMeter;
 
 public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
