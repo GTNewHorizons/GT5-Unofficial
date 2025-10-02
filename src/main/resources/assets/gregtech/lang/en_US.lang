@@ -1714,7 +1714,12 @@ GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
-GT5U.item.cable.swapped=Cable swapped:
+GT5U.item.cable.connected=Connected
+GT5U.item.cable.disconnected=Disconnected
+GT5U.item.cable.swapped=Cable swapped: %s
+GT5U.item.cable.multi.infinite_loop=Error: cable traversal limit exceeded. This is probably a bug, please report it.
+GT5U.item.cable.multi.success=Found %d cables, connected %d cables and %d blocks.
+
 GT5U.item.tank.locked_to=Content locked to %s
 
 GT5U.item.pipe.capacity=Capacity

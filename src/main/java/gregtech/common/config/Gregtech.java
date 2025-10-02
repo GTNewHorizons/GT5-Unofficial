@@ -340,6 +340,16 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean costlyCableConnection;
 
+        @Config.Comment("if true, enables cable multi-connection using a wire cutter.")
+        @Config.DefaultBoolean(true)
+        @Config.RequiresMcRestart
+        public boolean cableMultiConnectEnabled;
+
+        @Config.Comment("Maximum number of cables to check during multi-connect before stopping.")
+        @Config.DefaultInt(10000)
+        @Config.RequiresMcRestart
+        public int cableMultiConnectLimit;
+
         @Config.Comment("if true, crashes on null recipe input.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart

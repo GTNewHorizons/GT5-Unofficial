@@ -606,6 +606,8 @@ public class GTProxy implements IFuelHandler {
     public boolean gt6Pipe = true;
     public boolean gt6Cable = true;
     public boolean ic2EnergySourceCompat = true;
+    public boolean cableMultiConnectEnabled = true;
+    public int cableMultiConnectLimit = 10000;
     public boolean costlyCableConnection = false;
     public boolean crashOnNullRecipeInput = false;
 
