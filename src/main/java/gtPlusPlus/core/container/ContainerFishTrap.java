@@ -1,5 +1,6 @@
 package gtPlusPlus.core.container;
 
+import gtPlusPlus.core.block.machine.BlockFishTrap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -80,7 +81,7 @@ public class ContainerFishTrap extends Container {
 
     @Override
     public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-        if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != GregtechItemList.FishTrap.getBlock()) {
+        if (!(this.worldObj.getBlock(this.posX, this.posY, this.posZ) instanceof BlockFishTrap)) {
             return false;
         }
 

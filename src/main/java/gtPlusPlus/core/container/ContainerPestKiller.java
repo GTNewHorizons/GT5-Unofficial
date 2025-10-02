@@ -1,5 +1,6 @@
 package gtPlusPlus.core.container;
 
+import gtPlusPlus.core.block.machine.BlockPestKiller;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -99,7 +100,7 @@ public class ContainerPestKiller extends Container {
 
     @Override
     public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-        if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != GregtechItemList.PestKiller.getBlock()) {
+        if (!(this.worldObj.getBlock(this.posX, this.posY, this.posZ) instanceof BlockPestKiller)) {
             return false;
         }
         return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64D;
