@@ -79,7 +79,8 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
             .marginBottom(4);
     }
 
-    // allows for overriding in sublcasses for better ui positioning
+    // allows for overriding in subclasses for better ui positioning
+    // this is where anything specific to the cover goes.
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         return Flow.row()
             .size(1, 1);

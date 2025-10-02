@@ -67,11 +67,15 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                     .marginBottom(4)
 
                     .child(
+                        // number field with 'Any' goes here
                         makeNumberField(88).value(slotSyncer)
                             .setDefaultNumber(-1)
                             .setNumbers(-1, tile.getSizeInventory() - 1)
                             .marginRight(2))
-                    .child(displayWidget)
+                    .child(displayWidget.tooltipDynamic(t -> {
+                        // to convey the -1 = 'Any'.
+                        if (slotSyncer.getIntValue() == -1) t.addLine(translateToLocal("gt.interact.desc.any_slot"));
+                    }))
                     .child(new TextWidget(translateToLocal("gt.interact.desc.item_slot"))))
             .coverChildrenWidth()
 
