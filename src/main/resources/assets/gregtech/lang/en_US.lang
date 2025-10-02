@@ -215,14 +215,16 @@ gt.interact.desc.input_from_output_on=Input from Output Side allowed
 gt.interact.desc.input_from_output_off=Input from Output Side forbidden
 gt.interact.desc.public=Public
 gt.interact.desc.private=Private
-gt.interact.desc.set_perm=Public/Private
-gt.interact.desc.set_io=Import/Export
-gt.interact.desc.channel=Channel
-gt.interact.desc.freq=Frequency
+gt.interact.desc.set_perm=§8Public/Private
+gt.interact.desc.set_io=§8Import/Export
+gt.interact.desc.channel=§8Channel
+gt.interact.desc.freq=§8Frequency
 gt.interact.desc.freq_format=Frequency: %s
 gt.interact.desc.freq_perm=Frequency: %s, Transmission: %s
-gt.interact.desc.normal=Normal
-gt.interact.desc.inverted=Inverted
+gt.interact.desc.normal=§8Normal
+gt.interact.desc.normal.tooltip=Normal
+gt.interact.desc.inverted=§8Inverted
+gt.interact.desc.inverted.tooltip=Inverted
 gt.interact.desc.inverted_b=(Inverted)
 gt.interact.desc.ready=Ready to work
 gt.interact.desc.not_ready=Not ready to work
@@ -1274,7 +1276,6 @@ GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional pa
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
 GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
 GT5U.machines.stocking_bus.force_check=Recipe Check on change
-GT5U.machines.stocking_bus.hatch_warning=Requires a fresh structure check to apply (Reboot/Replace controller)
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
@@ -1347,7 +1348,7 @@ channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generato
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
 
-GT5U.gui.select.current=Current:
+GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
 GT5U.gui.button.liquid_filling_ON=§7Liquid Filling: §aON
 GT5U.gui.button.power_switch=Power Switch
@@ -1569,18 +1570,18 @@ GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
 GT5U.gui.tooltip.redstone_receiver.analog=ANALOG Mode\nOnly use this mode with ONE transmitter in total,\nno logic involved
 GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
 GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
-GT5U.gui.text.fluid_limiter.threshold=Percent threshold
+GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
 GT5U.gui.text.volumetric_flask.confirm=Confirm
 
-GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=No Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=>= 1 Issue
-GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=>= 2 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=>= 3 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=>= 4 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=>= 5 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=Rotor < 20%
-GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=Rotor ≈ 0%
+GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=§8No Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=§8>= 1 Issue
+GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=§8>= 2 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=§8>= 3 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=§8>= 4 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=§8>= 5 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=§8Rotor < 20%
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=§8Rotor ≈ 0%
 
 GT5U.gui.text.fusion_computer.hit_to_start=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
 GT5U.gui.text.fusion_computer.running_perfectly=Running perfectly.
@@ -1740,6 +1741,8 @@ gt.behaviour.paintspray.infinite.tooltip.pick=MMB: On a Surface block to Copy co
 gt.behaviour.paintspray.infinite.tooltip.lock=Sneak + MMB: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=MMB: Open color choice GUI
 gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s + MMB: Toggle Color Cycle Lock
+gt.behaviour.paintspray.infinite.tooltip.author_byline=§o"Try using this in your offhand!"§r -§cQuerns§r
+
 GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cycle Lock
 
 
@@ -1885,6 +1888,151 @@ GT5U.interface.coverTabs.redstone.south=south
 GT5U.interface.coverTabs.redstone.west=west
 GT5U.interface.coverTabs.redstone.east=east
 GT5U.interface.coverTabs.redstone.unknown=<unknown>
+
+## Redstone Receiver
+GT5U.gui.tooltip.redstone_receiver.GateMode=§8Gate Mode
+GT5U.gui.tooltip.redstone_receiver.AND_Gate=AND Gate
+GT5U.gui.tooltip.redstone_receiver.NAND_Gate=NAND Gate
+GT5U.gui.tooltip.redstone_receiver.OR_Gate=OR Gate
+GT5U.gui.tooltip.redstone_receiver.NOR_Gate=NOR Gate
+
+## Arm
+gt.interact.desc.arm.any=Any
+gt.interact.desc.arm.Internal_Slot=§8Internal slot#
+gt.interact.desc.arm.Adjacent_Slot=§8Adjacent slot#
+
+## Machine Controller Cover
+gt.interact.desc.MachContr.EnRedstone=§8Enable with Redstone
+gt.interact.desc.MachContr.DisRedstone=§8Disable with Redstone
+gt.interact.desc.MachContr.DisMachine=§8Disable machine
+gt.interact.desc.MachContr.SafeMode=§8Safe Mode
+
+## Conveyor
+gt.interact.desc.conveyor.AlwaysOn=Always On
+gt.interact.desc.conveyor.MachProcState=Use Machine Processing State
+gt.interact.desc.conveyor.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.conveyor.AllowIn=Allow Input
+gt.interact.desc.conveyor.AllowOut=Allow Output
+gt.interact.desc.conveyor.BlockIn=Block Input
+gt.interact.desc.conveyor.BlockOut=Block Output
+gt.interact.desc.conveyor.ExpImp=§8Export/Import
+gt.interact.desc.conveyor.Conditional=§8Conditional
+gt.interact.desc.conveyor.InputBlock=§8Input Blocking
+gt.interact.desc.conveyor.OutputBlock=§8Output Blocking
+
+## DoesWorkUI
+gt.interact.desc.MachineEnabled=§8Machine enabled
+gt.interact.desc.MachineIdle=§8Machine idle
+gt.interact.desc.RecipeProgress=§8Recipe progress
+
+## EU MEter
+gt.interact.desc.EnergyTHR=§8Energy threshold
+
+## Facade
+gt.interact.desc.facade.Redstone=§8Redstone
+gt.interact.desc.facade.Energy=§8Energy
+gt.interact.desc.facade.Fluids=§8Fluids
+gt.interact.desc.facade.Items=§8Items
+
+## FluidFilter
+gt.interact.desc.FluidFilter.FilterInput=Filter Input
+gt.interact.desc.FluidFilter.FilterOutput=Filter Output
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.AllowOutput=Allow Output
+gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
+gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
+gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
+gt.interact.desc.FluidFilter.Type=§8IFilter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
+gt.interact.desc.FluidFilter.Empty=§8IFilter Empty
+
+## Fluid Regulator
+gt.interact.desc.fluid_regulator.AlwaysOn=Always On
+gt.interact.desc.fluid_regulator.MachProcState=Use Machine Processing State
+gt.interact.desc.fluid_regulator.InvertedMachProcState=Use Inverted Machine Processing State
+
+gt.interact.desc.fluid_regulator.ExpImp=§8Export/Import
+gt.interact.desc.fluid_regulator.Conditional=§8Conditional
+gt.interact.desc.fluid_regulator.L=§8 L
+gt.interact.desc.fluid_regulator.Ticks=§8 ticks
+gt.interact.desc.fluid_regulator.Average=Average: 
+gt.interact.desc.fluid_regulator.L_Sec=L/sec
+
+## Item Filter
+gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
+gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
+gt.interact.desc.Item_Filter.Filter=§8Filter 
+gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
+
+## Item Meter
+gt.interact.desc.Item_Meter.All=All
+gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
+gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
+
+## Liquid Meter (Fluid meter)
+gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+
+## Player Detector
+gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
+gt.interact.desc.Player_Detector.Emit_Player_No_Close=Emit if other Player is close
+gt.interact.desc.Player_Detector.Emit_You_Close=Emit if you are close
+gt.interact.desc.Player_Detector.Any_Player=§8Any player
+gt.interact.desc.Player_Detector.Other_Players=§8Other players
+gt.interact.desc.Player_Detector.Only_Owner=§8Only owner
+
+## Pump
+gt.interact.desc.Pump.AlwaysOn=Always On
+gt.interact.desc.Pump.MachProcState=Use Machine Processing State
+gt.interact.desc.Pump.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.Pump.AllowIn=Allow Input
+gt.interact.desc.Pump.AllowOut=Allow Output
+gt.interact.desc.Pump.BlockIn=Block Input
+gt.interact.desc.Pump.BlockOut=Block Output
+gt.interact.desc.Pump.ExpImp=§8Export/Import
+gt.interact.desc.Pump.Conditional=§8Conditional
+gt.interact.desc.Pump.InputBlock=§8Input Blocking
+gt.interact.desc.Pump.OutputBlock=§8Output Blocking
+
+## RedstoneWirelessBase
+gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq=§8Use Private Frequency
+
+## Shutter
+gt.interact.desc.Shutter.Open_Enabled=§8Open if work enabled
+gt.interact.desc.Shutter.Open_Disabled=§8Open if work disabled
+gt.interact.desc.Shutter.OutAllow=§8Only Output allowed
+gt.interact.desc.Shutter.InAllow=§8Only Input allowed
+
+## Wireless Activity
+
+gt.interact.desc.Wireless_Activity.Enabled=§8Machine enabled
+gt.interact.desc.Wireless_Activity.Idle=§8Machine idle
+gt.interact.desc.Wireless_Activity.Recipe_Progress=§8Recipe progress
+
+gt.interact.tooltip.Wireless_Activity.Recipe_Progress=Recipe progress
+gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
+gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
+
+## Wireless Fluid Detector
+gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
+
+## Wireless Item Detector
+gt.interact.desc.Item_Item_Detector.All=All
+gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
+
+## Energy Detector
+gt.interact.desc.Energy_Detector.universal=§8Universal
+gt.interact.desc.Energy_Detector.universal.tooltip=§fUniversal Storage
+gt.interact.desc.Energy_Detector.electricity=§8Int. EU
+gt.interact.desc.Energy_Detector.electricity.tooltip=§fElectricity Storage
+gt.interact.desc.Energy_Detector.steam=§8Steam
+gt.interact.desc.Energy_Detector.steam.tooltip=§fSteam Storage
+gt.interact.desc.Energy_Detector.average_in=§8Avg. Input
+gt.interact.desc.Energy_Detector.average_in.tooltip=§fAverage Electric Input
+gt.interact.desc.Energy_Detector.average_out=§8Avg. Output
+gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
+gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
+gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
 
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
@@ -2845,8 +2993,8 @@ gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
 gt.cover.info.button.bounds_notification.minimum=§7 (minimum)§r
 gt.cover.info.button.bounds_notification.maximum=§7 (maximum)§r
 gt.cover.wirelessdetector.redstone.tooltip=Changes this covers Redstone output behavior
-gt.cover.wirelessdetector.redstone.0=Only a wireless signal
-gt.cover.wirelessdetector.redstone.1=Wireless signal & direct Redstone
+gt.cover.wirelessdetector.redstone.0=§8Only a wireless signal
+gt.cover.wirelessdetector.redstone.1=§8Wireless signal & direct Redstone
 gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
@@ -2885,14 +3033,14 @@ GT5U.gui.text.no_tools=§7Missing applicable tools
 
 # Cover Overflow Valve
 GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
-GTPP.gui.text.cover_overflow_valve_overflow_point=Overflow Point
-GTPP.gui.text.cover_overflow_valve_voiding_rate=Voiding Rate
-GTPP.gui.text.cover_overflow_valve_allow_fluid_input=Allow Fluid Input
-GTPP.gui.text.cover_overflow_valve_block_fluid_input=Block Fluid Input
-GTPP.gui.text.cover_overflow_valve_allow_fluid_output=Allow Fluid Output
-GTPP.gui.text.cover_overflow_valve_block_fluid_output=Block Fluid Output
-GTPP.gui.text.cover_overflow_valve_liter=L
-GTPP.gui.text.cover_overflow_valve_l_per_update=L/update
+GTPP.gui.text.cover_overflow_valve_overflow_point=§8Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=§8Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=§8Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§8Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=§8Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_liter=§8L
+GTPP.gui.text.cover_overflow_valve_l_per_update=§8L/update
 
 GTPP.EBF.heat=Heat capacity
 
@@ -3474,3 +3622,6 @@ item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 
 # Entities
 entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
+
+#mui1
+mui.button.close=x
