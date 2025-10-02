@@ -290,12 +290,6 @@ public class HTGRLoader {
             .eut(1)
             .addTo(HTGRRecipes);
 
-
-
-
-
-
-
         // Structure blocks and items for HTGR
 
         GTValues.RA.stdBuilder()
