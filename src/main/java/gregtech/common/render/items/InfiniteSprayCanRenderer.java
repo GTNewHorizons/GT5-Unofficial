@@ -16,10 +16,7 @@ public class InfiniteSprayCanRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
-        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-            || type == ItemRenderType.INVENTORY
-            || type == ItemRenderType.ENTITY;
-
+        return type != ItemRenderType.FIRST_PERSON_MAP;
     }
 
     @Override
