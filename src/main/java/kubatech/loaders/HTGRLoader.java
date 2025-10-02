@@ -302,7 +302,7 @@ public class HTGRLoader {
             .itemInputs(
                 ItemList.Beryllium_Shielding_Plate.get(2L),
                 ItemList.Casing_Refined_Graphite.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials.StainlessSteel, 6L),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 6L),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 12L))
             .itemOutputs(ItemList.Casing_Graphite_Moderator.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 15)
