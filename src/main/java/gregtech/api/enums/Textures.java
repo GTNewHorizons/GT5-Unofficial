@@ -1925,6 +1925,8 @@ public class Textures {
         NANITE_CORE,
         NANITE_SHIELDING_FRAME,
 
+        COKE_OVEN_CASING,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 

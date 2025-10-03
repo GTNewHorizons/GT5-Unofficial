@@ -18,6 +18,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
+        register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
         register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
@@ -35,6 +36,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
+            case 0 -> Textures.BlockIcons.COKE_OVEN_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();
