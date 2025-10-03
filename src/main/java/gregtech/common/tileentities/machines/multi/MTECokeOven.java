@@ -12,6 +12,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> {
@@ -62,6 +64,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> {
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.cokeOvenRecipes;
     }
 
     @Override

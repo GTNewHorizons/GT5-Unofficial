@@ -610,6 +610,10 @@ public final class RecipeMaps {
         .frontend(SpaceProjectFrontend::new)
         .disableRenderRealStackSizes()
         .build();
+    public static final RecipeMap<RecipeMapBackend> cokeOvenRecipes = RecipeMapBuilder.of("gt.recipe.cokeoven")
+        .maxIO(1, 1, 0, 1)
+        .minInputs(1, 0)
+        .build();
     /**
      * Uses {@link GTRecipeConstants#ADDITIVE_AMOUNT} for coal/charcoal amount.
      */
