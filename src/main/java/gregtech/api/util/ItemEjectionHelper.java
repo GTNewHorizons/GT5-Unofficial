@@ -86,6 +86,8 @@ public class ItemEjectionHelper {
             Comparator.comparingInt(output -> -output.remaining.stackSize));
 
         for (var e : Object2LongMaps.fastIterable(GTUtility.getItemStackHistogram(outputs))) {
+            if (e.getLongValue() <= 0) continue;
+
             GTUtility.ItemId id = e.getKey();
             int amount = GTUtility.longToInt(e.getLongValue());
 
