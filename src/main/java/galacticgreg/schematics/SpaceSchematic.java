@@ -90,7 +90,7 @@ public class SpaceSchematic {
                 pSI.getBlock()
                     .getBlock());
             blockMeta = pSI.getBlock()
-                .getBlockMeta();
+                .getMeta();
         }
 
         public Vec3 getVec3Pos() {

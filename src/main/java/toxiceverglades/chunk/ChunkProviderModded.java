@@ -31,7 +31,6 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import gregtech.api.objects.XSTR;
 import gtPlusPlus.api.objects.Logger;
 import toxiceverglades.dimension.DimensionEverglades;
 
@@ -100,7 +99,7 @@ public class ChunkProviderModded implements IChunkProvider {
         this.worldObj = par1World;
         this.field_147435_p = par1World.getWorldInfo()
             .getTerrainType();
-        this.rand = new XSTR(par2);
+        this.rand = new Random(par2);
         this.field_147431_j = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147432_k = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147429_l = new NoiseGeneratorOctaves(this.rand, 8);

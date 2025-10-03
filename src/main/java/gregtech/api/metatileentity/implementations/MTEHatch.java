@@ -40,7 +40,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     public static int getSlots(int aTier) {
-        return (aTier + 1) * (aTier + 1);
+        return aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16;
     }
 
     @Override

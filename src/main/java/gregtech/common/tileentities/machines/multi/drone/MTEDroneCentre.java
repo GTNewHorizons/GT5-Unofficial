@@ -219,7 +219,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.UPRIGHT;
+        // I don't think a drone can take off HORIZONTALLY!
+        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
+            && !f.isVerticallyFliped();
     }
 
     private void onCasingAdded() {

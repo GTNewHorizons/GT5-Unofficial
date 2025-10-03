@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -177,7 +178,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.FACING_UP;
+        return (d, r, f) -> d == ForgeDirection.UP;
     }
 
     @Override

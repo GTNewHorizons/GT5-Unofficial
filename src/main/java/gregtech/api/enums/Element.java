@@ -326,12 +326,6 @@ public enum Element {
         return mProtons + mNeutrons + mAdditionalMass;
     }
 
-    @Override
-    public String toString() {
-        if (this == Element._NULL) return "Empty";
-        return super.toString().replaceAll("_", "-");
-    }
-
     /**
      * A companion object to workaround java limitations
      */

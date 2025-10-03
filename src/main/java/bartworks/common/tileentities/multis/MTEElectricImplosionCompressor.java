@@ -207,8 +207,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // This restriction prevents wallsharing the central section.
-        return IAlignmentLimits.UPRIGHT;
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
     }
 
     @Override

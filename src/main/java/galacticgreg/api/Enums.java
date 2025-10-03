@@ -22,6 +22,12 @@ public class Enums {
         AsteroidCoreAndShell
     }
 
+    public enum AirReplaceRule {
+        NeverReplaceAir,
+        AllowReplaceAir,
+        OnlyReplaceAir
+    }
+
     public enum ReplaceState {
         Unknown,
         Airblock,

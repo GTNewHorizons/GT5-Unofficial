@@ -121,7 +121,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.UPRIGHT;
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
     @Override

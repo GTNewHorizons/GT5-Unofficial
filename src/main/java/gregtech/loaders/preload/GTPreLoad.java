@@ -358,6 +358,7 @@ public class GTPreLoad {
         GTValues.debugBlockPump = Gregtech.debug.debugBlockPump;
         GTValues.debugEntityCramming = Gregtech.debug.debugEntityCramming;
         GTValues.debugWorldData = Gregtech.debug.debugWorldData;
+        GTValues.oreveinPercentage = Gregtech.general.oreveinPercentage;
         GTValues.oreveinAttempts = Gregtech.general.oreveinAttempts;
         GTValues.oreveinMaxPlacementAttempts = Gregtech.general.oreveinMaxPlacementAttempts;
         GTValues.oreveinPlacerOres = Gregtech.general.oreveinPlacerOres;
@@ -383,6 +384,7 @@ public class GTPreLoad {
         GTMod.proxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
         GTMod.proxy.mChangeWoodenVanillaTools = Gregtech.general.changedWoodenVanillaTools;
         GTMod.proxy.mAchievements = Gregtech.general.achievements;
+        GTMod.proxy.mHideUnusedOres = Gregtech.general.hideUnusedOres;
         GTMod.proxy.mEnableAllMaterials = Gregtech.general.enableAllMaterials;
         GTMod.proxy.mExplosionItemDrop = Gregtech.general.explosionItemDrop;
         GTMod.proxy.mEnableCleanroom = Gregtech.general.enableCleanroom;

@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import galacticgreg.WorldGeneratorSpace;
+import galacticgreg.WorldgenGaGT;
 import gregtech.api.enums.GTStones;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.SmallOres;
@@ -11,7 +11,6 @@ public class GTWorldgenloader implements Runnable {
 
     public void run() {
         new GTWorldgenerator();
-        new WorldGeneratorSpace();
 
         // GT Stones
         for (GTStones stone : GTStones.values()) {
@@ -28,6 +27,7 @@ public class GTWorldgenloader implements Runnable {
             oreMix.addGTOreLayer();
         }
 
+        new WorldgenGaGT().run();
         GTLog.out.println("Started Galactic Greg ore gen code");
     }
 }

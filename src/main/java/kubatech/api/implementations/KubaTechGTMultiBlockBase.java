@@ -71,9 +71,6 @@ import kubatech.Tags;
 public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
-    @Deprecated
-    public int mEUt;
-
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
         @NotNull KTContainerConstructor<K> containerConstructor) {
@@ -242,7 +239,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         builder.widget(
             new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO)
                 .setSize(13, 15)
-                .setPos(191 - 16, 86 - 16)
+                .setPos(191 - 13, 86 - 15)
                 .addTooltip(new Text(Tags.MODNAME).color(Color.GRAY.normal))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }

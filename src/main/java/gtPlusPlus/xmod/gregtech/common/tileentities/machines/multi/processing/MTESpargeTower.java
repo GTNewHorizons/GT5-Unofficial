@@ -245,7 +245,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.UPRIGHT;
+        // don't rotate a freaking tower, it won't work
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
     @Override

@@ -782,13 +782,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.UPRIGHT;
+        return (d, r, f) -> d != ForgeDirection.UP && d != ForgeDirection.DOWN;
     }
 
     @Override
     public void onBlockDestroyed() {
         destroyRenderBlock();
         super.onBlockDestroyed();
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
     }
 
     private boolean shouldRender = true;

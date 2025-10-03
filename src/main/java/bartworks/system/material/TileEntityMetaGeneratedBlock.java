@@ -24,8 +24,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import bartworks.common.net.PacketBWMetaBlock;
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 
-public abstract class TileEntityMetaGeneratedBlock extends TileEntity {
+public abstract class TileEntityMetaGeneratedBlock extends TileEntity implements ITexturedTileEntity {
 
     public short mMetaData;
 
@@ -56,7 +57,7 @@ public abstract class TileEntityMetaGeneratedBlock extends TileEntity {
         return null;
     }
 
-    protected abstract Block getProperBlock();
+    protected abstract Block GetProperBlock();
 
     public ArrayList<ItemStack> getDrops(int aFortune) {
         ArrayList<ItemStack> rList = new ArrayList<>();
@@ -64,7 +65,7 @@ public abstract class TileEntityMetaGeneratedBlock extends TileEntity {
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;
         }
-        rList.add(new ItemStack(this.getProperBlock(), 1, this.mMetaData));
+        rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
         return rList;
     }
 }

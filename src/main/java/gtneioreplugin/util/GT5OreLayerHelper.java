@@ -1,94 +1,87 @@
 package gtneioreplugin.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 
-import com.google.common.collect.ImmutableMap;
-
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreMixes;
-import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.interfaces.IStoneType;
 import gregtech.common.OreMixBuilder;
-import gregtech.common.ores.OreInfo;
-import gregtech.common.ores.OreManager;
 
 public class GT5OreLayerHelper {
 
-    /** {vein ore mix name: wrapper} */
-    private static Map<String, OreLayerWrapper> ORE_VEINS_BY_NAME;
+    public static class NormalOreDimensionWrapper {
 
-    /** {abbr dim name: wrapper} */
-    private static Map<String, NormalOreDimensionWrapper> ORE_VEINS_BY_DIM;
+        public final ArrayList<OreLayerWrapper> internalDimOreList = new ArrayList<>();
+        public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
 
-    public static void init() {
-        HashMap<String, OreLayerWrapper> byName = new HashMap<>();
-        HashMap<String, NormalOreDimensionWrapper> byDim = new HashMap<>();
-
-        for (OreMixes mix : OreMixes.values()) {
-            OreLayerWrapper wrapper = new OreLayerWrapper(mix.oreMixBuilder);
-            byName.put(mix.oreMixBuilder.oreMixName, wrapper);
-
-            for (String dim : wrapper.abbrDimNames) {
-                NormalOreDimensionWrapper dimensionOres = byDim.getOrDefault(dim, new NormalOreDimensionWrapper());
-                dimensionOres.oreVeins.add(wrapper);
-                byDim.put(dim, dimensionOres);
+        // Calculate all weights of ore veins once dimension is initialised.
+        private void calculateWeights() {
+            int totalWeight = 0;
+            for (OreLayerWrapper oreVein : internalDimOreList) {
+                totalWeight += oreVein.randomWeight;
+            }
+            for (OreLayerWrapper oreVein : internalDimOreList) {
+                oreVeinToProbabilityInDimension.put(oreVein, ((double) oreVein.randomWeight) / ((double) totalWeight));
             }
         }
-
-        // Calculate probabilities for each dim.
-        byDim.values()
-            .forEach(NormalOreDimensionWrapper::calculateWeights);
-
-        ORE_VEINS_BY_NAME = ImmutableMap.copyOf(byName);
-        ORE_VEINS_BY_DIM = ImmutableMap.copyOf(byDim);
     }
 
-    public static OreLayerWrapper getVeinByName(String name) {
-        return ORE_VEINS_BY_NAME.get(name);
-    }
+    public static final HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
+    public static final HashMap<OreLayerWrapper, Map<String, Boolean>> bufferedDims = new HashMap<>();
+    public static final HashMap<String, NormalOreDimensionWrapper> dimToOreWrapper = new HashMap<>();
 
-    public static NormalOreDimensionWrapper getVeinByDim(String abbrName) {
-        return ORE_VEINS_BY_DIM.get(abbrName);
-    }
+    public static void init() {
+        for (OreMixes mix : OreMixes.values())
+            mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
+        for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {
+            bufferedDims.put(layer, DimensionHelper.getDims(layer));
+        }
 
-    public static Map<String, OreLayerWrapper> getOreVeinsByName() {
-        return ORE_VEINS_BY_NAME;
-    }
+        // --- Handling of dimToOreWrapper ---
 
-    public static Map<String, NormalOreDimensionWrapper> getOreVeinsByDim() {
-        return ORE_VEINS_BY_DIM;
+        // Get dims as "Ow,Ne,Ma" etc.
+        bufferedDims.forEach((veinInfo, dims) -> {
+
+            for (String dim : dims.keySet()) {
+                NormalOreDimensionWrapper dimensionOres = dimToOreWrapper
+                    .getOrDefault(dim, new NormalOreDimensionWrapper());
+                dimensionOres.internalDimOreList.add(veinInfo);
+                dimToOreWrapper.put(dim, dimensionOres);
+            }
+
+            // Calculate probabilities for each dim.
+            for (String dim : dimToOreWrapper.keySet()) {
+                dimToOreWrapper.get(dim)
+                    .calculateWeights();
+            }
+        });
+        // --- End of handling for dimToOreWrapper ---
     }
 
     public static class OreLayerWrapper {
 
         public final String veinName, worldGenHeightRange, localizedName;
-        public final IOreMaterial[] ores = new IOreMaterial[4];
+        public final short[] Meta = new short[4];
         public final short randomWeight, size, density;
-        /** {full dim name} */
-        public final Set<String> allowedDimWithOrigNames;
-        /** {abbr dim name} */
-        public final Set<String> abbrDimNames;
+        public final Map<String, Boolean> allowedDimWithOrigNames;
 
-        public final IOreMaterial mPrimaryVeinMaterial;
-        public final IOreMaterial mSecondaryMaterial;
-        public final IOreMaterial mBetweenMaterial;
-        public final IOreMaterial mSporadicMaterial;
+        public final Materials mPrimaryVeinMaterial;
+        public final Materials mSecondaryMaterial;
+        public final Materials mBetweenMaterial;
+        public final Materials mSporadicMaterial;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
             this.localizedName = mix.localizedName;
-            this.ores[0] = mix.primary;
-            this.ores[1] = mix.secondary;
-            this.ores[2] = mix.between;
-            this.ores[3] = mix.sporadic;
+            this.Meta[0] = (short) mix.primary.mMetaItemSubID;
+            this.Meta[1] = (short) mix.secondary.mMetaItemSubID;
+            this.Meta[2] = (short) mix.between.mMetaItemSubID;
+            this.Meta[3] = (short) mix.sporadic.mMetaItemSubID;
 
             this.mPrimaryVeinMaterial = mix.primary;
             this.mSecondaryMaterial = mix.secondary;
@@ -101,53 +94,25 @@ public class GT5OreLayerHelper {
             this.randomWeight = (short) mix.weight;
 
             this.allowedDimWithOrigNames = mix.dimsEnabled;
-            this.abbrDimNames = mix.dimsEnabled.stream()
-                .map(DimensionHelper::getDimAbbreviatedName)
-                .collect(Collectors.toSet());
         }
 
-        public List<ItemStack> getVeinLayerOre(int veinLayer) {
+        public List<ItemStack> getVeinLayerOre(int maximumMaterialIndex, int veinLayer) {
             List<ItemStack> stackList = new ArrayList<>();
-            for (IStoneType stoneType : ores[veinLayer].getValidStones()) {
-                if (!stoneType.isExtraneous()) {
-                    stackList.add(getLayerOre(veinLayer, stoneType));
-                }
+            for (int i = 0; i < maximumMaterialIndex; i++) {
+                stackList.add(getLayerOre(veinLayer, i));
             }
             return stackList;
         }
 
-        public ItemStack getLayerOre(int veinLayer, IStoneType stoneType) {
-            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
-                info.material = ores[veinLayer];
-                info.stoneType = stoneType;
-
-                return Objects.requireNonNull(
-                    OreManager.getStack(info, 1),
-                    "getLayerOre: " + veinLayer + ", " + stoneType + ", " + Arrays.toString(ores));
-            }
+        public ItemStack getLayerOre(int veinLayer, int materialIndex) {
+            return new ItemStack(GregTechAPI.sBlockOres1, 1, Meta[veinLayer] + materialIndex * 1000);
         }
 
-        public boolean containsOre(IOreMaterial material) {
-            return ores[OreVeinLayer.VEIN_PRIMARY] == material || ores[OreVeinLayer.VEIN_SECONDARY] == material
-                || ores[OreVeinLayer.VEIN_BETWEEN] == material
-                || ores[OreVeinLayer.VEIN_SPORADIC] == material;
-        }
-    }
-
-    public static class NormalOreDimensionWrapper {
-
-        public final ArrayList<OreLayerWrapper> oreVeins = new ArrayList<>();
-        public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
-
-        // Calculate all weights of ore veins once dimension is initialised.
-        private void calculateWeights() {
-            int totalWeight = 0;
-            for (OreLayerWrapper oreVein : oreVeins) {
-                totalWeight += oreVein.randomWeight;
-            }
-            for (OreLayerWrapper oreVein : oreVeins) {
-                oreVeinToProbabilityInDimension.put(oreVein, ((double) oreVein.randomWeight) / ((double) totalWeight));
-            }
+        public boolean containsOre(short materialIndex) {
+            return Meta[OreVeinLayer.VEIN_PRIMARY] == materialIndex
+                || Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex
+                || Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex
+                || Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex;
         }
     }
 }

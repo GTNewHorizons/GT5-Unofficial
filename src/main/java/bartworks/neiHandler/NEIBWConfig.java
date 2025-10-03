@@ -78,6 +78,7 @@ public class NEIBWConfig implements IConfigureNEI {
         }
 
         NEIBWConfig.sIsAdded = false;
+        new OreNEIHandler();
         new BioVatNEIHandler(BartWorksRecipeMaps.bacterialVatRecipes.getDefaultRecipeCategory());
         new BioLabNEIHandler(BartWorksRecipeMaps.bioLabRecipes.getDefaultRecipeCategory());
         NEIBWConfig.sIsAdded = true;

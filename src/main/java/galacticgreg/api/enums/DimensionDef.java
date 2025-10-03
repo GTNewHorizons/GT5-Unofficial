@@ -1,263 +1,185 @@
 package galacticgreg.api.enums;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderEnd;
-import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraft.world.gen.ChunkProviderHell;
 
-import galacticgreg.api.Enums.DimensionType;
+import galacticgreg.api.Enums;
 import galacticgreg.api.ModDimensionDef;
-import gregtech.api.enums.Mods;
-import gregtech.common.worldgen.HEEIslandScanner;
-import toxiceverglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
 
-    // spotless:off
-    Overworld(new ModDimensionDef(
-        DimNames.OW,
-        ChunkProviderGenerate.class,
-        DimensionType.Planet)),
-    Nether(new ModDimensionDef(
-        DimNames.NETHER,
-        ChunkProviderHell.class,
-        DimensionType.Planet)),
-    TheEnd(new ModDimensionDef(
-        DimNames.THE_END,
-        ChunkProviderEnd.class,
-        DimensionType.Planet)
-        .setGeneratesAsteroids()
-        .disableOreVeinHeightChecks()),
-    EndAsteroids(new ModDimensionDef(
-        DimNames.ENDASTEROID,
-        ChunkProviderEnd.class,
-        DimensionType.Asteroid)),
-    TwilightForest(new ModDimensionDef(
-        DimNames.TWILIGHT_FOREST,
-        "twilightforest.world.ChunkProviderTwilightForest",
-        DimensionType.Planet)),
-    Everglades(new ModDimensionDef(
-        DimNames.EVERGLADES,
-        ChunkProviderModded.class,
-        DimensionType.Planet)
-        .setOreVeinChance(66)
-        .disableEoHRecipe()),
-
-
+    EndAsteroids(new ModDimensionDef(DimNames.ENDASTEROIDS, ChunkProviderEnd.class, Enums.DimensionType.Asteroid)),
     Moon(new ModDimensionDef(
         DimNames.MOON,
         "micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Moon.DBMDefList)),
     Mars(new ModDimensionDef(
         DimNames.MARS,
         "micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Mars.DBMDefList)),
     Asteroids(new ModDimensionDef(
         DimNames.ASTEROIDS,
         "micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids",
-        DimensionType.Asteroid)
-        .disableVoidMining()),
-    Ross128b(new ModDimensionDef(
-        DimNames.ROSS128B,
-        "bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b",
-        DimensionType.Planet)
-        .disableEoHRecipe()),
-    Ross128ba(new ModDimensionDef(
-        DimNames.ROSS128BA,
-        "bwcrossmod.galacticraft.planets.ross128ba.ChunkProviderRoss128ba",
-        DimensionType.Planet)
-        .disableEoHRecipe()),
+        Enums.DimensionType.Asteroid)),
     Pluto(new ModDimensionDef(
         DimNames.PLUTO,
         "galaxyspace.SolarSystem.planets.pluto.dimension.ChunkProviderPluto",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Pluto.DBMDefList)),
     Triton(new ModDimensionDef(
         DimNames.TRITON,
         "galaxyspace.SolarSystem.moons.triton.dimension.ChunkProviderTriton",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Triton.DBMDefList)),
     Proteus(new ModDimensionDef(
         DimNames.PROTEUS,
         "galaxyspace.SolarSystem.moons.proteus.dimension.ChunkProviderProteus",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Proteus.DBMDefList)),
     Oberon(new ModDimensionDef(
         DimNames.OBERON,
         "galaxyspace.SolarSystem.moons.oberon.dimension.ChunkProviderOberon",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Oberon.DBMDefList)),
     Titan(new ModDimensionDef(
         DimNames.TITAN,
         "galaxyspace.SolarSystem.moons.titan.dimension.ChunkProviderTitan",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Titan.DBMDefList)),
     Callisto(new ModDimensionDef(
         DimNames.CALLISTO,
         "galaxyspace.SolarSystem.moons.callisto.dimension.ChunkProviderCallisto",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Callisto.DBMDefList)),
     Ganymede(new ModDimensionDef(
         DimNames.GANYMEDE,
         "galaxyspace.SolarSystem.moons.ganymede.dimension.ChunkProviderGanymede",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Ganymede.DBMDefList)),
     Ceres(new ModDimensionDef(
         DimNames.CERES,
         "galaxyspace.SolarSystem.planets.ceres.dimension.ChunkProviderCeres",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Ceres.DBMDefList)),
     Deimos(new ModDimensionDef(
         DimNames.DEIMOS,
         "galaxyspace.SolarSystem.moons.deimos.dimension.ChunkProviderDeimos",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Deimos.DBMDefList)),
     Enceladus(new ModDimensionDef(
         DimNames.ENCELADUS,
         "galaxyspace.SolarSystem.moons.enceladus.dimension.ChunkProviderEnceladus",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Enceladus.DBMDefList)),
     Io(new ModDimensionDef(
         DimNames.IO,
         "galaxyspace.SolarSystem.moons.io.dimension.ChunkProviderIo",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Io.DBMDefList)),
     Europa(new ModDimensionDef(
         DimNames.EUROPA,
         "galaxyspace.SolarSystem.moons.europa.dimension.ChunkProviderEuropa",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Europa.DBMDefList)),
     Phobos(new ModDimensionDef(
         DimNames.PHOBOS,
         "galaxyspace.SolarSystem.moons.phobos.dimension.ChunkProviderPhobos",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Phobos.DBMDefList)),
     Venus(new ModDimensionDef(
         DimNames.VENUS,
         "galaxyspace.SolarSystem.planets.venus.dimension.ChunkProviderVenus",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Venus.DBMDefList)),
     Mercury(new ModDimensionDef(
         DimNames.MERCURY,
         "galaxyspace.SolarSystem.planets.mercury.dimension.ChunkProviderMercury",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Mercury.DBMDefList)),
     MakeMake(new ModDimensionDef(
         DimNames.MAKEMAKE,
         "galaxyspace.SolarSystem.planets.makemake.dimension.ChunkProviderMakemake",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.MakeMake.DBMDefList)),
     Haumea(new ModDimensionDef(
         DimNames.HAUMEA,
         "galaxyspace.SolarSystem.planets.haumea.dimension.ChunkProviderHaumea",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Haumea.DBMDefList)),
     CentauriAlpha(new ModDimensionDef(
         DimNames.CENTAURIA,
         "galaxyspace.ACentauriSystem.planets.aCentauriBb.dimension.ChunkProviderACentauri",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.CentauriAlpha.DBMDefList)),
     VegaB(new ModDimensionDef(
         DimNames.VEGAB,
         "galaxyspace.VegaSystem.planets.vegaB.dimension.ChunkProviderVegaB",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.VegaB.DBMDefList)),
     BarnardC(new ModDimensionDef(
         DimNames.BARNARDC,
         "galaxyspace.BarnardsSystem.planets.barnardaC.dimension.ChunkProviderBarnardaC",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.BarnardaC.DBMDefList)),
     BarnardE(new ModDimensionDef(
         DimNames.BARNARDE,
         "galaxyspace.BarnardsSystem.planets.barnardaE.dimension.ChunkProviderBarnardaE",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.BarnardaE.DBMDefList)),
     BarnardF(new ModDimensionDef(
         DimNames.BARNARDF,
         "galaxyspace.BarnardsSystem.planets.barnardaF.dimension.ChunkProviderBarnardaF",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.BarnardaF.DBMDefList)),
     TcetiE(new ModDimensionDef(
         DimNames.TCETIE,
         "galaxyspace.TCetiSystem.planets.tcetiE.dimension.ChunkProviderTCetiE",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.TcetiE.DBMDefList)),
     Miranda(new ModDimensionDef(
         DimNames.MIRANDA,
         "galaxyspace.SolarSystem.moons.miranda.dimension.ChunkProviderMiranda",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Miranda.DBMDefList)),
     KuiperBelt(new ModDimensionDef(
         DimNames.KUIPERBELT,
         "galaxyspace.SolarSystem.planets.kuiperbelt.dimension.ChunkProviderKuiper",
-        DimensionType.Asteroid)
-        .disableVoidMining()),
+        Enums.DimensionType.Asteroid)),
 
     Neper(new ModDimensionDef(
         DimNames.NEPER,
         "de.katzenpapst.amunra.world.neper.NeperChunkProvider",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Neper.DBMDefList)),
     Maahes(new ModDimensionDef(
         DimNames.MAAHES,
         "de.katzenpapst.amunra.world.maahes.MaahesChunkProvider",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Maahes.DBMDefList)),
     Anubis(new ModDimensionDef(
         DimNames.ANUBIS,
         "de.katzenpapst.amunra.world.anubis.AnubisChunkProvider",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Anubis.DBMDefList)),
     Horus(new ModDimensionDef(
         DimNames.HORUS,
         "de.katzenpapst.amunra.world.horus.HorusChunkProvider",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Horus.DBMDefList)),
     Seth(new ModDimensionDef(
         DimNames.SETH,
         "de.katzenpapst.amunra.world.seth.SethChunkProvider",
-        DimensionType.Planet)),
+        Enums.DimensionType.Planet,
+        DimensionBlockMetaDefinitionList.Seth.DBMDefList)),
     MehenBelt(new ModDimensionDef(
         DimNames.MEHENBELT,
         "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
-        DimensionType.Asteroid)
-        .disableVoidMining()),
-
-    DeepDark(new ModDimensionDef(
-        DimNames.DEEPDARK,
-        "",
-        DimensionType.Planet)),
-    ;
-    // spotless:on
-
-    public final ModDimensionDef modDimensionDef;
-
-    DimensionDef(ModDimensionDef modDimDef) {
-        this.modDimensionDef = modDimDef;
-    }
-
-    private static final Map<String, ModDimensionDef> DEF_BY_WORLD_NAME = new HashMap<>();
-
-    static {
-        for (DimensionDef def : values()) {
-            DEF_BY_WORLD_NAME.put(def.modDimensionDef.getDimensionName(), def.modDimensionDef);
-        }
-    }
-
-    public static ModDimensionDef getDefByName(String worldName) {
-        return DEF_BY_WORLD_NAME.get(worldName);
-    }
-
-    public static ModDimensionDef getDefForWorld(World world) {
-        return DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
-    }
-
-    public static ModDimensionDef getEffectiveDefForChunk(World world, int chunkX, int chunkZ) {
-        ModDimensionDef def = DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
-
-        if (def == null) return null;
-
-        if (def == DimensionDef.TheEnd.modDimensionDef) {
-            if (chunkX * chunkX + chunkZ * chunkZ <= 16 * 16) {
-                return def;
-            }
-
-            if (Mods.HardcoreEnderExpansion.isModLoaded()) {
-                if (HEEIslandScanner.isWithinRangeOfIsland(chunkX, chunkZ)) {
-                    return def;
-                }
-            }
-
-            return DimensionDef.EndAsteroids.modDimensionDef;
-        }
-
-        return def;
-    }
+        Enums.DimensionType.Asteroid));
 
     public static class DimNames {
 
-        public static final String OW = "Overworld";
-        public static final String NETHER = "Nether";
-        public static final String THE_END = "The End";
-        public static final String ENDASTEROID = "EndAsteroid";
-        public static final String TWILIGHT_FOREST = "Twilight Forest";
-        public static final String EVERGLADES = "dimensionDarkWorld";
-
+        public static final String ENDASTEROIDS = "EndAsteroids";
         public static final String MOON = "Moon";
         public static final String MARS = "Mars";
         public static final String ASTEROIDS = "Asteroids";
@@ -287,14 +209,20 @@ public enum DimensionDef {
         public static final String BARNARDF = "BarnardF";
         public static final String TCETIE = "TcetiE";
         public static final String MIRANDA = "Miranda";
-        public static final String KUIPERBELT = "Kuiper Belt";
+        public static final String KUIPERBELT = "Kuiperbelt";
         public static final String NEPER = "Neper";
         public static final String MAAHES = "Maahes";
         public static final String ANUBIS = "Anubis";
         public static final String HORUS = "Horus";
         public static final String SETH = "Seth";
-        public static final String MEHENBELT = "Mehen Belt";
+        public static final String MEHENBELT = "MehenBelt";
         public static final String DEEPDARK = "Underdark";
 
+    }
+
+    public final ModDimensionDef modDimensionDef;
+
+    DimensionDef(ModDimensionDef modDimDef) {
+        this.modDimensionDef = modDimDef;
     }
 }

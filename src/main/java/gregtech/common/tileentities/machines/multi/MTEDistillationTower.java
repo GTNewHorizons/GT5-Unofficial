@@ -218,7 +218,14 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.UPRIGHT;
+        // don't rotate a freaking tower, it won't work
+        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
+            && !f.isVerticallyFliped();
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
     }
 
     @Override

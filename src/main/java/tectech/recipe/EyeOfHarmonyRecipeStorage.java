@@ -15,8 +15,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.math.LongMath;
 
-import galacticgreg.api.ModDimensionDef;
-import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -27,9 +25,7 @@ import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
-import gtneioreplugin.util.GT5OreLayerHelper.NormalOreDimensionWrapper;
 import gtneioreplugin.util.GT5OreSmallHelper;
-import gtneioreplugin.util.GT5OreSmallHelper.SmallOreDimensionWrapper;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
@@ -57,17 +53,14 @@ public class EyeOfHarmonyRecipeStorage {
                 BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks
                     .get(dimAbbreviation);
 
-                ModDimensionDef dimensionDef = DimensionDef.getDefByName(DimensionHelper.getFullName(dimAbbreviation));
-
-                if (dimensionDef != null && !dimensionDef.hasEoHRecipe()) continue;
-
                 if (dimAbbreviation.equals("DD")) {
                     specialDeepDarkRecipe(this, blockDimensionDisplay);
                 } else {
 
-                    NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.getVeinByDim(dimAbbreviation);
-                    SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.getSmallOrebyDim(dimAbbreviation);
-
+                    GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.dimToOreWrapper
+                        .getOrDefault(dimAbbreviation, null);
+                    GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
+                        .getOrDefault(dimAbbreviation, null);
                     if (normalOre == null && smallOre == null) {
                         // No ores are generated in this dimension. Fail silently.
                         continue;

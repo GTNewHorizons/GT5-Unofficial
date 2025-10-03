@@ -26,6 +26,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
 import gregtech.common.powergoggles.handlers.PowerGogglesKeybindHandler;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
+import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
 import gtPlusPlus.core.client.renderer.RenderSickBlaze;
@@ -55,10 +56,11 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(final FMLInitializationEvent e) {
+        RenderingRegistry.registerBlockHandler(new CustomOreBlockRenderer());
         new CustomItemBlockRenderer();
         RenderingRegistry.registerBlockHandler(new MachineBlockRenderer());
         new FlaskRenderer();
-        MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
         PowerGogglesKeybindHandler.init();
         super.init(e);
     }

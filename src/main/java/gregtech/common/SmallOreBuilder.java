@@ -1,23 +1,22 @@
 package gregtech.common;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.interfaces.IStoneCategory;
+import gregtech.api.enums.Materials;
 
 public class SmallOreBuilder {
 
+    public static final String OW = "Overworld";
+    public static final String NETHER = "Nether";
+    public static final String THE_END = "TheEnd";
+    public static final String TWILIGHT_FOREST = "Twilight Forest";
     public String smallOreName;
     public boolean enabledByDefault = true;
-    /** {full dimension name} */
-    public Set<String> dimsEnabled = new HashSet<>();
+    public Map<String, Boolean> dimsEnabled = new HashMap<>();
     public int minY, maxY, amount;
-    public IOreMaterial ore;
-    public Set<IStoneCategory> stoneCategories;
-    public boolean defaultStoneCategories = true;
+    public Materials ore;
 
     public SmallOreBuilder name(String name) {
         this.smallOreName = name;
@@ -31,14 +30,14 @@ public class SmallOreBuilder {
 
     public SmallOreBuilder enableInDim(DimensionDef... dims) {
         for (DimensionDef dim : dims) {
-            this.dimsEnabled.add(dim.modDimensionDef.getDimensionName());
+            this.dimsEnabled.put(dim.modDimensionDef.getDimensionName(), true);
         }
         return this;
     }
 
     public SmallOreBuilder enableInDim(String... dims) {
         for (String dim : dims) {
-            this.dimsEnabled.add(dim);
+            this.dimsEnabled.put(dim, true);
         }
         return this;
     }
@@ -54,19 +53,8 @@ public class SmallOreBuilder {
         return this;
     }
 
-    public SmallOreBuilder ore(IOreMaterial ore) {
+    public SmallOreBuilder ore(Materials ore) {
         this.ore = ore;
-        return this;
-    }
-
-    public SmallOreBuilder stoneType(IStoneCategory... stoneCategories) {
-        if (defaultStoneCategories) {
-            this.stoneCategories = new HashSet<>();
-            defaultStoneCategories = false;
-        }
-
-        this.stoneCategories.addAll(Arrays.asList(stoneCategories));
-
         return this;
     }
 }

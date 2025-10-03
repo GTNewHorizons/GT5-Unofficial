@@ -62,11 +62,11 @@ public class PowerGogglesClient {
         PowerGogglesMeasurement lastMeasurement = measurements.getLast();
         if (lastMeasurement.isWireless()) {
             NW.sendToPlayer(
-                new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((playerMP).getUniqueID())),
+                new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((playerMP).getUniqueID()), false),
                 playerMP);
         } else {
             NW.sendToPlayer(
-                new GTPacketUpdatePowerGoggles(lastMeasurement.getMeasurement(), lastMeasurement.getCapacity()),
+                new GTPacketUpdatePowerGoggles(lastMeasurement.getMeasurement(), lastMeasurement.getCapacity(), false),
                 playerMP);
         }
     }

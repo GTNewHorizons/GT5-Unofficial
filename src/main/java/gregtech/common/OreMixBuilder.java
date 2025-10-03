@@ -1,26 +1,24 @@
 package gregtech.common;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.StoneCategory;
-import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.interfaces.IStoneCategory;
 
 public class OreMixBuilder {
 
+    public static final String OW = "Overworld";
+    public static final String NETHER = "Nether";
+    public static final String THE_END = "TheEnd";
+    public static final String TWILIGHT_FOREST = "Twilight Forest";
     public String oreMixName;
     public boolean enabledByDefault = true;
-    /** {full dim name} */
-    public Set<String> dimsEnabled = new HashSet<>();
+    public Map<String, Boolean> dimsEnabled = new HashMap<>();
     public int minY, maxY, weight, density, size;
-    public IOreMaterial primary, secondary, between, sporadic, representative;
+    public Materials primary, secondary, between, sporadic, representative;
     public String localizedName;
-    public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
-    public boolean defaultStoneCategories = true;
 
     public OreMixBuilder name(String name) {
         this.oreMixName = name;
@@ -34,14 +32,14 @@ public class OreMixBuilder {
 
     public OreMixBuilder enableInDim(DimensionDef... dims) {
         for (DimensionDef dim : dims) {
-            this.dimsEnabled.add(dim.modDimensionDef.getDimensionName());
+            this.dimsEnabled.put(dim.modDimensionDef.getDimensionName(), true);
         }
         return this;
     }
 
     public OreMixBuilder enableInDim(String... dims) {
         for (String dim : dims) {
-            this.dimsEnabled.add(dim);
+            this.dimsEnabled.put(dim, true);
         }
         return this;
     }
@@ -67,38 +65,27 @@ public class OreMixBuilder {
         return this;
     }
 
-    public OreMixBuilder primary(IOreMaterial primary) {
+    public OreMixBuilder primary(Materials primary) {
         this.primary = primary;
         if (representative == null || localizedName == null) {
             representative = primary;
-            localizedName = primary.getLocalizedName();
+            localizedName = primary.mLocalizedName;
         }
         return this;
     }
 
-    public OreMixBuilder secondary(IOreMaterial secondary) {
+    public OreMixBuilder secondary(Materials secondary) {
         this.secondary = secondary;
         return this;
     }
 
-    public OreMixBuilder inBetween(IOreMaterial between) {
+    public OreMixBuilder inBetween(Materials between) {
         this.between = between;
         return this;
     }
 
-    public OreMixBuilder sporadic(IOreMaterial sporadic) {
+    public OreMixBuilder sporadic(Materials sporadic) {
         this.sporadic = sporadic;
-        return this;
-    }
-
-    public OreMixBuilder stoneCategory(IStoneCategory... stoneCategories) {
-        if (defaultStoneCategories) {
-            this.stoneCategories = new HashSet<>();
-            defaultStoneCategories = false;
-        }
-
-        this.stoneCategories.addAll(Arrays.asList(stoneCategories));
-
         return this;
     }
 

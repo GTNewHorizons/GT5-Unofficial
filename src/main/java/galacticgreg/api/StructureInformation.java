@@ -2,8 +2,6 @@ package galacticgreg.api;
 
 import net.minecraft.util.Vec3;
 
-import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
-
 import galacticgreg.api.Enums.TargetBlockPosition;
 
 /**
@@ -13,7 +11,7 @@ public class StructureInformation {
 
     private final Vec3 _mCoordinates;
     private final TargetBlockPosition _mBlockPosition;
-    private final ImmutableBlockMeta _mBlockMetaComb;
+    private final BlockMetaComb _mBlockMetaComb;
 
     public TargetBlockPosition getBlockPosition() {
         return _mBlockPosition;
@@ -31,7 +29,7 @@ public class StructureInformation {
         return (int) Math.round(_mCoordinates.zCoord);
     }
 
-    public ImmutableBlockMeta getBlock() {
+    public BlockMetaComb getBlock() {
         return _mBlockMetaComb;
     }
 
@@ -52,9 +50,10 @@ public class StructureInformation {
      * @param pPosition    The position-enum value
      * @param pTargetBlock The target block in question
      */
-    public StructureInformation(Vec3 pCoordinates, TargetBlockPosition pPosition, ImmutableBlockMeta pTargetBlock) {
+    public StructureInformation(Vec3 pCoordinates, TargetBlockPosition pPosition, BlockMetaComb pTargetBlock) {
         _mCoordinates = pCoordinates;
         _mBlockPosition = pPosition;
         _mBlockMetaComb = pTargetBlock;
     }
+
 }

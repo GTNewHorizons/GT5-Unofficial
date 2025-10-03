@@ -495,7 +495,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.FACING_UP;
+        return (d, r, f) -> d == ForgeDirection.UP;
     }
 
     private Fluid mColdSalt = null;

@@ -355,25 +355,19 @@ public class EyeOfHarmonyRecipe {
 
         if (normalOreDimWrapper != null) {
             normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                if (veinInfo.mPrimaryVeinMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier, probability);
-                if (veinInfo.mSecondaryMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier, probability);
+                processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
                 // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                if (veinInfo.mBetweenMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier / 8.0, probability);
-                if (veinInfo.mSporadicMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier / 8.0, probability);
+                processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
             });
         }
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
         if (smallOreDimWrapper != null) {
-            smallOreDimWrapper.oreVeinProbabilities.forEach(
-                (veinInfo, probability) -> {
-                    if (veinInfo.material instanceof Materials gtMat)
-                        processHelper(outputMap, gtMat, mainMultiplier, probability);
-                });
+            smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach(
+                (veinInfo,
+                    probability) -> processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
         }
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();

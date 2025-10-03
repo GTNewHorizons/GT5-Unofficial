@@ -6,11 +6,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.util.Vec3;
 
-import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
-import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.GalacticGreg;
+import galacticgreg.api.BlockMetaComb;
 import galacticgreg.api.Enums.SpaceObjectType;
 import galacticgreg.api.Enums.TargetBlockPosition;
 import galacticgreg.api.ISpaceObjectGenerator;
@@ -49,7 +47,7 @@ public class SpaceSchematicWrapper implements ISpaceObjectGenerator {
 
                 Block tBlock = GameRegistry.findBlock(tModID, tBlockName);
                 if (tBlock != null) {
-                    ImmutableBlockMeta bmc = new BlockMeta(tBlock, bsi.blockMeta);
+                    BlockMetaComb bmc = new BlockMetaComb(tBlock, bsi.blockMeta);
                     Vec3 tCenteredPos = _mCenter.addVector(bsi.posX, bsi.posY, bsi.posZ);
                     StructureInformation tnewSI = new StructureInformation(
                         tCenteredPos,

@@ -19,12 +19,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
@@ -35,7 +32,6 @@ import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -44,8 +40,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 
-public class MTEHatchOutputBus extends MTEHatch
-    implements IAddUIWidgets, IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
+public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable, IOutputBus {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -285,35 +280,16 @@ public class MTEHatchOutputBus extends MTEHatch
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final int BUTTON_SIZE = 18;
-        int slotCount = getSizeInventory();
-        final int itemColumns = Math.max(1, mTier + 1);
-        final int itemRows = Math.max(1, mTier + 1);
-        final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
-        final int centerY = 14 - (mTier - 1);
-
-        switch (slotCount) {
-            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {
-                for (int row = 0; row < itemRows; row++) {
-                    for (int col = 0; col < itemColumns; col++) {
-                        int slotIndex = row * itemColumns + col;
-                        if (slotIndex < slotCount) {
-                            builder.widget(
-                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
-                                    .setPos(centerX + col * 18, centerY + row * 18));
-                        }
-                    }
-                }
-            }
+        switch (mTier) {
+            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
+            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
+            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
+            default -> getBaseMetaTileEntity().add4by4Slots(builder);
         }
 
         if (acceptsItemLock()) {
             builder.widget(
-                new PhantomItemButton(this).setPos(6, 60 + (mTier < 4 ? 0 : 16 * (mTier - 1)))
+                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
@@ -349,23 +325,6 @@ public class MTEHatchOutputBus extends MTEHatch
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(18, 18)
-                .setPos(152 + (mTier < 4 ? 0 : 2 * (mTier - 1)), 60 + (mTier < 4 ? 0 : 16 * (mTier - 1))));
-    }
-
-    @Override
-    public int getGUIWidth() {
-        return super.getGUIWidth() + (mTier < 4 ? 0 : 2 * (mTier - 1));
-    }
-
-    @Override
-    public int getGUIHeight() {
-        return super.getGUIHeight() + (mTier < 4 ? 0 : 16 * (mTier - 1));
-    }
-
     public boolean isFiltered() {
         return isLocked();
     }

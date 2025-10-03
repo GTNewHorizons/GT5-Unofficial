@@ -36,10 +36,9 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.23:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.8.5-GTNH-pre:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.8.4-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.7.0:dev")
-	  api("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.12.13-GTNH:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.20-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.9.0:dev")
@@ -97,7 +96,6 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.2:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.2-GTNH:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
-    compileOnly rfg.deobf("curse.maven:harvestthenether-231262:2241397")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.3.12:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.6.0:dev') {transitive = false}

@@ -274,15 +274,7 @@ public enum Mods implements IMod {
     Witchery(ModIDs.WITCHERY),
     ZTones(ModIDs.Z_TONES),
 
-    Minecraft(ModIDs.MINECRAFT) {
-
-        {
-            // instance initializer to avoid having to override isModLoaded
-            checked = true;
-            modLoaded = true;
-        }
-
-    },
+    Minecraft(ModIDs.MINECRAFT),
 
     Aroma1997Core(ModIDs.AROMA1997_CORE),
     ExtraCells2(ModIDs.EXTRA_CELLS2),
@@ -297,19 +289,17 @@ public enum Mods implements IMod {
 
     public final String ID;
     public final String resourceDomain;
-    protected boolean checked, modLoaded;
+    private Boolean modLoaded;
 
     Mods(String ID) {
         this.ID = ID;
         this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
     }
 
-    // isModLoaded is final to allow the JIT to inline this
     @Override
-    public final boolean isModLoaded() {
-        if (!this.checked) {
+    public boolean isModLoaded() {
+        if (this.modLoaded == null) {
             this.modLoaded = Loader.isModLoaded(ID);
-            this.checked = true;
         }
         return this.modLoaded;
     }

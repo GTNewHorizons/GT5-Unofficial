@@ -231,7 +231,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.NOT_UPSIDE_DOWN;
+        return (d, r, f) -> !r.isUpsideDown() && !f.isVerticallyFliped();
     }
 
     @Override

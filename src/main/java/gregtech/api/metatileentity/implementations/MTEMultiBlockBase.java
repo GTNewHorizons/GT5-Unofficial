@@ -3403,26 +3403,25 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
-        if (showMachineStatusInGUI()) {
-            screenElements.widget(
+        screenElements
+            .widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
-                .widget(
-                    new FakeSyncWidget.BooleanSyncer(
-                        () -> getBaseMetaTileEntity().isActive(),
-                        val -> getBaseMetaTileEntity().setActive(val)));
-            screenElements.widget(
-                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
-            screenElements.widget(
-                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)));
+        screenElements.widget(
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+        screenElements.widget(
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
-            screenElements.widget(
-                new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
-        }
+        screenElements.widget(
+            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
@@ -3538,10 +3537,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public boolean showRecipeTextInGUI() {
-        return true;
-    }
-
-    public boolean showMachineStatusInGUI() {
         return true;
     }
 

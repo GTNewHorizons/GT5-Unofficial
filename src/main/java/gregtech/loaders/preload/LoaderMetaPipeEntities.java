@@ -39,7 +39,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             Materials material = GregTechAPI.sGeneratedMaterials[meta];
             // This check is separated out because IntelliJ thinks Materials.Wood can be null.
             if (material == null) continue;
-            if (material.hasMetalItems() || material == Materials.Wood) {
+            if ((material.mTypes & 0x2) != 0 || material == Materials.Wood) {
                 new MTEFrame(
                     4096 + meta,
                     "GT_Frame_" + material,

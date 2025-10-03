@@ -31,7 +31,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
-import gregtech.common.ores.GTOreAdapter;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -81,7 +80,6 @@ public class NEIGTConfig implements IConfigureNEI {
         registerCatalysts();
         registerItemEntries();
         registerDumpers();
-        hideItems();
         sIsAdded = true;
     }
 
@@ -128,10 +126,6 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addOption(new InputSeparationSupportDumper());
         API.addOption(new BatchModeSupportDumper());
         API.addOption(new RecipeLockingSupportDumper());
-    }
-
-    private void hideItems() {
-        GTOreAdapter.INSTANCE.hideOres();
     }
 
     @SubscribeEvent

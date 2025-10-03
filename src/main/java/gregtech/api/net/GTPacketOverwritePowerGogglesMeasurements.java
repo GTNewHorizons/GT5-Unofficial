@@ -1,7 +1,9 @@
 package gregtech.api.net;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import net.minecraft.world.IBlockAccess;
 
@@ -78,8 +80,19 @@ public class GTPacketOverwritePowerGogglesMeasurements extends GTPacket {
 
     @Override
     public void process(IBlockAccess world) {
-        PowerGogglesHudHandler.getInstance()
-            .getRenderer()
-            .setMeasurements(measurements);
+
+        PowerGogglesHudHandler.clear();
+        PowerGogglesHudHandler.measurements = new LinkedList<>(
+            measurements.stream()
+                .map(PowerGogglesMeasurement::getMeasurement)
+                .collect(Collectors.toList()));
+        Collections.reverse(PowerGogglesHudHandler.measurements); // TODO: REMOVE THIS IN HUD REFACTOR
+
+        if (!measurements.isEmpty()) {
+            PowerGogglesHudHandler.capacity = measurements.getLast()
+                .getCapacity();
+        }
+
+        PowerGogglesHudHandler.updateClient = true;
     }
 }

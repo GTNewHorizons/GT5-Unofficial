@@ -273,7 +273,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return IAlignmentLimits.NOT_UPSIDE_DOWN;
+        return (d, r, f) -> !r.isUpsideDown() && !f.isVerticallyFliped();
     }
 
     @Override

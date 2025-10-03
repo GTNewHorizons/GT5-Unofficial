@@ -856,12 +856,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public int getGUIWidth() {
-        return 176 + 16;
-    }
-
-    @Override
-    public int getGUIHeight() {
-        return 166;
+        return super.getGUIWidth() + 16;
     }
 
     @Override

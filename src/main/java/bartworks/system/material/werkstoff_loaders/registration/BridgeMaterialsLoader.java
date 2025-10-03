@@ -25,7 +25,6 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -36,22 +35,39 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        final short[] rgba = werkstoff.getRGBA();
-        final int argb = (rgba[3] & 0xff << 24) | (rgba[0] & 0xff << 16) | (rgba[1] & 0xff << 8) | rgba[2] & 0xff;
-        final Werkstoff.Stats stats = werkstoff.getStats();
-
+        // int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, int aTypes, int
+        // aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType, int aFuelPower, int
+        // aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int
+        // aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection, boolean aCustomOre, String
+        // aCustomID
         Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
             : Materials.get(werkstoff.getVarName()) != Materials._NULL ? Materials.get(werkstoff.getVarName())
-                : new MaterialBuilder().setName(werkstoff.getVarName())
-                    .setDefaultLocalName(werkstoff.getDefaultName())
-                    .setIconSet(werkstoff.getTexSet())
-                    .setARGB(argb)
-                    .setTool(werkstoff.getDurability(), werkstoff.getToolQuality(), werkstoff.getToolSpeed())
-                    .setMeltingPoint(stats.getMeltingPoint())
-                    .setBlastFurnaceTemp(stats.getMeltingPoint())
-                    .setBlastFurnaceRequired(stats.isBlastFurnace())
-                    .constructMaterial();
-
+                : new Materials(
+                    -1,
+                    werkstoff.getTexSet(),
+                    werkstoff.getToolSpeed(),
+                    werkstoff.getDurability(),
+                    werkstoff.getToolQuality(),
+                    0,
+                    werkstoff.getRGBA()[0],
+                    werkstoff.getRGBA()[1],
+                    werkstoff.getRGBA()[2],
+                    werkstoff.getRGBA()[3],
+                    werkstoff.getVarName(),
+                    werkstoff.getDefaultName(),
+                    0,
+                    0,
+                    werkstoff.getStats()
+                        .getMeltingPoint(),
+                    werkstoff.getStats()
+                        .getMeltingPoint(),
+                    werkstoff.getStats()
+                        .isBlastFurnace(),
+                    false,
+                    0,
+                    1,
+                    1,
+                    null);
         final Element[] ELEMENT_VALUES = Element.values();
         for (OrePrefixes prefixes : values()) {
             if (prefixes != cell || !Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
@@ -66,18 +82,32 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                                 ? werkstoff.getBridgeMaterial()
                                 : Materials.get(werkstoff.getVarName()) != Materials._NULL
                                     ? Materials.get(werkstoff.getVarName())
-                                    : new MaterialBuilder().setName(werkstoff.getVarName())
-                                        .setDefaultLocalName(werkstoff.getDefaultName())
-                                        .setIconSet(werkstoff.getTexSet())
-                                        .setARGB(argb)
-                                        .setTool(
-                                            werkstoff.getDurability(),
-                                            werkstoff.getToolQuality(),
-                                            werkstoff.getToolSpeed())
-                                        .setMeltingPoint(stats.getMeltingPoint())
-                                        .setBlastFurnaceTemp(stats.getMeltingPoint())
-                                        .setBlastFurnaceRequired(stats.isBlastFurnace())
-                                        .constructMaterial();
+                                    : new Materials(
+                                        -1,
+                                        werkstoff.getTexSet(),
+                                        werkstoff.getToolSpeed(),
+                                        werkstoff.getDurability(),
+                                        werkstoff.getToolQuality(),
+                                        0,
+                                        werkstoff.getRGBA()[0],
+                                        werkstoff.getRGBA()[1],
+                                        werkstoff.getRGBA()[2],
+                                        werkstoff.getRGBA()[3],
+                                        werkstoff.getVarName(),
+                                        werkstoff.getDefaultName(),
+                                        0,
+                                        0,
+                                        werkstoff.getStats()
+                                            .getMeltingPoint(),
+                                        werkstoff.getStats()
+                                            .getMeltingPoint(),
+                                        werkstoff.getStats()
+                                            .isBlastFurnace(),
+                                        false,
+                                        0,
+                                        1,
+                                        1,
+                                        null);
                             werkstoffBridgeMaterial.mElement = e;
                             e.mLinkedMaterials = new ArrayList<>();
                             e.mLinkedMaterials.add(werkstoffBridgeMaterial);
