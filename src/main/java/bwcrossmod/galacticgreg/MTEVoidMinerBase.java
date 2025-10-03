@@ -113,11 +113,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return this.TIER_MULTIPLIER + 5; // min tier = LuV
     }
 
+    int batchMultiplier= 1;
     protected void setElectricityStats() {
+        batchMultiplier = batchMode ? 16 : 1;
         this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
         this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10 * (batchMode ? 16 : 1);
+        this.mMaxProgresstime = 10 * batchMultiplier;
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
@@ -213,8 +215,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      */
     private boolean consumeNobleGas(FluidStack gasToConsume) {
         for (FluidStack s : this.getStoredFluids()) {
-            if (s.isFluidEqual(gasToConsume) && s.amount >= 1) {
-                s.amount -= 1;
+            if (s.isFluidEqual(gasToConsume) && s.amount >= batchMultiplier) {
+                s.amount -= batchMultiplier;
                 this.updateSlots();
                 return true;
             }
@@ -291,7 +293,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
         final ItemStack output = this.nextOre();
-        output.stackSize = multiplier * (batchMode ? 16 : 1);
+        output.stackSize = multiplier * batchMultiplier;
         if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
             .noneMatch(is -> GTUtility.areStacksEqual(is, output))
             || !this.mBlacklist && inputOres.stream()
@@ -347,7 +349,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
+        return !mMaintenanceHatches.isEmpty()
             && !mOutputBusses.isEmpty()
             && !mEnergyHatches.isEmpty();
     }
