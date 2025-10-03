@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.HatchElement;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -112,7 +113,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     'i',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(gregtech.api.enums.HatchElement.InputHatch)
+                            .atLeast(gregtech.api.enums.HatchElement.InputHatch.or(HatchElement.InputBus))
                             .casingIndex(53)
                             .dot(1)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
