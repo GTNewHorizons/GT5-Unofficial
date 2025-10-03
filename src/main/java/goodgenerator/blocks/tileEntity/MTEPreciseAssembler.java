@@ -124,31 +124,31 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .addElement(
                     'C',
                     GTStructureChannels.PRASS_UNIT_CASING.use(
-                    buildHatchAdder(MTEPreciseAssembler.class)
-                        .atLeast(
-                            InputBus,
-                            InputHatch,
-                            OutputHatch,
-                            OutputBus,
-                            Maintenance,
-                            Muffler,
-                            ExoticEnergy.or(Energy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> x.casingAmount++,
-                                StructureUtility.ofBlocksTiered(
-                                    MTEPreciseAssembler::getCasingBlockTier,
-                                    ImmutableList.of(
-                                        Pair.of(Loaders.impreciseUnitCasing, 0),
-                                        Pair.of(Loaders.preciseUnitCasing, 0),
-                                        Pair.of(Loaders.preciseUnitCasing, 1),
-                                        Pair.of(Loaders.preciseUnitCasing, 2),
-                                        Pair.of(Loaders.preciseUnitCasing, 3)),
-                                    -3,
-                                    MTEPreciseAssembler::setCasingTier,
-                                    MTEPreciseAssembler::getCasingTier)))))
+                        buildHatchAdder(MTEPreciseAssembler.class)
+                            .atLeast(
+                                InputBus,
+                                InputHatch,
+                                OutputHatch,
+                                OutputBus,
+                                Maintenance,
+                                Muffler,
+                                ExoticEnergy.or(Energy))
+                            .casingIndex(CASING_INDEX)
+                            .dot(1)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> x.casingAmount++,
+                                    StructureUtility.ofBlocksTiered(
+                                        MTEPreciseAssembler::getCasingBlockTier,
+                                        ImmutableList.of(
+                                            Pair.of(Loaders.impreciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 1),
+                                            Pair.of(Loaders.preciseUnitCasing, 2),
+                                            Pair.of(Loaders.preciseUnitCasing, 3)),
+                                        -3,
+                                        MTEPreciseAssembler::setCasingTier,
+                                        MTEPreciseAssembler::getCasingTier)))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
                 .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
