@@ -73,7 +73,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return false;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
     }
 
     @Override
