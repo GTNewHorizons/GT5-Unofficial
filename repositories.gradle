@@ -1,6 +1,14 @@
 // Add any additional repositories for your dependencies here
 
 repositories {
+    mavenLocal()
+    maven {
+        name = "mavenpattern"
+        url = "https://mvn.falsepattern.com/releases"
+        content {
+            includeGroup("com.falsepattern")
+        }
+    }
     exclusiveContent {
         forRepository {
             ivy {
