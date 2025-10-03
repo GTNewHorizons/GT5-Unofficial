@@ -17,24 +17,28 @@ public class Tea {
 
     private static int META_COUNTER = 1;
     protected static final HashMap<Integer, String> metaToName = new HashMap<>();
-    protected static final HashMap<String, Tea> teas = new HashMap<>();
+    public static final HashMap<String, Tea> teas = new HashMap<>();
     public static final TeaItemCup cupItem = new TeaItemCup();
     public static final TeaItemBucket bucketItem = new TeaItemBucket();
+    public static final TeaItemColdCup coldCupItem = new TeaItemColdCup();
     public static final ItemStack EMPTY_CUP = new ItemStack(cupItem, 1, 0);
     public static final ItemStack EMPTY_BUCKET = new ItemStack(bucketItem, 1, 0);
 
     final String name;
-    final TeaFluid fluid;
+    public final TeaFluid fluid;
     final TeaFluidBlock block;
-    ItemStack cup;
-    ItemStack bucket;
+    public ItemStack cup;
+    public ItemStack coldCup;
+    public ItemStack bucket;
 
     public static void init() {
         GameRegistry.registerItem(cupItem, "tea_cup");
         GameRegistry.registerItem(bucketItem, "tea_bucket");
+        GameRegistry.registerItem(coldCupItem, "tea_cold_cup");
         if (ModUtils.isClientSided) {
             MinecraftForgeClient.registerItemRenderer(cupItem, new TeaItemsRenderer());
             MinecraftForgeClient.registerItemRenderer(bucketItem, new TeaItemsRenderer());
+            MinecraftForgeClient.registerItemRenderer(coldCupItem, new TeaItemsRenderer());
         }
     }
 
@@ -53,6 +57,7 @@ public class Tea {
         this.block = new TeaFluidBlock(this.fluid);
         GameRegistry.registerBlock(this.block, "tea_" + name);
         this.cup = cupItem.getItem(META_COUNTER);
+        this.coldCup = coldCupItem.getItem(META_COUNTER);
         this.bucket = bucketItem.getItem(META_COUNTER);
         META_COUNTER++;
         teas.put(name, this);
@@ -63,6 +68,10 @@ public class Tea {
             return teas.get(name);
         }
         return new Tea(name);
+    }
+
+    public static Tea get(String name) {
+        return createTea(name);
     }
 
     public Tea setCustomCup(ItemStack cup) {
