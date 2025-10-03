@@ -1926,6 +1926,7 @@ public class Textures {
         NANITE_SHIELDING_FRAME,
 
         COKE_OVEN_CASING,
+        COKE_OVEN_OVERLAY_INACTIVE,
 
         // semicolon after the comment to reduce merge conflicts
         ;
