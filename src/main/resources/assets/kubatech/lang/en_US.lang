@@ -230,6 +230,7 @@ kubatech.tea.white=White Tea
 kubatech.tea.yellow=Yellow Tea
 
 kubatech.tea.tea_cup=Tea Cup of %s
+kubatech.tea.cold_tea_cup=Cold Tea Cup of %s
 kubatech.tea.tea_cup.empty=Empty Tea Cup
 kubatech.tea.tea_bucket=Tea Bucket of %s
 kubatech.tea.tea_bucket.empty=Empty Tea Bucket

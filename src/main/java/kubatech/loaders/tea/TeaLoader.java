@@ -42,6 +42,10 @@ import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -52,36 +56,43 @@ import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.loaders.item.kubaitem.items.ItemPlaceHolder;
 import kubatech.loaders.tea.components.Tea;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import tconstruct.library.crafting.DryingRackRecipes;
 
 public class TeaLoader {
 
-    public static void run() {
+    public static Tea BLACK_TEA;
+    public static Tea EARL_GRAY_TEA;
+    public static Tea GREEN_TEA;
+    public static Tea LEMON_TEA;
+    public static Tea MILK_TEA;
+    public static Tea OOLONG_TEA;
+    public static Tea PEPPERMINT_TEA;
+    public static Tea PUERH_TEA;
+    public static Tea WHITE_TEA;
+    public static Tea YELLOW_TEA;
 
+    public static void run() {
         Tea.init();
 
-        Tea.createTea("black")
+        BLACK_TEA = Tea.createTea("black")
             .setCustomCup(BlackTea.get(1L));
-        Tea.createTea("earl_gray")
+        EARL_GRAY_TEA = Tea.createTea("earl_gray")
             .setCustomCup(EarlGrayTea.get(1L));
-        Tea.createTea("green")
+        GREEN_TEA = Tea.createTea("green")
             .setCustomCup(GreenTea.get(1L));
-        Tea.createTea("lemon")
+        LEMON_TEA = Tea.createTea("lemon")
             .setCustomCup(LemonTea.get(1L));
-        Tea.createTea("milk")
+        MILK_TEA = Tea.createTea("milk")
             .setCustomCup(MilkTea.get(1L));
-        Tea.createTea("oolong")
+        OOLONG_TEA = Tea.createTea("oolong")
             .setCustomCup(OolongTea.get(1L));
-        Tea.createTea("peppermint")
+        PEPPERMINT_TEA = Tea.createTea("peppermint")
             .setCustomCup(PeppermintTea.get(1L));
-        Tea.createTea("pu-erh")
+        PUERH_TEA = Tea.createTea("pu-erh")
             .setCustomCup(PuerhTea.get(1L));
-        Tea.createTea("white")
+        WHITE_TEA = Tea.createTea("white")
             .setCustomCup(WhiteTea.get(1L));
-        Tea.createTea("yellow")
+        YELLOW_TEA = Tea.createTea("yellow")
             .setCustomCup(YellowTea.get(1L));
 
         Tea.finish();
@@ -104,7 +115,7 @@ public class TeaLoader {
         return getModItemOrPlaceholder(modID, itemName, 1, 0);
     }
 
-    public static void registerTeaLine(){
+    public static void registerTeaLine() {
         // TEA LINE //
         // if (PamsHarvestCraft.isModLoaded()) {
 
@@ -112,7 +123,7 @@ public class TeaLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(gregtech.api.enums.ItemList.Shape_Mold_Cylinder.get(1L))
             .fluidInputs(Materials.Glass.getFluid(144L))
-            .itemOutputs(Tea.EMPTY_CUP)
+            .itemOutputs(Tea.EMPTY_CUP.copy())
             .eut(TierEU.RECIPE_LV)
             .duration(10 * SECONDS)
             .addTo(fluidSolidifierRecipes);
@@ -121,21 +132,24 @@ public class TeaLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.bucket))
             .fluidInputs(Materials.Glass.getFluid(1000L))
-            .itemOutputs(Tea.EMPTY_CUP)
+            .itemOutputs(Tea.EMPTY_CUP.copy())
             .eut(TierEU.RECIPE_LV)
             .duration(10 * SECONDS)
             .addTo(fluidSolidifierRecipes);
 
         // base tea processing
-//        GTValues.RA.stdBuilder()
-//            .itemInputs(getModItemOrPlaceholder("harvestcraft", "tealeafItem", 1))
-//            .itemOutputs(TeaLeafDehydrated.get(1))
-//            .eut(TierEU.RECIPE_LV)
-//            .duration(5 * SECONDS)
-//            .addTo(chemicalDehydratorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(getModItemOrPlaceholder("harvestcraft", "tealeafItem", 1))
+            .itemOutputs(TeaLeafDehydrated.get(1))
+            .eut(TierEU.RECIPE_LV)
+            .duration(5 * SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // drying rack alternative
-        DryingRackRecipes.addDryingRecipe(getModItemOrPlaceholder("harvestcraft", "tealeafItem", 1), 50 * SECONDS, TeaLeafDehydrated.get(1));
+        DryingRackRecipes.addDryingRecipe(
+            getModItemOrPlaceholder("harvestcraft", "tealeafItem", 1),
+            50 * SECONDS,
+            TeaLeafDehydrated.get(1));
 
         GTValues.RA.stdBuilder()
             .itemInputs(TeaLeafDehydrated.get(1))
@@ -146,7 +160,6 @@ public class TeaLoader {
 
         // drying rack alternative
         DryingRackRecipes.addDryingRecipe(TeaLeafDehydrated.get(1), 50 * SECONDS, WhiteTeaLeaf.get(1));
-
 
         GTValues.RA.stdBuilder()
             .itemInputs(TeaLeafDehydrated.get(1))
@@ -241,47 +254,84 @@ public class TeaLoader {
         // drying rack alternative
         DryingRackRecipes.addDryingRecipe(PartiallyOxidizedTeaLeaf.get(1), 50 * SECONDS, OolongTeaLeaf.get(1));
 
-        // Tea Assembly
-        GameRegistry.addSmelting(BlackTeaLeaf.get(1), BlackTea.get(1), 10);
+        // Tea Assembling
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BlackTea.get(1), getModItemOrPlaceholder("harvestcraft", "limejuiceItem", 1))
-            .itemOutputs(EarlGrayTea.get(1))
+            .itemInputs(BlackTeaLeaf.get(1), Tea.EMPTY_CUP.copy())
+            .itemOutputs(BLACK_TEA.coldCup.copy())
+            .eut(TierEU.RECIPE_LV)
+            .duration(2 * SECONDS)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(BLACK_TEA.cup.copy(), getModItemOrPlaceholder("harvestcraft", "limejuiceItem", 1))
+            .itemOutputs(EARL_GRAY_TEA.cup.copy())
             .eut(TierEU.RECIPE_LV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
 
-        GameRegistry.addSmelting(GreenTeaLeaf.get(1), GreenTea.get(1), 10);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GreenTeaLeaf.get(1), Tea.EMPTY_CUP.copy())
+            .itemOutputs(GREEN_TEA.coldCup.copy())
+            .eut(TierEU.RECIPE_LV)
+            .duration(2 * SECONDS)
+            .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BlackTea.get(1))
-            .itemOutputs(LemonTea.get(1))
+            .itemInputs(BLACK_TEA.cup.copy())
+            .itemOutputs(LEMON_TEA.cup.copy())
             .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 10))
             .eut(TierEU.RECIPE_LV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BlackTea.get(1))
-            .itemOutputs(MilkTea.get(1))
+            .itemInputs(BLACK_TEA.cup.copy())
+            .itemOutputs(MILK_TEA.cup.copy())
             .fluidInputs(Materials.Milk.getFluid(100))
             .eut(TierEU.RECIPE_LV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
 
-        GameRegistry.addSmelting(OolongTeaLeaf.get(1), OolongTea.get(1), 10);
+        GTValues.RA.stdBuilder()
+            .itemInputs(OolongTeaLeaf.get(1), Tea.EMPTY_CUP.copy())
+            .itemOutputs(OOLONG_TEA.coldCup.copy())
+            .eut(TierEU.RECIPE_LV)
+            .duration(2 * SECONDS)
+            .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItemOrPlaceholder("harvestcraft", "peppermintItem", 1))
-            .itemOutputs(PeppermintTea.get(1))
+            .itemOutputs(PEPPERMINT_TEA.cup.copy())
             .fluidInputs(Materials.Water.getFluid(1_000))
             .eut(TierEU.RECIPE_LV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
 
-        GameRegistry.addSmelting(PuerhTeaLeaf.get(1), PuerhTea.get(1), 10);
-        GameRegistry.addSmelting(WhiteTeaLeaf.get(1), WhiteTea.get(1), 10);
-        GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);
+        GTValues.RA.stdBuilder()
+            .itemInputs(PuerhTeaLeaf.get(1), Tea.EMPTY_CUP.copy())
+            .itemOutputs(PUERH_TEA.coldCup.copy())
+            .eut(TierEU.RECIPE_LV)
+            .duration(2 * SECONDS)
+            .addTo(mixerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(WhiteTeaLeaf.get(1), Tea.EMPTY_CUP.copy())
+            .itemOutputs(WHITE_TEA.coldCup.copy())
+            .eut(TierEU.RECIPE_LV)
+            .duration(2 * SECONDS)
+            .addTo(mixerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(YellowTeaLeaf.get(1), Tea.EMPTY_CUP.copy())
+            .itemOutputs(YELLOW_TEA.coldCup.copy())
+            .eut(TierEU.RECIPE_LV)
+            .duration(2 * SECONDS)
+            .addTo(mixerRecipes);
+
+        // smelting cold to hot tea
+        for (Tea tea : Tea.teas.values()) {
+            GameRegistry.addSmelting(tea.coldCup.copy(), tea.cup.copy(), 10);
+        }
+
         // }
         // if (Avaritia.isModLoaded() && NewHorizonsCoreMod.isModLoaded()) {
         // Tea Acceptor
