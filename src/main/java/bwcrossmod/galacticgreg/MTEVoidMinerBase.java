@@ -113,7 +113,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return this.TIER_MULTIPLIER + 5; // min tier = LuV
     }
 
-    int batchMultiplier= 1;
+    int batchMultiplier = 1;
+
     protected void setElectricityStats() {
         batchMultiplier = batchMode ? 16 : 1;
         this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
@@ -349,9 +350,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && !mEnergyHatches.isEmpty();
+        return !mMaintenanceHatches.isEmpty() && !mOutputBusses.isEmpty() && !mEnergyHatches.isEmpty();
     }
 
     public abstract int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env);
