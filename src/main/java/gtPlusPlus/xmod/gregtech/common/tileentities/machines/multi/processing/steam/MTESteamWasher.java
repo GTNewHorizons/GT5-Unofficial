@@ -442,8 +442,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // don't rotate a washer, water will flow out.
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @SideOnly(Side.CLIENT)

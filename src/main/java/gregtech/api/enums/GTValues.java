@@ -276,10 +276,6 @@ public class GTValues {
      */
     public static IGT_NetworkHandler NW;
     /**
-     * Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn
-     */
-    public static int oreveinPercentage;
-    /**
      * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is
      * cheap
      */
@@ -316,6 +312,10 @@ public class GTValues {
      * Debug parameter for world generation. Tracks chunks added/removed from run queue.
      */
     public static boolean debugWorldGen = false;
+    /**
+     * Debug parameter for world generation. Measures amount of time taken to generate oreveins, stone, etc.
+     */
+    public static boolean profileWorldGen = false;
     /**
      * Debug parameter for orevein generation.
      */
@@ -518,12 +518,26 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "0";
 
+    public static final String AuthorPxx500 = "Author: " + EnumChatFormatting.DARK_BLUE
+        + EnumChatFormatting.BOLD
+        + "Pxx500";
+
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
         + "Blue"
         + EnumChatFormatting.AQUA
         + EnumChatFormatting.BOLD
         + "Weabo";
+
+    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
+        + EnumChatFormatting.BOLD
+        + "gu"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "id"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "118";
 
     public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
