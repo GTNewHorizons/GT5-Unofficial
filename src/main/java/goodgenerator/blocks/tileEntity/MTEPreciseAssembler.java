@@ -123,6 +123,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                             { "CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC" } }))
                 .addElement(
                     'C',
+                    GTStructureChannels.PRASS_UNIT_CASING.use(
                     buildHatchAdder(MTEPreciseAssembler.class)
                         .atLeast(
                             InputBus,
@@ -147,7 +148,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                         Pair.of(Loaders.preciseUnitCasing, 3)),
                                     -3,
                                     MTEPreciseAssembler::setCasingTier,
-                                    MTEPreciseAssembler::getCasingTier))))
+                                    MTEPreciseAssembler::getCasingTier)))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
                 .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
