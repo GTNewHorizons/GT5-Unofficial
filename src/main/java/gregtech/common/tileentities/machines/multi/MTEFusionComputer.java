@@ -46,6 +46,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -112,7 +113,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     'i',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(gregtech.api.enums.HatchElement.InputHatch)
+                            .atLeast(gregtech.api.enums.HatchElement.InputHatch.or(HatchElement.InputBus))
                             .casingIndex(53)
                             .dot(1)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
