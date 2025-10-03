@@ -290,7 +290,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
         if (canVoidMine) {
             final ItemStack output = this.nextOre();
-        	output.stackSize = multiplier * batchMultiplier;
+            output.stackSize = multiplier * batchMultiplier;
 
             boolean matchesFilter = contains(inputOres, output);
 
