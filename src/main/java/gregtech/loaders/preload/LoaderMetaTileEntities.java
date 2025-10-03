@@ -133,6 +133,7 @@ import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
+import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
@@ -258,6 +259,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         + " to use this.";
 
     private static void registerMultiblockControllers() {
+        ItemList.CokeOvenController
+            .set(new MTECokeOven(COKE_OVEN_CONTROLLER.ID, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
+
         ItemList.Machine_Bricked_BlastFurnace.set(
             new MTEBrickedBlastFurnace(
                 BRICKED_BLAST_FURNACE_CONTROLLER.ID,

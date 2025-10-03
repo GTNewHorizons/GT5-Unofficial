@@ -2742,6 +2742,8 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    CokeOvenController,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
