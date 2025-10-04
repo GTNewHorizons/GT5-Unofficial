@@ -564,6 +564,11 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     @Override
     public boolean polluteEnvironment(int aPollutionLevel) {
+        // Since this multi places gas blocks on top of its mufflers
+        // we need to override default behavior to not fail if there is no air
+
+        // This function is similar to the base method but does no air check
+
         final int VENT_AMOUNT = 10_000;
         // Early exit if pollution is disabled
         if (!GTMod.proxy.mPollution) return true;
