@@ -159,6 +159,11 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         tt.addMachineType("Blast Furnace, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
+                TooltipHelper.effText("-5%") + " EU Usage per "
+                    + TooltipHelper.coloredText("900K", EnumChatFormatting.RED)
+                    + " above the recipe requirement")
+            .addSeparator()
+            .addInfo(
                 "Increases Heat by " + EnumChatFormatting.RED
                     + "100K"
                     + EnumChatFormatting.GRAY
@@ -168,26 +173,16 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     + EnumChatFormatting.AQUA
                     + "MV")
             .addInfo(
-                "Reduces " + TooltipHelper.effText("EU Usage")
-                    + " by "
-                    + EnumChatFormatting.WHITE
-                    + "5%"
-                    + EnumChatFormatting.GRAY
-                    + " every "
-                    + EnumChatFormatting.RED
-                    + "900K"
-                    + EnumChatFormatting.GRAY
-                    + " above the recipe requirement")
-            .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "1800K"
                     + EnumChatFormatting.GRAY
                     + " over the recipe requirement grants 1 "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Perfect Overclock")
+            .addSeparator()
             .addTecTechHatchInfo()
-            .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)

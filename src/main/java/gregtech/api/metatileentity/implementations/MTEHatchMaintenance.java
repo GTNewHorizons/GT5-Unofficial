@@ -55,6 +55,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
+import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
 public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAlignment {
 
@@ -175,10 +176,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         float aX, float aY, float aZ) {
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aBaseMetaTileEntity.isClientSide()) return true;
-            // only allow OC robot fake player
-            if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile()
-                .getName()
-                .endsWith(".robot")) return false;
+            // only allow OC robot & dynamism tablet fake player
+            if (aPlayer instanceof FakePlayer) {
+                if (!(aPlayer instanceof TabletFakePlayer) && !aPlayer.getGameProfile()
+                    .getName()
+                    .endsWith(".robot")) {
+                    return false;
+                }
+            }
             ItemStack tStack = aPlayer.getCurrentEquippedItem();
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {

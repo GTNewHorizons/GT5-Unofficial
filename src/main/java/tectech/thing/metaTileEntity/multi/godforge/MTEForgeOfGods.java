@@ -113,7 +113,6 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -511,34 +510,28 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (!mInputBusses.isEmpty()) {
                     if (internalBattery == 0 || isUpgradeActive(END)) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
-                        ItemStack[] inputBusInventory = inputBus.getRealInventory();
+
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (isUpgradeActive(END) && internalBattery != 0) {
                             itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
                         }
-                        if (inputBusInventory != null) {
-                            for (int i = 0; i < inputBusInventory.length; i++) {
-                                ItemStack itemStack = inputBusInventory[i];
-                                if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
-                                    int stacksize = itemStack.stackSize;
-                                    if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                        ItemStack realItem = meBus.getStackInSlot(i);
-                                        if (realItem == null) {
-                                            break;
-                                        }
-                                        stacksize = realItem.stackSize;
-                                    }
-                                    inputBus.decrStackSize(i, stacksize);
-                                    if (internalBattery == 0) {
-                                        stellarFuelAmount += stacksize;
-                                    } else {
-                                        gravitonShardsAvailable += stacksize;
-                                        gravitonShardsSpent -= stacksize;
-                                    }
-                                    inputBus.updateSlots();
+
+                        int invLength = inputBus.getSizeInventory();
+                        for (int i = 0; i < invLength; i++) {
+                            ItemStack itemStack = inputBus.getStackInSlot(i);
+                            if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
+                                int stacksize = itemStack.stackSize;
+                                inputBus.decrStackSize(i, stacksize);
+                                if (internalBattery == 0) {
+                                    stellarFuelAmount += stacksize;
+                                } else {
+                                    gravitonShardsAvailable += stacksize;
+                                    gravitonShardsSpent -= stacksize;
                                 }
+                                inputBus.updateSlots();
                             }
                         }
+
                         if (internalBattery == 0) {
                             neededStartupFuel = calculateStartupFuelConsumption(this);
                             if (stellarFuelAmount >= neededStartupFuel) {
