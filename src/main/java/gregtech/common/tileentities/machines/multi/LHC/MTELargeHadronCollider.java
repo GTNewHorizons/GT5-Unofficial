@@ -12,14 +12,19 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import static java.lang.Math.max;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +61,10 @@ import gtnhlanth.common.register.LanthItemList;
 public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELargeHadronCollider>
     implements ISurvivalConstructable {
 
+
+    private static final int MACHINEMODE_ACCELERATOR = 0;
+    private static final int MACHINEMODE_COLLIDER = 1;
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
@@ -71,6 +80,41 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     private int outputRate;
     private int outputParticleID;
     private float outputFocus;
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("machineMode", machineMode);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        machineMode = aNBT.getInteger("machineMode");
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return translateToLocal("GT5U.MULTI_LHC.mode." + machineMode);
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == MACHINEMODE_ACCELERATOR) return MACHINEMODE_COLLIDER;
+        else return MACHINEMODE_ACCELERATOR;
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
 
     private static final IStructureDefinition<MTELargeHadronCollider> STRUCTURE_DEFINITION = StructureDefinition
         .<MTELargeHadronCollider>builder()
@@ -2784,5 +2828,17 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             }
         }
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTELargeHadronColliderGui(this);
+    }
+
+
 
 }
