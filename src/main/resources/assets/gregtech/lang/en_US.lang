@@ -759,6 +759,8 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
+GT5U.MBTT.Tier=%s-tier
+GT5U.MBTT.ErrorTier=Invalid Voltage Tier
 GT5U.MBTT.MachineType=Machine Type: §e
 GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=§fDimensions: §6%d§7x§6%d§7x§6%d §7(§6W§7x§6H§7x§6L§7) %s
@@ -3216,8 +3218,8 @@ GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 GT5U.tooltip.electric.tier=Tier: %d
 GT5U.tooltip.electric.tier.s=Tier: %s
 
-gt.coilheattooltip=Base Heating Capacity =
-gt.coilunittooltip= Kelvin
+gt.coilheattooltip=Base Heating Capacity = %s %s
+gt.coilunittooltip=Kelvin
 
 GT5U.tootlip.tool.turbine.steam=Steam
 GT5U.tootlip.tool.turbine.loose=Loose
