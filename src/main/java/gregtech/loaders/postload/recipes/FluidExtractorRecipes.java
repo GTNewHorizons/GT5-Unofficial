@@ -34,6 +34,22 @@ public class FluidExtractorRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1))
+            .fluidOutputs(Materials.GraniteBlack.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1))
+            .fluidOutputs(Materials.GraniteRed.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Dye_SquidInk.get(1L))
             .fluidOutputs(getFluidStack("squidink", 1 * INGOTS))
             .duration(6 * SECONDS + 8 * TICKS)

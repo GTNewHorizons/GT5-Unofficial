@@ -779,7 +779,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             }
 
             // We do care. Preserve the weapon
-            if (!mCycleWeapons || !addOutputPartial(tWeapon, false)) return null;
+            if (!mCycleWeapons || !addOutputAtomic(tWeapon)) return null;
             weaponCache.setStackInSlot(0, null);
             tWeapon = null;
         }

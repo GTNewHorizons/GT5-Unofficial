@@ -91,6 +91,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.gui.TecTechUITextures;
@@ -1096,11 +1097,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected void addClassicOutputs_EM() {
         if (mOutputItems != null) {
-            for (ItemStack tStack : mOutputItems) {
-                if (tStack != null) {
-                    addOutput(tStack);
-                }
-            }
+            addItemOutputs(mOutputItems);
         }
         mOutputItems = null;
 
@@ -1663,8 +1660,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchDynamo) {
             return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+            return mMaintenanceHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchMuffler) {
             return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
@@ -1918,6 +1918,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
             return mMaintenanceHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) {

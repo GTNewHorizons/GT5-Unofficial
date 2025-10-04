@@ -46,6 +46,15 @@ public class PowerGogglesUtil {
 
         WorldServer lscDim = MinecraftServer.getServer()
             .worldServerForDimension(lscLink.getDimension());
+
+        // TODO: REMOVE IN 2.9
+        // Should be safe to remove this check in 2.9. This is a safeguard against a situation where in one
+        // Singleplayer world you link goggles to something in a dimension that doesn't normally exist e.g. Personal Dim
+        // And you quit and select another world.
+        if (lscDim == null) {
+            return null;
+        }
+
         TileEntity tileEntity = lscDim.getTileEntity(lscLink.x, lscLink.y, lscLink.z);
 
         if (tileEntity == null) {
