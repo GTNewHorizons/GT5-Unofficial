@@ -89,6 +89,7 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import kekztech.client.gui.KTUITextures;
 import kekztech.common.Blocks;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
@@ -134,10 +135,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         LuV(3, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
         ZPM(4, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_cap_storage)),
         UV(5, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_cap_storage)),
-        UHV(6, MAX_LONG),
+        UHV(6, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UHV_cap_storage)),
         None(0, BigInteger.ZERO),
         EV(1, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
-        UEV(7, MAX_LONG),
+        UEV(7, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UEV_cap_storage)),
         UIV(8, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_cap_storage)),
         UMV(9, ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
 
@@ -287,9 +288,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         if (aTileEntity == null || aTileEntity.isDead()) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (!(aMetaTileEntity instanceof MTEHatch)) return false;
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add(hatch);
         } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
             // Add GT hatches
             final MTEHatchEnergy tHatch = ((MTEHatchEnergy) aMetaTileEntity);
@@ -1501,8 +1505,20 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         private int getHint(ItemStack stack) {
-            return Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
-                .getValueClamped(stack, 1, Capacitor.VALUES_BY_TIER.length) - 1].getMinimalGlassTier() + 1;
+            return switch (Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
+                .getValueClamped(stack, 1, Capacitor.VALUES_BY_TIER.length) - 1].getMinimalGlassTier() + 1) {
+                // This is necessary for mapping from channel number to the correct capacitor tier
+                case 2 -> 7;
+                case 3 -> 1;
+                case 4 -> 2;
+                case 5 -> 3;
+                case 6 -> 4;
+                case 7 -> 5;
+                case 8 -> 8;
+                case 9 -> 9;
+                case 10 -> 10;
+                default -> 6;
+            };
         }
 
         @Override

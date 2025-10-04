@@ -85,12 +85,12 @@ public class MTEMoltenModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
+                BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
+                    .multiply(BigInteger.valueOf(duration));
+                if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
