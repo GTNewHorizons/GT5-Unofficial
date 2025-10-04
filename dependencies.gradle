@@ -114,6 +114,11 @@ dependencies {
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.0-GTNH:dev")
 
+    // For testing EEC multiblock
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.9.25:dev") { transitive = false }
+    // runtimeOnlyNonPublishable rfg.deobf("curse.maven:extra-utilities-225561:2264384")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Mobs-Info:0.5.4-GTNH:dev")
+
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testImplementation("org.mockito:mockito-core:5.+")
