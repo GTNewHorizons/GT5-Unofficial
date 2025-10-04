@@ -17,12 +17,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.ItemOres;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
@@ -395,21 +396,22 @@ public class EIGIC2Bucket extends EIGBucket {
         Block b = Block.getBlockFromItem(item);
         if (b == Blocks.air || !(item instanceof ItemBlock)) return false;
         short tDamage = (short) item.getDamage(stack);
-        if (item instanceof ItemOres && tDamage > 0) {
-            if (!world.setBlock(
-                x,
-                y,
-                z,
-                b,
-                TileEntityOres
-                    .getHarvestData(tDamage, ((BlockOresAbstract) b).getBaseBlockHarvestLevel(tDamage % 16000 / 1000)),
-                0)) {
-                return false;
+
+        try (OreInfo<?> info = OreManager.getOreInfo(b, tDamage)) {
+            if (info != null) {
+                info.isNatural = true;
+
+                ImmutableBlockMeta oreBlock = OreManager.getAdapter(info)
+                    .getBlock(info);
+
+                world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 3);
+
+                if (oreBlock.matches(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))) return true;
             }
-            TileEntityOres tTileEntity = (TileEntityOres) world.getTileEntity(x, y, z);
-            tTileEntity.mMetaData = tDamage;
-            tTileEntity.mNatural = false;
-        } else world.setBlock(x, y, z, b, tDamage, 0);
+        }
+
+        world.setBlock(x, y, z, b, tDamage, 0);
+
         return true;
     }
 

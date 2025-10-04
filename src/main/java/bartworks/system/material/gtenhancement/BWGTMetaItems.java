@@ -13,8 +13,8 @@
 
 package bartworks.system.material.gtenhancement;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -123,7 +123,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
         if (SideReference.Side.Server || PrefixTextureLinker.texMap == null) return null;
 
-        HashMap<TextureSet, Textures.ItemIcons.CustomIcon> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
+        Map<TextureSet, Textures.ItemIcons.CustomIcon> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
 
         if (iconLink == null) return null;
 

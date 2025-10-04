@@ -17,6 +17,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -57,7 +58,14 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             tIsRich = (aPrefix == OrePrefixes.oreEndstone) || (aPrefix == OrePrefixes.oreEnd);
         }
 
-        if (aMaterial == Materials.Oilsands) {
+        if (aMaterial.contains(SubTag.ICE_ORE)) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .fluidOutputs(aMaterial.getGas((tIsRich ? 2000L : 1000L) * aMaterial.mOreMultiplier))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(RecipeMaps.fluidExtractionRecipes);
+        } else if (aMaterial == Materials.Oilsands) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(new ItemStack(net.minecraft.init.Blocks.sand, 1, 0))

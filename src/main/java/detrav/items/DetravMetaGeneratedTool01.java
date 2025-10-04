@@ -261,6 +261,11 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.4"));
     }
 
+    public static final int MODE_BIG_ORES = 0;
+    public static final int MODE_ALL_ORES = 1;
+    public static final int MODE_FLUIDS = 2;
+    public static final int MODE_POLLUTION = 3;
+
     public Long getToolGTDetravData(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {

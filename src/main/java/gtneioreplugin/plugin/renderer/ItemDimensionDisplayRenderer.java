@@ -61,7 +61,7 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
     // See DimensionHelper.DimNameDisplayed for real names of these.
     public static long getPrefix(String dimName) {
         return switch (dimName) {
-            case "Ow", "Ne", "TF", "ED", "VA", "EA" -> 0L;
+            case "Ow", "Ne", "TF", "ED", "VA", "EA", "Eg" -> 0L;
             case "Mo" -> 1L;
             case "De", "Ma", "Ph" -> 2L;
             case "As", "Ca", "Ce", "Eu", "Ga", "Rb" -> 3L;

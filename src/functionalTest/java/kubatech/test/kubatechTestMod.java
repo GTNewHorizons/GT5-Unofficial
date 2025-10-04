@@ -31,7 +31,8 @@ import gregtech.GTMod;
     modid = "kubatech-tests",
     name = "KubaTech Dev Tests",
     version = "1.0",
-    dependencies = "required-after:kubatech;required-after:gregtech;after:berriespp;")
+    dependencies = "required-after:kubatech;required-after:gregtech;after:berriespp;",
+    acceptableRemoteVersions = "*")
 public class kubatechTestMod {
 
     @EventHandler

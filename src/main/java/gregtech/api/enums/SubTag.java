@@ -248,6 +248,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * If this material cannot be made superdense using the HIP unit
      */
     public static final SubTag BLACK_HOLE = getNewSubTag("BLACK_HOLE");
+    /**
+     * This material has ice ores, but not rock ores or ore items
+     */
+    public static final SubTag ICE_ORE = getNewSubTag("ICE_ORE");
 
     /**
      * If this material should generate Multi-plates (triple, quadruple, quintuple)
