@@ -24,6 +24,7 @@ public enum ItemList implements IItemContainer {
     ExtremeIndustrialApiary,
     ExtremeIndustrialGreenhouse,
     DraconicEvolutionFusionCrafter,
+    HighTemperatureGasCooledReactor,
     LegendaryBlackTea,
     LegendaryButterflyTea,
     LegendaryEarlGrayTea,
