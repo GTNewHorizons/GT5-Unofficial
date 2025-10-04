@@ -218,7 +218,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
                 .getMeasurement();
 
         double differenceRatio;
-        if (lastMeasurement.compareTo(BigInteger.ZERO) == 0) {
+        if (lastMeasurement.equals(BigInteger.ZERO)) {
             if (getMaximumMeasurement(getLastMeasurements(PowerGogglesConstants.MEASUREMENT_COUNT_5M))
                 .compareTo(BigInteger.ZERO) > 0) {
                 differenceRatio = -1;
@@ -385,7 +385,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         BigInteger minReading = getMinimumMeasurement(lastMeasurements);
         BigInteger maxReading = getMaximumMeasurement(lastMeasurements);
 
-        if (minReading.compareTo(BigInteger.ZERO) != 0) {
+        if (!minReading.equals(BigInteger.ZERO)) {
             int exponent = BigIntegerMath.log10(minReading, RoundingMode.DOWN);
             minReading = BigInteger.valueOf(10)
                 .pow(exponent);
@@ -439,7 +439,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             Color.rgb(237, 2, 158),
             scale);
         drawScaledString(
-            minReading.compareTo(maxReading) == 0 ? "" : PowerGogglesUtil.format(maxReading),
+            minReading.equals(maxReading) ? "" : PowerGogglesUtil.format(maxReading),
             xOffset,
             screenHeight - yOffset - borderRadius * 2 - chartHeight,
             Color.rgb(237, 2, 158),
@@ -498,7 +498,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private double getPointY(int chartY, int chartHeight, BigInteger maxReading, BigInteger lastMeasurement) {
-        if (lastMeasurement.compareTo(BigInteger.ZERO) == 0) {
+        if (lastMeasurement.equals(BigInteger.ZERO)) {
             return screenHeight - chartY;
         }
         BigInteger percentageLastMeasurement = lastMeasurement.multiply(BigInteger.valueOf(100));
