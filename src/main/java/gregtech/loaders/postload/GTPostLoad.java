@@ -409,8 +409,8 @@ public class GTPostLoad {
         String plateName = OrePrefixes.plate.get(m)
             .toString();
         boolean noSmash = !m.contains(SubTag.NO_SMASHING);
-        if ((m.mTypes & 2) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
-        if ((m.mTypes & 4) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
+        if (m.hasMetalItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
+        if (m.hasGemItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
         if (m.getBlocks(1) != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
     }
 
