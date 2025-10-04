@@ -291,10 +291,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 360, true)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 339, true)
             .addMaintenanceHatch("gt.mega_abs.info.2", 2)
-            .addStructurePartHinted(
-                "GTPP.tooltip.structure.many_bus_hatch",
-                "<bottom casing>",
-                1)
+            .addStructurePartHinted("GTPP.tooltip.structure.many_bus_hatch", "<bottom casing>", 1)
             .addMufflerHatch("gt.mega_abs.info.3", 3)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
