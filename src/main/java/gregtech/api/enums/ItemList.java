@@ -2742,6 +2742,8 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    ManaFly,
+
     CokeOvenController,
     CokeOvenCasing,
 
