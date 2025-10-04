@@ -66,10 +66,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public static int sUUASpeedBonus = 4;
     public static int sDurationMultiplier = 3200;
 
-    public static String mCasingName1 = "Matter Fabricator Casing";
-    public static String mCasingName2 = "Containment Casing";
-    public static String mCasingName3 = "Matter Generation Coil";
-
     private int mMode = 0;
 
     private static final int MODE_SCRAP = 1;
@@ -92,32 +88,31 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public String getMachineType() {
-        return "Mass Fabricator, Recycler";
+        return "machtype.mass_fab";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
+            .addInfo("gt.mass_fab.tips.1")
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
-            .addInfo("Produces UU-A, UU-M & Scrap")
-            .addInfo("Change mode with screwdriver")
+            .addInfo("gt.mass_fab.tips.2")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front Center")
-            .addCasingInfoMin(mCasingName3, 9, false)
-            .addCasingInfoMin(mCasingName2, 24, false)
-            .addCasingInfoMin(mCasingName1, 36, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin("miscutils.blockcasings.8.name", 9)
+            .addCasingInfoMin("gtplusplus.blockcasings.3.15.name", 24)
+            .addCasingInfoMin("miscutils.blockcasings.9.name", 36)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }
