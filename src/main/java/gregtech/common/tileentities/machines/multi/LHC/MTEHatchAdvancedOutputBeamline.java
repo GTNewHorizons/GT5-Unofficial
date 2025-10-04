@@ -217,8 +217,8 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
      */
     protected IWidget createButtonForParticle(GenericMapSyncHandler<Particle, Boolean> mapSyncHandler,
         Particle particle) {
-        return new ToggleButton().marginRight(2)
-            .overlay(Particle.itemDrawable)
+        return new ToggleButton().marginRight(2).invertSelected(true)
+            .overlay(particle.getTexture())
             .value(
                 new BoolValue.Dynamic(
                     () -> mapSyncHandler.getValue()

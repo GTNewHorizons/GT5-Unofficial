@@ -1,5 +1,7 @@
 package gtnhlanth.common.beamline;
 
+import com.cleanroommc.modularui.drawable.UITexture;
+import gregtech.api.modularui2.GTGuiTextures;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -12,30 +14,30 @@ public enum Particle {
     // restMass is in MeV/c^2
     // maxSourceEnergy is in keV/c^2
 
-    // Gauge Bosons
-    PHOTON(false, 0, 0, 0, "photon", "\u03B3", 0, null, 1000),
-    ZBOSON(false, 1, 91188.00f, 0, "zboson", "Z\u2070", 0, null, 15),
-    WBOSON(true, 2, 80369.20f, 0, "wboson", "W\u207B", 0, null, 20),
-    HIGGS(false, 3, 125110.00f, 0, "higgs", "H\u2070", 0, null, 5),
-    GRAVITON(false, 4, 0, 0, "graviton", "G", 0, null, 50),
+    // Gauge Boso, GTGuiTextures.ns
+    PHOTON(false, 0, 0, 0, "photon", "\u03B3", 0, null, 1000, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_PHOTON),
+    ZBOSON(false, 1, 91188.00f, 0, "zboson", "Z\u2070", 0, null, 15, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ZBOSON),
+    WBOSON(true, 2, 80369.20f, 0, "wboson", "W\u207B", 0, null, 20, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_WBOSON),
+    HIGGS(false, 3, 125110.00f, 0, "higgs", "H\u2070", 0, null, 5, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_HIGGS),
+    GRAVITON(false, 4, 0, 0, "graviton", "G", 0, null, 50, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_GRAVITON),
     // Leptons
-    ELECTRON(true, 5, 0.511f, 5000, "electron", "e\u207B", -1, null, 800),
-    MUON(true, 6, 105.66f, 0, "muon", "\u03BC \u207B", -1, null, 300),
-    TAU(true, 7, 1776.89f, 0, "tau", "\u03C4 \u207B", -1, null, 100),
-    ELECTRONNEUTRINO(false, 8, 0, 0, "electron neutrino", "\u03BD e", 0, null, 250),
-    MUONNEUTRINO(false, 9, 0, 0, "muon neutrino", "\u03BD \u03BC", 0, null, 200),
-    TAUNEUTRINO(false, 10, 0, 0, "tau neutrino", "\u03BD \u03C4", 0, null, 150),
+    ELECTRON(true, 5, 0.511f, 5000, "electron", "e\u207B", -1, null, 800,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ELECTRON),
+    MUON(true, 6, 105.66f, 0, "muon", "\u03BC \u207B", -1, null, 300,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_MUON),
+    TAU(true, 7, 1776.89f, 0, "tau", "\u03C4 \u207B", -1, null, 100,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_TAU),
+    ELECTRONNEUTRINO(false, 8, 0, 0, "electron neutrino", "\u03BD e", 0, null, 250,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ELECTRONNEUTRINO),
+    MUONNEUTRINO(false, 9, 0, 0, "muon neutrino", "\u03BD \u03BC", 0, null, 200,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_MUONNEUTRINO),
+    TAUNEUTRINO(false, 10, 0, 0, "tau neutrino", "\u03BD \u03C4", 0, null, 150,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_TAUNEUTRINO),
     // Baryons
-    PROTON(true, 11, 938.27f, 1000000, "proton", "p\u207A", 1, null, 600),
-    NEUTRON(false, 12, 939.57f, 15000, "neutron", "n\u2070", 0, null, 500),
-    LAMBDA(false, 13, 1115.68f, 0, "lambda", "\u039B \u2070", 0, null, 80),
-    OMEGA(true, 14, 1672.45f, 0, "omega", "\u03A9 \u207B", -1, null, 60),
+    PROTON(true, 11, 938.27f, 1000000, "proton", "p\u207A", 1, null, 600,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_PROTON),
+    NEUTRON(false, 12, 939.57f, 15000, "neutron", "n\u2070", 0, null, 500,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_NEUTRON),
+    LAMBDA(false, 13, 1115.68f, 0, "lambda", "\u039B \u2070", 0, null, 80,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_LAMBDA),
+    OMEGA(true, 14, 1672.45f, 0, "omega", "\u03A9 \u207B", -1, null, 60,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_OMEGA),
     // Mesons
-    ETA(false, 15, 547.86f, 0, "eta", "\u03B7", 0, null, 400),
-    JPSI(false, 16, 3096.92f, 0, "j/psi", "J/\u03C8", 0, null, 50),
-    UPSILON(false, 17, 9460.3f, 0, "upsilon", "\u03A5", 0, null, 40),
+    ETA(false, 15, 547.86f, 0, "eta", "\u03B7", 0, null, 400,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ETA),
+    JPSI(false, 16, 3096.92f, 0, "j/psi", "J/\u03C8", 0, null, 50,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_JPSI),
+    UPSILON(false, 17, 9460.3f, 0, "upsilon", "\u03A5", 0, null, 40,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_UPSILON),
     // Nuclei
-    ALPHA(true, 18, 3727.38f, 8000, "alpha", "\u03B1", 2, null, 0);
+    ALPHA(true, 18, 3727.38f, 8000, "alpha", "\u03B1", 2, null, 0,GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ALPHA);
     // todo: quantum anomaly
     // todo: gregs boson
 
@@ -60,13 +62,11 @@ public enum Particle {
 
     private final int id;
 
-    // TODO: change this to be a ItemDrawable unique to each particle with constructor, and create a public
-    // getItemDrawable method, replace createButtonForParticle call to match this accordingly.
-    public static final ItemDrawable itemDrawable = new ItemDrawable(
-        new ItemStack(LanthItemList.PARTICLE_ITEM, 1, Particle.PROTON.getId()));
+    private final UITexture texture;
+
 
     Particle(boolean canAcc, int id, float restMass, float maxSourceEnergy, String name, String shortName, float charge,
-        String chargeSpecial, int lhcWeight) {
+        String chargeSpecial, int lhcWeight, UITexture texture) {
         this.canAcc = canAcc;
         this.id = id;
         this.restMass = restMass;
@@ -76,6 +76,7 @@ public enum Particle {
         this.charge = charge;
         this.chargeSpecial = chargeSpecial;
         this.LHCWeight = lhcWeight;
+        this.texture = texture;
     }
 
     public int getId() {
@@ -119,4 +120,10 @@ public enum Particle {
     public static Particle getParticleFromId(int id) {
         return ParticleArray[id];
     }
+
+    public final UITexture getTexture() {
+        return this.texture;
+    }
+
+
 }

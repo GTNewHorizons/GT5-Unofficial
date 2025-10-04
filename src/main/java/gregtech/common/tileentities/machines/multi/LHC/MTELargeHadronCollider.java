@@ -2776,6 +2776,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             for (MTEHatchAdvancedOutputBeamline o : this.mOutputBeamline) {
                 if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID), false)
                     == false) {
+                    o.dataPacket = null;
                     continue;
                 }
                 o.dataPacket = packet;

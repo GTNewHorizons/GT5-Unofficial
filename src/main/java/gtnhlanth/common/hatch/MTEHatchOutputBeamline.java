@@ -144,11 +144,4 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements
         return new MTEHatchOutputBeamline(mName, mTier, mDescriptionArray, mTextures);
     }
 
-    public boolean hasBlacklist() {
-        return false;
-    }
-
-    public List<Integer> getBlacklist() {
-        return ImmutableList.of();
-    }
 }
