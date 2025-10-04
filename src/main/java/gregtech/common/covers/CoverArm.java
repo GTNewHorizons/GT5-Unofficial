@@ -27,11 +27,11 @@ import io.netty.buffer.ByteBuf;
 
 public class CoverArm extends Cover {
 
-    private boolean export = false;
-    private int internalSlotId = 1;
-    private int externalSlotId = 1;
+    private boolean export;
+    private int internalSlotId;
+    private int externalSlotId;
     public final int mTickRate;
-    // TODO: REMOVE
+    // TODO: REMOVE AFTER 2.9
     // msb converted, 2nd : direction (1=export)
     // right 14 bits: internalSlot, next 14 bits adjSlot, 0 = all, slot = -1
     public static final int EXPORT_MASK = 0x40000000;
@@ -257,27 +257,6 @@ public class CoverArm extends Cover {
 
     public void setExternalSlotId(int externalSlotId) {
         this.externalSlotId = externalSlotId;
-    }
-
-    // LEGACY BACKWARDS COMPAT
-    private int getNewVar(int var, int step) {
-        int intSlot = (var & SLOT_ID_MASK);
-        int adjSlot = (var >> 14) & SLOT_ID_MASK;
-        if ((var & EXPORT_MASK) == 0) {
-            int x = (intSlot + step);
-            if (x > SLOT_ID_MASK) return createVar(0, SLOT_ID_MASK, 0);
-            else if (x < 1) return createVar(-step - intSlot + 1, 0, EXPORT_MASK);
-            else return createVar(0, x, 0);
-        } else {
-            int x = (adjSlot - step);
-            if (x > SLOT_ID_MASK) return createVar(SLOT_ID_MASK, 0, EXPORT_MASK);
-            else if (x < 1) return createVar(0, step - adjSlot + 1, 0);
-            else return createVar(x, 0, EXPORT_MASK);
-        }
-    }
-
-    private int createVar(int adjSlot, int intSlot, int export) {
-        return CONVERTED_BIT | export | ((adjSlot & SLOT_ID_MASK) << 14) | (intSlot & SLOT_ID_MASK);
     }
 
     private boolean getFlagExport(int coverVariable) {
