@@ -256,22 +256,36 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * subScale);
         int offsetFactor = yOffset - borderRadius - stringHeight - gapBetweenLines * 2 - gradientRectangleHeight;
 
-        String formattedDifference5m = PowerGogglesUtil.format(euDifference5m);
-        String formattedTickDifference5m = PowerGogglesUtil.format(euDifference5m.divide(BigInteger.valueOf(20)));
-        String timedDifference5m = String.format("5m: %s (%s eu/t)", formattedDifference5m, formattedTickDifference5m);
-        int stringColor5m = getTextColor(euDifference5m);
-
-        String formattedDifference1h = PowerGogglesUtil.format(euDifference1h);
-        String formattedTickDifference1h = PowerGogglesUtil.format(euDifference1h.divide(BigInteger.valueOf(20)));
-        String timedDifference1h = String.format("1h: %s (%s eu/t)", formattedDifference1h, formattedTickDifference1h);
-        int stringColor1h = getTextColor(euDifference1h);
-
         int string5mY = screenHeight + gapBetweenLines - offsetFactor;
         int string1hY = string5mY + gapBetweenLines + stringHeight;
 
-        drawScaledString(timedDifference5m, xOffset, string5mY, stringColor5m, subScale);
-        drawScaledString(timedDifference1h, xOffset, string1hY, stringColor1h, subScale);
+        render5mDifference(string5mY);
+        render1hDifference(string1hY);
 
+    }
+
+    private void render5mDifference(int stringY) {
+        String formattedDifference5m = PowerGogglesUtil.format(euDifference5m);
+        int tickCount5m = 5 * PowerGogglesConstants.MINUTES;
+
+        BigInteger tickDifference5m = euDifference5m.divide(BigInteger.valueOf(tickCount5m));
+        String formattedTickDifference5m = PowerGogglesUtil.format(tickDifference5m);
+        String timedDifference5m = String.format("5m: %s (%s eu/t)", formattedDifference5m, formattedTickDifference5m);
+        int stringColor5m = getTextColor(euDifference5m);
+
+        drawScaledString(timedDifference5m, xOffset, stringY, stringColor5m, subScale);
+    }
+
+    private void render1hDifference(int stringY) {
+        String formattedDifference1h = PowerGogglesUtil.format(euDifference1h);
+
+        int tickCount1h = 1 * PowerGogglesConstants.HOURS;
+        BigInteger tickDifference1h = euDifference1h.divide(BigInteger.valueOf(tickCount1h));
+        String formattedTickDifference1h = PowerGogglesUtil.format(tickDifference1h);
+
+        String timedDifference1h = String.format("1h: %s (%s eu/t)", formattedDifference1h, formattedTickDifference1h);
+        int stringColor1h = getTextColor(euDifference1h);
+        drawScaledString(timedDifference1h, xOffset, stringY, stringColor1h, subScale);
     }
 
     private void drawScaledString(String string, int xOffset, int yOffset, int color, double scale) {
