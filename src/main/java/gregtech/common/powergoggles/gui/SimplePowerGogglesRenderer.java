@@ -256,10 +256,14 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * subScale);
         int offsetFactor = yOffset - borderRadius - stringHeight - gapBetweenLines * 2 - gradientRectangleHeight;
 
-        String timedDifference5m = PowerGogglesUtil.format(euDifference5m);
+        String formattedDifference5m = PowerGogglesUtil.format(euDifference5m);
+        String formattedTickDifference5m = PowerGogglesUtil.format(euDifference5m.divide(BigInteger.valueOf(20)));
+        String timedDifference5m = String.format("5m: %s (%s eu/t)", formattedDifference5m, formattedTickDifference5m);
         int stringColor5m = getTextColor(euDifference5m);
 
-        String timedDifference1h = PowerGogglesUtil.format(euDifference1h);
+        String formattedDifference1h = PowerGogglesUtil.format(euDifference1h);
+        String formattedTickDifference1h = PowerGogglesUtil.format(euDifference1h.divide(BigInteger.valueOf(20)));
+        String timedDifference1h = String.format("1h: %s (%s eu/t)", formattedDifference1h, formattedTickDifference1h);
         int stringColor1h = getTextColor(euDifference1h);
 
         int string5mY = screenHeight + gapBetweenLines - offsetFactor;
