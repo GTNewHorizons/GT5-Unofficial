@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidfilter;
@@ -36,7 +37,7 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<FilterDirectionMode> ioModeSyncValue = new EnumSyncValue<>(
             FilterDirectionMode.class,
             cover::getFilterDirection,
