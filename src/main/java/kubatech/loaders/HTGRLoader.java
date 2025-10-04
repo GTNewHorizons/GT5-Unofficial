@@ -50,6 +50,8 @@ public class HTGRLoader {
     public static final RecipeMap<RecipeMapBackend> HTGRRecipes = RecipeMapBuilder.of("kubatech.htgrrecipes")
         .maxIO(9, 3, 1, 1)
         .minInputs(1, 0)
+        .neiHandlerInfo(builder -> builder.setHeight(255))
+        .neiTransferRect(127, 50, 36, 98)
         .frontend(HighTemperatureGasCooledReactorRecipeMapFrontend::new)
         .builderTransformer(builder -> {
             ItemStack[] inputs = builder.getItemInputsBasic();
