@@ -15,7 +15,6 @@ public enum TargetedMod implements ITargetMod {
     HEE("chylex.hee.HEECore", "HardcoreEnderExpansion"),
     IC2("ic2.core.coremod.IC2core", "IC2"),
     OPTIFINE("optifine.OptiFineForgeTweaker", "Optifine"),
-    PAMS_NETHER(null, "harvestthenether"),
     RAILCRAFT(null, "Railcraft"),
     THAUMCRAFT(null, "Thaumcraft");
 
