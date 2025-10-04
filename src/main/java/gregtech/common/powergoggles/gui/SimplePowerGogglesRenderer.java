@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.GL_LINES;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -102,13 +103,55 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private void renderStorageText() {
         int stringY = screenHeight - yOffset + borderRadius;
 
+        int stringColor = getTextColor(euDifference5m);
+
+        renderEuStorage(stringY, stringColor);
+        renderFillPercentage(stringY, stringColor);
+
+    }
+
+    private void renderEuStorage(int stringY, int stringColor) {
         BigInteger measurement = measurements.isEmpty() ? BigInteger.ZERO
             : measurements.getLast()
                 .getMeasurement();
-        String currentStorage = PowerGogglesUtil.format(measurement);
-        int stringColor = getTextColor(euDifference5m);
 
+        String currentStorage = PowerGogglesUtil.format(measurement);
         drawScaledString(currentStorage, xOffset, stringY, stringColor, mainScale);
+    }
+
+    private void renderFillPercentage(int stringY, int stringColor) {
+        DecimalFormat percentageFormatter = new DecimalFormat("0.00%");
+        double percentage = getFillPercentage();
+        String percentageText = percentageFormatter.format(percentage);
+
+        int stringX = xOffset + gradientRectangleWidth - fontRenderer.getStringWidth(percentageText);
+        drawScaledString(percentageText, stringX, stringY, stringColor, mainScale);
+    }
+
+    private double getFillPercentage() {
+        if (measurements.isEmpty()) {
+            return 0;
+        }
+
+        PowerGogglesMeasurement measurementData = measurements.getLast();
+        BigInteger measurement = measurementData.getMeasurement();
+        BigDecimal decimalMeasurement = new BigDecimal(measurement);
+
+        if (measurementData.isWireless()) {
+            BigDecimal decimalMaximumMeasurement = new BigDecimal(getMaximumMeasurement(measurements));
+            if (decimalMeasurement.equals(BigDecimal.ZERO)) {
+                return 0;
+            }
+            return decimalMeasurement.divide(decimalMaximumMeasurement, RoundingMode.HALF_EVEN)
+                .doubleValue();
+        } else {
+            BigDecimal decimalCapacity = BigDecimal.valueOf(measurementData.getCapacity());
+            if (decimalCapacity.equals(BigDecimal.ZERO)) {
+                return 0;
+            }
+            return decimalMeasurement.divide(decimalCapacity, RoundingMode.HALF_EVEN)
+                .doubleValue();
+        }
     }
 
     private int getTextColor(BigInteger measurement) {
