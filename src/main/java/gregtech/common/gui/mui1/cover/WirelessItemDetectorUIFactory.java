@@ -99,7 +99,7 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
             .addFollower(
                 new CoverDataFollowerNumericWidget<>(),
                 coverData -> (double) coverData.getThreshold(),
-                (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                (coverData, state) -> coverData.setThreshold(state.intValue()),
                 widget -> widget.setBounds(0, maxThreshold)
                     .setScrollValues(1, 64, 1000)
                     .setFocusOnGuiOpen(true)
