@@ -292,6 +292,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setSize(182, 79));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
