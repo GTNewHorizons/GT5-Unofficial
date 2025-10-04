@@ -5,7 +5,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -28,6 +30,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.gui.MTECokeOvenGUI;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
+
+    private final static int FLUID_CAPACITY = 64_000;
+    private FluidStack fluid;
 
     public MTECokeOven(String name) {
         super(name);
@@ -66,6 +71,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public int getCapacity() {
+        return FLUID_CAPACITY;
     }
 
     @Override
@@ -133,5 +143,26 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         } else {
             return TEXTURE_CASING;
         }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound nbt) {
+        super.saveNBTData(nbt);
+        if (fluid != null) nbt.setTag("fluid", this.fluid.writeToNBT(new NBTTagCompound()));
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbt) {
+        super.loadNBTData(nbt);
+        fluid = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid"));
+    }
+
+    @Override
+    public FluidStack getFluid() {
+        return fluid;
+    }
+
+    public void setFluid(FluidStack fluid) {
+        this.fluid = fluid;
     }
 }
