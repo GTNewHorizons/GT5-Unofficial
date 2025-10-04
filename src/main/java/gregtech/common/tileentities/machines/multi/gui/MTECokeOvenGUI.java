@@ -45,7 +45,7 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui {
                             .size(20, 18)
                             .marginRight(8))
                     .child(
-                        new ItemSlot().slot(new ModularSlot(base.inventoryHandler, 1))
+                        new ItemSlot().slot(new ModularSlot(base.inventoryHandler, 1).accessibility(false, true))
                             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL)));
     }
 }
