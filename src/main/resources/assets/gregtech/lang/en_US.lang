@@ -820,14 +820,15 @@ GT5U.MBTT.Tiers.ItemPipe=Item Pipe Casing
 GT5U.MBTT.Tiers.FluidPipe=Pipe Casing
 GT5U.MBTT.Tiers.Solenoid=Solenoid
 GT5U.MBTT.Tiers.Turbine=Sum of Turbine
+GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
 GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
-GT5U.MBTT.Structure.MinGlassForLaser=-tier glass required for §9Tec§1Tech§7 Laser Hatches
-GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by Glass tier
-GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier Glass unlocks all
+GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
+GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by §fGlass§7 Tier
+GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
@@ -1754,6 +1755,8 @@ gt.behaviour.paintspray.infinite.tooltip.pick=MMB: On a Surface block to Copy co
 gt.behaviour.paintspray.infinite.tooltip.lock=Sneak + MMB: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=MMB: Open color choice GUI
 gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s + MMB: Toggle Color Cycle Lock
+gt.behaviour.paintspray.infinite.tooltip.author_byline=§o"Try using this in your offhand!"§r -§cQuerns§r
+
 GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cycle Lock
 
 
