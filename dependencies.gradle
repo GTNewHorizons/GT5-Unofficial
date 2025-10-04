@@ -36,19 +36,19 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.23:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.8.5-GTNH-pre:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.8.7-GTNH-pre:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.7.0:dev")
 	api("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.12.13-GTNH:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.20-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.9.0:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-700-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-702-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.1-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.1:dev')
     api("com.github.GTNewHorizons:Postea:1.1.3:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.0:dev')
+    compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.2:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.4-GTNH:dev")
     compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.17:dev")
     implementation('com.github.GTNewHorizons:Baubles-Expanded:2.2.0-GTNH:dev') {transitive=false}
@@ -62,7 +62,7 @@ dependencies {
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta57:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.45:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.26:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.17:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.0-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.0-GTNH:dev") { transitive = false }
@@ -84,7 +84,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.20:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.1:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.2:dev")
     compileOnly('com.github.GTNewHorizons:Botania:1.13.1-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.5-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
@@ -116,6 +116,11 @@ dependencies {
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.0-GTNH:dev")
 
+    // For testing EEC multiblock
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.0:dev") { transitive = false }
+    // runtimeOnlyNonPublishable rfg.deobf("curse.maven:extra-utilities-225561:2264384")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Mobs-Info:0.5.4-GTNH:dev")
+
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testImplementation("org.mockito:mockito-core:5.+")
@@ -128,7 +133,7 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.3.4:dev")
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.9.26:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.10.0:dev')
 
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.4:dev')
