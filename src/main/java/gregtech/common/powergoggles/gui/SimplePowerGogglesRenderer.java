@@ -489,8 +489,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
         this.measurements = measurements;
         onNewMeasurement();
-        euDifference5m = BigInteger.ZERO;
-        euDifference1h = BigInteger.ZERO;
     }
 
     @Override
@@ -503,14 +501,16 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void onNewMeasurement() {
-        if (measurements.isEmpty()) {
-            return;
-        }
         update5mDifference();
         update1hDifference();
     }
 
     private void update5mDifference() {
+        if (measurements.size() <= 1) {
+            this.euDifference5m = BigInteger.ZERO;
+            return;
+        }
+
         LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
             PowerGogglesConstants.MEASUREMENT_COUNT_5M);
         BigInteger first = lastMeasurements.getFirst()
@@ -522,6 +522,11 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void update1hDifference() {
+        if (measurements.size() <= 1) {
+            this.euDifference1h = BigInteger.ZERO;
+            return;
+        }
+
         LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
             PowerGogglesConstants.MEASUREMENT_COUNT_1H);
         BigInteger first = lastMeasurements.getFirst()
