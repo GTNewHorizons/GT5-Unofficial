@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.GL_LINES;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -102,13 +103,55 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private void renderStorageText() {
         int stringY = screenHeight - yOffset + borderRadius;
 
+        int stringColor = getTextColor(euDifference5m);
+
+        renderEuStorage(stringY, stringColor);
+        renderFillPercentage(stringY, stringColor);
+
+    }
+
+    private void renderEuStorage(int stringY, int stringColor) {
         BigInteger measurement = measurements.isEmpty() ? BigInteger.ZERO
             : measurements.getLast()
                 .getMeasurement();
-        String currentStorage = PowerGogglesUtil.format(measurement);
-        int stringColor = getTextColor(euDifference5m);
 
+        String currentStorage = PowerGogglesUtil.format(measurement);
         drawScaledString(currentStorage, xOffset, stringY, stringColor, mainScale);
+    }
+
+    private void renderFillPercentage(int stringY, int stringColor) {
+        DecimalFormat percentageFormatter = new DecimalFormat("0.00%");
+        double percentage = getFillPercentage();
+        String percentageText = percentageFormatter.format(percentage);
+
+        int stringX = xOffset + gradientRectangleWidth - fontRenderer.getStringWidth(percentageText);
+        drawScaledString(percentageText, stringX, stringY, stringColor, mainScale);
+    }
+
+    private double getFillPercentage() {
+        if (measurements.isEmpty()) {
+            return 0;
+        }
+
+        PowerGogglesMeasurement measurementData = measurements.getLast();
+        BigInteger measurement = measurementData.getMeasurement();
+        BigDecimal decimalMeasurement = new BigDecimal(measurement);
+
+        if (measurementData.isWireless()) {
+            BigDecimal decimalMaximumMeasurement = new BigDecimal(getMaximumMeasurement(measurements));
+            if (decimalMeasurement.equals(BigDecimal.ZERO)) {
+                return 0;
+            }
+            return decimalMeasurement.divide(decimalMaximumMeasurement, RoundingMode.HALF_EVEN)
+                .doubleValue();
+        } else {
+            BigDecimal decimalCapacity = BigDecimal.valueOf(measurementData.getCapacity());
+            if (decimalCapacity.equals(BigDecimal.ZERO)) {
+                return 0;
+            }
+            return decimalMeasurement.divide(decimalCapacity, RoundingMode.HALF_EVEN)
+                .doubleValue();
+        }
     }
 
     private int getTextColor(BigInteger measurement) {
@@ -175,7 +218,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
                 .getMeasurement();
 
         double differenceRatio;
-        if (lastMeasurement.compareTo(BigInteger.ZERO) == 0) {
+        if (lastMeasurement.equals(BigInteger.ZERO)) {
             if (getMaximumMeasurement(getLastMeasurements(PowerGogglesConstants.MEASUREMENT_COUNT_5M))
                 .compareTo(BigInteger.ZERO) > 0) {
                 differenceRatio = -1;
@@ -213,18 +256,36 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int stringHeight = (int) (fontRenderer.FONT_HEIGHT * subScale);
         int offsetFactor = yOffset - borderRadius - stringHeight - gapBetweenLines * 2 - gradientRectangleHeight;
 
-        String timedDifference5m = PowerGogglesUtil.format(euDifference5m);
-        int stringColor5m = getTextColor(euDifference5m);
-
-        String timedDifference1h = PowerGogglesUtil.format(euDifference1h);
-        int stringColor1h = getTextColor(euDifference1h);
-
         int string5mY = screenHeight + gapBetweenLines - offsetFactor;
         int string1hY = string5mY + gapBetweenLines + stringHeight;
 
-        drawScaledString(timedDifference5m, xOffset, string5mY, stringColor5m, subScale);
-        drawScaledString(timedDifference1h, xOffset, string1hY, stringColor1h, subScale);
+        render5mDifference(string5mY);
+        render1hDifference(string1hY);
 
+    }
+
+    private void render5mDifference(int stringY) {
+        String formattedDifference5m = PowerGogglesUtil.format(euDifference5m);
+        int tickCount5m = 5 * PowerGogglesConstants.MINUTES;
+
+        BigInteger tickDifference5m = euDifference5m.divide(BigInteger.valueOf(tickCount5m));
+        String formattedTickDifference5m = PowerGogglesUtil.format(tickDifference5m);
+        String timedDifference5m = String.format("5m: %s (%s eu/t)", formattedDifference5m, formattedTickDifference5m);
+        int stringColor5m = getTextColor(euDifference5m);
+
+        drawScaledString(timedDifference5m, xOffset, stringY, stringColor5m, subScale);
+    }
+
+    private void render1hDifference(int stringY) {
+        String formattedDifference1h = PowerGogglesUtil.format(euDifference1h);
+
+        int tickCount1h = 1 * PowerGogglesConstants.HOURS;
+        BigInteger tickDifference1h = euDifference1h.divide(BigInteger.valueOf(tickCount1h));
+        String formattedTickDifference1h = PowerGogglesUtil.format(tickDifference1h);
+
+        String timedDifference1h = String.format("1h: %s (%s eu/t)", formattedDifference1h, formattedTickDifference1h);
+        int stringColor1h = getTextColor(euDifference1h);
+        drawScaledString(timedDifference1h, xOffset, stringY, stringColor1h, subScale);
     }
 
     private void drawScaledString(String string, int xOffset, int yOffset, int color, double scale) {
@@ -342,7 +403,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         BigInteger minReading = getMinimumMeasurement(lastMeasurements);
         BigInteger maxReading = getMaximumMeasurement(lastMeasurements);
 
-        if (minReading.compareTo(BigInteger.ZERO) != 0) {
+        if (!minReading.equals(BigInteger.ZERO)) {
             int exponent = BigIntegerMath.log10(minReading, RoundingMode.DOWN);
             minReading = BigInteger.valueOf(10)
                 .pow(exponent);
@@ -396,7 +457,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             Color.rgb(237, 2, 158),
             scale);
         drawScaledString(
-            minReading.compareTo(maxReading) == 0 ? "" : PowerGogglesUtil.format(maxReading),
+            minReading.equals(maxReading) ? "" : PowerGogglesUtil.format(maxReading),
             xOffset,
             screenHeight - yOffset - borderRadius * 2 - chartHeight,
             Color.rgb(237, 2, 158),
@@ -455,7 +516,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private double getPointY(int chartY, int chartHeight, BigInteger maxReading, BigInteger lastMeasurement) {
-        if (lastMeasurement.compareTo(BigInteger.ZERO) == 0) {
+        if (lastMeasurement.equals(BigInteger.ZERO)) {
             return screenHeight - chartY;
         }
         BigInteger percentageLastMeasurement = lastMeasurement.multiply(BigInteger.valueOf(100));
@@ -489,8 +550,6 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     public void setMeasurements(LinkedList<PowerGogglesMeasurement> measurements) {
         this.measurements = measurements;
         onNewMeasurement();
-        euDifference5m = BigInteger.ZERO;
-        euDifference1h = BigInteger.ZERO;
     }
 
     @Override
@@ -503,14 +562,16 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void onNewMeasurement() {
-        if (measurements.isEmpty()) {
-            return;
-        }
         update5mDifference();
         update1hDifference();
     }
 
     private void update5mDifference() {
+        if (measurements.size() <= 1) {
+            this.euDifference5m = BigInteger.ZERO;
+            return;
+        }
+
         LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
             PowerGogglesConstants.MEASUREMENT_COUNT_5M);
         BigInteger first = lastMeasurements.getFirst()
@@ -522,6 +583,11 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void update1hDifference() {
+        if (measurements.size() <= 1) {
+            this.euDifference1h = BigInteger.ZERO;
+            return;
+        }
+
         LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
             PowerGogglesConstants.MEASUREMENT_COUNT_1H);
         BigInteger first = lastMeasurements.getFirst()
