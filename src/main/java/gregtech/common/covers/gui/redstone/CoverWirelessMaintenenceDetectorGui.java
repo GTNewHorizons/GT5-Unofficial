@@ -9,6 +9,10 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
@@ -39,6 +43,15 @@ public class CoverWirelessMaintenenceDetectorGui
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = (EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode>) syncManager
             .getSyncHandler("maintenanceMode:0");
+        final ICoverable tile = data.getCoverable();
+        boolean usesTurbines = false;
+
+        if (!tile.isDead() && tile instanceof IGregTechTileEntity gTE && gTE.getMetaTileEntity() != null) {
+            IMetaTileEntity metaTE = (gTE.getMetaTileEntity());
+            if (metaTE instanceof MTEMultiBlockBase multiTE) {
+                usesTurbines = multiTE.usesTurbines();
+            }
+        }
         return Flow.column()
             .coverChildren()
             .child(
@@ -56,7 +69,8 @@ public class CoverWirelessMaintenenceDetectorGui
                     maintenanceSync,
                     CoverWirelessMaintenanceDetector.MaintenanceMode.FOUR_ISSUES,
                     CoverWirelessMaintenanceDetector.MaintenanceMode.FIVE_ISSUES))
-            .child(
+            .childIf(
+                usesTurbines,
                 makeSyncedBoolRow(
                     maintenanceSync,
                     CoverWirelessMaintenanceDetector.MaintenanceMode.ROTOR_80,
@@ -68,24 +82,20 @@ public class CoverWirelessMaintenenceDetectorGui
         CoverWirelessMaintenanceDetector.MaintenanceMode value2) {
         return Flow.row()
             .coverChildren()
-            .child(
-                new Row().size(90, 18)
-                    .child(
-                        new SelectButton().value(LinkedBoolValue.of(syncValue, value1))
-                            .size(16)
-                            .marginRight(2)
-                            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK))
-                    .child(new TextWidget(StatCollector.translateToLocal(value1.getDescriptorKey())))
-                    .marginRight(8))
-            .child(
-                new Row().size(90, 18)
-                    .child(
-                        new SelectButton().value(LinkedBoolValue.of(syncValue, value2))
-                            .size(16)
-                            .marginRight(2)
-                            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK))
-                    .child(new TextWidget(StatCollector.translateToLocal(value2.getDescriptorKey()))))
+            .child(makeMaintanenceIssueRow(syncValue, value1).marginRight(8))
+            .child(makeMaintanenceIssueRow(syncValue, value2))
             .marginBottom(4);
+    }
+
+    private Flow makeMaintanenceIssueRow(EnumSyncValue syncValue,
+        CoverWirelessMaintenanceDetector.MaintenanceMode value) {
+        return new Row().size(90, 18)
+            .child(
+                new SelectButton().value(LinkedBoolValue.of(syncValue, value))
+                    .size(16)
+                    .marginRight(2)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK))
+            .child(new TextWidget(StatCollector.translateToLocal(value.getDescriptorKey())));
     }
 
     @Override

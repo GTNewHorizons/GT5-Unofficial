@@ -1,11 +1,8 @@
 package gregtech.common.covers.gui.redstone;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.UUID;
 
-import net.minecraft.util.StatCollector;
-
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -62,7 +59,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
                     .height(12)
                     .width(88)
                     .marginRight(2))
-            .child(new TextWidget(translateToLocal("gt.interact.desc.freq")))
+            .child(new TextWidget(IKey.lang("gt.interact.desc.freq")))
             .marginBottom(4);
     }
 
@@ -75,7 +72,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .marginRight(buttonRowSpacing ? 74 : 2))
-            .child(new TextWidget(StatCollector.translateToLocal("gt.interact.desc.privfreq")).marginRight(20))
+            .child(new TextWidget(IKey.lang("gt.interact.desc.privfreq")).marginRight(20))
             .marginBottom(4);
     }
 

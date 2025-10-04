@@ -78,7 +78,7 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
 
     public enum GateMode implements KeyProvider {
 
-        AND(IKey.lang("gt.interact.desc.addgate")),
+        AND(IKey.lang("gt.interact.desc.andgate")),
         NAND(IKey.lang("gt.interact.desc.nandgate")),
         OR(IKey.lang("gt.interact.desc.orgate")),
         NOR(IKey.lang("gt.interact.desc.norgate")),
