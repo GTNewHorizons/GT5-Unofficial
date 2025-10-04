@@ -1,18 +1,63 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.enums.Materials.Obsidian;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.BlockCactusCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.BlockCactusCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.BlockSugarCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.BlockSugarCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CactusCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CactusCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CompressedCactusCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CompressedCactusCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CompressedGlowstone;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CompressedNetherrack;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CompressedObsidian;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CompressedSugarCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.CompressedSugarCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.DoubleCompressedCactusCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.DoubleCompressedCactusCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.DoubleCompressedGlowstone;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.DoubleCompressedNetherrack;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.DoubleCompressedObsidian;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.DoubleCompressedSugarCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.DoubleCompressedSugarCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuadrupleCompressedCactusCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuadrupleCompressedCactusCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuadrupleCompressedGlowstone;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuadrupleCompressedObsidian;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuadrupleCompressedSugarCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuadrupleCompressedSugarCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuintupleCompressedCactusCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuintupleCompressedCactusCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuintupleCompressedGlowstone;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuintupleCompressedObsidian;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuintupleCompressedSugarCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.QuintupleCompressedSugarCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.SugarCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.SugarCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedCactusCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedCactusCoke;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedGlowstone;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedNetherrack;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedObsidian;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedSugarCharcoal;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedSugarCoke;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
@@ -146,157 +191,136 @@ public class RecipesGeneral {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
+        addCompressedCactusCharcoal();
+        addCompressedCactusCoke();
+        addCompressedSugarCharcoal();
+        addCompressedSugarCoke();
         addCompressedObsidian();
-        addFuelBlocks();
+        addCompressedNetherrack();
+        addCompressedGlowstone();
+
         migratedRecipes();
         addPipesAndWires();
     }
 
-    private static void addFuelBlocks() {
-        addCompressionRecipes(
-            false,
-            GregtechItemList.CactusCharcoal.get(1),
-            GregtechItemList.BlockCactusCharcoal.get(1),
-            GregtechItemList.CompressedCactusCharcoal.get(1),
-            GregtechItemList.DoubleCompressedCactusCharcoal.get(1),
-            GregtechItemList.TripleCompressedCactusCharcoal.get(1),
-            GregtechItemList.QuadrupleCompressedCactusCharcoal.get(1),
-            GregtechItemList.QuintupleCompressedCactusCharcoal.get(1));
+    private static void addCompressedCactusCharcoal() {
+        addCompressionRecipe(CactusCharcoal.get(9), BlockCactusCharcoal.get(1));
+        addCompressionRecipe(BlockCactusCharcoal.get(9), CompressedCactusCharcoal.get(1));
+        addCompressionRecipe(CompressedCactusCharcoal.get(9), DoubleCompressedCactusCharcoal.get(1));
+        addCompressionRecipe(DoubleCompressedCactusCharcoal.get(9), TripleCompressedCactusCharcoal.get(1));
+        addCompressionRecipe(TripleCompressedCactusCharcoal.get(9), QuadrupleCompressedCactusCharcoal.get(1));
+        addCompressionRecipe(QuadrupleCompressedCactusCharcoal.get(9), QuintupleCompressedCactusCharcoal.get(1));
 
-        addCompressionRecipes(
-            false,
-            GregtechItemList.CactusCoke.get(1),
-            GregtechItemList.BlockCactusCoke.get(1),
-            GregtechItemList.CompressedCactusCoke.get(1),
-            GregtechItemList.DoubleCompressedCactusCoke.get(1),
-            GregtechItemList.TripleCompressedCactusCoke.get(1),
-            GregtechItemList.QuadrupleCompressedCactusCoke.get(1),
-            GregtechItemList.QuintupleCompressedCactusCoke.get(1));
-
-        addCompressionRecipes(
-            false,
-            GregtechItemList.SugarCharcoal.get(1),
-            GregtechItemList.BlockSugarCharcoal.get(1),
-            GregtechItemList.CompressedSugarCharcoal.get(1),
-            GregtechItemList.DoubleCompressedSugarCharcoal.get(1),
-            GregtechItemList.TripleCompressedSugarCharcoal.get(1),
-            GregtechItemList.QuadrupleCompressedSugarCharcoal.get(1),
-            GregtechItemList.QuintupleCompressedSugarCharcoal.get(1));
-
-        addCompressionRecipes(
-            false,
-            GregtechItemList.SugarCoke.get(1),
-            GregtechItemList.BlockSugarCoke.get(1),
-            GregtechItemList.CompressedSugarCoke.get(1),
-            GregtechItemList.DoubleCompressedSugarCoke.get(1),
-            GregtechItemList.TripleCompressedSugarCoke.get(1),
-            GregtechItemList.QuadrupleCompressedSugarCoke.get(1),
-            GregtechItemList.QuintupleCompressedSugarCoke.get(1));
+        addDecompressionRecipe(BlockCactusCharcoal.get(1), CactusCharcoal.get(9));
+        addDecompressionRecipe(CompressedCactusCharcoal.get(1), BlockCactusCharcoal.get(9));
+        addDecompressionRecipe(DoubleCompressedCactusCharcoal.get(1), CompressedCactusCharcoal.get(9));
+        addDecompressionRecipe(TripleCompressedCactusCharcoal.get(1), DoubleCompressedCactusCharcoal.get(9));
+        addDecompressionRecipe(QuadrupleCompressedCactusCharcoal.get(1), TripleCompressedCactusCharcoal.get(9));
+        addDecompressionRecipe(QuintupleCompressedCactusCharcoal.get(1), QuadrupleCompressedCactusCharcoal.get(9));
     }
 
-    private static void addCompressionRecipes(boolean withCrafting, ItemStack item, ItemStack block, ItemStack one,
-        ItemStack two, ItemStack three, ItemStack four, ItemStack five) {
+    private static void addCompressedCactusCoke() {
+        addCompressionRecipe(CactusCoke.get(9), BlockCactusCoke.get(1));
+        addCompressionRecipe(BlockCactusCoke.get(9), CompressedCactusCoke.get(1));
+        addCompressionRecipe(CompressedCactusCoke.get(9), DoubleCompressedCactusCoke.get(1));
+        addCompressionRecipe(DoubleCompressedCactusCoke.get(9), TripleCompressedCactusCoke.get(1));
+        addCompressionRecipe(TripleCompressedCactusCoke.get(9), QuadrupleCompressedCactusCoke.get(1));
+        addCompressionRecipe(QuadrupleCompressedCactusCoke.get(9), QuintupleCompressedCactusCoke.get(1));
 
-        addCompressionRecipe(withCrafting, item, block);
-        addCompressionRecipe(withCrafting, block, one);
-        addCompressionRecipe(withCrafting, one, two);
-        addCompressionRecipe(withCrafting, two, three);
-        addCompressionRecipe(withCrafting, three, four);
-        addCompressionRecipe(withCrafting, four, five);
+        addDecompressionRecipe(BlockCactusCoke.get(1), CactusCoke.get(9));
+        addDecompressionRecipe(CompressedCactusCoke.get(1), BlockCactusCoke.get(9));
+        addDecompressionRecipe(DoubleCompressedCactusCoke.get(1), CompressedCactusCoke.get(9));
+        addDecompressionRecipe(TripleCompressedCactusCoke.get(1), DoubleCompressedCactusCoke.get(9));
+        addDecompressionRecipe(QuadrupleCompressedCactusCoke.get(1), TripleCompressedCactusCoke.get(9));
+        addDecompressionRecipe(QuintupleCompressedCactusCoke.get(1), QuadrupleCompressedCactusCoke.get(9));
     }
 
-    private static void addCompressionRecipes(boolean withCrafting, ItemStack item, ItemStack block, ItemStack one,
-        ItemStack two, ItemStack three) {
+    private static void addCompressedSugarCharcoal() {
+        addCompressionRecipe(SugarCharcoal.get(9), BlockSugarCharcoal.get(1));
+        addCompressionRecipe(BlockSugarCharcoal.get(9), CompressedSugarCharcoal.get(1));
+        addCompressionRecipe(CompressedSugarCharcoal.get(9), DoubleCompressedSugarCharcoal.get(1));
+        addCompressionRecipe(DoubleCompressedSugarCharcoal.get(9), TripleCompressedSugarCharcoal.get(1));
+        addCompressionRecipe(TripleCompressedSugarCharcoal.get(9), QuadrupleCompressedSugarCharcoal.get(1));
+        addCompressionRecipe(QuadrupleCompressedSugarCharcoal.get(9), QuintupleCompressedSugarCharcoal.get(1));
 
-        addCompressionRecipe(withCrafting, item, block);
-        addCompressionRecipe(withCrafting, block, one);
-        addCompressionRecipe(withCrafting, one, two);
-        addCompressionRecipe(withCrafting, two, three);
+        addDecompressionRecipe(BlockSugarCharcoal.get(1), SugarCharcoal.get(9));
+        addDecompressionRecipe(CompressedSugarCharcoal.get(1), BlockSugarCharcoal.get(9));
+        addDecompressionRecipe(DoubleCompressedSugarCharcoal.get(1), CompressedSugarCharcoal.get(9));
+        addDecompressionRecipe(TripleCompressedSugarCharcoal.get(1), DoubleCompressedSugarCharcoal.get(9));
+        addDecompressionRecipe(QuadrupleCompressedSugarCharcoal.get(1), TripleCompressedSugarCharcoal.get(9));
+        addDecompressionRecipe(QuintupleCompressedSugarCharcoal.get(1), QuadrupleCompressedSugarCharcoal.get(9));
     }
 
-    private static void addCompressionRecipe(boolean crafting, ItemStack raw, ItemStack compressed) {
-        if (raw == null || compressed == null) return;
+    private static void addCompressedSugarCoke() {
+        addCompressionRecipe(SugarCoke.get(9), BlockSugarCoke.get(1));
+        addCompressionRecipe(BlockSugarCoke.get(9), CompressedSugarCoke.get(1));
+        addCompressionRecipe(CompressedSugarCoke.get(9), DoubleCompressedSugarCoke.get(1));
+        addCompressionRecipe(DoubleCompressedSugarCoke.get(9), TripleCompressedSugarCoke.get(1));
+        addCompressionRecipe(TripleCompressedSugarCoke.get(9), QuadrupleCompressedSugarCoke.get(1));
+        addCompressionRecipe(QuadrupleCompressedSugarCoke.get(9), QuintupleCompressedSugarCoke.get(1));
 
-        if (crafting) {
-            GTModHandler.addCraftingRecipe(compressed, new Object[] { "III", "III", "III", 'I', raw });
-            GTModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(9, raw), new Object[] { compressed });
-        } else {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(9, raw))
-                .itemOutputs(compressed)
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
+        addDecompressionRecipe(BlockSugarCoke.get(1), SugarCoke.get(9));
+        addDecompressionRecipe(CompressedSugarCoke.get(1), BlockSugarCoke.get(9));
+        addDecompressionRecipe(DoubleCompressedSugarCoke.get(1), CompressedSugarCoke.get(9));
+        addDecompressionRecipe(TripleCompressedSugarCoke.get(1), DoubleCompressedSugarCoke.get(9));
+        addDecompressionRecipe(QuadrupleCompressedSugarCoke.get(1), TripleCompressedSugarCoke.get(9));
+        addDecompressionRecipe(QuintupleCompressedSugarCoke.get(1), QuadrupleCompressedSugarCoke.get(9));
     }
 
     private static void addCompressedObsidian() {
-        // Compressed Obsidian
-        addCompressionRecipes(
-            true,
-            null,
-            new ItemStack(Blocks.obsidian),
-            GregtechItemList.CompressedObsidian.get(1),
-            GregtechItemList.DoubleCompressedObsidian.get(1),
-            GregtechItemList.TripleCompressedObsidian.get(1),
-            GregtechItemList.QuadrupleCompressedObsidian.get(1),
-            GregtechItemList.QuintupleCompressedObsidian.get(1));
+        addCompressionRecipe(Obsidian.getBlocks(9), CompressedObsidian.get(1));
+        addCompressionRecipe(CompressedObsidian.get(9), DoubleCompressedObsidian.get(1));
+        addCompressionRecipe(DoubleCompressedObsidian.get(9), TripleCompressedObsidian.get(1));
+        addCompressionRecipe(TripleCompressedObsidian.get(9), QuadrupleCompressedObsidian.get(1));
+        addCompressionRecipe(QuadrupleCompressedObsidian.get(9), QuintupleCompressedObsidian.get(1));
 
-        // Compressed Glowstone
-        addCompressionRecipe(true, new ItemStack(Blocks.glowstone), GregtechItemList.CompressedGlowstone.get(1));
-        addCompressionRecipe(
-            true,
-            GregtechItemList.CompressedGlowstone.get(1),
-            GregtechItemList.DoubleCompressedGlowstone.get(1));
+        addDecompressionRecipe(CompressedObsidian.get(1), Obsidian.getBlocks(9));
+        addDecompressionRecipe(DoubleCompressedObsidian.get(1), CompressedObsidian.get(9));
+        addDecompressionRecipe(TripleCompressedObsidian.get(1), DoubleCompressedObsidian.get(9));
+        addDecompressionRecipe(QuadrupleCompressedObsidian.get(1), TripleCompressedObsidian.get(9));
+        addDecompressionRecipe(QuintupleCompressedObsidian.get(1), QuadrupleCompressedObsidian.get(9));
+    }
 
-        // Double -> Triple done differently
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.TripleCompressedGlowstone.get(1),
-            new Object[] { "III", "IQI", "III", 'I', GregtechItemList.DoubleCompressedGlowstone.get(1), 'Q',
-                GregtechItemList.InvertedObsidian.get(1) });
-        GTModHandler.addShapelessCraftingRecipe(
-            GregtechItemList.DoubleCompressedGlowstone.get(9),
-            new Object[] { GregtechItemList.TripleCompressedGlowstone.get(1) });
+    private static void addCompressedNetherrack() {
+        addCompressionRecipe(new ItemStack(Blocks.netherrack, 9, 0), CompressedNetherrack.get(1));
+        addCompressionRecipe(CompressedNetherrack.get(9), DoubleCompressedNetherrack.get(1));
+        addCompressionRecipe(DoubleCompressedNetherrack.get(9), TripleCompressedNetherrack.get(1));
 
-        addCompressionRecipe(
-            true,
-            GregtechItemList.TripleCompressedGlowstone.get(1),
-            GregtechItemList.QuadrupleCompressedGlowstone.get(1));
-        addCompressionRecipe(
-            true,
-            GregtechItemList.QuadrupleCompressedGlowstone.get(1),
-            GregtechItemList.QuintupleCompressedGlowstone.get(1));
+        addDecompressionRecipe(CompressedNetherrack.get(1), new ItemStack(Blocks.netherrack, 9, 0));
+        addDecompressionRecipe(DoubleCompressedNetherrack.get(1), CompressedNetherrack.get(9));
+        addDecompressionRecipe(TripleCompressedNetherrack.get(1), DoubleCompressedNetherrack.get(9));
+    }
 
-        // Compressed Netherrack
-        addCompressionRecipes(
-            true,
-            null,
-            new ItemStack(Blocks.netherrack, 1),
-            GregtechItemList.CompressedNetherrack.get(1),
-            GregtechItemList.DoubleCompressedNetherrack.get(1),
-            GregtechItemList.TripleCompressedNetherrack.get(1));
+    private static void addCompressedGlowstone() {
+        addCompressionRecipe(new ItemStack(Blocks.glowstone, 9, 0), CompressedGlowstone.get(1));
+        addCompressionRecipe(CompressedGlowstone.get(9), DoubleCompressedGlowstone.get(1));
+        addCompressionRecipe(DoubleCompressedGlowstone.get(9), TripleCompressedGlowstone.get(1));
+        addCompressionRecipe(TripleCompressedGlowstone.get(9), QuadrupleCompressedGlowstone.get(1));
+        addCompressionRecipe(QuadrupleCompressedGlowstone.get(9), QuintupleCompressedGlowstone.get(1));
 
+        addDecompressionRecipe(CompressedGlowstone.get(1), new ItemStack(Blocks.glowstone, 9, 0));
+        addDecompressionRecipe(DoubleCompressedGlowstone.get(1), CompressedGlowstone.get(9));
+        addDecompressionRecipe(TripleCompressedGlowstone.get(1), DoubleCompressedGlowstone.get(9));
+        addDecompressionRecipe(QuadrupleCompressedGlowstone.get(1), TripleCompressedGlowstone.get(9));
+        addDecompressionRecipe(QuintupleCompressedGlowstone.get(1), QuadrupleCompressedGlowstone.get(9));
+    }
+
+    private static void addCompressionRecipe(@NotNull ItemStack raw, @NotNull ItemStack compressed) {
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.netherrack, 9))
-            .itemOutputs(GregtechItemList.CompressedNetherrack.get(1))
+            .itemInputs(raw)
+            .itemOutputs(compressed)
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(2)
             .addTo(compressorRecipes);
+    }
 
+    private static void addDecompressionRecipe(@NotNull ItemStack compressed, @NotNull ItemStack raw) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CompressedNetherrack.get(9))
-            .itemOutputs(GregtechItemList.DoubleCompressedNetherrack.get(1))
+            .itemInputs(compressed)
+            .itemOutputs(raw)
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.DoubleCompressedNetherrack.get(9))
-            .itemOutputs(GregtechItemList.TripleCompressedNetherrack.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(compressorRecipes);
-
+            .eut(2)
+            .addTo(hammerRecipes);
     }
 
     private static void addPipesAndWires() {

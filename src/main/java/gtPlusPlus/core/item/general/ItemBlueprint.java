@@ -15,12 +15,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ItemBlueprint extends Item implements IItemBlueprint {
 
@@ -82,7 +82,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer par3Entity) {
         // Let the player know what blueprint is held
         if (itemStack.hasTagCompound()) {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 par3Entity,
                 "This Blueprint holds NBT data. " + "|"
                     + this.getNBT(itemStack, "mID")
@@ -94,7 +94,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     + ItemUtils.getArrayStackNames(this.readItemsFromNBT(itemStack)));
         } else {
             this.createNBT(itemStack);
-            PlayerUtils.messagePlayer(par3Entity, "This is a placeholder. " + this.getNBT(itemStack, "mID"));
+            GTUtility.sendChatToPlayer(par3Entity, "This is a placeholder. " + this.getNBT(itemStack, "mID"));
         }
 
         return super.onItemRightClick(itemStack, world, par3Entity);

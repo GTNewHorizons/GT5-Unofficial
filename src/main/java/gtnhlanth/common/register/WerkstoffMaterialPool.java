@@ -117,7 +117,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 225, 230, 225 },
         "Zirconium",
         subscriptNumbers("Zr"),
-        new Werkstoff.Stats().setBlastFurnace(true),
+        new Werkstoff.Stats(),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()

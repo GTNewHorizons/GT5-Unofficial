@@ -225,18 +225,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     private boolean checkMachine() {
+        mDataAccessHatches.clear();
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         return checkMachine(true) || checkMachine(false);
     }
 
     private boolean checkMachine(boolean leftToRight) {
-        clearHatches();
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
-            if (!mOutputBusses.isEmpty()) {
+            if (!mOutputBusses.isEmpty())
                 return (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) && mMaintenanceHatches.size() == 1
                     && mDataAccessHatches.size() <= 1;
-            }
         }
         return false;
     }
@@ -445,8 +444,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     /**
-     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not
-     * loaded. also supports setting a stop reason
+     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not loaded.
+     * also supports setting a stop reason
      */
     private void criticalStopMachine(String reason) {
         int oMaxProgresstime = mMaxProgresstime;
@@ -633,7 +632,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInputBus inputBus = mInputBusses.get(index);
         if (!inputBus.isValid()) return null;
         if (inputBus instanceof MTEHatchInputBusME meBus) {
-            ItemStack item = meBus.getFirstShadowItemStack(true);
+            ItemStack item = meBus.getFirstValidStack(true);
             if (item == null) return null;
             GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
             if (!curBatchItemsFromME.containsKey(id)) return null;
@@ -648,7 +647,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInput inputHatch = mInputHatches.get(index);
         if (!inputHatch.isValid()) return null;
         if (inputHatch instanceof MTEHatchInputME meHatch) {
-            FluidStack fluid = meHatch.getFirstShadowFluidStack(true);
+            FluidStack fluid = meHatch.getFirstValidStack(true);
             if (fluid == null) return null;
             if (!curBatchFluidsFromME.containsKey(fluid.getFluid())) return null;
             return curBatchFluidsFromME.get(fluid.getFluid());
@@ -1025,11 +1024,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 if (id + 1 >= currentInputLength) {
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
-                    if (addOutput(output) || !voidingMode.protectItem) reset();
-                    else stuck = true;
+                    if (addOutputAtomic(GTUtility.copy(output)) || !voidingMode.protectItem) {
+                        reset();
+                    } else {
+                        stuck = true;
+                    }
                 } else {
-                    if (slices[id + 1].start()) reset();
-                    else stuck = true;
+                    if (slices[id + 1].start()) {
+                        reset();
+                    } else {
+                        stuck = true;
+                    }
                 }
             }
         }

@@ -152,9 +152,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfItems != 0) {
-                        for (ItemStack itemStack : randomizedItemInput) {
-                            addOutput(itemStack);
-                        }
+                        addItemOutputs(randomizedItemInput);
                     }
 
                     recipeInProgress = true;
@@ -789,15 +787,15 @@ public class MTEExoticModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Exotic Matter Producer")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for ultra high temperature matter degeneration.")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for ultra high temperature matter degeneration")
             .addSeparator(EnumChatFormatting.AQUA, 75)
             .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
             .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
             .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
-            .addInfo("requires a fully upgraded Godforge.")
-            .addInfo("This module is specialized towards acquisition of unique materials.")
+            .addInfo("requires a fully upgraded Godforge")
+            .addInfo("This module is specialized towards acquisition of unique materials")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"

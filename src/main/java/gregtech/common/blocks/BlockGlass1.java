@@ -14,8 +14,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 
 /**
- * The glass is split into separate files because they are registered as regular blocks, and a regular block can have
- * 16 subtypes at most.
+ * The glass is split into separate files because they are registered as regular blocks, and a regular block can have 16
+ * subtypes at most.
  * <p>
  * This class hosts various special types of tiered glass with not many tiers.
  */
@@ -34,6 +34,9 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             ItemList.Hawking_Glass,
             "Hawking Radiation Realignment Focus",
             translatedText("gt.casing.hawking-focus"));
+        register(5, ItemList.NaniteShieldingGlass, "Nanite Shielding Glass");
+        register(6, ItemList.Chamber_Grate, "Chamber Grate");
+
     }
 
     @Override
@@ -72,6 +75,9 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 2 -> Textures.BlockIcons.OMNI_PURPOSE_INFINITY_FUSED_GLASS.getIcon();
             case 3 -> Textures.BlockIcons.GLASS_QUARK_CONTAINMENT.getIcon();
             case 4 -> Textures.BlockIcons.HAWKING_GLASS.getIcon();
+            case 5 -> Textures.BlockIcons.NANITE_SHIELDING_FRAME.getIcon();
+            case 6 -> Textures.BlockIcons.SIEVE_MESH.getIcon();
+
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

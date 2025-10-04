@@ -101,27 +101,27 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     private void cyclePrefix(boolean aRightClick) {
-        for (int i = 0; i < OrePrefixes.values().length; i++) {
-            if (this.mPrefix == OrePrefixes.values()[i]) {
-                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.values()[i]) {
+        final OrePrefixes[] ORE_VALUES = OrePrefixes.values();
+        for (int i = 0; i < ORE_VALUES.length; i++) {
+            if (this.mPrefix == ORE_VALUES[i]) {
+                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = ORE_VALUES[i]) {
                     if (aRightClick) {
                         do {
                             i--;
                             if (i < 0) {
-                                i = OrePrefixes.values().length - 1;
+                                i = ORE_VALUES.length - 1;
                             }
-                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
+                        } while (ORE_VALUES[i].mPrefixedItems.isEmpty());
                     } else {
                         do {
                             i++;
-                            if (i >= OrePrefixes.values().length) {
+                            if (i >= ORE_VALUES.length) {
                                 i = 0;
                             }
-                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
+                        } while (ORE_VALUES[i].mPrefixedItems.isEmpty());
                     }
-                    if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty()
-                        && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
-                        mPrefix = OrePrefixes.values()[i];
+                    if (!ORE_VALUES[i].mPrefixedItems.isEmpty() && ORE_VALUES[i].mPrefixInto == ORE_VALUES[i])
+                        mPrefix = ORE_VALUES[i];
                 }
             }
             this.mRotationIndex = -1;
