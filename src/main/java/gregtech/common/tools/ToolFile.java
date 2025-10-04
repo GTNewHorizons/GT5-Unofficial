@@ -7,8 +7,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -31,11 +30,6 @@ public class ToolFile extends GTTool {
     }
 
     @Override
-    public String getCraftingSound() {
-        return SoundResource.GTCEU_OP_FILE.toString();
-    }
-
-    @Override
     public boolean canBlock() {
         return true;
     }
@@ -55,7 +49,7 @@ public class ToolFile extends GTTool {
         return !aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(
                 aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.mTextureIndex]
-            : Textures.ItemIcons.HANDLE_FILE;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleFile];
     }
 
     @Override
