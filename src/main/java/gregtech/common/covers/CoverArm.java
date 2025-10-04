@@ -4,10 +4,16 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -17,28 +23,24 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.mui1.cover.ArmUIFactory;
+import io.netty.buffer.ByteBuf;
 
-public class CoverArm extends CoverLegacyData {
+public class CoverArm extends Cover {
 
     private boolean export = false;
     private int internalSlotId = 1;
     private int externalSlotId = 1;
     public final int mTickRate;
+    // TODO: REMOVE
     // msb converted, 2nd : direction (1=export)
     // right 14 bits: internalSlot, next 14 bits adjSlot, 0 = all, slot = -1
     public static final int EXPORT_MASK = 0x40000000;
     public static final int SLOT_ID_MASK = 0x3FFF;
-    protected static final int SLOT_ID_MIN = 0;
     public static final int CONVERTED_BIT = 0x80000000;
 
     public CoverArm(CoverContext context, int aTickRate, ITexture coverTexture) {
         super(context, coverTexture);
         this.mTickRate = aTickRate;
-    }
-
-    @Override
-    public boolean isRedstoneSensitive(long aTimer) {
-        return false;
     }
 
     @Override
@@ -146,6 +148,45 @@ public class CoverArm extends CoverLegacyData {
     }
 
     @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(export);
+        byteBuf.writeInt(internalSlotId);
+        byteBuf.writeInt(externalSlotId);
+    }
+
+    @Override
+    protected void readDataFromPacket(ByteArrayDataInput byteData) {
+        this.export = byteData.readBoolean();
+        this.internalSlotId = byteData.readInt();
+        this.externalSlotId = byteData.readInt();
+    }
+
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagInt legacyData) {
+            int data = legacyData.func_150287_d();
+            this.export = getFlagExport(data);
+            this.internalSlotId = getFlagInternalSlot(data);
+            this.externalSlotId = getFlagExternalSlot(data);
+            return;
+        }
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        this.export = tag.getBoolean("export");
+        this.internalSlotId = tag.getInteger("internalSlotId");
+        this.externalSlotId = tag.getInteger("externalSlotId");
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("export", this.export);
+        tag.setInteger("internalSlotId", this.internalSlotId);
+        tag.setInteger("externalSlotId", this.externalSlotId);
+
+        return tag;
+    }
+
+    @Override
     public boolean letsRedstoneGoIn() {
         return true;
     }
@@ -194,6 +235,62 @@ public class CoverArm extends CoverLegacyData {
         return this.mTickRate;
     }
 
+    public boolean isExport() {
+        return export;
+    }
+
+    public void setExport(boolean export) {
+        this.export = export;
+    }
+
+    public int getInternalSlotId() {
+        return internalSlotId;
+    }
+
+    public void setInternalSlotId(int internalSlotId) {
+        this.internalSlotId = internalSlotId;
+    }
+
+    public int getExternalSlotId() {
+        return externalSlotId;
+    }
+
+    public void setExternalSlotId(int externalSlotId) {
+        this.externalSlotId = externalSlotId;
+    }
+
+    // LEGACY BACKWARDS COMPAT
+    private int getNewVar(int var, int step) {
+        int intSlot = (var & SLOT_ID_MASK);
+        int adjSlot = (var >> 14) & SLOT_ID_MASK;
+        if ((var & EXPORT_MASK) == 0) {
+            int x = (intSlot + step);
+            if (x > SLOT_ID_MASK) return createVar(0, SLOT_ID_MASK, 0);
+            else if (x < 1) return createVar(-step - intSlot + 1, 0, EXPORT_MASK);
+            else return createVar(0, x, 0);
+        } else {
+            int x = (adjSlot - step);
+            if (x > SLOT_ID_MASK) return createVar(SLOT_ID_MASK, 0, EXPORT_MASK);
+            else if (x < 1) return createVar(0, step - adjSlot + 1, 0);
+            else return createVar(x, 0, EXPORT_MASK);
+        }
+    }
+
+    private int createVar(int adjSlot, int intSlot, int export) {
+        return CONVERTED_BIT | export | ((adjSlot & SLOT_ID_MASK) << 14) | (intSlot & SLOT_ID_MASK);
+    }
+
+    private boolean getFlagExport(int coverVariable) {
+        return (coverVariable & CoverArm.EXPORT_MASK) != 0;
+    }
+
+    private int getFlagInternalSlot(int coverVariable) {
+        return coverVariable & CoverArm.SLOT_ID_MASK;
+    }
+
+    private int getFlagExternalSlot(int coverVariable) {
+        return (coverVariable >> 14) & CoverArm.SLOT_ID_MASK;
+    }
     // GUI stuff
 
     @Override
