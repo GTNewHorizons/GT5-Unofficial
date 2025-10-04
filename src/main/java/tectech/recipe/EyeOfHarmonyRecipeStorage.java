@@ -55,8 +55,9 @@ public class EyeOfHarmonyRecipeStorage {
 
                 if (dimAbbreviation.equals("DD")) {
                     specialDeepDarkRecipe(this, blockDimensionDisplay);
+                } else if (dimAbbreviation.equals("Rb") || dimAbbreviation.equals("Ra")) {
+                    // disable ross128b/ross128ba
                 } else {
-
                     GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.dimToOreWrapper
                         .getOrDefault(dimAbbreviation, null);
                     GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper

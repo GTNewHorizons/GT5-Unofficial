@@ -99,3 +99,24 @@ gtnop.ore.custom.name=Custom
 
 # items
 itemGroup.gtneioreplugin=GT NEI Ore Plugin
+
+# ross vein names
+ore.mix.ross128.Thorianit=Thorianite
+ore.mix.ross128.carbon=Graphite
+ore.mix.ross128.bismuth=Bismuth
+ore.mix.ross128.TurmalinAlkali=Olenite
+ore.mix.ross128.Roquesit=Roquesite
+ore.mix.ross128.Tungstate=Scheelite
+ore.mix.ross128.CopperSulfits=Djurleite
+ore.mix.ross128.Forsterit=Forsterite
+ore.mix.ross128.Hedenbergit=Hedenbergite
+ore.mix.ross128.RedZircon=Red Zircon
+
+ore.mix.ross128ba.tib=Tiberium
+ore.mix.ross128ba.Tungstate=Scheelite
+ore.mix.ross128ba.bart=BArTiMaEuSNeK
+ore.mix.ross128ba.TurmalinAlkali=Olenite
+ore.mix.ross128ba.Amethyst=Amethyst
+ore.mix.ross128ba.CopperSulfits=Djurleite
+ore.mix.ross128ba.RedZircon=Red Zircon
+ore.mix.ross128ba.Fluorspar=Fluorspar
