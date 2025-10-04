@@ -18,11 +18,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.multi.gui.MTECokeOvenGUI;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
 
@@ -63,6 +66,21 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.PRIMITIVE;
+    }
+
+    @Override
+    protected MTECokeOvenGUI getGui() {
+        return new MTECokeOvenGUI(this);
     }
 
     @Override

@@ -656,7 +656,7 @@ public class MTEMultiBlockBaseGui {
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
-    private IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
+    protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .height(76)
             .alignX(0)
