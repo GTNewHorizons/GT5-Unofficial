@@ -267,45 +267,35 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Alloy Cooker, MABS")
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"all it does is make metals hot\""),
-                    EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType("machtype.mega_abs")
+            .addInfo("gt.mega_abs.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                TooltipHelper.speedText("-5%") + " Recipe Time per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier above TPV (additive)")
-            .addInfo("if the equivalent or better " + TooltipHelper.tierText(TooltipTier.GLASS) + " is present")
-            .addInfo(
-                TooltipHelper.effText("-5%") + " EU Usage per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier above the Recipe Tier (multiplicative)")
+                "gt.mega_abs.tips.2",
+                TooltipHelper.tierText(TooltipTier.COIL),
+                TooltipHelper.tierText(TooltipTier.GLASS))
             .addSeparator()
             .addInfo(
-                "Recipe Tier limited by " + TooltipHelper.tierText(TooltipTier.GLASS)
-                    + " Tier, "
-                    + TooltipHelper.voltageText(VoltageIndex.UMV)
-                    + " unlocks all")
-            .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
+                "gt.mega_abs.tips.3",
+                TooltipHelper.tierText(TooltipTier.GLASS),
+                TooltipHelper.voltageText(VoltageIndex.UMV))
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
-            .addController("Mid of the fourth layer")
-            .addCasingInfoExactly("Blast Smelter Casing Block", 218, false)
-            .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 56, false)
-            .addCasingInfoExactly("Coil", 360, true)
-            .addCasingInfoExactly("Any Tiered Glass", 339, true)
-            .addMaintenanceHatch("Around the controller", 2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GTPP.tooltip.structure.many_bus_hatch"),
-                "Bottom Casing",
+            .addController("gt.mega_abs.info.1")
+            .addCasingInfoExactly("miscutils.blockcasings.15.name", 218, false)
+            .addCasingInfoExactly("miscutils.blockcasings.14.name", 56, false)
+            .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 360, true)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 339, true)
+            .addMaintenanceHatch("gt.mega_abs.info.2", 2)
+            .addStructurePartHinted(
+                "GTPP.tooltip.structure.many_bus_hatch",
+                "<bottom casing>",
                 1)
-            .addMufflerHatch("1 in the center of the top layer", 3)
+            .addMufflerHatch("gt.mega_abs.info.3", 3)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
