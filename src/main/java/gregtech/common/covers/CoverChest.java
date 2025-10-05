@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import static gregtech.api.modularui2.GTGuis.GLOBAL_SWITCH_MUI2;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.entity.item.EntityItem;
@@ -32,6 +33,7 @@ public class CoverChest extends Cover {
     private final int slots;
     private final int stackSizeLimit = 1;
     private LimitingItemStackHandler items;
+    // TODO: REMOVE AFTER 2.9
     private LegacyLimitingItemStackHandler legacyItems;
     private boolean firstTick;
 
@@ -51,26 +53,39 @@ public class CoverChest extends Cover {
         return this.legacyItems;
     }
 
+    public LimitingItemStackHandler getItems() {
+        return items;
+    }
+
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
         if (!(nbt instanceof NBTTagCompound)) return;
+        items.deserializeNBT((NBTTagCompound) nbt);
         legacyItems.deserializeNBT((NBTTagCompound) nbt);
         firstTick = true;
     }
 
     @Override
     public void readDataFromPacket(ByteArrayDataInput byteData) {
-        legacyItems.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
+        if (GLOBAL_SWITCH_MUI2) {
+            items.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
+        } else {
+            legacyItems.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
+        }
     }
 
     @Override
     protected @NotNull NBTBase saveDataToNbt() {
-        return legacyItems.serializeNBT();
+        return GLOBAL_SWITCH_MUI2 ? items.serializeNBT() : legacyItems.serializeNBT();
     }
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        ByteBufUtils.writeTag(byteBuf, legacyItems.serializeNBT());
+        if (GLOBAL_SWITCH_MUI2) {
+            ByteBufUtils.writeTag(byteBuf, items.serializeNBT());
+        } else {
+            ByteBufUtils.writeTag(byteBuf, legacyItems.serializeNBT());
+        }
     }
 
     @Override
@@ -96,6 +111,22 @@ public class CoverChest extends Cover {
     }
 
     private void dropAll(ICoverable coverable, ForgeDirection direction) {
+        if (!GLOBAL_SWITCH_MUI2) {
+            dropAllLegacy(coverable, direction);
+            return;
+        }
+
+        for (int i = 0; i < items.getSlots(); i++) {
+            ItemStack tItem = items.getStackInSlot(i);
+            if (tItem == null) {
+                continue;
+            }
+            dropItem(coverable, direction, tItem);
+            items.setStackInSlot(i, null);
+        }
+    }
+
+    private void dropAllLegacy(ICoverable coverable, ForgeDirection direction) {
         for (int i = 0; i < legacyItems.getSlots(); i++) {
             ItemStack tItem = legacyItems.getStackInSlot(i);
             if (tItem == null) {
@@ -119,6 +150,28 @@ public class CoverChest extends Cover {
         }
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
+        if (!GLOBAL_SWITCH_MUI2) {
+            doCoverThingsLegacy(aInputRedstone, aTimer, coverable);
+        }
+        if (items.getSlots() != slots) {
+            if (items.getSlots() > slots) {
+                for (int i = slots; i < items.getSlots(); i++) {
+                    ItemStack item = items.getStackInSlot(i);
+                    if (item != null) {
+                        dropItem(coverable, coverSide, item);
+                    }
+                }
+            }
+            this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
+            int toCopy = Math.min(items.getSlots(), items.getSlots());
+            for (int i = 0; i < toCopy; i++) {
+                items.setStackInSlot(i, items.getStackInSlot(i));
+            }
+        }
+        firstTick = false;
+    }
+
+    private void doCoverThingsLegacy(byte aInputRedstone, long aTimer, ICoverable coverable) {
         if (legacyItems.getSlots() != slots) {
             if (legacyItems.getSlots() > slots) {
                 for (int i = slots; i < legacyItems.getSlots(); i++) {
@@ -134,7 +187,6 @@ public class CoverChest extends Cover {
                 legacyItems.setStackInSlot(i, legacyItems.getStackInSlot(i));
             }
         }
-        firstTick = false;
     }
 
     @Override
