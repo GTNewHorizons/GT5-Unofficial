@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverChest;
 
 public class CoverChestGui extends CoverGui<CoverChest> {
@@ -39,7 +40,7 @@ public class CoverChestGui extends CoverGui<CoverChest> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         int rows = cover.getSlotCount() / 3;
         String[] matrix = new String[rows];
         Arrays.fill(matrix, "xxx");
