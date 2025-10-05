@@ -61,7 +61,8 @@ public class CoverArmGui extends CoverGui<CoverArm> {
             .dynamic(
                 () -> cover.isExport() ? StatCollector.translateToLocal("gt.interact.desc.export")
                     : StatCollector.translateToLocal("gt.interact.desc.import"))
-            .asWidget();
+            .asWidget()
+            .marginLeft(14);
     }
 
     private Flow createInternalSlotRow() {
