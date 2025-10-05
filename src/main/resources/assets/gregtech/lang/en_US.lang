@@ -3632,7 +3632,7 @@ machtype.fishtrap=Fish Trap
 machtype.flotation_cell=Flotation Cell, FCR
 machtype.chem_plant=Chemical Plant
 machtype.mega_abs=Fluid Alloy Cooker, MABS
-machtype.mass_fab=Mass Fabricator, Recycler
+machtype.massfab=Mass Fabricator
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3642,8 +3642,8 @@ gt.mb.corepos.top_center=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
 
-gt.mass_fab.tips.1=Parallel: Scrap = 64 | UU = 8 * Tier
-gt.mass_fab.tips.2=Produces UU-A, UU-M & Scrap\nChange mode with screwdriver
+gt.massfab.tips.1=Parallel: Scrap = 64 | UU = 8 * Tier
+gt.massfab.tips.2=Produces UU-A, UU-M & Scrap\nChange mode with screwdriver
 
 gt.mega_abs.tips.1=§8§o"all it does is make metals hot"
 gt.mega_abs.tips.2=§a-5%% §7Recipe Time per %1$s Tier above TPV (additive)\nif the equivalent or better %2$s is present\n§b-5%% §7EU Usage per %1$s Tier above the Recipe Tier (multiplicative)

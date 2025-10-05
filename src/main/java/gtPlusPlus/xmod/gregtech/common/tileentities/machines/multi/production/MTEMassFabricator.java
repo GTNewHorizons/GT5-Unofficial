@@ -88,17 +88,17 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public String getMachineType() {
-        return "machtype.mass_fab";
+        return "Mass Fabricator, Recycler";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("gt.mass_fab.tips.1")
+        tt.addMachineType("machtype.massfab", "ic.recipe.recycler")
+            .addInfo("gt.massfab.tips.1")
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
-            .addInfo("gt.mass_fab.tips.2")
+            .addInfo("gt.massfab.tips.2")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
