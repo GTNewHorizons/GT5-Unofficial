@@ -58,7 +58,7 @@ public class ClientProxy extends CommonProxy {
         new CustomItemBlockRenderer();
         RenderingRegistry.registerBlockHandler(new MachineBlockRenderer());
         new FlaskRenderer();
-        MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
+        MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
         PowerGogglesKeybindHandler.init();
         super.init(e);
     }

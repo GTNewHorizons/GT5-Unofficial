@@ -28,6 +28,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Pulverizer implements Runnable {
 
     @Override
