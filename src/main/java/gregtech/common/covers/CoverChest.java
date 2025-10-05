@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -21,6 +22,8 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTByteBuffer;
+import gregtech.common.covers.gui.CoverChestGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.ChestUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -29,12 +32,14 @@ public class CoverChest extends Cover {
     private final int slots;
     private final int stackSizeLimit = 1;
     private LimitingItemStackHandler items;
+    private LegacyLimitingItemStackHandler legacyItems;
     private boolean firstTick;
 
     public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
         super(context, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
+        this.legacyItems = new LegacyLimitingItemStackHandler(slots, stackSizeLimit);
         this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
     }
 
@@ -42,30 +47,30 @@ public class CoverChest extends Cover {
         return slots;
     }
 
-    public IItemHandlerModifiable getItems() {
-        return this.items;
+    public IItemHandlerModifiable getLegacyItems() {
+        return this.legacyItems;
     }
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
         if (!(nbt instanceof NBTTagCompound)) return;
-        items.deserializeNBT((NBTTagCompound) nbt);
+        legacyItems.deserializeNBT((NBTTagCompound) nbt);
         firstTick = true;
     }
 
     @Override
     public void readDataFromPacket(ByteArrayDataInput byteData) {
-        items.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
+        legacyItems.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
     }
 
     @Override
     protected @NotNull NBTBase saveDataToNbt() {
-        return items.serializeNBT();
+        return legacyItems.serializeNBT();
     }
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        ByteBufUtils.writeTag(byteBuf, items.serializeNBT());
+        ByteBufUtils.writeTag(byteBuf, legacyItems.serializeNBT());
     }
 
     @Override
@@ -91,13 +96,13 @@ public class CoverChest extends Cover {
     }
 
     private void dropAll(ICoverable coverable, ForgeDirection direction) {
-        for (int i = 0; i < items.getSlots(); i++) {
-            ItemStack tItem = items.getStackInSlot(i);
+        for (int i = 0; i < legacyItems.getSlots(); i++) {
+            ItemStack tItem = legacyItems.getStackInSlot(i);
             if (tItem == null) {
                 continue;
             }
             dropItem(coverable, direction, tItem);
-            items.setStackInSlot(i, null);
+            legacyItems.setStackInSlot(i, null);
         }
     }
 
@@ -114,22 +119,27 @@ public class CoverChest extends Cover {
         }
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
-        if (items.getSlots() != slots) {
-            if (items.getSlots() > slots) {
-                for (int i = slots; i < items.getSlots(); i++) {
-                    ItemStack item = items.getStackInSlot(i);
+        if (legacyItems.getSlots() != slots) {
+            if (legacyItems.getSlots() > slots) {
+                for (int i = slots; i < legacyItems.getSlots(); i++) {
+                    ItemStack item = legacyItems.getStackInSlot(i);
                     if (item != null) {
                         dropItem(coverable, coverSide, item);
                     }
                 }
             }
-            this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
-            int toCopy = Math.min(items.getSlots(), items.getSlots());
+            this.legacyItems = new LegacyLimitingItemStackHandler(slots, stackSizeLimit);
+            int toCopy = Math.min(legacyItems.getSlots(), legacyItems.getSlots());
             for (int i = 0; i < toCopy; i++) {
-                items.setStackInSlot(i, items.getStackInSlot(i));
+                legacyItems.setStackInSlot(i, legacyItems.getStackInSlot(i));
             }
         }
         firstTick = false;
+    }
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverChestGui(this);
     }
 
     @Override
@@ -137,11 +147,11 @@ public class CoverChest extends Cover {
         return new ChestUIFactory(buildContext).createWindow();
     }
 
-    private static class LimitingItemStackHandler extends ItemStackHandler {
+    private static class LegacyLimitingItemStackHandler extends ItemStackHandler {
 
         private final int slotLimit;
 
-        private LimitingItemStackHandler(int slots, int slotLimit) {
+        private LegacyLimitingItemStackHandler(int slots, int slotLimit) {
             super(slots);
             this.slotLimit = slotLimit;
         }
