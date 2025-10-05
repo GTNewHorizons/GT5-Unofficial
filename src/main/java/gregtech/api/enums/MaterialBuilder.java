@@ -36,7 +36,7 @@ public class MaterialBuilder {
     private Element element;
     private String chemicalFormula;
     private int metaItemSubID = -1;
-    private boolean unificatable = true;
+    private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
     private Dyes color = Dyes._NULL;
     private int argb = 0x00ffffff;
@@ -96,7 +96,7 @@ public class MaterialBuilder {
             element,
             chemicalFormula,
             metaItemSubID,
-            unificatable,
+            unifiable,
             iconSet,
             color,
             argb, argbMolten,
@@ -172,8 +172,8 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setUnificatable(boolean unificatable) {
-        this.unificatable = unificatable;
+    public MaterialBuilder setUnifiable(boolean unifiable) {
+        this.unifiable = unifiable;
         return this;
     }
 
