@@ -69,7 +69,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
-import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.AssemblyLineServer;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
@@ -720,8 +719,6 @@ public class GTMod {
         event.registerServerCommand(new SPMCommand());
         event.registerServerCommand(new SpaceProjectCommand());
         event.registerServerCommand(new GTPowerfailCommand());
-        // Sets a new Machine Block Update Thread everytime a world is loaded
-        RunnableMachineUpdate.initExecutorService();
     }
 
     @Mod.EventHandler
@@ -738,8 +735,6 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
             tRunnable.run();
         }
-        // Interrupt IDLE Threads to close down cleanly
-        RunnableMachineUpdate.shutdownExecutorService();
     }
 
     @Mod.EventHandler
