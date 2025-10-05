@@ -1053,6 +1053,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         @Nullable Element element,
         @Nullable String chemicalFormula,
         int metaItemSubID,
+        boolean unificatable,
         TextureSet iconSet,
         Dyes color,
         int argb, int argbMolten,
@@ -1191,7 +1192,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mCustomOre = false;
         mCustomID = "null";
         mConfigSection = "ore";
-        mUnificatable = true;
         mMaterialInto = this;
 
         // Set material SubTags
@@ -1202,6 +1202,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         // Uncategorized fields
         mHeatDamage = heatDamage;
         mOreMultiplier = oreMultiplier;
+        mUnificatable = unificatable;
 
         // No clue what is going on here...
         int numberOfComponents = 0;

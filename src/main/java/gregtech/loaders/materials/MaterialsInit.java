@@ -8476,7 +8476,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8493,7 +8493,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8510,7 +8510,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8718,7 +8718,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8751,7 +8751,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -9088,7 +9088,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -9105,7 +9105,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
