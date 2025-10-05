@@ -215,6 +215,19 @@ gt.interact.desc.input_from_output_on=Input from Output Side allowed
 gt.interact.desc.input_from_output_off=Input from Output Side forbidden
 gt.interact.desc.public=Public
 gt.interact.desc.private=Private
+gt.interact.desc.privfreq=Use Private Frequency
+gt.interact.desc.gatemode=Gate Mode
+gt.interact.desc.andgate=AND Gate
+gt.interact.desc.nandgate=NAND Gate
+gt.interact.desc.orgate=OR Gate
+gt.interact.desc.norgate=NOR Gate
+gt.interact.desc.analogmode=ANALOG Mode
+gt.interact.desc.recipeprogress=Recipe Progress
+gt.interact.desc.machineidle=Machine Idle
+gt.interact.desc.fluidthreshold=Fluid Threshold
+gt.interact.desc.itemthreshold=Item Threshold
+gt.interact.desc.item_slot=Item In Slot
+gt.interact.desc.any_slot=-1 is Any Slot
 gt.interact.desc.set_perm=§8Public/Private
 gt.interact.desc.set_io=§8Import/Export
 gt.interact.desc.channel=§8Channel
@@ -1956,13 +1969,13 @@ gt.interact.desc.fluid_regulator.ExpImp=§8Export/Import
 gt.interact.desc.fluid_regulator.Conditional=§8Conditional
 gt.interact.desc.fluid_regulator.L=§8 L
 gt.interact.desc.fluid_regulator.Ticks=§8 ticks
-gt.interact.desc.fluid_regulator.Average=Average: 
+gt.interact.desc.fluid_regulator.Average=Average:
 gt.interact.desc.fluid_regulator.L_Sec=L/sec
 
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
 gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
-gt.interact.desc.Item_Filter.Filter=§8Filter 
+gt.interact.desc.Item_Filter.Filter=§8Filter
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
 ## Item Meter

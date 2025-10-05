@@ -316,6 +316,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
 
+    public static final UITexture OVERLAY_ROBOT_ARM_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
+    public static final UITexture OVERLAY_ROBOT_ARM_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/bounding_box")
         .fullImage()
@@ -462,6 +464,11 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = fullImageGT(
         "overlay_button/use_inverted_processing_state");
     public static final UITexture OVERLAY_BUTTON_WHITELIST = fullImageGT("overlay_button/whitelist");
+    public static final UITexture OVERLAY_BUTTON_GATE_AND = fullImageGT("overlay_button/gate_and");
+    public static final UITexture OVERLAY_BUTTON_GATE_NAND = fullImageGT("overlay_button/gate_nand");
+    public static final UITexture OVERLAY_BUTTON_GATE_OR = fullImageGT("overlay_button/gate_or");
+    public static final UITexture OVERLAY_BUTTON_GATE_NOR = fullImageGT("overlay_button/gate_nor");
+    public static final UITexture OVERLAY_BUTTON_ANALOG = fullImageGT("overlay_button/analog");
 
     // endregion button overlay
 

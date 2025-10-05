@@ -186,6 +186,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     protected boolean alwaysMaxParallel = true;
     protected int maxParallel = 1;
     protected boolean makePowerfailEvents = true;
+    // for the wireless maintenance detector cover gui, to display / not display the turbine row.
+    protected boolean usesTurbine = false;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -349,6 +351,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         aNBT.setBoolean("alwaysMaxParallel", alwaysMaxParallel);
         aNBT.setBoolean("makePowerfailEvents", makePowerfailEvents);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
+        aNBT.setBoolean("usesTurbine", usesTurbine);
     }
 
     @Override
@@ -367,7 +370,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         alwaysMaxParallel = !aNBT.hasKey("alwaysMaxParallel") || aNBT.getBoolean("alwaysMaxParallel");
         powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
         makePowerfailEvents = !aNBT.hasKey("makePowerfailEvents") || aNBT.getBoolean("makePowerfailEvents");
-
+        usesTurbine = aNBT.hasKey("usesTurbine") && aNBT.getBoolean("usesTurbine");
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
         if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
             CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(checkRecipeResultID)
@@ -3639,5 +3642,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public void setAlwaysMaxParallel(boolean alwaysMaxParallel) {
         this.alwaysMaxParallel = alwaysMaxParallel;
+    }
+
+    public boolean usesTurbines() {
+        return usesTurbine;
     }
 }

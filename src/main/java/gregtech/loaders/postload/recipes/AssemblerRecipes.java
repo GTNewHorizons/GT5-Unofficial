@@ -57,6 +57,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.CustomItemList;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AssemblerRecipes implements Runnable {
 
     @Override

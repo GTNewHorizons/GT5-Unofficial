@@ -25,6 +25,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class PlasmaForgeRecipes implements Runnable {
 
     @Override
