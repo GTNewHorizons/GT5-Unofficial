@@ -509,6 +509,7 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Sets what the ore of this material smelts into. */
     public MaterialBuilder setDirectSmelting(Supplier<Materials> material) {
         pendingDirectSmelting = material;
         return this;
