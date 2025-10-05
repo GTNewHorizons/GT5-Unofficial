@@ -286,6 +286,7 @@ public class CellLoader implements IWerkstoffRunnable {
                     werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
                         : new MaterialBuilder().setName(werkstoff.getDefaultName())
                             .setDefaultLocalName(werkstoff.getDefaultName())
+                            .setUnifiable(false)
                             .setIconSet(werkstoff.getTexSet())
                             .constructMaterial();
                     werkstoffBridgeMaterial.mElement = e;

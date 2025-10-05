@@ -2074,14 +2074,17 @@ public class WerkstoffLoader {
     private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
         Materials oreMat = new MaterialBuilder().setName("bwores")
             .setDefaultLocalName("bwores")
+            .setUnifiable(false)
             .constructMaterial();
 
         Materials smallOreMat = new MaterialBuilder().setName("bwsmallores")
             .setDefaultLocalName("bwsmallores")
+            .setUnifiable(false)
             .constructMaterial();
 
         Materials blockMat = new MaterialBuilder().setName("bwblocks")
             .setDefaultLocalName("bwblocks")
+            .setUnifiable(false)
             .constructMaterial();
 
         for (int i = 0; i < 16; i++) {
