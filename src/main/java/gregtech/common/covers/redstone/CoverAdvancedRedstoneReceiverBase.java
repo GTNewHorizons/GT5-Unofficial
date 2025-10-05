@@ -5,12 +5,16 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.KeyProvider;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.redstone.CoverAdvancedRedstoneReceiverBaseGui;
 import gregtech.common.gui.mui1.cover.AdvancedRedstoneReceiverBaseUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -67,11 +71,28 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
         return new AdvancedRedstoneReceiverBaseUIFactory(buildContext).createWindow();
     }
 
-    public enum GateMode {
-        AND,
-        NAND,
-        OR,
-        NOR,
-        SINGLE_SOURCE
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverAdvancedRedstoneReceiverBaseGui(this);
+    }
+
+    public enum GateMode implements KeyProvider {
+
+        AND(IKey.lang("gt.interact.desc.andgate")),
+        NAND(IKey.lang("gt.interact.desc.nandgate")),
+        OR(IKey.lang("gt.interact.desc.orgate")),
+        NOR(IKey.lang("gt.interact.desc.norgate")),
+        SINGLE_SOURCE(IKey.lang("gt.interact.desc.analogmode"));
+
+        private final IKey key;
+
+        GateMode(IKey key) {
+            this.key = key;
+        }
+
+        @Override
+        public IKey getKey() {
+            return this.key;
+        }
     }
 }

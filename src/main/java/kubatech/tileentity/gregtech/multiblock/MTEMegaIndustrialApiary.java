@@ -872,6 +872,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setEnabled(w -> !isInInventory));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))

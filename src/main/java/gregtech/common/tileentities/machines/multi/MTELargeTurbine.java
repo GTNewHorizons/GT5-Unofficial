@@ -106,10 +106,12 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
     public MTELargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        usesTurbine = true;
     }
 
     public MTELargeTurbine(String aName) {
         super(aName);
+        usesTurbine = true;
     }
 
     @Override
