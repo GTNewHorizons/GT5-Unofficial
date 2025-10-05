@@ -222,6 +222,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             int maxZ = Math.min((chunkZ + 1) * 16, cZ + size + 1);
 
             MurmurHash hasher = new MurmurHash();
+            XSTR rng2 = new XSTR(0);
 
             for (int y = minY; y < maxY; y++) {
                 for (int z = minZ; z < maxZ; z++) {
@@ -239,9 +240,11 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         hasher.feed(y);
                         hasher.feed(z);
 
-                        XSTR rng2 = new XSTR(hasher.finish());
+                        rng2.setSeed(hasher.finish());
 
-                        for (Ellipsoid e : negative) {
+                        for (int i = 0, negativeSize = negative.size(); i < negativeSize; i++) {
+                            Ellipsoid e = negative.get(i);
+
                             if (e.dist2(rng2, x - cX + 0.5f, y - cY + 0.5f, z - cZ + 0.5f) <= 1) {
                                 continue outer;
                             }
@@ -249,7 +252,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
                         float dist = 2f;
 
-                        for (Ellipsoid e : positive) {
+                        for (int i = 0, positiveSize = positive.size(); i < positiveSize; i++) {
+                            Ellipsoid e = positive.get(i);
+
                             dist = Math.min(dist, e.dist2(rng2, x - cX + 0.5f, y - cY + 0.5f, z - cZ + 0.5f));
                         }
 

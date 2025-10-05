@@ -17,10 +17,9 @@ public abstract class GTWorldgen {
 
     public static final int WRONG_BIOME = 0;
     public static final int WRONG_DIMENSION = 1;
-    public static final int NO_ORE_IN_BOTTOM_LAYER = 2;
-    public static final int NO_OVERLAP = 3;
-    public static final int ORE_PLACED = 4;
-    public static final int NO_OVERLAP_AIR_BLOCK = 5;
+    public static final int NO_OVERLAP = 2;
+    public static final int ORE_PLACED = 3;
+    public static final int NO_OVERLAP_AIR_BLOCK = 4;
 
     @SuppressWarnings({ "unchecked", "rawtypes" }) // The adding of "this" needs a List<this> which does not exist
     public GTWorldgen(String aName, List aList, boolean aDefault) {

@@ -1,5 +1,6 @@
 package gregtech.common.worldgen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,7 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IStoneCategory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
 
@@ -64,7 +66,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
     public WorldgenQuery<TLayer> inDimension(World world) {
         if (dimensions == null) dimensions = new HashSet<>();
 
-        dimensions.add(world.provider.getDimensionName());
+        dimensions.add(DimensionDef.getDimensionName(world));
 
         return this;
     }
@@ -108,19 +110,17 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
     private TLayer findRandomWithWeight(Random random) {
         int totalAmount = 0;
 
-        for (TLayer layer : list) {
-            if (matches(layer)) {
-                totalAmount += layer.getWeight();
-            }
+        ArrayList<TLayer> matches = GTDataUtils.filterList(list, this::matches);
+
+        for (TLayer layer : matches) {
+            totalAmount += layer.getWeight();
         }
 
         if (totalAmount == 0) return null;
 
         int remainingAmount = random.nextInt(totalAmount);
 
-        for (TLayer layer : list) {
-            if (!matches(layer)) continue;
-
+        for (TLayer layer : matches) {
             remainingAmount -= layer.getWeight();
 
             if (remainingAmount <= 0) return layer;

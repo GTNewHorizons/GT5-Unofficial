@@ -144,7 +144,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             return ORE_PLACED;
         }
 
-        if (!mAllowedDimensions.contains(world.provider.getDimensionName())) {
+        if (!mAllowedDimensions.contains(DimensionDef.getDimensionName(world))) {
             // The following code can be used for debugging, but it spams in logs
             // if (debugOrevein) { GTLog.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;
@@ -199,8 +199,16 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         }
 
         if (limitWestX >= limitEastX) { // No overlap between orevein and this chunk exists in X
+            int hits = 0;
+
             // Check for stone at the center of the chunk and the bottom of the orevein.
-            if (StoneType.findStoneType(world, chunkX + 7, veinMinY, chunkZ + 9) != null) {
+            for (int i = 0; i < 9; i++) {
+                if (StoneType.findStoneType(world, chunkX + 7, veinMinY + i, chunkZ + 9) != null) {
+                    hits++;
+                }
+            }
+
+            if (hits >= 5) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -217,8 +225,16 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int limitSouthZ = Math.min(veinSouthZ, chunkZ + 2 + 16);
 
         if (limitNorthZ >= limitSouthZ) { // No overlap between orevein and this chunk exists in Z
+            int hits = 0;
+
             // Check for stone at the center of the chunk and the bottom of the orevein.
-            if (StoneType.findStoneType(world, chunkX + 7, veinMinY, chunkZ + 9) != null) {
+            for (int i = 0; i < 9; i++) {
+                if (StoneType.findStoneType(world, chunkX + 7, veinMinY + i, chunkZ + 9) != null) {
+                    hits++;
+                }
+            }
+
+            if (hits >= 5) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -272,12 +288,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         // Now we do bottom-level-first oregen, and work our way upwards.
 
         generator.generateLayer(true, false, false); // layer -1
-
-        if ((placeCount[1] + placeCount[3]) == 0) {
-            if (debugOrevein) GTLog.out.println(" No ore in bottom layer");
-            return NO_ORE_IN_BOTTOM_LAYER; // Exit early, didn't place anything in the bottom layer
-        }
-
         generator.generateLayer(true, false, false); // layer 0
         generator.generateLayer(true, false, false); // layer 1
         generator.generateLayer(true, true, false); // layer 2

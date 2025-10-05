@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +50,7 @@ public class ModDimensionDef {
 
     /**
      * @param pDimensionName The provider dimension name (see {@link World#provider} and
-     *                       {@link WorldProvider#getDimensionName()})
+     *                       {@link galacticgreg.api.enums.DimensionDef#getDimensionName(World)})
      * @param pChunkProvider The chunk provider class
      * @param pDimType       The dimension type (whether it generates asteroids or ore veins)
      */
@@ -62,7 +61,7 @@ public class ModDimensionDef {
 
     /**
      * @param pDimensionName     The provider dimension name (see {@link World#provider} and
-     *                           {@link WorldProvider#getDimensionName()})
+     *                           {@link galacticgreg.api.enums.DimensionDef#getDimensionName(World)})
      * @param pChunkProviderName The chunk provider class name
      * @param pDimType           The dimension type (whether it generates asteroids or ore veins)
      */

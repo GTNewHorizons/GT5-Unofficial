@@ -22,6 +22,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a64;
+
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -275,7 +277,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             int oreveinPercentageRoll = oreveinRNG.nextInt(100); // Roll the dice, see if we get an orevein here at all
 
-            String dimensionName = this.mWorld.provider.getDimensionName();
+            String dimensionName = DimensionDef.getDimensionName(this.mWorld);
 
             if (debugOrevein) GTLog.out.println(
                 " Finding oreveins for oreveinSeed=" + oreveinSeed
@@ -322,13 +324,8 @@ public class GTWorldgenerator implements IWorldGenerator {
                     placementResult);
                 MinecraftForge.EVENT_BUS.post(event);
 
-                switch (placementResult) {
-                    case WorldgenGTOreLayer.NO_ORE_IN_BOTTOM_LAYER -> {
-                        if (debugOrevein) GTLog.out.println(" No ore in bottom layer");
-                    }
-                    case WorldgenGTOreLayer.NO_OVERLAP -> {
-                        if (debugOrevein) GTLog.out.println(" No overlap");
-                    }
+                if (placementResult == WorldgenGTOreLayer.NO_OVERLAP && debugOrevein) {
+                    GTLog.out.println(" No overlap");
                 }
 
                 return;
@@ -349,11 +346,19 @@ public class GTWorldgenerator implements IWorldGenerator {
                  * ); } }
                  */
 
+                XSTR veinRNG = new XSTR(0);
+
                 for (i = 0; i < oreveinAttempts && placementAttempts < oreveinMaxPlacementAttempts
                     && !oreveinFound; i++) {
+                    long seed = Fnv1a64.initialState();
+                    seed = Fnv1a64.hashStep(seed, oreveinSeed);
+                    seed = Fnv1a64.hashStep(seed, i);
+
+                    veinRNG.setSeed(seed);
+
                     WorldgenGTOreLayer oreLayer = WorldgenQuery.veins()
                         .inDimension(dimensionName)
-                        .findRandom(oreveinRNG);
+                        .findRandom(veinRNG);
 
                     // There aren't any veins in this dimension so there's no point in retrying
                     if (oreLayer == null) break;
@@ -361,13 +366,17 @@ public class GTWorldgenerator implements IWorldGenerator {
                     int placementResult = 0;
 
                     try {
+                        seed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
+
+                        veinRNG.setSeed(seed);
+
                         // Adjust the seed so that this layer has a series of unique random numbers.
                         // Otherwise multiple attempts at this same oreseed will get the same offset and X/Z values.
                         // If an orevein failed, any orevein with the same minimum heights would fail as well. This
                         // prevents that, giving each orevein a unique height each pass through here.
                         placementResult = oreLayer.executeWorldgenChunkified(
                             this.mWorld,
-                            new XSTR(oreveinSeed ^ (oreLayer.mPrimary.getId())),
+                            veinRNG,
                             this.mBiome,
                             this.mX * 16,
                             this.mZ * 16,
@@ -416,7 +425,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                             validOreveins.put(oreveinSeed, oreLayer);
                             oreveinFound = true;
                         }
-                        case WorldgenGTOreLayer.NO_ORE_IN_BOTTOM_LAYER -> placementAttempts++;
 
                         // Should retry in this case until out of chances
                         case WorldgenGTOreLayer.NO_OVERLAP -> {
