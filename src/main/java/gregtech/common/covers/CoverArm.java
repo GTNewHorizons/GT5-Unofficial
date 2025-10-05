@@ -22,6 +22,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverArmGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.ArmUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -275,6 +277,11 @@ public class CoverArm extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverArmGui(this);
     }
 
     @Override
