@@ -31,6 +31,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectricImplosionCompressorRecipes implements Runnable {
 
     @Override
