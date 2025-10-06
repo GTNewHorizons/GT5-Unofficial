@@ -44,7 +44,7 @@ public class PowerGogglesConfigHandler {
     public static void syncConfig() {
 
         try {
-            mainOffsetX = config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 334, "")
+            mainOffsetX = config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 10, "")
                 .getInt(10);
             mainOffsetY = config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 37, "")
                 .getInt(40);
@@ -83,8 +83,8 @@ public class PowerGogglesConfigHandler {
             hudScale = config.get(Configuration.CATEGORY_GENERAL, "HUD Scale", 1.0, "")
                 .getDouble(1.0);
             hideWhenChatOpen = config
-                .get(Configuration.CATEGORY_GENERAL, "Hide HUD", false, "Hide the HUD when the in-game chat is open")
-                .getBoolean(false);
+                .get(Configuration.CATEGORY_GENERAL, "Hide HUD", true, "Hide the HUD when the in-game chat is open")
+                .getBoolean(true);
 
             gradientBadColor = config
                 .get(Configuration.CATEGORY_GENERAL, "Bad Gradient", Color.rgb(255, 50, 50), "", 0, Integer.MAX_VALUE)
