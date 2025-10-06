@@ -270,7 +270,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         BigInteger tickDifference5m = euDifference5m.divide(BigInteger.valueOf(tickCount5m));
         String formattedTickDifference5m = PowerGogglesUtil.format(tickDifference5m);
-        String timedDifference5m = String.format("5m: %s (%s eu/t)", formattedDifference5m, formattedTickDifference5m);
+        String timedDifference5m = getTimedDifferenceText("5m: ", formattedDifference5m, formattedTickDifference5m);
         int stringColor5m = getTextColor(euDifference5m);
 
         drawScaledString(timedDifference5m, xOffset, stringY, stringColor5m, subScale);
@@ -283,9 +283,18 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         BigInteger tickDifference1h = euDifference1h.divide(BigInteger.valueOf(tickCount1h));
         String formattedTickDifference1h = PowerGogglesUtil.format(tickDifference1h);
 
-        String timedDifference1h = String.format("1h: %s (%s eu/t)", formattedDifference1h, formattedTickDifference1h);
+        String timedDifference1h = getTimedDifferenceText("1h: ", formattedDifference1h, formattedTickDifference1h);
         int stringColor1h = getTextColor(euDifference1h);
         drawScaledString(timedDifference1h, xOffset, stringY, stringColor1h, subScale);
+    }
+
+    private String getTimedDifferenceText(String prefix, String formattedDifference, String formattedTickDifference) {
+        return switch (PowerGogglesConfigHandler.readingIndex) {
+            case 0 -> String.format("%s%s EU (%s EU/t)", prefix, formattedDifference, formattedTickDifference);
+            case 1 -> String.format("%s%s EU", prefix, formattedDifference);
+            case 2 -> String.format("%s%s EU/t", prefix, formattedTickDifference);
+            default -> "How did you even get this reading type?";
+        };
     }
 
     private void drawScaledString(String string, int xOffset, int yOffset, int color, double scale) {
