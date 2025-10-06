@@ -974,6 +974,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
+
     private String createFocusText(String text) {
         return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
     }

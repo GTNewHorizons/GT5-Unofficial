@@ -601,6 +601,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
+
     private String createFocusText(String text) {
         return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
     }
