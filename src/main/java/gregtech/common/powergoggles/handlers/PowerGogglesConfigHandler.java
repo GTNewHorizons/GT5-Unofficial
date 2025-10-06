@@ -44,9 +44,9 @@ public class PowerGogglesConfigHandler {
     public static void syncConfig() {
 
         try {
-            mainOffsetX = config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 10, "")
+            mainOffsetX = config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 334, "")
                 .getInt(10);
-            mainOffsetY = config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 40, "")
+            mainOffsetY = config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 37, "")
                 .getInt(40);
             rectangleWidth = config.get(Configuration.CATEGORY_GENERAL, "Power Rectangle Width", 120, "")
                 .getInt(120);
