@@ -420,13 +420,13 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 translateToLocalFormatted(
                     "gt.blockmachines.multimachine.ig.dyson.desc2",
                     getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc3"))
             .addInfo(
                 translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc4",
+                    "gt.blockmachines.multimachine.ig.dyson.desc3",
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-                    IGConfig.dysonSwarm.destroyModuleB))
+                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
             .addInfo(
                 translateToLocalFormatted(
                     "gt.blockmachines.multimachine.ig.dyson.desc5",

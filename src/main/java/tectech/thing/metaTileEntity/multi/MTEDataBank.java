@@ -128,9 +128,11 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                                                                                            // Assembling Lines
             // with more Data Sticks
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                           // Assembling Lines access to
+                                                                                           // Assembling Lines
+                                                                                           // access to
                                                                                            // the same Data
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to toggle
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
+                                                                                           // toggle
                                                                                            // wireless mode
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 3, 3, false)

@@ -112,7 +112,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
 import gregtech.api.util.GTUtility;
-import gregtech.mixin.interfaces.accessors.AlleleEffectThrottledAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -511,9 +510,9 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                 genome,
                 effectData[0],
                 this,
-                usedBeeLife / (effect instanceof AlleleEffectThrottled
-                    ? (float) ((AlleleEffectThrottledAccessor) effect).gt5u$getThrottle()
-                    : 1f));
+                usedBeeLife
+                    / (effect instanceof AlleleEffectThrottled ? (float) ((AlleleEffectThrottled) effect).getThrottle()
+                        : 1f));
         }
 
         if (!effect.isCombinable()) return;
@@ -528,7 +527,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                 effectData[0],
                 this,
                 usedBeeLife / (secondary instanceof AlleleEffectThrottled
-                    ? (float) ((AlleleEffectThrottledAccessor) secondary).gt5u$getThrottle()
+                    ? (float) ((AlleleEffectThrottled) secondary).getThrottle()
                     : 1f));
         }
     }
@@ -1276,7 +1275,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
                         builder,
                         (widget, val) -> widget.notifyTooltipChange())
-                    .setPos(163, 5)
+                    .setPos(163, 19)
                     .setSize(7, 18))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {

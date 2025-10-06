@@ -22,6 +22,7 @@ package kubatech.api.implementations;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static kubatech.api.Variables.ln4;
+import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -228,15 +228,11 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
             list.remove(0);
             wasSomethingRemoved = true;
             for (ItemStack stack : toOutputNow) {
-                addOutput(stack);
+                addOutputPartial(stack);
             }
         }
         return wasSomethingRemoved;
     }
-
-    // UI stuff
-
-    public static final UITexture PICTURE_KUBATECH_LOGO = UITexture.fullImage(Tags.MODID, "gui/logo_13x15_dark");
 
     @Override
     public void addGregTechLogo(ModularWindow.@NotNull Builder builder) {
@@ -293,6 +289,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setSize(182, 79));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))

@@ -94,8 +94,8 @@ public class RecipeMapBackend {
     }
 
     /**
-     * @return All the recipes belonging to this backend. Returned collection is immutable,
-     *         use {@link #compileRecipe} to add / {@link #removeRecipes} to remove.
+     * @return All the recipes belonging to this backend. Returned collection is immutable, use {@link #compileRecipe}
+     *         to add / {@link #removeRecipes} to remove.
      */
     @Unmodifiable
     public Collection<GTRecipe> getAllRecipes() {
@@ -343,13 +343,13 @@ public class RecipeMapBackend {
      *
      * @param rawItems            Item inputs.
      * @param fluids              Fluid inputs.
-     * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do.
-     *                            Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
+     * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do. Set
+     *                            {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
      *                            Alternatively overriding {@link #filterFindRecipe} will also work.
      * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
      * @param notUnificated       If this is set to true, item inputs will be unificated.
-     * @param dontCheckStackSizes If this is set to true, this method won't check item count and fluid amount
-     *                            for the matched recipe.
+     * @param dontCheckStackSizes If this is set to true, this method won't check item count and fluid amount for the
+     *                            matched recipe.
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
      * @return Stream of matches recipes.
      */
@@ -395,7 +395,8 @@ public class RecipeMapBackend {
         }
 
         return Stream.<Stream<GTRecipe>>of(
-            // Check the recipe which has been used last time in order to not have to search for it again, if possible.
+            // Check the recipe which has been used last time in order to not have to search for it again, if
+            // possible.
             GTStreamUtil.ofNullable(cachedRecipe)
                 .filter(recipe -> recipe.mCanBeBuffered)
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
@@ -406,7 +407,8 @@ public class RecipeMapBackend {
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
-            // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
+            // Now look for the recipes inside the item index, but only when the recipes actually can have items
+            // inputs.
             GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items)
                 .filter(Objects::nonNull)
                 .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
@@ -415,7 +417,8 @@ public class RecipeMapBackend {
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
-            // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only recipes,
+            // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only
+            // recipes,
             // so check fluid index too.
             GTStreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
                 .filter(Objects::nonNull)

@@ -277,9 +277,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("25% faster than using single block steam machines of the same pressure")
-            .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
-            .addInfo("Processes up to 8 items at once")
+            .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 3, 4, true)
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -344,18 +342,20 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
+        aNBT.setInteger("tierMachineCasing", tierMachineCasing);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
+        tierMachineCasing = aNBT.getInteger("tierMachineCasing");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
+        return SoundResource.GTCEU_LOOP_COMPRESSOR;
     }
 
 }

@@ -243,8 +243,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     }
 
     /**
-     * Add Pyrolyse Oven Recipes for Logs.
-     * Used in NHCoreMod.
+     * Add Pyrolyse Oven Recipes for Logs. Used in NHCoreMod.
      */
     @SuppressWarnings("unused")
     public static void addPyrolyeOvenRecipes(ItemStack logStack) {

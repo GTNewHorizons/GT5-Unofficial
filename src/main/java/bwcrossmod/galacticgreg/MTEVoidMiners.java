@@ -117,7 +117,16 @@ public class MTEVoidMiners {
             tt.addMachineType("Miner")
                 .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
                 .addInfo(
-                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                    "Can be supplied with " + EnumChatFormatting.AQUA
+                        + "2 L/s"
+                        + EnumChatFormatting.GRAY
+                        + " of Noble gases to boost "
+                        + EnumChatFormatting.GOLD
+                        + "output")
+                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
                 .addInfo(
                     "Will output " + 2 * this.TIER_MULTIPLIER
                         + " Ores per Second depending on the Dimension it is build in")
@@ -138,7 +147,7 @@ public class MTEVoidMiners {
                     EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
-                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputBus("Ores, optional, any base casing")
                 .addInputHatch("Optional noble gas, any base casing")
                 .addOutputBus("Any base casing")
                 .toolTipFinisher();
@@ -269,7 +278,16 @@ public class MTEVoidMiners {
             tt.addMachineType("Miner")
                 .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
                 .addInfo(
-                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                    "Can be supplied with " + EnumChatFormatting.AQUA
+                        + "2 L/s"
+                        + EnumChatFormatting.GRAY
+                        + " of Noble gases to boost "
+                        + EnumChatFormatting.GOLD
+                        + "output")
+                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
                 .addInfo(
                     "Will output " + 2 * this.TIER_MULTIPLIER
                         + " Ores per Second depending on the Dimension it is build in")
@@ -293,7 +311,7 @@ public class MTEVoidMiners {
                     EnumChatFormatting.GOLD + "9x" + EnumChatFormatting.GRAY + " Rebolted Naquadah Alloy Casing")
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
-                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputBus("Ores, optional, any base casing")
                 .addInputHatch("Optional noble gas, any base casing")
                 .addOutputBus("Any base casing")
                 .toolTipFinisher();
@@ -418,9 +436,18 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType("Miner")
-                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
                 .addInfo(
-                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                    "Can be supplied with " + EnumChatFormatting.AQUA
+                        + "2 L/s"
+                        + EnumChatFormatting.GRAY
+                        + " of Noble gases to boost "
+                        + EnumChatFormatting.GOLD
+                        + "output")
+                .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
+                .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
+                .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
+                .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
                 .addInfo(
                     "Will output " + 2 * this.TIER_MULTIPLIER
                         + " Ores per Second depending on the Dimension it is build in")
@@ -442,7 +469,7 @@ public class MTEVoidMiners {
                     EnumChatFormatting.GOLD + "36x" + EnumChatFormatting.GRAY + " Rebolted Iridium Casing")
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
-                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputBus("Ores, optional, any base casing")
                 .addInputHatch("Optional noble gas, any base casing")
                 .addOutputBus("Any base casing")
                 .toolTipFinisher();

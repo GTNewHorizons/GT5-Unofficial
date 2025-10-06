@@ -50,6 +50,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
+import gregtech.api.recipe.maps.EFRBlastingBackend;
+import gregtech.api.recipe.maps.EFRSmokingBackend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -195,6 +197,32 @@ public final class RecipeMaps {
         .neiTransferRectId("smelting")
         .disableRegisterNEI()
         .build();
+    public static final RecipeMap<EFRBlastingBackend> efrBlastingRecipes = RecipeMapBuilder
+        .of("gt.recipe.efrblasting", EFRBlastingBackend::new)
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 9)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE : null)
+        .slotOverlaysSteam(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE_STEAM
+                : null)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .neiTransferRectId("smelting")
+        .disableRegisterNEI()
+        .build();
+    public static final RecipeMap<EFRSmokingBackend> efrSmokingRecipes = RecipeMapBuilder
+        .of("gt.recipe.efrsmelting", EFRSmokingBackend::new)
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 9)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE : null)
+        .slotOverlaysSteam(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE_STEAM
+                : null)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .neiTransferRectId("smelting")
+        .disableRegisterNEI()
+        .build();
     public static final RecipeMap<MicrowaveBackend> microwaveRecipes = RecipeMapBuilder
         .of("gt.recipe.microwave", MicrowaveBackend::new)
         .maxIO(1, 1, 0, 0)
@@ -329,7 +357,8 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GTUITextures.OVERLAY_SLOT_LENS : null)
         // Add a simple ordering so lower tier purified water is displayed first, otherwise it gets really confusing
-        // NEI Catalyst search requires recipes to be sorted by voltage tier. Therefore, we first sort by voltage tier,
+        // NEI Catalyst search requires recipes to be sorted by voltage tier. Therefore, we first sort by voltage
+        // tier,
         // then by water tier, then the default comparator.
         .neiRecipeComparator(
             (a, b) -> Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mEUt)
@@ -526,9 +555,9 @@ public final class RecipeMaps {
         .useCustomFilterForNEI()
         .neiSpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE)
         .neiRecipeComparator(
-            Comparator
-                .<GTRecipe, Integer>comparing(
-                    recipe -> FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt))
+            Comparator.<GTRecipe, Integer>comparing(
+                recipe -> FusionSpecialValueFormatter
+                    .getFusionTier(recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L), recipe.mEUt))
                 .thenComparing(GTRecipe::compareTo))
         .frontend(FluidOnlyFrontend::new)
         .build();
@@ -841,8 +870,8 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .build();
     /**
-     * Using {@code .addTo(multiblockChemicalReactorRecipes)} will cause the recipe to be added to
-     * multiblock recipe map ONLY! Use {@link GTRecipeConstants#UniversalChemical} to add to both.
+     * Using {@code .addTo(multiblockChemicalReactorRecipes)} will cause the recipe to be added to multiblock recipe map
+     * ONLY! Use {@link GTRecipeConstants#UniversalChemical} to add to both.
      */
     public static final RecipeMap<RecipeMapBackend> multiblockChemicalReactorRecipes = RecipeMapBuilder
         .of("gt.recipe.largechemicalreactor")

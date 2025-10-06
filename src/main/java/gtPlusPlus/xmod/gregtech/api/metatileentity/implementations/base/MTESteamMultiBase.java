@@ -16,9 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,15 +40,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -72,7 +72,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
-    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "Processing Speed & Steam Consumption is doubled under High Pressure";
+    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles " + EnumChatFormatting.GREEN
+        + "Speed"
+        + EnumChatFormatting.GRAY
+        + " and "
+        + EnumChatFormatting.AQUA
+        + "Steam Usage";
 
     public MTESteamMultiBase(String aName) {
         super(aName);
@@ -212,7 +217,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
             log("Adding Steam Input Bus");
             aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput) {
+        } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
             log("Adding Steam Output Bus");
             aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchInput)
@@ -321,55 +326,16 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) return false;
-        aStack = GTUtility.copy(aStack);
-        boolean outputSuccess = true;
-        while (outputSuccess && aStack.stackSize > 0) {
-            outputSuccess = false;
-            ItemStack single = aStack.splitStack(1);
-            for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
-                if (!outputSuccess) {
-                    for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
-                        if (tHatch.getBaseMetaTileEntity()
-                            .addStackToSlot(i, single)) outputSuccess = true;
-                    }
-                }
-            }
-            for (MTEHatchOutput tHatch : validMTEList(mOutputHatches)) {
-                if (!outputSuccess && tHatch.outputsItems()) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .addStackToSlot(1, single)) outputSuccess = true;
-                }
-            }
-        }
-        return outputSuccess;
-    }
+    public List<IOutputBus> getOutputBusses() {
+        List<IOutputBus> output = new ArrayList<>(mSteamOutputs.size());
 
-    @Override
-    public ArrayList<ItemStack> getStoredOutputs() {
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
-            for (int i = tHatch.getBaseMetaTileEntity()
-                .getSizeInventory() - 1; i >= 0; i--) {
-                rList.add(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i));
-            }
-        }
-        return rList;
-    }
+        for (int i = 0, mOutputBussesSize = mSteamOutputs.size(); i < mOutputBussesSize; i++) {
+            MTEHatchSteamBusOutput outputBus = mSteamOutputs.get(i);
 
-    @Override
-    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
-        List<ItemStack> ret = new ArrayList<>();
-        for (final MTEHatch tBus : validMTEList(mSteamOutputs)) {
-            final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-            for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                ret.add(tBus.getStackInSlot(i));
-            }
+            if (outputBus.isValid()) output.add(outputBus);
         }
-        return ret;
+
+        return output;
     }
 
     @Override
@@ -380,6 +346,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    /*
+     * With batch mode enabled (True by default from config), HP steam multi processing times get rounded and look weird
+     * Setting them to false here will make it look normal again. (Steam multi's can't process every tick anyway)
+     * Batch mode is also now supported to account for players who wish to change this behavior
+     */
+
+    @Override
+    public boolean getDefaultBatchMode() {
         return false;
     }
 

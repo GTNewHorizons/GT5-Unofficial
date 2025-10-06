@@ -40,6 +40,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
+import static kubatech.api.gui.KubaTechUITextures.APIARY_INVENTORY_BACKGROUND;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -80,7 +81,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -309,8 +309,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     /**
      * Checks the block in the given world and block position, and remove the entries in the {@link #flowerCheckingMap}
-     * if it matches any.
-     * This function will be called during the structural check, see structure definition also.
+     * if it matches any. This function will be called during the structural check, see structure definition also.
      *
      * @see #flowerCheckingMap
      */
@@ -322,8 +321,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     /**
-     * This should be called when {@link #mStorage} is changed.
-     * And this will trigger the flower check update.
+     * This should be called when {@link #mStorage} is changed. And this will trigger the flower check update.
      * <p>
      * The flower check should be ignored when the storage is updated when loading world (or loadNBTData specifically),
      * which the world itself is not ready yet.
@@ -388,7 +386,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Operating Mode:")
             .addInfo("- NORMAL:")
-            .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
             .addInfo("  - Processing time: 5 seconds")
             .addInfo("  - Uses 1 " + voltageTooltipFormatted(6) + " amp per queen")
             .addInfo("  - All bees are accelerated 64 times")
@@ -786,9 +783,15 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
     }
 
+    private static final int INVENTORY_WIDTH = 128;
+    private static final int INVENTORY_HEIGHT = 60;
+    private static final int INVENTORY_X = 10;
+    private static final int INVENTORY_Y = 16;
+    private static final int INVENTORY_BORDER_WIDTH = 3;
+
     DynamicInventory<BeeSimulator> dynamicInventory = new DynamicInventory<>(
-        128,
-        60,
+        INVENTORY_WIDTH,
+        INVENTORY_HEIGHT,
         () -> mMaxSlots,
         mStorage,
         s -> s.queenStack).allowInventoryInjection(input -> {
@@ -837,10 +840,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setPos(4, 4)
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
+
+        final int backgroundPadding = INVENTORY_BORDER_WIDTH * 2;
+        builder.widget(
+            new DrawableWidget().setDrawable(APIARY_INVENTORY_BACKGROUND)
+                .setPos(INVENTORY_X - INVENTORY_BORDER_WIDTH, INVENTORY_Y - INVENTORY_BORDER_WIDTH)
+                .setSize(INVENTORY_WIDTH + backgroundPadding, INVENTORY_HEIGHT + backgroundPadding)
+                .setEnabled(w -> isInInventory));
+
         builder.widget(
             dynamicInventory.asWidget(builder, buildContext)
-                .setPos(10, 16)
-                .setBackground(new Rectangle().setColor(Color.rgb(163, 163, 198)))
+                .setPos(INVENTORY_X, INVENTORY_Y)
                 .setEnabled(w -> isInInventory));
 
         builder.widget(
@@ -862,6 +872,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setEnabled(w -> !isInInventory));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))

@@ -1,7 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.ProjectRedExploration;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -26,6 +28,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Pulverizer implements Runnable {
 
     @Override
@@ -206,7 +209,7 @@ public class Pulverizer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahAlloy, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 16),
-                ItemList.Netherite_Nanoparticles.get(2))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 1))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -218,7 +221,7 @@ public class Pulverizer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 24),
-                ItemList.Netherite_Nanoparticles.get(3))
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Netherite, 6))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -230,7 +233,7 @@ public class Pulverizer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 32),
-                ItemList.Netherite_Nanoparticles.get(4))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 2))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -242,7 +245,7 @@ public class Pulverizer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 9L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 48),
-                ItemList.Netherite_Nanoparticles.get(6))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 3))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -254,7 +257,7 @@ public class Pulverizer implements Runnable {
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
-                ItemList.Netherite_Nanoparticles.get(8))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 4))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -266,7 +269,7 @@ public class Pulverizer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 9L),
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
-                ItemList.Netherite_Nanoparticles.get(16))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 8))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -722,6 +725,24 @@ public class Pulverizer implements Runnable {
                 .outputChances(10000, 5000)
                 .duration(20 * SECONDS)
                 .eut(2)
+                .addTo(maceratorRecipes);
+        }
+
+        if (BiomesOPlenty.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(BiomesOPlenty.ID, "gemOre", 1, 5))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 9))
+                .duration(Materials.Olivine.getMass() * 9 * TICKS)
+                .eut(4)
+                .addTo(maceratorRecipes);
+        }
+
+        if (ProjectRedExploration.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(ProjectRedExploration.ID, "projectred.exploration.stone", 1, 7))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 9))
+                .duration(Materials.Olivine.getMass() * 9 * TICKS)
+                .eut(4)
                 .addTo(maceratorRecipes);
         }
 

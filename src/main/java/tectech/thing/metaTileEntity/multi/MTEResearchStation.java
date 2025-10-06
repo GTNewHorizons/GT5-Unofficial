@@ -264,7 +264,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                     30); // make fake recipe
                                 // Set property
                                 computationRequired = computationRemaining = GTUtility
-                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L); // value get from MTEScanner
+                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L); // value get from
+                                                                                           // MTEScanner
                                                                                            // class
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;

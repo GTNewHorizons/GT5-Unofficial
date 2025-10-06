@@ -2,13 +2,13 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -63,12 +63,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -76,15 +70,11 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.ISmartInputHatch;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements IConstructable, ISurvivalConstructable {
@@ -130,7 +120,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .addElement(
                     'C',
                     GTStructureChannels.PRASS_UNIT_CASING.use(
-                        HatchElementBuilder.<MTEPreciseAssembler>builder()
+                        buildHatchAdder(MTEPreciseAssembler.class)
                             .atLeast(
                                 InputBus,
                                 InputHatch,
@@ -139,7 +129,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                 Maintenance,
                                 Muffler,
                                 ExoticEnergy.or(Energy))
-                            .adder(MTEPreciseAssembler::addToPAssList)
                             .casingIndex(CASING_INDEX)
                             .dot(1)
                             .buildAndChain(
@@ -176,50 +165,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         return multiDefinition;
     }
 
-    public boolean addToPAssList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            // Only add them to be iterated if enabled for performance reasons
-            if (hatch.doFastRecipeCheck()) {
-                mSmartInputHatches.add(hatch);
-            }
-        }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof IDualInputHatch) {
-            return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInputBus) {
-            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
-            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMuffler) {
-            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            return mExoticEnergyHatches.add((MTEHatchEnergyMulti) aMetaTileEntity);
-        }
-        return false;
-    }
-
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         casingTier = aNBT.getInteger("casingTier");
@@ -242,13 +187,12 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
-        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + machineMode));
+        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode));
     }
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("preciseassembler.chat." + machineMode);
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode);
     }
 
     @Override
@@ -348,13 +292,25 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Precise Assembler, Assembler, PrAss")
-            .addInfo("The error is no more than 7nm.")
-            .addInfo("Can assemble precise components in Precise Mode.")
-            .addInfo("Can work like a normal assembler in Normal Mode.")
-            .addInfo("Use a screwdriver to change the mode.")
-            .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
-            .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
-            .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
+            .addInfo("No more than 7nm of error")
+            .addInfo("Has Two Modes: Precise and Normal")
+            .addInfo("Use a Screwdriver to change modes")
+            .addSeparator()
+            .addInfo("Precise Mode unlocks the ability to assemble precise components")
+            .addInfo("Casing Tier determines Maximum Recipe Tier")
+            .addSeparator()
+            .addInfo("Normal Mode allows standard assembler recipes")
+            .addInfo(
+                EnumChatFormatting.WHITE + "Precise Casing"
+                    + EnumChatFormatting.GRAY
+                    + " Tier determines "
+                    + TooltipHelper.parallelText("Parallels"))
+            .addInfo(
+                tieredTextLine("Imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV") + "->"
+                    + tieredTextLine("16", "32", "64", "128", "256")
+                    + " Parallels")
+            .addStaticSpeedInfo(2f)
+            .addSeparator()
             .addInfo(
                 "Machine Casing limits the voltage tier the machine can work on, "
                     + GTValues.TIER_COLORS[VoltageIndex.UHV]
@@ -529,19 +485,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+        tag.setString("mode", getMachineModeName());
     }
 
     @SideOnly(Side.CLIENT)
@@ -579,5 +523,26 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     .setEnabled(ignored -> machineTier > 0 && machineTier < 9))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> machineTier, tier -> machineTier = tier));
         super.drawTexts(screenElements, inventorySlot);
+    }
+
+    private String tieredTextLine(String mk0, String mk1, String mk2, String mk3, String mk4) {
+        return EnumChatFormatting.GREEN + mk0
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.BLUE
+            + mk1
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + mk2
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.GOLD
+            + mk3
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "/"
+            + EnumChatFormatting.RED
+            + mk4
+            + EnumChatFormatting.GRAY;
     }
 }
