@@ -10,6 +10,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidHeaterRecipes implements Runnable {
 
     @Override

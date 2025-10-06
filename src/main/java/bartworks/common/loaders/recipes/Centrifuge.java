@@ -22,6 +22,7 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Centrifuge implements Runnable {
 
     @Override
