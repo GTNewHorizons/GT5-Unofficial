@@ -2,7 +2,9 @@ package gregtech.common.powergoggles;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
