@@ -2844,7 +2844,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public boolean isRecipeLockingEnabled() {
-        if (!supportsSingleRecipeLocking()) return false;
         return mLockedToSingleRecipe;
     }
 
