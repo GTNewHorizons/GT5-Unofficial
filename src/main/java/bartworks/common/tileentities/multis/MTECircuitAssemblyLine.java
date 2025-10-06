@@ -603,11 +603,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean isInputSeparationEnabled() {
         return machineMode == MACHINEMODE_ASSEMBLER && super.isInputSeparationEnabled();
     }

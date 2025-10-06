@@ -358,11 +358,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
 
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
