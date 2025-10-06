@@ -41,6 +41,7 @@ import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalRecipes implements Runnable {
 
     @Override
