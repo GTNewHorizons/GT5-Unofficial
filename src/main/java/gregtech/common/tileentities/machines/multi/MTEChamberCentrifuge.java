@@ -821,11 +821,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public boolean supportsInputSeparation() {
         return true;
     }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
 }
 
 // struct for packaging data for structure piece so i don't have to do String manipulation
