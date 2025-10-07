@@ -62,6 +62,14 @@ public class OverclockCalculator {
     /** The value used for discount final eut per 900 heat */
     protected double heatDiscountExponent = 0.95;
 
+    // Limited Perfect Overclock parameters, to stop using heatOC for the same purpose
+
+    protected boolean limitedPOC = false;
+    /** The max amount of Limited Perfect Overclocks to run */
+    protected int limitedPerfectOCAmount = 0;
+    /** The duration decrease per limited overclock */
+    protected double durationDecreasePerLimitedPerfectOC = 4;
+
     // Results
     /** variable to check whether the overclocks have been calculated */
     protected boolean calculated;
@@ -151,6 +159,27 @@ public class OverclockCalculator {
     @Nonnull
     public OverclockCalculator setMachineHeat(int machineHeat) {
         this.machineHeat = machineHeat;
+        return this;
+    }
+
+    /** Sets if limited perfect overclocks are to be performed */
+    @Nonnull
+    public OverclockCalculator setHasLimitedPerfectOverclocks(boolean limitedPOC) {
+        this.limitedPOC = limitedPOC;
+        return this;
+    }
+
+    /** Sets the maximum amount of limited perfect overclocks the machine can do */
+    @Nonnull
+    public OverclockCalculator setLimitedPerfectOverclockAmount(int limitedPerfectOCAmount) {
+        this.limitedPerfectOCAmount = limitedPerfectOCAmount;
+        return this;
+    }
+
+    /** Sets the factor to decrease time by per limited perfect overclock */
+    @Nonnull
+    public OverclockCalculator setDurationDecreasePerLimitedPerfectOC(double durationDecreasePerLimitedPerfectOC) {
+        this.durationDecreasePerLimitedPerfectOC = durationDecreasePerLimitedPerfectOC;
         return this;
     }
 
@@ -384,7 +413,6 @@ public class OverclockCalculator {
             calculatedDuration = (int) Math.max(duration / GTUtility.powInt(durationDecreasePerOC, overclocks), 1);
             return;
         }
-
         // Limit overclocks allowed by power tier.
         overclocks = Math.min(maxOverclocks, tiersAbove);
 
@@ -398,12 +426,17 @@ public class OverclockCalculator {
         // Make sure overclocks don't go negative. This allows recipes needing >1A to run on a single hatch.
         overclocks = Math.max(overclocks, 0);
 
-        // Split overclocks into heat-based and regular overclocks.
-        int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
-        int regularOverclocks = overclocks - heatOverclocks;
+        // Split overclocks into limited perfect, heat-based and regular overclocks.
+        // limited perfect overclocks and heat overclocks are an opt-in during object creation
+        int limitedPerfectOverclocks = Math.min(limitedPOC ? limitedPerfectOCAmount : 0, overclocks);
+        int regularOverclocks = overclocks - limitedPerfectOverclocks;
+        int heatOverclocks = Math
+            .min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, regularOverclocks);
+        regularOverclocks = regularOverclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
         calculatedConsumption = (long) Math.ceil(recipePower * GTUtility.powInt(eutIncreasePerOC, overclocks));
+        duration /= GTUtility.powInt(durationDecreasePerLimitedPerfectOC, limitedPerfectOverclocks);
         duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
         duration /= GTUtility.powInt(durationDecreasePerOC, regularOverclocks);
         calculatedDuration = (int) Math.max(duration, 1);

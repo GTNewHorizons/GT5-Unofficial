@@ -401,11 +401,10 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 // First try to detect the current fluid used for subspace cooling.
                 currentCoolingFluid = findSubspaceCoolingFluid();
 
-                return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks * 1800)
-                    .setRecipeHeat(0)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false);
+                return super.createOverclockCalculator(recipe).setHasLimitedPerfectOverclocks(true)
+                    .setDurationDecreasePerLimitedPerfectOC(4.0)
+                    .setLimitedPerfectOverclockAmount(
+                        currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks);
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel);
