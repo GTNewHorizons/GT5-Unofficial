@@ -1,8 +1,6 @@
 package gregtech.common.gui.mui1.cover;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static tectech.thing.cover.CoverEnderFluidLink.PUBLIC_PRIVATE_MASK;
-import static tectech.thing.cover.CoverEnderFluidLink.toggleBit;
 
 import java.util.UUID;
 
@@ -32,10 +30,6 @@ public class EnderFluidLinkUIFactory extends CoverUIFactory<CoverEnderFluidLink>
     private static final int START_Y = 25;
     private static final int SPACE_X = 18;
     private static final int SPACE_Y = 18;
-    private static final int PUBLIC_BUTTON_ID = 0;
-    private static final int PRIVATE_BUTTON_ID = 1;
-    private static final int IMPORT_BUTTON_ID = 2;
-    private static final int EXPORT_BUTTON_ID = 3;
 
     public EnderFluidLinkUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);
@@ -131,25 +125,6 @@ public class EnderFluidLinkUIFactory extends CoverUIFactory<CoverEnderFluidLink>
             .widget(
                 new TextWidget(translateToLocal("gt.interact.desc.set_io"))
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
-    }
-
-    private int getNewCoverVariable(int id, int coverVariable) {
-        return switch (id) {
-            case PUBLIC_BUTTON_ID, PRIVATE_BUTTON_ID -> toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
-            case IMPORT_BUTTON_ID, EXPORT_BUTTON_ID -> toggleBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
-            default -> coverVariable;
-        };
-    }
-
-    private boolean getClickable(int id, int coverVariable) {
-        return switch (id) {
-            case PUBLIC_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-            case PRIVATE_BUTTON_ID -> !CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-            case IMPORT_BUTTON_ID -> !CoverEnderFluidLink
-                .testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
-            case EXPORT_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
-            default -> false;
-        };
     }
 
     private UUID getUUID() {
