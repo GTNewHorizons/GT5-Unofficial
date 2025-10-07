@@ -123,8 +123,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(2)
                             .addTo(compressorRecipes);
                     }
-                    // This is so disgustingly bad.
-                    // It really is.
                     if (((OrePrefixes.block.isIgnored(aMaterial))
                         || (null == GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L)))
                         && (aMaterial != Materials.GraniteRed)
