@@ -56,26 +56,29 @@ public class CoverEnderFluidLink extends CoverLegacyData {
         if (coverable == null) {
             return;
         }
-        if ((coverable instanceof IFluidHandler teTank)) {
-            EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(teTank);
+        if (!(coverable instanceof IFluidHandler teTank)) {
+            return;
+        }
 
-            if (tag != null) {
-                boolean shouldBePrivate = testBit(this.coverData, PUBLIC_PRIVATE_MASK);
-                boolean isPrivate = tag.getUUID() != null;
+        EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(teTank);
+        if (tag == null) {
+            return;
+        }
 
-                if (shouldBePrivate != isPrivate) {
-                    tag = new EnderLinkTag(tag.getFrequency(), shouldBePrivate ? getOwner(coverable) : null);
-                    EnderWorldSavedData.bindEnderLinkTag(teTank, tag);
-                }
+        boolean shouldBePrivate = testBit(this.coverData, PUBLIC_PRIVATE_MASK);
+        boolean isPrivate = tag.getUUID() != null;
 
-                IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
+        if (shouldBePrivate != isPrivate) {
+            tag = new EnderLinkTag(tag.getFrequency(), shouldBePrivate ? getOwner(coverable) : null);
+            EnderWorldSavedData.bindEnderLinkTag(teTank, tag);
+        }
 
-                if (testBit(this.coverData, IMPORT_EXPORT_MASK)) {
-                    transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide);
-                } else {
-                    transferFluid(teTank, coverSide, enderTank, ForgeDirection.UNKNOWN);
-                }
-            }
+        IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
+
+        if (testBit(this.coverData, IMPORT_EXPORT_MASK)) {
+            transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide);
+        } else {
+            transferFluid(teTank, coverSide, enderTank, ForgeDirection.UNKNOWN);
         }
     }
 
