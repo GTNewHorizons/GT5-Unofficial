@@ -402,7 +402,6 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 currentCoolingFluid = findSubspaceCoolingFluid();
 
                 return super.createOverclockCalculator(recipe).setHasLimitedPerfectOverclocks(true)
-                    .setDurationDecreasePerLimitedPerfectOC(4.0)
                     .setLimitedPerfectOverclockAmount(
                         currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks);
             }
