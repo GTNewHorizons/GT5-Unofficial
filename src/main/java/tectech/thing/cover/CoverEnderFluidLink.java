@@ -3,32 +3,43 @@ package tectech.thing.cover;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.covers.CoverLegacyData;
+import gregtech.common.covers.Cover;
 import gregtech.common.gui.mui1.cover.EnderFluidLinkUIFactory;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import io.netty.buffer.ByteBuf;
 import tectech.mechanics.enderStorage.EnderLinkTag;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
 
-public class CoverEnderFluidLink extends CoverLegacyData {
+public class CoverEnderFluidLink extends Cover {
 
     private static final int L_PER_TICK = 8000;
+    private boolean export;
+    private boolean privateChannel;
+    // TODO: REMOVE AFTER 2.9
     public static final int IMPORT_EXPORT_MASK = 0b0001;
     public static final int PUBLIC_PRIVATE_MASK = 0b0010;
 
-    public CoverEnderFluidLink(CoverContext context) {
-        super(context);
+    public CoverEnderFluidLink(@NotNull CoverContext context, ITexture coverFGTexture) {
+        super(context, coverFGTexture);
     }
 
     private void transferFluid(IFluidHandler source, ForgeDirection coverSide, IFluidHandler target,
@@ -65,20 +76,19 @@ public class CoverEnderFluidLink extends CoverLegacyData {
             return;
         }
 
-        boolean shouldBePrivate = testBit(this.coverData, PUBLIC_PRIVATE_MASK);
         boolean isPrivate = tag.getUUID() != null;
 
-        if (shouldBePrivate != isPrivate) {
-            tag = new EnderLinkTag(tag.getFrequency(), shouldBePrivate ? getOwner(coverable) : null);
+        if (privateChannel != isPrivate) {
+            tag = new EnderLinkTag(tag.getFrequency(), privateChannel ? getOwner(coverable) : null);
             EnderWorldSavedData.bindEnderLinkTag(teTank, tag);
         }
 
         IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
 
-        if (testBit(this.coverData, IMPORT_EXPORT_MASK)) {
-            transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide);
-        } else {
+        if (export) {
             transferFluid(teTank, coverSide, enderTank, ForgeDirection.UNKNOWN);
+        } else {
+            transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide);
         }
     }
 
@@ -118,13 +128,67 @@ public class CoverEnderFluidLink extends CoverLegacyData {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        this.coverData = toggleBit(this.coverData, IMPORT_EXPORT_MASK);
+        export = !export;
 
-        if (testBit(this.coverData, IMPORT_EXPORT_MASK)) {
-            PlayerChatHelper.SendInfo(aPlayer, "Ender Suction Engaged!"); // TODO Translation support
-        } else {
+        if (export) {
             PlayerChatHelper.SendInfo(aPlayer, "Ender Filling Engaged!");
+        } else {
+            PlayerChatHelper.SendInfo(aPlayer, "Ender Suction Engaged!"); // TODO Translation support
         }
+    }
+
+    public boolean isExport() {
+        return export;
+    }
+
+    public void setExport(boolean export) {
+        this.export = export;
+    }
+
+    public boolean isPrivateChannel() {
+        return privateChannel;
+    }
+
+    public void setPrivateChannel(boolean privateChannel) {
+        this.privateChannel = privateChannel;
+    }
+
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagInt nbtInt) {
+            readLegacyDataFromNbt(nbtInt);
+            return;
+        }
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        this.export = tag.getBoolean("export");
+        this.privateChannel = tag.getBoolean("privateChannel");
+    }
+
+    private void readLegacyDataFromNbt(NBTTagInt nbtInt) {
+        int data = nbtInt.func_150287_d();
+        this.export = testBit(data, IMPORT_EXPORT_MASK);
+        this.privateChannel = testBit(data, PUBLIC_PRIVATE_MASK);
+    }
+
+    @Override
+    protected void readDataFromPacket(ByteArrayDataInput byteData) {
+        this.export = byteData.readBoolean();
+        this.privateChannel = byteData.readBoolean();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("export", this.export);
+        tag.setBoolean("privateChannel", this.privateChannel);
+
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(this.export);
+        byteBuf.writeBoolean(this.privateChannel);
     }
 
     @Override
