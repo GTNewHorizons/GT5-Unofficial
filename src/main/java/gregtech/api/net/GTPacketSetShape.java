@@ -1,6 +1,5 @@
 package gregtech.api.net;
 
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -16,6 +15,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasInventory;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.util.GTByteBuffer;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketSetShape extends GTPacket {

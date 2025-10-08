@@ -1,18 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.net.GTPacketSetShape;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.items.ItemIntegratedCircuit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
@@ -28,11 +23,15 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.net.GTPacketSetShape;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
-import net.minecraftforge.common.util.ForgeDirection;
+import gregtech.common.items.ItemIntegratedCircuit;
 
 public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets {
 
@@ -41,39 +40,24 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
 
     public static final ItemStack[] extruderShapes = {
         // Tools
-        ItemList.Shape_Extruder_Axe.get(1),
-        ItemList.Shape_Extruder_File.get(1),
-        ItemList.Shape_Extruder_Hammer.get(1),
-        ItemList.Shape_Extruder_Hoe.get(1),
-        ItemList.Shape_Extruder_Pickaxe.get(1),
-        ItemList.Shape_Extruder_Saw.get(1),
-        ItemList.Shape_Extruder_Shovel.get(1),
-        ItemList.Shape_Extruder_Sword.get(1),
+        ItemList.Shape_Extruder_Axe.get(1), ItemList.Shape_Extruder_File.get(1), ItemList.Shape_Extruder_Hammer.get(1),
+        ItemList.Shape_Extruder_Hoe.get(1), ItemList.Shape_Extruder_Pickaxe.get(1), ItemList.Shape_Extruder_Saw.get(1),
+        ItemList.Shape_Extruder_Shovel.get(1), ItemList.Shape_Extruder_Sword.get(1),
         ItemList.Shape_Extruder_ToolHeadDrill.get(1),
         // Machine Components
-        ItemList.Shape_Extruder_Gear.get(1),
-        ItemList.Shape_Extruder_Small_Gear.get(1),
-        ItemList.Shape_Extruder_Rotor.get(1),
-        ItemList.Shape_Extruder_Turbine_Blade.get(1),
+        ItemList.Shape_Extruder_Gear.get(1), ItemList.Shape_Extruder_Small_Gear.get(1),
+        ItemList.Shape_Extruder_Rotor.get(1), ItemList.Shape_Extruder_Turbine_Blade.get(1),
         // Pipes
-        ItemList.Shape_Extruder_Pipe_Tiny.get(1),
-        ItemList.Shape_Extruder_Pipe_Small.get(1),
-        ItemList.Shape_Extruder_Pipe_Medium.get(1),
-        ItemList.Shape_Extruder_Pipe_Large.get(1),
+        ItemList.Shape_Extruder_Pipe_Tiny.get(1), ItemList.Shape_Extruder_Pipe_Small.get(1),
+        ItemList.Shape_Extruder_Pipe_Medium.get(1), ItemList.Shape_Extruder_Pipe_Large.get(1),
         ItemList.Shape_Extruder_Pipe_Huge.get(1),
         // Materials
-        ItemList.Shape_Extruder_Block.get(1),
-        ItemList.Shape_Extruder_Bolt.get(1),
-        ItemList.Shape_Extruder_Ingot.get(1),
-        ItemList.Shape_Extruder_Plate.get(1),
-        ItemList.Shape_Extruder_Ring.get(1),
-        ItemList.Shape_Extruder_Rod.get(1),
+        ItemList.Shape_Extruder_Block.get(1), ItemList.Shape_Extruder_Bolt.get(1), ItemList.Shape_Extruder_Ingot.get(1),
+        ItemList.Shape_Extruder_Plate.get(1), ItemList.Shape_Extruder_Ring.get(1), ItemList.Shape_Extruder_Rod.get(1),
         ItemList.Shape_Extruder_Wire.get(1),
         // Containers, Misc
-        ItemList.Shape_Extruder_Bottle.get(1),
-        ItemList.Shape_Extruder_Casing.get(1),
-        ItemList.Shape_Extruder_Cell.get(1)
-    };
+        ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
+        ItemList.Shape_Extruder_Cell.get(1) };
 
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -96,7 +80,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
         return new String[] {
             "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
             "Capacity: " + GTUtility.formatNumbers(getInventorySlots(mTier)) + " Slots",
-            "Added by: " + EnumChatFormatting.BLUE + "VorTex"};
+            "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
     }
 
     public static ItemStack findMatchingShape(ItemStack stack) {
@@ -122,7 +106,9 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == shapeSlot) return findMatchingShape(aStack) != null;
-        if (aIndex == circuitSlot) return GTUtility.isStackValid(aStack) && aStack.stackSize == 1 && (aStack.getItem() instanceof ItemIntegratedCircuit || GTUtility.areStacksEqual(aStack, ItemList.Circuit_Integrated.get(1), true));
+        if (aIndex == circuitSlot) return GTUtility.isStackValid(aStack) && aStack.stackSize == 1
+            && (aStack.getItem() instanceof ItemIntegratedCircuit
+                || GTUtility.areStacksEqual(aStack, ItemList.Circuit_Integrated.get(1), true));
         return super.isItemValidForSlot(aIndex, aStack);
     }
 
@@ -157,8 +143,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
                 if (slotIndex >= shapeSlot) slotIndex++;
                 if (slotIndex >= circuitSlot) slotIndex++;
                 scrollable.widget(
-                    new SlotWidget(inventoryHandler, slotIndex)
-                        .setPos(column * 18, row * 18)
+                    new SlotWidget(inventoryHandler, slotIndex).setPos(column * 18, row * 18)
                         .setSize(18, 18));
             }
         }
@@ -207,11 +192,11 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
                         StatCollector.translateToLocal("GT5U.machines.select_shape.tooltip.2")));
             }
         }.setOverwriteItemStackTooltip(list -> {
-                list.removeIf(
-                    line -> line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.0"))
-                        || line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.1")));
-                return list;
-            })
+            list.removeIf(
+                line -> line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.0"))
+                    || line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.1")));
+            return list;
+        })
             .disableShiftInsert()
             .setHandlePhantomActionClient(true)
             .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_EXTRUDER_SHAPE)
@@ -230,9 +215,9 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
                 this::onShapeSelected,
                 Arrays.asList(extruderShapes),
                 findMatchingShapeIndex(inv.getStackInSlot(shapeSlot))).setAnotherWindow(true, dialogOpened)
-                .setGuiTint(getGUIColorization())
-                .setCurrentGetter(() -> inv.getStackInSlot(shapeSlot))
-                .createWindow(new UIBuildContext(player)));
+                    .setGuiTint(getGUIColorization())
+                    .setCurrentGetter(() -> inv.getStackInSlot(shapeSlot))
+                    .createWindow(new UIBuildContext(player)));
     }
 
     protected void onShapeSelected(ItemStack selected) {
@@ -269,13 +254,17 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return aIndex != shapeSlot && aIndex != circuitSlot
+            && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return aIndex != shapeSlot && aIndex != circuitSlot
+            && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
