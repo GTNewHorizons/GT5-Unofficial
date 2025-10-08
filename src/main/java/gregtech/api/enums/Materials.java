@@ -2142,6 +2142,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         Materials.HellishMetal.mChemicalFormula = "RhMa";
         Materials.Netherite.mChemicalFormula = "NrAuMa*";
+        MaterialsUEVplus.BiocatalyzedPropulsionFluid.mChemicalFormula = "ඞ";
     }
 
     private static void initSubTags() {
@@ -2586,8 +2587,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Redrock.add(SubTag.STONE, SubTag.NO_SMASHING);
         Obsidian.add(SubTag.STONE, SubTag.NO_SMASHING);
         Flint.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-        GraniteRed.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
-        GraniteBlack.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
+        GraniteRed.add(SubTag.STONE, SubTag.NO_SMASHING);
+        GraniteBlack.add(SubTag.STONE, SubTag.NO_SMASHING);
         Salt.add(SubTag.STONE, SubTag.NO_SMASHING);
         RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
 
@@ -2752,6 +2753,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotExoHalkonite);

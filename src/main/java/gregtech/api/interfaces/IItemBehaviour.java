@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SubTag;
@@ -24,6 +25,19 @@ public interface IItemBehaviour<E extends Item> {
     }
 
     default boolean onMiddleClick(E aItem, ItemStack aStack, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    /**
+     * Allows a GT Tool wielded in the offhand to perform an action on a placed block in the same tick.
+     * 
+     * @param blockSnapshot Data about what block was placed and where
+     * @param itemStack     The tool being used
+     * @param player        The player initiating the action
+     * @return true to cancel all further tool actions, false to keep going
+     */
+    default boolean onBlockPlacedWhileWieldingOffhanded(BlockSnapshot blockSnapshot, ItemStack itemStack,
+        EntityPlayer player) {
         return false;
     }
 

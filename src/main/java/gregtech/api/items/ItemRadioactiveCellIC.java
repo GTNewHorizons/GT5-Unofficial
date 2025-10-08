@@ -19,7 +19,6 @@ import ic2.core.util.ConfigUtil;
 
 public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReactorComponent {
 
-    private static final int MYSTERIOUS_MULTIPLIER_HEAT = 4;
     public final int numberOfCells;
     public final float sEnergy;
     public final int sRadiation;
@@ -56,11 +55,10 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                     StatCollector
                         .translateToLocal(aMox ? "GT5U.nei.nuclear.model.mox" : "GT5U.nei.nuclear.model.uranium"),
                     StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.neutron_pulse", aCellcount),
-                    aCellcount == 1 ? StatCollector
-                        .translateToLocalFormatted("GT5U.nei.nuclear.heat.0", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
+                    aCellcount == 1 ? StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.heat.0", aHeat / 2f)
                         : StatCollector.translateToLocalFormatted(
                             "GT5U.nei.nuclear.heat.1",
-                            (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f,
+                            aHeat * aCellcount / 2f,
                             pulses,
                             pulses + 1),
                     StatCollector.translateToLocalFormatted(
@@ -106,7 +104,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
 
                 // int heat = sumUp(pulses) * 4;
 
-                int heat = triangularNumber(pulses) * MYSTERIOUS_MULTIPLIER_HEAT;
+                int heat = triangularNumber(pulses);
 
                 heat = getFinalHeat(reactor, yourStack, x, y, heat);
 

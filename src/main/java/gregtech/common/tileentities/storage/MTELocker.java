@@ -56,7 +56,7 @@ public class MTELocker extends MTETieredMachineBlock {
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
             ITexture[] tmp0 = { MACHINE_CASINGS[this.mTier][(i + 1)] };
             rTextures[0][(i + 1)] = tmp0;
-            ITexture[] tmp1 = { MACHINE_CASINGS[this.mTier][(i + 1)], OVERLAYS_ENERGY_IN[this.mTier] };
+            ITexture[] tmp1 = { MACHINE_CASINGS[this.mTier][(i + 1)], OVERLAYS_ENERGY_IN[this.mTier + 1] };
             rTextures[1][(i + 1)] = tmp1;
             ITexture[] tmp2 = { MACHINE_CASINGS[this.mTier][(i + 1)], TextureFactory.of(OVERLAY_LOCKER) };
             rTextures[2][(i + 1)] = tmp2;
