@@ -501,15 +501,28 @@ public class OverclockCalculator {
         // Make sure overclocks don't go negative. This allows recipes needing >1A to run on a single hatch.
         overclocks = Math.max(overclocks, 0);
 
-        // Split overclocks into heat-based and regular overclocks.
-        int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
-        int regularOverclocks = overclocks - heatOverclocks;
+        // Split overclocks into limited perfect, heat-based, and regular overclocks.
+        int limitedPerfectOverclocks = Math.min(limitedPOC ? limitedPerfectOCAmount : 0, overclocks);
+        int regularOverclocksBeforeHeat = overclocks - limitedPerfectOverclocks;
+        int heatOverclocks = Math
+            .min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, regularOverclocksBeforeHeat);
+
+        int regularOverclocks = regularOverclocksBeforeHeat - heatOverclocks;
 
         double originalDuration = duration;
+
+        int neededLimitedPerfectOC = (int) Math
+            .ceil((Math.log(duration) / Math.log(durationDecreasePerLimitedPerfectOC)));
+        duration /= GTUtility.powInt(durationDecreasePerLimitedPerfectOC, limitedPerfectOverclocks);
+
         int neededHeatOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerHeatOC)));
         duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
+
         neededOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerOC)));
 
+        int limitedPerfectOverclockMultiplier = (int) GTUtility.powInt(
+            durationDecreasePerLimitedPerfectOC,
+            Math.max(limitedPerfectOverclocks - neededLimitedPerfectOC, 0));
         int heatMultiplier = (int) GTUtility
             .powInt(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
         int regularMultiplier = (int) GTUtility
@@ -518,15 +531,19 @@ public class OverclockCalculator {
         // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick
         // durations. It is 1 / (duration of first OC to go below 1 tick)
         double correctionMultiplier = 1.0;
-        if (heatOverclocks >= neededHeatOverclocks) {
+        if (limitedPerfectOverclocks >= neededLimitedPerfectOC) {
+            double criticalDuration = originalDuration
+                / GTUtility.powInt(durationDecreasePerLimitedPerfectOC, neededLimitedPerfectOC);
+            correctionMultiplier = 1 / criticalDuration;
+        } else if (heatOverclocks >= neededHeatOverclocks) {
             double criticalDuration = originalDuration
                 / GTUtility.powInt(durationDecreasePerHeatOC, neededHeatOverclocks);
             correctionMultiplier = 1 / criticalDuration;
         } else if (regularOverclocks >= neededOverclocks) {
-            double criticalDuration = originalDuration / GTUtility.powInt(durationDecreasePerOC, neededOverclocks);
+            double criticalDuration = duration / GTUtility.powInt(durationDecreasePerOC, neededOverclocks);
             correctionMultiplier = 1 / criticalDuration;
         }
 
-        return Math.ceil(heatMultiplier * correctionMultiplier * regularMultiplier);
+        return Math.ceil(limitedPerfectOverclockMultiplier * heatMultiplier * correctionMultiplier * regularMultiplier);
     }
 }
