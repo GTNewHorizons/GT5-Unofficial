@@ -38,24 +38,22 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
 public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTEMultiNqGenerator> multiDefinition = null;
-    protected long leftEnergy = 0;
     protected long trueOutput = 0;
     protected int trueEff = 0;
     protected FluidStack lockedFluid = null;
@@ -75,9 +73,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
             Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
-            Pair.of(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
-            Pair.of(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
-            Pair.of(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
+            Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
+            Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
+            Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
     }
 
     @Override
@@ -88,34 +86,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
         return DescTextLocalization.addText("MultiNqGenerator.hint", 8);
-    }
-
-    public final boolean addToGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else {
-                if (aMetaTileEntity instanceof MTEHatch) {
-                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                }
-                if (aMetaTileEntity instanceof MTEHatchInput) {
-                    return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchOutput) {
-                    return this.mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                    return this.mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                    return this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-                    return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-                } else {
-                    return false;
-                }
-            }
-        }
     }
 
     @Override
@@ -141,6 +111,8 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                             .atLeast(
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
                                     .or(gregtech.api.enums.HatchElement.Dynamo),
+                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
+                                    .or(gregtech.api.enums.HatchElement.Energy),
                                 gregtech.api.enums.HatchElement.InputHatch,
                                 gregtech.api.enums.HatchElement.OutputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
@@ -166,14 +138,8 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.times = aNBT.getInteger("mTimes");
-        this.leftEnergy = aNBT.getLong("mLeftEnergy");
         this.basicOutput = aNBT.getInteger("mbasicOutput");
         if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null) this.lockedFluid = new FluidStack(
             FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")),
@@ -185,7 +151,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mTimes", this.times);
-        aNBT.setLong("mLeftEnergy", this.leftEnergy);
         aNBT.setInteger("mbasicOutput", this.basicOutput);
         if (lockedFluid != null) {
             aNBT.setString(
@@ -339,32 +304,28 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     public void addAutoEnergy(long outputPower) {
-        if (!this.eDynamoMulti.isEmpty()) for (MTEHatch tHatch : this.eDynamoMulti) {
-            long voltage = tHatch.maxEUOutput();
-            long power = voltage * tHatch.maxAmperesOut();
-            long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
-            if (outputPower >= voltage) {
-                leftEnergy += outputPower;
-                outputAmperes = leftEnergy / voltage;
-                leftEnergy -= outputAmperes * voltage;
-                addEnergyOutput_EM(voltage, outputAmperes);
+        if (!this.eDynamoMulti.isEmpty()) {
+            MTEHatchDynamoMulti tHatch = this.eDynamoMulti.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + outputPower));
             } else {
-                addEnergyOutput_EM(outputPower, 1);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
-        if (!this.mDynamoHatches.isEmpty()) for (MTEHatch tHatch : this.mDynamoHatches) {
-            long voltage = tHatch.maxEUOutput();
-            long power = voltage * tHatch.maxAmperesOut();
-            long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
-            if (outputPower >= voltage) {
-                leftEnergy += outputPower;
-                outputAmperes = leftEnergy / voltage;
-                leftEnergy -= outputAmperes * voltage;
-                addEnergyOutput_EM(voltage, outputAmperes);
+        if (!this.mDynamoHatches.isEmpty()) {
+            MTEHatchDynamo tHatch = this.mDynamoHatches.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + outputPower));
             } else {
-                addEnergyOutput_EM(outputPower, 1);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
     }
@@ -381,16 +342,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEMultiNqGenerator(this.mName);
     }
@@ -398,33 +349,53 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Naquadah Reactor")
+        tt.addMachineType("Naquadah Reactor, LNR")
             .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids.")
+            .addInfo("Generate power from high-energy liquids")
             .addInfo(
                 String.format(
-                    "Consumes %d L/s Liquid Air to keep running, otherwise" + EnumChatFormatting.YELLOW
+                    "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
                         + " it will void your fuel"
                         + EnumChatFormatting.GRAY
                         + ".",
-                    LiquidAirConsumptionPerSecond))
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
+                    EnumChatFormatting.AQUA,
+                    LiquidAirConsumptionPerSecond,
+                    EnumChatFormatting.GRAY))
             .addInfo(
                 "The reactor will explode when there is more than" + EnumChatFormatting.RED
                     + " ONE"
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
-            .addInfo("Can consume coolants to increase efficiency:")
-            .addInfo(String.format("IC2 Coolant | %d%% | 1000 L/s ", CoolantEfficiency[3]))
-            .addInfo(String.format("Super Coolant | %d%% | 1000 L/s", CoolantEfficiency[2]))
-            .addInfo(String.format("Cryotheum | %d%% | 1000 L/s", CoolantEfficiency[1]))
-            .addInfo(String.format("Tachyon Rich Temporal Fluid | %d%% | 20 L/s", CoolantEfficiency[0]))
-            .addInfo("Can consume excited liquid to increase the output power and fuel usage:")
-            .addInfo(String.format("Molten Caesium | %dx power | 180 L/s ", ExcitedLiquidCoe[4]))
-            .addInfo(String.format("Molten Uranium-235 | %dx power | 180 L/s", ExcitedLiquidCoe[3]))
-            .addInfo(String.format("Molten Naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[2]))
-            .addInfo(String.format("Molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
-            .addInfo(String.format("Spatially Enlarged Fluid | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
+            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
+            .addSeparator()
+            .addInfo(
+                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
+                    + "efficiency "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.WHITE
+                    + "consuming "
+                    + EnumChatFormatting.BLUE
+                    + "coolants:")
+            .addInfo(getCoolantTextFormatted("IC2 Coolant", "1000", CoolantEfficiency[3]))
+            .addInfo(getCoolantTextFormatted("Super Coolant", "1000", CoolantEfficiency[2]))
+            .addInfo(getCoolantTextFormatted("Cryotheum", "1000", CoolantEfficiency[1]))
+            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid", "20", CoolantEfficiency[0]))
+            .addSeparator()
+            .addInfo(
+                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
+                    + "output power and fuel usage "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.WHITE
+                    + "consuming "
+                    + EnumChatFormatting.RED
+                    + "excited liquid:")
+            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
+            .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
+            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
+            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom")
@@ -464,6 +435,39 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost) {
+        return String.format(
+            "%s%s L/s%s : %s%d%% %s: %s%s",
+            EnumChatFormatting.WHITE,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            effBoost,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.BLUE,
+            fluidType);
+    }
+
+    public String getExcitedTextFormatted(String fluidType, String litersConsumed, int multiplier) {
+        return String.format(
+            "%s%s L/s %s: %s%dx power %s: %s%s",
+            EnumChatFormatting.WHITE,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            multiplier,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.RED,
+            fluidType);
+
+    }
+
 }

@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -20,7 +21,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEEnergyBuffer extends MTETieredMachineBlock {
@@ -89,7 +89,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[this.mTier + 1] };
     }
 
     public ITexture[] getBack(final byte aColor) {
@@ -114,7 +114,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[this.mTier + 1] };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
@@ -145,16 +145,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
             this.mDescriptionArray,
             this.mTextures,
             this.mInventory.length);
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(final int aIndex) {
-        return true;
     }
 
     @Override
@@ -220,26 +210,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
     public int getProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyStored();
@@ -252,18 +222,16 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
-        aCurrentOutputAmperage = aNBT.getByte("aCurrentOutputAmperage");
+        if (aNBT.hasKey("aCurrentOutputAmperage")) {
+            aCurrentOutputAmperage = aNBT.getByte("aCurrentOutputAmperage");
+        }
+
         if (aNBT.hasKey("aStoredEU")) {
             this.setEUVar(aNBT.getLong("aStoredEU"));
         }
@@ -286,10 +254,10 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
             .getStoredEU();
         final double c = ((double) tempStorage / this.maxEUStore()) * 100;
         final double roundOff = Math.round(c * 100.00) / 100.00;
-        PlayerUtils.messagePlayer(
+        GTUtility.sendChatToPlayer(
             playerIn,
             "Energy: " + GTUtility.formatNumbers(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
-        PlayerUtils.messagePlayer(playerIn, "Amperage: " + GTUtility.formatNumbers(maxAmperesOut()) + "A");
+        GTUtility.sendChatToPlayer(playerIn, "Amperage: " + GTUtility.formatNumbers(maxAmperesOut()) + "A");
     }
     // Utils.LOG_WARNING("Begin Show Energy");
     /*
@@ -342,7 +310,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
@@ -371,11 +339,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(final int p_70304_1_) {
-        return null;
-    }
-
-    @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
 
     @Override
@@ -384,25 +347,9 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 0;
     }
-
-    @Override
-    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
-        return false;
-    }
-
-    @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
@@ -424,12 +371,13 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         byte aTest = (byte) (aCurrentOutputAmperage + 1);
         if (aTest > 16 || aTest <= 0) {
             aTest = 1;
         }
         aCurrentOutputAmperage = aTest;
-        PlayerUtils.messagePlayer(aPlayer, "Now handling " + aCurrentOutputAmperage + " Amps.");
+        GTUtility.sendChatToPlayer(aPlayer, "Now handling " + aCurrentOutputAmperage + " Amps.");
     }
 }

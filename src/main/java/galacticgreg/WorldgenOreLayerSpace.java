@@ -313,9 +313,8 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
     public int getDensityFromPos(int aX, int aZ, int aSeedX, int aSeedZ) {
         if (aX < 0) aX -= 16;
         if (aZ < 0) aZ -= 16;
-        return Math.max(
-            1,
-            this.mDensity
-                / ((int) Math.sqrt(2 + Math.pow(aX / 16 - aSeedX / 16, 2) + Math.pow(aZ / 16 - aSeedZ / 16, 2))));
+        double dx = aX / 16 - aSeedX / 16;
+        double dz = aZ / 16 - aSeedZ / 16;
+        return Math.max(1, this.mDensity / ((int) Math.sqrt(2 + dx * dx + dz * dz)));
     }
 }

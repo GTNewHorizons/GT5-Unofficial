@@ -24,23 +24,8 @@ public class ToolElectricSnips extends ToolWireCutter {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft() {
-        return 400;
-    }
-
-    @Override
     public int getToolDamagePerEntityAttack() {
         return 100;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -49,18 +34,8 @@ public class ToolElectricSnips extends ToolWireCutter {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1F;
-    }
-
-    @Override
     public float getMaxDurabilityMultiplier() {
         return 1.4F;
-    }
-
-    @Override
-    public ItemStack getBrokenItem(final ItemStack aStack) {
-        return null;
     }
 
     @Override

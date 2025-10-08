@@ -106,12 +106,12 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
-            .addInfo("Turn Steam back to Distilled Water.")
-            .addController("Mid of the second layer")
+            .addInfo("Turn Steam back to Distilled Water")
+            .addController("Front middle of the second layer")
             .addCasingInfoExactly("Light Concrete", 277, false)
             .addCasingInfoExactly("Tungstencarbide Frame Box", 28, false)
-            .addInputHatch("Input Hatch", 1)
-            .addOutputHatch("Output Hatch", 1)
+            .addInputHatch("Any Light Concrete of the second layer", 1)
+            .addOutputHatch("Any Light Concrete of the second layer", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -129,11 +129,6 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTECoolantTower(mName);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -166,7 +161,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
 
     private int maybeDrainSteam(MTEHatchInput tHatch, FluidStack maybeSteam) {
         if (maybeSteam == null) return 0;
-        if (!GTUtility.areFluidsEqual(maybeSteam, GTModHandler.getSteam(1))) return 0;
+        if (!GTUtility.areFluidsEqual(maybeSteam, Materials.Steam.getGas(1))) return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
         return defoSteam.amount;
     }
@@ -200,7 +195,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
     }
 
     @Override

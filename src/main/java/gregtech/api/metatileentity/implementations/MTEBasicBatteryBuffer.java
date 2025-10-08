@@ -69,9 +69,9 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                mInventory.length == 16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]
-                    : mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
-                        : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                mInventory.length == 16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1]
+                    : mInventory.length > 1 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 1] };
         }
         return rTextures;
     }
@@ -85,16 +85,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBasicBatteryBuffer(mName, mTier, mDescriptionArray, mTextures, mInventory.length);
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
     }
 
     @Override
@@ -158,16 +148,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
     public int rechargerSlotCount() {
         return mCharge ? mInventory.length : 0;
     }
@@ -185,11 +165,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     @Override
     public int maxProgresstime() {
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override

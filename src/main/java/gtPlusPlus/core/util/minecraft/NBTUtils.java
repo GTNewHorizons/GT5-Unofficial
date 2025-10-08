@@ -1,7 +1,5 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gtPlusPlus.core.item.ModItems.ZZZ_Empty;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,17 +22,12 @@ public class NBTUtils {
     public static ItemStack[] readItemsFromNBT(ItemStack itemstack) {
         NBTTagCompound tNBT = getNBT(itemstack);
         final NBTTagList list = tNBT.getTagList("Items", 10);
-        ItemStack[] inventory = new ItemStack[list.tagCount()];
+
+        ItemStack[] inventory = new ItemStack[tNBT.getInteger("InventorySlots")];
         for (int i = 0; i < list.tagCount(); i++) {
             final NBTTagCompound data = list.getCompoundTagAt(i);
             final int slot = data.getInteger("Slot");
-            if ((slot >= 0) && (slot < list.tagCount())) {
-                if (ItemStack.loadItemStackFromNBT(data) == ItemUtils.getSimpleStack(ZZZ_Empty)) {
-                    inventory[slot] = null;
-                } else {
-                    inventory[slot] = ItemStack.loadItemStackFromNBT(data);
-                }
-            }
+            inventory[slot] = ItemStack.loadItemStackFromNBT(data);
         }
         return inventory;
     }
@@ -49,15 +42,10 @@ public class NBTUtils {
                 stack.writeToNBT(data);
                 data.setInteger("Slot", i);
                 list.appendTag(data);
-            } else {
-                final NBTTagCompound data = new NBTTagCompound();
-                ItemStack nullstack = ItemUtils.getSimpleStack(ZZZ_Empty);
-                nullstack.writeToNBT(data);
-                data.setInteger("Slot", i);
-                list.appendTag(data);
             }
         }
         tNBT.setTag("Items", list);
+        tNBT.setInteger("InventorySlots", stored.length);
         itemstack.setTagCompound(tNBT);
         return itemstack;
     }

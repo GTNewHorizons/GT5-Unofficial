@@ -7,17 +7,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import gregtech.api.enums.GTValues;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ShapedRecipe implements IRecipeMutableAccess {
 
     private static final String CHARS = "abcdefghijklmnop";
-    public ShapedOreRecipe mRecipe;
+    public @Nullable ShapedOreRecipe mRecipe;
 
-    ItemStack[] mBlackList = null;
+    ItemStack @Nullable [] mBlackList = null;
 
     public ShapedRecipe(Object aInput1, Object aInput2, Object aInput3, Object aInput4, Object aInput5, Object aInput6,
         Object aInput7, Object aInput8, Object aInput9, ItemStack aOutput) {
@@ -25,12 +27,12 @@ public class ShapedRecipe implements IRecipeMutableAccess {
         this(new Object[] { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 }, aOutput);
     }
 
-    public ShapedRecipe(Object[] aInputs, ItemStack aOutput) {
+    public ShapedRecipe(Object @NotNull [] aInputs, @Nullable ItemStack aOutput) {
         StringBuilder aGridWhole = new StringBuilder();
         String[] aGrid = new String[3];
         char[] aChar = new char[9];
         String[] aLoggingInfo = new String[9];
-        mBlackList = new ItemStack[] {};
+        mBlackList = GTValues.emptyItemStackArray;
 
         // Just to be safe
         try {
@@ -43,7 +45,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                     Logger.RECIPE("Input slot " + xSlot++ + " contains " + mInfo);
                 } else if (u instanceof ItemStack || u instanceof Item) {
                     if (u instanceof Item) {
-                        u = ItemUtils.getSimpleStack((Item) u);
+                        u = new ItemStack((Item) u);
                     }
                     mInfo = ((ItemStack) u).getDisplayName();
                     Logger.RECIPE("Input slot " + xSlot++ + " contains " + mInfo);
@@ -86,7 +88,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                             mInfo = (String) stack;
                         } else if (stack instanceof ItemStack || stack instanceof Item) {
                             if (stack instanceof Item) {
-                                stack = ItemUtils.getSimpleStack((Item) stack);
+                                stack = new ItemStack((Item) stack);
                             }
                             mInfo = ((ItemStack) stack).getDisplayName();
                         }
@@ -150,7 +152,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                                 mInfo = (String) stack;
                             } else if (stack instanceof ItemStack || stack instanceof Item) {
                                 if (stack instanceof Item) {
-                                    stack = ItemUtils.getSimpleStack((Item) stack);
+                                    stack = new ItemStack((Item) stack);
                                 }
                                 mInfo = ((ItemStack) stack).getDisplayName();
                             }
@@ -190,7 +192,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
 
                         if (o instanceof ItemStack || o instanceof Item) {
                             if (o instanceof Item) {
-                                o = ItemUtils.getSimpleStack((Item) o);
+                                o = new ItemStack((Item) o);
                             }
                             o = ((ItemStack) o).copy();
                         }

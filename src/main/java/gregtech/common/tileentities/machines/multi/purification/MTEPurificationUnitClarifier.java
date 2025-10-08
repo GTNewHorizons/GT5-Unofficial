@@ -183,15 +183,15 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
-            .addInfo("Requires a filter made of Activated Carbon to work.")
+            .addInfo("Requires a filter made of Activated Carbon to work")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(FILTER_DAMAGE_RATE)
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " chance to destroy the filter.")
+                    + " chance to destroy the filter")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -255,7 +255,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(
+        int built = survivalBuildPiece(
             STRUCTURE_PIECE_MAIN_SURVIVAL,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -308,11 +308,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {

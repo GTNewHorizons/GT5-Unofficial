@@ -70,6 +70,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -81,8 +82,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     implements ISurvivalConstructable {
 
     /**
-     * Number of seconds to average the wormhole energy over.
-     * (controls the weights in a weighted average)
+     * Number of seconds to average the wormhole energy over. (controls the weights in a weighted average)
      */
     public static int WH_ENERGY_AVG_WINDOW = 5;
 
@@ -104,7 +104,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     /**
      * The max number of 'overclocks' allowed when the wormhole's energy is increasing.
      */
-    public static double MAX_OVERCLOCKS = 2.0;
+    public static int MAX_OVERCLOCKS = 2;
 
     /**
      * The number of seconds to record for scan EU/t measurements. Purely visual and not saved.
@@ -312,11 +312,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
@@ -358,17 +353,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     // #endregion
@@ -500,11 +485,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     // #region Logic
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
 
     @Override
     public void onUnload() {
@@ -666,11 +646,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         long toSend = GTUtility.min(available, empty, maxSend, maxReceive, maxIO);
 
-        double overclocks = 0;
+        int overclocks = 0;
 
         if (mAllowOverclocks) {
-            overclocks = Math.log((double)toSend / (double)optimal) / Math.log(4.0);
-            overclocks = MathHelper.clamp_double(overclocks, 0, MAX_OVERCLOCKS);
+            overclocks = (int) GTUtility.log4(toSend / optimal);
+            overclocks = MathHelper.clamp_int(overclocks, 0, MAX_OVERCLOCKS);
         }
 
         long toReceive = (long) (
@@ -991,14 +971,14 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         // spotless:off
         tt.addMachineType("Wormhole Generator")
-            .addInfo("Transfers EU between two wormhole generators.")
-            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot.")
-            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate.")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%.")
-            .addInfo("EU will only be transferred if there is space in the laser source hatch.")
-            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side.")
-            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started.")
-            .addInfo("Right click the controller with a screwdriver to disable overclocking.")
+            .addInfo("Transfers EU between two wormhole generators")
+            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
+            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
+            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%")
+            .addInfo("EU will only be transferred if there is space in the laser source hatch")
+            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
+            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
+            .addInfo("Right click the controller with a screwdriver to disable overclocking")
             .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
@@ -1012,7 +992,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInputBus("§61§r (dot 1)")
             .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
             .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
 
@@ -1149,22 +1129,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mLink == null) {
-                return "§7Missing Entangled Singularity§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.missing_entangled_singularity");
             }
 
             if (!mLink.isFormed()) {
-                return "§7Wormhole status: §cNo destination§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.no_destination");
             }
 
             if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
-                return "§7Wormhole status: §6Decaying§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.decaying");
             }
 
             if (mLink.mWormholeEnergy > 0) {
-                return "§7Wormhole status: §bActive§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.active");
             }
 
-            return "§7Wormhole status: Inactive§f";
+            return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.inactive");
         })
             .setTextAlignment(Alignment.CenterLeft),
 
@@ -1176,7 +1156,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 // LV power = 1 angstrom in diameter
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
 
-                return String.format("§7Wormhole diameter: §b%,d§7 Å§f", (long) (radius * 2));
+                return StatCollector
+                    .translateToLocalFormatted("GT5U.gui.text.wormhole_generator.diameter", (long) (radius * 2));
             })
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mWormholeEnergy_UI > 0),
@@ -1187,9 +1168,13 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 }
 
                 if (mLink.mWormholeEnergy >= 1e10) {
-                    return String.format("§7Max I/O per hatch: §b%3.3e§7 EU/t§f", mLink.mWormholeEnergy / 20);
+                    return StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.wormhole_generator.max_io.large",
+                        mLink.mWormholeEnergy / 20);
                 } else {
-                    return String.format("§7Max I/O per hatch: §b%,d§7 EU/t§f", (long) (mLink.mWormholeEnergy / 20));
+                    return StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.wormhole_generator.max_io",
+                        (long) (mLink.mWormholeEnergy / 20));
                 }
             })
                 .setTextAlignment(Alignment.CenterLeft)

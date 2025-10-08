@@ -20,6 +20,7 @@ import forestry.api.genetics.IFlowerProvider;
 import forestry.api.genetics.IIndividual;
 import forestry.api.genetics.IPollinatable;
 import forestry.api.genetics.ISpeciesRoot;
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTLanguageManager;
 
 public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeType {
@@ -70,7 +71,7 @@ public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeTyp
         if (this == GTFlowers.FLAMING) {
             return new ItemStack[] { new ItemStack(Blocks.fire) };
         }
-        return new ItemStack[0];
+        return GTValues.emptyItemStackArray;
     }
 
     @Override

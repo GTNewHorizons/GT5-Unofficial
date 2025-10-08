@@ -86,7 +86,7 @@ public final class CoverRegistry {
         return factory == null ? coverNone : factory;
     }
 
-    public static Cover buildCover(ItemStack coverItem, ForgeDirection side, ICoverable coverable) {
+    public static @NotNull Cover buildCover(ItemStack coverItem, ForgeDirection side, ICoverable coverable) {
         CoverRegistration registration = getRegistration(coverItem);
         return registration.getFactory()
             .buildCover(new CoverContext(coverItem, side, coverable));

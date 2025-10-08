@@ -8,7 +8,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -26,7 +25,7 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
             && !aMaterial.contains(SubTag.NO_WORKING)) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(1, aStack),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "Xx", 'X', OrePrefixes.foil.get(aMaterial) });
         }
     }

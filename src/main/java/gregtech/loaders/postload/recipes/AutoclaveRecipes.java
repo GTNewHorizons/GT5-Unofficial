@@ -3,7 +3,10 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -20,6 +23,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
 
     @Override
@@ -28,7 +32,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
             .itemOutputs(ItemList.IC2_EnergyCrystal.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.EnergeticAlloy.getMolten(288))
+            .fluidInputs(Materials.EnergeticAlloy.getMolten(2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(256)
             .addTo(autoclaveRecipes);
@@ -37,7 +41,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
             .itemOutputs(ItemList.IC2_EnergyCrystal.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.ConductiveIron.getMolten(576))
+            .fluidInputs(Materials.ConductiveIron.getMolten(4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(256)
             .addTo(autoclaveRecipes);
@@ -115,7 +119,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(certusQuartzSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(36L))
+            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -124,7 +128,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(netherQuartzSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(36L))
+            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -133,7 +137,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(fluixSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(36L))
+            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -160,7 +164,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 2L))
             .outputChances(10000)
-            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(18L))
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * EIGHTH_INGOTS))
             .duration(1 * SECONDS + 5 * TICKS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
@@ -169,7 +173,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Plastic.getMolten(36L))
+            .fluidInputs(Materials.Plastic.getMolten(1 * QUARTER_INGOTS))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -178,7 +182,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
             .outputChances(3333)
-            .fluidInputs(Materials.UUMatter.getFluid(576L))
+            .fluidInputs(Materials.UUMatter.getFluid(4 * INGOTS))
             .duration(60 * MINUTES)
             .eut((int) TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
@@ -187,7 +191,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(ItemList.QuantumStar.get(1L)))
             .itemOutputs(ItemList.Gravistar.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Neutronium.getMolten(288))
+            .fluidInputs(Materials.Neutronium.getMolten(2 * INGOTS))
             .duration(24 * SECONDS)
             .eut((int) TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
@@ -196,7 +200,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(ItemList.Gravistar.get(16L)))
             .itemOutputs(ItemList.NuclearStar.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Infinity.getMolten(288))
+            .fluidInputs(Materials.Infinity.getMolten(2 * INGOTS))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(autoclaveRecipes);
@@ -223,7 +227,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(Materials.SiliconDioxide.getDust(1))
             .itemOutputs(Materials.Quartzite.getGems(1))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(36L))
+            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
             .duration(50 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -234,7 +238,7 @@ public class AutoclaveRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
-            .fluidInputs(Materials.Water.getFluid(1000L))
+            .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -245,8 +249,24 @@ public class AutoclaveRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
-            .fluidInputs(GTModHandler.getDistilledWater(1000L))
+            .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
+
+        // Marble Block
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Marble, 1L))
+            .fluidInputs(Materials.Water.getFluid(1_000L))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Marble, 1L))
+            .fluidInputs(GTModHandler.getDistilledWater(500L))
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
 
@@ -267,5 +287,6 @@ public class AutoclaveRecipes implements Runnable {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(autoclaveRecipes);
+
     }
 }

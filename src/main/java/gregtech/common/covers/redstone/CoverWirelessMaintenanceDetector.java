@@ -18,6 +18,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.covers.CoverNeedMaintainance;
+import gregtech.common.covers.CoverPosition;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.redstone.CoverWirelessMaintenenceDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessMaintenanceDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -137,8 +140,8 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
             return;
         }
         final byte signal = computeSignalBasedOnMaintenance(coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(getUuid(), getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(getUuid(), getFrequency(), key, signal);
 
         if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -163,14 +166,25 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
     }
 
     public enum MaintenanceMode {
-        NO_ISSUE,
-        ONE_ISSUE,
-        TWO_ISSUES,
-        THREE_ISSUES,
-        FOUR_ISSUES,
-        FIVE_ISSUES,
-        ROTOR_80,
-        ROTOR_100
+
+        NO_ISSUE("GT5U.gui.text.wireless_maintenance_detector.extra.no_issues"),
+        ONE_ISSUE("GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues"),
+        TWO_ISSUES("GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues"),
+        THREE_ISSUES("GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues"),
+        FOUR_ISSUES("GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues"),
+        FIVE_ISSUES("GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues"),
+        ROTOR_80("GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20"),
+        ROTOR_100("GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0");
+
+        private final String descriptorKey;
+
+        MaintenanceMode(String key) {
+            this.descriptorKey = key;
+        }
+
+        public String getDescriptorKey() {
+            return descriptorKey;
+        }
     }
 
     @Override
@@ -178,4 +192,8 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
         return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
     }
 
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverWirelessMaintenenceDetectorGui(this);
+    }
 }

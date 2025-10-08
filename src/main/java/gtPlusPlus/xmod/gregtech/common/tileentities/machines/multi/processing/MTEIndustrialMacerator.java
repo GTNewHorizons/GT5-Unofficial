@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -47,6 +48,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
@@ -93,26 +95,26 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     public String getMachineType() {
-        return "Macerator, Pulverizer";
+        return "Macerator, Pulverizer, IMS";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("60% faster than using single block machines of the same voltage")
-            .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
-            .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
+            .addInfo(TooltipHelper.parallelText("Voltage Tier * n") + " Parallels")
+            .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip")
+            .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 3, true)
             .addController("Bottom center")
             .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
             .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
-            .addInputBus("Bottom casing", 1)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .addOutputBus("One per layer except bottom layer", 2)
-            .addMufflerHatch("Any casing except bottom layer", 2)
+            .addMufflerHatch("Any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -170,7 +172,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -211,7 +213,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MACERATOR_OP;
+        return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
     @Override
@@ -277,7 +279,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack aGuiStack = this.getControllerSlot();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(aGuiStack, false, true)) {
                 controllerTier = 2;
-                mInventory[1] = ItemUtils.depleteStack(aGuiStack);
+                mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
                 markDirty();
                 // schedule a structure check
                 mUpdated = true;
@@ -292,7 +294,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack heldItem = aPlayer.getHeldItem();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(heldItem, false, true)) {
                 controllerTier = 2;
-                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 if (getBaseMetaTileEntity().isServerSide()) {
                     markDirty();
                     aPlayer.inventory.markDirty();
@@ -352,7 +354,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.6F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 1.6F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -361,11 +364,6 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         final long tVoltage = getMaxInputVoltage();
         final byte tTier = (byte) Math.max(1, GTUtility.getTier(tVoltage));
         return Math.max(1, (controllerTier == 1 ? 2 : 8) * tTier);
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -387,7 +385,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("tier")) {
             currentTip.add(
-                "Tier: " + EnumChatFormatting.YELLOW
+                StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                    + EnumChatFormatting.YELLOW
                     + GTUtility.formatNumbers(tag.getInteger("tier"))
                     + EnumChatFormatting.RESET);
         }

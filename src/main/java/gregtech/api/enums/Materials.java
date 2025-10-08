@@ -41,6 +41,7 @@ import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfinityRenderer;
+import gregtech.common.render.items.RainbowOverlayRenderer;
 import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
@@ -264,7 +265,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Emery;
     public static Materials EnderiumBase;
     public static Materials Energized;
-    public static Materials Epidote;
     public static Materials Eximite;
     public static Materials FierySteel;
     public static Materials Firestone;
@@ -421,7 +421,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Antimatter;
     public static Materials Protomatter;
     public static Materials AdvancedGlue;
-    public static Materials BioFuel;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
@@ -984,6 +983,31 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SterilizationFluid;
     public static Materials NeuralFluid;
 
+    public static Materials NetherAir;
+    public static Materials NetherSemiFluid;
+    public static Materials NefariousGas;
+    public static Materials NefariousOil;
+    public static Materials PoorNetherWaste;
+    public static Materials RichNetherWaste;
+    public static Materials HellishMetal;
+    public static Materials Netherite;
+    public static Materials ActivatedNetherite;
+    public static Materials PrismarineSolution;
+    public static Materials PrismarineContaminatedHydrogenPeroxide;
+    public static Materials PrismarineRichNitrobenzeneSolution;
+    public static Materials PrismarineContaminatedNitrobenzeSolution;
+    public static Materials PrismaticGas;
+    public static Materials PrismaticAcid;
+    public static Materials PrismaticNaquadah;
+    public static Materials PrismaticNaquadahCompositeSlurry;
+
+    // Misc GT Magic Materials
+    public static Materials ComplexityCatalyst;
+    public static Materials EntropicCatalyst;
+
+    // Aliases
+    public static Materials Steam; // Steam.getGas(..) reads better than Water.getGas(..)
+
     // spotless:on
 
     static {
@@ -1018,8 +1042,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     @Deprecated
     public static Materials Superconductor = new Materials(SuperconductorUHV, true); // new Materials( -1,
-                                                                                     // TextureSet.SET_NONE , 1.0F, 0,
-                                                                                     // 0, 0
+    // TextureSet.SET_NONE , 1.0F, 0,
+    // 0, 0
     // , 255, 255, 255, 0, "Superconductor" , "Superconductor" , 0,
     // 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray , Arrays.asList(new
     // TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
@@ -1472,8 +1496,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setOthers() {
         Mercury.add(SubTag.SMELTING_TO_GEM);
-        BandedIron.setOreReplacement(RoastedIron);
-        Garnierite.setOreReplacement(RoastedNickel);
     }
 
     private static void setDirectSmelting() {
@@ -1923,12 +1945,84 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         InfusedEarth.mChemicalFormula = CustomGlyphs.EARTH;
         InfusedFire.mChemicalFormula = CustomGlyphs.FIRE;
         InfusedWater.mChemicalFormula = CustomGlyphs.WATER;
-        Glue.mChemicalFormula = "No Horses were harmed for the Production";
+        Glue.mChemicalFormula = "No Horses were harmed in the the making of this substance";
         AdvancedGlue.mChemicalFormula = "A chemically approved glue!";
         UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
-        LiveRoot.mChemicalFormula = "";
         WoodSealed.mChemicalFormula = "";
         Wood.mChemicalFormula = "";
+        HeeEndium.mChemicalFormula = "Em";
+        Alduorite.mChemicalFormula = "SpAl";
+        PlatinumGroupSludge.mChemicalFormula = "(SiO\u2082)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "Au"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "Pt"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "Pd"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "??";
+        Ceruclase.mChemicalFormula = "SpAg";
+        Orichalcum.mChemicalFormula = "SpBi";
+        Rubracium.mChemicalFormula = "SpRb";
+        Vulcanite.mChemicalFormula = "SpCu";
+        Vyroxeres.mChemicalFormula = "SpBe";
+        Force.mChemicalFormula = "Fc⚙";
+        DarkAsh.mChemicalFormula = "C" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??";
+        Ash.mChemicalFormula = "??";
+        FierySteel.mChemicalFormula = CustomGlyphs.BRIMSTONE + "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C";
+        RareEarth.mChemicalFormula = "??????";
+        WroughtIron.mChemicalFormula = "Fe*";
+        AnnealedCopper.mChemicalFormula = "Cu*";
+        PigIron.mChemicalFormula = "\u00bfFe?";
+        LiveRoot.mChemicalFormula = "(COH\u2083)Ma";
+        Vinteum.mChemicalFormula = "FeMa*";
+        Forcicium.mChemicalFormula = "\u25C3\u25C1\u25C0";
+        Forcillium.mChemicalFormula = "\u25B6\u25B7\u25B9";
+        DarkIron.mChemicalFormula = "Sp\u2086Fe" + CustomGlyphs.PICKAXE;
+        IronMagnetic.mChemicalFormula = "Fe" + CustomGlyphs.MAGNET;
+        SteelMagnetic.mChemicalFormula = "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C" + CustomGlyphs.MAGNET;
+        NeodymiumMagnetic.mChemicalFormula = "Nd" + CustomGlyphs.MAGNET;
+        SamariumMagnetic.mChemicalFormula = "Sm" + CustomGlyphs.MAGNET;
+        MetalMixture.mChemicalFormula = "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "O"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "??";
+        Void.mChemicalFormula = "ShFeMa\u2083";
+        Shadow.mChemicalFormula = "Sh\u2086(FeMa\u2083)\u2082";
+        BloodInfusedIron.mChemicalFormula = CustomGlyphs.BRIMSTONE + "Fe";
+        DamascusSteel.mChemicalFormula = "(Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C)\u2089Mn\u2084Cr\u2084CSiV";
+        Dilithium.mChemicalFormula = "\u2233Li\u2233Li\u2233";
+        NetherStar.mChemicalFormula = "(Nh\u2082Ma)\u2083" + CustomGlyphs.CIRCLE_CROSS + "C\u2086";
+        Unstable.mChemicalFormula = CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C\u230B";
+        RoastedAntimony.mChemicalFormula = "Sb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        RoastedArsenic.mChemicalFormula = "As" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        RoastedCobalt.mChemicalFormula = "Co" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        RoastedCopper.mChemicalFormula = "Cu" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        RoastedIron.mChemicalFormula = "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        RoastedLead.mChemicalFormula = "Pb" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        RoastedNickel.mChemicalFormula = "Ni" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        RoastedZinc.mChemicalFormula = "Zn" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
+        Reinforced.mChemicalFormula = "Fe\u2082(C(MgFeSi\u2082O\u2088)\u2088)";
+        Galgadorian.mChemicalFormula = "???Fe\u2082C\u2089Nh\u2083";
+        EnhancedGalgadorian.mChemicalFormula = "???Fe\u2082C\u2089Nh\u2083";
+        QuartzSand.mChemicalFormula = "(SiO\u2082)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??";
+        Blizz.mChemicalFormula = "\u2746Ma";
+        Firestone.mChemicalFormula = "\u2f55";
+        InfusedOrder.mChemicalFormula = CustomGlyphs.ORDER;
+        InfusedEntropy.mChemicalFormula = CustomGlyphs.CHAOS;
+        MaterialsUEVplus.BlackDwarfMatter.mChemicalFormula = ">>\u2205<<";
+        MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "\u2205";
+        MysteriousCrystal.mChemicalFormula = CustomGlyphs.CIRCLE_STAR;
+        Cryotheum.mChemicalFormula = "(KNO\u2083)(" + Redstone.mChemicalFormula
+            + ")(H\u2082O)("
+            + Blizz.mChemicalFormula
+            + ")";
+        Uranium235.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT3
+            + CustomGlyphs.SUPERSCRIPT5
+            + "U";
+        Plutonium241.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT4
+            + CustomGlyphs.SUPERSCRIPT1
+            + "Pu";
+
         Electrotine.mChemicalFormula = "Rp";
         Trinium.mChemicalFormula = "Ke";
         Naquadah.mChemicalFormula = "Nq";
@@ -1939,7 +2033,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Adamantium.mChemicalFormula = "Ad";
         InfusedGold.mChemicalFormula = "AuMa*";
         MeteoricIron.mChemicalFormula = "SpFe";
-        MeteoricSteel.mChemicalFormula = "SpFe\u2085\u2080C";
+        MeteoricSteel.mChemicalFormula = "SpFe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C";
         Duranium.mChemicalFormula = "Du";
         Tritanium.mChemicalFormula = "Tn";
         Ardite.mChemicalFormula = "Ai";
@@ -1973,16 +2067,28 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         NetherQuartz.mChemicalFormula = "SiO\u2082";
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
-        CertusQuartzCharged.mChemicalFormula = "SiO\u2082";
+        CertusQuartzCharged.mChemicalFormula = "SiO\u2082" + CustomGlyphs.HIGH_VOLTAGE;
         MaterialsUEVplus.SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
         MaterialsUEVplus.Universium.mChemicalFormula = "A tear into the space beyond space";
         MaterialsUEVplus.Eternity.mChemicalFormula = "En\u29BC";
         MaterialsUEVplus.MagMatter.mChemicalFormula = "M\u238B";
+        MaterialsUEVplus.RawStarMatter.mChemicalFormula = CustomGlyphs.GALAXY;
+        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "\u21F2"
+            + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
+            + CustomGlyphs.GALAXY
+            + CustomGlyphs.ARROW_CORNER_NORTH_WEST
+            + "\u21F1";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
-        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7 Ni4Ti6)";
-        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
-        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085\u06DE\u2082";
+        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7Ni4Ti6)";
+        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
+            + CustomGlyphs.SUBSCRIPT0
+            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
+        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083"
+            + CustomGlyphs.FIRE
+            + CustomGlyphs.EARTH
+            + CustomGlyphs.CHAOS
+            + ")\u2085\u06DE\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
         EnrichedHolmium.mChemicalFormula = "Nq+\u2084Ho\u2081";
         Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
@@ -1994,11 +2100,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
         FlocculationWasteLiquid.mChemicalFormula = "Al\u2082(OH)\u2083??Cl\u2083";
-        TengamRaw.mChemicalFormula = "";
+        TengamRaw.mChemicalFormula = "M" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK;
         TengamPurified.mChemicalFormula = "M";
-        TengamAttuned.mChemicalFormula = "M";
+        TengamAttuned.mChemicalFormula = CustomGlyphs.HIGH_VOLTAGE + "M" + CustomGlyphs.MAGNET;
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
+        MaterialsUEVplus.DimensionallyTranscendentResidue.mChemicalFormula = CustomGlyphs.SPARKLES + "-"
+            + CustomGlyphs.EMPTY_SET;
         PolyAluminiumChloride.mChemicalFormula = "Al\u2082(OH)\u2083Cl\u2083";
         MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
             + EnumChatFormatting.RESET
@@ -2007,9 +2115,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + EnumChatFormatting.OBFUSCATED
             + "X";
         MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
-        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081\u2080Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085\u2080C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081" + CustomGlyphs.SUBSCRIPT0
+            + "Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085"
+            + CustomGlyphs.SUBSCRIPT0
+            + "C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
+            + CustomGlyphs.SUBSCRIPT0
+            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
         MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
-        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081?\u2087?\u2081\u2083?\u2081\u2083";
+        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081("
+            + FierySteel.mChemicalFormula
+            + ")\u2087"
+            + Firestone.mChemicalFormula
+            + "\u2081\u2083?\u2081\u2083";
         MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
         Tartarite.mChemicalFormula = "Tt";
         MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
@@ -2022,10 +2139,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + ")\u2084C\u2084V\u2083SpPu)\u2082"
             + Tartarite.mChemicalFormula
             + "\u2082"
-            + "((CW)\u2087Ti\u2083)\u2083???"
+            + "((CW)\u2087Ti\u2083)\u2083"
+            + CustomGlyphs.FIRE
+            + CustomGlyphs.EARTH
+            + CustomGlyphs.CHAOS
             + "If*";
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        Materials.HellishMetal.mChemicalFormula = "RhMa";
+        Materials.Netherite.mChemicalFormula = "NrAuMa*";
+        MaterialsUEVplus.BiocatalyzedPropulsionFluid.mChemicalFormula = "ඞ";
     }
 
     private static void initSubTags() {
@@ -2035,15 +2158,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
         MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
         MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+
+        SubTag.NO_RECIPES.addTo(Materials.Netherite);
+        Materials.Netherite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
@@ -2561,7 +2692,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Master.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Ultimate.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING); // Todo: remove this once it will be fully
-                                                                    // deprecated
+        // deprecated
         Infinite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Bio.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorMV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -2590,13 +2721,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         new ProcessingConfig();
-        if (!GTMod.gregtechproxy.mEnableAllMaterials) new ProcessingModSupport();
+        if (!GTMod.proxy.mEnableAllMaterials) new ProcessingModSupport();
         mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate
-                                                                      // materials
+        // materials
         initMaterialProperties(); // No more material addition or manipulation should be done past this point!
         MATERIALS_ARRAY = MATERIALS_MAP.values()
             .toArray(new Materials[0]); // Generate standard object array. This is a
-                                        // lot faster to loop over.
+        // lot faster to loop over.
         VALUES = Arrays.asList(MATERIALS_ARRAY);
 
         disableUnusedHotIngots();
@@ -2628,6 +2759,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotExoHalkonite);
@@ -2649,6 +2781,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
         MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
         MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -2726,17 +2859,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void addHarvestLevelNerfs(Materials aMaterial) {
         /* Moved the harvest level changes from GTMod to have fewer things iterating over MATERIALS_ARRAY */
-        if (GTMod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
-            && aMaterial.mMetaItemSubID < GTMod.gregtechproxy.mHarvestLevel.length
+        if (GTMod.proxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
+            && aMaterial.mMetaItemSubID < GTMod.proxy.mHarvestLevel.length
             && aMaterial.mMetaItemSubID >= 0) {
-            GTMod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
+            GTMod.proxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
         }
     }
 
     private static void addHarvestLevels() {
-        GTMod.gregtechproxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
-        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
-        GTMod.gregtechproxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
+        GTMod.proxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
+        GTMod.proxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
+        GTMod.proxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {

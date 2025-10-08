@@ -55,14 +55,17 @@ public class GTGuiTheme {
     }
 
     public static void registerThemes() {
-        MinecraftForge.EVENT_BUS.register(GTGuiTheme.class);
+        MinecraftForge.EVENT_BUS.register(new GTGuiTheme.EventHandler());
         GTGuiThemes.init();
         THEMES.forEach(GTGuiTheme::register);
     }
 
-    @SubscribeEvent
-    public static void onReloadThemes(ReloadThemeEvent.Pre event) {
-        THEMES.forEach(GTGuiTheme::buildJson);
+    public static class EventHandler {
+
+        @SubscribeEvent
+        public void onReloadThemes(ReloadThemeEvent.Pre event) {
+            THEMES.forEach(GTGuiTheme::buildJson);
+        }
     }
 
     public static Builder builder(String themeId) {
@@ -83,16 +86,16 @@ public class GTGuiTheme {
         }
 
         /**
-         * Set a parent theme for this theme, which unset values will inherit from.
-         * If not set, it will use the default theme as the parent (VANILLA).
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
          */
         public Builder parent(GTGuiTheme parent) {
             return parent(parent.themeId);
         }
 
         /**
-         * Set a parent theme for this theme, which unset values will inherit from.
-         * If not set, it will use the default theme as the parent (VANILLA).
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
          */
         public Builder parent(String parentId) {
             theme.elementBuilder.add(b -> b.add("parent", parentId));

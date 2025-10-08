@@ -416,7 +416,7 @@ public enum IDMetaItem01 {
     QuantumEye(724),
     QuantumStar(725),
     Gravistar(726),
-    Upgrade_Muffler(727),
+    // Muffler upgrade was 727
     Upgrade_Lock(728),
     Component_Filter(729),
     Cover_Controller(730),

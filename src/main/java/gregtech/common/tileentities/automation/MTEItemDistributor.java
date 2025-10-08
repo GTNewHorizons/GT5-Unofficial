@@ -102,11 +102,6 @@ public class MTEItemDistributor extends MTEBuffer {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < this.mInventory.length - 1;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         itemsPerSide = aNBT.getByteArray("mItemsPerSide");
@@ -158,7 +153,8 @@ public class MTEItemDistributor extends MTEBuffer {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         final int ordinalSide = side.ordinal();
         // Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
         itemsPerSide[ordinalSide] += aPlayer.isSneaking() ? -1 : 1;

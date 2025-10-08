@@ -1,6 +1,5 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GTModHandler.getWater;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.Objects;
@@ -13,6 +12,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.enums.Materials;
 
 public class ReasonOutOfFluid implements ShutDownReason {
 
@@ -51,7 +52,7 @@ public class ReasonOutOfFluid implements ShutDownReason {
     @NotNull
     @Override
     public ShutDownReason newInstance() {
-        return new ReasonOutOfFluid(getWater(0));
+        return new ReasonOutOfFluid(Materials.Water.getFluid(0));
     }
 
     @Override

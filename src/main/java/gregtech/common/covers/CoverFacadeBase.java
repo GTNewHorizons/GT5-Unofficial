@@ -27,10 +27,17 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTRenderingWorld;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverFacadeBaseGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.FacadeBaseUIFactory;
 import io.netty.buffer.ByteBuf;
 
 public abstract class CoverFacadeBase extends Cover {
+
+    private static final int REDSTONE_PASS_FLAG = 0x1;
+    private static final int ENERGY_PASS_FLAG = 0x2;
+    private static final int FLUID_PASS_FLAG = 0x4;
+    private static final int ITEM_PASS_FLAG = 0x8;
 
     public static CoverPlacementPredicate isCoverPlaceable(Function<ItemStack, Block> getTargetBlock,
         Function<ItemStack, Integer> getTargetmeta) {
@@ -85,13 +92,12 @@ public abstract class CoverFacadeBase extends Cover {
         this.mStack = stack;
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.isClientSide()) {
-            GTRenderingWorld.getInstance()
-                .register(
-                    coverable.getXCoord(),
-                    coverable.getYCoord(),
-                    coverable.getZCoord(),
-                    getTargetBlock(mStack),
-                    getTargetMeta(mStack));
+            GTRenderingWorld.register(
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord(),
+                getTargetBlock(mStack),
+                getTargetMeta(mStack));
         }
         return this;
     }
@@ -103,6 +109,62 @@ public abstract class CoverFacadeBase extends Cover {
     public CoverFacadeBase setFlags(int flags) {
         this.mFlags = flags;
         return this;
+    }
+
+    public boolean getRedstonePass() {
+        return (getFlags() & REDSTONE_PASS_FLAG) > 0;
+    }
+
+    public void setRedstonePass(boolean redstonePass) {
+        int flags = getFlags();
+        if (redstonePass) {
+            flags |= REDSTONE_PASS_FLAG;
+        } else {
+            flags &= ~REDSTONE_PASS_FLAG;
+        }
+        setFlags(flags);
+    }
+
+    public boolean getEnergyPass() {
+        return (getFlags() & ENERGY_PASS_FLAG) > 0;
+    }
+
+    public void setEnergyPass(boolean energyPass) {
+        int flags = getFlags();
+        if (energyPass) {
+            flags |= ENERGY_PASS_FLAG;
+        } else {
+            flags &= ~ENERGY_PASS_FLAG;
+        }
+        setFlags(flags);
+    }
+
+    public boolean getFluidPass() {
+        return (getFlags() & FLUID_PASS_FLAG) > 0;
+    }
+
+    public void setFluidPass(boolean fluidPass) {
+        int flags = getFlags();
+        if (fluidPass) {
+            flags |= FLUID_PASS_FLAG;
+        } else {
+            flags &= ~FLUID_PASS_FLAG;
+        }
+        setFlags(flags);
+    }
+
+    public boolean getItemPass() {
+        return (getFlags() & ITEM_PASS_FLAG) > 0;
+    }
+
+    public void setItemPass(boolean itemPass) {
+        int flags = getFlags();
+        if (itemPass) {
+            flags |= ITEM_PASS_FLAG;
+        } else {
+            flags &= ~ITEM_PASS_FLAG;
+        }
+        setFlags(flags);
     }
 
     @Override
@@ -137,62 +199,61 @@ public abstract class CoverFacadeBase extends Cover {
         mFlags = ((mFlags + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
-            ((mFlags & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((mFlags & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((mFlags & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((mFlags & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+            ((mFlags & REDSTONE_PASS_FLAG) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
+                + ((mFlags & ENERGY_PASS_FLAG) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
+                + ((mFlags & FLUID_PASS_FLAG) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
+                + ((mFlags & ITEM_PASS_FLAG) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
     }
 
     @Override
     public boolean letsRedstoneGoIn() {
-        return (mFlags & 1) != 0;
+        return (mFlags & REDSTONE_PASS_FLAG) != 0;
     }
 
     @Override
     public boolean letsRedstoneGoOut() {
-        return (mFlags & 1) != 0;
+        return (mFlags & REDSTONE_PASS_FLAG) != 0;
     }
 
     @Override
     public boolean letsEnergyIn() {
-        return (mFlags & 2) != 0;
+        return (mFlags & ENERGY_PASS_FLAG) != 0;
     }
 
     @Override
     public boolean letsEnergyOut() {
-        return (mFlags & 2) != 0;
+        return (mFlags & ENERGY_PASS_FLAG) != 0;
     }
 
     @Override
     public boolean letsFluidIn(Fluid fluid) {
-        return (mFlags & 4) != 0;
+        return (mFlags & FLUID_PASS_FLAG) != 0;
     }
 
     @Override
     public boolean letsFluidOut(Fluid fluid) {
-        return (mFlags & 4) != 0;
+        return (mFlags & FLUID_PASS_FLAG) != 0;
     }
 
     @Override
     public boolean letsItemsIn(int slot) {
-        return (mFlags & 8) != 0;
+        return (mFlags & ITEM_PASS_FLAG) != 0;
     }
 
     @Override
     public boolean letsItemsOut(int slot) {
-        return (mFlags & 8) != 0;
+        return (mFlags & ITEM_PASS_FLAG) != 0;
     }
 
     @Override
     public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
-            .register(
-                coverable.getXCoord(),
-                coverable.getYCoord(),
-                coverable.getZCoord(),
-                getTargetBlock(coverItem),
-                getTargetMeta(coverItem));
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register(
+            coverable.getXCoord(),
+            coverable.getYCoord(),
+            coverable.getZCoord(),
+            getTargetBlock(coverItem),
+            getTargetMeta(coverItem));
     }
 
     @Override
@@ -251,13 +312,12 @@ public abstract class CoverFacadeBase extends Cover {
             }
             if (mStack != null)
                 // mStack == null -> cover removed before data reach client
-                GTRenderingWorld.getInstance()
-                    .unregister(
-                        coverable.getXCoord(),
-                        coverable.getYCoord(),
-                        coverable.getZCoord(),
-                        getTargetBlock(mStack),
-                        getTargetMeta(mStack));
+                GTRenderingWorld.unregister(
+                    coverable.getXCoord(),
+                    coverable.getYCoord(),
+                    coverable.getZCoord(),
+                    getTargetBlock(mStack),
+                    getTargetMeta(mStack));
         }
     }
 
@@ -270,6 +330,11 @@ public abstract class CoverFacadeBase extends Cover {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverFacadeBaseGui(this);
+    }
 
     @Override
     public boolean hasCoverGUI() {

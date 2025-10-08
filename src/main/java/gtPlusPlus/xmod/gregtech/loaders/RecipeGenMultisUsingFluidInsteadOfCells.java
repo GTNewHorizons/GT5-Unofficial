@@ -8,11 +8,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.recipe.GTRecipeUtils;
 
@@ -26,17 +26,16 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         if (!mInit) {
             mInit = true;
 
-            mEmptyItems.add(CI.emptyCells(1));
+            mEmptyItems.add(ItemList.Cell_Empty.get(1));
             mEmptyItems.add(new ItemStack(Items.bowl));
             mEmptyItems.add(new ItemStack(Items.bucket));
             mEmptyItems.add(new ItemStack(Items.glass_bottle));
-
             mItemsToIgnore.add(
-                ItemUtils.simpleMetaStack(
-                    CI.emptyCells(1)
+                new ItemStack(
+                    ItemList.Cell_Empty.get(1)
                         .getItem(),
-                    8,
-                    1));
+                    1,
+                    8));
         }
     }
 
@@ -151,7 +150,8 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                     aNewFluidOutputs[i] = aOutputFluidsMap.get(i);
                 }
 
-                if (!ItemUtils.checkForInvalidItems(aNewItemInputs, aNewItemOutputs)) {
+                if (!(ItemUtils.checkForInvalidItems(aNewItemInputs)
+                    && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
                     aInvalidRecipesToConvert++;
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
@@ -166,7 +166,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                     x.mDuration,
                     x.mEUt,
                     x.mSpecialValue);
-                aNewRecipe.owners = new ArrayList<>(x.owners);
+                aNewRecipe.owners = x.owners == null ? null : new ArrayList<>(x.owners);
 
                 // add all recipes to an intermediate array
                 deDuplicationInputArray.add(aNewRecipe);

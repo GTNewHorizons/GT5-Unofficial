@@ -9,6 +9,98 @@ itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
+# Components
+gt.component.dust=%s Dust
+gt.component.dustsmall=Small Pile of %s Dust
+gt.component.dusttiny=Tiny Pile of %s Dust
+gt.component.ingot=%s Ingot
+gt.component.hotingot=Hot %s Ingot
+gt.component.plate=%s Plate
+gt.component.platedouble=Double %s Plate
+gt.component.rod=%s Rod
+gt.component.rodlong=Long %s Rod
+gt.component.gear=%s Gear
+gt.component.smallgear=Small %s Gear
+gt.component.screw=%s Screw
+gt.component.bolt=%s Bolt
+gt.component.rotor=%s Rotor
+gt.component.ring=%s Ring
+gt.component.foil=%s Foil
+gt.component.plasmacell=%s Plasma Cell
+gt.component.cell=%s Cell
+gt.component.nugget=%s Nugget
+gt.component.spring=%s Spring
+gt.component.smallspring=Small %s Spring
+gt.component.finewire=Fine %s Wire
+gt.component.platedense=Dense %s Plate
+gt.component.platesuperdense=Superdense %s Plate
+
+# Crops
+gt.crop.argentia.name=Argentia
+gt.crop.bauxia.name=Bauxia
+gt.crop.blazereed.name=Blazereed
+gt.crop.bobsyeruncleranks.name=Bobsyeruncleranks
+gt.crop.brown_mushrooms.name=Brown Mushrooms
+gt.crop.chilly.name=Chilly
+gt.crop.coppon.name=Coppon
+gt.crop.corium.name=Corium
+gt.crop.corpseplant.name=Corpseplant
+gt.crop.creeperweed.name=Creeperweed
+gt.crop.cucumber.name=Cucumber
+gt.crop.diareed.name=Diareed
+gt.crop.eggplant.name=Eggplant
+gt.crop.enderbloom.name=Enderbloom
+gt.crop.evil_ore.name=Evil Ore
+gt.crop.fertilia.name=Fertilia
+gt.crop.flax.name=Flax
+gt.crop.galvania.name=Galvania
+gt.crop.glowheat.name=Glowheat
+gt.crop.god_of_thunder.name=God of Thunder
+gt.crop.grape.name=Grape
+gt.crop.indigo.name=Indigo
+gt.crop.lazulia.name=Lazulia
+gt.crop.lemon.name=Lemon
+gt.crop.liveroots.name=Liveroots
+gt.crop.meatrose.name=Meatrose
+gt.crop.micadia.name=Micadia
+gt.crop.milkwart.name=Milkwart
+gt.crop.nickelback.name=Nickelback
+gt.crop.oilberries.name=Oilberries
+gt.crop.olivia.name=Olivia
+gt.crop.onion.name=Onion
+gt.crop.platina.name=Platina
+gt.crop.plumbilia.name=Plumbilia
+gt.crop.pyrolusium.name=Pyrolusium
+gt.crop.quantaria.name=Quantaria
+gt.crop.rape.name=Rape
+gt.crop.reactoria.name=Reactoria
+gt.crop.red_mushrooms.name=Red Mushrooms
+gt.crop.sapphirum.name=Sapphirum
+gt.crop.scheelinium.name=Scheelinium
+gt.crop.slimeplant.name=Slimeplant
+gt.crop.spidernip.name=Spidernip
+gt.crop.stargatium.name=Stargatium
+gt.crop.starwart.name=Starwart
+gt.crop.steeleafranks.name=Steeleafranks
+gt.crop.tea.name=Tea
+gt.crop.tearstalks.name=Tearstalks
+gt.crop.tine.name=Tine
+gt.crop.titania.name=Titania
+gt.crop.tomato.name=Tomato
+gt.crop.transformium.name=Transformium
+gt.crop.trollplant.name=Trollplant
+gt.crop.withereed.name=Withereed
+gt.crop.zomplant.name=Zomplant
+
+# Tooltip info of tile-entities
+gt.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
+gt.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
+gt.tileentity.eup_amount=Amperage: §e%d§7
+gt.tileentity.eup_store=Capacity: §9%d§7 EU
+gt.tileentity.has_muffler=is Muffled
+gt.tileentity.has_steam_upgrade=has Steam Upgrade
+gt.tileentity.colored=Colored (%s%s§7)
+
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
 gt.blackholerenderer.name=Black Hole Renderer
 gt.block.longdistancepipe.name=Long Distance Pipeline Pipe
@@ -52,9 +144,475 @@ item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
 tile.gt.dronerender.name=Drone Renderer
 
+# GT Item Descriptions
+gt.item.desc.stored_heat=Stored Heat: %s
+gt.item.desc.durability=Durability: %s/%s
+gt.item.desc.tier=%s Tier %s
+gt.item.desc.level=%s lvl %s
+gt.item.desc.damage=Attack Damage: %s
+gt.item.desc.mine_speed=Mining Speed: %s
+gt.item.desc.base_eff=Base Efficiency: %s
+gt.item.desc.fuel_eff=Fuel | Optimal Flow > EU/t Produced | Efficiency
+gt.item.desc.gas_energy=Energy from Optimal Gas Flow: %s EU/t
+gt.item.desc.plasma_energy=Energy from Optimal Plasma Flow: %s EU/t
+gt.item.desc.stored_eu=Contains %s EU   Tier: %s
+gt.item.desc.empty=Empty. You should recycle it properly.
+gt.item.desc.eu_info=%s / %s EU - Voltage: %s
+gt.item.desc.no_fluid=No Fluids Contained
+gt.item.desc.fluid_info=%sL / %sL
+gt.item.desc.miss_coord=Missing Coordinates!
+gt.item.desc.device_at=Device at:
+gt.item.desc.state=State: %s
+gt.item.desc.breeder_tip=Bath with neutron in a hot reactor
+gt.item.desc.progress=Progress: %s/%s
+gt.item.desc.haz_rad=Radiation Hazard
+gt.item.desc.turbine_eff=Turbine Efficiency (Loose): %s
+gt.item.desc.steam_rate=Optimal Steam flow (Loose): %s L/t
+gt.item.desc.eff_tier=Overflow Efficiency Tier: %s
+gt.item.desc.steam_eut=Energy from Optimal Steam Flow: %s EU/t
+gt.item.desc.steam_eut_loose=Energy from Optimal Steam Flow (Loose): %s EU/t
+
+# GT Interaction Descriptions
+gt.interact.desc.out_slot=Puts out into adjacent Slot #
+gt.interact.desc.in_slot=Grabs in for own Slot #
+gt.interact.desc.signal_on=Enable with Signal
+gt.interact.desc.signal_inverted=Disable with Signal
+gt.interact.desc.signal_off=Disabled
+gt.interact.desc.signal_on_safe=Enable with Signal (Safe)
+gt.interact.desc.signal_inverted_safe=Disable with Signal (Safe)
+gt.interact.desc.filter_i_deny_o=Filter input, Deny output
+gt.interact.desc.invert_i_deny_o=Invert input, Deny output
+gt.interact.desc.filter_i_any_o=Filter input, Permit any output
+gt.interact.desc.invert_i_any_o=Invert input, Permit any output
+gt.interact.desc.deny_i_filter_o=Deny input, Filter output
+gt.interact.desc.deny_i_invert_o=Deny input, Invert output
+gt.interact.desc.any_i_filter_o=Permit any input, Filter output
+gt.interact.desc.any_i_invert_o=Permit any input, Invert output
+gt.interact.desc.mb.idle.1=Hit with Soft Mallet
+gt.interact.desc.mb.idle.2=to (re-)start the Machine
+gt.interact.desc.mb.idle.3=if it doesn't start.
+gt.interact.desc.mb.running=Running perfectly.
+gt.interact.desc.mb.incomplete=Incomplete Structure.
+gt.interact.desc.mb.locking_on=Single recipe locking enabled. Will lock to next recipe.
+gt.interact.desc.mb.locking_off=Single recipe locking disabled.
+gt.interact.desc.mb.mode=§fRunning mode: §6%s
+gt.interact.desc.export=Export
+gt.interact.desc.import=Import
+gt.interact.desc.export_cond=Export (conditional)
+gt.interact.desc.import_cond=Import (conditional)
+gt.interact.desc.export_invert_cond=Export (invert cond)
+gt.interact.desc.import_invert_cond=Import (invert cond)
+gt.interact.desc.export_allow_cond=Export allow Input (conditional)
+gt.interact.desc.import_allow_cond=Import allow Output (conditional)
+gt.interact.desc.export_allow_invert_cond=Export allow Input (invert cond)
+gt.interact.desc.import_allow_invert_cond=Import allow Output (invert cond)
+gt.interact.desc.no_fluid=Keep Fluids Away
+gt.interact.desc.no_fluid_cond=Keep Fluids Away (conditional)
+gt.interact.desc.no_fluid_invert_cond=Keep Fluids Away (invert cond)
+gt.interact.desc.export_allow=Export allow Input
+gt.interact.desc.import_allow=Import allow Output
+gt.interact.desc.input_from_output_on=Input from Output Side allowed
+gt.interact.desc.input_from_output_off=Input from Output Side forbidden
+gt.interact.desc.public=Public
+gt.interact.desc.private=Private
+gt.interact.desc.privfreq=Use Private Frequency
+gt.interact.desc.gatemode=Gate Mode
+gt.interact.desc.andgate=AND Gate
+gt.interact.desc.nandgate=NAND Gate
+gt.interact.desc.orgate=OR Gate
+gt.interact.desc.norgate=NOR Gate
+gt.interact.desc.analogmode=ANALOG Mode
+gt.interact.desc.recipeprogress=Recipe Progress
+gt.interact.desc.machineidle=Machine Idle
+gt.interact.desc.fluidthreshold=Fluid Threshold
+gt.interact.desc.itemthreshold=Item Threshold
+gt.interact.desc.item_slot=Item In Slot
+gt.interact.desc.any_slot=-1 is Any Slot
+gt.interact.desc.set_perm=§8Public/Private
+gt.interact.desc.set_io=§8Import/Export
+gt.interact.desc.channel=§8Channel
+gt.interact.desc.freq=§8Frequency
+gt.interact.desc.freq_format=Frequency: %s
+gt.interact.desc.freq_perm=Frequency: %s, Transmission: %s
+gt.interact.desc.normal=§8Normal
+gt.interact.desc.normal.tooltip=Normal
+gt.interact.desc.inverted=§8Inverted
+gt.interact.desc.inverted.tooltip=Inverted
+gt.interact.desc.inverted_b=(Inverted)
+gt.interact.desc.ready=Ready to work
+gt.interact.desc.not_ready=Not ready to work
+gt.interact.desc.mach_on=Machine Enabled
+gt.interact.desc.mach_off=Machine Disabled
+gt.interact.desc.univ_normal=Normal Universal Storage
+gt.interact.desc.univ_invert=Inverted Universal Storage
+gt.interact.desc.eu_normal=Normal Electricity Storage
+gt.interact.desc.eu_invert=Inverted Electricity Storage
+gt.interact.desc.steam_normal=Normal Steam Storage
+gt.interact.desc.steam_invert=Inverted Steam Storage
+gt.interact.desc.eu_avg_i_normal=Normal Average Electric Input
+gt.interact.desc.eu_avg_i_invert=Inverted Average Electric Input
+gt.interact.desc.eu_avg_o_normal=Normal Average Electric Output
+gt.interact.desc.eu_avg_o_invert=Inverted Average Electric Output
+gt.interact.desc.eu_batt_normal=Normal Electricity Storage (Including Batteries)
+gt.interact.desc.eu_batt_invert=Inverted Electricity Storage (Including Batteries)
+gt.interact.desc.need_maint_count=Emit if %s Maintenance Needed%s
+gt.interact.desc.need_maint_rotor_lo=Emit if rotor needs maintenance low accuracy mod
+gt.interact.desc.need_maint_rotor_hi=Emit if rotor needs maintenance high accuracy mod
+gt.interact.desc.issue=1 Issue
+gt.interact.desc.issues=%s Issues
+gt.interact.desc.issue_rotor_low=Rotor < 20%
+gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
+
+# GT++ Materials
+gtpp.material.AbyssalAlloy=Abyssal Alloy
+gtpp.material.AceticAnhydride=Acetic Anhydride
+gtpp.material.AdvancedNitinol=Advanced Nitinol
+gtpp.material.AgarditeCd=Agardite (Cd)
+gtpp.material.AgarditeLa=Agardite (La)
+gtpp.material.AgarditeNd=Agardite (Nd)
+gtpp.material.AgarditeY=Agardite (Y)
+gtpp.material.Alburnite=Alburnite
+gtpp.material.Almandine=Almandine
+gtpp.material.Alumina=Alumina
+gtpp.material.Aluminium=Aluminium
+gtpp.material.Americium=Americium
+gtpp.material.Ammonia=Ammonia
+gtpp.material.Ammonium=Ammonium
+gtpp.material.AmmoniumNitrate=Ammonium Nitrate
+gtpp.material.AmmoniumBifluoride=Ammonium Bifluoride
+gtpp.material.AmmoniumTetrafluoroberyllate=Ammonium Tetrafluoroberyllate
+gtpp.material.AncientGranite=Ancient Granite
+gtpp.material.Antimony=Antimony
+gtpp.material.Arcanite=Arcanite
+gtpp.material.ArceusAlloy2B=Arceus Alloy 2B
+gtpp.material.Argon=Argon
+gtpp.material.Arsenic=Arsenic
+gtpp.material.AstralTitanium=Astral Titanium
+gtpp.material.BabbitAlloy=Babbit Alloy
+gtpp.material.BariteRa=Barite (Ra)
+gtpp.material.Barium=Barium
+gtpp.material.Beryllium=Beryllium
+gtpp.material.BerylliumFluoride=Beryllium Fluoride
+gtpp.material.BerylliumHydroxide=Beryllium Hydroxide
+gtpp.material.Bismuth=Bismuth
+gtpp.material.BlackMetal=Black Metal
+gtpp.material.BlackSteel=BlackSteel
+gtpp.material.BlackTitanium=Black Titanium
+gtpp.material.BloodSteel=Blood Steel
+gtpp.material.Boron=Boron
+gtpp.material.Botmium=Botmium
+gtpp.material.Brine=Brine
+gtpp.material.Bromine=Bromine
+gtpp.material.Bronze=Bronze
+gtpp.material.BurntReactorFuelI=Burnt Reactor Fuel I
+gtpp.material.BurntReactorFuelII=Burnt Reactor Fuel II
+gtpp.material.Cadmium=Cadmium
+gtpp.material.Caesium=Caesium
+gtpp.material.Calcium=Calcium
+gtpp.material.CalciumCarbonate=Calcium Carbonate
+gtpp.material.CalciumSulfateGypsum=Calcium Sulfate (Gypsum)
+gtpp.material.Californium=Californium
+gtpp.material.Carbon=Carbon
+gtpp.material.CarbonDioxide=Carbon Dioxide
+gtpp.material.CarbonMonoxide=Carbon Monoxide
+gtpp.material.CelestialTungsten=Celestial Tungsten
+gtpp.material.Cerite=Cerite
+gtpp.material.Cerium=Cerium
+gtpp.material.Chalcopyrite=Chalcopyrite
+gtpp.material.Chlorine=Chlorine
+gtpp.material.ChloroaceticAcid=Chloroacetic Acid
+gtpp.material.ChloroaceticMixture=Chloroacetic Mixture
+gtpp.material.ChromaticGlass=Chromatic Glass
+gtpp.material.Chrome=Chrome
+gtpp.material.CinobiteA243=Cinobite A243
+gtpp.material.Clay=Clay
+gtpp.material.Cobalt=Cobalt
+gtpp.material.Comancheite=Comancheite
+gtpp.material.CookedZrCl4=Cooked ZrCl4
+gtpp.material.Copper=Copper
+gtpp.material.CopperIISulfate=Copper(II) Sulfate
+gtpp.material.CopperIISulfatePentahydrate=Copper(II) Sulfate Pentahydrate
+gtpp.material.Crocoite=Crocoite
+gtpp.material.CryoliteF=Cryolite (F)
+gtpp.material.Curium=Curium
+gtpp.material.CyanoaceticAcid=Cyanoacetic Acid
+gtpp.material.CyanoacrylatePolymer=Cyanoacrylate Polymer
+gtpp.material.DecayedRadium226=Decayed Radium-226
+gtpp.material.DemicheleiteBr=Demicheleite (Br)
+gtpp.material.DichloroaceticAcid=Dichloroacetic Acid
+gtpp.material.Dragonblood=Dragonblood
+gtpp.material.DriedEarth=Dried Earth
+gtpp.material.Dysprosium=Dysprosium
+gtpp.material.EglinSteel=Eglin Steel
+gtpp.material.EglinSteelBaseCompound=Eglin Steel Base Compound
+gtpp.material.EnderPearl=EnderPearl
+gtpp.material.EnergyCrystal=Energy Crystal
+gtpp.material.Erbium=Erbium
+gtpp.material.EthylCyanoacetate=Ethyl Cyanoacetate
+gtpp.material.EthylCyanoacrylateSuperGlue=Ethyl Cyanoacrylate (Super Glue)
+gtpp.material.Europium=Europium
+gtpp.material.Fermium=Fermium
+gtpp.material.Florencite=Florencite
+gtpp.material.Fluorcaphite=Fluorcaphite
+gtpp.material.FluorinatedUraniumHexafluorideFUF6=Fluorinated Uranium Hexafluoride (F-UF6)
+gtpp.material.Fluorine=Fluorine
+gtpp.material.FluorineSpargedTBSalt=Fluorine Sparged TB Salt
+gtpp.material.FluorineSpargedTSalt=Fluorine Sparged T Salt
+gtpp.material.FluoriteF=Fluorite (F)
+gtpp.material.Force=Force
+gtpp.material.FormaldehydeCatalyst=Formaldehyde Catalyst
+gtpp.material.GadoliniteCe=Gadolinite (Ce)
+gtpp.material.GadoliniteY=Gadolinite (Y)
+gtpp.material.Gadolinium=Gadolinium
+gtpp.material.Galena=Galena
+gtpp.material.Gallium=Gallium
+gtpp.material.Geikielite=Geikielite
+gtpp.material.Germanium=Germanium
+gtpp.material.Glowstone=Glowstone
+gtpp.material.Gold=Gold
+gtpp.material.Greenockite=Greenockite
+gtpp.material.Grisium=Grisium
+gtpp.material.Grossular=Grossular
+gtpp.material.HG1223=HG-1223
+gtpp.material.HS188A=HS188-A
+gtpp.material.Hafnium=Hafnium
+gtpp.material.HastelloyC276=Hastelloy-C276
+gtpp.material.HastelloyN=Hastelloy-N
+gtpp.material.HastelloyW=Hastelloy-W
+gtpp.material.HastelloyX=Hastelloy-X
+gtpp.material.HeLiCoPtEr=HeLiCoPtEr
+gtpp.material.Helium=Helium
+gtpp.material.HeliumSpargedUSalt=Helium Sparged U Salt
+gtpp.material.Hibonite=Hibonite
+gtpp.material.Holmium=Holmium
+gtpp.material.Honeaite=Honeaite
+gtpp.material.HydratedLime=Hydrated Lime
+gtpp.material.Hydrogen=Hydrogen
+gtpp.material.HydrogenChloride=Hydrogen Chloride
+gtpp.material.HydrogenChlorideMix=Hydrogen Chloride Mix
+gtpp.material.HydrogenCyanide=Hydrogen Cyanide
+gtpp.material.Hydroxide=Hydroxide
+gtpp.material.Hypogen=Hypogen
+gtpp.material.Incoloy020=Incoloy-020
+gtpp.material.IncoloyDS=Incoloy-DS
+gtpp.material.IncoloyMA956=Incoloy-MA956
+gtpp.material.Inconel625=Inconel-625
+gtpp.material.Inconel690=Inconel-690
+gtpp.material.Inconel792=Inconel-792
+gtpp.material.Indalloy140=Indalloy 140
+gtpp.material.Indium=Indium
+gtpp.material.InfusedAir=Infused Air
+gtpp.material.InfusedEarth=Infused Earth
+gtpp.material.InfusedEntropy=Infused Entropy
+gtpp.material.InfusedFire=Infused Fire
+gtpp.material.InfusedOrder=Infused Order
+gtpp.material.InfusedWater=Infused Water
+gtpp.material.Invar=Invar
+gtpp.material.Iodine=Iodine
+gtpp.material.Irarsite=Irarsite
+gtpp.material.Iridium=Iridium
+gtpp.material.Iron=Iron
+gtpp.material.Kanthal=Kanthal
+gtpp.material.Kashinite=Kashinite
+gtpp.material.Koboldite=Koboldite
+gtpp.material.Krypton=Krypton
+gtpp.material.LFTRFuel1=LFTR Fuel 1
+gtpp.material.LFTRFuel2=LFTR Fuel 2
+gtpp.material.LFTRFuel3=LFTR Fuel 3
+gtpp.material.LFTRFuelBase=LFTR Fuel Base
+gtpp.material.LafiumCompound=Lafium Compound
+gtpp.material.Lafossaite=Lafossaite
+gtpp.material.LanthaniteCe=Lanthanite (Ce)
+gtpp.material.LanthaniteLa=Lanthanite (La)
+gtpp.material.LanthaniteNd=Lanthanite (Nd)
+gtpp.material.Lanthanum=Lanthanum
+gtpp.material.Laurenium=Laurenium
+gtpp.material.Lautarite=Lautarite
+gtpp.material.Lead=Lead
+gtpp.material.Lepersonnite=Lepersonnite
+gtpp.material.Li2CO3CaO2H2Compound=Li2CO3 + CaO2H2 Compound
+gtpp.material.Lithium=Lithium
+gtpp.material.LithiumCarbonate=Lithium Carbonate
+gtpp.material.LithiumHydroperoxide=Lithium Hydroperoxide
+gtpp.material.LithiumHydroxide=Lithium Hydroxide
+gtpp.material.LithiumPeroxide=Lithium Peroxide
+gtpp.material.LithiumTetrafluoroberyllateFuelCompound=Lithium Tetrafluoroberyllate Fuel Compound
+gtpp.material.Lithium7=Lithium 7
+gtpp.material.LithiumFluoride=Lithium Fluoride
+gtpp.material.LithiumTetrafluoroberyllateLFTB=Lithium Tetrafluoroberyllate (LFTB)
+gtpp.material.Lutetium=Lutetium
+gtpp.material.Magic=Magic
+gtpp.material.Magnesium=Magnesium
+gtpp.material.Manganese=Manganese
+gtpp.material.ManureByproduct=Manure Byproduct
+gtpp.material.MaragingSteel250=Maraging Steel 250
+gtpp.material.MaragingSteel300=Maraging Steel 300
+gtpp.material.MaragingSteel350=Maraging Steel 350
+gtpp.material.MeatRaw=MeatRaw
+gtpp.material.Mercury=Mercury
+gtpp.material.Miessiite=Miessiite
+gtpp.material.Molybdenum=Molybdenum
+gtpp.material.Monazite=Monazite
+gtpp.material.MutatedLivingSolder=Mutated Living Solder
+gtpp.material.Naquadah=Naquadah
+gtpp.material.NaquadahEnriched=NaquadahEnriched
+gtpp.material.Naquadria=Naquadria
+gtpp.material.Neodymium=Neodymium
+gtpp.material.Neon=Neon
+gtpp.material.Neptunium=Neptunium
+gtpp.material.NeptuniumHexafluoride=Neptunium Hexafluoride
+gtpp.material.NetherQuartz=NetherQuartz
+gtpp.material.Nichrome=Nichrome
+gtpp.material.Nichromite=Nichromite
+gtpp.material.Nickel=Nickel
+gtpp.material.Niobium=Niobium
+gtpp.material.NiobiumCarbide=Niobium Carbide
+gtpp.material.Nitinol60=Nitinol 60
+gtpp.material.Nitrogen=Nitrogen
+gtpp.material.Octiron=Octiron
+gtpp.material.OrganicFertilizer=Organic Fertilizer
+gtpp.material.Osmiridium=Osmiridium
+gtpp.material.Osmium=Osmium
+gtpp.material.Oxygen=Oxygen
+gtpp.material.Palladium=Palladium
+gtpp.material.Pentlandite=Pentlandite
+gtpp.material.Perroudite=Perroudite
+gtpp.material.PhosphorousUraniumHexafluoridePUF6=Phosphorous Uranium Hexafluoride (P-UF6)
+gtpp.material.Phosphorus=Phosphorus
+gtpp.material.PhthalicAnhydride=Phthalic Anhydride
+gtpp.material.Pikyonium64B=Pikyonium 64B
+gtpp.material.Plastic=Plastic
+gtpp.material.Platinum=Platinum
+gtpp.material.Plutonium238=Plutonium-238
+gtpp.material.Plutonium241=Plutonium241
+gtpp.material.Polonium=Polonium
+gtpp.material.Polycrase=Polycrase
+gtpp.material.Polytetrafluoroethylene=Polytetrafluoroethylene
+gtpp.material.Potassium=Potassium
+gtpp.material.PotassiumNitrate=Potassium Nitrate
+gtpp.material.Potin=Potin
+gtpp.material.Praseodymium=Praseodymium
+gtpp.material.Promethium=Promethium
+gtpp.material.Protactinium=Protactinium
+gtpp.material.Pyrope=Pyrope
+gtpp.material.Quantum=Quantum
+gtpp.material.RadioactiveMineralMix=Radioactive Mineral Mix
+gtpp.material.Radium=Radium
+gtpp.material.Radon=Radon
+gtpp.material.RareEarthI=Rare Earth (I)
+gtpp.material.RareEarthII=Rare Earth (II)
+gtpp.material.RareEarthIII=Rare Earth (III)
+gtpp.material.Redstone=Redstone
+gtpp.material.Rhenium=Rhenium
+gtpp.material.Rhodium=Rhodium
+gtpp.material.Rhugnor=Rhugnor
+gtpp.material.Rubidium=Rubidium
+gtpp.material.Runite=Runite
+gtpp.material.Ruthenium=Ruthenium
+gtpp.material.SaltWater=Salt Water
+gtpp.material.Samarium=Samarium
+gtpp.material.SamarskiteY=Samarskite (Y)
+gtpp.material.SamarskiteYb=Samarskite (Yb)
+gtpp.material.Scandium=Scandium
+gtpp.material.SeleniousAcid=Selenious Acid
+gtpp.material.Selenium=Selenium
+gtpp.material.SeleniumDioxide=Selenium Dioxide
+gtpp.material.SeleniumHexafluoride=Selenium Hexafluoride
+gtpp.material.Silicon=Silicon
+gtpp.material.SiliconCarbide=Silicon Carbide
+gtpp.material.SiliconDioxide=SiliconDioxide
+gtpp.material.Silver=Silver
+gtpp.material.Sodium=Sodium
+gtpp.material.SodiumChloride=Sodium Chloride
+gtpp.material.SodiumCyanide=Sodium Cyanide
+gtpp.material.SodiumFluoride=Sodium Fluoride
+gtpp.material.SodiumNitrate=Sodium Nitrate
+gtpp.material.SolarSaltCold=Solar Salt (Cold)
+gtpp.material.SolarSaltHot=Solar Salt (Hot)
+gtpp.material.SolidAcidCatalystMixture=Solid Acid Catalyst Mixture
+gtpp.material.SoulSand=SoulSand
+gtpp.material.Spessartine=Spessartine
+gtpp.material.Sphalerite=Sphalerite
+gtpp.material.Staballoy=Staballoy
+gtpp.material.StableMoltenSaltBase=Stable Molten Salt Base
+gtpp.material.StainlessSteel=StainlessSteel
+gtpp.material.Steel=Steel
+gtpp.material.Stellite=Stellite
+gtpp.material.Stone=Stone
+gtpp.material.Strontium=Strontium
+gtpp.material.StrontiumHydroxide=Strontium Hydroxide
+gtpp.material.StrontiumOxide=Strontium Oxide
+gtpp.material.Sulfur=Sulfur
+gtpp.material.Talonite=Talonite
+gtpp.material.Tantalloy60=Tantalloy-60
+gtpp.material.Tantalloy61=Tantalloy-61
+gtpp.material.Tantalum=Tantalum
+gtpp.material.TantalumCarbide=Tantalum Carbide
+gtpp.material.Technetium=Technetium
+gtpp.material.TechnetiumHexafluoride=Technetium Hexafluoride
+gtpp.material.Tellurium=Tellurium
+gtpp.material.Terbium=Terbium
+gtpp.material.Thallium=Thallium
+gtpp.material.Thaumium=Thaumium
+gtpp.material.Thorium=Thorium
+gtpp.material.Thorium232=Thorium 232
+gtpp.material.ThoriumBerylliumDepletedMoltenSaltTBSalt=Thorium-Beryllium Depleted Molten Salt (TB Salt)
+gtpp.material.ThoriumDepletedMoltenSaltTSalt=Thorium Depleted Molten Salt (T Salt)
+gtpp.material.ThoriumHexafluoride=Thorium Hexafluoride
+gtpp.material.ThoriumTetrafluoride=Thorium Tetrafluoride
+gtpp.material.Thulium=Thulium
+gtpp.material.Tin=Tin
+gtpp.material.Titanite=Titanite
+gtpp.material.Titanium=Titanium
+gtpp.material.Titansteel=Titansteel
+gtpp.material.TrichloroaceticAcid=Trichloroacetic Acid
+gtpp.material.Trinium=Trinium
+gtpp.material.TriniumNaquadahAlloy=Trinium Naquadah Alloy
+gtpp.material.TriniumNaquadahCarbonite=Trinium Naquadah Carbonite
+gtpp.material.TriniumTitaniumAlloy=Trinium Titanium Alloy
+gtpp.material.Tumbaga=Tumbaga
+gtpp.material.TumbagaMix=Tumbaga Mix
+gtpp.material.Tungsten=Tungsten
+gtpp.material.TungstenCarbide=Tungsten Carbide
+gtpp.material.TungstenSteel=TungstenSteel
+gtpp.material.TungstenTitaniumCarbide=Tungsten Titanium Carbide
+gtpp.material.UN18Fertiliser=UN-18 Fertiliser
+gtpp.material.UN32Fertiliser=UN-32 Fertiliser
+gtpp.material.Uranium=Uranium
+gtpp.material.Uranium232=Uranium 232
+gtpp.material.Uranium233=Uranium 233
+gtpp.material.Uranium235=Uranium235
+gtpp.material.UraniumDepletedMoltenSaltUSalt=Uranium Depleted Molten Salt (U Salt)
+gtpp.material.UraniumHexafluoride=Uranium Hexafluoride
+gtpp.material.UraniumTetrafluoride=Uranium Tetrafluoride
+gtpp.material.Vanadium=Vanadium
+gtpp.material.Water=Water
+gtpp.material.WatertightSteel=Watertight Steel
+gtpp.material.WhiteMetal=White Metal
+gtpp.material.WoodsGlass=Wood's Glass
+gtpp.material.WroughtIron=WroughtIron
+gtpp.material.Xenon=Xenon
+gtpp.material.Xenotime=Xenotime
+gtpp.material.Ytterbium=Ytterbium
+gtpp.material.Yttriaite=Yttriaite
+gtpp.material.Yttrialite=Yttrialite
+gtpp.material.Yttrium=Yttrium
+gtpp.material.Yttrocerite=Yttrocerite
+gtpp.material.Zeron100=Zeron-100
+gtpp.material.Zimbabweite=Zimbabweite
+gtpp.material.Zinc=Zinc
+gtpp.material.Zircon=Zircon
+gtpp.material.Zirconium=Zirconium
+gtpp.material.ZirconiumCarbide=Zirconium Carbide
+gtpp.material.ZirconiumTetrafluoride=Zirconium Tetrafluoride
+gtpp.material.Zirconolite=Zirconolite
+gtpp.material.Zircophyllite=Zircophyllite
+gtpp.material.Zirkelite=Zirkelite
+gtpp.material.ZrCl4=ZrCl4
 
 # Air Filter
 item.GTPP.air_filter.name=Air Filter
@@ -147,6 +705,44 @@ GTPP.algae.tooltip.generation=Generation: %d
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
+GT5U.power_goggles.link_fail=That's not an LSC...
+GT5U.power_goggles.unlink=Goggles Unlinked.
+GT5U.power_goggles.link_tooltip=Linked to LSC at %d,%d,%d: %s
+# Power Goggles config GUI
+GT5U.power_goggles_config.notation_scientific=SCIENTIFIC
+GT5U.power_goggles_config.notation_engineering=ENGINEERING
+GT5U.power_goggles_config.notation_si=SI
+GT5U.power_goggles_config.reading_both=BOTH
+GT5U.power_goggles_config.reading_total=TOTAL
+GT5U.power_goggles_config.reading_eut=EUT
+GT5U.power_goggles_config.settings_general=General Settings
+GT5U.power_goggles_config.settings_scale=Scale settings
+GT5U.power_goggles_config.settings_color=Color Scheme
+
+GT5U.power_goggles_config.toggle_notation=Toggle Notation: %s
+GT5U.power_goggles_config.toggle_reading=Toggle Reading Type: %s
+GT5U.power_goggles_config.toggle_hud_with_chat=Hide HUD when chat open: %s
+GT5U.power_goggles_config.main_text_scale=Storage Text Scale
+GT5U.power_goggles_config.sub_text_scale=Sub Text Scale
+GT5U.power_goggles_config.hud_scale=HUD Scale
+
+GT5U.power_goggles_config.gradient_bad=Bad Gradient Color
+GT5U.power_goggles_config.gradient_bad_tooltip=Affects what color the power rectangle's gradient approaches as EU change goes lower
+GT5U.power_goggles_config.gradient_ok=OK Gradient Color
+GT5U.power_goggles_config.gradient_ok_tooltip=Affects what color the power rectangle's gradient approaches as EU change approaches 0
+GT5U.power_goggles_config.gradient_good=Good Gradient Color
+GT5U.power_goggles_config.gradient_good_tooltip=Affects what color the power rectangle's gradient approaches as EU change goes higher
+
+GT5U.power_goggles_config.text_bad=Bad Text Color
+GT5U.power_goggles_config.text_bad_tooltip=Affects Text and Power Chart color when EU change is negative
+GT5U.power_goggles_config.text_ok=OK Text Color
+GT5U.power_goggles_config.text_ok_tooltip=Affects Text color when EU change is 0
+GT5U.power_goggles_config.text_good=Good Text Color
+GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
+
+GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pylon
+GT5U.maglevHarness.pylons=§9YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
@@ -164,7 +760,7 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
-GT5U.MBTT.Parallels=Processes up to %d recipes at once
+GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
@@ -192,25 +788,87 @@ GT5U.MBTT.Uncertainty=Uncertainty Hatch
 GT5U.MBTT.InputData=Data Reception Connector
 GT5U.MBTT.OutputData=Data Transmission Connector
 GT5U.MBTT.Causes=Causes
-GT5U.MBTT.PPS=pollution per second
+GT5U.MBTT.Produces=Produces
+GT5U.MBTT.PPS=Pollution per second
 GT5U.MBTT.Hold=Hold
 GT5U.MBTT.Display=to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
+GT5U.MBTT.ParallelBase=Processes %s items per %s Tier
+GT5U.MBTT.ParallelBase_Singular=Processes %s item per %s Tier
+GT5U.MBTT.SpeedBase=%s faster than single block machines of the same voltage
+GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, per %s Tier
+GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
+GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
+GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
+
+GT5U.MBTT.Parallel.Base=%s Parallels
+GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
+GT5U.MBTT.Parallel.Singular=%s Parallel
+GT5U.MBTT.Speed.Base=%s Speed
+GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.EuDiscount.Base=%s EU Usage
+GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
+GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
+GT5U.MBTT.Tiers.Voltage=Voltage
+GT5U.MBTT.Tiers.Machine=Machine
+GT5U.MBTT.Tiers.Coil=Heating Coil
+GT5U.MBTT.Tiers.MachineCasing=Machine Casing
+GT5U.MBTT.Tiers.MetalMachineCasing=Metal Machine Casing
+GT5U.MBTT.Tiers.ItemPipe=Item Pipe Casing
+GT5U.MBTT.Tiers.FluidPipe=Pipe Casing
+GT5U.MBTT.Tiers.Solenoid=Solenoid
+GT5U.MBTT.Tiers.Turbine=Sum of Turbine
+GT5U.MBTT.Tiers.Glass=Glass
+GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
+GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
 GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
-GT5U.MBTT.Structure.MinGlassForLaser=-tier glass required for §9Tec§1Tech§7 Laser Hatches.
-GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by Glass tier
-GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier Glass unlocks all.
+GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
+GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by §fGlass§7 Tier
+GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
+GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
+GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
+GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchDots= (dots: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
+GT5U.MBTT.ConfigMenu=Configuration Menu
+GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
+GT5U.MBTT.PCB.Tier=PCB Factory Tier
+GT5U.MBTT.PCB.Bio=Biochamber
+GT5U.MBTT.PCB.RotBio=Bio Rotation
+GT5U.MBTT.PCB.LiqCool=Liquid Cooling
+GT5U.MBTT.PCB.Sink=Thermosink
+GT5U.MBTT.PCB.Size=Trace Size
+GT5U.MBTT.PCB.BioOn=Biochamber Upgrade Enabled
+GT5U.MBTT.PCB.BioOff=Biochamber Upgrade Disabled
+GT5U.MBTT.PCB.RotBioOn=Rotated Biochamber Enabled
+GT5U.MBTT.PCB.RotBioOff=Rotated Biochamber Disabled
+GT5U.MBTT.PCB.T1CoolOn=Tier 1 Cooling Enabled
+GT5U.MBTT.PCB.T1CoolOff=Tier 1 Cooling Disabled
+GT5U.MBTT.PCB.T1CoolOffset=Cooler Tier 1 Offsets
+GT5U.MBTT.PCB.T2CoolOn=Tier 2 Cooling Enabled
+GT5U.MBTT.PCB.T2CoolOff=Tier 2 Cooling Disabled
+GT5U.MBTT.PCB.T2CoolOffset=Cooler Tier 2 Offsets
+GT5U.MBTT.PCB.Offsets=Bio Upgrade Offsets
+GT5U.MBTT.PCB.XOffset=X Offset
+GT5U.MBTT.PCB.ZOffset=Z Offset
+GT5U.MBTT.PCB.Tooltip.1=Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards.
+GT5U.MBTT.PCB.Tooltip.2=Rotates the biochamber by 90 degrees.
+GT5U.MBTT.PCB.Tooltip.3=Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive.
+GT5U.MBTT.PCB.Tooltip.4=Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant.
+GT5U.MBTT.PCB.Tooltip.5=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
+GT5U.MBTT.PCB.Tooltip.6=Can't change configuration when running!
+
+GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
+GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
+GT5U.MBTT.SuperChest=Super/Quantum Chest
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
-GT5U.tooltip.channelvalue=Use value §6%d§r§7 for sub channel §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
@@ -369,6 +1027,8 @@ gt.recipe.replicator=Replicator
 gt.recipe.replicator.description=Producing Elemental Matter
 gt.recipe.rockbreaker=Rock Breaker
 gt.recipe.rockbreaker.description=Put Lava and Water adjacent, or Lava around and Soul Sand below
+gt.recipe.rockbreaker.fakeitem.side=IT'S FREE! Place Lava on Side
+gt.recipe.rockbreaker.fakeitem.top=IT'S FREE! Place Lava on Top
 gt.recipe.scanner=Scanner
 gt.recipe.scanner.description=Scans Crops and other things.
 gt.recipe.sifter=Sifter
@@ -414,6 +1074,8 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.entropic-processing=Entropic Processing
+gt.recipe.isotope-decay=Isotope Decay
 gt.recipe.purificationplantclarifier=Clarifier
 gt.recipe.purificationplantflocculation=Flocculation
 gt.recipe.purificationplantphadjustment=pH Neutralization
@@ -423,6 +1085,7 @@ gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
+gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.neutroniumcompressor=Neutronium Compressor
 gt.recipe.biosynthesizer=Biological Synthesis
 gt.recipe.bioprogrammer=Biological Programming
@@ -450,11 +1113,15 @@ GT5U.machines.chunks=Chunks
 GT5U.machines.miner=Miner
 GT5U.machines.powersource.power=power
 GT5U.machines.powersource.steam=steam
+GT5U.machines.steam.amount=%1$s/%2$sL Steam
 GT5U.machines.pump=Pump
 GT5U.machines.separatebus=Input buses are separated
 GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
+GT5U.machines.muffled=Sound Muffling
+GT5U.machines.muffled.on=Sound Muffling: §aEnabled§r
+GT5U.machines.muffled.off=Sound Muffling: §cDisabled§r
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
 GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
@@ -480,6 +1147,10 @@ GT5U.machines.select_circuit.tooltip.configuration.none=None
 GT5U.machines.select_circuit.tooltip.1=§7LMB/RMB/scroll to cycle through the list
 GT5U.machines.select_circuit.tooltip.2=§7Shift left click to open GUI
 GT5U.machines.select_circuit.tooltip.3=§7Shift right click to clear
+GT5U.machines.select_mold.tooltip=Ghost Mold Slot
+GT5U.machines.select_mold.tooltip.1=§7LMB/RMB/scroll to cycle through the list
+GT5U.machines.select_mold.tooltip.2=§7Shift left click to open GUI
+GT5U.machines.select_mold=Configure Mold
 GT5U.machines.extra_tooltips_toggle.tooltip=Additional information
 GT5U.machines.fluid_transfer.tooltip=Fluid Auto-Output
 GT5U.machines.fluid_transfer.tooltip.extended=§6Screwdriver:§7 Right click machine to
@@ -529,11 +1200,11 @@ GT5U.GTPP_MULTI_WASH_PLANT.mode.1=Simple Washer
 GT5U.GTPP_MULTI_WASH_PLANT.mode.2=Chemical Bath
 GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode.0=Bending
 GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode.1=Forming Press
+GT5U.GTPP_MULTI_STEAM_FURNACE.mode.0=Furnace
+GT5U.GTPP_MULTI_STEAM_FURNACE.mode.1=Blasting
+GT5U.GTPP_MULTI_STEAM_FURNACE.mode.2=Smoking
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.0=Separator
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.1=Polarizer
-GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.0=Metal
-GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.1=Fluid
-GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode.2=Misc
 GT5U.MULTI_CANNER.mode.0=Canner
 GT5U.MULTI_CANNER.mode.1=Fluid Canner
 GT5U.BLACKHOLE.mode.0=Compressor
@@ -554,7 +1225,6 @@ GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
 GT5U.DEHP.mode.0=Direct Steam
 GT5U.DEHP.mode.1=Coolant Heating
-GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
 GT5U.machines.oreprocessor.Macerate=Macerate
@@ -563,6 +1233,8 @@ GT5U.machines.oreprocessor.Sifter=Sifter
 GT5U.machines.oreprocessor.Chemical_Bathing=Chemical Bathing
 GT5U.machines.oreprocessor.Ore_Washer=Ore Washer
 GT5U.machines.oreprocessor.Thermal_Centrifuge=Thermal Centrifuge
+GT5U.machines.oreprocessor.Forge_Hammer=Forge Hammer
+GT5U.machines.oreprocessor.Simple_Washer=Simple Washer
 GT5U.machines.oreprocessor.WRONG_MODE=Something went wrong
 GT5U.machines.industrialapiary.cancel.tooltip=§cCancel process
 GT5U.machines.industrialapiary.cancel.tooltip.1=§7Will also disable machine (soft mallet)
@@ -627,7 +1299,6 @@ GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional pa
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
 GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
 GT5U.machines.stocking_bus.force_check=Recipe Check on change
-GT5U.machines.stocking_bus.hatch_warning=Requires a fresh structure check to apply (Reboot/Replace controller)
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
@@ -657,6 +1328,21 @@ GT5U.machines.laser_hatch.amperage=Amperage
 GT5U.machines.hatch_output.lockfluid.label=Locked Fluid
 GT5U.machines.hatch_output.lockfluid.empty=None
 GT5U.machines.basic_tank.liquid_amount=Liquid Amount
+GT5U.machines.computation_hatch.pending_computation=§7Total Computation I/O: §b%d§r
+GT5U.machines.computation_hatch.wasted_computation=§7Wasted Computation: §b%d§r
+GT5U.machines.animations.enabled=Animations are now enabled
+GT5U.machines.animations.disabled=Animations are now disabled
+GT5U.machines.nano_forge.t4_info_tooltip=Click for T4 info
+GT5U.machines.nano_forge.t4_info_header=Nano Forge Tier 4
+GT5U.machines.nano_forge.t4_info_text.1=Upgrading the Nano Forge to T4 by placing an eternity nanite into the controller completely transforms the structure and unlocks both a scaling speed boost and parallel for mass nanite creation.
+GT5U.machines.nano_forge.t4_info_text.2=The Nano Forge can be supplied with molten magmatter to increase its maximum parallels. At the start of a recipe cycle ALL supplied magmatter is consumed and converted to parallels via the following formula:
+GT5U.machines.nano_forge.t4_info_text.3=Maximum Parallel = Max((Magmatter Amount / (288 / 2^(4 - Recipe Tier))), 1)
+GT5U.machines.nano_forge.t4_info_text.4=To actually apply the parallels to the recipe, a copy of the output nanite has to be supplied in an input bus and will be consumed. If other types of nanites are present this wont work.
+GT5U.machines.nano_forge.t4_info_text.5=A recipe time multiplier is also granted based on maximum parallels via the following formula:
+GT5U.machines.nano_forge.t4_info_text.6=Recipe Time Multiplier = 0.9999^(Maximum Parallel)
+GT5U.machines.nano_forge.t4_info_text.7=Additionally, tier 1 & 2 nanites will receive unconditional perfect overclocks, while perfect OCs on tier 3 nanites require parallels to be above 1. Tier 4 nanites do not get perfect overclocks.
+GT5U.machines.antimatter_forge.enableRender=Enable Antimatter Forge Render
+GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -664,7 +1350,28 @@ GT5U.type_filter.representation_slot.tooltip=§7Left click to cycle forward
 GT5U.type_filter.representation_slot.tooltip.1=§7Right click to cycle back
 GT5U.type_filter.representation_slot.tooltip.2=§7Click with an item to set filter
 
-GT5U.gui.select.current=Current:
+channels.gregtech.manipulator=Decides the tier of QFT manipulator blocks. Starts at §6Neutron Pulse Manipulator§r at value 1 and ends at §6SpaceTime Continuum Ripper§r at value 4.
+channels.gregtech.shielding=Decides the tier of QFT shielding blocks. Starts at §6Neutron Shielding Core§r at value 1 and ends at §6SpaceTime Bending Core§r at value 4.
+channels.gregtech.coil=Decides the tier of heating coil. Starts at §6Cupronickel Coil§r at value 1 and ends at §6Eternal Coil§r at value 14.
+channels.gregtech.glass=Decides the tier of glass. This has many tiers and many substitutes for various tiers. Please refer to the tooltip of individual glass blocks.
+channels.gregtech.casing=Decides the tier of metallic machine casing.
+channels.gregtech.unit_casing=Decides the tier of Electronic Unit casing. Starts at §6Imprecise Electronic Unit Casing§r at value 1 and ends at §6MkIV§r at value 5.
+channels.gregtech.machine_casing=Decides the tier of Machine Casing. Starts at §6ULV machine casing§r at value 1 and ends at §6UHV machine casing§r at value 10.
+channels.gregtech.solenoid=Decides the tier of Solenoid Superconductor Coil. Starts at §6MV§r at value 1 and ends at §6UMV§r at value 11.
+channels.gregtech.capacitor=Decides the tier of Lapotronic Capacitor. Starts at §6Empty§r at value 1 and ends at §6UMV§r at value 10.
+channels.gregtech.height=Decides the height of repeatable slices. Valid range varies from multi to multi.
+channels.gregtech.length=Decides the length of repeatable slices. Valid range varies from multi to multi.
+channels.gregtech.pipe=Decides the tier of Pipe Casing. Starts at §6Bronze Pipe Casing§r at value 1 and ends at §6Tungsten Steel Pipe Casing§r at value 4.
+channels.gregtech.item_pipe=Decides the tier of Item Pipe Casing. Starts at §6Tin Item Pipe Casing§r at value 1 and ends at §6Black Plutonium Item Pipe Casing§r at value 8.
+channels.gregtech.cell=Decides the tier of Vanadium Redox Power Cell. Starts at §6EV§r at value 1 and ends at §6UHV§r at value 6.
+channels.gregtech.antenna=Decides the of Antenna Casing. Starts at §6T1§r at value 1 and ends at §6T2§r at value 2.
+channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compression Field Generator. Starts at §6Crude Spacetime Compression Field Generator§r at value 1 and ends at §6Gallifreyan Spacetime Compression Field Generator§r at value 9.
+channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
+channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
+channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
+channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+
+GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
 GT5U.gui.button.liquid_filling_ON=§7Liquid Filling: §aON
 GT5U.gui.button.power_switch=Power Switch
@@ -673,10 +1380,13 @@ GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
-GT5U.gui.button.input_separation=Input Separation
+GT5U.gui.button.input_separation_on=Input Separation: ON
+GT5U.gui.button.input_separation_off=Input Separation: OFF
 GT5U.gui.button.mode_switch=Mode Switch
-GT5U.gui.button.batch_mode=Batch Mode
-GT5U.gui.button.lock_recipe=Lock Recipe
+GT5U.gui.button.batch_mode_on=Batch Mode: ON
+GT5U.gui.button.batch_mode_off=Batch Mode: OFF
+GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
+GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
 GT5U.gui.button.structure_update=Update Structure
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
@@ -702,11 +1412,18 @@ GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.turbinemenu=Open Chamber Controller
+GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.progress=§fProgress:
+GT5U.gui.text.amount=§fAmount:
+GT5U.gui.text.per_second=§fPer second:
+GT5U.gui.text.per_minute=§fPer minute:
+GT5U.gui.text.per_hour=§fPer hour:
+GT5U.gui.text.per_day=§fPer day:
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
@@ -771,9 +1488,11 @@ GT5U.gui.text.drill_chunks_left=Drilling chunk: §a%s / %s
 GT5U.gui.text.drill_current_vein=Current Vein: §a%s
 GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
+GT5U.gui.text.drill_extracting_ores=Extracting Ores
+GT5U.gui.text.drill_extracting_ores_failed=Extraction Failed
 GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
 GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
-GT5U.gui.text.drone_noDrone=§4Can't find any drone in inputBuses!
+GT5U.gui.text.drone_noDrone=§4Can't find any drone in Input Buses!
 GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
@@ -787,6 +1506,7 @@ GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
+GT5U.gui.text.insufficient=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
@@ -809,19 +1529,42 @@ GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
+GT5U.gui.text.powerfail_events=Powerfail Events
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
-GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.lma_craftingfx=Show Crafting Effects
+GT5U.gui.text.repair_tip=Click with a tool to repair.
+GT5U.gui.text.repair_info=Right-click hatch with Duct Tape\nor a filled Tool Box to repair all issues.
+GT5U.gui.text.apiary_missing_flowers=Missing flowers: %s
+GT5U.gui.text.microwave_energy_transmitter.x=Target X
+GT5U.gui.text.microwave_energy_transmitter.y=Target Y
+GT5U.gui.text.microwave_energy_transmitter.z=Target Z
+GT5U.gui.text.microwave_energy_transmitter.d=Target Dim
+GT5U.gui.text.contents=§7Contents:§r
+GT5U.gui.text.content-entry=§7%s:§9 %s§r
+GT5U.gui.text.decay-rate=§7Decay Rate:§9 %s§7%s
+GT5U.gui.text.nothing=§7Nothing§r
+GT5U.gui.text.half-life=Half-life: %s %s
+GT5U.gui.text.isotope-prod-per-s=Prod/Stack/Second: %.2e
+GT5U.gui.text.decay-type=Decay Type: %s
+GT5U.gui.text.unknown=Unknown
+GT5U.gui.text.alpha=Alpha Decay
+GT5U.gui.text.spontaneous-fission=Spontaneous Fission
+GT5U.gui.text.cluster=Cluster Decay
+GT5U.gui.text.alpha-transfer=Alpha Transfer
+GT5U.gui.text.beta-minus=Beta Minus Decay
+GT5U.gui.text.beta-plus=Beta Plus Decay
+GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
 GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
-GT5U.gui.config.client.color_modulation.construction_foam=Construction Foam
 GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.blockoverlay=GT Tool Block Overlay
 GT5U.gui.config.client.render=Render
 GT5U.gui.config.client.waila=Waila
 GT5U.gui.config.client.nei=NEI
@@ -845,6 +1588,146 @@ GT5U.gui.config.machine_stats.cleanroom=Cleanroom
 GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
+
+GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
+
+GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
+GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
+
+GT5U.gui.tooltip.redstone_circuit.toggle_output=Toggle EU Output
+GT5U.gui.tooltip.redstone_circuit.toggle_active=Toggle Active State
+GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
+
+GT5U.gui.tooltip.redstone_receiver.analog=ANALOG Mode\nOnly use this mode with ONE transmitter in total,\nno logic involved
+GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
+GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
+GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
+GT5U.gui.text.volumetric_flask.capacity=Capacity
+GT5U.gui.text.volumetric_flask.confirm=Confirm
+
+GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=§8No Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=§8>= 1 Issue
+GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=§8>= 2 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=§8>= 3 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=§8>= 4 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=§8>= 5 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=§8Rotor < 20%
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=§8Rotor ≈ 0%
+
+GT5U.gui.text.fusion_computer.hit_to_start=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
+GT5U.gui.text.fusion_computer.running_perfectly=Running perfectly.
+
+GT5U.gui.text.large_fluid_extractor.not_enough_casings=Not enough casings: need %d, but\nhave %d.
+GT5U.gui.text.wormhole_generator.missing_entangled_singularity=§7Missing Entangled Singularity§f
+GT5U.gui.text.wormhole_generator.status.no_destination=§7Wormhole status: §cNo destination§f
+GT5U.gui.text.wormhole_generator.status.decaying=§7Wormhole status: §6Decaying§f
+GT5U.gui.text.wormhole_generator.status.active=§7Wormhole status: §bActive§f
+GT5U.gui.text.wormhole_generator.status.inactive=§7Wormhole status: Inactive§f
+GT5U.gui.text.wormhole_generator.diameter=§7Wormhole diameter: §b%,d§7 Å§f
+GT5U.gui.text.wormhole_generator.max_io=§7Max I/O per hatch: §b%,d§7 EU/t§f
+GT5U.gui.text.wormhole_generator.max_io.large=§7Max I/O per hatch: §b%3.3e§7 EU/t§f
+
+GT5U.gui.text.status.active=Active
+GT5U.gui.text.status.online=Online
+GT5U.gui.text.status.disabled=Disabled
+GT5U.gui.text.status.incomplete=Incomplete Structure
+GT5U.gui.text.x=X: %s
+GT5U.gui.text.y=Y: %s
+GT5U.gui.text.z=Z: %s
+GT5U.gui.text.dim=Dim: %s
+GT5U.gui.text.dim.valid=Dim Valid: Yes
+GT5U.gui.text.dim.invalid=Dim Valid: No
+
+GT5U.gui.title.unknown=Unknown
+GT5U.gui.text.item_amount=Item Amount
+
+GT5U.gui.circuit.generic.data_display.off=OFF
+GT5U.gui.circuit.generic.data_display.on=ON
+GT5U.gui.circuit.data_description.delay=Delay
+GT5U.gui.circuit.data_description.length=Length
+GT5U.gui.circuit.data_description.rs_on=RS => ON
+GT5U.gui.circuit.data_description.rs_off=RS => OFF
+
+GT5U.gui.circuit.basic.name=Basic Logic
+GT5U.gui.circuit.basic.description=Regular Logic Gates
+GT5U.gui.circuit.data_description.or=OR
+GT5U.gui.circuit.data_description.nor=NOR
+GT5U.gui.circuit.data_description.xor=XOR
+GT5U.gui.circuit.data_description.xnor=XNOR
+GT5U.gui.circuit.data_description.and=AND
+GT5U.gui.circuit.data_description.nand=NAND
+GT5U.gui.circuit.data_description.invert=INVERT
+GT5U.gui.circuit.data_description.bit_or=BIT_OR
+GT5U.gui.circuit.data_description.bit_nor=BIT_NOR
+GT5U.gui.circuit.data_description.bit_xor=BIT_XOR
+GT5U.gui.circuit.data_description.bit_xnor=BIT_XNOR
+GT5U.gui.circuit.data_description.bit_and=BIT_AND
+GT5U.gui.circuit.data_description.bit_nand=BIT_NAND
+GT5U.gui.circuit.data_description.bit_invert=BIT_INVERT
+GT5U.gui.circuit.bit_and.name=Hardcode Bit-AND
+GT5U.gui.circuit.bit_and.description=( signal & this ) != 0
+GT5U.gui.circuit.bit_and.data_description=Bit %d:
+GT5U.gui.circuit.combination_lock.name=Combination Lock
+GT5U.gui.circuit.combination_lock.description=Checks Combinations
+GT5U.gui.circuit.combination_lock.data_description=Power %d
+GT5U.gui.circuit.equals.name=Equals
+GT5U.gui.circuit.equals.description=signal == this
+GT5U.gui.circuit.equals.data_description.signal=Signal
+GT5U.gui.circuit.equals.data_description.equal=Equal
+GT5U.gui.circuit.equals.data_description.unequal=Unequal
+GT5U.gui.circuit.pulser.name=Pulser
+GT5U.gui.circuit.pulser.description=Limits & Lengthens
+GT5U.gui.circuit.pulser.data_description.rs_out=RS Out
+GT5U.gui.circuit.pulser.data_display.highest=HIGHEST
+GT5U.gui.circuit.pulser.data_display.lowest=LOWEST
+GT5U.gui.circuit.randomizer.name=Randomizer
+GT5U.gui.circuit.randomizer.description=Randomizes Redstone
+GT5U.gui.circuit.randomizer.data_description.status=Status
+GT5U.gui.circuit.redstone_meter.name=Redstone Meter
+GT5U.gui.circuit.redstone_meter.description=Checks Boundaries
+GT5U.gui.circuit.redstone_meter.data_description.lower=Lower
+GT5U.gui.circuit.redstone_meter.data_description.upper=Upper
+GT5U.gui.circuit.redstone_meter.data_description.invert=Invert:
+GT5U.gui.circuit.redstone_meter.data_description.rs_out=RS Out:
+GT5U.gui.circuit.repeater.name=Repeater
+GT5U.gui.circuit.repeater.description=Delays RS-Signal
+GT5U.gui.circuit.timer.name=Timer
+GT5U.gui.circuit.timer.description=Pulses Redstone
+GT5U.gui.circuit.timer.data_description.pulses=Pulses
+GT5U.gui.circuit.timer.data_description.time=Time
+
+GT5U.gui.text.second=%s second
+GT5U.gui.text.second.plural=%s seconds
+GT5U.gui.text.minute=%s minute
+GT5U.gui.text.minute.plural=%s minutes
+GT5U.gui.text.hour=%s hour
+GT5U.gui.text.hour.plural=%s hours
+GT5U.gui.text.day=%s day
+GT5U.gui.text.day.plural=%s days
+
+GT5U.gui.text.show-powerfail-layer=Show Powerfails
+GT5U.gui.chat.powerfail=%s at %s in %s powerfailed %s time %s ago
+GT5U.gui.chat.powerfail.plural=%s at %s in %s powerfailed %s times %s ago
+GT5U.gui.chat.powerfail.waypoint=%s (%s time, %s ago)
+GT5U.gui.chat.powerfail.waypoint.plural=%s (%s times, %s ago)
+
+GT5U.gui.chat.powerfail.waypoint.tooltip=Machine: %s\nLocation: %s\nCount: %s\nLast Occurrence: %s\nPress %s to clear
+
+GT5U.gui.chat.powerfail.hint=§7Use /powerfails help for more info.
+
+GT5U.gui.chat.powerfail.login=You have %s uncleared powerfail.
+GT5U.gui.chat.powerfail.login.plural=You have %s uncleared powerfails.
+
+GT5U.gui.chat.powerfail.cleared=Cleared all of your powerfails.
+GT5U.gui.chat.powerfail.cleared-dim=Cleared all of your powerfails in the current dimension.
+
+GT5U.gui.chat.powerfail.list.none=No powerfails have occurred.
+GT5U.gui.chat.powerfail.list.uncleared-header=Uncleared powerfails:
+GT5U.gui.chat.powerfail.list.entry=- %s
+GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
+
+GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
+GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
@@ -875,27 +1758,29 @@ GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
-gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
 gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
 
 gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
 gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
 gt.behaviour.paintspray.infinite.tooltip.locked=Locked
-gt.behaviour.paintspray.infinite.tooltip.preventing_shake=Left click action disabled
+gt.behaviour.paintspray.infinite.tooltip.preventing_shake=LMB action disabled
 
-gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
-gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
-gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
-gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
-gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s-Middle Click: Allow/prevent left click action
-gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
-gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
+gt.behaviour.paintspray.infinite.tooltip.switch=LMB: Cycle color (Sneak to reverse direction)
+gt.behaviour.paintspray.infinite.tooltip.pick=MMB: On a Surface block to Copy color to spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=Sneak + MMB: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.gui=MMB: Open color choice GUI
+gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s + MMB: Toggle Color Cycle Lock
+gt.behaviour.paintspray.infinite.tooltip.author_byline=§o"Try using this in your offhand!"§r -§cQuerns§r
+
+GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cycle Lock
+
 
 gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
 gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
 
-gt.behaviour.switch_mode.tooltip=Shift+Rclick to change mode
+gt.behaviour.switch_mode.tooltip=Press [%s] to change mode
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -934,6 +1819,8 @@ GT5U.multiblock.speed=Speed
 GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
 GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
+GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
+GT5U.multiblock.runningMode=§eRunning Mode:
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -971,10 +1858,6 @@ GT5U.config.colormodulation.cable_insulation=Cable Insulation
 GT5U.config.colormodulation.cable_insulation.B=Blue
 GT5U.config.colormodulation.cable_insulation.G=Green
 GT5U.config.colormodulation.cable_insulation.R=Red
-GT5U.config.colormodulation.construction_foam=Construction Foam
-GT5U.config.colormodulation.construction_foam.B=Blue
-GT5U.config.colormodulation.construction_foam.G=Green
-GT5U.config.colormodulation.construction_foam.R=Red
 GT5U.config.colormodulation.machine_metal=Machine Metal (Default GUI color)
 GT5U.config.colormodulation.machine_metal.B=Blue
 GT5U.config.colormodulation.machine_metal.G=Green
@@ -1037,8 +1920,165 @@ GT5U.interface.coverTabs.redstone.west=west
 GT5U.interface.coverTabs.redstone.east=east
 GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
-GT5U.steam_variant.bronze=Bronze
-GT5U.steam_variant.steel=Steel
+## Redstone Receiver
+GT5U.gui.tooltip.redstone_receiver.GateMode=§8Gate Mode
+GT5U.gui.tooltip.redstone_receiver.AND_Gate=AND Gate
+GT5U.gui.tooltip.redstone_receiver.NAND_Gate=NAND Gate
+GT5U.gui.tooltip.redstone_receiver.OR_Gate=OR Gate
+GT5U.gui.tooltip.redstone_receiver.NOR_Gate=NOR Gate
+
+## Arm
+gt.interact.desc.arm.any=Any
+gt.interact.desc.arm.Internal_Slot=§8Internal slot#
+gt.interact.desc.arm.Adjacent_Slot=§8Adjacent slot#
+
+## Machine Controller Cover
+gt.interact.desc.MachContr.EnRedstone=§8Enable with Redstone
+gt.interact.desc.MachContr.DisRedstone=§8Disable with Redstone
+gt.interact.desc.MachContr.DisMachine=§8Disable machine
+gt.interact.desc.MachContr.SafeMode=§8Safe Mode
+
+## Conveyor
+gt.interact.desc.conveyor.AlwaysOn=Always On
+gt.interact.desc.conveyor.MachProcState=Use Machine Processing State
+gt.interact.desc.conveyor.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.conveyor.AllowIn=Allow Input
+gt.interact.desc.conveyor.AllowOut=Allow Output
+gt.interact.desc.conveyor.BlockIn=Block Input
+gt.interact.desc.conveyor.BlockOut=Block Output
+gt.interact.desc.conveyor.ExpImp=§8Export/Import
+gt.interact.desc.conveyor.Conditional=§8Conditional
+gt.interact.desc.conveyor.InputBlock=§8Input Blocking
+gt.interact.desc.conveyor.OutputBlock=§8Output Blocking
+
+## DoesWorkUI
+gt.interact.desc.MachineEnabled=§8Machine enabled
+gt.interact.desc.MachineIdle=§8Machine idle
+gt.interact.desc.RecipeProgress=§8Recipe progress
+
+## EU MEter
+gt.interact.desc.EnergyTHR=§8Energy threshold
+
+## Facade
+gt.interact.desc.facade.Redstone=§8Redstone
+gt.interact.desc.facade.Energy=§8Energy
+gt.interact.desc.facade.Fluids=§8Fluids
+gt.interact.desc.facade.Items=§8Items
+
+## FluidFilter
+gt.interact.desc.FluidFilter.FilterInput=Filter Input
+gt.interact.desc.FluidFilter.FilterOutput=Filter Output
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.AllowOutput=Allow Output
+gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
+gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
+gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
+gt.interact.desc.FluidFilter.Type=§8IFilter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
+gt.interact.desc.FluidFilter.Empty=§8IFilter Empty
+
+## Fluid Regulator
+gt.interact.desc.fluid_regulator.AlwaysOn=Always On
+gt.interact.desc.fluid_regulator.MachProcState=Use Machine Processing State
+gt.interact.desc.fluid_regulator.InvertedMachProcState=Use Inverted Machine Processing State
+
+gt.interact.desc.fluid_regulator.ExpImp=§8Export/Import
+gt.interact.desc.fluid_regulator.Conditional=§8Conditional
+gt.interact.desc.fluid_regulator.L=§8 L
+gt.interact.desc.fluid_regulator.Ticks=§8 ticks
+gt.interact.desc.fluid_regulator.Average=Average:
+gt.interact.desc.fluid_regulator.L_Sec=L/sec
+
+## Item Filter
+gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
+gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
+gt.interact.desc.Item_Filter.Filter=§8Filter
+gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
+
+## Item Meter
+gt.interact.desc.Item_Meter.All=All
+gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
+gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
+
+## Liquid Meter (Fluid meter)
+gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+
+## Player Detector
+gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
+gt.interact.desc.Player_Detector.Emit_Player_No_Close=Emit if other Player is close
+gt.interact.desc.Player_Detector.Emit_You_Close=Emit if you are close
+gt.interact.desc.Player_Detector.Any_Player=§8Any player
+gt.interact.desc.Player_Detector.Other_Players=§8Other players
+gt.interact.desc.Player_Detector.Only_Owner=§8Only owner
+
+## Pump
+gt.interact.desc.Pump.AlwaysOn=Always On
+gt.interact.desc.Pump.MachProcState=Use Machine Processing State
+gt.interact.desc.Pump.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.Pump.AllowIn=Allow Input
+gt.interact.desc.Pump.AllowOut=Allow Output
+gt.interact.desc.Pump.BlockIn=Block Input
+gt.interact.desc.Pump.BlockOut=Block Output
+gt.interact.desc.Pump.ExpImp=§8Export/Import
+gt.interact.desc.Pump.Conditional=§8Conditional
+gt.interact.desc.Pump.InputBlock=§8Input Blocking
+gt.interact.desc.Pump.OutputBlock=§8Output Blocking
+
+## RedstoneWirelessBase
+gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq=§8Use Private Frequency
+
+## Shutter
+gt.interact.desc.Shutter.Open_Enabled=§8Open if work enabled
+gt.interact.desc.Shutter.Open_Disabled=§8Open if work disabled
+gt.interact.desc.Shutter.OutAllow=§8Only Output allowed
+gt.interact.desc.Shutter.InAllow=§8Only Input allowed
+
+## Wireless Activity
+
+gt.interact.desc.Wireless_Activity.Enabled=§8Machine enabled
+gt.interact.desc.Wireless_Activity.Idle=§8Machine idle
+gt.interact.desc.Wireless_Activity.Recipe_Progress=§8Recipe progress
+
+gt.interact.tooltip.Wireless_Activity.Recipe_Progress=Recipe progress
+gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
+gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
+
+## Wireless Fluid Detector
+gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
+
+## Wireless Item Detector
+gt.interact.desc.Item_Item_Detector.All=All
+gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
+
+## Energy Detector
+gt.interact.desc.Energy_Detector.universal=§8Universal
+gt.interact.desc.Energy_Detector.universal.tooltip=§fUniversal Storage
+gt.interact.desc.Energy_Detector.electricity=§8Int. EU
+gt.interact.desc.Energy_Detector.electricity.tooltip=§fElectricity Storage
+gt.interact.desc.Energy_Detector.steam=§8Steam
+gt.interact.desc.Energy_Detector.steam.tooltip=§fSteam Storage
+gt.interact.desc.Energy_Detector.average_in=§8Avg. Input
+gt.interact.desc.Energy_Detector.average_in.tooltip=§fAverage Electric Input
+gt.interact.desc.Energy_Detector.average_out=§8Avg. Output
+gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
+gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
+gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
+
+# NEI Display
+GT5U.nei.display.steam_variant.bronze=Bronze
+GT5U.nei.display.steam_variant.steel=Steel
+GT5U.nei.display.duration.seconds=Time: %s seconds
+GT5U.nei.display.duration.ticks=Time: %s ticks
+GT5U.nei.display.total=Total: %s EU
+GT5U.nei.display.total.steam=Total: %s L of Steam
+GT5U.nei.display.usage=Usage: %s EU/t %s
+GT5U.nei.display.usage.original=Original usage: %s EU/t %s
+GT5U.nei.display.usage.steam=Usage: %s L/s of Steam
+GT5U.nei.display.voltage=Voltage: %s EU/t %s
+GT5U.nei.display.amperage=Amperage: %s A
+GT5U.nei.display.overclock=(OC)
+GT5U.nei.display.average=Average: %s EU/t %s
 
 GT5U.biomes.humidity=Humidity:
 
@@ -1075,9 +2115,9 @@ GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 GT5U.waila.drone_downlink.noConnection=Not connected
-GT5U.waila.drone_downlink.connection=Connect to centre:
-GT5U.waila.drone_downlink.connectionCount=Connection Count:
-GT5U.waila.drone_downlink.droneLevel=Drone Level:
+GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
+GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
 GT5U.waila.producing=Producing:
 GT5U.waila.producing.andmore=  And %d More...
 GT5U.waila.generating.on=Generating Energy
@@ -1308,8 +2348,6 @@ achievement.highpowersmelt=High Power Smelter
 achievement.highpowersmelt.desc=Craft a Multi Furnace
 achievement.oilplant=Oil Plant
 achievement.oilplant.desc=Start up a Distillation Tower
-achievement.factory=Factory
-achievement.factory.desc=Craft a Processing Array
 achievement.upgradeebf=Upgrade your EBF
 achievement.upgradeebf.desc=Craft a MV Energy Hatch
 achievement.maintainance=Maintenance
@@ -1631,7 +2669,7 @@ achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item 
 achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
 achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
-achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Oil/Gas/Fluid Drilling Rig
+achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Fluid Drilling Rig
 achievement.gt.blockmachines.multimachine.oildrillinfinite.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.oreprocessor=Integrated Ore Factory
 achievement.gt.blockmachines.multimachine.oreprocessor.desc=Processing all those ores.
@@ -1835,7 +2873,15 @@ for.bees.species.fireessence=Fire Essence
 for.bees.species.unknownwater=Unknown Liquid
 for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
-for.bees.species.dragonblood=Dragonblood
+for.bees.species.manasteel=Manasteel
+for.bees.species.elvenelementium=Elven Elementium
+for.bees.species.terrasteel=Terrasteel
+for.bees.species.gaiaspirit=Gaia Spirit
+for.bees.species.mmm=M-M-M
+for.bees.species.dragonstone=Dragonstone
+
+for.bees.authority.mmm=ignThree
+for.bees.authority.gaia=ignThree
 
 for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Aditya & Noila
 
@@ -2008,6 +3054,19 @@ gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
 gt.item.adv_sensor_card.error.no_data=No data found
+gt.item.redstone_sniffer.regular_wireless=Regular Wireless
+gt.item.redstone_sniffer.advanced_wireless=Advanced Wireless
+gt.item.redstone_sniffer.frequency=Frequency
+gt.item.redstone_sniffer.frequency_filter=Frequency:
+gt.item.redstone_sniffer.owner=Owner
+gt.item.redstone_sniffer.owner_filter=Owner:
+gt.item.redstone_sniffer.private=Private
+gt.item.redstone_sniffer.dimension=Dimension
+gt.item.redstone_sniffer.action=Action
+gt.item.redstone_sniffer.locate=Locate
+gt.item.redstone_sniffer.teleport=Teleport
+gt.item.redstone_sniffer.highlight_message=Highlighting cover at %d,%d,%d
+gt.item.redstone_sniffer.wrong_dim_message=Cannot highlight because you're not in the same dimension!
 
 gt.cover.info.format.tick_rate=§b%s§r %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s
@@ -2018,16 +3077,22 @@ gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
 gt.cover.info.button.bounds_notification.minimum=§7 (minimum)§r
 gt.cover.info.button.bounds_notification.maximum=§7 (maximum)§r
 gt.cover.wirelessdetector.redstone.tooltip=Changes this covers Redstone output behavior
-gt.cover.wirelessdetector.redstone.0=Only a wireless signal
-gt.cover.wirelessdetector.redstone.1=Wireless signal & direct Redstone
+gt.cover.wirelessdetector.redstone.0=§8Only a wireless signal
+gt.cover.wirelessdetector.redstone.1=§8Wireless signal & direct Redstone
 gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
 
 #Tool modes
+key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
+gt.wrench.mode.2=Precise Mode
 
+# Tooltip for vajra
+gt.vajra.tooltip.flavor=Your friendly instant block breaker
+gt.vajra.tooltip.charge=Can be charged in any %s machine
+gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
 
 # GT++
 
@@ -2052,14 +3117,14 @@ GT5U.gui.text.no_tools=§7Missing applicable tools
 
 # Cover Overflow Valve
 GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
-GTPP.gui.text.cover_overflow_valve_overflow_point=Overflow Point
-GTPP.gui.text.cover_overflow_valve_voiding_rate=Voiding Rate
-GTPP.gui.text.cover_overflow_valve_allow_fluid_input=Allow Fluid Input
-GTPP.gui.text.cover_overflow_valve_block_fluid_input=Block Fluid Input
-GTPP.gui.text.cover_overflow_valve_allow_fluid_output=Allow Fluid Output
-GTPP.gui.text.cover_overflow_valve_block_fluid_output=Block Fluid Output
-GTPP.gui.text.cover_overflow_valve_liter=L
-GTPP.gui.text.cover_overflow_valve_l_per_update=L/update
+GTPP.gui.text.cover_overflow_valve_overflow_point=§8Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=§8Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=§8Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§8Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=§8Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_liter=§8L
+GTPP.gui.text.cover_overflow_valve_l_per_update=§8L/update
 
 GTPP.EBF.heat=Heat capacity
 
@@ -2171,11 +3236,12 @@ GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
 GTPP.tooltip.meta_food.unless_starving=I wouldn't eat this unless I was starving
 GTPP.tooltip.meta_food.better_cooked=Doesn't look any better cooked
 GTPP.tooltip.meta_food.warm_touch=Warm to the touch
+GTPP.tooltip.dust-decay-hint=Only decays in a %s or a %s
 
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
 GTPP.tooltip.structure.data_orb_repository=Data Orb Repository
-GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch
+GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Hatch, Energy Hatch
 GTPP.tooltip.structure.rotor_assembly=Rotor Assembly
 
 GT5U.tooltip.pollution.produces=Produces %d Pollution/Second
@@ -2229,6 +3295,10 @@ GT5U.tooltip.tool.heat=Heat: %d K
 
 GT5U.tooltip.volumetric_flask.empty=Empty
 GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
+
+GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
+GT5U.tooltip.purify.2=Can be used as Enriched Naquadah Fuel Substitute
+GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # info data
 GT5U.infodata.no_network=No Network
@@ -2323,8 +3393,10 @@ GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
 
 GT5U.infodata.critical_info=Critical Information
-GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s
+GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
 GT5U.infodata.plasma_forge.convergence=Convergence: %s
+GT5U.infodata.plasma_forge.convergence.progress=, perfect convergence reached in %s min
+GT5U.infodata.plasma_forge.convergence.achieved=, perfect convergence achieved
 GT5U.infodata.plasma_forge.convergence.active=Active
 GT5U.infodata.plasma_forge.convergence.inactive=Inactive
 
@@ -2350,6 +3422,8 @@ GT5U.infodata.wormhole_generator.hatch.right=Right
 GT5U.infodata.wormhole_generator.hatch.back=Back
 GT5U.infodata.wormhole_generator.hatch.front=Front
 
+GT5U.infodata.purification_plant.status_button=Status
+GT5U.infodata.purification_plant.status_title=§lPurification Unit Status
 GT5U.infodata.purification_plant.linked_units=Linked Purification Units:
 GT5U.infodata.purification_plant.linked_units.status.online=Online
 GT5U.infodata.purification_plant.linked_units.status.disabled=Disabled
@@ -2567,3 +3641,71 @@ achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[A
 achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 
+# Fission Fuels
+item.gt.rodLithium.name=Fuel Rod (Lithium)
+item.gt.rodGlowstone.name=Fuel Rod (Glowstone)
+item.gt.rodThorium.name=Fuel Rod (Thorium)
+item.gt.rodThorium2.name=Dual Fuel Rod (Thorium)
+item.gt.rodThorium4.name=Quad Fuel Rod (Thorium)
+item.gt.rodUranium.name=Fuel Rod (Uranium)
+item.gt.rodUranium2.name=Dual Fuel Rod (Uranium)
+item.gt.rodUranium4.name=Quad Fuel Rod (Uranium)
+item.gt.rodMOX.name=Fuel Rod (MOX)
+item.gt.rodMOX2.name=Dual Fuel Rod (MOX)
+item.gt.rodMOX4.name=Quad Fuel Rod (MOX)
+item.gt.rodHighDensityUranium.name=Fuel Rod (High Density Uranium)
+item.gt.rodHighDensityUranium2.name=Dual Fuel Rod (High Density Uranium)
+item.gt.rodHighDensityUranium4.name=Quad Fuel Rod (High Density Uranium)
+item.gt.rodHighDensityPlutonium.name=Fuel Rod (High Density Plutonium)
+item.gt.rodHighDensityPlutonium2.name=Dual Fuel Rod (High Density Plutonium)
+item.gt.rodHighDensityPlutonium4.name=Quad Fuel Rod (High Density Plutonium)
+item.gt.rodExcitedUranium.name=Fuel Rod (Excited Uranium)
+item.gt.rodExcitedUranium2.name=Dual Fuel Rod (Excited Uranium)
+item.gt.rodExcitedUranium4.name=Quad Fuel Rod (Excited Uranium)
+item.gt.rodExcitedPlutonium.name=Fuel Rod (Excited Plutonium)
+item.gt.rodExcitedPlutonium2.name=Dual Fuel Rod (Excited Plutonium)
+item.gt.rodExcitedPlutonium4.name=Quad Fuel Rod (Excited Plutonium)
+item.gt.rodNaquadah.name=Fuel Rod (Naquadah)
+item.gt.rodNaquadah2.name=Dual Fuel Rod (Naquadah)
+item.gt.rodNaquadah4.name=Quad Fuel Rod (Naquadah)
+item.gt.rodNaquadah32.name=The Core
+item.gt.rodNaquadria.name=Fuel Rod (Naquadria)
+item.gt.rodNaquadria2.name=Dual Fuel Rod (Naquadria)
+item.gt.rodNaquadria4.name=Quad Fuel Rod (Naquadria)
+
+item.gt.depletedRodLithium.name=Fuel Rod (Tritium)
+item.gt.depletedRodGlowstone.name=Fuel Rod (Sunnarium)
+item.gt.depletedRodThorium.name=Fuel Rod (Depleted Thorium)
+item.gt.depletedRodThorium2.name=Dual Fuel Rod (Depleted Thorium)
+item.gt.depletedRodThorium4.name=Quad Fuel Rod (Depleted Thorium)
+item.gt.depletedRodUranium.name=Fuel Rod (Depleted Uranium)
+item.gt.depletedRodUranium2.name=Dual Fuel Rod (Depleted Uranium)
+item.gt.depletedRodUranium4.name=Quad Fuel Rod (Depleted Uranium)
+item.gt.depletedRodMOX.name=Fuel Rod (Depleted MOX)
+item.gt.depletedRodMOX2.name=Dual Fuel Rod (Depleted MOX)
+item.gt.depletedRodMOX4.name=Quad Fuel Rod (Depleted MOX)
+item.gt.depletedRodHighDensityUranium.name=Fuel Rod (Depleted High Density Uranium)
+item.gt.depletedRodHighDensityUranium2.name=Dual Fuel Rod (Depleted High Density Uranium)
+item.gt.depletedRodHighDensityUranium4.name=Quad Fuel Rod (Depleted High Density Uranium)
+item.gt.depletedRodHighDensityPlutonium.name=Fuel Rod (Depleted High Density Plutonium)
+item.gt.depletedRodHighDensityPlutonium2.name=Dual Fuel Rod (Depleted High Density Plutonium)
+item.gt.depletedRodHighDensityPlutonium4.name=Quad Fuel Rod (Depleted High Density Plutonium)
+item.gt.depletedRodExcitedUranium.name=Fuel Rod (Depleted Excited Uranium)
+item.gt.depletedRodExcitedUranium2.name=Dual Fuel Rod (Depleted Excited Uranium)
+item.gt.depletedRodExcitedUranium4.name=Quad Fuel Rod (Depleted Excited Uranium)
+item.gt.depletedRodExcitedPlutonium.name=Fuel Rod (Depleted Excited Plutonium)
+item.gt.depletedRodExcitedPlutonium2.name=Dual Fuel Rod (Depleted Excited Plutonium)
+item.gt.depletedRodExcitedPlutonium4.name=Quad Fuel Rod (Depleted Excited Plutonium)
+item.gt.depletedRodNaquadah.name=Fuel Rod (Depleted Naquadah)
+item.gt.depletedRodNaquadah2.name=Dual Fuel Rod (Depleted Naquadah)
+item.gt.depletedRodNaquadah4.name=Quad Fuel Rod (Depleted Naquadah)
+item.gt.depletedRodNaquadah32.name=The Core (Depleted)
+item.gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
+item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
+item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
+
+# Entities
+entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
+
+#mui1
+mui.button.close=x

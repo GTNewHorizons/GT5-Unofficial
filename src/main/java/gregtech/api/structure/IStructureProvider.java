@@ -8,10 +8,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 public interface IStructureProvider<MTE> {
 
     /**
-     * Gets the minimal (default trigger w/ stackSize = 1) structure definition.
-     * Override {@link #getMaxDefinition()} if your structure has a variable size.
-     * This is primarily used to determine the controller offset, casing counts, and the structure dimensions, but it is
-     * also passed to {@link #compile(String[][])}.
+     * Gets the minimal (default trigger w/ stackSize = 1) structure definition. Override {@link #getMaxDefinition()} if
+     * your structure has a variable size. This is primarily used to determine the controller offset, casing counts, and
+     * the structure dimensions, but it is also passed to {@link #compile(String[][])}.
      */
     String[][] getDefinition();
 
@@ -35,5 +34,5 @@ public interface IStructureProvider<MTE> {
      * Gets the structure instance. Return is undefined/null for prototype MTEs, but should be well-defined for instance
      * MTEs.
      */
-    IStructureInstance getStructureInstance();
+    IStructureInstance<MTE> getStructureInstance();
 }

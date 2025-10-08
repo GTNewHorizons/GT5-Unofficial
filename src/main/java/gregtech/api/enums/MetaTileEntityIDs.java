@@ -1,20 +1,15 @@
 package gregtech.api.enums;
 
 /**
- * An enum for all registered MetaTileEntities.
- * No more magic numbers about TE's IDs. Yay!!!
- * The entries are sorted by ID, so if you need to take one,
- * please, pretty please, insert it at the correct place.
+ * An enum for all registered MetaTileEntities. No more magic numbers about TE's IDs. Yay!!! The entries are sorted by
+ * ID, so if you need to take one, please, pretty please, insert it at the correct place.
  * <p/>
- * This does not list all used IDs. If you are looking for
- * a free ID, you can use the java arg `-Dgt.debug=true` to
- * list all that are in use.
+ * This does not list all used IDs. If you are looking for a free ID, you can use the java arg `-Dgt.debug=true` to list
+ * all that are in use.
  * <p/>
- * Additionally, some ID ranges are blocked for automatic
- * generation, do not use these:
+ * Additionally, some ID ranges are blocked for automatic generation, do not use these:
  * <p/>
- * 4096 - 5095 are used for GregTech Frames.
- * 5096 - 6099 are used for GregTech Pipes.
+ * 4096 - 5095 are used for GregTech Frames. 5096 - 6099 are used for GregTech Pipes.
  */
 
 public enum MetaTileEntityIDs {
@@ -581,7 +576,6 @@ public enum MetaTileEntityIDs {
     Industrial_ThermalCentrifuge(849),
     Industrial_WashPlant(850),
     Industrial_Extruder(859),
-    Industrial_MultiMachine(860),
     Hatch_Air_Intake(861),
     Industrial_Arc_Furnace(862),
     Industrial_Solar_Tower(863),
@@ -647,12 +641,12 @@ public enum MetaTileEntityIDs {
     VACUUM_FREEZER_CONTROLLER(1002),
     MULTI_SMELTER_CONTROLLER(1003),
     DTPF_CONTROLLER(1004),
-    LARGE_ADVANCED_GAS_TURBINE_CONTROLLER(1005),
     TRANSCENDENT_PLASMA_MIXER_CONTROLLER(1006),
     LARGE_BRONZE_BOILER_CONTROLLER(1020),
     LARGE_STEEL_BOILER_CONTROLLER(1021),
     LARGE_TITANIUM_BOILER_CONTROLLER(1022),
     LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER(1023),
+    CHAMBER_CENTRIFUGE_CONTROLLER(1033),
     COMBUSTION_GENERATOR_LV(1110),
     COMBUSTION_GENERATOR_MV(1111),
     COMBUSTION_GENERATOR_HV(1112),
@@ -733,7 +727,6 @@ public enum MetaTileEntityIDs {
     PLASMA_GENERATOR_EV(1196),
     PLASMA_GENERATOR_IV(1197),
     PLASMA_GENERATOR_LuV(1198),
-    PROCESSING_ARRAY_CONTROLLER(1199),
     ADVANCED_SEISMIC_PROSPECTOR_LV(2102),
     ADVANCED_SEISMIC_PROSPECTOR_MV(2103),
     ADVANCED_SEISMIC_PROSPECTOR_HV(2104),
@@ -760,6 +753,8 @@ public enum MetaTileEntityIDs {
     SOLAR_PANEL_LuV(2738),
     SOLAR_PANEL_ZPM(2739),
     SOLAR_PANEL_UV(2740),
+    VENDING_MACHINE_CONTROLLER(2741),
+    VENDING_MACHINE_UPLINK_ME(2742),
     INDUSTRIAL_LASER_ENGRAVER_CONTROLLER(3004),
     INDUSTRIAL_COMPRESSOR_CONTROLLER(3005),
     HIP_COMPRESSOR_CONTROLLER(3006),
@@ -1270,6 +1265,8 @@ public enum MetaTileEntityIDs {
     OUTPUT_HATCH_UMV(12105),
     OUTPUT_HATCH_UXV(12106),
     OUTPUT_HATCH_MAX(12108),
+    VOID_HATCH(12109),
+    VOID_BUS(12110),
     cropGeneExtractorLV(12501),
     cropGeneExtractorMV(12502),
     cropGeneExtractorHV(12503),
@@ -1432,55 +1429,6 @@ public enum MetaTileEntityIDs {
     VoidMinerIII(12739),
     VoidMinerII(12740),
     VoidMinerI(12741),
-    LowPowerLaserPipe(12742),
-    LowPowerLaserConverter32A_EV(12743),
-    LowPowerLaserConverter32A_IV(12744),
-    LowPowerLaserConverter32A_LuV(12745),
-    LowPowerLaserConverter32A_ZPM(12746),
-    LowPowerLaserConverter64A_EV(12747),
-    LowPowerLaserConverter64A_IV(12748),
-    LowPowerLaserConverter64A_LuV(12749),
-    LowPowerLaserConverter64A_ZPM(12750),
-    LowPowerLaserConverter96A_EV(12751),
-    LowPowerLaserConverter96A_IV(12752),
-    LowPowerLaserConverter96A_LuV(12753),
-    LowPowerLaserConverter96A_ZPM(12754),
-    LowPowerLaserConverter128A_EV(12755),
-    LowPowerLaserConverter128A_IV(12756),
-    LowPowerLaserConverter128A_LuV(12757),
-    LowPowerLaserConverter128A_ZPM(12758),
-    LowPowerLaserTargetHatch32A_EV(12759),
-    LowPowerLaserTargetHatch32A_IV(12760),
-    LowPowerLaserTargetHatch32A_LuV(12761),
-    LowPowerLaserTargetHatch32A_ZPM(12762),
-    LowPowerLaserTargetHatch64A_EV(12763),
-    LowPowerLaserTargetHatch64A_IV(12764),
-    LowPowerLaserTargetHatch64A_LuV(12765),
-    LowPowerLaserTargetHatch64A_ZPM(12766),
-    LowPowerLaserTargetHatch96A_EV(12767),
-    LowPowerLaserTargetHatch96A_IV(12768),
-    LowPowerLaserTargetHatch96A_LuV(12769),
-    LowPowerLaserTargetHatch96A_ZPM(12770),
-    LowPowerLaserTargetHatch128A_EV(12771),
-    LowPowerLaserTargetHatch128A_IV(12772),
-    LowPowerLaserTargetHatch128A_LuV(12773),
-    LowPowerLaserTargetHatch128A_ZPM(12774),
-    LowPowerLaserSourceHatch32A_EV(12775),
-    LowPowerLaserSourceHatch32A_IV(12776),
-    LowPowerLaserSourceHatch32A_LuV(12777),
-    LowPowerLaserSourceHatch32A_ZPM(12778),
-    LowPowerLaserSourceHatch64A_EV(12779),
-    LowPowerLaserSourceHatch64A_IV(12780),
-    LowPowerLaserSourceHatch64A_LuV(12781),
-    LowPowerLaserSourceHatch64A_ZPM(12782),
-    LowPowerLaserSourceHatch96A_EV(12783),
-    LowPowerLaserSourceHatch96A_IV(12784),
-    LowPowerLaserSourceHatch96A_LuV(12785),
-    LowPowerLaserSourceHatch96A_ZPM(12786),
-    LowPowerLaserSourceHatch128A_EV(12787),
-    LowPowerLaserSourceHatch128A_IV(12788),
-    LowPowerLaserSourceHatch128A_LuV(12789),
-    LowPowerLaserSourceHatch128A_ZPM(12790),
     HighTemperatureGasCooledReactor(12791),
     ExtremeIndustrialGreenhouseController(12792),
     AcidGeneratorLV(12793),
@@ -1495,6 +1443,11 @@ public enum MetaTileEntityIDs {
     WORMHOLE_GENERATOR_CONTROLLER(13115),
     MegaChemicalReactor(13366),
     MegaOilCracker(13367),
+    AdvancedAssline(13532),
+    LinkedInputBus(13533),
+    ToolCast_MV(13534),
+    ToolCast_HV(13535),
+    ToolCast_EV(13536),
     DysonSwarmController(14001),
     PlanetaryGasSiphonController(14002),
     SpaceElevatorController(14003),
@@ -1509,6 +1462,7 @@ public enum MetaTileEntityIDs {
     SpaceElevatorModuleManager(14012),
     SpaceElevatorModuleResearch(14013),
     SpaceElevatorModulePumpT3(14014),
+    LargeMolecularAssembler(14101),
     ExtremeEntityCrusherController(14201),
     ExtremeIndustrialApiaryController(14202),
     BETTER_JUKEBOX_LV(14301),
@@ -1516,6 +1470,7 @@ public enum MetaTileEntityIDs {
     BETTER_JUKEBOX_HV(14303),
     BETTER_JUKEBOX_EV(14304),
     BETTER_JUKEBOX_IV(14305),
+    WIRELESS_DYNAMO_ENERGIZED(15040),
     EV4AWirelessEnergyHatch(15065),
     EV16AWirelessEnergyHatch(15066),
     EV64AWirelessEnergyHatch(15067),
@@ -1743,6 +1698,7 @@ public enum MetaTileEntityIDs {
     MicrowaveGrinder(15312),
     DataBank(15313),
     TeslaTower(15314),
+    NetworkSwitchAdv(15315),
     Researchstation(15331),
     EnergyInfuser(15350),
     EyeofHarmony(15410),
@@ -1794,6 +1750,8 @@ public enum MetaTileEntityIDs {
     UXV262144AWirelessEnergyHatch(15505),
     UXV1048576AWirelessEnergyHatch(15506),
     UncertaintyResolution(15510),
+    ENTROPIC_PROCESSOR(15750),
+    DECAY_WAREHOUSE(15751),
     BasicTeslaTransceiver1by1(16000),
     AdvancedTeslaTransceiver1by1(16001),
     EpycTeslaTransceiver1by1(16002),
@@ -1823,6 +1781,9 @@ public enum MetaTileEntityIDs {
     WIRELESS_LASER_UXV8(16026),
     WIRELESS_LASER_UXV9(16027),
     FuelRefineFactory(16999),
+    MAGLEV_PYLON_MV(29990),
+    MAGLEV_PYLON_HV(29991),
+    MAGLEV_PYLON_EV(29992),
     Hatch_Muffler_Adv_LV(30001),
     Hatch_Muffler_Adv_MV(30002),
     Hatch_Muffler_Adv_HV(30003),
@@ -1895,6 +1856,9 @@ public enum MetaTileEntityIDs {
     Controller_SteamWasherMulti(31082),
     Controller_SteamForgeHammer(31083),
     Controller_SteamMixerMulti(31084),
+    WaterPump(31085),
+    Controller_SteamAlloySmelterMulti(31086),
+    Controller_SteamFurnaceMulti(31087),
     GT4_Electric_Auto_Workbench_LV(31091),
     GT4_Electric_Auto_Workbench_MV(31092),
     GT4_Electric_Auto_Workbench_HV(31093),
@@ -1929,9 +1893,7 @@ public enum MetaTileEntityIDs {
     RedstoneLamp(31803),
     RedstoneStrengthDisplay(31804),
     RedstoneStrengthScale(31805),
-    WaterPump(31085),
     UniversalChemicalFuelEngine(32001),
-    LargeEssentiaGenerator(32002),
     NeutronAcceleratorULV(32003),
     NeutronAcceleratorLV(32004),
     NeutronAcceleratorMV(32005),
@@ -1964,7 +1926,8 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUHV(32761),
     NeutronAcceleratorUEV(32762),
     NeutronAcceleratorUIV(32763),
-    NeutronAcceleratorUMV(32764),;
+    NeutronAcceleratorUMV(32764),
+    Hatch_Air_Intake_Atmospheric(32765);
 
     public final int ID;
 

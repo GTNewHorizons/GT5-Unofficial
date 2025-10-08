@@ -1,6 +1,5 @@
 package tectech.rendering.EOH;
 
-import static java.lang.Math.pow;
 import static tectech.Reference.MODID;
 import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_0;
 import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_1;
@@ -19,6 +18,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import gregtech.api.util.GTUtility;
 
 public abstract class EOHRenderingUtils {
 
@@ -75,7 +75,7 @@ public abstract class EOHRenderingUtils {
         float scale = 0.01f * size;
 
         // Put each subsequent layer further out.
-        scale *= pow(1.04f, layer);
+        scale *= GTUtility.powInt(1.04f, layer);
 
         // Scale the star up in the x, y and z directions.
         GL11.glScalef(scale, scale, scale);

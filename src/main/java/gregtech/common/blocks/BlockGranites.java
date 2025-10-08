@@ -2,11 +2,9 @@ package gregtech.common.blocks;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -55,11 +53,6 @@ public class BlockGranites extends BlockStonesAbstract {
     @Override
     public int getHarvestLevel(int aMeta) {
         return 3;
-    }
-
-    @Override
-    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        return this.blockHardness = Blocks.stone.getBlockHardness(aWorld, aX, aY, aZ) * 3.0F;
     }
 
     @Override

@@ -1,0 +1,192 @@
+#This file is a translation file for KubaTech
+
+#RecipeMaps
+kubatech.defusioncrafter=Draconic Evolution термоядерный крафтер
+
+#NEI
+kubatech.defusioncrafter.tier=Тир корпуса: %s
+kubatech.mobhandler.eec_chance=§5Шанс добычи в EEC: %.2f%%
+kubatech.mobhandler.eec_disabled=§5Не падает в EEC
+
+#Commands
+kubatech.commandhandler.invalid=§cНедопустимое использование! Правильное использование этой команды /%s
+kubatech.commandhandler.cant_find=§cНе удается найти параметр команды %s
+kubatech.commandhandler.generic_help=§cВы также можете использовать "/kubatech help" для получения возможных команд
+kubatech.commandhandler.usage=<option>
+kubatech.command.help.possible_commands=Возможные команды:
+kubatech.command.help.usage=- Показывает все возможные команды
+kubatech.command.config.invalid_option=§cНеверный вариант! Возможные варианты: перезагрузить
+kubatech.command.config.success=§aКонфигурация успешно перезагружена!
+kubatech.command.config.usage=<option>
+
+kubatech.command.tea.invalid_option=§cНедопустимое использование!
+kubatech.command.tea.player_not_found=§cИгрок не найден!
+kubatech.command.tea.success_get=Игрок %s имеет %d Чай
+kubatech.command.tea.success_set=Игрок %s теперь имеет %d Чай
+kubatech.command.tea.success_add=Игрок %s теперь имеет %d Чай
+kubatech.command.tea.usage=<username> get/set/add (<amount>)
+
+#GUI
+GT5U.gui.text.EEC_nospawner=Нет электрического спаунера!
+GT5U.gui.text.EEC_invalidspawner=Неверный спаунер!
+GT5U.gui.text.EEC_peaceful=Вставленный моб не может заспавнится в мирном режиме!
+GT5U.gui.text.MegaApiary_slotoverflow=Внутри слишком много пчёл!
+GT5U.gui.text.MegaApiary_noflowers=Отсутствуют цветы!
+GT5U.gui.text.EIG_slotoverflow=Внутри слишком много видов семян!
+GT5U.gui.text.EIG_seedOverflow=Внутри слишком много семян!
+GT5U.gui.text.EIG_missingwater=Нет воды!
+GT5U.gui.text.EIG_ic2glass=Недостаточный тир стекла!
+
+# info data
+## general
+kubatech.infodata.running_mode=Работает в режиме:
+
+## Extreme Entity Crusher
+kubatech.infodata.eec.current_mob=Текущий моб: §e%s
+kubatech.infodata.eec.current_mob.none=Текущий моб: §eНет
+kubatech.infodata.eec.animations.enabled=Анимация: §eВключена
+kubatech.infodata.eec.animations.disabled=Анимация: §eОтключена
+kubatech.infodata.eec.produce_infernal_drops.allowed=Is allowed to produce infernal drops: §eYes
+kubatech.infodata.eec.produce_infernal_drops.not_allowed=Is not allowed to produce infernal drops: §eNo
+kubatech.infodata.eec.void_damaged.yes=Уничтожать все поврежденные и зачарованные предметы: §eДа
+kubatech.infodata.eec.void_damaged.no=Уничтожать все поврежденные и зачарованные предметы: §eНет
+kubatech.infodata.eec.in_ritual_mode.yes=Находится в режим ритуала: §eДа
+kubatech.infodata.eec.in_ritual_mode.no=Находится в режим ритуала: §eНет
+kubatech.infodata.eec.connected_to_ritual.yes=Связан с ритуалом: §aДа
+kubatech.infodata.eec.connected_to_ritual.no=Связан с ритуалом: §aНет
+kubatech.infodata.eec.inserted_weapon.yes=Вставленное оружие: §eДа
+kubatech.infodata.eec.inserted_weapon.no=Вставленное оружие: §eНет
+kubatech.infodata.eec.weapon.damage=Урон от атаки оружием: §e%f
+kubatech.infodata.eec.weapon.looting_level=Уровень добычи оружия: §e%d
+kubatech.infodata.eec.total_damage=Общий урон от атаки: §e%f
+
+## Exreme Industrial Greenhouse
+kubatech.infodata.eig.running_mode.setup_mode.input=Режим настройки (загрузка)
+kubatech.infodata.eig.running_mode.setup_mode.output=Режим настройки (выгрузка)
+kubatech.infodata.eig.uses.water=Использует %dЛ воды за операцию
+kubatech.infodata.eig.uses.weedex=Использует %dЛ/секунду Анти-сорняка 9000
+kubatech.infodata.eig.max_slots=Макс. слотов:
+kubatech.infodata.eig.used_slots=Используется слотов:
+kubatech.infodata.bucket.humidity=Влажность:
+kubatech.infodata.bucket.humidity.on=Вкл.
+kubatech.infodata.bucket.humidity.off=Откл.
+kubatech.infodata.eig.too_many_types=Внутри слишком много видов семян для запуска!
+kubatech.infodata.eig.too_many_seeds=Внутри слишком много семян для запуска!
+
+## Mega Industrial Apiary
+kubatech.infodata.mia.running_mode.input=Режим загрузки
+kubatech.infodata.mia.running_mode.output=Режим выгрузки
+kubatech.infodata.mia.running_mode.operating.normal=Режим работы (НОРМАЛЬНЫЙ)
+kubatech.infodata.mia.running_mode.operating.swarmer=Режим работы (РОЕНИЕ)
+kubatech.infodata.mia.running_mode.bee_storage=Хранилище пчел (%s/%s):
+
+
+#Waila
+kubatech.waila.eec.mob_type=Вид существа: %s
+kubatech.waila.eec.no_mob=Нет
+
+#Blocks
+kubablock.tea_acceptor.name=§4§lПриёмщик чая
+kubablock.tea_storage.name=§4§lРасширенное хранилище чая
+
+#DEFC Casings
+defc.casing.name=Термоядерный корпус
+defc.casing.tip=Корпус Draconic Evolution термоядерного крафтера, тир %d
+
+#Items
+item.kubaitems.name=Чай/Чайный лист
+kubaitem.fromcollection=Этот предмет из
+kubaitem.notyours=Похоже, этот предмет не ваш
+kubaitem.defc_schematic_t1.name=Схема: ядро дракона
+kubaitem.defc_schematic_t1.tip=Эту схему можно найти в Подземельях Плутона
+kubaitem.defc_schematic_t2.name=Схема: ядро виверны
+kubaitem.defc_schematic_t3.name=Схема: пробуждённое ядро
+kubaitem.defc_schematic_t4.name=Схема: ядро хаоса
+
+#Tea
+kubaitem.tea.black_tea.name=Черный чай
+kubaitem.tea.earl_gray_tea.name=Чай Эрл Грей
+kubaitem.tea.green_tea.name=Зеленый чай
+kubaitem.tea.lemon_tea.name=Чай с лимоном
+kubaitem.tea.milk_tea.name=Молочный чай
+kubaitem.tea.oolong_tea.name=Чай улун
+kubaitem.tea.peppermint_tea.name=Мятный чай
+kubaitem.tea.pu-erh_tea.name=Чай Пуэр
+kubaitem.tea.white_tea.name=Белый чай
+kubaitem.tea.yellow_tea.name=Жёлтый чай
+kubaitem.teaingredient.black_tea_leaf.name=Лист чёрного чая
+kubaitem.teaingredient.green_tea_leaf.name=Лист зеленого чая
+kubaitem.teaingredient.oolong_tea_leaf.name=Лист чая Улун
+kubaitem.teaingredient.pu-erh_tea_leaf.name=Лист чая Пуэр
+kubaitem.teaingredient.white_tea_leaf.name=Лист белого чая
+kubaitem.teaingredient.yellow_tea_leaf.name=Лист жёлтого чая
+kubaitem.teaingredient.tea_leaf_dehydrated.name=Высушенный чайный лист
+kubaitem.teaingredient.steamed_tea_leaf.name=Заваренный чайный лист
+kubaitem.teaingredient.rolled_tea_leaf.name=Скрученный чайный лист
+kubaitem.teaingredient.oxidized_tea_leaf.name=Окисленный чайный лист
+kubaitem.teaingredient.fermented_tea_leaf.name=Ферментированный чайный лист
+kubaitem.teaingredient.bruised_tea_leaf.name=Поврежденный чайный лист
+kubaitem.teaingredient.partially_oxidized_tea_leaf.name=Частично окисленный чайный лист
+
+#Legendary Tea collection
+kubaitem.teacollection=Коллекция турбо-легендарного секретного чая
+kubaitem.teacollection.mmm=Мммм чай
+kubaitem.teacollection.black_tea.name=§6§lЧёрный чай от Кубы
+kubaitem.teacollection.butterfly_tea.name=§1§lСиний чай от Кубы
+kubaitem.teacollection.earl_gray_tea.name=§6§lЧай Эрл Грей от Кубы
+kubaitem.teacollection.green_tea.name=§2§lЗеленый чай от Кубы
+kubaitem.teacollection.lemon_tea.name=§e§lЧай с лимоном от Кубы
+kubaitem.teacollection.milk_tea.name=§f§lМолочный чай от Кубы
+kubaitem.teacollection.oolong_tea.name=§e§lЧай улун от Кубы
+kubaitem.teacollection.peppermint_tea.name=§a§lМятный чай от кубы
+kubaitem.teacollection.pu-erh_tea.name=§4§lЧай Пуэр от Кубы
+kubaitem.teacollection.red_tea.name=§c§lЧай каркаде от Кубы
+kubaitem.teacollection.white_tea.name=§e§lБелый чай от Кубы
+kubaitem.teacollection.yellow_tea.name=§6§lЖёлтый чай от Кубы
+kubaitem.teacollection.ultimate_tea.name=%s §6§lчай от§6§lКубы
+
+kubaitem.tea_acceptor_research_note.name=Записки исследования по Приёмщику чая
+
+#Achievements
+achievement.teacollection.black_tea=§6§lЧёрный чай от Кубы
+achievement.teacollection.butterfly_tea=§1§lСиний чай от Кубы
+achievement.teacollection.earl_gray_tea=§6§lЧай Эрл Грей от Кубы
+achievement.teacollection.green_tea=§2§lЗеленый чай от Кубы
+achievement.teacollection.lemon_tea=§e§lЧай с лимоном от Кубы
+achievement.teacollection.milk_tea=§f§lМолочный чай от Кубы
+achievement.teacollection.oolong_tea=§e§lЧай улун от Кубы
+achievement.teacollection.peppermint_tea=§a§lМятный чай от кубы
+achievement.teacollection.pu-erh_tea=§4§lЧай Пуэр от Кубы
+achievement.teacollection.red_tea=§c§lЧай каркаде от Кубы
+achievement.teacollection.white_tea=§e§lБелый чай от Кубы
+achievement.teacollection.yellow_tea=§6§lЖёлтый чай от Кубы
+achievement.teacollection.ultimate_tea=§4§l§k??????
+
+achievement.teacollection.black_tea.desc=§6Самый распространённый и популярный вид чая
+achievement.teacollection.butterfly_tea.desc=§1Даже не Чай
+achievement.teacollection.earl_gray_tea.desc=§6Для настоящих британцев
+achievement.teacollection.green_tea.desc=§2Основной
+achievement.teacollection.lemon_tea.desc=§eЧерный чай с лимоном, чего вы ожидаете?
+achievement.teacollection.milk_tea.desc=§fЧерный чай с молоком, мой любимый
+achievement.teacollection.oolong_tea.desc=§eДля настоящего ценителя
+achievement.teacollection.peppermint_tea.desc=§aХорошо помогает при болях в животе
+achievement.teacollection.pu-erh_tea.desc=§4Полезен для пищеварения, но на вкус как земля
+achievement.teacollection.red_tea.desc=§cЗачем кому-то это пить ?
+achievement.teacollection.white_tea.desc=§eСамый здоровый
+achievement.teacollection.yellow_tea.desc=§6Зеленый чай с более травянистым вкусом
+achievement.teacollection.ultimate_tea.desc=§4§lОдин чай, чтобы выпить их всех
+
+#Thaumcraft
+tc.research_category.KUBATECH=§lКамелия китайская
+tc.research_name.KT_UltimateTea=%s §6§lЧай
+tc.research_text.KT_UltimateTea=§4§lЧистая сила
+KT.research.ultimatetea=Вы нашли способ преобразовать весь этот чай в чистую энергию, создав %s §6§lЧай
+
+#Tooltip
+kubatech.tooltip.tea=Чай
+kubatech.tooltip.tea_acceptor.0=Принимает предметы "Чай" и добавляет их в вашу сеть
+kubatech.tooltip.tea_acceptor.1=Может принимать до 10 стаков за тик
+kubatech.tooltip.tea_storage.0=Расширяет хранилище чая на %s
+kubatech.tooltip.tea_ingredient.0=Это ингредиент чая
+
+kubatech.tooltip.structure.flowers=Цветы

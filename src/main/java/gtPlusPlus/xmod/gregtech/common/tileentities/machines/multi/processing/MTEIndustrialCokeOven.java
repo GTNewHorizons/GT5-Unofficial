@@ -20,6 +20,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -29,6 +31,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -37,7 +41,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeOven> implements ISurvivalConstructable {
 
-    private int mLevel = 0;
+    private int tier = 0;
     private int mCasing;
     private int mCasing1;
     private int mCasing2;
@@ -66,9 +70,9 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo("Gain 4% energy discount per voltage tier")
-            .addInfo("Process 12x materials with Heat Resistant Casings")
-            .addInfo("Or 24x materials with Heat Proof Casings")
+            .addInfo(TooltipHelper.parallelText(18) + " Parallels with Heat Resistant Casings")
+            .addInfo(TooltipHelper.parallelText(30) + " Parallels with Heat Proof Casings")
+            .addDynamicEuEffInfo(0.04f, TooltipTier.VOLTAGE)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front middle at bottom")
@@ -130,8 +134,8 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (stackSize.stackSize == 1)
-            return survivialBuildPiece(mName + "1", stackSize, 1, 2, 0, elementBudget, env, false, true);
-        else return survivialBuildPiece(mName + "2", stackSize, 1, 2, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(mName + "1", stackSize, 1, 2, 0, elementBudget, env, false, true);
+        else return survivalBuildPiece(mName + "2", stackSize, 1, 2, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -139,18 +143,24 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         mCasing = 0;
         mCasing1 = 0;
         mCasing2 = 0;
-        mLevel = 0;
+        tier = 0;
         if (checkPiece(mName, 1, 2, 0)) {
-            if (mCasing1 == 8) mLevel = 1;
-            if (mCasing2 == 8) mLevel = 2;
-            return mLevel > 0 && mCasing >= 8 && checkHatch();
+            if (mCasing1 == 8) tier = 1;
+            if (mCasing2 == 8) tier = 2;
+            return tier > 0 && mCasing >= 8 && checkHatch();
         }
         return false;
     }
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
+        return SoundResource.GTCEU_OP_CLICK;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FIRE;
     }
 
     @Override
@@ -196,12 +206,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
 
     @Override
     public int getMaxParallelRecipes() {
-        return this.mLevel * 12;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
+        return 6 + tier * 12;
     }
 
     @Override
@@ -209,8 +214,4 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         return PollutionConfig.pollutionPerSecondMultiIndustrialCokeOven;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
 }

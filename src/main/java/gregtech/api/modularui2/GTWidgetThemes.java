@@ -20,9 +20,9 @@ import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
  * To add new widget theme, follow these steps:
  * <ol>
  * <li>Define all the relevant texture IDs, typically at {@link GTTextureIds}.</li>
- * <li>Register {@link com.cleanroommc.modularui.drawable.UITexture UITexture}s, typically at
- * {@link GTGuiTextures}. Make sure to register texture ID with
- * {@link com.cleanroommc.modularui.drawable.UITexture.Builder#name(String) builder#name}.</li>
+ * <li>Register {@link com.cleanroommc.modularui.drawable.UITexture UITexture}s, typically at {@link GTGuiTextures}.
+ * Make sure to register texture ID with {@link com.cleanroommc.modularui.drawable.UITexture.Builder#name(String)
+ * builder#name}.</li>
  * <li>Define widget theme ID at this class.</li>
  * <li>Register widget theme at this class.</li>
  * <li>Register relevant information of the widget theme for each theme to use at {@link GTGuiThemes}.</li>
@@ -34,6 +34,7 @@ public final class GTWidgetThemes {
 
     public static final String BACKGROUND_POPUP = "backgroundPopup";
     public static final String BACKGROUND_TITLE = "backgroundTitle";
+    public static final String BACKGROUND_TERMINAL = "backgroundTerminal";
 
     public static final String OVERLAY_ITEM_SLOT_DUST = "overlayItemSlotDust";
     public static final String OVERLAY_ITEM_SLOT_INGOT = "overlayItemSlotIngot";
@@ -83,6 +84,10 @@ public final class GTWidgetThemes {
             PROGRESSBAR_FUEL,
             new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14),
             ProgressbarWidgetTheme::new);
+        themeApi.registerWidgetTheme(
+            BACKGROUND_TERMINAL,
+            new WidgetTheme(GTGuiTextures.BACKGROUND_TEXT_FIELD, null, Color.WHITE.main, 0xFAFAFA, false),
+            WidgetTheme::new);
 
         registerThemedButton(BUTTON_COVER_TAB_ENABLED);
         registerThemedButton(BUTTON_COVER_TAB_DISABLED);

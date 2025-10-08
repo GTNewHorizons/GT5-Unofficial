@@ -85,6 +85,7 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
     protected long processingVoltage = 2_000_000_000;
     protected BigInteger powerTally = BigInteger.ZERO;
     protected long recipeTally = 0;
+    private long currentRecipeHeat = 0;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
@@ -259,6 +260,14 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
         return tier;
     }
 
+    public void setCurrentRecipeHeat(long heat) {
+        currentRecipeHeat = heat;
+    }
+
+    public long getCurrentRecipeHeat() {
+        return currentRecipeHeat;
+    }
+
     @Override
     public long getMaxInputVoltage() {
         return GTValues.V[tier];
@@ -284,7 +293,7 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(1000, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
     }
 
     @Override
@@ -483,11 +492,11 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
 
         builder.widget(
             TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo")
-                .setPos(0, 59)
-                .setSize(138, 15));
+                .setPos(0, 60)
+                .setSize(138, 18));
         builder.widget(
             new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
-                .setPos(127, 67)
+                .setPos(126, 67)
                 .setSize(8, 8)
                 .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment"))
                 .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment.1"))
@@ -610,6 +619,7 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
         NBT.setBoolean("isVoltageConfigUnlocked", isVoltageConfigUnlocked);
         NBT.setLong("processingVoltage", processingVoltage);
         NBT.setLong("recipeTally", recipeTally);
+        NBT.setLong("currentRecipeHeat", currentRecipeHeat);
         NBT.setByteArray("powerTally", powerTally.toByteArray());
         super.saveNBTData(NBT);
     }
@@ -620,6 +630,7 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
         isVoltageConfigUnlocked = NBT.getBoolean("isVoltageConfigUnlocked");
         processingVoltage = NBT.getLong("processingVoltage");
         recipeTally = NBT.getLong("recipeTally");
+        currentRecipeHeat = NBT.getLong("currentRecipeHeat");
         powerTally = new BigInteger(NBT.getByteArray("powerTally"));
         super.loadNBTData(NBT);
     }

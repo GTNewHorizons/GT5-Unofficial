@@ -216,6 +216,9 @@ tile.blockCompressedObsidian.7.name=Double Compressed Glowstone (81)
 tile.blockCompressedObsidian.8.name=Triple Compressed Glowstone (729)
 tile.blockCompressedObsidian.9.name=Quadruple Compressed Glowstone (6561)
 tile.blockCompressedObsidian.10.name=Quintuple Compressed Glowstone (59049)
+tile.blockCompressedObsidian.11.name=Compressed Netherrack
+tile.blockCompressedObsidian.12.name=Double Compressed Netherrack
+tile.blockCompressedObsidian.13.name=Triple Compressed Netherrack
 tile.blockNet.name=Net
 gtplusplus.blockcasings.2.name=Machine Casing
 gtplusplus.blockcasings.3.name=Machine Casing
@@ -334,13 +337,6 @@ item.itemControlCore.tooltip.1=Required Tier is determined by the sum of the eu/
 item.itemControlCore.tooltip.2=Lower tiers may be used to underclock, which is useful in some situations
 item.thekeytothecity.tooltip.0=You feel like you're on top of the world.
 item.thekeytothecity.tooltip.1=Wear it around your neck like an amulet.
-
-# Conversion Dusts
-item.dustNeptunium238.name=Neptunium 238 Dust
-item.dustRadium226.name=Radium 226 Dust
-item.itemDustDecayedRadium226.name=Decayed Radium 226 Dust
-item.itemDustSmallDecayedRadium226.name=Small Decayed Radium 226 Dust
-item.itemDustTinyDecayedRadium226.name=Tiny Decayed Radium 226 Dust
 
 # Material Items
 item.itemDustGadolinium.name=Gadolinium Dust
@@ -2865,9 +2861,12 @@ tile.Block of Abyssal Alloy.name=Block of Abyssal Alloy
 tile.Abyssal Alloy Frame Box.name=Abyssal Alloy Frame Box
 
 # Radioactive
-item.dustTechnetium99M.name=Technetium 99M Dust
-item.dustTechnetium99.name=Technetium 99 Dust
-item.dustMolybdenum99.name=Molybdenum 99 Dust
+item.dustNeptunium238.name=Neptunium 238 Dust
+item.dustNeptunium239.name=Neptunium 239 Dust
+item.dustRadium226.name=Radium 226 Dust
+item.itemDustDecayedRadium226.name=Decayed Radium 226 Dust
+item.itemDustSmallDecayedRadium226.name=Small Decayed Radium 226 Dust
+item.itemDustTinyDecayedRadium226.name=Tiny Decayed Radium 226 Dust
 
 # Bags
 item.item.MysticBag.name=Mystic Pouch
@@ -3920,6 +3919,7 @@ item.itemGearPraseodymium.name=Praseodymium Gear
 item.itemCellPraseodymium.name=Praseodymium Cell
 item.milledMonazite.name=Milled Monazite
 item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
+item.milledNetherrack.name=Milled Netherrack
 
 # Added 18/12/21
 item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
@@ -3975,6 +3975,10 @@ item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst
 
 # Added 19/09/23
 item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
+
+# Added 13/03/25
+item.BasicGenericChemItem.34.name=Hellish Force Catalyst
+item.BasicGenericChemItem.35.name=Crystal Colorization Catalyst
 
 # config gui
 gtpp.gui.config.general=General
@@ -4032,6 +4036,12 @@ gtpp.tooltip.tool.optimal_plasma_flow=Optimal Plasma flow(Plasma energyvalue per
 gtpp.tooltip.tool.attack_damage=Attack Damage:
 gtpp.tooltip.tool.mining_speed=Mining Speed:
 
+gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a screwdriver.
+gtpp.tooltip.wireless_charger.1=Use screwdriver to change mode.
+gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %,dm away.
+gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %,dm.
+gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
+
 #gtpp info data
 gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
 gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
@@ -4067,4 +4077,44 @@ gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
 gtpp.infodata.tiered_tank.name=%s Fluid Tank
 
+# GUI
+gtpp.gui.text.time_since_built=Total Time Since Built
+gtpp.gui.text.stock=Stock
+gtpp.gui.text.active=Active
+gtpp.gui.text.in=In
+gtpp.gui.text.out=Out
+gtpp.gui.text.on=On
+gtpp.gui.text.off=Off
+gtpp.gui.text.time.week=%s Weeks,
+gtpp.gui.text.time.days=%s Days,
+gtpp.gui.text.time.hours=%s Hours,
+gtpp.gui.text.time.minutes=%s Minutes,
+gtpp.gui.text.time.seconds=%s Seconds
 
+gtpp.gui.text.power_sub_station.stored=Stored:
+gtpp.gui.text.power_sub_station.avg_in=Avg In: %s EU
+gtpp.gui.text.power_sub_station.avg_out=Avg Out: %s EU
+gtpp.gui.text.power_sub_station.power_loss=Powerloss: %s EU per tick
+gtpp.gui.text.power_sub_station.running_perfectly=Running perfectly
+gtpp.gui.text.power_sub_station.turn_on_with_mallet=Turn on with Mallet
+gtpp.gui.atmospheric_reconditioner.tooltip.reduction=Reduction: %s/s
+gtpp.gui.crop_harvestor.tooltip.water=Water: %sL / %sL
+
+gtpp.gui.multiblock.progress.text=Progress: %s s / %s s
+gtpp.gui.multiblock.eu_t_p.text=%s EU/t/parallel
+gtpp.gui.multiblock.duration.text=Duration: %s ticks
+gtpp.gui.multiblock.max_voltage.txt=%s EU/t(*2A) Tier: %s
+gtpp.gui.multiblock.pollution.txt=Pollution: %s/sec
+
+gtpp.chat.wireless_charger.mode_change=Now in %s %s.
+gtpp.chat.wireless_charger.mode_info=Current: %s %s
+gtpp.chat.wireless_charger.mode_info_player=Players with access:
+gtpp.chat.wireless_charger.mode=Mode
+gtpp.chat.wireless_charger.mode.long=Long-Range
+gtpp.chat.wireless_charger.mode.local=Local
+gtpp.chat.wireless_charger.mode.mixed=Mixed
+gtpp.chat.wireless_charger.range=Range
+gtpp.chat.wireless_charger.lock=Locked to owner
+gtpp.chat.wireless_charger.unlock=Unlocked
+gtpp.chat.wireless_charger.enter=You have entered charging range. [%,dm - %s]
+gtpp.chat.wireless_charger.leave=You have left charging range. [%,dm - %s]

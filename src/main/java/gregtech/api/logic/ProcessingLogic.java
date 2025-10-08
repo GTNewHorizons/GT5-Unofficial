@@ -1,6 +1,7 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,9 +15,10 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.objects.GTDualInputs;
+import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -24,7 +26,7 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -39,7 +41,6 @@ public class ProcessingLogic {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected ItemStack specialSlotItem;
-    protected IDualInputInventory craftingPattern;
     protected int maxParallel = 1;
     protected Supplier<Integer> maxParallelSupplier;
     protected int batchSize = 1;
@@ -48,11 +49,13 @@ public class ProcessingLogic {
     protected double speedBoost = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
+    protected int maxTierSkips = 1;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected double overClockTimeReduction = 2.0;
     protected double overClockPowerIncrease = 4.0;
     protected boolean amperageOC = true;
+    protected boolean recipeCaching = true;
 
     // Calculated results
     protected ItemStack[] outputItems;
@@ -64,7 +67,21 @@ public class ProcessingLogic {
     // Cache
     protected RecipeMap<?> lastRecipeMap;
     protected GTRecipe lastRecipe;
-    protected Map<IDualInputInventory, Set<GTRecipe>> craftingPatternRecipeCache = new HashMap<>();
+
+    /**
+     * The {@link IDualInputInventoryWithPattern} that has any possible recipe found in the last call of
+     * {@link #tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern)}.
+     */
+    protected IDualInputInventoryWithPattern activeDualInv;
+    /**
+     * The cache keyed by the {@link IDualInputInventoryWithPattern}, storing the possible recipes of the inv.
+     * <p>
+     * The entries can be removed by {@link #removeInventoryRecipeCache(IDualInputInventoryWithPattern)}, and it
+     * requires the hatches to actively call it when the inventory is changed (like the pattern is changed).
+     * <p>
+     * It will also be fully cleared when the {@link #getCurrentRecipeMap()} is not same to the last.
+     */
+    protected Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
 
     public ProcessingLogic() {}
 
@@ -94,8 +111,8 @@ public class ProcessingLogic {
     }
 
     @Nonnull
-    public ProcessingLogic setInputItems(List<ItemStack> itemOutputs) {
-        this.inputItems = itemOutputs.toArray(new ItemStack[0]);
+    public ProcessingLogic setInputItems(List<ItemStack> itemInputs) {
+        this.inputItems = itemInputs.toArray(new ItemStack[0]);
         return this;
     }
 
@@ -116,31 +133,48 @@ public class ProcessingLogic {
         return this;
     }
 
-    public boolean craftingPatternHandler(IDualInputInventory slot) {
-        if (!slot.shouldBeCached()) {
-            return true;
-        }
-        if (craftingPatternRecipeCache.containsKey(slot)) {
-            craftingPattern = slot;
+    /**
+     * Try to cache the possible recipes from the pattern.
+     * <p>
+     * If the inventory can be cached, and any possible recipe is found, {@link #activeDualInv the active inv} will be
+     * set to the given inventory.
+     *
+     * @return {@code true} if the inv shouldn't be cached, or there is already a cached recipe sets, or the recipes are
+     *         cached successfully. {@code false} if there is no recipe found.
+     */
+    public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+        if (!inv.shouldBeCached()) {
             return true;
         }
 
-        GTDualInputs inputs = slot.getPatternInputs();
+        // check existing caches
+        if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
+            activeDualInv = inv;
+            return true;
+        }
+
+        // get recipes from the pattern
+        GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        // reset the status
         setInputItems();
         setInputFluids();
+
         if (!recipes.isEmpty()) {
-            craftingPatternRecipeCache.put(slot, recipes);
-            craftingPattern = slot;
+            dualInvWithPatternToRecipeCache.put(inv, recipes);
+            activeDualInv = inv;
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
-    public void clearCraftingPatternRecipeCache(IDualInputInventory slot) {
-        craftingPatternRecipeCache.remove(slot);
+    public void removeInventoryRecipeCache(IDualInputInventoryWithPattern inv) {
+        dualInvWithPatternToRecipeCache.remove(inv);
     }
 
     /**
@@ -187,9 +221,9 @@ public class ProcessingLogic {
     }
 
     /**
-     * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine;
-     * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
-     * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
+     * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine; For
+     * example, most of the multiblock machines set maximum possible input power (including amperage) as voltage and 1
+     * as amperage. That way recipemap search will be executed with overclocked voltage.
      */
     public ProcessingLogic setAvailableVoltage(long voltage) {
         this.availableVoltage = voltage;
@@ -197,11 +231,25 @@ public class ProcessingLogic {
     }
 
     /**
-     * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap.
-     * Useful for preventing tier skip but still considering amperage for parallel.
+     * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap. Useful for
+     * preventing tier skip but still considering amperage for parallel.
      */
     public ProcessingLogic setAvailableAmperage(long amperage) {
         this.availableAmperage = amperage;
+        return this;
+    }
+
+    /**
+     * Sets the max amount of tier skips, which is how many voltage tiers above the input voltage a recipe is valid. For
+     * unlimited tier skips, use {@link #setUnlimitedTierSkips()}
+     */
+    public ProcessingLogic setMaxTierSkips(int tierSkips) {
+        this.maxTierSkips = tierSkips;
+        return this;
+    }
+
+    public ProcessingLogic setUnlimitedTierSkips() {
+        this.maxTierSkips = Integer.MAX_VALUE;
         return this;
     }
 
@@ -229,6 +277,14 @@ public class ProcessingLogic {
      */
     public ProcessingLogic setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
+        return this;
+    }
+
+    /**
+     * Disable caching of matched recipes.
+     */
+    public ProcessingLogic noRecipeCaching() {
+        this.recipeCaching = false;
         return this;
     }
 
@@ -282,7 +338,7 @@ public class ProcessingLogic {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
-        this.craftingPattern = null;
+        this.activeDualInv = null;
         return this;
     }
 
@@ -302,7 +358,7 @@ public class ProcessingLogic {
         }
         if (lastRecipeMap != recipeMap) {
             if (lastRecipeMap != null) {
-                craftingPatternRecipeCache.clear();
+                dualInvWithPatternToRecipeCache.clear();
             }
             lastRecipe = null;
             lastRecipeMap = recipeMap;
@@ -322,21 +378,21 @@ public class ProcessingLogic {
         }
 
         if (inputItems == null) {
-            inputItems = new ItemStack[0];
+            inputItems = GTValues.emptyItemStackArray;
         }
         if (inputFluids == null) {
-            inputFluids = new FluidStack[0];
+            inputFluids = GTValues.emptyFluidStackArray;
         }
 
-        if (craftingPattern != null) {
-            Set<GTRecipe> matchedRecipes = craftingPatternRecipeCache.get(craftingPattern);
+        if (activeDualInv != null) {
+            Set<GTRecipe> matchedRecipes = dualInvWithPatternToRecipeCache.get(activeDualInv);
             for (GTRecipe matchedRecipe : matchedRecipes) {
                 if (matchedRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
                     CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
                     return foundResult.checkRecipeResult;
                 }
             }
-            craftingPattern = null;
+            activeDualInv = null;
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -397,8 +453,8 @@ public class ProcessingLogic {
     }
 
     /**
-     * Check has been succeeded, so it applies the recipe and calculated parameters.
-     * At this point, inputs have been already consumed.
+     * Check has been succeeded, so it applies the recipe and calculated parameters. At this point, inputs have been
+     * already consumed.
      */
     @Nonnull
     protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
@@ -457,6 +513,7 @@ public class ProcessingLogic {
             return Stream.empty();
         }
         return map.findRecipeQuery()
+            .caching(recipeCaching)
             .items(inputItems)
             .fluids(inputFluids)
             .specialSlot(specialSlotItem)
@@ -498,6 +555,7 @@ public class ProcessingLogic {
         return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
+            .setMaxTierSkips(maxTierSkips)
             .setDuration(recipe.mDuration)
             .setDurationModifier(speedBoost)
             .setEUtDiscount(euModifier)
@@ -509,10 +567,8 @@ public class ProcessingLogic {
     /**
      * Override to perform additional logic when recipe starts.
      * <p>
-     * This is called when the recipe processing logic has finished all
-     * checks, consumed all inputs, but has not yet set the outputs to
-     * be produced. Returning a result other than SUCCESSFUL will void
-     * all inputs!
+     * This is called when the recipe processing logic has finished all checks, consumed all inputs, but has not yet set
+     * the outputs to be produced. Returning a result other than SUCCESSFUL will void all inputs!
      */
     @Nonnull
     protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
@@ -547,8 +603,8 @@ public class ProcessingLogic {
 
     /**
      * Represents the status of check recipe calculation. {@link #successfullyConsumedInputs} does not necessarily mean
-     * {@link #checkRecipeResult} being successful, when duration or power is overflowed. Being failure means
-     * recipe cannot meet requirements and recipe search should be continued if possible.
+     * {@link #checkRecipeResult} being successful, when duration or power is overflowed. Being failure means recipe
+     * cannot meet requirements and recipe search should be continued if possible.
      */
     protected final static class CalculationResult {
 

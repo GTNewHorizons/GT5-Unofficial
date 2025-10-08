@@ -129,7 +129,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                     String aCurrentText = getText();
                     if (!aCurrentText.isEmpty()) {
                         this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));
-                        if (getText().length() <= 0) {
+                        if (getText().length() == 0) {
                             setText(0);
                         }
                         sendUpdateToServer();
@@ -158,7 +158,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         if (mIsOpen) {
             log("Clicked.");
             this.mText.mouseClicked(x, y, btn);
-            if (!mText.didClickInTextField(x, y)) {
+            if (!mText.clickInTextField(x, y)) {
                 log("Did not click in text box, passing to super.");
                 super.mouseClicked(x, y, btn);
             }
@@ -198,7 +198,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     public void updateScreen() {
         super.updateScreen();
         // Update Textbox to 0 if Empty
-        if (getText().length() <= 0) {
+        if (getText().length() == 0) {
             this.mText.setText("0");
             sendUpdateToServer();
         }

@@ -33,7 +33,7 @@ public class GTParallelHelperTest {
             null,
             new int[] { 10000, 6667 },
             null,
-            new FluidStack[] { Materials.Rubber.getMolten(1000) },
+            new FluidStack[] { Materials.Rubber.getMolten(1_000) },
             1,
             1,
             0);

@@ -213,11 +213,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return tt;
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
     private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
 
     @Override
@@ -296,6 +291,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
         GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+            .caching(false)
             .items(itemStack)
             .voltage(V[1])
             .find();
@@ -364,30 +360,33 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) return false;
+    public boolean addItemOutputs(ItemStack[] stacks) {
+        for (ItemStack stack : stacks) {
+            if (GTUtility.isStackInvalid(stack)) continue;
 
-        for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-            for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)
-                    && aStack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        ItemStack merge = tHatch.getStackInSlot(i)
-                            .copy();
-                        merge.stackSize = aStack.stackSize + tHatch.getStackInSlot(i).stackSize;
-                        tHatch.setInventorySlotContents(i, merge);
-                    } else {
-                        tHatch.setInventorySlotContents(i, aStack.copy());
-                    }
+            for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
+                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
+                    if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        && stack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            ItemStack merge = tHatch.getStackInSlot(i)
+                                .copy();
+                            merge.stackSize = stack.stackSize + tHatch.getStackInSlot(i).stackSize;
+                            tHatch.setInventorySlotContents(i, merge);
+                        } else {
+                            tHatch.setInventorySlotContents(i, stack.copy());
+                        }
 
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        return true;
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            return true;
+                        }
+                        tHatch.setInventorySlotContents(i, null);
+                        return false;
                     }
-                    tHatch.setInventorySlotContents(i, null);
-                    return false;
                 }
             }
         }
+
         return false;
     }
 
@@ -413,21 +412,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (this.mInventory[1] != null && this.mInventory[1].stackSize <= 0) {
             this.mInventory[1] = null;
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     @Override
@@ -529,7 +513,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
     }
 
     public float OutputMultiplier(TileEntityRotorBlock rotorBlock) {

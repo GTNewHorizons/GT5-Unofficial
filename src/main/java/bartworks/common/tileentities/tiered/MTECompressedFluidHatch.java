@@ -26,9 +26,11 @@ import gregtech.api.util.GTUtility;
 
 public class MTECompressedFluidHatch extends MTEHatchInput {
 
+    final int CAPACITY = 100_000_000;
+
     public MTECompressedFluidHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
-        this.mDescriptionArray[1] = "Capacity: 100,000,000L";
+        setCustomCapacity(CAPACITY);
     }
 
     public MTECompressedFluidHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -37,12 +39,13 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
 
     @Override
     public int getCapacity() {
-        return 100_000_000;
+        return CAPACITY;
     }
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return GTUtility.areFluidsEqual(aFluid, Materials.LiquidAir.getFluid(1));
+        return GTUtility.areFluidsEqual(aFluid, Materials.LiquidAir.getFluid(1))
+            || GTUtility.areFluidsEqual(aFluid, Materials.NetherSemiFluid.getFluid(1));
     }
 
     @Override
@@ -52,6 +55,7 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
 
     @Override
     protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == Materials.LiquidAir.mFluid);
+        return super.createFluidSlot()
+            .setFilter(f -> (f == Materials.LiquidAir.mFluid || f == Materials.NetherSemiFluid.mFluid));
     }
 }

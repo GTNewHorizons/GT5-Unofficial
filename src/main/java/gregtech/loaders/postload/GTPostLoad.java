@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,7 +60,7 @@ public class GTPostLoad {
     public static void activateOreDictHandler() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.gregtechproxy.activateOreDictHandler();
+        GTMod.proxy.activateOreDictHandler();
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GTMod.GT_FML_LOGGER
@@ -320,14 +321,14 @@ public class GTPostLoad {
         massFabFakeRecipes.add(MTEMassfabricator.uuaRecipe);
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.top"))
                 .sideBlocks(Blocks.water)
                 .topBlock(Blocks.lava)
                 .outputItem(new ItemStack(Blocks.stone, 1))
                 .duration(16 * TICKS));
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.side"))
                 .sideBlocks(Blocks.water, Blocks.lava)
                 .outputItem(new ItemStack(Blocks.cobblestone, 1))
                 .duration(16 * TICKS));
@@ -339,6 +340,14 @@ public class GTPostLoad {
                 .circuit(1)
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
                 .duration(6 * SECONDS + 8 * TICKS));
+
+        MTERockBreaker.addRockBreakerRecipe(
+            b -> b.sideBlocks(Blocks.water)
+                .anywhereBlocks(Blocks.lava)
+                .inputItem(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), true)
+                .circuit(6)
+                .outputItem(new ItemStack(Blocks.netherrack, 1))
+                .duration(16 * TICKS));
 
         if (Mods.EtFuturumRequiem.isModLoaded()) {
             MTERockBreaker.addRockBreakerRecipe(
@@ -360,7 +369,7 @@ public class GTPostLoad {
     }
 
     public static void changeWoodenVanillaTools() {
-        if (!GTMod.gregtechproxy.mChangeWoodenVanillaTools) {
+        if (!GTMod.proxy.mChangeWoodenVanillaTools) {
             return;
         }
 

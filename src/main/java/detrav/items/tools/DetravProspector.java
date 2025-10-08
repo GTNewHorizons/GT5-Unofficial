@@ -1,10 +1,6 @@
 package detrav.items.tools;
 
-import net.minecraft.item.ItemStack;
-
-import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolProspector;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
 public class DetravProspector extends DetravToolElectricProspectorBase {
@@ -23,10 +19,6 @@ public class DetravProspector extends DetravToolElectricProspectorBase {
     public float getMaxDurabilityMultiplier() {
         double x = tier + 1;
         return (float) (0.00625D + (1.25D * x / 6D) * Math.tanh(Math.pow(x, (x / 8D)) / 25D));
-    }
-
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return Textures01.mTextures[0];
     }
 
     public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {

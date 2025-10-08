@@ -27,7 +27,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -42,6 +41,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.misc.GTStructureChannels;
 
 public class HatchElementBuilder<T> {
 
@@ -118,11 +118,21 @@ public class HatchElementBuilder<T> {
     }
 
     /**
-     * Set all of adder, hint and hatchItemFilter. Provide a reasonable default for shouldSkip. TODO add doc
+     * Set all of adder, hint and hatchItemFilter. Provide a reasonable default for shouldSkip.
+     * Uses a blacklist defined by overwriting{@link gregtech.api.interfaces.IHatchElement#mteBlacklist}
+     * Any class inside of the blacklist is not added to the preview.
+     * TODO add doc
      */
     public final HatchElementBuilder<T> atLeast(Map<IHatchElement<? super T>, ? extends Number> elements) {
         if (elements == null || elements.isEmpty() || elements.containsKey(null) || elements.containsValue(null))
             throw new IllegalArgumentException();
+
+        List<Class<? extends IMetaTileEntity>> blacklist = elements.keySet()
+            .stream()
+            .map(IHatchElement::mteBlacklist)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
+
         List<Class<? extends IMetaTileEntity>> list = elements.keySet()
             .stream()
             .map(IHatchElement::mteClasses)
@@ -138,7 +148,7 @@ public class HatchElementBuilder<T> {
                 .reduce(IGTHatchAdder::orElse)
                 .orElseThrow(AssertionError::new))
                     .hatchItemFilter(
-                        obj -> GTStructureUtility.filterByMTEClass(
+                        obj -> GTStructureUtility.filterByMTEClassWithBlacklist(
                             elements.entrySet()
                                 .stream()
                                 .filter(
@@ -150,7 +160,8 @@ public class HatchElementBuilder<T> {
                                     entry -> entry.getKey()
                                         .mteClasses()
                                         .stream())
-                                .collect(Collectors.toList())))
+                                .collect(Collectors.toList()),
+                            blacklist))
                     .shouldReject(
                         obj -> elements.entrySet()
                             .stream()
@@ -179,8 +190,7 @@ public class HatchElementBuilder<T> {
      * Currently, this will make the built IStructureElement to ignore gt_no_hatch directive from player
      * <p>
      * Do note that {@link #buildAndChain(IStructureElement[])} and its overloads will force the resulting structure
-     * element
-     * to be non-exclusive.
+     * element to be non-exclusive.
      */
     public HatchElementBuilder<T> exclusive() {
         mExclusive = true;
@@ -498,7 +508,7 @@ public class HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                if (ChannelDataAccessor.hasSubChannel(trigger, "gt_no_hatch") && !mExclusive) {
+                if (GTStructureChannels.NO_HATCH.hasValue(trigger) && !mExclusive) {
                     String type = getHint();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));

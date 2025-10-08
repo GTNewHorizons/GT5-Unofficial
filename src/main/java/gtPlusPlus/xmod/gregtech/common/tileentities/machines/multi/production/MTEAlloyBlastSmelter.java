@@ -19,6 +19,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -31,6 +33,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -42,8 +47,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelter> implements ISurvivalConstructable {
 
-    private int mMode = 0;
-    private boolean isUsingControllerCircuit = false;
     private static Item circuit;
     private int mCasing;
     private static IStructureDefinition<MTEAlloyBlastSmelter> STRUCTURE_DEFINITION = null;
@@ -79,12 +82,11 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Allows Complex alloys to be created")
-            .addInfo("Accepts only one Energy Hatch")
-            .addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
+            .addInfo("Recipe tier is limited to hatch tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom Center")
-            .addCasingInfoMin("Blast Smelter Casings", 5, false)
+            .addCasingInfoMin("Blast Smelter Casings", 3, false)
             .addCasingInfoMin("Blast Smelter Heat Containment Coils", 16, false)
             .addInputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -126,13 +128,13 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 3, 0) && mCasing >= 5 && mEnergyHatches.size() == 1 && checkHatch();
+        return checkPiece(mName, 1, 3, 0) && mCasing >= 3 && checkHatch();
     }
 
     @Override
@@ -172,32 +174,37 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
     @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
-        if (this.getBaseMetaTileEntity()
-            .isServerSide()) {
-            // Get Controller Circuit
-            if (circuit == null) {
-                circuit = GTUtility.getIntegratedCircuit(0)
-                    .getItem();
-            }
-            if (aStack != null && aStack.getItem() == circuit) {
-                this.mMode = aStack.getItemDamage();
-                return this.isUsingControllerCircuit = true;
-            } else {
-                if (aStack == null) {
-                    this.isUsingControllerCircuit = false;
-                    return true; // Allowed empty
-                }
-                Logger.WARNING("Not circuit in GUI inputs.");
-                return this.isUsingControllerCircuit = false;
-            }
+        if (!getBaseMetaTileEntity().isServerSide()) {
+            Logger.WARNING("No Circuit, clientside.");
+            return false;
         }
-        Logger.WARNING("No Circuit, clientside.");
-        return this.isUsingControllerCircuit = false;
+
+        if (circuit == null) {
+            circuit = GTUtility.getIntegratedCircuit(0)
+                .getItem();
+        }
+
+        if (aStack == null) {
+            return true;
+        } else if (aStack.getItem() == circuit) {
+            return true;
+        }
+
+        Logger.WARNING("Not circuit in GUI inputs.");
+        return false;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
+        return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt))
+                    return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
+                return super.validateRecipe(recipe);
+            }
+        };
     }
 
     @Override
@@ -209,28 +216,8 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiABS;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override

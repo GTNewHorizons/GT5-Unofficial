@@ -1,10 +1,13 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverRedstoneWirelessBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
@@ -51,10 +54,10 @@ public class RedstoneWirelessBaseUIFactory extends CoverLegacyDataUIFactory {
                         widget -> widget.setPos(spaceX * 0, spaceY * 2))
                     .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.freq"))
                     .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("602", "Use Private Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq"))
                     .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
     }
 

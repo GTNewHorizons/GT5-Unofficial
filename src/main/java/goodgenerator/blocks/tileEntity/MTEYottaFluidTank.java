@@ -1,8 +1,10 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.CharExchanger.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
+import static java.lang.String.valueOf;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -43,7 +45,6 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -57,7 +58,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -105,6 +108,9 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     public static final BigInteger MAX_INT_BIGINT = BigInteger.valueOf(Integer.MAX_VALUE);
 
     protected boolean voidExcessEnabled = false;
+
+    private final LongRunningAverage fluidInputValues1m = new LongRunningAverage(60 * 20);
+    private final LongRunningAverage fluidOutputValues1m = new LongRunningAverage(60 * 20);
 
     protected Parameters.Group.ParameterIn tickRateSettings;
 
@@ -363,47 +369,86 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocal("scanner.info.YOTTank.1"),
-            StatCollector.translateToLocal(
-                EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getFluidName() + EnumChatFormatting.RESET)),
-
-            StatCollector.translateToLocal("scanner.info.YOTTank.0"),
-            StatCollector.translateToLocal(
-                EnumChatFormatting.GREEN + CharExchanger.formatNumber(getCap()) + EnumChatFormatting.RESET + " L"),
-
-            StatCollector.translateToLocal("scanner.info.YOTTank.2"),
-            StatCollector.translateToLocal(
-                EnumChatFormatting.GREEN + CharExchanger.formatNumber(getStored())
-                    + EnumChatFormatting.RESET
-                    + " L"
-                    + " ("
-                    + EnumChatFormatting.GREEN
-                    + getPercent()
-                    + "%"
-                    + EnumChatFormatting.RESET
-                    + ")"),
-
-            StatCollector.translateToLocal("scanner.info.YOTTank.3"),
-            StatCollector.translateToLocal(
-                EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getLockedFluidName())
-                    + EnumChatFormatting.RESET) };
+        final ArrayList<String> info = new ArrayList<>();
+        info.add(
+            translateToLocal("scanner.info.YOTTank.1") + " "
+                + translateToLocal(
+                    EnumChatFormatting.YELLOW + formatNumber(getFluidName() + EnumChatFormatting.RESET)));
+        info.add(
+            translateToLocal("scanner.info.YOTTank.0") + " "
+                + translateToLocal(
+                    EnumChatFormatting.GREEN + formatNumber(getCap()) + EnumChatFormatting.RESET + " L"));
+        info.add(
+            translateToLocal("scanner.info.YOTTank.2") + " "
+                + translateToLocal(
+                    EnumChatFormatting.GREEN + formatNumber(getStored())
+                        + EnumChatFormatting.RESET
+                        + " L"
+                        + " ("
+                        + EnumChatFormatting.GREEN
+                        + getPercent()
+                        + "%"
+                        + EnumChatFormatting.RESET
+                        + ")"));
+        info.add(getTimeTo());
+        info.add(
+            StatCollector.translateToLocal("scanner.info.YOTTank.3") + " "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(getLockedFluidName()));
+        final String[] a = new String[info.size()];
+        return info.toArray(a);
     }
 
     private String getPercent() {
         if (mStorage.signum() == 0) return "0";
-        return mStorageCurrent.multiply(ONE_HUNDRED)
-            .divide(mStorage)
-            .toString();
+        return valueOf(
+            mStorageCurrent.multiply(BigInteger.valueOf(10000))
+                .divide(mStorage)
+                .doubleValue() / 100);
+    }
+
+    private String getTimeTo() {
+        double avgIn = fluidInputValues1m.avgLong();
+        double avgOut = fluidOutputValues1m.avgLong();
+        double cap = mStorage.doubleValue();
+        double stored = mStorageCurrent.doubleValue();
+        if (avgIn >= avgOut) {
+            if (avgIn > 0) {
+                double timeToFull = (cap - stored) / (avgIn - avgOut) / 20;
+                return "Time to Full: " + formatTime(timeToFull, true);
+            }
+            return "Time to Something: Infinity years";
+        } else {
+            double timeToEmpty = stored / (avgOut - avgIn) / 20;
+            return "Time to Empty: " + formatTime(timeToEmpty, false);
+        }
+    }
+
+    private String formatTime(double time, boolean fill) {
+        if (time < 1) {
+            return "Completely " + (fill ? "full" : "empty");
+        } else if (time < 60) {
+            return String.format("%.2f seconds", time);
+        } else if (time < 3600) {
+            return String.format("%.2f minutes", time / 60);
+        } else if (time < 86400) {
+            return String.format("%.2f hours", time / 3600);
+        } else if (time < 31536000) {
+            return String.format("%.2f days", time / 86400);
+        } else {
+            double y = time / 31536000;
+            return y < 9_000 ? String.format("%.2f years", y) : "It's over 9000 years!!";
+        }
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
-            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
-            .addInfo("The max fluid cell tier is limited by the glass tier.")
+            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity")
+            .addInfo("The max fluid cell tier is limited by the glass tier")
             .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-            .addInfo("The max height of the cell blocks is 15.")
+            .addInfo("The max height of the cell blocks is 15")
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
             .addController("Front of the second layer")
             .addCasingInfoExactly("Steel Frame Box", 16, false)
@@ -412,7 +457,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
             .addInputHatch("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 3")
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -437,94 +482,101 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         super.onRunningTick(aStack);
-        if (this.getBaseMetaTileEntity()
-            .isServerSide()) {
-            long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
-            ++workTickCounter;
-            if (workTickCounter < tickRate) {
-                return true;
-            }
-            workTickCounter = 0;
 
-            List<FluidStack> tStore = getStoredFluids();
-            for (FluidStack tFluid : tStore) {
-                if (tFluid == null) continue;
-                if (isFluidLocked) {
-                    if (mLockedFluid != null) {
-                        if (!tFluid.isFluidEqual(mLockedFluid)) continue;
-                    } else {
-                        mLockedFluid = tFluid.copy();
-                        mLockedFluid.amount = 1;
-                    }
+        long totalInput = 0;
+        long totalOutput = 0;
+
+        long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
+        ++workTickCounter;
+        if (workTickCounter < tickRate) {
+            fluidInputValues1m.update(totalInput);
+            fluidOutputValues1m.update(totalOutput);
+            return true;
+        }
+        workTickCounter = 0;
+
+        List<FluidStack> tStore = getStoredFluids();
+        for (FluidStack tFluid : tStore) {
+            if (tFluid == null) continue;
+            if (isFluidLocked) {
+                if (mLockedFluid != null) {
+                    if (!tFluid.isFluidEqual(mLockedFluid)) continue;
+                } else {
+                    mLockedFluid = tFluid.copy();
+                    mLockedFluid.amount = 1;
                 }
-                if (mFluid == null || tFluid.isFluidEqual(mFluid)) {
-                    if (mFluid == null) {
-                        mFluid = tFluid.copy();
-                        mFluid.amount = 1;
-                    }
-                    if (addFluid(tFluid.amount, true)) {
+            }
+            if (mFluid == null || tFluid.isFluidEqual(mFluid)) {
+                if (mFluid == null) {
+                    mFluid = tFluid.copy();
+                    mFluid.amount = 1;
+                }
+                if (addFluid(tFluid.amount, true)) {
+                    totalInput += tFluid.amount;
+                    tFluid.amount = 0;
+                } else {
+                    if (voidExcessEnabled) {
                         tFluid.amount = 0;
                     } else {
-                        if (voidExcessEnabled) {
-                            tFluid.amount = 0;
-                        } else {
-                            final BigInteger delta = mStorage.subtract(mStorageCurrent);
-                            tFluid.amount -= delta.intValueExact();
-                        }
-                        mStorageCurrent = mStorage;
+                        final BigInteger delta = mStorage.subtract(mStorageCurrent);
+                        tFluid.amount -= delta.intValueExact();
                     }
-                }
-            }
-
-            if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) {
-                mFluid = null;
-            }
-
-            if (mFluid != null) {
-                // Try to drain 1% of the tank per tick
-                int outputAmount = mStorageCurrent.divide(ONE_HUNDRED)
-                    .min(MAX_INT_BIGINT)
-                    .max(BigInteger.ONE)
-                    .intValueExact();
-                if (outputAmount != 1) outputAmount = (int) Math.min(Integer.MAX_VALUE, (long) outputAmount * tickRate);
-                else outputAmount = Math.min(mStorageCurrent.intValueExact(), outputAmount * (int) tickRate);
-
-                final int originalOutputAmount = outputAmount;
-
-                for (final MTEHatch outputHatch : mOutputHatches) {
-                    final FluidStack fluidInHatch = outputHatch.mFluid;
-
-                    final int remainingHatchSpace;
-                    if (fluidInHatch != null) {
-                        if (fluidInHatch.isFluidEqual(mFluid)) {
-                            remainingHatchSpace = outputHatch.getCapacity() - fluidInHatch.amount;
-                        } else {
-                            continue;
-                        }
-                    } else {
-                        remainingHatchSpace = outputHatch.getCapacity();
-                    }
-
-                    final int amountToFillHatch = Math.min(remainingHatchSpace, outputAmount);
-                    if (amountToFillHatch <= 0) {
-                        continue;
-                    }
-                    final FluidStack fillStack = mFluid.copy();
-                    fillStack.amount = amountToFillHatch;
-                    final int transferredAmount = outputHatch.fill(fillStack, true);
-                    outputAmount -= transferredAmount;
-                }
-
-                final int totalDrainedAmount = originalOutputAmount - outputAmount;
-                if (totalDrainedAmount > 0) {
-                    mStorageCurrent = mStorageCurrent.subtract(BigInteger.valueOf(totalDrainedAmount));
-                    if (mStorageCurrent.signum() < 0) {
-                        throw new IllegalStateException(
-                            "YOTTank drained beyond its fluid amount, indicating logic bug: " + mStorageCurrent);
-                    }
+                    mStorageCurrent = mStorage;
                 }
             }
         }
+
+        if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) {
+            mFluid = null;
+        }
+
+        if (mFluid != null) {
+            // Try to drain 1% of the tank per tick
+            int outputAmount = mStorageCurrent.divide(ONE_HUNDRED)
+                .min(MAX_INT_BIGINT)
+                .max(BigInteger.ONE)
+                .intValueExact();
+            if (outputAmount != 1) outputAmount = (int) Math.min(Integer.MAX_VALUE, (long) outputAmount * tickRate);
+            else outputAmount = Math.min(mStorageCurrent.intValueExact(), outputAmount * (int) tickRate);
+
+            final int originalOutputAmount = outputAmount;
+
+            for (final MTEHatch outputHatch : mOutputHatches) {
+                final FluidStack fluidInHatch = outputHatch.mFluid;
+
+                final int remainingHatchSpace;
+                if (fluidInHatch != null) {
+                    if (fluidInHatch.isFluidEqual(mFluid)) {
+                        remainingHatchSpace = outputHatch.getCapacity() - fluidInHatch.amount;
+                    } else {
+                        continue;
+                    }
+                } else {
+                    remainingHatchSpace = outputHatch.getCapacity();
+                }
+
+                final int amountToFillHatch = Math.min(remainingHatchSpace, outputAmount);
+                if (amountToFillHatch <= 0) {
+                    continue;
+                }
+                final FluidStack fillStack = mFluid.copy();
+                fillStack.amount = amountToFillHatch;
+                final int transferredAmount = outputHatch.fill(fillStack, true);
+                totalOutput += transferredAmount;
+                outputAmount -= transferredAmount;
+            }
+
+            final int totalDrainedAmount = originalOutputAmount - outputAmount;
+            if (totalDrainedAmount > 0) {
+                mStorageCurrent = mStorageCurrent.subtract(BigInteger.valueOf(totalDrainedAmount));
+                if (mStorageCurrent.signum() < 0) {
+                    throw new IllegalStateException(
+                        "YOTTank drained beyond its fluid amount, indicating logic bug: " + mStorageCurrent);
+                }
+            }
+        }
+        fluidInputValues1m.update(totalInput);
+        fluidOutputValues1m.update(totalOutput);
         return true;
     }
 
@@ -615,19 +667,19 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built = 0;
-        built += survivialBuildPiece(YOTTANK_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
+        built += survivalBuildPiece(YOTTANK_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         int height = stackSize.stackSize;
         if (height > 15) height = 15;
-        built += survivialBuildPiece(YOTTANK_TOP, stackSize, 2, height + 2, 0, elementBudget - built, env, false, true);
+        built += survivalBuildPiece(YOTTANK_TOP, stackSize, 2, height + 2, 0, elementBudget - built, env, false, true);
         while (height > 0) {
-            built += survivialBuildPiece(YOTTANK_MID, stackSize, 2, height, 0, elementBudget - built, env, false, true);
+            built += survivalBuildPiece(YOTTANK_MID, stackSize, 2, height, 0, elementBudget - built, env, false, true);
             height--;
         }
         return built;
     }
 
     @Override
-    protected boolean shouldDisplayCheckRecipeResult() {
+    public boolean shouldDisplayCheckRecipeResult() {
         return false;
     }
 
@@ -655,7 +707,14 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
                             + numberFormat.format(mStorageCurrent)
-                            + " L")
+                            + EnumChatFormatting.RESET
+                            + " L"
+                            + " ("
+                            + EnumChatFormatting.GREEN
+                            + getPercent()
+                            + "%"
+                            + EnumChatFormatting.RESET
+                            + ")")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0))

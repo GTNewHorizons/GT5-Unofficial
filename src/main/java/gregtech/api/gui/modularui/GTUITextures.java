@@ -195,6 +195,7 @@ public class GTUITextures {
     public static final UITexture PROGRESSBAR_EXTRUDE = UITexture.fullImage(GregTech.ID, "gui/progressbar/extrude");
     public static final SteamTexture PROGRESSBAR_FUEL_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/progressbar/fuel_%s");
+    public static final UITexture PROGRESSBAR_FISHING = UITexture.fullImage(GregTech.ID, "gui/progressbar/fishing");
     public static final UITexture PROGRESSBAR_HAMMER = UITexture.fullImage(GregTech.ID, "gui/progressbar/hammer");
     public static final UITexture PROGRESSBAR_HAMMER_BASE = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/hammer_base");
@@ -231,6 +232,9 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/progressbar/steam_fill");
     public static final UITexture PROGRESSBAR_STEAM_FILL_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/steam_fill_steel");
+    public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
+    public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
+        .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/name_remover");
 
@@ -435,6 +439,10 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
     public static final UITexture OVERLAY_BUTTON_POWER_PANEL = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/power_panel");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
 
     public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");
@@ -477,6 +485,10 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
+    public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
+    public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
 
     /**
      * Can adjust size as needed.

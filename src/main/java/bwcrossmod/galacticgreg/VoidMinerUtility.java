@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -30,6 +32,7 @@ import galacticgreg.api.ModDimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -39,11 +42,16 @@ public class VoidMinerUtility {
     public static final FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
         WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
         WerkstoffLoader.Oganesson.getFluidOrGas(1) };
-    public static final int[] NOBEL_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
+    public static final int[] NOBLE_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
 
     public static class DropMap {
 
+        private boolean isAliasCached;
+        private DiscreteDistribution discreteDistribution;
+
         private float totalWeight;
+        private double[] oreWeights;
+        private GTUtility.ItemId[] ores;
         private final Map<GTUtility.ItemId, Float> internalMap;
 
         private final Set<String> voidMinerBlacklistedDrops;
@@ -110,12 +118,55 @@ public class VoidMinerUtility {
             totalWeight += weight;
         }
 
+        private void mergeDropMaps(DropMap dropMap) {
+            if (dropMap == null || dropMap.internalMap == null || dropMap.internalMap.isEmpty()) return;
+
+            for (Map.Entry<GTUtility.ItemId, Float> entry : dropMap.internalMap.entrySet()) {
+                // We cant be sure that the extraDropMap entries are intentional duplicates of this DropMap
+                this.internalMap.merge(entry.getKey(), entry.getValue(), Float::sum);
+                totalWeight += entry.getValue();
+            }
+        }
+
+        /**
+         * Method used to compute the ore distribution for the VM if it doesn't exist.
+         *
+         * @param extraDropMap the extraDropMap that is related to this DropMap
+         */
+        public void isDistributionCached(@Nullable DropMap extraDropMap) {
+            if (isAliasCached) return;
+            if (internalMap == null || internalMap.isEmpty()) {
+                if (extraDropMap == null || extraDropMap.internalMap == null || extraDropMap.internalMap.isEmpty())
+                    return;
+            }
+
+            // Merge a related extraDropMap if it exists
+            mergeDropMaps(extraDropMap);
+
+            ores = new GTUtility.ItemId[internalMap.size()];
+            oreWeights = new double[internalMap.size()];
+            int i = 0;
+
+            for (Map.Entry<GTUtility.ItemId, Float> entry : internalMap.entrySet()) {
+                ores[i] = entry.getKey();
+                oreWeights[i] = entry.getValue() / totalWeight;
+                i++;
+            }
+
+            discreteDistribution = new DiscreteDistribution(oreWeights);
+            isAliasCached = true;
+        }
+
         public float getTotalWeight() {
             return totalWeight;
         }
 
         public Map<GTUtility.ItemId, Float> getInternalMap() {
             return internalMap;
+        }
+
+        public GTUtility.ItemId nextOre() {
+            return ores[discreteDistribution.next()];
         }
     }
 
@@ -160,7 +211,10 @@ public class VoidMinerUtility {
      * Method to generate a DropMap that contains ores of a vanilla GT worldgen
      */
     private static DropMap getDropMapVanilla(int dimId) {
-        DropMap dropMap = new DropMap();
+        if (!dropMapsByDimId.containsKey(dimId)) {
+            dropMapsByDimId.put(dimId, new DropMap());
+        }
+        DropMap dropMap = dropMapsByDimId.get(dimId);
 
         // Ore Veins
         Predicate<WorldgenGTOreLayer> oreLayerPredicate = makeOreLayerPredicate(dimId);
@@ -217,7 +271,11 @@ public class VoidMinerUtility {
      * @param aID dim id of Ross128b or Ross128ba
      */
     private static DropMap getDropMapRoss(int aID) {
-        DropMap dropMap = new DropMap();
+        if (!dropMapsByDimId.containsKey(aID)) {
+            dropMapsByDimId.put(aID, new DropMap());
+        }
+        DropMap dropMap = dropMapsByDimId.get(aID);
+
         for (BWOreLayer oreLayer : BWOreLayer.sList) {
             if (oreLayer.mEnabled && oreLayer.isGenerationAllowed("", aID, 0)) {
                 List<ItemStack> data = oreLayer.getStacks();

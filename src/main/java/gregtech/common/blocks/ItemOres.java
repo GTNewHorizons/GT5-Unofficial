@@ -11,22 +11,22 @@ import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-public class ItemOres extends ItemBlock {
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
+public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
 
     public ItemOres(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
-    }
-
-    @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
-        return false;
     }
 
     @Override
@@ -77,5 +77,15 @@ public class ItemOres extends ItemBlock {
         String formula = StatCollector
             .translateToLocal(field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
         if (!StringUtils.isBlank(formula)) aList.add(formula);
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
+    public boolean shouldBurn(ItemStack itemStack) {
+        if (this.field_150939_a instanceof BlockOres) {
+            int damage = itemStack.getItemDamage();
+            return GregTechAPI.sGeneratedMaterials[damage % 1000] == Materials.Firestone;
+        }
+        return false;
     }
 }

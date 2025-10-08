@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import org.jetbrains.annotations.ApiStatus;
+
 /**
  * To access my Machines a bit easier
  */
@@ -18,25 +20,39 @@ public interface IUpgradableMachine extends IMachineProgress {
     /**
      * Accepts Steam-Converter Upgrades
      */
-    boolean isSteamEngineUpgradable();
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    default boolean isSteamEngineUpgradable() {
+        return false;
+    }
 
     /**
      * Adds Muffler Upgrade
      */
     boolean addMufflerUpgrade();
 
+    default void setMuffler(boolean value) {}
+
     /**
      * Adds MJ-Converter Upgrade
      */
-    boolean addSteamEngineUpgrade();
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    default boolean addSteamEngineUpgrade() {
+        return false;
+    }
 
     /**
      * Does this Machine have an Muffler
      */
-    boolean hasMufflerUpgrade();
+    boolean isMuffled();
 
     /**
      * Does this Machine have a Steam-Converter
      */
-    boolean hasSteamEngineUpgrade();
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    default boolean hasSteamEngineUpgrade() {
+        return false;
+    }
 }

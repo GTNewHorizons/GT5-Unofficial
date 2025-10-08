@@ -12,7 +12,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEGeothermalGenerator;
 
@@ -61,8 +60,8 @@ public class GregtechGeothermalThermalGenerator {
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.UV), 'W',
                 OrePrefixes.cableGt04.get(Materials.Platinum), 'G', MaterialsAlloy.STELLITE.getGear(1) });
 
-        final ItemStack INGREDIENT_1 = CI.electricPiston_LuV;
-        final ItemStack INGREDIENT_2 = CI.electricMotor_LuV;
+        final ItemStack INGREDIENT_1 = ItemList.Electric_Piston_LuV.get(1);
+        final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_LuV.get(1L),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE

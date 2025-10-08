@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +22,9 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.structure.IStructureChannels;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -49,7 +54,16 @@ public class MultiblockTooltipBuilder {
     private static final String COLON = ": ";
     private static final String SEPARATOR = ", ";
     private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
-    private static final String TT_Parallels = StatCollector.translateToLocal("GT5U.MBTT.Parallels");
+    private static final String TT_StaticParallels = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Base");
+    private static final String TT_StaticSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Base");
+    private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Base");
+    private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Additional");
+    private static final String TT_SingularParallel = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Singular");
+    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Additional");
+    private static final String TT_DynamicEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Additional");
+    private static final String TT_Steam_StaticSteamEff = StatCollector
+        .translateToLocal("GT5U.MBTT.SteamDiscount.Base");
+
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
@@ -65,7 +79,11 @@ public class MultiblockTooltipBuilder {
     private static final String TT_outputbus = StatCollector.translateToLocal("GT5U.MBTT.OutputBus");
     private static final String TT_outputhatch = StatCollector.translateToLocal("GT5U.MBTT.OutputHatch");
     private static final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
+    private static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
+    private static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
+    private static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
+    private static final String TT_produces = StatCollector.translateToLocal("GT5U.MBTT.Produces");
     private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
     private static final String TT_todisplay = StatCollector.translateToLocal("GT5U.MBTT.Display");
@@ -75,6 +93,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StructureComplex = StatCollector.translateToLocal("GT5U.MBTT.Structure.Complex");
     private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
     private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
+    private static final String TT_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
@@ -121,15 +140,147 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a line for static parallel count
-     * Processes up to {parallels} recipes at once
+     * Add a line for static parallel count Processes up to {parallels} recipes at once
      *
      * @param parallels Maximum parallels
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addParallelInfo(Integer parallels) {
-        iLines.add(String.format(TT_Parallels, parallels));
+    public MultiblockTooltipBuilder addStaticParallelInfo(Integer parallels) {
+        iLines.add(String.format(TT_StaticParallels, TooltipHelper.parallelText(parallels)));
         return this;
+    }
+
+    /**
+     * Add a line of information about dynamic parallel count (tiered).
+     * "Processes %s items per %s Tier."
+     *
+     * @param parallels Amount of parallels gained per tier
+     * @param tier      Tiered object that determines bonus
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDynamicParallelInfo(Integer parallels, TooltipTier tier) {
+        iLines.add(
+            String.format(
+                parallels == 1 ? TT_SingularParallel : TT_DynamicParallels,
+                TooltipHelper.parallelText(parallels),
+                tier.getValue()));
+        return this;
+    }
+
+    /**
+     * Add a line of information about parallel count per Voltage Tier
+     * "Processes %s items per Voltage Tier."
+     *
+     * @param parallels Amount of parallels gained per Voltage tier
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addVoltageParallelInfo(int parallels) {
+        return addDynamicParallelInfo(parallels, TooltipTier.VOLTAGE);
+    }
+
+    /**
+     * Add a line of information about multiplicative parallels per Tier
+     * "%sx Parallels per %s Tier"
+     *
+     * @param factor parallel multiplier
+     * @param tier   Tiered object that determines bonus
+     * @return Instance this method was called on
+     */
+    public MultiblockTooltipBuilder addDynamicMultiplicativeParallelInfo(Integer factor, TooltipTier tier) {
+        iLines.add(
+            String.format(TT_DynamicParallels, TooltipHelper.parallelText(factor.toString() + "x"), tier.getValue()));
+        return this;
+    }
+
+    /**
+     * Add a line of information about Speed bonus
+     *
+     * @param speed Speed as defined in ProcessingLogic. e.g (1F / 3.5F = 350% Speed
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
+
+        iLines.add(String.format(TT_StaticSpeed, TooltipHelper.speedText(speed)));
+        return this;
+    }
+
+    /**
+     * Add a line of information about dynamic parallel count (tiered).
+     *
+     * @param speed Speed increment per tier
+     * @param tier  Tiered object that determines bonus
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+        iLines.add(
+            String.format(
+                TT_DynamicSpeed,
+                TooltipHelper.speedText("+" + percentageFormat.format(speed)),
+                tier.getValue()));
+        return this;
+    }
+
+    /**
+     * Add a line of information about Eu Discount bonus relative to SB machines
+     *
+     * @param euEff euEff as defined in ProcessingLogic
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
+        iLines.add(String.format(TT_StaticEuEff, TooltipHelper.effText(euEff)));
+        return this;
+    }
+
+    /**
+     * Add a line of information about dynamic parallel count (tiered).
+     *
+     * @param euEff euEff Increment per tier
+     * @param tier  Tiered object that determines bonus
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
+        iLines.add(
+            String
+                .format(TT_DynamicEuEff, TooltipHelper.effText("-" + percentageFormat.format(euEff)), tier.getValue()));
+        return this;
+    }
+
+    /**
+     *
+     * Add bulk information for parallels (voltageTier) , speed, euEff; in that order.
+     *
+     * @param parallels parallels per voltage tier
+     * @param speed     Speed as defined in ProcessingLogic
+     * @param euEff     EuEff as defined in ProcessingLogic
+     */
+    public MultiblockTooltipBuilder addBulkMachineInfo(int parallels, float speed, float euEff) {
+        return addVoltageParallelInfo(parallels).addStaticSpeedInfo(speed)
+            .addStaticEuEffInfo(euEff);
+    }
+
+    /**
+     * For steam machines only.
+     * Add a line of information about Steam Discount
+     *
+     * @param steamEff steamEff as defined in ProcessingLogic
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStaticSteamEffInfo(float steamEff) {
+        iLines.add(String.format(TT_Steam_StaticSteamEff, TooltipHelper.effText(percentageFormat.format(steamEff))));
+        return this;
+    }
+
+    /**
+     * For steam machines only. Assumes static parallels / buffs.
+     * Add bulk information for parallels (voltageTier) , speed, steamEff; in that order.
+     *
+     * @param parallels parallels
+     * @param speed     Speed as defined in ProcessingLogic
+     * @param steamEff  steamEff as defined in ProcessingLogic
+     */
+    public MultiblockTooltipBuilder addSteamBulkMachineInfo(int parallels, float speed, float steamEff) {
+        return addStaticParallelInfo(parallels).addStaticSpeedInfo(speed)
+            .addStaticSteamEffInfo(steamEff);
     }
 
     /**
@@ -167,7 +318,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.gregtechproxy.separatorStyle) {
+        switch (GTMod.proxy.separatorStyle) {
             case 0 -> iLines.add(" ");
             case 1 -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
             default -> iLines
@@ -185,8 +336,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
-        iLines.add(
-            TT_causes + COLON + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+        iLines.add("" + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 
@@ -505,6 +655,18 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)Input Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamInputBus(String info) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steaminputbus + COLON + EnumChatFormatting.GRAY + info);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Input Hatch: info
      *
      * @param info Location where the hatch goes
@@ -524,6 +686,18 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addOutputBus(String info) {
         sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)Output Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamOutputBus(String info) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steamoutputbus + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -579,7 +753,18 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * t-tier Glass required for TecTech Laser Hatches.
+     * Machine does not lose efficiency when overclocked
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addPerfectOCInfo() {
+        iLines.add(EnumChatFormatting.AQUA + TT_PerfectOC);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * t-tier Glass required for TecTech Laser Hatches
      *
      * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
@@ -594,18 +779,18 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * Energy Hatch limited by Glass tier.
+     * Energy Hatch limited by Glass tier
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addGlassEnergyLimitInfo() {
-        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ".");
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit"));
         return this;
     }
 
     /**
      * Add a line of information about the structure:<br>
-     * Energy Hatch limited by Glass tier, t-tier Glass unlocks all.
+     * Energy Hatch limited by Glass tier, t-tier Glass unlocks all
      *
      * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
@@ -617,6 +802,40 @@ public class MultiblockTooltipBuilder {
                 + GTValues.VN[t]
                 + EnumChatFormatting.GRAY
                 + StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimitTier"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addNoTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.NoTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addUnlimitedTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.UnlimitedTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes at most n tiers above the average energy hatch tier
+     *
+     * @param n The max amount of tier skips allowed
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMaxTierSkips(int n) {
+        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
         return this;
     }
 
@@ -692,6 +911,20 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)Input Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @param dots The valid locations for this part when asked to display hints
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamInputBus(String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steaminputbus + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, TT_steaminputbus);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Input Hatch: info
      *
      * @param info Location where the hatch goes
@@ -715,6 +948,20 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addOutputBus(String info, int... dots) {
         sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_outputbus);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)Output Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @param dots The valid locations for this part when asked to display hints
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamOutputBus(String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steamoutputbus + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, TT_steamoutputbus);
         return this;
     }
 
@@ -752,7 +999,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length,
         boolean useFinisherConfig) {
         if (useFinisherConfig) {
-            switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+            switch (GTMod.proxy.tooltipFinisherStyle) {
                 case 0 -> {}
                 case 1 -> sLines.add(TAB + " ");
                 case 2 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
@@ -762,7 +1009,7 @@ public class MultiblockTooltipBuilder {
                         + StringUtils.getRepetitionOf('-', length));
             }
         } else {
-            switch (GTMod.gregtechproxy.separatorStyle) {
+            switch (GTMod.proxy.separatorStyle) {
                 case 0 -> sLines.add(TAB + " ");
                 case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
                 default -> sLines
@@ -782,6 +1029,15 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * @deprecated use overload that accepts {@link IStructureChannels} instead
+     */
+    @Deprecated
+    public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        return this;
+    }
+
+    /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
      *
@@ -789,8 +1045,22 @@ public class MultiblockTooltipBuilder {
      * @param purpose the purpose of subchannel
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
+        return this;
+    }
+
+    /**
+     * Use this method to add non-standard structural info.<br>
+     * (indent)info
+     *
+     * @param channel the name of subchannel
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
+        sLines.add(
+            TAB + StatCollector
+                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 
@@ -859,7 +1129,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
 
-        switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+        switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
             case 1 -> iLines.add(" ");
             case 2 -> iLines.add(separatorColor + StringUtils.getRepetitionOf('-', separatorLength));

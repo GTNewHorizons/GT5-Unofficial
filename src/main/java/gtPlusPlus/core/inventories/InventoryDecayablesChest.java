@@ -102,12 +102,12 @@ public class InventoryDecayablesChest implements IInventory {
     // 1.7.2+ renamed to hasCustomInventoryName
     @Override
     public boolean hasCustomInventoryName() {
-        return !this.name.isEmpty();
+        return true;
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return 1;
     }
 
     /**

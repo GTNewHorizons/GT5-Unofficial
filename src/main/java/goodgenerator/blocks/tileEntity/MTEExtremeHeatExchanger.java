@@ -209,13 +209,13 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo("Outputs SH steam by cooling hot fluids with distilled water.")
+            .addInfo("Outputs SH steam by cooling hot fluids with distilled water")
             .addInfo("Supplying more hot fluid than the threshold causes overheating,")
-            .addInfo("producing SC steam instead.")
-            .addInfo("Plasma always produces SC steam.")
-            .addInfo("Maximum input and output values per second are shown in NEI.")
-            .addInfo("Actual output is proportional to the amount of hot fluid inserted.")
-            .addInfo("Explodes if it runs out of water.")
+            .addInfo("producing SC steam instead")
+            .addInfo(EnumChatFormatting.YELLOW + "Plasma always produces SC steam")
+            .addInfo("Maximum input and output values per second are shown in NEI")
+            .addInfo("Actual output is proportional to the amount of hot fluid inserted")
+            .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
             .addController("Front bottom")
             .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
             .addCasingInfoExactly("EV+ Glass", 72, false)
@@ -342,11 +342,6 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
         return new String[] {
@@ -411,7 +406,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 5, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 5, 0, elementBudget, env, false, true);
     }
 
     private enum EHEHatches implements IHatchElement<MTEExtremeHeatExchanger> {

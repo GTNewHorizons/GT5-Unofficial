@@ -47,7 +47,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import ic2.core.Ic2Items;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CraftingRecipes implements Runnable {
 
@@ -140,7 +141,7 @@ public class CraftingRecipes implements Runnable {
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "IPI", "PMP", "ISI", 'I', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 'P', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1L), 'M',
-                new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), 'S', Ic2Items.ironFurnace });
+                new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), 'S', "craftingIronFurnace" });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.WINDMETER),
@@ -558,5 +559,42 @@ public class CraftingRecipes implements Runnable {
             "UV " + StatCollector.translateToLocal("tile.radiohatch.name"),
             8,
             true);
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.Item_Power_Goggles.get(1),
+            new Object[] { "MPM", "LSL", "PRP", 'M', ItemList.Cover_Screen.get(1), 'P',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'L',
+                GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1L), 'S', ItemList.Sensor_IV.get(1),
+                'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.Item_Redstone_Sniffer.get(1L),
+            new Object[] { " M ", "STS", "dPw", 'M', ItemList.Cover_Screen.get(1L), 'S',
+                OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'P',
+                OrePrefixes.plate.get(Materials.Titanium) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.Tool_Vajra.get(1),
+            new Object[] { "RMR", "hCd", "EBE", 'R', OrePrefixes.lens.get(Materials.Ruby), 'M',
+                ItemList.Magnetron.get(1), 'C', ItemList.Vajra_Core.get(1), 'E',
+                OrePrefixes.plateDense.get(Materials.Electrum), 'B', OrePrefixes.battery.get(Materials.IV) });
+
+        RecipeUtils.addShapedRecipe(
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            ItemList.HV_Coil.get(1),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            OrePrefixes.plate.get(Materials.Electrum),
+            OrePrefixes.wireGt12.get(Materials.SuperconductorIV),
+            OrePrefixes.plate.get(Materials.Electrum),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            ItemList.HV_Coil.get(1),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            ItemList.Magnetron.get(1));
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.Vajra_Core.get(1),
+            new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.get(Materials.Electrum), 'I',
+                OrePrefixes.plateDense.get(Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1), 'S',
+                OrePrefixes.wireGt12.get(Materials.SuperconductorIV), 'R', ItemList.Transformer_IV_EV.get(1) });
     }
 }

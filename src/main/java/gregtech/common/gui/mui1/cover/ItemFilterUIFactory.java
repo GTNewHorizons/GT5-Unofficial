@@ -1,18 +1,16 @@
 package gregtech.common.gui.mui1.cover;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverItemFilter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public class ItemFilterUIFactory extends CoverUIFactory<CoverItemFilter> {
@@ -37,11 +35,8 @@ public class ItemFilterUIFactory extends CoverUIFactory<CoverItemFilter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        ItemStackHandler filterInvHandler = new ItemStackHandler(1);
         CoverItemFilter cover = getCover();
-        if (cover != null) {
-            filterInvHandler.setStackInSlot(0, setStackSize1(cover.getFilter()));
-        }
+        assert cover != null;
         builder
             .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
@@ -50,28 +45,18 @@ public class ItemFilterUIFactory extends CoverUIFactory<CoverItemFilter> {
                     CoverItemFilter::setWhitelist,
                     widget -> widget
                         .setToggleTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST, GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                        .addTooltip(0, GTUtility.trans("125.1", "Whitelist Mode"))
-                        .addTooltip(1, GTUtility.trans("124.1", "Blacklist Mode"))
+                        .addTooltip(0, StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Whitelist_Mode"))
+                        .addTooltip(1, StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Blacklist_Mode"))
                         .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        new CoverDataFollowerSlotWidget<>(filterInvHandler, 0, true),
-                        coverData -> setStackSize1(coverData.getFilter()),
-                        (coverData, stack) -> coverData.setFilter(setStackSize1(stack)),
-                        widget -> widget.setBackground(GTUITextures.SLOT_DARK_GRAY)
-                            .setPos(spaceX * 0, spaceY * 2))
                     .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Filter"))
                     .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
             .widget(
-                new TextWidget(GTUtility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
-    }
-
-    private ItemStack setStackSize1(ItemStack stack) {
-        if (stack != null) {
-            stack.stackSize = 1;
-        }
-        return stack;
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.CheckMode"))
+                    .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0))
+            .widget(
+                SlotWidget.phantom(cover.getFilter(), 0)
+                    .setPos(startX + spaceX * 0, startY + spaceY * 2));
     }
 }

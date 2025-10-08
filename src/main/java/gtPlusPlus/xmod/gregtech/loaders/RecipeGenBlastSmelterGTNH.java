@@ -15,12 +15,12 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenBlastSmelterGTNH {
 
@@ -130,6 +130,13 @@ public class RecipeGenBlastSmelterGTNH {
             }
         }
 
+        Logger.INFO("[ABS] Caching existing ABS recipes...");
+        GTRecipe[] recipeCandidates = GTPPRecipeMaps.alloyBlastSmelterRecipes.getAllRecipes()
+            .stream()
+            .filter(r -> r.mOutputs.length == 0 && r.mFluidOutputs.length == 1)
+            .toArray(GTRecipe[]::new);
+        Logger.MACHINE_INFO("[ABS] Cached " + recipeCandidates.length + " existing ABS recipes...");
+
         Logger.INFO("[ABS] Generating recipes based on existing EBF recipes.");
         // Okay, so now lets Iterate existing EBF recipes.
         for (GTRecipe x : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
@@ -148,100 +155,147 @@ public class RecipeGenBlastSmelterGTNH {
             // continue to next recipe if the Temp is too high.
             if (special > 3600) {
                 Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to temp.");
-            } else {
-                FluidStack mMoltenStack = null;
-                int mMoltenCount = 0;
-                // If We have a valid Output, let's try use our cached data to get it's molten form.
-                if (x.mOutputs != null && x.mOutputs[0] != null) {
-                    mMoltenCount = x.mOutputs[0].stackSize;
-                    ItemStackData R = new ItemStackData(x.mOutputs[0]);
-                    Logger.MACHINE_INFO(
-                        "[ABS] Found " + x.mOutputs[0].getDisplayName()
-                            + " as valid EBF output, finding it's fluid from the cache. We will require "
-                            + (144 * mMoltenCount)
-                            + "L. Looking for ID "
-                            + R.getUniqueDataIdentifier());
-                    FluidStack tempFluid = getFluidFromIngot(R);
-                    if (tempFluid != null) {
-                        // Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");
-                        mMoltenStack = FluidUtils.getFluidStack(tempFluid, mMoltenCount * 144);
-                    } else {
-                        Logger.MACHINE_INFO("[ABS] Failed to get Fluid from Cache.");
-                    }
-                }
-                // If this recipe is enabled and we have a valid molten fluidstack, let's try add this recipe.
-                if (enabled && isValid(inputs, outputs, inputsF, mMoltenStack)) {
-                    // Boolean to decide whether or not to create a new circuit later
-                    boolean circuitFound = false;
+                continue;
+            }
 
-                    // Build correct input stack
-                    ArrayList<ItemStack> aTempList = new ArrayList<>();
-                    for (ItemStack recipeItem : inputs) {
-                        if (ItemUtils.isControlCircuit(recipeItem)) {
-                            circuitFound = true;
-                        }
-                        aTempList.add(recipeItem);
-                    }
-
-                    inputs = aTempList.toArray(new ItemStack[0]);
-                    int inputLength = inputs.length;
-                    // If no circuit was found, increase array length by 1 to add circuit at newInput[0]
-                    if (!circuitFound) {
-                        inputLength++;
-                    }
-
-                    ItemStack[] newInput = new ItemStack[inputLength];
-
-                    int l = 0;
-                    // If no circuit was found, add a circuit here
-                    if (!circuitFound) {
-                        l = 1;
-                        newInput[0] = GTUtility.getIntegratedCircuit(inputs.length);
-                    }
-
-                    for (ItemStack y : inputs) {
-                        newInput[l++] = y;
-                    }
-
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(newInput)
-                        .fluidInputs(inputsF)
-                        .fluidOutputs(mMoltenStack)
-                        .duration(MathUtils.roundToClosestInt(time * 0.8))
-                        .eut(voltage)
-                        .recipeCategory(
-                            inputLength <= 2 ? RecipeCategories.absNonAlloyRecipes
-                                : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory())
-                        .addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
+            FluidStack mMoltenStack = null;
+            int mMoltenCount = 0;
+            // If We have a valid Output, let's try use our cached data to get it's molten form.
+            if (x.mOutputs != null && x.mOutputs[0] != null) {
+                mMoltenCount = x.mOutputs[0].stackSize;
+                ItemStackData R = new ItemStackData(x.mOutputs[0]);
+                Logger.MACHINE_INFO(
+                    "[ABS] Found " + x.mOutputs[0].getDisplayName()
+                        + " as valid EBF output, finding it's fluid from the cache. We will require "
+                        + (144 * mMoltenCount)
+                        + "L. Looking for ID "
+                        + R.getUniqueDataIdentifier());
+                FluidStack tempFluid = getFluidFromIngot(R);
+                if (tempFluid != null) {
+                    // Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");
+                    mMoltenStack = FluidUtils.getFluidStack(tempFluid, mMoltenCount * 144);
                 } else {
-                    if (!enabled) {
-                        Logger.MACHINE_INFO("[ABS] Failure. EBF recipe was not enabled.");
-                    } else {
-                        Logger.MACHINE_INFO("[ABS] Failure. Invalid Inputs or Outputs.");
-                        if (inputs == null) {
-                            Logger.MACHINE_INFO("[ABS] Inputs were not Valid.");
-                        } else {
-                            Logger.MACHINE_INFO("[ABS] inputs size: " + inputs.length);
-                        }
-                        if (outputs == null) {
-                            Logger.MACHINE_INFO("[ABS] Outputs were not Valid.");
-                        } else {
-                            Logger.MACHINE_INFO("[ABS] outputs size: " + outputs.length);
-                        }
-                        if (inputsF == null) {
-                            Logger.MACHINE_INFO("[ABS] Input Fluids were not Valid.");
-                        } else {
-                            Logger.MACHINE_INFO("[ABS] inputsF size: " + inputsF.length);
-                        }
-                        if (mMoltenStack == null) {
-                            Logger.MACHINE_INFO("[ABS] Output Fluid were not Valid.");
-                        }
-                    }
+                    Logger.MACHINE_INFO("[ABS] Failed to get Fluid from Cache.");
                 }
             }
+
+            // This recipe isn't enabled
+            if (!enabled) {
+                Logger.MACHINE_INFO("[ABS] Failure. EBF recipe was not enabled.");
+                continue;
+            }
+            // We don't have a valid molten fluidstack
+            if (!isValid(inputs, outputs, inputsF, mMoltenStack)) {
+                Logger.MACHINE_INFO("[ABS] Failure. Invalid Inputs or Outputs.");
+                if (inputs == null) {
+                    Logger.MACHINE_INFO("[ABS] Inputs were not Valid.");
+                } else {
+                    Logger.MACHINE_INFO("[ABS] inputs size: " + inputs.length);
+                }
+                if (outputs == null) {
+                    Logger.MACHINE_INFO("[ABS] Outputs were not Valid.");
+                } else {
+                    Logger.MACHINE_INFO("[ABS] outputs size: " + outputs.length);
+                }
+                if (inputsF == null) {
+                    Logger.MACHINE_INFO("[ABS] Input Fluids were not Valid.");
+                } else {
+                    Logger.MACHINE_INFO("[ABS] inputsF size: " + inputsF.length);
+                }
+                if (mMoltenStack == null) {
+                    Logger.MACHINE_INFO("[ABS] Output Fluid were not Valid.");
+                }
+                continue;
+            }
+
+            // Boolean to decide whether or not to create a new circuit later
+            boolean circuitFound = false;
+
+            // Build correct input stack
+            ArrayList<ItemStack> aTempList = new ArrayList<>();
+            for (ItemStack recipeItem : inputs) {
+                if (recipeItem != null && recipeItem.getItem() instanceof ItemIntegratedCircuit) {
+                    circuitFound = true;
+                }
+                aTempList.add(recipeItem);
+            }
+
+            inputs = aTempList.toArray(new ItemStack[0]);
+            int inputLength = inputs.length;
+            // If no circuit was found, increase array length by 1 to add circuit at newInput[0]
+            if (!circuitFound) {
+                inputLength++;
+            }
+
+            ItemStack[] newInput = new ItemStack[inputLength];
+
+            int l = 0;
+            // If no circuit was found, add a circuit here
+            if (!circuitFound) {
+                l = 1;
+                newInput[0] = GTUtility.getIntegratedCircuit(inputs.length);
+            }
+
+            for (ItemStack y : inputs) {
+                newInput[l++] = y;
+            }
+
+            boolean recipeFound = false;
+            for (GTRecipe recipe : recipeCandidates) {
+                if (itemStacksMatch(recipe.mInputs, newInput) && fluidStacksMatch(recipe.mFluidInputs, inputsF)
+                    && GTUtility.areFluidsEqual(recipe.mFluidOutputs[0], mMoltenStack)) {
+                    recipeFound = true;
+                    break;
+                }
+            }
+            // Recipe was already added in RecipeGenBlastSmelter
+            if (recipeFound) {
+                Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to existing recipe.");
+                continue;
+            }
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(newInput)
+                .fluidInputs(inputsF)
+                .fluidOutputs(mMoltenStack)
+                .duration(MathUtils.roundToClosestInt(time * 0.8))
+                .eut(voltage)
+                .recipeCategory(
+                    inputLength <= 2 ? RecipeCategories.absNonAlloyRecipes
+                        : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory())
+                .addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
+            mSuccess++;
         }
 
         Logger.INFO("[ABS] Processed " + mSuccess + " recipes.");
         return mSuccess > 0;
+    }
+
+    private static boolean itemStacksMatch(final ItemStack[] mStack1, final ItemStack[] mStack2) {
+        if (mStack1 == null || mStack2 == null || mStack1.length != mStack2.length) {
+            return false;
+        }
+
+        for (int c = 0; c < mStack1.length; c++) {
+            if (!GTUtility.areStacksEqual(mStack1[c], mStack2[c])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean fluidStacksMatch(final FluidStack[] mStack1, final FluidStack[] mStack2) {
+        if (mStack1 == null || mStack2 == null || mStack1.length != mStack2.length) {
+            return false;
+        }
+
+        for (int c = 0; c < mStack1.length; c++) {
+            if (!GTUtility.areFluidsEqual(mStack1[c], mStack2[c])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

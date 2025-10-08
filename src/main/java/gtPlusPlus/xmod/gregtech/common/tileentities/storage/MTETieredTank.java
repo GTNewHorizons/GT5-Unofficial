@@ -34,7 +34,7 @@ public class MTETieredTank extends MTEBasicTank {
             aNameRegional,
             aTier,
             3,
-            "Stores " + GTUtility.formatNumbers(((int) (Math.pow(2, aTier) * 32000))) + "L of fluid");
+            "Stores " + GTUtility.formatNumbers(((int) (GTUtility.powInt(2, aTier) * 32000))) + "L of fluid");
     }
 
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
@@ -99,11 +99,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public final byte getUpdateData() {
         return 0x00;
     }
@@ -155,7 +150,7 @@ public class MTETieredTank extends MTEBasicTank {
 
     @Override
     public int getCapacity() {
-        return (int) (Math.pow(2, this.mTier) * 32000);
+        return (int) (GTUtility.powInt(2, this.mTier) * 32000);
     }
 
     @Override

@@ -1,13 +1,10 @@
 package gregtech.api.interfaces.metatileentity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +13,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -36,7 +33,8 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.util.GTUtil;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -106,17 +104,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Called in the registered MetaTileEntity when the Server starts, to reset static variables
      */
     void onServerStart();
-
-    /**
-     * Called in the registered MetaTileEntity when the Server ticks a World the first time, to load things from the
-     * World Save
-     */
-    void onWorldLoad(File aSaveDirectory);
-
-    /**
-     * Called in the registered MetaTileEntity when the Server stops, to save the Game.
-     */
-    void onWorldSave(File aSaveDirectory);
 
     /**
      * Called to set Configuration values for this MetaTileEntity. Use aConfig.get(ConfigCategories.machineconfig,
@@ -220,6 +207,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return True if the item at the index should be dropped, else false
      */
     boolean shouldDropItemAt(int index);
+
+    /**
+     * Override to change which items are dropped when block is broken.
+     */
+    ArrayList<ItemStack> getDroppedItem();
 
     /**
      * @return if aIndex can be set to Zero stackSize, when being removed.
@@ -362,13 +354,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer);
+    boolean renderInInventory(ISBRInventoryContext ctx);
 
     /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer);
+    boolean renderInWorld(ISBRWorldContext ctx);
 
     /**
      * Gets the Output for the comparator on the given Side
@@ -385,6 +377,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     void onColorChangeClient(byte aColor);
 
+    default NBTTagCompound getDescriptionData() {
+        return null;
+    }
+
+    default void onDescriptionPacket(NBTTagCompound data) {
+
+    }
+
     /**
      * @return Actual color shown on GUI
      */
@@ -392,7 +392,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return GTUtil.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+            return Dyes.MACHINE_METAL.toInt();
         }
     }
 
@@ -462,7 +462,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     }
 
     default String getLocalName() {
-        return "Unknown";
+        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
     }
 
     default boolean doesBindPlayerInventory() {
@@ -489,8 +489,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Gets items to be displayed for HoloInventory mod.
      *
-     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
-     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}. Otherwise, a list
+     *         of items to be displayed. Null element may be contained.
      */
     @Nullable
     default List<ItemStack> getItemsForHoloGlasses() {
@@ -501,4 +501,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Returns GUI ID used for resource packs as a distinguishable id to customize UI elements in MUI2.
      */
     String getGuiId();
+
+    default void onTextureUpdate() {}
 }

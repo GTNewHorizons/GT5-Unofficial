@@ -43,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
@@ -289,10 +290,10 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
             FluidStack fluid = null;
             if (block != Blocks.water && block != Blocks.flowing_water) {
                 if (block == Blocks.lava || block == Blocks.flowing_lava) {
-                    fluid = new FluidStack(FluidRegistry.LAVA, 1000);
+                    fluid = Materials.Lava.getFluid(1_000);
                 }
             } else {
-                fluid = new FluidStack(FluidRegistry.WATER, 1000);
+                fluid = Materials.Water.getFluid(1_000);
             }
 
             if (fluid != null) {
@@ -343,9 +344,12 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                     .setPos(8, 8)
                     .setSize(77, 12))
-                .widget(new TextWidget("Capacity").setPos(88, 10))
                 .widget(
-                    new VanillaButtonWidget().setDisplayString("Confirm")
+                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
+                        .setPos(88, 10))
+                .widget(
+                    new VanillaButtonWidget()
+                        .setDisplayString(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))
                         .setOnClick((clickData, widget) -> {
                             capacityWidget.onRemoveFocus();
                             widget.getWindow()

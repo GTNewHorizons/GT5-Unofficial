@@ -39,11 +39,6 @@ public class EnchantmentEnderDamage extends EnchantmentDamage {
     }
 
     @Override
-    public int getMaxLevel() {
-        return 5;
-    }
-
-    @Override
     public void func_151367_b(EntityLivingBase aHurtEntity, Entity aDamagingEntity, int aLevel) {
         if ((aHurtEntity instanceof EntityEnderman || aHurtEntity instanceof EntityDragon
             || (aHurtEntity.getClass()

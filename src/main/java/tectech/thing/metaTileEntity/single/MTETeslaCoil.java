@@ -1,6 +1,7 @@
 package tectech.thing.metaTileEntity.single;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,10 +22,12 @@ import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
+import gregtech.api.render.TextureFactory;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
@@ -31,7 +35,6 @@ import tectech.mechanics.spark.RendererMessage;
 import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
-import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
 
 public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
@@ -86,7 +89,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (overdriveToggle) {
             overdriveToggle = false;
             PlayerChatHelper
@@ -100,7 +103,8 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             if (histSettingHigh < histHighLimit) {
                 histSettingHigh++;
@@ -130,7 +134,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             if (transferRadius > transferRadiusMin) {
                 transferRadius--;
@@ -182,13 +186,13 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[3][17][];
         for (byte i = -1; i < 16; ++i) {
-            rTextures[0][i + 1] = new ITexture[] { Textures.MACHINE_CASINGS_TT[this.mTier][i + 1] };
-            rTextures[1][i + 1] = new ITexture[] { Textures.MACHINE_CASINGS_TT[this.mTier][i + 1],
-                Textures.TESLA_TRANSCEIVER_TOP_BA };
-            rTextures[2][i + 1] = new ITexture[] { Textures.MACHINE_CASINGS_TT[this.mTier][i + 1],
-                this.mInventory.length == 16 ? Textures.OVERLAYS_ENERGY_OUT_POWER_TT[this.mTier]
-                    : (this.mInventory.length > 4 ? Textures.OVERLAYS_ENERGY_OUT_MULTI_TT[this.mTier]
-                        : Textures.OVERLAYS_ENERGY_OUT_TT[this.mTier]) };
+            rTextures[0][i + 1] = new ITexture[] { MACHINE_CASINGS[this.mTier][i + 1] };
+            rTextures[1][i + 1] = new ITexture[] { MACHINE_CASINGS[this.mTier][i + 1],
+                TextureFactory.of(Textures.BlockIcons.TESLA_TRANSCEIVER_TOP) };
+            rTextures[2][i + 1] = new ITexture[] { MACHINE_CASINGS[this.mTier][i + 1],
+                this.mInventory.length == 16 ? OVERLAYS_ENERGY_OUT_MULTI_16A[this.mTier + 1]
+                    : (this.mInventory.length > 4 ? OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1]
+                        : OVERLAYS_ENERGY_OUT[this.mTier + 1]) };
         }
         return rTextures;
     }

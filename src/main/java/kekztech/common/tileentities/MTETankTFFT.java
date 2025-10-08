@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -22,6 +21,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +36,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -62,6 +61,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
 public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implements ISurvivalConstructable {
@@ -147,7 +147,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
 
         private int getHint(ItemStack stack) {
-            return Math.min(Field.VALUES.length, ChannelDataAccessor.getChannelData(stack, "field"));
+            return GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 1, Field.VALUES.length);
         }
 
         @Override
@@ -167,12 +167,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int fieldTier = getHint(trigger);
+            boolean isPreview = !(env.getActor() instanceof EntityPlayerMP);
             ItemStack result = env.getSource()
                 .takeOne(
                     s -> s != null && s.stackSize >= 0
                         && s.getItem() == TFFT_FIELD_ITEM
                         && s.getItemDamage() != CASING_META
-                        && s.getItemDamage() <= fieldTier,
+                        && (isPreview ? s.getItemDamage() == fieldTier : s.getItemDamage() <= fieldTier),
                     true);
             if (result == null) return PlaceResult.REJECT;
 
@@ -288,7 +289,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     private boolean doVoidExcess = false;
     private byte fluidSelector = -1;
 
-    private MTEHatchTFFT tfftHatch = null;
+    public MTEHatchTFFT tfftHatch = null;
 
     public MTETankTFFT(String aName) {
         super(aName);
@@ -341,13 +342,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
             .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+            .addInfo("Has 1/25th of the total capacity as capacity for each fluid")
+            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding")
+            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used")
             .addSeparator()
             .addInfo("Note on hatch locking:")
-            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
-            .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
+            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
+            .addInfo("The index of a stored fluid can be obtained through the Tricorder")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Top Center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
@@ -363,44 +364,44 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 "Multi I/O Hatches",
                 "Instead of any casing or glass, has to touch storage field block")
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = min(stackSize.stackSize + DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT + 1);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
-        for (int i = -1; i >= 1 - layer; i--) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, i);
-        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer);
+        for (int i = 1; i <= layer; i++) {
+            buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, -i);
+        }
+        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer - 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int layer = min(stackSize.stackSize + DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT + 1);
-        for (int i = -1; i >= 1 - layer; i--) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
+        for (int i = 1; i <= layer; i++) {
+            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, -i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer - 1, elementBudget, env, false, true);
     }
 
     @Override
     public void clearHatches() {
         super.clearHatches();
-        if (tfftHatch != null) {
-            tfftHatch.unbind();
-            tfftHatch = null;
-        }
+        // do not call tfftHatch.unbind() here
+        // if tfftHatch is actually removed, tfftHatch will unbind itself later
+        // if tfftHatch is not removed, this will save a pair of unbind()/bind() call
+        tfftHatch = null;
+
     }
 
     @Override
@@ -462,6 +463,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 final FluidStack toDeplete = aFluid.copy();
                 toDeplete.amount = this.pull(aFluid, true);
                 depleteInput(toDeplete);
+                notifyMultiHatch(true, toDeplete);
             }
         }
 
@@ -495,8 +497,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     if (isFluidSelected) {
                         if (isFluidLocked && !lockedFluidName.equals(sFluid.name())) continue;
                         if (!isFluidEmpty && !sFluid.contains(tFluid)) continue;
-
-                        tHatch.fill(this.push(sFluid.get(remaining), true), true);
+                        FluidStack tofill = this.push(sFluid.get(remaining), true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     } else if (isFluidLocked) {
                         if (!isFluidEmpty && !lockedFluidName.equals(
                             tFluid.getFluid()
@@ -504,11 +507,19 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                             continue;
 
                         FluidStack aFluid = FluidRegistry.getFluidStack(lockedFluidName, remaining);
-                        tHatch.fill(this.push(aFluid, true), true);
+                        FluidStack tofill = this.push(aFluid, true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     } else if (isFluidEmpty) {
-                        if (this.firstNotNull() != null) tHatch.fill(this.push(hatchCapacity, true), true);
+                        if (this.firstNotNull() != null) {
+                            FluidStack tofill = this.push(hatchCapacity, true);
+                            tHatch.fill(tofill, true);
+                            notifyMultiHatch(false, tofill);
+                        }
                     } else {
-                        tHatch.fill(this.push(new FluidStack(tFluid, remaining), true), true);
+                        FluidStack tofill = this.push(new FluidStack(tFluid, remaining), true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     }
                 }
             }
@@ -618,23 +629,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         this.setDoVoidExcess(!doVoidExcess);
         GTUtility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
     }
@@ -807,5 +804,11 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             info[i] = STORE[i].getInfo();
         }
         return info;
+    }
+
+    public void notifyMultiHatch(boolean isIncrement, FluidStack stack) {
+        if (tfftHatch != null && tfftHatch.isValid()) {
+            tfftHatch.notifyListeners(isIncrement, stack);
+        }
     }
 }

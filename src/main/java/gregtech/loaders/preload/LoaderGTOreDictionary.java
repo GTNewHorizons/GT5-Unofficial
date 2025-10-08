@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -44,8 +45,8 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Lava, new ItemStack(Items.lava_bucket, 1, 0));
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Milk, new ItemStack(Items.milk_bucket, 1, 0));
-        // Clay buckets handled in gregtech.common.GTProxy.onLoad() as they aren't registered until Iguana Tweaks
-        // pre-init.
+        // Clay buckets handled in gregtech.common.GTProxy.onInitialization()
+        // as they aren't registered until Iguana Tweaks pre-init.
 
         GTOreDictUnificator.set(OrePrefixes.bottle, Materials.Empty, new ItemStack(Items.glass_bottle, 1, 0));
         GTOreDictUnificator.set(OrePrefixes.bottle, Materials.Water, new ItemStack(Items.potionitem, 1, 0));
@@ -415,5 +416,10 @@ public class LoaderGTOreDictionary implements Runnable {
             OrePrefixes.block,
             MaterialsBotania.BotaniaDragonstone,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 4));
+
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.ore,
+            Materials.Desh,
+            GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 1L, 0));
     }
 }

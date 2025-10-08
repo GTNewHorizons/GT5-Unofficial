@@ -156,8 +156,4 @@ public class TileEntityProjectTable extends TileEntity
         super.updateEntity();
     }
 
-    @Override
-    public boolean canUpdate() {
-        return true;
-    }
 }

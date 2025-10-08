@@ -83,8 +83,8 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag NO_WORKING = getNewSubTag("NO_WORKING");
     /**
-     * This Material cannot be used for regular Metal working techniques. Already
-     * listed are: Rubber, Plastic, Paper, Wood, Stone
+     * This Material cannot be used for regular Metal working techniques. Already listed are: Rubber, Plastic, Paper,
+     * Wood, Stone
      */
     public static final SubTag NO_SMASHING = getNewSubTag("NO_SMASHING");
     /**
@@ -99,6 +99,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * This Material cannot be used in any Recycler. Already listed are: Stone, Glass, Water
      */
     public static final SubTag NO_RECYCLING = getNewSubTag("NO_RECYCLING");
+    /**
+     * This Material won't auto generate recycling recipes.
+     */
+    public static final SubTag NO_RECYCLING_RECIPES = getNewSubTag("NO_RECYCLING_RECIPES");
     /**
      * This Material cannot be used in any Furnace alike Structure. Already listed are: Paper, Wood, Gunpowder, Stone
      */

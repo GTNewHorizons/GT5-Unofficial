@@ -5,10 +5,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -18,8 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -27,15 +31,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
@@ -58,10 +63,12 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
-public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase> {
+public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase>
+    implements ISurvivalConstructable {
 
     // Formerly configurable values
     public static final int POLLUTION_THRESHOLD = 10000;
@@ -72,7 +79,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     private static final Random RANDOM = new XSTR();
 
-    protected int baseEff = 0;
+    protected float baseEff = 0;
     protected int multiTier = 0;
     protected int chunkIndex = 0;
     protected boolean hasPollution = false;
@@ -96,24 +103,27 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                             { "c~c", "ccc", "ccc" }, }))
                 .addElement(
                     'c',
-                    lazy(
-                        x -> ofChain(
-                            ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta()),
-                            ofHatchAdder(MTEAirFilterBase::addMaintenanceToMachineList, x.getCasingIndex(), 1),
-                            ofHatchAdder(MTEAirFilterBase::addInputToMachineList, x.getCasingIndex(), 1),
-                            ofHatchAdder(MTEAirFilterBase::addOutputToMachineList, x.getCasingIndex(), 1),
-                            ofHatchAdder(MTEAirFilterBase::addEnergyInputToMachineList, x.getCasingIndex(), 1))))
+                    ofChain(
+                        lazy(
+                            x -> ofChain(
+                                buildHatchAdder(MTEAirFilterBase.class)
+                                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, OutputBus, Energy)
+                                    .dot(1)
+                                    .casingIndex(x.getCasingIndex())
+                                    .build(),
+                                ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
                 .addElement('x', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))
                 .addElement('v', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getPipeMeta())))
                 .addElement(
                     'm',
-                    lazy(
-                        x -> ofHatchAdderOptional(
-                            MTEAirFilterBase::addMufflerToMachineList,
-                            x.getCasingIndex(),
-                            2,
-                            GregTechAPI.sBlockCasingsNH,
-                            x.getCasingMeta())))
+                    ofChain(
+                        lazy(
+                            x -> ofChain(
+                                buildHatchAdder(MTEAirFilterBase.class).atLeast(Muffler)
+                                    .dot(2)
+                                    .casingIndex(x.getCasingIndex())
+                                    .build(),
+                                ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
                 .build();
         }
     };
@@ -129,6 +139,11 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0) && !mMufflerHatches.isEmpty()
             && mMaintenanceHatches.size() == 1;
@@ -141,10 +156,12 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     public MTEAirFilterBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        usesTurbine = true;
     }
 
     public MTEAirFilterBase(String aName) {
         super(aName);
+        usesTurbine = true;
     }
 
     public abstract long getEUt();
@@ -263,7 +280,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         int pollutionPerSecond = 0;
         for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
             // applying scaling factor
-            pollutionPerSecond += (int) Math.pow(SCALING_FACTOR, min(tTier, tHatch.mTier));
+            pollutionPerSecond += (int) GTUtility.powInt(SCALING_FACTOR, min(tTier, tHatch.mTier));
         }
         // apply the boost
         if (isRateBoosted) {
@@ -296,7 +313,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         if (damage == -1) {
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
-        baseEff = GTUtility.safeInt((long) ((50.0F + 10.0F * damage) * 100));
+
+        TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
+        baseEff = turbine.getBaseEfficiency();
         tickCounter = 0; // resetting the counter in case of a power failure, etc
 
         // scan the inventory to search for filter if none has been loaded previously
@@ -401,7 +420,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     public void cleanPollution() {
-        int cleaningRate = getPollutionCleaningRatePerSecond(baseEff / 10000f, mEfficiency / 10000f, isFilterLoaded);
+        int cleaningRate = getPollutionCleaningRatePerSecond(baseEff, mEfficiency / 10000f, isFilterLoaded);
         if (cleaningRate > 0) {
             World world = this.getBaseMetaTileEntity()
                 .getWorld();
@@ -451,11 +470,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public abstract int getPipeMeta();
 
     public abstract int getCasingMeta();
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -534,24 +548,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!mFormed || !overlayTickets.isEmpty()) return false;
-        int[] xyz = new int[3];
-        ExtendedFacing ext = getExtendedFacing();
-        ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);
-        IIconContainer[] tTextures = getBaseMetaTileEntity().isActive() ? TURBINE_NEW_ACTIVE : TURBINE_NEW;
-        // we know this multi can only ever face upwards, so just use +y directly
-        ExtendedFacing direction = ExtendedFacing.of(ForgeDirection.UP);
-        GTUtilityClient.renderTurbineOverlay(
-            aWorld,
-            xyz[0] + aX,
-            xyz[1] + aY,
-            xyz[2] + aZ,
-            aRenderer,
-            direction,
-            GregTechAPI.sBlockCasingsNH,
-            tTextures);
-        return false;
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     @Override
@@ -578,12 +576,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!aPlayer.isSneaking()) { // change mode
             mode = mode == 1 ? 0 : 1;
             if (mode == 0) {
@@ -622,7 +616,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                 // negative EU triggers special EU consumption behavior. however it does not produce power.
                 EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.max_energy_income_tie",
+                "GT5U.infodata.max_energy_income_tier",
                 EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
@@ -633,8 +627,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.air_filter.pollution_reduction",
                 EnumChatFormatting.GREEN
-                    + Integer.toString(
-                        getPollutionCleaningRatePerTick(baseEff / 10000f, mEfficiency / 10000f, isFilterLoaded))
+                    + Integer.toString(getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
                     + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
             StatCollector

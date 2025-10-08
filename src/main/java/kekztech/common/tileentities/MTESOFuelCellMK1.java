@@ -5,11 +5,15 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +24,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -34,13 +40,12 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kekztech.common.Blocks;
 
-public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1> {
+public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1> implements ISurvivalConstructable {
 
     private final int OXYGEN_PER_SEC = 100;
     private final int EU_PER_TICK = 2048;
@@ -78,11 +83,12 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         .addElement(
             'c',
             ofChain(
-                onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)),
-                ofHatchAdder(MTESOFuelCellMK1::addInputToMachineList, CASING_TEXTURE_ID, 1),
-                ofHatchAdder(MTESOFuelCellMK1::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
-                ofHatchAdder(MTESOFuelCellMK1::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
-        .addElement('d', ofHatchAdder(MTESOFuelCellMK1::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
+                buildHatchAdder(MTESOFuelCellMK1.class).atLeast(InputHatch, InputHatch, OutputHatch, Maintenance)
+                    .dot(1)
+                    .casingIndex(CASING_TEXTURE_ID)
+                    .build(),
+                onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+        .addElement('d', Dynamo.newAny(CASING_TEXTURE_ID, 2))
         .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
         .addElement('e', ofBlockAnyMeta(Blocks.yszUnit))
         .build();
@@ -108,11 +114,11 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             .addCasingInfoMin("Clean Stainless Steel Casing", 12, false)
             .addOtherStructurePart("YSZ Ceramic Electrolyte Unit", "3x, Center 1x1x3")
             .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any casing")
-            .addInputHatch("Fuel, any casing")
-            .addInputHatch("Oxygen, any casing")
-            .addOutputHatch("Steam, any casing")
+            .addDynamoHatch("Back center", 2)
+            .addMaintenanceHatch("Any casing", 1)
+            .addInputHatch("Fuel, any casing", 1)
+            .addInputHatch("Oxygen, any casing", 1)
+            .addOutputHatch("Steam, any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -145,11 +151,6 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack stack) {
-        return true;
-    }
-
     @Nonnull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -176,7 +177,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 40;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutput(GTModHandler.getSteam(STEAM_PER_SEC));
+                            super.addOutput(Materials.Steam.getGas(STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }
@@ -199,22 +200,17 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 1, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 }

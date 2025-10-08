@@ -16,13 +16,14 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import gtPlusPlus.api.objects.Logger;
@@ -114,7 +115,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         Logger.MACHINE_INFO("| " + b.getUnlocalizedName() + " | " + a1 + "/" + a2);
 
         if (!a1 && !a2) {
-            ItemStack replacement = ItemUtils.getSimpleStack(b.getDecayResult());
+            ItemStack replacement = b.getDecayResult();
             replacement.stackSize = 1;
             // iStack = replacement.copy();
             for (int fff = 0; fff < this.inventoryContents.getSizeInventory(); fff++) {
@@ -388,7 +389,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     }
 
     @Override
-    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         final SlotGroup SLOT_GROUP = new SlotGroup("decayables", 5);
         syncManager.registerSlotGroup(SLOT_GROUP);
         syncManager.addOpenListener(player -> {
@@ -405,7 +406,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         final ModularPanel panel = ModularPanel.defaultPanel("decayablesChest");
         panel.bindPlayerInventory();
         panel.child(
-            new TextWidget(IKey.lang("tile.blockDecayablesChest.name")).top(5)
+            new TextWidget(IKey.lang("tile.blockDecayablesChest.name")).top(7)
                 .left(5));
         panel.child(
             SlotGroupWidget.builder()
@@ -418,8 +419,9 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 .build()
                 .flex(
                     flex -> flex.anchor(Alignment.TopCenter)
-                        .marginTop(15)
-                        .leftRelAnchor(0.5f, 0.5f)));
+                        .leftRelAnchor(0.5f, 0.5f)
+                        .topRelAnchor(0.125f, 0f)));
+
         return panel;
     }
 

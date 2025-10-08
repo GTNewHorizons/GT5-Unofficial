@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_RECEIVER;
@@ -171,12 +172,14 @@ import static gregtech.common.items.IDMetaItem02.Food_Sliced_Onion;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Tomato;
 import static gregtech.common.items.IDMetaItem02.GelledToluene;
 import static gregtech.common.items.IDMetaItem02.MSFMixture;
+import static gregtech.common.items.IDMetaItem02.Magnetron;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia_Green;
 import static gregtech.common.items.IDMetaItem02.Plank_Balsa;
 import static gregtech.common.items.IDMetaItem02.Plank_Baobab;
 import static gregtech.common.items.IDMetaItem02.Plank_Birch;
 import static gregtech.common.items.IDMetaItem02.Plank_Cherry;
+import static gregtech.common.items.IDMetaItem02.Plank_Cherry_EFR;
 import static gregtech.common.items.IDMetaItem02.Plank_Chestnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Citrus;
 import static gregtech.common.items.IDMetaItem02.Plank_DarkOak;
@@ -212,6 +215,7 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Jesus_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
+import static gregtech.common.items.IDMetaItem02.Vajra_Core;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -1944,6 +1948,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .set(addItem(Plank_Maple.ID, "Maple Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Citrus.set(
             addItem(Plank_Citrus.ID, "Citrus Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Cherry_EFR.set(
+            addItem(
+                Plank_Cherry_EFR.ID,
+                "Cherry Plank",
+                aTextCover,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
         ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
 
@@ -2387,6 +2397,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "(or at least almost free)",
                 SubTag.INVISIBLE,
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
+        ItemList.Item_Redstone_Sniffer
+            .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
+        ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
 
         try {
             CropCard tCrop;
@@ -2489,6 +2503,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         setBurnValue(32000 + Plank_Plum.ID, 75);
         setBurnValue(32000 + Plank_Maple.ID, 75);
         setBurnValue(32000 + Plank_Citrus.ID, 75);
+        setBurnValue(32000 + Plank_Cherry_EFR.ID, 75);
         setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
         setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
     }
@@ -3019,6 +3034,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 23, new ItemStack(Blocks.planks, 1, 0))),
                 7));
+        CoverRegistry.registerDecorativeCover(
+            ItemList.Plank_Cherry_EFR.get(1L),
+            TextureFactory.of(
+                GTUtility.getBlockFromStack(
+                    GTModHandler
+                        .getModItem(EtFuturumRequiem.ID, "wood_planks", 1L, 3, new ItemStack(Blocks.planks, 1, 0))),
+                0));
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),

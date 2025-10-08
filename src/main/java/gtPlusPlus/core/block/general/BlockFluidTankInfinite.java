@@ -18,9 +18,9 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class BlockFluidTankInfinite extends BlockContainer {
 
@@ -69,47 +69,56 @@ public class BlockFluidTankInfinite extends BlockContainer {
         if (world.isRemote) {
             return true;
         } else {
+
             TileEntityInfiniteFluid tank = (TileEntityInfiniteFluid) world.getTileEntity(x, y, z);
             if (tank != null) {
-                Item handItem;
-                try {
-                    handItem = player.getHeldItem()
-                        .getItem();
-                } catch (Throwable t) {
-                    handItem = null;
+                if (player.isSneaking()) {
+                    switch (tank.changeMode()) {
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
+                            .sendChatToPlayer(player, "This tank is now in single fluid mode.");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
+                            .sendChatToPlayer(player, "This tank is now in supply all fluids mode.");
+                    }
+                    return true;
                 }
-                if (handItem != null && (handItem instanceof IFluidContainerItem
-                    || FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
-                    if (tank.tank.getFluid() == null) {
-                        try {
-                            if (!FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
-                                ItemStack handItemStack = player.getHeldItem();
-                                IFluidContainerItem container = (IFluidContainerItem) handItem;
-                                FluidStack containerFluid = container.getFluid(handItemStack);
-                                container.drain(handItemStack, container.getFluid(handItemStack).amount, true);
-                                tank.tank.setFluid(containerFluid);
-                            } else {
-                                ItemStack handItemStack = player.getHeldItem();
-                                FluidContainerRegistry.drainFluidContainer(handItemStack);
-                                FluidStack containerFluid = FluidContainerRegistry.getFluidForFilledItem(handItemStack);
-                                ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(handItemStack);
-                                player.setItemInUse(emptyContainer, 0);
 
-                                tank.tank.setFluid(containerFluid);
-                            }
-                        } catch (Throwable t) {
-                            t.printStackTrace();
-                        }
+                // get the held item
+                ItemStack handStack = player.getHeldItem();
+                Item handItem = handStack == null ? null : handStack.getItem();
+                if (handItem == null) handStack = null;
+
+                // only do things if we hold a container
+                if (handStack != null) {
+                    if (FluidContainerRegistry.isEmptyContainer(player.getHeldItem())) {
+                        tank.setFluid(null);
+                    } else if (FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
+                        FluidStack newFluid = FluidContainerRegistry.getFluidForFilledItem(player.getHeldItem());
+                        tank.setFluid(newFluid);
+                    } else if (handItem instanceof IFluidContainerItem container) {
+                        tank.setFluid(container.getFluid(player.getHeldItem()));
                     }
                 }
-                if (tank.tank.getFluid() != null) {
-                    PlayerUtils.messagePlayer(
-                        player,
-                        "This tank contains " + tank.tank.getFluidAmount()
-                            + "L of "
-                            + tank.tank.getFluid()
-                                .getLocalizedName());
+
+                // report new stats after update
+                if (tank.getFluid() != null) {
+                    String fluidName = tank.getFluid()
+                        .getLocalizedName();
+                    switch (tank.mode) {
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
+                            .sendChatToPlayer(player, "This tank contains " + fluidName + ".");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility.sendChatToPlayer(
+                            player,
+                            "This tank contains " + fluidName + " and can supply any fluid that is requested from it.");
+                    }
+                } else {
+                    switch (tank.mode) {
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
+                            .sendChatToPlayer(player, "This tank is empty.");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
+                            .sendChatToPlayer(player, "This tank can supply any fluid that is requested from it.");
+                    }
                 }
+                return true;
             }
         }
         return true;

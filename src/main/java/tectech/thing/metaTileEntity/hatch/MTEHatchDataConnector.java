@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -94,9 +95,12 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            aTick = MinecraftServer.getServer()
+                .getTickCounter();
             if (CommonValues.MOVE_AT == aTick % 20) {
                 if (q == null) {
                     getBaseMetaTileEntity().setActive(false);
+                    resetHistory();
                 } else {
                     getBaseMetaTileEntity().setActive(true);
                     moveAround(aBaseMetaTileEntity);
@@ -106,6 +110,10 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     }
 
     public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
+
+    protected void resetHistory() {
+
+    }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
@@ -120,11 +128,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 

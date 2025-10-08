@@ -120,10 +120,6 @@ public class ContainerProjectTable extends Container {
         final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
-            if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
-                // Utils.LOG_WARNING("??? - "+aSlotIndex);
-            }
-
             if (aSlotIndex == 0) {
                 Logger.INFO("Player Clicked on the Data Stick slot");
                 // TODO
@@ -139,7 +135,6 @@ public class ContainerProjectTable extends Container {
                 }
             }
         }
-        // Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Grid");
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 

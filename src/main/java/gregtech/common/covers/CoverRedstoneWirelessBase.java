@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
@@ -24,17 +26,12 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
     }
 
     @Override
-    public void onCoverRemoval() {
-        GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
-    }
-
-    @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))) {
             GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
             coverData = (coverData & (PRIVATE_MASK | CHECKBOX_MASK))
                 | (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + coverData);
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("gt.interact.desc.freq_format", coverData));
             return true;
         }
         return false;
@@ -66,7 +63,9 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
                 this.coverData = (this.coverData & (PRIVATE_MASK | CHECKBOX_MASK)) | tPublicChannel;
             }
         }
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + (this.coverData & PUBLIC_MASK));
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            translateToLocalFormatted("gt.interact.desc.freq_format", this.coverData & PUBLIC_MASK));
     }
 
     @Override
@@ -101,7 +100,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
 
     @Override
     public String getDescription() {
-        return GTUtility.trans("081", "Frequency: ") + coverData;
+        return translateToLocalFormatted("gt.interact.desc.freq_format", coverData);
     }
 
     @Override

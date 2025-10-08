@@ -32,6 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -53,7 +54,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -104,9 +104,9 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             .addInfo("Grows Algae!")
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
-            .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
+            .addInfo("All Machine Casings must be the same tier, this dictates machine speed")
             .addInfo("Requires one Input Hatch that matches the tier of the Casings")
-            .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
+            .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front Center")
@@ -177,7 +177,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 2, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
+        return SoundResource.GTCEU_LOOP_BATH;
     }
 
     @Override
@@ -279,7 +279,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     if (isNotStaticWater(tBlock, tMeta)) {
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))) {
+                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
                                     if (stored.amount >= 1000) {
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;
@@ -321,18 +321,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiAlgaePond;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -421,7 +411,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     private static int compostForTier(int aTier) {
-        return aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier - 1)) : 1;
+        return aTier > 1 ? (int) Math.min(64, GTUtility.powInt(2, aTier - 1)) : 1;
     }
 
     private static GTRecipe generateBaseRecipe(int aTier, boolean isUsingCompost) {
@@ -437,7 +427,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             // Boost Tier by one if using compost, so it gets a speed boost
             aTier++;
         } else {
-            aInputs = new ItemStack[] {};
+            aInputs = GTValues.emptyItemStackArray;
         }
 
         ItemStack[] aOutputs = getOutputsForTier(aTier);
@@ -446,7 +436,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInputs,
             aOutputs,
             null,
-            new int[] {},
+            GTValues.emptyIntArray,
             new FluidStack[] { GTValues.NF },
             new FluidStack[] { GTValues.NF },
             getRecipeDuration(aTier),

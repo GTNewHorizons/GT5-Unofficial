@@ -2,6 +2,8 @@ package gregtech.common.gui.mui1.cover;
 
 import java.util.Arrays;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -54,7 +56,7 @@ public class AdvancedRedstoneReceiverBaseUIFactory
     protected void addUIWidgets(ModularWindow.Builder builder) {
         super.addUIWidgets(builder);
         builder.widget(
-            new TextWidget(GTUtility.trans("335", "Gate Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+            new TextWidget(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.GateMode"))
                 .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
     }
 
@@ -68,28 +70,28 @@ public class AdvancedRedstoneReceiverBaseUIFactory
                 coverData -> coverData.getGateMode() == CoverAdvancedRedstoneReceiverBase.GateMode.AND,
                 (coverData, state) -> coverData.setMode(CoverAdvancedRedstoneReceiverBase.GateMode.AND),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_AND)
-                    .addTooltip(GTUtility.trans("331", "AND Gate"))
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.AND_Gate"))
                     .setPos(spaceX * 0, spaceY * 2))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.getGateMode() == CoverAdvancedRedstoneReceiverBase.GateMode.NAND,
                 (coverData, state) -> coverData.setMode(CoverAdvancedRedstoneReceiverBase.GateMode.NAND),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_NAND)
-                    .addTooltip(GTUtility.trans("332", "NAND Gate"))
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.NAND_Gate"))
                     .setPos(spaceX * 1, spaceY * 2))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.getGateMode() == CoverAdvancedRedstoneReceiverBase.GateMode.OR,
                 (coverData, state) -> coverData.setMode(CoverAdvancedRedstoneReceiverBase.GateMode.OR),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_OR)
-                    .addTooltip(GTUtility.trans("333", "OR Gate"))
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.OR_Gate"))
                     .setPos(spaceX * 2, spaceY * 2))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.getGateMode() == CoverAdvancedRedstoneReceiverBase.GateMode.NOR,
                 (coverData, state) -> coverData.setMode(CoverAdvancedRedstoneReceiverBase.GateMode.NOR),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_NOR)
-                    .addTooltip(GTUtility.trans("334", "NOR Gate"))
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.NOR_Gate"))
                     .setPos(spaceX * 3, spaceY * 2))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -98,9 +100,8 @@ public class AdvancedRedstoneReceiverBaseUIFactory
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ANALOG)
                     .addTooltips(
                         Arrays.asList(
-                            "ANALOG Mode",
-                            "Only use this mode with ONE transmitter in total,",
-                            "no logic involved"))
+                            GTUtility.breakLines(
+                                StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.analog"))))
                     .setPos(spaceX * 4, spaceY * 2));
     }
 }

@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.ItemOres;
 import gregtech.common.blocks.TileEntityOres;
@@ -48,26 +49,23 @@ public class EIGIC2Bucket extends EIGBucket {
      */
     private static final boolean IS_ON_WET_FARMLAND = true;
     /**
-     * The amount of water stored in the crop stick when hydration is turned on.
-     * bounds of 0 to 200 inclusive
+     * The amount of water stored in the crop stick when hydration is turned on. bounds of 0 to 200 inclusive
      */
     private static final int WATER_STORAGE_VALUE = 200;
     // nutrient factors
     /**
-     * The number of blocks of dirt we assume are under. Subtract 1 if we have a block under our crop.
-     * bounds of 0 to 3, inclusive
+     * The number of blocks of dirt we assume are under. Subtract 1 if we have a block under our crop. bounds of 0 to 3,
+     * inclusive
      */
     private static final int NUMBER_OF_DIRT_BLOCKS_UNDER = 0;
     /**
-     * The amount of fertilizer stored in the crop stick
-     * bounds of 0 to 200, inclusive
+     * The amount of fertilizer stored in the crop stick bounds of 0 to 200, inclusive
      */
     private static final int FERTILIZER_STORAGE_VALUE = 0;
     // air quality factors
     /**
-     * How many blocks in a 3x3 area centered on the crop do not contain solid blocks or other crops.
-     * Max value is 8 because the crop always counts itself.
-     * bound of 0-8 inclusive
+     * How many blocks in a 3x3 area centered on the crop do not contain solid blocks or other crops. Max value is 8
+     * because the crop always counts itself. bound of 0-8 inclusive
      */
     private static final int CROP_OBSTRUCTION_VALUE = 5;
     /**
@@ -428,7 +426,7 @@ public class EIGIC2Bucket extends EIGBucket {
      */
     private static double getRealAverageDropRounds(TileEntityCrop te, CropCard cc) {
         // this should be ~99.995% accurate
-        double chance = (double) cc.dropGainChance() * Math.pow(1.03, te.getGain());
+        double chance = (double) cc.dropGainChance() * GTUtility.powInt(1.03, te.getGain());
         // this is essentially just performing an integration using the composite trapezoidal rule.
         double min = -10, max = 10;
         int steps = 10000;
@@ -466,8 +464,8 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     /**
-     * Calculates the average drop of the stack size caused by seed's gain using information obtained by
-     * decompiling IC2.
+     * Calculates the average drop of the stack size caused by seed's gain using information obtained by decompiling
+     * IC2.
      *
      * @see TileEntityCrop#harvest_automated(boolean)
      * @param te The {@link TileEntityCrop} holding the crop
@@ -635,8 +633,8 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     /**
-     * Computes a 1D convolution of a signal and stores the results in the signal array.
-     * Essentially performs `X <- convolve(X,rev(Y))[1:length(X)]` in R
+     * Computes a 1D convolution of a signal and stores the results in the signal array. Essentially performs `X <-
+     * convolve(X,rev(Y))[1:length(X)]` in R
      *
      * @param signal            The signal to apply the convolution to.
      * @param kernel            The kernel to compute with.
@@ -668,8 +666,8 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     /**
-     * Calculates the average growth rate of an ic2 crop using information obtained though decompiling IC2.
-     * Calls to random functions have been either replaced with customisable values or boundary tests.
+     * Calculates the average growth rate of an ic2 crop using information obtained though decompiling IC2. Calls to
+     * random functions have been either replaced with customisable values or boundary tests.
      *
      * @see TileEntityCrop#calcGrowthRate()
      * @param te      The {@link TileEntityCrop} holding the crop
@@ -709,8 +707,8 @@ public class EIGIC2Bucket extends EIGBucket {
     // region deterministic environmental calculations
 
     /**
-     * Calculates the humidity at the location of the controller using information obtained by decompiling IC2.
-     * Returns 0 if the greenhouse is in no humidity mode.
+     * Calculates the humidity at the location of the controller using information obtained by decompiling IC2. Returns
+     * 0 if the greenhouse is in no humidity mode.
      *
      * @see EIGIC2Bucket#IS_ON_WET_FARMLAND
      * @see EIGIC2Bucket#WATER_STORAGE_VALUE

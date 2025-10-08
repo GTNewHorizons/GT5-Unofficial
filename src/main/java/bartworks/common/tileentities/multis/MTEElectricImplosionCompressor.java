@@ -14,11 +14,8 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
-import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
-import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -35,9 +32,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COM
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -46,6 +43,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -54,15 +52,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
@@ -87,14 +81,11 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -105,6 +96,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);
     private int mBlockTier = 0;
     private int mCasing;
+    private boolean isSuccessful = true;
 
     public MTEElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -114,163 +106,103 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         super(aName);
     }
 
-    private static final int CASING_INDEX = 16;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEElectricImplosionCompressor> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEElectricImplosionCompressor>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { { "ccc", "cec", "ccc" }, { "ttt", "tft", "ttt" }, { "ttt", "tft", "ttt" },
-                    { "nnn", "nnn", "nnn" }, { "nNn", "NNN", "nNn" }, { "nnn", "nnn", "nnn" }, { "t~t", "tft", "ttt" },
-                    { "ttt", "tft", "ttt" }, { "CCC", "CeC", "CCC" }, }))
-        .addElement('c', ofChain(ofBlock(GregTechAPI.sBlockCasings2, 0), ofBlock(GregTechAPI.sBlockCasings3, 4)))
-        .addElement('t', ofBlock(BW_BLOCKS[2], 1))
-        .addElement('f', ofBlock(BW_BLOCKS[2], 0))
-        .addElement(
-            'n',
-            StructureUtility.ofBlocksTiered(
-                tieredBlockConverter(),
-                getAllBlockTiers(),
-                0,
-                MTEElectricImplosionCompressor::setBlockTier,
-                MTEElectricImplosionCompressor::getBlockTier))
-        .addElement(
-            'C',
-            buildHatchAdder(MTEElectricImplosionCompressor.class)
-                .atLeast(InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
-        .addElement(
-            'e',
-            buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
-                .casingIndex(CASING_INDEX)
-                .dot(2)
-                .buildAndChain(
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
-                    onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
-        .addElement('N', new IStructureElement<>() {
-
-            // Much of this based on StructureUtility.ofBlocksTiered
-            private final List<Pair<Block, Integer>> tiers = getAllBlockTiers();
-
-            @Override
-            public boolean check(MTEElectricImplosionCompressor te, World world, int x, int y, int z) {
-                if (!te.piston && !world.isAirBlock(x, y, z)) return false;
-                if (te.piston) {
-                    Block candidate = world.getBlock(x, y, z);
-                    int candidateMeta = world.getBlockMetadata(x, y, z);
-                    return getTierOfBlock(candidate, candidateMeta) != null;
-                }
-                return true;
-            }
-
-            private Pair<Block, Integer> getTier(ItemStack trigger) {
-                return this.tiers.get(Math.min(Math.max(trigger.stackSize, 1), this.tiers.size()) - 1);
-            }
-
-            @Override
-            public boolean spawnHint(MTEElectricImplosionCompressor te, World world, int x, int y, int z,
-                ItemStack itemStack) {
-                Pair<Block, Integer> tier = this.getTier(itemStack);
-                if (te.piston) StructureLibAPI.hintParticle(world, x, y, z, tier.getKey(), tier.getValue());
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(MTEElectricImplosionCompressor te, World world, int x, int y, int z,
-                ItemStack itemStack) {
-                Pair<Block, Integer> tier = this.getTier(itemStack);
-                if (te.piston) world.setBlock(x, y, z, tier.getKey(), tier.getValue(), 3);
-                else world.setBlockToAir(x, y, z);
-                return true;
-            }
-
-            @Override
-            public BlocksToPlace getBlocksToPlace(MTEElectricImplosionCompressor t, World world, int x, int y, int z,
-                ItemStack trigger, AutoPlaceEnvironment env) {
-                if (t.piston) {
-                    Pair<Block, Integer> tier = getTier(trigger);
-                    return BlocksToPlace.create(tier.getKey(), tier.getValue());
-                }
-                return BlocksToPlace.createEmpty();
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(MTEElectricImplosionCompressor t, World world, int x, int y, int z,
-                ItemStack trigger, AutoPlaceEnvironment env) {
-                if (t.piston) {
-                    if (check(t, world, x, y, z)) return SKIP;
-                    Pair<Block, Integer> tier = getTier(trigger);
-                    if (tier == null) return REJECT;
-                    return StructureUtility.survivalPlaceBlock(
-                        tier.getKey(),
-                        tier.getValue(),
-                        world,
-                        x,
-                        y,
-                        z,
-                        env.getSource(),
-                        env.getActor(),
-                        env.getChatter());
-                }
-                return isAir().survivalPlaceBlock(t, world, x, y, z, trigger, env);
-            }
-        })
-        .build();
-
-    public static List<Pair<Block, Integer>> getAllBlockTiers() {
-        ImmutableList.Builder<Pair<Block, Integer>> b = new ImmutableList.Builder<>();
-        b.add(Pair.of(GregTechAPI.sBlockMetal5, 2));
-        if (Mods.Avaritia.isModLoaded()) {
-            b.add(Pair.of(LudicrousBlocks.resource_block, 1));
-        }
-        b.add(Pair.of(GregTechAPI.sBlockMetal9, 4));
-        b.add(Pair.of(GregTechAPI.sBlockMetal9, 3));
-        b.add(Pair.of(GregTechAPI.sBlockMetal9, 8));
-        return b.build();
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+        return new MTEElectricImplosionCompressor(this.mName);
     }
 
-    public static ITierConverter<Integer> tieredBlockConverter() {
-        return MTEElectricImplosionCompressor::getTierOfBlock;
+    private static final int CASING_INDEX = 16;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN_SUCCESSFUL = "main_successful";
+    private static final String[][] shape = new String[][] { { "CCC", "CBC", "CCC" }, { "DDD", "DGD", "DDD" },
+        { "DDD", "DGD", "DDD" }, { "EEE", "EEE", "EEE" }, { "EFE", "FFF", "EFE" }, { "EEE", "EEE", "EEE" },
+        { "D~D", "DGD", "DDD" }, { "DDD", "DGD", "DDD" }, { "CCC", "CBC", "CCC" } };
+
+    public static ImmutableList<Pair<Block, Integer>> getTierBlockList() {
+        ImmutableList.Builder<Pair<Block, Integer>> builder = ImmutableList.builder();
+
+        builder.add(Pair.of(GregTechAPI.sBlockMetal5, 2));
+
+        if (Mods.Avaritia.isModLoaded()) {
+            builder.add(Pair.of(LudicrousBlocks.resource_block, 1));
+        }
+
+        builder.add(Pair.of(GregTechAPI.sBlockMetal9, 4));
+        builder.add(Pair.of(GregTechAPI.sBlockMetal9, 3));
+        builder.add(Pair.of(GregTechAPI.sBlockMetal9, 8));
+
+        return builder.build();
     }
 
     @Nullable
-    private static Integer getTierOfBlock(Block block, int meta) {
-        if (block == null) {
-            return null;
-        }
-        if (block == GregTechAPI.sBlockMetal5 && meta == 2) {
-            return 1; // Neutronium
-        }
-        if (Mods.Avaritia.isModLoaded() && block == LudicrousBlocks.resource_block && meta == 1) {
-            return 2; // Infinity
-        }
-        if (block == GregTechAPI.sBlockMetal9) {
-            return switch (meta) {
-                case 4 -> 3; // Transcendent Metal
-                case 3 -> 4; // SpaceTime
-                case 8 -> 5; // Universium
-                default -> -1;
-            };
+    public static Integer getTierBlock(Block block, int meta) {
+        if (block == null) return null;
+        if (block == GregTechAPI.sBlockMetal5 && meta == 2) return 1;
+
+        if (Mods.Avaritia.isModLoaded()) {
+            if (block == LudicrousBlocks.resource_block && meta == 1) return 2;
+            if (block == GregTechAPI.sBlockMetal9 && meta == 4) return 3;
+            if (block == GregTechAPI.sBlockMetal9 && meta == 3) return 4;
+            if (block == GregTechAPI.sBlockMetal9 && meta == 8) return 5;
+        } else {
+            if (block == GregTechAPI.sBlockMetal9 && meta == 4) return 2;
+            if (block == GregTechAPI.sBlockMetal9 && meta == 3) return 3;
+            if (block == GregTechAPI.sBlockMetal9 && meta == 8) return 4;
         }
         return null;
     }
 
-    private void setBlockTier(int tier) {
-        this.mBlockTier = tier;
-    }
-
-    private int getBlockTier() {
-        return this.mBlockTier;
-    }
-
     @Override
     public IStructureDefinition<MTEElectricImplosionCompressor> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MTEElectricImplosionCompressor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addShape(
+                STRUCTURE_PIECE_MAIN_SUCCESSFUL,
+                Arrays.stream(transpose(shape))
+                    .map(
+                        sa -> Arrays.stream(sa)
+                            .map(s -> s.replaceAll("F", "H"))
+                            .toArray(String[]::new))
+                    .toArray(String[][]::new))
+            .addElement(
+                'B',
+                buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(2)
+                    .buildAndChain(
+                        onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
+                        onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
+            .addElement(
+                'C',
+                buildHatchAdder(MTEElectricImplosionCompressor.class)
+                    .atLeast(InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
+                        onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
+            .addElement('D', ofBlock(BW_BLOCKS[2], 1))
+            .addElement(
+                'E',
+                GTStructureChannels.EIC_PISTON.use(
+                    StructureUtility.ofBlocksTiered(
+                        MTEElectricImplosionCompressor::getTierBlock,
+                        getTierBlockList(),
+                        -1,
+                        (t, m) -> t.mBlockTier = m,
+                        t -> t.mBlockTier)))
+            .addElement(
+                'F',
+                GTStructureChannels.EIC_PISTON.use(
+                    StructureUtility.ofBlocksTiered(
+                        MTEElectricImplosionCompressor::getTierBlock,
+                        getTierBlockList(),
+                        -1,
+                        (t, m) -> t.mBlockTier = m,
+                        t -> t.mBlockTier)))
+            .addElement('G', ofBlock(BW_BLOCKS[2], 0))
+            .addElement('H', isAir())
+            .build();
     }
 
     @Override
@@ -282,12 +214,22 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor, EIC")
-            .addInfo("Explosions are fun")
+            .addInfo("Explosions are fun!")
             .addInfo("Uses electricity instead of Explosives")
-            .addInfo("Can parallel up to 4^(Tier - 1)")
-            .addInfo("Tier is determined by containment block")
-            .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
-            .addInfo("Minimum allowed energy hatch tier is one below recipe tier")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Parallels"
+                    + EnumChatFormatting.GRAY
+                    + " are determined by "
+                    + EnumChatFormatting.WHITE
+                    + "Containment Block"
+                    + EnumChatFormatting.GRAY
+                    + " Tier")
+            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
+            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
+            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+            .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
@@ -296,11 +238,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
             .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
             .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
+            .addMaintenanceHatch("Any Solid Steel Machine casing", 1)
+            .addInputBus("Any Solid Steel Machine casing", 1)
+            .addInputHatch("Any Solid Steel Machine casing", 1)
+            .addOutputBus("Any Solid Steel Machine casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
+            .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
         return tt;
     }
@@ -312,33 +255,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                long voltage = MTEElectricImplosionCompressor.this.getAverageInputVoltage();
-                // Only allow a minimum of T-1 energy hatch
-                if (recipe.mEUt > voltage * 4) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
-            @NotNull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // For overclocking we'll allow all power to be used
-                return super.createOverclockCalculator(recipe)
-                    .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
-                    .setAmperage(1);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0));
+        return (int) GTUtility.powInt(4, Math.max(this.mBlockTier - 1, 0));
     }
 
     private void updateChunkCoordinates() {
@@ -373,7 +295,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         if (pistonEnabled && aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
             if (aBaseMetaTileEntity.isClientSide()) this.animatePiston(aBaseMetaTileEntity);
-            else if (aBaseMetaTileEntity.hasMufflerUpgrade()) GTValues.NW.sendPacketToAllPlayersInRange(
+            else if (aBaseMetaTileEntity.isMuffled()) GTValues.NW.sendPacketToAllPlayersInRange(
                 aBaseMetaTileEntity.getWorld(),
                 new PacketEIC(
                     new Coords(
@@ -394,11 +316,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         this.resetPiston(this.mBlockTier);
         super.stopMachine(reason);
@@ -409,7 +326,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!this.piston) {
-            List<Pair<Block, Integer>> tiers = getAllBlockTiers();
+            List<Pair<Block, Integer>> tiers = getTierBlockList();
             Pair<Block, Integer> tieredBlock = tiers.get(Math.min(tier, tiers.size()) - 1);
             this.chunkCoordinates.forEach(c -> {
                 // Don't replace real blocks in case user has placed something (e.g. tier upgrade)
@@ -432,6 +349,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 c -> aBaseMetaTileEntity.getWorld()
                     .setBlockToAir(c.posX, c.posY, c.posZ));
             this.piston = !this.piston;
+            this.isSuccessful = true;
         }
     }
 
@@ -439,7 +357,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (!aBaseMetaTileEntity.getWorld().isRemote) return;
 
         if (!this.getBaseMetaTileEntity()
-            .hasMufflerUpgrade())
+            .isMuffled())
             GTUtility.doSoundAtClient(
                 sound,
                 10,
@@ -465,21 +383,29 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("piston", this.piston);
+        aNBT.setBoolean("isSuccessful", this.isSuccessful);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("piston")) this.piston = aNBT.getBoolean("piston");
+        if (aNBT.hasKey("isSuccessful")) this.isSuccessful = aNBT.getBoolean("isSuccessful");
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         int pistonTier = this.mBlockTier;
-        this.mCasing = 0;
         int mMaxHatchTier = 0;
-        this.setBlockTier(0);
-        boolean isOK = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
+        boolean isOK;
+        this.mCasing = 0;
+        this.mBlockTier = -1;
+
+        if (this.isSuccessful) {
+            isOK = this.checkPiece(STRUCTURE_PIECE_MAIN_SUCCESSFUL, 1, 6, 0);
+        } else {
+            isOK = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
+        }
 
         List<MTEHatch> energyHatches = this.getExoticAndNormalEnergyHatchList();
         for (MTEHatch hatch : energyHatches) {
@@ -491,28 +417,16 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             this.activatePiston();
             return true;
         }
+
+        this.isSuccessful = false;
         this.resetPiston(pistonTier);
         return false;
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEElectricImplosionCompressor(this.mName);
+    public void onBlockDestroyed() {
+        this.resetPiston(this.mBlockTier);
+        super.onBlockDestroyed();
     }
 
     @Override
@@ -544,13 +458,15 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
+        this.isSuccessful = false;
         this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 6, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
+        this.isSuccessful = false;
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -580,6 +496,18 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
-        resetPiston(mBlockTier);
+        resetPiston(this.mBlockTier);
+    }
+
+    private String createParallelText(EnumChatFormatting blockColor, String block, int parallels) {
+        return String.format(
+            "%s%s%s : %s%d%s %s",
+            blockColor,
+            block,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            parallels,
+            EnumChatFormatting.GRAY,
+            parallels == 1 ? "Parallel" : "Parallels");
     }
 }

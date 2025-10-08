@@ -93,6 +93,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
     private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
+    public static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
     private final int MACHINE_LIST_WINDOW_ID = 10;
     private final int CUSTOM_NAME_WINDOW_ID = 11;
     private static final int CASINGS_MIN = 85;
@@ -121,7 +122,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         .addElement(
             'C',
             buildHatchAdder(MTEDroneCentre.class).atLeast(InputBus)
-                .casingIndex(59)
+                .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTEDroneCentre::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 2))))
         .addElement('A', chainAllGlasses())
@@ -148,23 +149,25 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (getBaseMetaTileEntity().isActive()) {
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
-                    .addIcon(ACTIVE)
-                    .extFacing()
-                    .build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder()
+                        .addIcon(ACTIVE)
+                        .extFacing()
+                        .build() };
             } else {
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
-                    .addIcon(INACTIVE)
-                    .extFacing()
-                    .build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder()
+                        .addIcon(INACTIVE)
+                        .extFacing()
+                        .build() };
             }
         } else if (side == aFacing.getOpposite()) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
                 .addIcon(FACE)
                 .extFacing()
                 .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     @Override
@@ -182,13 +185,13 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Drone Centre")
             .addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
-            .addInfo("Monitors multiblock machines in range.")
-            .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
-            .addInfo("Provides maintenance, power control, monitoring and etc.")
+            .addInfo("Monitors multiblock machines in range")
+            .addInfo("Replace maintenance hatch on other multi with drone downlink module")
+            .addInfo("Provides maintenance, power control, monitoring, and more")
             .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
-            .addInfo("Place drones in input bus; only one needed to operate.")
-            .addInfo("Automatically upgrade based on the drone level in the input bus.")
-            .addInfo("There is a chance per second that the drone will crash.")
+            .addInfo("Place drones in input bus; only one needed to operate")
+            .addInfo("Automatically upgrade based on the drone level in the input bus")
+            .addInfo("There is a chance per second that the drone will crash")
             .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
             .addInfo("If machine is too far, remote control would not available")
             .beginStructureBlock(5, 4, 9, false)
@@ -211,7 +214,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     public int survivalConstruct(ItemStack stack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stack, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("main", stack, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -219,11 +222,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         // I don't think a drone can take off HORIZONTALLY!
         return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
             && !f.isVerticallyFliped();
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     private void onCasingAdded() {
@@ -237,13 +235,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         useRender = !useRender;
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation(
@@ -253,11 +247,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         } else {
             destroyRenderBlock();
         }
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
     }
 
     @Override
@@ -286,8 +275,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                     endRecipeProcessing();
                 }
             }
-            // Clean invalid connections every 4 seconds
-            if (aTick % 80 == 0) connectionList.removeIf(v -> !v.isValid());
         }
         if (mMaxProgresstime > 0 && mMaxProgresstime - mProgresstime == 1) destroyRenderBlock();
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -335,11 +322,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.droneLevel")
-                + tag.getInteger("droneLevel"));
+            EnumChatFormatting.AQUA + StatCollector
+                .translateToLocalFormatted("GT5U.waila.drone_downlink.droneLevel", tag.getInteger("droneLevel")));
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.waila.drone_downlink.connectionCount")
-                + tag.getInteger("connectionCount"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.drone_downlink.connectionCount",
+                tag.getInteger("connectionCount")));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
@@ -457,34 +445,28 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     private void createRenderBlock() {
         if (!useRender) return;
-        int x = getBaseMetaTileEntity().getXCoord();
-        int y = getBaseMetaTileEntity().getYCoord();
-        int z = getBaseMetaTileEntity().getZCoord();
+        int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
-        double xOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTechAPI.sDroneRender);
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        if (world.isAirBlock(x, y, z)) {
+            world.setBlock(x, y, z, GregTechAPI.sDroneRender);
+        }
     }
 
     private void destroyRenderBlock() {
-        int x = getBaseMetaTileEntity().getXCoord();
-        int y = getBaseMetaTileEntity().getYCoord();
-        int z = getBaseMetaTileEntity().getZCoord();
+        int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
-        double xOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        if (world.getBlock(x, y, z)
+            .equals(GregTechAPI.sDroneRender)) {
+            world.setBlock(x, y, z, Blocks.air);
+        }
     }
 
     @Override

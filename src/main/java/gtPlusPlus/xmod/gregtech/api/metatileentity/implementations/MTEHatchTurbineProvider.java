@@ -17,10 +17,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
@@ -152,11 +152,12 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer != null) {
             if (KeyboardUtils.isCtrlKeyDown()) {
                 mDescending = !mDescending;
-                PlayerUtils.messagePlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
+                GTUtility.sendChatToPlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
             } else {
                 int aAmount = 0;
                 if (KeyboardUtils.isShiftKeyDown()) {
@@ -175,7 +176,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                         mRefreshTime = 0;
                     }
                 }
-                PlayerUtils.messagePlayer(aPlayer, "Set check time to be every " + mRefreshTime + " ticks.");
+                GTUtility.sendChatToPlayer(aPlayer, "Set check time to be every " + mRefreshTime + " ticks.");
             }
         }
     }
@@ -188,7 +189,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (isItemStackScrewdriver(aPlayer.getHeldItem())) {
                     aDidScrewdriver = true;
                     mRefreshTime = 1200;
-                    PlayerUtils.messagePlayer(aPlayer, "Reset check time to " + mRefreshTime + " ticks.");
+                    GTUtility.sendChatToPlayer(aPlayer, "Reset check time to " + mRefreshTime + " ticks.");
                 }
             }
         }

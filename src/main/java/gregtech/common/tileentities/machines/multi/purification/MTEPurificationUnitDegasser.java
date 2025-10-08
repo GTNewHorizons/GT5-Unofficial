@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -110,9 +111,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private static final int STRUCTURE_Z_OFFSET = 1;
 
     // Supplier because werkstoff loads later than multiblock controllers... fml
-    private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] { Materials.Helium.getGas(10000L),
-        WerkstoffLoader.Neon.getFluidOrGas(7500), WerkstoffLoader.Krypton.getFluidOrGas(5000),
-        WerkstoffLoader.Xenon.getFluidOrGas(2500) };
+    private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] { Materials.Helium.getGas(10_000),
+        WerkstoffLoader.Neon.getFluidOrGas(7_500), WerkstoffLoader.Krypton.getFluidOrGas(5_000),
+        WerkstoffLoader.Xenon.getFluidOrGas(2_500) };
 
     private static final class SuperconductorMaterial {
 
@@ -125,7 +126,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         }
     }
 
-    private static final long SUPERCON_FLUID_AMOUNT = 1440L;
+    private static final long SUPERCON_FLUID_AMOUNT = 10 * INGOTS;
 
     private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
         new SuperconductorMaterial(Materials.Longasssuperconductornameforuvwire.getMolten(SUPERCON_FLUID_AMOUNT), 1.0f),
@@ -136,8 +137,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         new SuperconductorMaterial(Materials.SuperconductorUIVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.75f),
         new SuperconductorMaterial(Materials.SuperconductorUMVBase.getMolten(SUPERCON_FLUID_AMOUNT), 2.0f), };
 
-    private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(4608L);
-    private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10000L);
+    private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(32 * INGOTS);
+    private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10_000);
 
     private static final long CONSUME_INTERVAL = 20;
 
@@ -266,7 +267,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -293,16 +294,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "At the start of the operation, the " + EnumChatFormatting.WHITE
                     + "Degasser Control Hatch"
                     + EnumChatFormatting.GRAY
-                    + " will output a redstone signal.")
-            .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal.")
-            .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15.")
-            .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
+                    + " will output a redstone signal")
+            .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal")
+            .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15")
+            .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -314,12 +315,12 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
                     + "inert gas"
                     + EnumChatFormatting.GRAY
-                    + " into the machine.")
+                    + " into the machine")
             .addInfo(
                 "To determine which gas to insert, interpret bits " + EnumChatFormatting.WHITE
                     + "2-3"
                     + EnumChatFormatting.GRAY
-                    + " as a 2-bit number.")
+                    + " as a 2-bit number")
             .addInfo(
                 EnumChatFormatting.GRAY + "0: "
                     + EnumChatFormatting.RED
@@ -359,7 +360,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "1440L "
                     + EnumChatFormatting.WHITE
                     + "Molten Superconductor Base.")
-            .addInfo("Using higher tier superconductor provides bonus output.")
+            .addInfo("Using higher tier superconductor provides bonus output")
             .addInfo(
                 "Output multiplier: " + EnumChatFormatting.DARK_GREEN
                     + "UV"
@@ -412,9 +413,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
                     + "4608L "
                     + EnumChatFormatting.WHITE
-                    + "Molten Neutronium"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Molten Neutronium")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -426,7 +425,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on," + EnumChatFormatting.RED
                     + " DISREGARD "
                     + EnumChatFormatting.GRAY
-                    + "all other bits and do not insert anything.")
+                    + "all other bits and do not insert anything")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -434,15 +433,15 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
                     + "Machine Overload")
-            .addInfo("In rare cases, the machine may overload and output no control signal at all.")
+            .addInfo("In rare cases, the machine may overload and output no control signal at all")
             .addInfo(
                 "To prevent machine damage, insert " + EnumChatFormatting.RED
                     + "10000L "
                     + EnumChatFormatting.WHITE
                     + "Super Coolant.")
             .addSeparator()
-            .addInfo("The recipe can only succeed if the entire signal is decoded correctly.")
-            .addInfo("Inserting any fluid not requested by the signal will always void the recipe.")
+            .addInfo("The recipe can only succeed if the entire signal is decoded correctly")
+            .addInfo("Inserting any fluid not requested by the signal will always void the recipe")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -673,7 +672,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack waterOutput = mOutputFluids[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
-                (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
+                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
@@ -686,11 +685,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         } else {
             return 0.0f;
         }
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -762,14 +756,14 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     private static String generateInfoStringForBit(int i, ControlBitStatus status) {
-        String base = StatCollector.translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1));
-        if (status.satisfied) {
-            return base + EnumChatFormatting.GREEN
-                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok");
-        } else {
-            return base + EnumChatFormatting.RED
+        String statusText = status.satisfied
+            ? EnumChatFormatting.GREEN
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok")
+            : EnumChatFormatting.RED
                 + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
-        }
+
+        return StatCollector
+            .translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1), statusText);
     }
 
     @Override

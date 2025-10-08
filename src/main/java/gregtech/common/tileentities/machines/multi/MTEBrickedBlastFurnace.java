@@ -12,6 +12,7 @@ import static gregtech.api.util.GTWaila.getMachineProgressString;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -25,10 +26,11 @@ import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -49,6 +51,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -73,6 +76,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -108,6 +112,9 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     public int mUpdate = 5;
     public int mProgresstime = 0;
     public boolean mMachine = false;
+
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop activitySoundLoop;
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
 
@@ -145,7 +152,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             tooltipBuilder.addMachineType("Blast Furnace, BBF")
                 .addInfo("Usable for Steel and general Pyrometallurgy")
                 .addInfo("Has a useful interface, unlike other gregtech multis")
-                .addPollutionAmount(GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
+                .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 4, 3, true)
                 .addController("Front center")
                 .addOtherStructurePart("Firebricks", "Everything except the controller")
@@ -280,16 +287,23 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         final int lavaX = aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1);
         final int lavaZ = aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1);
-        if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            if (aBaseMetaTileEntity.isActive() && activitySoundLoop == null) {
+                updateSound(aBaseMetaTileEntity);
+            } else if (!aBaseMetaTileEntity.isActive() && activitySoundLoop != null) {
+                activitySoundLoop = null;
+            }
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
-                .setIdentifier(ParticleFX.LARGE_SMOKE)
-                .setPosition(
-                    lavaX + XSTR_INSTANCE.nextFloat(),
-                    aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
-                    lavaZ + XSTR_INSTANCE.nextFloat())
-                .setWorld(getBaseMetaTileEntity().getWorld())
-                .run();
+            if (aBaseMetaTileEntity.isActive()) {
+                new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
+                    .setIdentifier(ParticleFX.LARGE_SMOKE)
+                    .setPosition(
+                        lavaX + XSTR_INSTANCE.nextFloat(),
+                        aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
+                        lavaZ + XSTR_INSTANCE.nextFloat())
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .run();
+            }
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mUpdated) {
@@ -317,9 +331,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 }
             }
             if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
-                Pollution.addPollution(
-                    this.getBaseMetaTileEntity(),
-                    GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
+                Pollution
+                    .addPollution(this.getBaseMetaTileEntity(), GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
@@ -350,6 +363,18 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateSound(IGregTechTileEntity aBaseMetaTileEntity) {
+        activitySoundLoop = new GTSoundLoop(
+            SoundResource.GTCEU_LOOP_FIRE.resourceLocation,
+            aBaseMetaTileEntity,
+            false,
+            true);
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(activitySoundLoop);
     }
 
     @Override
@@ -570,9 +595,9 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 0);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build()
             .child(
                 SlotGroupWidget.builder()

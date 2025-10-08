@@ -90,13 +90,11 @@ public class OreMixBuilder {
     }
 
     /**
-     * Sets the localized name for the ore mix based on the provided materials.
-     * If more than one material is provided, their localized names are concatenated
-     * with commas, last comma is replaced by "&".
+     * Sets the localized name for the ore mix based on the provided materials. If more than one material is provided,
+     * their localized names are concatenated with commas, last comma is replaced by "&".
      *
-     * @param materials The materials to be used for localization. The first material
-     *                  in the array will be used to represent to ore mix in GUI's.
-     *                  If none are provided the {@link #primary} will be used.
+     * @param materials The materials to be used for localization. The first material in the array will be used to
+     *                  represent to ore mix in GUI's. If none are provided the {@link #primary} will be used.
      */
     public OreMixBuilder localize(Materials... materials) {
         if (materials.length > 1) {
