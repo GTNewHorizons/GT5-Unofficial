@@ -357,16 +357,16 @@ public class GregtechCustomHatches {
 
     private static void run7() {
         GregtechItemList.Hatch_Extrusion_I.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_I.ID, "hatch.extrusion.tier.05", "Extrusion Hatch I", 5)
+            new MTEHatchExtrusion(Hatch_Extrusion_I.ID, "hatch.extrusion.tier.05", "Extrusion Bus I", 5)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Extrusion_II.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_II.ID, "hatch.extrusion.tier.06", "Extrusion Hatch II", 6)
+            new MTEHatchExtrusion(Hatch_Extrusion_II.ID, "hatch.extrusion.tier.06", "Extrusion Bus II", 6)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Extrusion_III.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_III.ID, "hatch.extrusion.tier.07", "Extrusion Hatch III", 7)
+            new MTEHatchExtrusion(Hatch_Extrusion_III.ID, "hatch.extrusion.tier.07", "Extrusion Bus III", 7)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Extrusion_IV.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_IV.ID, "hatch.extrusion.tier.08", "Extrusion Hatch IV", 8)
+            new MTEHatchExtrusion(Hatch_Extrusion_IV.ID, "hatch.extrusion.tier.08", "Extrusion Bus IV", 8)
                 .getStackForm(1L));
     }
 }
