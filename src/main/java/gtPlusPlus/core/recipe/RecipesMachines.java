@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
@@ -1130,7 +1131,18 @@ public class RecipesMachines {
             "craftingPiston",
             aBronzeBricks,
             GregtechItemList.Controller_SteamCompressorMulti.get(1));
-
+        // Steam Furnace Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 1),
+            MaterialsAlloy.TUMBAGA.getGear(1),
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 1),
+            EtFuturumRequiem.isModLoaded() ? getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0) : aBronzeBricks,
+            ItemList.Machine_HP_Furnace.get(1),
+            EtFuturumRequiem.isModLoaded() ? getModItem(EtFuturumRequiem.ID, "smoker", 1, 0) : aBronzeBricks,
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 1),
+            MaterialsAlloy.TUMBAGA.getFrameBox(1),
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 1),
+            GregtechItemList.Controller_SteamFurnaceMulti.get(1));
         // Steam Hatch
         RecipeUtils.addShapedGregtechRecipe(
             "plateBronze",
@@ -1284,9 +1296,9 @@ public class RecipesMachines {
             plateBronze,
             plateBronze,
             plateBronze,
-            "frameGtBronze",
+            "frameGtTPVAlloy",
             CI.gearboxCasing_Tier_1,
-            "frameGtBronze",
+            "frameGtTPVAlloy",
             plateBronze,
             plateBronze,
             plateBronze,
@@ -1296,9 +1308,9 @@ public class RecipesMachines {
             plateSteel,
             plateSteel,
             plateSteel,
-            "frameGtSteel",
+            "frameGtHSSS",
             CI.gearboxCasing_Tier_2,
-            "frameGtSteel",
+            "frameGtHSSS",
             plateSteel,
             plateSteel,
             plateSteel,
@@ -1575,7 +1587,7 @@ public class RecipesMachines {
             "plateDoubleGrisium",
             RECIPE_IndustrialMultiTankController);
 
-        // Semi-Fluid Generators
+        // Semifluid Generators
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(14),
@@ -1983,7 +1995,7 @@ public class RecipesMachines {
 
         }
 
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             RecipeUtils.addShapedGregtechRecipe(
                 "plateCarbon",
                 "plateCarbon",
@@ -2206,9 +2218,9 @@ public class RecipesMachines {
             MaterialsAlloy.OCTIRON.getPlate(1),
             ItemList.FluidRegulator_UHV.get(1),
             MaterialsAlloy.OCTIRON.getPlate(1),
-            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
+            "circuitInfinite",
             ItemList.Hatch_Input_UHV.get(1),
-            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
+            "circuitInfinite",
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1));
 
         // Thorium Reactor
@@ -2228,6 +2240,8 @@ public class RecipesMachines {
             ItemList.Hull_IV.get(1),
             "plateThorium232",
             RECIPE_LFTRController);
+
+        // Reactor Shield Casing
         RecipeUtils.addShapedGregtechRecipe(
             "plateDoubleHastelloyC276",
             ToolDictNames.craftingToolScrewdriver.name(),
@@ -2239,7 +2253,17 @@ public class RecipesMachines {
             ToolDictNames.craftingToolHardHammer.name(),
             "plateDoubleHastelloyC276",
             RECIPE_LFTRInnerCasing);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.HASTELLOY_C276.getPlateDouble(4),
+                MaterialsAlloy.TALONITE.getGear(2),
+                ItemList.Field_Generator_LV.get(1))
+            .itemOutputs(RECIPE_LFTRInnerCasing)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
 
+        // Hastelloy-N Reactor Casing
         ItemStack IC2HeatPlate = getModItem(Mods.IndustrialCraft2.ID, "reactorPlatingHeat", 1);
         RecipeUtils.addShapedGregtechRecipe(
             "plateDoubleHastelloyN",
@@ -2303,6 +2327,15 @@ public class RecipesMachines {
             "plateHastelloyN",
             "plateIncoloyMA956",
             GregtechItemList.Casing_Refinery_External.get(1));
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.HASTELLOY_N.getPlate(4),
+                MaterialsAlloy.INCOLOY_MA956.getPlate(4),
+                MaterialsAlloy.HASTELLOY_C276.getFrameBox(1))
+            .itemOutputs(GregtechItemList.Casing_Refinery_External.get(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
 
         // Hastelloy-X Structural Casing
         RecipeUtils.addShapedGregtechRecipe(
@@ -3032,7 +3065,6 @@ public class RecipesMachines {
             .itemInputs(
                 GregtechItemList.Casing_Vacuum_Furnace.get(1),
                 CI.getTieredComponent(OrePrefixes.wireGt16, 7, 4),
-                CI.getEnergyCore(5, 1),
                 CI.getRobotArm(4, 4),
                 CI.getTieredComponent(OrePrefixes.plate, 6, 8),
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
@@ -3051,16 +3083,14 @@ public class RecipesMachines {
             .metadata(RESEARCH_ITEM, ItemList.Machine_IV_Macerator.get(1))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
+                GregtechItemList.Casing_IsaMill_Casing.get(4),
                 GregtechItemList.Casing_IsaMill_Gearbox.get(4),
-                CI.getTieredGTPPMachineCasing(6, 4),
                 ItemList.Component_Grinder_Tungsten.get(16),
-                new Object[] { "circuitMaster", 8 },
+                new Object[] { "circuitMaster", 16 },
                 MaterialsAlloy.INCONEL_625.getGear(8),
                 MaterialsAlloy.INCONEL_625.getPlate(32),
                 MaterialsAlloy.ZERON_100.getPlateDouble(16),
-                MaterialsAlloy.ZERON_100.getScrew(64),
-                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 32))
+                MaterialsAlloy.ZERON_100.getScrew(64))
             .fluidInputs(
                 CI.getTieredFluid(6, 16 * INGOTS),
                 CI.getAlternativeTieredFluid(6, 32 * INGOTS),
@@ -3076,9 +3106,7 @@ public class RecipesMachines {
                 GTUtility.getIntegratedCircuit(7),
                 ItemList.Casing_Gearbox_Titanium.get(2),
                 MaterialsAlloy.INCONEL_625.getGear(4),
-                CI.getTieredComponentOfMaterial(Materials.HSSE, OrePrefixes.gearGtSmall, 8),
-                MaterialsAlloy.INCONEL_625.getPlate(16),
-                MaterialsAlloy.ZERON_100.getBolt(16))
+                MaterialsAlloy.INCONEL_625.getPlate(16))
             .itemOutputs(GregtechItemList.Casing_IsaMill_Gearbox.get(1))
             .fluidInputs(MaterialsAlloy.TUNGSTENSTEEL.getFluidStack(8 * INGOTS))
             .duration(2 * MINUTES)
@@ -3088,10 +3116,9 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
-                CI.getTieredGTPPMachineCasing(5, 1),
-                MaterialsAlloy.INCONEL_625.getPlate(8),
+                GregtechItemList.Casing_MacerationStack.get(1),
+                MaterialsAlloy.ZERON_100.getPlateDouble(2),
                 MaterialsAlloy.ZERON_100.getRod(4),
-                CI.getTieredComponentOfMaterial(Materials.HSSG, OrePrefixes.gearGtSmall, 4),
                 MaterialsAlloy.ZERON_100.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_IsaMill_Casing.get(1))
             .fluidInputs(MaterialsElements.getInstance().TITANIUM.getFluidStack(4 * INGOTS))
@@ -3102,11 +3129,11 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
-                CI.getTieredGTPPMachineCasing(4, 2),
-                MaterialsAlloy.INCONEL_625.getPlateDouble(4),
-                MaterialsAlloy.INCOLOY_MA956.getRing(8),
+                GregtechItemList.Casing_IsaMill_Casing.get(1),
+                ItemList.Casing_Item_Pipe_Quantium.get(1),
+                CI.getTieredComponentOfMaterial(Materials.HSSE, OrePrefixes.ring, 8),
                 CI.getTieredComponentOfMaterial(Materials.HSSE, OrePrefixes.plate, 8),
-                MaterialsAlloy.INCOLOY_MA956.getBolt(16))
+                CI.getTieredComponentOfMaterial(Materials.HSSE, OrePrefixes.screw, 8))
             .itemOutputs(GregtechItemList.Casing_IsaMill_Pipe.get(1))
             .fluidInputs(MaterialsElements.getInstance().ALUMINIUM.getFluidStack(8 * INGOTS))
             .duration(8 * MINUTES)
@@ -3118,17 +3145,14 @@ public class RecipesMachines {
             .metadata(RESEARCH_ITEM, ItemList.Distillation_Tower.get(1))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
+                GregtechItemList.Machine_Adv_DistillationTower.get(2),
+                GregtechItemList.Casing_Extruder.get(4L),
                 GregtechItemList.Casing_Flotation_Cell.get(4),
-                CI.getTieredGTPPMachineCasing(5, 4),
-                ItemList.Machine_IV_Distillery.get(1),
-                new Object[] { "circuitMaster", 8 },
+                ItemList.Electric_Pump_LuV.get(4),
                 MaterialsAlloy.STELLITE.getGear(8),
                 MaterialsAlloy.STELLITE.getPlate(32),
                 MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
-                MaterialsAlloy.HASTELLOY_N.getScrew(64),
-                CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
+                MaterialsAlloy.HASTELLOY_N.getScrew(64))
             .fluidInputs(
                 CI.getTieredFluid(5, 16 * INGOTS),
                 CI.getAlternativeTieredFluid(4, 32 * INGOTS),
@@ -3142,11 +3166,11 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
-                CI.getTieredGTPPMachineCasing(4, 1),
-                MaterialsAlloy.AQUATIC_STEEL.getPlate(8),
-                MaterialsAlloy.STELLITE.getRing(8),
+                GregtechItemList.Casing_Extruder.get(4L),
                 CI.getTieredComponentOfMaterial(Materials.HSSG, OrePrefixes.plateDouble, 4),
-                MaterialsAlloy.HASTELLOY_N.getScrew(8))
+                MaterialsAlloy.AQUATIC_STEEL.getPlate(8),
+                MaterialsAlloy.AQUATIC_STEEL.getRing(8),
+                MaterialsAlloy.AQUATIC_STEEL.getRotor(4))
             .itemOutputs(GregtechItemList.Casing_Flotation_Cell.get(1))
             .fluidInputs(MaterialsAlloy.STAINLESS_STEEL.getFluidStack(8 * INGOTS))
             .duration(2 * MINUTES)

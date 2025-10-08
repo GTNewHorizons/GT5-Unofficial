@@ -32,14 +32,18 @@ public class MTEHatchEnergy extends MTEHatch {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
+    public MTEHatchEnergy(String name, int tier, int invSlotCount, String[] description, ITexture[][][] textures) {
+        super(name, tier, invSlotCount, description, textures);
+    }
+
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier + 1] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier + 1] };
     }
 
     @Override

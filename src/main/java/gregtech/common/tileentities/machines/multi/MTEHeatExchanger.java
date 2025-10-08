@@ -75,7 +75,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             'H',
             InputHatch.withAdder(MTEHeatExchanger::addHotFluidInputToMachineList)
                 .withCount(t -> t.mInputHotFluidHatch.isValid() ? 1 : 0)
-                .newAny(CASING_INDEX, 3))
+                .newAny(CASING_INDEX, 2))
         .addElement(
             'c',
             buildHatchAdder(MTEHeatExchanger.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
@@ -114,19 +114,105 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, LHE")
-            .addInfo("More complicated than a Fusion Reactor. Seriously")
-            .addInfo("Inputs are Hot Coolant or Lava")
-            .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
-            .addInfo("Read the wiki article to understand how it works")
-            .addInfo("Then go to the Discord to understand the wiki")
+            .addInfo(
+                "Inputs are" + EnumChatFormatting.RED
+                    + " Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.RED
+                    + " Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.RED
+                    + " Hot Solar Salt")
+            .addInfo(
+                "Outputs are" + EnumChatFormatting.BLUE
+                    + " Pahoehoe Lava"
+                    + EnumChatFormatting.GRAY
+                    + ","
+                    + EnumChatFormatting.BLUE
+                    + " IC2 Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ", or"
+                    + EnumChatFormatting.BLUE
+                    + " Cold Solar Salt")
+            .addInfo(
+                "Converts Distilled Water into" + EnumChatFormatting.WHITE
+                    + " Steam"
+                    + EnumChatFormatting.GRAY
+                    + " or"
+                    + EnumChatFormatting.WHITE
+                    + " SH Steam"
+                    + EnumChatFormatting.GRAY
+                    + " in the process")
+            .addInfo(
+                "Outputs" + EnumChatFormatting.WHITE
+                    + " SH Steam"
+                    + EnumChatFormatting.GRAY
+                    + " if the input rate of hot fluid is above a certain"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " threshold")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.RED + "Lava"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 1,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 2,000 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 160,000 SH Steam/s")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 800 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 1,600 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 320,000 SH Steam/s")
+            .addInfo(
+                EnumChatFormatting.RED + "Hot Solar Salt"
+                    + EnumChatFormatting.GRAY
+                    + " : SH Threshold"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + " 160 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Input"
+                    + EnumChatFormatting.RED
+                    + " 320 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " : Max Output"
+                    + EnumChatFormatting.WHITE
+                    + " 320,000 SH Steam/s")
+            .addSeparator()
+            .addInfo("A circuit in the controller lowers the SH threshold at the cost of steam")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "3.75%"
+                    + EnumChatFormatting.GRAY
+                    + " reduced SH threshold and"
+                    + EnumChatFormatting.WHITE
+                    + " 1.5%"
+                    + EnumChatFormatting.GRAY
+                    + " reduced steam per circuit over 1")
             .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
+            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
             .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
             .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot fluid, bottom center", 2)
+            .addInputHatch("Hot Fluid, bottom center casing", 2)
             .addInputHatch("Distilled water, any casing", 1)
-            .addOutputHatch("Cold fluid, top center", 3)
+            .addOutputHatch("Cold Fluid, top center casing", 3)
             .addOutputHatch("Steam/SH Steam, any casing", 1)
             .toolTipFinisher();
         return tt;

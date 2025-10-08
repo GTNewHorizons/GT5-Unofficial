@@ -18,6 +18,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -61,7 +64,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 "Use Soft Mallet to disable and retract the pipe",
                 String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
                 String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                String.format("Fortune bonus of %d", aTier) },
+                String.format("Small ore fortune bonus of %d", aTier) },
             2,
             2,
             TextureFactory.of(
@@ -403,5 +406,11 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
         return super.getUIProperties().toBuilder()
             .progressBarTexture(progressBarTexture)
             .build();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_MINER;
     }
 }

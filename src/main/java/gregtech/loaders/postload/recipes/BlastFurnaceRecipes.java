@@ -28,6 +28,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BlastFurnaceRecipes implements Runnable {
 
     @Override
@@ -48,7 +49,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         // Carbothermic Reduction
         // Depend on real amount except real ores
-        int outputIngotAmount = GTMod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
+        int outputIngotAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.RoastedCopper.getDust(2), Materials.Carbon.getDust(1))
@@ -230,7 +231,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
-        if (GTMod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
+        if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.CupricOxide.getDust(2), Materials.Carbon.getDustSmall(4))
                 .itemOutputs(Materials.Copper.getIngots(1), Materials.Ash.getDust(1))

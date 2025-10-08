@@ -41,6 +41,7 @@ import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfinityRenderer;
+import gregtech.common.render.items.RainbowOverlayRenderer;
 import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
@@ -264,7 +265,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Emery;
     public static Materials EnderiumBase;
     public static Materials Energized;
-    public static Materials Epidote;
     public static Materials Eximite;
     public static Materials FierySteel;
     public static Materials Firestone;
@@ -986,6 +986,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HellishMetal;
     public static Materials Netherite;
     public static Materials ActivatedNetherite;
+    public static Materials PrismarineSolution;
+    public static Materials PrismarineContaminatedHydrogenPeroxide;
+    public static Materials PrismarineRichNitrobenzeneSolution;
+    public static Materials PrismarineContaminatedNitrobenzeSolution;
+    public static Materials PrismaticGas;
+    public static Materials PrismaticAcid;
+    public static Materials PrismaticNaquadah;
+    public static Materials PrismaticNaquadahCompositeSlurry;
 
     // Misc GT Magic Materials
     public static Materials ComplexityCatalyst;
@@ -1482,8 +1490,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setOthers() {
         Mercury.add(SubTag.SMELTING_TO_GEM);
-        BandedIron.setOreReplacement(RoastedIron);
-        Garnierite.setOreReplacement(RoastedNickel);
     }
 
     private static void setDirectSmelting() {
@@ -2069,7 +2075,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7Ni4Ti6)";
-        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
+        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
+            + CustomGlyphs.SUBSCRIPT0
+            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
         SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083"
             + CustomGlyphs.FIRE
             + CustomGlyphs.EARTH
@@ -2101,7 +2109,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + EnumChatFormatting.OBFUSCATED
             + "X";
         MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
-        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081\u2080Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085"
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081" + CustomGlyphs.SUBSCRIPT0
+            + "Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085"
             + CustomGlyphs.SUBSCRIPT0
             + "C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
             + CustomGlyphs.SUBSCRIPT0
@@ -2132,7 +2141,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         Materials.HellishMetal.mChemicalFormula = "RhMa";
-        Materials.Netherite.mChemicalFormula = "NhAuMa*";
+        Materials.Netherite.mChemicalFormula = "NrAuMa*";
+        MaterialsUEVplus.BiocatalyzedPropulsionFluid.mChemicalFormula = "ඞ";
     }
 
     private static void initSubTags() {
@@ -2705,7 +2715,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         new ProcessingConfig();
-        if (!GTMod.gregtechproxy.mEnableAllMaterials) new ProcessingModSupport();
+        if (!GTMod.proxy.mEnableAllMaterials) new ProcessingModSupport();
         mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate
         // materials
         initMaterialProperties(); // No more material addition or manipulation should be done past this point!
@@ -2743,6 +2753,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotExoHalkonite);
@@ -2764,6 +2775,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
         MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
         MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -2841,17 +2853,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void addHarvestLevelNerfs(Materials aMaterial) {
         /* Moved the harvest level changes from GTMod to have fewer things iterating over MATERIALS_ARRAY */
-        if (GTMod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
-            && aMaterial.mMetaItemSubID < GTMod.gregtechproxy.mHarvestLevel.length
+        if (GTMod.proxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
+            && aMaterial.mMetaItemSubID < GTMod.proxy.mHarvestLevel.length
             && aMaterial.mMetaItemSubID >= 0) {
-            GTMod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
+            GTMod.proxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
         }
     }
 
     private static void addHarvestLevels() {
-        GTMod.gregtechproxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
-        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
-        GTMod.gregtechproxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
+        GTMod.proxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
+        GTMod.proxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
+        GTMod.proxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {

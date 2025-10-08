@@ -344,9 +344,12 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                     .setPos(8, 8)
                     .setSize(77, 12))
-                .widget(new TextWidget("Capacity").setPos(88, 10))
                 .widget(
-                    new VanillaButtonWidget().setDisplayString("Confirm")
+                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
+                        .setPos(88, 10))
+                .widget(
+                    new VanillaButtonWidget()
+                        .setDisplayString(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))
                         .setOnClick((clickData, widget) -> {
                             capacityWidget.onRemoveFocus();
                             widget.getWindow()

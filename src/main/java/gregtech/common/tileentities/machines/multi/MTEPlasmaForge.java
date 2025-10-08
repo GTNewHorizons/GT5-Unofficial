@@ -588,9 +588,14 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
                     + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(100 * maximum_discount)
-                    + "%"
+                    + "%")
+            .addInfo(
+                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
+                    + GTUtility.formatNumbers(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
-                    + ".")
+                    + " as fast as it builds up, draining")
+            .addInfo("the total amount of stored runtime")
+            .addSeparator()
             .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
             .addInfo(
                 "allowing " + EnumChatFormatting.GOLD
@@ -601,7 +606,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 "a " + EnumChatFormatting.AQUA
                     + "Transdimensional Alignment Matrix "
                     + EnumChatFormatting.GRAY
-                    + "must be placed in the controller.")
+                    + "must be placed in the controller")
             .addInfo(
                 "When " + EnumChatFormatting.GOLD
                     + "Convergence "
@@ -611,26 +616,18 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + "Perfect Overclocks"
                     + EnumChatFormatting.GRAY
                     + ",")
-            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts.")
-            .addInfo(
-                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(efficiency_decay_rate)
-                    + EnumChatFormatting.GRAY
-                    + " as fast as it builds up, draining")
-            .addInfo("the total amount of stored runtime.")
+            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
-            .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "1,270"
-                    + EnumChatFormatting.GRAY
-                    + " Dimensional injection casings required.")
+                EnumChatFormatting.GOLD + "1,270" + EnumChatFormatting.GRAY + " Dimensional injection casings required")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "2,121"
                     + EnumChatFormatting.GRAY
-                    + " Dimensionally transcendent casings required.")
+                    + " Dimensionally transcendent casings required")
             .addStructureInfo("")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
@@ -644,7 +641,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " TT energy hatch.")
+                    + " TT energy hatch")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + min_input_hatch
@@ -653,7 +650,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GOLD
                     + max_input_hatch
                     + EnumChatFormatting.GRAY
-                    + " input hatches.")
+                    + " input hatches")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + min_output_hatch
@@ -662,7 +659,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GOLD
                     + max_output_hatch
                     + EnumChatFormatting.GRAY
-                    + " output hatches.")
+                    + " output hatches")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + min_input_bus
@@ -671,7 +668,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GOLD
                     + max_input_bus
                     + EnumChatFormatting.GRAY
-                    + " input buses.")
+                    + " input buses")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + min_output_bus
@@ -680,7 +677,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GOLD
                     + max_input_bus
                     + EnumChatFormatting.GRAY
-                    + " output buses.")
+                    + " output buses")
             .addStructureInfo("")
             .toolTipFinisher(AuthorColen);
         return tt;
@@ -1023,9 +1020,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         FluidStack validFuelStack = recipe.mFluidInputs[fuelIndex];
         Fluid validFuel = validFuelStack.getFluid();
 
-        long numberOfOverclocks = (long) (Math.log((double) getMaxInputEu() / recipe.mEUt) / Math.log(4));
+        long numberOfOverclocks = GTUtility.log4(getMaxInputEu() / recipe.mEUt);
         long machineConsumption = recipe.mEUt * (1L << (2 * numberOfOverclocks));
-        double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
+        double recipeDuration = recipe.mDuration / GTUtility.powInt(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) (((1L << numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
         extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
@@ -1037,6 +1034,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         enoughCatalyst = true;
         int needed = (validFuelStack.amount + extraCatalystNeeded) / 2;
         for (FluidStack stack : inputFluids) {
+            if (needed <= 0) {
+                break;
+            }
+
             if (stack.isFluidEqual(validFuelStack)) {
                 needed -= stack.amount;
             }

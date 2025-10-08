@@ -698,15 +698,6 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_IV)
             .addTo(laserEngraverRecipes);
 
-        // Distillus Upgrade Chip
-        RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Laser_Lens_WoodsGlass.get(0),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 1L))
-            .itemOutputs(GregtechItemList.Distillus_Upgrade_Chip.get(1))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(laserEngraverRecipes);
     }
 
     private static void breweryRecipes() {
@@ -1997,7 +1988,7 @@ public class RecipesGregTech {
             ItemStack handPump = GregtechItemList.ExpandableHandPump.get(1);
             ItemStack pumpWithNBT = handPump.copy();
             NBTTagCompound nbt = new NBTTagCompound();
-            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) Math.pow(2, i);
+            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) GTUtility.powInt(2, i);
             nbt.setInteger("mMeta", 4);
             nbt.setBoolean("mInit", true);
             nbt.setString("mFluid", "@@@@@");

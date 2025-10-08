@@ -4,7 +4,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.G_T_PLUS_PLUS, configSubDirectory = "GTPlusPlus", category = "asm", filename = "ASM")
+@Config(modid = Mods.ModIDs.G_T_PLUS_PLUS, configSubDirectory = "GTPlusPlus", category = "asm", filename = "ASM")
 @Config.LangKeyPattern(pattern = "gtpp.gui.config.%cat.%field", fullyQualified = true)
 @Config.Comment("ASM section")
 @Config.RequiresMcRestart

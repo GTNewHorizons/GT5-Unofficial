@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -178,5 +179,16 @@ public class BlockTEContainer extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
         return null;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
+        super.onBlockPlacedBy(worldIn, x, y, z, placer, itemIn);
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof MTEEssentiaOutputHatchME hatchME) {
+            hatchME.getProxy()
+                .setOwner((EntityPlayer) placer);
+        }
+
     }
 }

@@ -43,6 +43,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -81,10 +82,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -215,12 +214,22 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor, EIC")
-            .addInfo("Explosions are fun")
+            .addInfo("Explosions are fun!")
             .addInfo("Uses electricity instead of Explosives")
-            .addInfo("Can parallel up to 4^(Tier - 1)")
-            .addInfo("Tier is determined by containment block")
-            .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
-            .addInfo("Minimum allowed energy hatch tier is one below recipe tier")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Parallels"
+                    + EnumChatFormatting.GRAY
+                    + " are determined by "
+                    + EnumChatFormatting.WHITE
+                    + "Containment Block"
+                    + EnumChatFormatting.GRAY
+                    + " Tier")
+            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
+            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
+            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
+            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+            .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
@@ -246,22 +255,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // For overclocking we'll allow all power to be used
-                return super.createOverclockCalculator(recipe)
-                    .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
-                    .setAmperage(1);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0));
+        return (int) GTUtility.powInt(4, Math.max(this.mBlockTier - 1, 0));
     }
 
     private void updateChunkCoordinates() {
@@ -296,7 +295,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         if (pistonEnabled && aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
             if (aBaseMetaTileEntity.isClientSide()) this.animatePiston(aBaseMetaTileEntity);
-            else if (aBaseMetaTileEntity.hasMufflerUpgrade()) GTValues.NW.sendPacketToAllPlayersInRange(
+            else if (aBaseMetaTileEntity.isMuffled()) GTValues.NW.sendPacketToAllPlayersInRange(
                 aBaseMetaTileEntity.getWorld(),
                 new PacketEIC(
                     new Coords(
@@ -358,7 +357,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (!aBaseMetaTileEntity.getWorld().isRemote) return;
 
         if (!this.getBaseMetaTileEntity()
-            .hasMufflerUpgrade())
+            .isMuffled())
             GTUtility.doSoundAtClient(
                 sound,
                 10,
@@ -498,5 +497,17 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
         resetPiston(this.mBlockTier);
+    }
+
+    private String createParallelText(EnumChatFormatting blockColor, String block, int parallels) {
+        return String.format(
+            "%s%s%s : %s%d%s %s",
+            blockColor,
+            block,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GOLD,
+            parallels,
+            EnumChatFormatting.GRAY,
+            parallels == 1 ? "Parallel" : "Parallels");
     }
 }

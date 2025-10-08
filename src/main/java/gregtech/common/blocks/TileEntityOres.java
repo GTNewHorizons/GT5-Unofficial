@@ -43,13 +43,13 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
         byte tByte = aMaterial == null ? 0
             : (byte) Math
                 .max(aBaseBlockHarvestLevel, Math.min(7, aMaterial.mToolQuality - (aMetaData < 16000 ? 0 : 1)));
-        if (GTMod.gregtechproxy.mChangeHarvestLevels) {
+        if (GTMod.proxy.mChangeHarvestLevels) {
             tByte = aMaterial == null ? 0
                 : (byte) Math.max(
                     aBaseBlockHarvestLevel,
                     Math.min(
-                        GTMod.gregtechproxy.mMaxHarvestLevel,
-                        GTMod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] - (aMetaData < 16000 ? 0 : 1)));
+                        GTMod.proxy.mMaxHarvestLevel,
+                        GTMod.proxy.mHarvestLevel[aMaterial.mMetaItemSubID] - (aMetaData < 16000 ? 0 : 1)));
         }
         return tByte;
     }
@@ -311,11 +311,11 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
             // Dense ore
 
             // NetherOre
-            if (GTMod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+            if (GTMod.proxy.mNetherOreYieldMultiplier && !tIsRich) {
                 tIsRich = (this.mMetaData >= 1000 && this.mMetaData < 2000);
             }
             // EndOre
-            if (GTMod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
+            if (GTMod.proxy.mEndOreYieldMultiplier && !tIsRich) {
                 tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
             }
 
@@ -324,7 +324,7 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
                 rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
 
             } else {
-                switch (GTMod.gregtechproxy.oreDropSystem) {
+                switch (GTMod.proxy.oreDropSystem) {
                     case Item -> {
                         rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
                     }

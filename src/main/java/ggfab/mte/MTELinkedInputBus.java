@@ -126,10 +126,12 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     .build()
                     .setPos(7, 24))
             .widget(
-                new TextWidget(new Text("Private")).setPos(110, 3)
+                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.private")))
+                    .setPos(110, 3)
                     .setSize(43, 20))
             .widget(
-                new TextWidget(new Text("Channel")).setPos(5, 3)
+                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.channel")))
+                    .setPos(5, 3)
                     .setSize(43, 20));
     }
 
@@ -429,7 +431,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         ItemStack stick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        if (!stick.hasTagCompound() || !COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("ggfab.type"))) {
+        if (!stick.hasTagCompound() || (!COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("ggfab.type"))
+            && !COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("type")))) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
         }

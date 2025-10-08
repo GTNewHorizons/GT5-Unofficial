@@ -9,13 +9,16 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class BTF_Inventory implements ISidedInventory {
 
-    public final ItemStack[] mInventory;
+    public final ItemStack @NotNull [] mInventory;
     public final TileEntityBase mTile;
 
     public BTF_Inventory(int aSlots, TileEntityBase tile) {
@@ -23,7 +26,7 @@ public class BTF_Inventory implements ISidedInventory {
         this.mTile = tile;
     }
 
-    public ItemStack[] getRealInventory() {
+    public ItemStack @NotNull [] getRealInventory() {
         purgeNulls();
         return this.mInventory;
     }
@@ -34,7 +37,7 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     @Override
-    public ItemStack getStackInSlot(int aIndex) {
+    public @Nullable ItemStack getStackInSlot(int aIndex) {
         return aIndex >= 0 && aIndex < this.mInventory.length ? this.mInventory[aIndex] : null;
     }
 
@@ -68,7 +71,7 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     @Override
-    public ItemStack decrStackSize(int aIndex, int aAmount) {
+    public @Nullable ItemStack decrStackSize(int aIndex, int aAmount) {
         ItemStack tStack = this.getStackInSlot(aIndex);
         ItemStack rStack = GTUtility.copy(new Object[] { tStack });
         if (tStack != null) {
@@ -110,7 +113,7 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
+    public boolean canInsertItem(int aIndex, @Nullable ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
             && aIndex < this.mInventory.length
             && (this.mInventory[aIndex] == null || GTUtility.areStacksEqual(aStack, this.mInventory[aIndex]))
@@ -118,7 +121,7 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
+    public boolean canExtractItem(int aIndex, @Nullable ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
             && aIndex < this.mInventory.length
             && this.allowPullStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
@@ -135,7 +138,7 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int i) {
+    public @Nullable ItemStack getStackInSlotOnClosing(int i) {
         return null;
     }
 
@@ -186,7 +189,7 @@ public class BTF_Inventory implements ISidedInventory {
         return true;
     }
 
-    public boolean addItemStack(ItemStack aInput) {
+    public boolean addItemStack(@Nullable ItemStack aInput) {
         if (aInput != null & (isEmpty() || !isFull())) {
             for (int s = 0; s < this.getSizeInventory(); s++) {
                 ItemStack slot = mInventory[s];

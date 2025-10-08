@@ -492,7 +492,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         return (int) Math.max(
             1,
             ((workState == STATE_DOWNWARD || workState == STATE_AT_BOTTOM || simulateWorking) ? getBaseProgressTime()
-                : 80) / Math.pow(2, tier));
+                : 80) / GTUtility.powInt(2, tier));
     }
 
     private ItemStack[] getOutputByDrops(Collection<ItemStack> oreBlockDrops) {
@@ -504,6 +504,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 return;
             }
             GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                .caching(false)
                 .items(currentItem)
                 .voltage(voltage)
                 .find();
@@ -740,7 +741,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MINER_OP;
+        return SoundResource.GTCEU_LOOP_MINER;
     }
 
     @Override

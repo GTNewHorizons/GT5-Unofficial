@@ -8,6 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -30,6 +31,16 @@ public class ToolMortar extends GTTool {
     }
 
     @Override
+    public String getCraftingSound() {
+        return SoundResource.GTCEU_OP_MORTAR.toString();
+    }
+
+    @Override
+    public String getEntityHitSound() {
+        return SoundResource.GTCEU_OP_MORTAR.toString();
+    }
+
+    @Override
     public boolean isMiningTool() {
         return false;
     }
@@ -46,7 +57,7 @@ public class ToolMortar extends GTTool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Dyes._NULL.mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Dyes._NULL.getRGBA();
     }
 
     @Override

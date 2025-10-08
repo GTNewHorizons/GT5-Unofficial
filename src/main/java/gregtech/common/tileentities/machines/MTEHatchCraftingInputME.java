@@ -8,6 +8,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,7 +46,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidPacket;
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -89,6 +89,7 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -213,13 +214,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         @Override
         public ItemStack[] getItemInputs() {
-            if (isItemEmpty()) return new ItemStack[0];
+            if (isItemEmpty()) return GTValues.emptyItemStackArray;
             return itemInventory.toArray(new ItemStack[0]);
         }
 
         @Override
         public FluidStack[] getFluidInputs() {
-            if (isEmpty()) return new FluidStack[0];
+            if (isEmpty()) return GTValues.emptyFluidStackArray;
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
@@ -232,7 +233,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             GTDualInputPattern dualInputs = new GTDualInputPattern();
 
             ItemStack[] inputItems = this.parentMTE.getSharedItems();
-            FluidStack[] inputFluids = new FluidStack[0];
+            FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
             for (IAEItemStack singleInput : this.getPatternDetails()
                 .getInputs()) {
@@ -267,9 +268,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         /**
          * Try to refund the items and fluids back.
          * <p>
-         * Push all the items and fluids back to the AE network first.
-         * If shouldDrop is true, the remaining are dropped to the world (the fluids are dropped as AE2FC fluid drop).
-         * Otherwise, they are still left in the inventory.
+         * Push all the items and fluids back to the AE network first. If shouldDrop is true, the remaining are dropped
+         * to the world (the fluids are dropped as AE2FC fluid drop). Otherwise, they are still left in the inventory.
          */
         public void refund(AENetworkProxy proxy, BaseActionSource src, boolean shouldDrop) throws GridAccessException {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
@@ -426,6 +426,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     public List<ProcessingLogic> processingLogics = new ArrayList<>();
+    private List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -512,6 +513,30 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public void onColorChangeServer(byte aColor) {
         updateAE2ProxyColor();
+    }
+
+    public void addProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        if (!proxyHatches.contains(proxy)) proxyHatches.add(proxy);
+    }
+
+    public void removeProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        proxyHatches.remove(proxy);
+    }
+
+    public List<MTEHatchCraftingInputSlave> getProxyHatches() {
+        validateProxyHatchList();
+        return Collections.unmodifiableList(proxyHatches);
+    }
+
+    private long lastProxyHatchValidationTime = -1;
+
+    private void validateProxyHatchList() {
+        long currentTime = getBaseMetaTileEntity().getTimer();
+        if (currentTime != lastProxyHatchValidationTime) {
+            proxyHatches
+                .removeIf(hatch -> hatch == null || hatch.getBaseMetaTileEntity() == null || hatch.getMaster() != this);
+            lastProxyHatchValidationTime = currentTime;
+        }
     }
 
     public void updateAE2ProxyColor() {
@@ -729,6 +754,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
+
+        // Sync inventories to ensure that the real inventory matches what AE2 is seeing.
+        for (int i = 0; i < MAX_PATTERN_COUNT; i++) {
+            if (internalInventory[i] == null) continue;
+            mInventory[i] = internalInventory[i].pattern;
+        }
     }
 
     @Override
@@ -860,7 +891,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE)
-                .addTooltips(ImmutableList.of("Place manual items"))
+                .addTooltip(
+                    StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
                 .setSize(16, 16)
                 .setPos(170, 46))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -870,7 +902,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_EXPORT)
-                .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.export"))
                 .setSize(16, 16)
                 .setPos(170, 28))
             .widget(

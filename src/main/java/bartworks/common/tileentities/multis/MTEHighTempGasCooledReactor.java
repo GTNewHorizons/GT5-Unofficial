@@ -15,8 +15,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -34,7 +40,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.items.SimpleSubItemClass;
@@ -64,7 +72,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
-public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor> {
+public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor>
+    implements ISurvivalConstructable {
 
     private static final int BASECASINGINDEX = 181;
 
@@ -103,17 +112,19 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         .addElement(
             'b',
             ofChain(
-                ofHatchAdder(MTEHighTempGasCooledReactor::addOutputToMachineList, BASECASINGINDEX, 1),
-                ofHatchAdder(MTEHighTempGasCooledReactor::addMaintenanceToMachineList, BASECASINGINDEX, 1),
-                ofHatchAdder(MTEHighTempGasCooledReactor::addEnergyInputToMachineList, BASECASINGINDEX, 1),
+                buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(OutputHatch, OutputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
                 onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
         .addElement(
             'B',
             ofChain(
-                ofHatchAdder(MTEHighTempGasCooledReactor::addInputToMachineList, BASECASINGINDEX, 2),
+                buildHatchAdder(MTEHighTempGasCooledReactor.class).atLeast(InputHatch, InputBus)
+                    .dot(2)
+                    .casingIndex(BASECASINGINDEX)
+                    .build(),
                 onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
-        // ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2,
-        // GregTechAPI.sBlockCasings8, 5))
         .build();
 
     private static final int HELIUM_NEEDED = 730000;
@@ -143,7 +154,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Breeder Reactor")
+        tt.addMachineType("Breeder Reactor, HTGR")
             .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
@@ -176,6 +187,11 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece("main", stackSize, hintsOnly, 5, 11, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 11, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -273,8 +289,8 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         if (this.HeliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED || this.fuelsupply < mincapacity)
             return CheckRecipeResultRegistry.NO_RECIPE;
 
-        double eff = Math.min(Math.pow((double) this.fuelsupply / (double) mincapacity, 2D), 100D) / 100D
-            - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
+        double ratio = (double) this.fuelsupply / (double) mincapacity;
+        double eff = Math.min(ratio * ratio, 100D) / 100D - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
 
         if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 

@@ -34,7 +34,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -47,6 +46,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -232,7 +232,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                     this.tRecipe = assRecipe;
                                     // Set property
                                     computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
-                                        * Math.pow(2, getTier(assRecipe.mResearchVoltage) - 1));
+                                        * GTUtility.powInt(2, getTier(assRecipe.mResearchVoltage) - 1));
                                     mMaxProgresstime = 20;
                                     mEfficiencyIncrease = 10000;
                                     eRequiredData = 1;
@@ -257,14 +257,15 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                     holdItem.copy(),
                                     (int) (tData.mMaterial.mMaterial.getMass() * 8192L),
                                     (int) TierEU.RECIPE_UV,
-                                    new ItemStack[0],
-                                    new FluidStack[0],
+                                    GTValues.emptyItemStackArray,
+                                    GTValues.emptyFluidStackArray,
                                     holdItem.copy(),
                                     1,
                                     30); // make fake recipe
                                 // Set property
                                 computationRequired = computationRemaining = GTUtility
-                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L); // value get from MTEScanner
+                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L); // value get from
+                                                                                           // MTEScanner
                                                                                            // class
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;

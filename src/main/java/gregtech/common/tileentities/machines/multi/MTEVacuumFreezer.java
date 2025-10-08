@@ -107,7 +107,7 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
+        return new ProcessingLogic().noRecipeCaching();
     }
 
     @Override

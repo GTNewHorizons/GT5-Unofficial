@@ -17,9 +17,9 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +30,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -65,17 +64,13 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialWashPlantGui;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWashPlant>
     implements ISurvivalConstructable {
@@ -87,6 +82,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
     private static final int MACHINEMODE_CHEMBATH = 2;
+    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
 
     public MTEIndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -103,19 +99,18 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
 
     @Override
     public String getMachineType() {
-        return "Ore Washer, Simple Washer, Chemical Bath";
+        return "Ore Washer, Simple Washer, Chemical Bath, OWP";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
-            .addInfo("400% faster than using single block machines of the same voltage")
-            .addInfo("Processes four item per voltage tier")
             .addInfo("Always requires an Input Hatch full of water to refill structure")
-            .addInfo("Need to be filled with water.")
-            .addInfo("Will automatically fill water from input hatch.")
+            .addInfo("Need to be filled with water")
+            .addInfo("Will automatically fill water from input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 7, true)
             .addController("Front Center")
@@ -241,7 +236,8 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                 }
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
-        }.setSpeedBonus(1F / 5F)
+        }.noRecipeCaching()
+            .setSpeedBonus(1F / 5F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -300,55 +296,67 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
         final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
         final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
 
-        int tAmount = 0;
+        boolean failed = false;
         for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
                 for (int h = 0; h < 2; ++h) {
                     Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == Blocks.water) {
-                        if (this.getStoredFluids() != null) {
-                            for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
-                                    if (stored.amount >= 1000) {
-                                        stored.amount -= 1000;
-                                        Block fluidUsed = null;
-                                        if (tBlock == Blocks.air || tBlock == Blocks.flowing_water) {
-                                            fluidUsed = Blocks.water;
-                                        }
-                                        if (tBlock == Blocks.water) {
-                                            fluidUsed = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
-                                        }
-                                        aBaseMetaTileEntity.getWorld()
-                                            .setBlock(
-                                                aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                                aBaseMetaTileEntity.getYCoord() + h,
-                                                aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                                fluidUsed);
-                                    }
-                                }
-                            }
-                        }
+                    if (tBlock == DISTILLED_WATER_BLOCK) {
+                        continue;
                     }
-                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
-                        ++tAmount;
-                    } else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
-                        ++tAmount;
-                    } else if (Mods.COFHCore.isModLoaded()) {
-                        if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
-                            ++tAmount;
-                        }
+
+                    // if we ever hit this code, we know it's not fully distilled, so check must fail
+                    failed = true;
+
+                    boolean isAir = tBlock == Blocks.air || tBlock == Blocks.flowing_water;
+
+                    boolean isCOFHCore = Mods.COFHCore.isModLoaded()
+                        && (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater);
+                    boolean isWater = (tBlock == Blocks.water) || isCOFHCore;
+
+                    // not a valid source block to transform
+                    if (!isAir && !isWater) {
+                        return false;
                     }
+
+                    ArrayList<FluidStack> storedFluids = this.getStoredFluids();
+
+                    // can't find fluid to convert water source, so next ones will also fail
+                    if (storedFluids == null) return false;
+
+                    boolean waterSourceProcessed = false;
+
+                    for (FluidStack stored : storedFluids) {
+                        if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+
+                        if (stored.amount < 1000) continue;
+
+                        stored.amount -= 1000;
+                        Block fluidUsed;
+                        if (isAir) { // first conversion from empty/flowing water to regular water source
+                            fluidUsed = Blocks.water;
+                        } else { // second conversion from regular water source to distilled
+                            fluidUsed = DISTILLED_WATER_BLOCK;
+                        }
+                        aBaseMetaTileEntity.getWorld()
+                            .setBlock(
+                                aBaseMetaTileEntity.getXCoord() + xDir + i,
+                                aBaseMetaTileEntity.getYCoord() + h,
+                                aBaseMetaTileEntity.getZCoord() + zDir + j,
+                                fluidUsed);
+
+                        waterSourceProcessed = true;
+                        break; // don't deplete other water sources
+                    }
+
+                    // if no water source processed, we know we can't process next ones as well
+                    if (!waterSourceProcessed) return false;
+
                 }
             }
         }
 
-        boolean isValidWater = tAmount >= 30;
-        if (isValidWater) {
-            Logger.WARNING("Filled structure.");
-        } else {
-            Logger.WARNING("Did not fill structure.");
-        }
-        return isValidWater;
+        return !failed;
     }
 
     @Override
@@ -377,19 +385,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+        tag.setString("mode", getMachineModeName());
     }
 
     @Override
@@ -400,8 +396,8 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        PlayerUtils
-            .messagePlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -413,7 +409,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);

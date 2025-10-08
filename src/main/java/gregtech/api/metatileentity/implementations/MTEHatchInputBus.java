@@ -55,7 +55,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public boolean disableSort;
     public boolean disableFilter = true;
     public boolean disableLimited = true;
-    private int uiButtonCount = 0;
+    protected int uiButtonCount = 0;
 
     public MTEHatchInputBus(int id, String name, String nameRegional, int tier) {
         this(id, name, nameRegional, tier, getSlots(tier) + 1);
@@ -90,7 +90,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
                 TextureFactory.of(ITEM_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
@@ -100,7 +100,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
                 TextureFactory.of(ITEM_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
@@ -158,8 +158,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GTClientPreference tPreference = GTMod.gregtechproxy
-                .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+            GTClientPreference tPreference = GTMod.proxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) disableFilter = !tPreference.isInputBusInitialFilterEnabled();
         }
     }
@@ -288,7 +287,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         return getSlots(mTier);
     }
 
-    private void addSortStacksButton(ModularWindow.Builder builder) {
+    protected void addSortStacksButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
                 () -> !disableSort,
@@ -297,7 +296,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                 () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
     }
 
-    private void addOneStackLimitButton(ModularWindow.Builder builder) {
+    protected void addOneStackLimitButton(ModularWindow.Builder builder) {
         builder.widget(createToggleButton(() -> !disableLimited, val -> {
             disableLimited = !val;
             updateSlots();

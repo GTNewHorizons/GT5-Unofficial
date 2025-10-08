@@ -25,7 +25,6 @@ import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -113,7 +112,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTClient;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -126,7 +124,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private static final int drone = 6;
     private static final int upgradeSlot = drone + 1;
     private static final int upgradeSlotCount = 4;
-    private static Field AlleleBeeEffectThrottledField;
 
     final IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
 
@@ -216,7 +213,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (!GTMod.gregtechproxy.mForceFreeFace) {
+        if (!GTMod.proxy.mForceFreeFace) {
             openGUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
@@ -507,46 +504,39 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private void doAcceleratedEffects() {
         final IBeeGenome genome = usedQueenBee.getGenome();
         final IAlleleBeeEffect effect = genome.getEffect();
-        try {
-            if (AlleleBeeEffectThrottledField == null) {
-                AlleleBeeEffectThrottledField = AlleleEffectThrottled.class.getDeclaredField("throttle");
-                AlleleBeeEffectThrottledField.setAccessible(true);
-            }
-            if (effect instanceof IAlleleBeeAcceleratableEffect) {
-                effectData[0] = effect.validateStorage(effectData[0]);
-                effectData[0] = ((IAlleleBeeAcceleratableEffect) effect).doEffectAccelerated(
-                    genome,
-                    effectData[0],
-                    this,
-                    usedBeeLife / (effect instanceof AlleleEffectThrottled
-                        ? (float) AlleleBeeEffectThrottledField.getInt(effect)
+        if (effect instanceof IAlleleBeeAcceleratableEffect) {
+            effectData[0] = effect.validateStorage(effectData[0]);
+            effectData[0] = ((IAlleleBeeAcceleratableEffect) effect).doEffectAccelerated(
+                genome,
+                effectData[0],
+                this,
+                usedBeeLife
+                    / (effect instanceof AlleleEffectThrottled ? (float) ((AlleleEffectThrottled) effect).getThrottle()
                         : 1f));
-            }
+        }
 
-            if (!effect.isCombinable()) return;
+        if (!effect.isCombinable()) return;
 
-            final IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
-            if (!secondary.isCombinable()) return;
+        final IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
+        if (!secondary.isCombinable()) return;
 
-            if (secondary instanceof IAlleleBeeAcceleratableEffect) {
-                effectData[1] = secondary.validateStorage(effectData[1]);
-                effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
-                    genome,
-                    effectData[0],
-                    this,
-                    usedBeeLife / (secondary instanceof AlleleEffectThrottled
-                        ? (float) AlleleBeeEffectThrottledField.getInt(secondary)
-                        : 1f));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (secondary instanceof IAlleleBeeAcceleratableEffect) {
+            effectData[1] = secondary.validateStorage(effectData[1]);
+            effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
+                genome,
+                effectData[0],
+                this,
+                usedBeeLife / (secondary instanceof AlleleEffectThrottled
+                    ? (float) ((AlleleEffectThrottled) secondary).getThrottle()
+                    : 1f));
         }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (GTClient.changeDetected == 4) {
+            if (GTMod.clientProxy()
+                .changeDetected() == 4) {
                 /*
                  * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next
                  * client tick when reaching 4, with provision for 3 more update tasks, spreading client change
@@ -914,8 +904,10 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         final String flowerType = bee.getGenome()
             .getFlowerProvider()
             .getFlowerType();
-        if (!getWorld().blockExists(flowercoords.posX, flowercoords.posY, flowercoords.posZ)
-            || !this.flowerType.equals(flowerType)) flowercoords = null;
+        if (!this.flowerType.equals(flowerType)
+            || !getWorld().blockExists(flowercoords.posX, flowercoords.posY, flowercoords.posZ)) {
+            flowercoords = null;
+        }
         if (flowercoords != null) {
             if (getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ) != flowerBlock
                 || getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ)
@@ -1283,7 +1275,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
                         builder,
                         (widget, val) -> widget.notifyTooltipChange())
-                    .setPos(163, 5)
+                    .setPos(163, 19)
                     .setSize(7, 18))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {

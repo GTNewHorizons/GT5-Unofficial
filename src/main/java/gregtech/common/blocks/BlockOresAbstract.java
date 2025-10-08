@@ -54,7 +54,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
         this.isBlockContainer = true;
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_ORES);
-        tHideOres = NotEnoughItems.isModLoaded() && GTMod.gregtechproxy.mHideUnusedOres;
+        tHideOres = NotEnoughItems.isModLoaded() && GTMod.proxy.mHideUnusedOres;
         if (aOreMetaCount > 8 || aOreMetaCount < 0) aOreMetaCount = 8;
 
         for (int i = 1; i < GregTechAPI.sGeneratedMaterials.length; i++) {
@@ -208,10 +208,22 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
 
     @Override
     public int getRenderType() {
-        if (GTRendererBlock.INSTANCE == null) {
-            return super.getRenderType();
-        }
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
     }
 
     @Override

@@ -13,7 +13,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -37,11 +36,11 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),
-                    GTProxy.tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "fX", "Xh", 'X', OrePrefixes.nugget.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 4L),
-                    GTProxy.tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "fXh", 'X', OrePrefixes.ingot.get(aMaterial) });
             }
         }

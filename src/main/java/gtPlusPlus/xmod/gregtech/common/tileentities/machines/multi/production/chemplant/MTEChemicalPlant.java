@@ -62,6 +62,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.api.objects.Logger;
@@ -98,11 +100,11 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         GregtechItemList.RubberPolymerCatalyst.get(1), GregtechItemList.AdhesionPromoterCatalyst.get(1),
         GregtechItemList.TitaTungstenIndiumCatalyst.get(1), GregtechItemList.RadioactivityCatalyst.get(1),
         GregtechItemList.RareEarthGroupCatalyst.get(1), GregtechItemList.SimpleNaquadahCatalyst.get(1),
-        GregtechItemList.HellishForceCatalyst.get(1), GregtechItemList.AdvancedNaquadahCatalyst.get(1),
-        GregtechItemList.RawIntelligenceCatalyst.get(1), GregtechItemList.UltimatePlasticCatalyst.get(1),
-        GregtechItemList.BiologicalIntelligenceCatalyst.get(1), GregtechItemList.TemporalHarmonyCatalyst.get(1),
-        GregtechItemList.ParticleAccelerationCatalyst.get(1), GregtechItemList.SynchrotronCapableCatalyst.get(1),
-        GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), };
+        GregtechItemList.HellishForceCatalyst.get(1), GregtechItemList.CrystalColorizationCatalyst.get(1),
+        GregtechItemList.AdvancedNaquadahCatalyst.get(1), GregtechItemList.RawIntelligenceCatalyst.get(1),
+        GregtechItemList.UltimatePlasticCatalyst.get(1), GregtechItemList.BiologicalIntelligenceCatalyst.get(1),
+        GregtechItemList.TemporalHarmonyCatalyst.get(1), GregtechItemList.ParticleAccelerationCatalyst.get(1),
+        GregtechItemList.SynchrotronCapableCatalyst.get(1), GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), };
 
     private final ArrayList<MTEHatchCatalysts> mCatalystBuses = new ArrayList<>();
 
@@ -153,9 +155,10 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("Heavy Industry, now right at your doorstep!")
             .addInfo("Plant tier is determined by casing tier")
             .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
-            .addInfo("Higher tier coils increases processing speed : T1 = 50%, T2 = 100%, T3 = 150%...")
-            .addInfo("Higher tier pipe casing boosts parallel and reduces catalyst consumption :")
-            .addInfo("+2 parallel per tier, +20% chance of not damaging catalyst per tier")
+            .addDynamicParallelInfo(2, TooltipTier.PIPE_CASING)
+            .addInfo(
+                "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.PIPE_CASING) + " Tier")
+            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("Any catalyst must be placed in the catalyst housing")
             .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
             .addController("Bottom Center")
@@ -443,7 +446,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
+        return SoundResource.GTCEU_LOOP_CHEMICAL;
     }
 
     @Override
@@ -576,7 +579,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
-                    addOutput(CI.getEmptyCatalyst(1));
+                    addOutputPartial(CI.getEmptyCatalyst(1));
                     aStack.stackSize -= 1;
                     return aStack.stackSize == 0;
                 } else {

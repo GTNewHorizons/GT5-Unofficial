@@ -26,7 +26,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -45,7 +44,7 @@ public class SelectItemUIFactory {
     private int selected;
     private boolean anotherWindow = false;
     private AtomicBoolean dialogOpened;
-    private int guiTint = GTUtil.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+    private int guiTint = Dyes.MACHINE_METAL.toInt();
     private Supplier<ItemStack> currentGetter;
 
     private final GUIColorOverride colorOverride = GUIColorOverride.get("SelectItemUIFactory");
@@ -151,7 +150,6 @@ public class SelectItemUIFactory {
                     .setPos(currentSlotX + 1, currentSlotY + 1));
         builder.widget(
             new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
 
         for (int i = 0; i < stacks.size(); i++) {

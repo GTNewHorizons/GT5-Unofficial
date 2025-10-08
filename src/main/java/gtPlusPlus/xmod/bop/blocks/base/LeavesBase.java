@@ -19,22 +19,23 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class LeavesBase extends BlockLeaves {
 
     protected IIcon[][] leafTextures = new IIcon[2][];
     protected String[][] leafType = new String[][] { {}, {} };
-    protected String[] treeType = new String[] {};
+    protected String[] treeType = GTValues.emptyStringArray;
     protected ItemStack[] bonusDrops;
 
     public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {
         this.bonusDrops = bonusDrops;
-        String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Leaves";
+        String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
         OreDictionary.registerOre("treeLeaves", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));

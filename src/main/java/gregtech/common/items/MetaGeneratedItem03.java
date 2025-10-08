@@ -22,7 +22,248 @@ import static gregtech.client.GTTooltipHandler.Tier.UV;
 import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
-import static gregtech.common.items.IDMetaItem03.*;
+import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Biowarecomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Biowaresupercomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Bio;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Bio_Ultra;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Coated_Basic;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Epoxy_Advanced;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Fiberglass_Advanced;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Multifiberglass_Elite;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Optical;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Phenolic_Good;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Plastic;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Plastic_Advanced;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Wetware;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Wetware_Extreme;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_BioCPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Biocell;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CrystalCPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CrystalSoC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CrystalSoC2;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_HPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_ILC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_LPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_NAND;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_NOR;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_NPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_NanoCPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_NeuroCPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Optical;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_PIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_PPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_QPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_QuantumCPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Ram;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Simple_SoC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_SoC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_SoC2;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Stemcell;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_UHPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_ULPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_CosmicAssembly;
+import static gregtech.common.items.IDMetaItem03.Circuit_CosmicComputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_CosmicMainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_CosmicProcessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Crystalcomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Crystalmainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_Crystalprocessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Elitenanocomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_ExoticAssembly;
+import static gregtech.common.items.IDMetaItem03.Circuit_ExoticComputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_ExoticMainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_ExoticProcessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Integrated_Good;
+import static gregtech.common.items.IDMetaItem03.Circuit_Masterquantumcomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Microprocessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Nanocomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Nanoprocessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Neuroprocessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_OpticalAssembly;
+import static gregtech.common.items.IDMetaItem03.Circuit_OpticalComputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_OpticalMainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_OpticalProcessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_CapacitorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_CapacitorSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_CapacitorXSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Chip_Bioware;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Coil;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_DiodeASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_DiodeSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_DiodeXSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_GlassFiber;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Glass_Tube;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_InductorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_InductorSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_InductorXSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_PetriDish;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_RawCrystalChip;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_RawCrystalParts;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Reinforced_Glass_Tube;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_ResistorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_ResistorSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_ResistorXSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_TransistorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_TransistorSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_TransistorXSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Processor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Quantumcomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Quantummainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_Quantumprocessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Ingot;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Ingot2;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Ingot3;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Ingot4;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Ingot5;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Ingot6;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer2;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer3;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer4;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer5;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer6;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer7;
+import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentAssembly;
+import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentComputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentMainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentProcessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_Ultimatecrystalcomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_Bioware;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_CPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_HPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ILC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_LPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_NAND;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_NOR;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_NPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_NanoCPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_PIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_PPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_QPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_QuantumCPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_Ram;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_Simple_SoC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_SoC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_SoC2;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_UHPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ULPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wetwarecomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaremainframe;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaresupercomputer;
+import static gregtech.common.items.IDMetaItem03.Cover_Metrics_Transmitter;
+import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
+import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
+import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.IDMetaItem03.EV_Coil;
+import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
+import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
+import static gregtech.common.items.IDMetaItem03.HV_Coil;
+import static gregtech.common.items.IDMetaItem03.Harmonic_Compound;
+import static gregtech.common.items.IDMetaItem03.Heavy_Hellish_Mud;
+import static gregtech.common.items.IDMetaItem03.Hot_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.IV_Coil;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_AUTOMATION;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_1;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_2;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_3;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_4;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_5;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_6;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_7;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_8;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_8_Upgraded;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_COOLER;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_DESERT;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_DRYER;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_FLOWERING;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Frame;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_HEATER;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_HELL;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_HUMIDIFIER;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_JUNGLE;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_LIFESPAN;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_LIGHT;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_OCEAN;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_PLAINS;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_POLLEN;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_PRODUCTION;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_SEAL;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_SIEVE;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_SKY;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_STABILIZER;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRITORY;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
+import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
+import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.KevlarFiber;
+import static gregtech.common.items.IDMetaItem03.LV_Coil;
+import static gregtech.common.items.IDMetaItem03.LuV_Coil;
+import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.Manafly;
+import static gregtech.common.items.IDMetaItem03.NandChip;
+import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
+import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.Netherite_Scrap_Seed;
+import static gregtech.common.items.IDMetaItem03.NuclearStar;
+import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing;
+import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
+import static gregtech.common.items.IDMetaItem03.Optically_Perfected_CPU;
+import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
+import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
+import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
+import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
+import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
+import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
+import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Down;
+import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Strange;
+import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
+import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
+import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
+import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
+import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.Spinneret;
+import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
+import static gregtech.common.items.IDMetaItem03.Timepiece;
+import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
+import static gregtech.common.items.IDMetaItem03.Tube_Wires;
+import static gregtech.common.items.IDMetaItem03.UHV_Coil;
+import static gregtech.common.items.IDMetaItem03.ULV_Coil;
+import static gregtech.common.items.IDMetaItem03.UV_Coil;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Axe;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Block;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Bolt;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Bottle;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Casing;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Cell;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_File;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Gear;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Hammer;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Hoe;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Ingot;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pickaxe;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Huge;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Large;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Medium;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Small;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Pipe_Tiny;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Plate;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Ring;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Rod;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Rotor;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Saw;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Shovel;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Small_Gear;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Sword;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_ToolHeadDrill;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Turbine_Blade;
+import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Wire;
+import static gregtech.common.items.IDMetaItem03.WovenKevlar;
+import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
 import net.minecraft.item.ItemStack;
 
@@ -42,11 +283,15 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
+import gregtech.common.powergoggles.ItemPowerGoggles;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
+import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem03 INSTANCE;
@@ -62,7 +307,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             OrePrefixes.rawOre,
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
-        Object[] o = new Object[0];
+        Object[] o = GTValues.emptyObjectArray;
         ItemList.Item_Power_Goggles.set(
             new ItemPowerGoggles("Power_Goggles", "Power Goggles", "For when you need to look at power storage 24/7"));
         /*
@@ -160,11 +405,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
          * (normal+glowstone+naquadah) EBF, normal silicon no EBF need anymore wafer(normal+glowstone+naquadah) cut mono
-         * silicon ingot in cutting machine
-         * Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes) SoCs(2 sizes, high tier cheap low
-         * tech component) Power IC/High Power IC/Ultra High power
-         * nanotube interconnected circuit (H-IC + nanotubes)
-         * quantum chips
+         * silicon ingot in cutting machine Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes)
+         * SoCs(2 sizes, high tier cheap low tech component) Power IC/High Power IC/Ultra High power nanotube
+         * interconnected circuit (H-IC + nanotubes) quantum chips
          */
 
         final String RAW = "Raw Circuit";
@@ -1026,6 +1269,20 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+        ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
+        ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
+        ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
+            .set(
+                addItem(
+                    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.ID,
+                    "Radiation-Proof Prismatic Naquadah Composite Sheet",
+                    "Attenuates all forms of radiation almost perfectly"))
+            .setRender(new RainbowOverlayMetaItemRenderer(new short[] { 255, 255, 255, 255 }));
+        ItemList.Naquarite_Universal_Insulator_Foil.set(
+            addItem(
+                Naquarite_Universal_Insulator_Foil.ID,
+                "Naquarite Universal Insulator Foil",
+                String.join("/n ", "The Perfect Insulator!", "Absorbs all heat, radiation and electricity.")));
 
         ItemList.Silicon_Seed_Crystal
             .set(addItem(Silicon_Seed_Crystal.ID, "Silicon Seed Crystal", "Something to begin with"));
@@ -1176,6 +1433,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        ItemList.ManaFly.set(
+            addItem(
+                Manafly.ID,
+                "Manafly",
+                "If you sift this, you're a monster",
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
+                new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();
@@ -1336,7 +1601,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null || data.mPrefix == null) {
