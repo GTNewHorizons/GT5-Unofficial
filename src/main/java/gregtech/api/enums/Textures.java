@@ -1926,6 +1926,7 @@ public class Textures {
         NANO_FORGE_CASING_3,
         NANO_FORGE_CASING_4,
         NANITE_CORE,
+        NANITE_SHIELDING_FRAME,
         MODULAR_SOLIDIFIER_CASING,
         MODULAR_SOLIDIFIER_EFFICIENT_OVERCLOCKING,
         MODULAR_SOLIDIFIER_POWER_EFFICIENT_SUBSYSTEMS,
@@ -1934,7 +1935,6 @@ public class Textures {
         MODULAR_SOLIDIFIER_HYPERCOOLER,
         MODULAR_SOLIDIFIER_STREAMLINED_CASTERS,
         MODULAR_SOLIDIFIER_ACTIVE_TIME_DILATION_SYSTEM,
-        
 
         // semicolon after the comment to reduce merge conflicts
         ;
