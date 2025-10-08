@@ -95,4 +95,9 @@ public class MTELargeBoilerBronze extends MTELargeBoiler {
     boolean isSuperheated() {
         return false;
     }
+
+    @Override
+    public float getOverdriveMult() {
+        return 1F;
+    }
 }

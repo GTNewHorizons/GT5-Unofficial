@@ -475,6 +475,10 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
+    public static final UITexture OVERLAY_BUTTON_OVERDRIVE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
+    public static final UITexture OVERLAY_BUTTON_OVERDRIVE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
 
     /**
      * Can adjust size as needed.

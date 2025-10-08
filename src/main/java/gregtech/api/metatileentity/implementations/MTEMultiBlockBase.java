@@ -144,6 +144,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.multi.MTELargeBoiler;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -166,7 +167,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean mStructureChanged = false;
     private int errorDisplayID;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0,
-        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
+        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, mEfficiencyDecrease = 1000;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
     public ItemStack[] mOutputItems = null;
@@ -769,7 +770,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     }
                 }
             }
-            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
+            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - mEfficiencyDecrease);
         }
     }
 
@@ -2588,6 +2589,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
+    @Override
+    public boolean isOverdrive() {
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity instanceof MTELargeBoiler) {
+            return baseMetaTileEntity.isMuffled();
+        }
+        return false;
+    }
+
+    @Override
+    public void setOverdrive(boolean value) {
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity instanceof MTELargeBoiler) {
+            baseMetaTileEntity.setMuffler(value);
+        }
+    }
+
     public ItemStack getControllerSlot() {
         return mInventory[getControllerSlotIndex()];
     }
@@ -2863,6 +2881,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
+    public Pos2d getOverDriveButtonPos() {
+        return new Pos2d(80, 91);
+    }
+
+    @Override
     public int getGUIWidth() {
         return 198;
     }
@@ -2911,6 +2934,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (supportsPowerPanel()) {
             builder.widget(createPowerPanelButton(builder));
             buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
+        }
+        if (this instanceof MTELargeBoiler) {
+            builder.widget(createOverdriveButton(builder));
         }
     }
 

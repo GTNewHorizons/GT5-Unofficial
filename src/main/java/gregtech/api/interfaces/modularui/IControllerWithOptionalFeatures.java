@@ -57,6 +57,10 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
 
     boolean isMuffled();
 
+    void setOverdrive(boolean value);
+
+    boolean isOverdrive();
+
     Pos2d getPowerSwitchButtonPos();
 
     default ButtonWidget createPowerSwitchButton(IWidgetBuilder<?> builder) {
@@ -108,6 +112,28 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
             .setPos(200, 0)
             .setSize(12, 12);
+    }
+
+    Pos2d getOverDriveButtonPos();
+
+    default ButtonWidget createOverdriveButton(IWidgetBuilder<?> builder) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setOverdrive(!isOverdrive()); })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isOverdrive()) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_OVERDRIVE_ON);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_OVERDRIVE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isOverdrive, this::setOverdrive), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.machines.overdrive"))
+            .setPos(80, 91)
+            .setSize(16, 16);
     }
 
     Pos2d getVoidingModeButtonPos();
