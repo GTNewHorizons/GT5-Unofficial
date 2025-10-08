@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.artificialorganisms;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -139,7 +138,6 @@ public class MTEBioProgrammer extends MTEAOUnitBase<MTEBioProgrammer> implements
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bio Programmer")
             .addInfo("Uses Artificial Organisms to design living circuitry")
-            .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")

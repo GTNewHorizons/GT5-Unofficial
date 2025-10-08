@@ -4,7 +4,6 @@ import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -148,7 +147,6 @@ public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implemen
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Advanced Bio Lab")
             .addInfo("Uses Artificial Organisms to form organic materials")
-            .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
