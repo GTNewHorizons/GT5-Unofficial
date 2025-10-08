@@ -45,7 +45,7 @@ public class CoverEnderFluidLinkGui extends CoverGui<CoverEnderFluidLink> {
             .marginBottom(4)
             .child(
                 new TextFieldWidget().height(10)
-                    .width(50)
+                    .width(88)
                     .value(frequencySyncer))
             .child(
                 IKey.lang("gt.interact.desc.channel")
