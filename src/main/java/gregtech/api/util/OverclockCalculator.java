@@ -486,12 +486,9 @@ public class OverclockCalculator {
         // durations. It is 1 / (duration of first OC to go below 1 tick)
         double correctionMultiplier = 1.0;
         if (heatOverclocks >= neededHeatOverclocks) {
-            double criticalDuration = originalDuration
-                / GTUtility.powInt(durationDecreasePerHeatOC, neededHeatOverclocks);
-            correctionMultiplier = 1 / criticalDuration;
+            correctionMultiplier = GTUtility.powInt(durationDecreasePerHeatOC, neededHeatOverclocks) / originalDuration;
         } else if (regularOverclocks >= neededOverclocks) {
-            double criticalDuration = originalDuration / GTUtility.powInt(durationDecreasePerOC, neededOverclocks);
-            correctionMultiplier = 1 / criticalDuration;
+            correctionMultiplier = GTUtility.powInt(durationDecreasePerOC, neededOverclocks) / originalDuration;
         }
 
         return Math.ceil(heatMultiplier * correctionMultiplier * regularMultiplier);
