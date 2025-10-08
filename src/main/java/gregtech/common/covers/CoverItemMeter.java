@@ -2,8 +2,6 @@ package gregtech.common.covers;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.CoverItemMeterGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -22,6 +20,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverItemMeterGui;
 import gregtech.common.gui.mui1.cover.ItemMeterUIFactory;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
