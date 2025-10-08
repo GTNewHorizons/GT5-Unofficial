@@ -2,6 +2,8 @@ package gregtech.common.covers;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverItemMeterGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -62,7 +64,7 @@ public class CoverItemMeter extends Cover {
         return this.threshold;
     }
 
-    public CoverItemMeter setThresdhold(int threshold) {
+    public CoverItemMeter setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -209,6 +211,11 @@ public class CoverItemMeter extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverItemMeterGui(this);
     }
 
     @Override
