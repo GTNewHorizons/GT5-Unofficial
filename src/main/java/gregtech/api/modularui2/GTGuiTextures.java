@@ -316,8 +316,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
 
-    public static final UITexture OVERLAY_ROBOT_ARM_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
-    public static final UITexture OVERLAY_ROBOT_ARM_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
+    public static final UITexture OVERLAY_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
+    public static final UITexture OVERLAY_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/bounding_box")
         .fullImage()
