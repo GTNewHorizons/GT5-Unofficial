@@ -114,8 +114,6 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .setSize(12, 12);
     }
 
-    Pos2d getOverDriveButtonPos();
-
     default ButtonWidget createOverdriveButton(IWidgetBuilder<?> builder) {
         return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setOverdrive(!isOverdrive()); })
             .setPlayClickSound(true)

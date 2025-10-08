@@ -2881,11 +2881,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public Pos2d getOverDriveButtonPos() {
-        return new Pos2d(80, 91);
-    }
-
-    @Override
     public int getGUIWidth() {
         return 198;
     }
@@ -2934,9 +2929,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (supportsPowerPanel()) {
             builder.widget(createPowerPanelButton(builder));
             buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
-        }
-        if (this instanceof MTELargeBoiler) {
-            builder.widget(createOverdriveButton(builder));
         }
     }
 

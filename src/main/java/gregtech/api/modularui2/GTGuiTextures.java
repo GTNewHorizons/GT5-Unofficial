@@ -323,6 +323,12 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme(true)
         .build();
+    public static final UITexture OVERLAY_BUTTON_OVERDRIVE_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/lma_animation_off");
+    public static final UITexture OVERLAY_BUTTON_OVERDRIVE_ON = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/lma_animation_on");
 
     // endregion slot overlay
 
