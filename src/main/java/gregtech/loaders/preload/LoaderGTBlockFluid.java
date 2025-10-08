@@ -268,7 +268,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium.get(1),
                 false,
                 1F));
@@ -280,7 +280,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium2.get(1),
                 false,
                 1F));
@@ -292,7 +292,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium4.get(1),
                 false,
                 1F));
@@ -312,7 +312,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium.get(1),
                 false,
                 1F));
@@ -324,7 +324,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium2.get(1),
                 false,
                 1F));
@@ -336,7 +336,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium4.get(1),
                 false,
                 1F));
@@ -354,7 +354,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX.get(1),
                 true,
                 1.5F));
@@ -366,7 +366,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX2.get(1),
                 true,
                 1.5F));
@@ -378,7 +378,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX4.get(1),
                 true,
                 1.5F));
@@ -592,7 +592,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah.get(1),
                 false,
                 1F));
@@ -604,7 +604,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah2.get(1),
                 false,
                 1F));
@@ -628,7 +628,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 8F,
                 32,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah32.get(1),
                 false,
                 1F));
@@ -649,7 +649,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria.get(1),
                 true,
                 1.5F));
@@ -661,7 +661,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria2.get(1),
                 true,
                 1.5F));
@@ -673,7 +673,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria4.get(1),
                 true,
                 1.5F));
@@ -694,7 +694,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium.get(1),
                 false,
                 1F));
@@ -706,7 +706,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium2.get(1),
                 false,
                 1F));
@@ -718,7 +718,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium4.get(1),
                 false,
                 1F));

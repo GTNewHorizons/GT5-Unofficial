@@ -1540,6 +1540,10 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialBrewery,
 
+    Machine_Multi_ChamberCentrifuge,
+    Chamber_Casing,
+    Chamber_Grate,
+
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
     Casing_Laser,
@@ -2742,7 +2746,7 @@ public enum ItemList implements IItemContainer {
     PlanetaryGasSiphonCasing,
 
     MagLevHarness,
-
+    ManaFly,
     Casing_Solidifier_Modular,
     Efficient_Overclocking_Solidifier_Modular,
     Power_Efficient_Subsystems_Solidifier_Modular,

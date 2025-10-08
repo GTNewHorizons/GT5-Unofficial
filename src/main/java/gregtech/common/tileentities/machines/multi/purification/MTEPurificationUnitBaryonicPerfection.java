@@ -15,7 +15,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_ACTI
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +42,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -53,7 +51,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 
 public class MTEPurificationUnitBaryonicPerfection
@@ -252,11 +249,6 @@ public class MTEPurificationUnitBaryonicPerfection
         numCasings = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (numCasings < MIN_CASINGS) return false;
-        // Blacklist stocking bus because it's incredibly buggy with this and keeps duping catalyst no matter how much
-        // I try to fix it.
-        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
-            if (bus instanceof MTEHatchInputBusME) return false;
-        }
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -419,7 +411,7 @@ public class MTEPurificationUnitBaryonicPerfection
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             if (correctStartIndex != -1 && (i == correctStartIndex || i == correctStartIndex + 1)) continue;
 
-            addOutput(insertedCatalysts.get(i));
+            addOutputPartial(insertedCatalysts.get(i));
         }
     }
 
@@ -494,9 +486,10 @@ public class MTEPurificationUnitBaryonicPerfection
                         this.insertedCatalysts.add(singleStack);
                     }
                     // Then deplete the entire stack
-                    this.depleteInput(stack);
+                    stack.stackSize = 0;
                 }
             }
+            updateSlots();
             endRecipeProcessing();
 
             // Only do this check if we didn't find a correct combination yet

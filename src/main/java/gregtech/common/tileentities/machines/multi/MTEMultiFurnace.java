@@ -20,7 +20,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,6 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -51,10 +51,10 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipTier;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
 
@@ -139,6 +139,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 .build() };
     }
 
+    /*
+     * NOTE: If you are wondering why your machine is not showing up in the NEIHandler for furnaces...
+     * it is handled in the NEI fork's catalysts.csv . so that multiple mods can show up in the same handler.
+     */
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.furnaceRecipes;
@@ -174,28 +178,31 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .setDuration(RECIPE_DURATION)
             .setParallel(originalMaxParallel);
 
-        maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
+        maxParallel = GTUtility.longToInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()));
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (isBatchModeEnabled()) {
-            maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
+            maxParallel = GTUtility.longToInt((long) maxParallel * getMaxBatchSize());
         }
 
-        int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
-        int itemParallel = 0;
+        maxParallel = Math.min(maxParallel, GTUtility.longToInt(availableEUt / RECIPE_EUT));
+
+        int currentParallel = 0;
         for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
-            if (smeltedOutput != null) {
-                int parallelsLeft = currentParallel - itemParallel;
-                if (parallelsLeft <= 0) break;
-                itemParallel += Math.min(item.stackSize, parallelsLeft);
-            }
+
+            if (smeltedOutput == null) continue;
+
+            int parallelsLeft = maxParallel - currentParallel;
+            if (parallelsLeft <= 0) break;
+
+            currentParallel += Math.min(item.stackSize, parallelsLeft);
         }
 
-        currentParallel = itemParallel;
         if (currentParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
+
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
         calculator.setCurrentParallel(currentParallelBeforeBatchMode)
             .calculate();
@@ -209,92 +216,39 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
-        // Copy the getItemOutputSlots as to not mutate the output busses' slots.
-        List<ItemStack> outputSlots = new ArrayList<>();
-        for (ItemStack stack : getItemOutputSlots(null)) {
-            if (stack != null) {
-                outputSlots.add(stack.copy());
-            } else {
-                outputSlots.add(null);
-            }
-        }
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
 
-        boolean hasMEOutputBus = false;
-        for (final MTEHatch bus : validMTEList(mOutputBusses)) {
-            if (bus instanceof MTEHatchOutputBusME meBus) {
-                if (!meBus.isLocked() && meBus.canAcceptItem()) {
-                    hasMEOutputBus = true;
-                    break;
-                }
-            }
-        }
         // Consume items and generate outputs
-        ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
+        HashMap<GTUtility.ItemId, ItemStack> smeltedOutputs = new HashMap<>();
         int toSmelt = finalParallel;
+
         for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
-            if (smeltedOutput != null) {
-                int maxOutput = 0;
-                int remainingToSmelt = Math.min(toSmelt, item.stackSize);
 
-                if (hasMEOutputBus) {
-                    // Has an unlocked ME Output Bus and therefore can always fit the full stack
-                    maxOutput = remainingToSmelt;
-                } else {
+            if (smeltedOutput == null) continue;
 
-                    // Calculate how many of this output can fit in the output slots
-                    int needed = remainingToSmelt;
-                    ItemStack outputType = smeltedOutput.copy();
-                    outputType.stackSize = 1;
+            int remainingToSmelt = Math.min(toSmelt, item.stackSize);
 
-                    for (int i = 0; i < outputSlots.size(); i++) {
-                        ItemStack slot = outputSlots.get(i);
-                        if (slot == null) {
-                            // Empty slot: can fit a full stack
-                            int canFit = Math.min(needed, outputType.getMaxStackSize());
-                            ItemStack newStack = outputType.copy();
-                            newStack.stackSize = canFit;
-                            outputSlots.set(i, newStack); // Fill the slot
-                            maxOutput += canFit;
-                            needed -= canFit;
-                        } else if (slot.isItemEqual(outputType)) {
-                            int canFit;
-                            // Check for locked ME Output bus
-                            if (slot.stackSize == 65) {
-                                canFit = needed;
-                            } else {
-                                // Same type: can fit up to max stack size
-                                int space = outputType.getMaxStackSize() - slot.stackSize;
-                                canFit = Math.min(needed, space);
-                            }
-                            slot.stackSize += canFit;
-                            maxOutput += canFit;
-                            needed -= canFit;
-                            // No need to set, since slot is a reference
-                        }
-                        if (needed <= 0) break;
-                    }
-                }
+            int smeltable = ejectionHelper
+                .ejectItems(Collections.singletonList(smeltedOutput.copy()), remainingToSmelt);
 
-                // If void protection is enabled, only process what fits
-                int toProcess = protectsExcessItem() ? maxOutput : remainingToSmelt;
+            if (smeltable == 0) continue;
 
-                if (toProcess > 0) {
-                    ItemStack outputStack = smeltedOutput.copy();
-                    outputStack.stackSize *= toProcess;
-                    smeltedOutputs.add(outputStack);
+            ItemStack outputStack = smeltedOutputs
+                .computeIfAbsent(GTUtility.ItemId.create(smeltedOutput), x -> GTUtility.copyAmount(0, smeltedOutput));
+            outputStack.stackSize += smeltedOutput.stackSize * smeltable;
 
-                    item.stackSize -= toProcess;
-                    toSmelt -= toProcess;
-                    if (toSmelt <= 0) break;
-                }
-            }
+            item.stackSize -= smeltable;
+            toSmelt -= smeltable;
+            if (toSmelt <= 0) break;
         }
+
         if (smeltedOutputs.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
+        this.mOutputItems = smeltedOutputs.values()
+            .toArray(new ItemStack[0]);
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
