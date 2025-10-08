@@ -28,7 +28,7 @@ public enum SolidifierModules {
         ItemList.Extra_Casting_Basins_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
         new float[] { 58f / 255f, 58f / 255f, 34f / 255f, 0.7f }),
     HYPERCOOLER("Hypercooler", "H.C", "hypercooler", ItemList.Hypercooler_Solidifier_Modular.get(1),
-        GTGuiTextures.MODULAR_SOLIDIFIER_HC, new float[] {0,1,1, 0.7f }),
+        GTGuiTextures.MODULAR_SOLIDIFIER_HC, new float[] { 0, 1, 1, 0.7f }),
     STREAMLINED_CASTERS("Streamlined Casters", "S.L.C", "streamlined_casters",
         ItemList.Streamlined_Casters_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
         new float[] { 255f / 255f, 0f / 255f, 0f / 255f, 0.7f });

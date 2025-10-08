@@ -28,8 +28,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import gregtech.GTMod;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -46,8 +44,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -55,6 +55,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.Loaders;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -83,7 +84,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
-import org.lwjgl.opengl.GL20;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -102,9 +102,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static final int depthOffset = 0;
 
     public boolean terminalSwitch = false;
-    private int tier = 0; // 1 - UEV , 2 - ~UI0oV, 3 - ~UXV
-    private final float speedModifierBase = 2.5F;
-    private final float euEffBase = 1F;
+    private int tier = 0; // 1 - UEV , 2 - ~UIV, 3 - ~UXV
+    private final float speedModifierBase = 1.5F;
+    private final float euEffBase = 1.0F;
     private final int parallelScaleBase = 16;
     private final float ocFactorBase = 2.0F;
     private int additionaloverclocks = 0;
@@ -656,8 +656,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         casingAmount = 0;
         tier = -1;
         mCoolantInputHatches.clear();
-        //limit hatch space to about 25 hatches without modules. T.D.S removes 12 for balance, and casters adds 36.
-        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && casingAmount >= 500 + (tdsPresent ? 12 : 0)) {
+        // limit hatch space to about 25 hatches without modules. T.D.S removes 12 for balance, and casters adds 36.
+        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)
+            && casingAmount >= 500 + (tdsPresent ? 12 : 0)) {
             return checkModules();
         }
         return false;
@@ -745,16 +746,16 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     speedMultiplier *= 6;
                     break;
                 case STREAMLINED_CASTERS:
-                    parallelScaleMultiplier *= 0.9F;
-                    speedMultiplier *= 1.6F;
+                    speedAdditive += 1.5F;
+                    parallelScaleMultiplier *= 0.9f;
                     break;
                 case EXTRA_CASTING_BASINS:
-                    parallelScaleAdditive += 10;
+                    parallelScaleAdditive += 12;
                     break;
                 case POWER_EFFICIENT_SUBSYSTEMS:
                     euEffAdditive -= 0.1f;
                     euEffMultiplier *= 0.8f;
-                    speedMultiplier *= 0.9f;
+                    speedMultiplier *= 0.95f;
                     break;
             }
         }
@@ -979,7 +980,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static ShaderProgram ringProgram;
     private int uGlowColor;
 
-    //TODO: figure out why isActive doesnt send to client by default???
+    // TODO: figure out why isActive doesnt send to client by default???
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
 
@@ -1022,7 +1023,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 9.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL20.glUniform4f(uGlowColor, rgba[0], rgba[1], rgba[2], rgba[3]);
         ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
@@ -1035,7 +1036,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 17.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL20.glUniform4f(uGlowColor, rgba[0], rgba[1], rgba[2], rgba[3]);
         ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
@@ -1049,7 +1050,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 25.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL20.glUniform4f(uGlowColor, rgba[0], rgba[1], rgba[2], rgba[3]);
         ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
@@ -1063,7 +1064,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5f, y + 33.5f, z + 7.5F);
         GL11.glScalef(1.2f, 0.6f, 1.2f);
-        GL20.glUniform4f(uGlowColor,rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL20.glUniform4f(uGlowColor, rgba[0], rgba[1], rgba[2], rgba[3]);
         ring.renderAllVBO();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
