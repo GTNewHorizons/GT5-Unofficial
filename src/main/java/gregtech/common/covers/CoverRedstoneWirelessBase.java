@@ -164,7 +164,7 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
     }
 
     protected int getMapFrequency() {
-        return this.frequency + (this.privateChannel ? MAX_CHANNEL : 0);
+        return this.frequency + (this.privateChannel ? MAX_CHANNEL + 1 : 0);
     }
 
     @Override
