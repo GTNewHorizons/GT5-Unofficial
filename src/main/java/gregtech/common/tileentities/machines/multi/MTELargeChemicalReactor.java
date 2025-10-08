@@ -111,7 +111,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addController("front_center")
             .addCasingInfoRange("gt.blockcasings8.0.name", 8, 22, false)
             .addStructurePart("gt.blockcasings8.1.name", "gt.lcr.info.1")
-            .addStructurePartHinted("GT5U.tooltip.structure.heating_coil", "gt.lcr.info.2", 1)
+            .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.lcr.info.2", 1)
             .addEnergyHatch("<casing>", 1, 2)
             .addMaintenanceHatch("<casing>", 1, 2)
             .addInputBus("<casing>", 1, 2)

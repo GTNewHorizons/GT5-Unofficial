@@ -1,16 +1,13 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.GTUtility.tryTranslate;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -66,15 +63,9 @@ public class MultiblockTooltipBuilder {
         : translateToLocal("gt.string.colon");
     private static final String SEPARATOR = translateToLocal("gt.string.separator").equals(",") ? ", "
         : translateToLocal("gt.string.separator");
-    private static final String TT_StaticParallels = translateToLocal("GT5U.MBTT.Parallel.Base");
-    private static final String TT_StaticSpeed = translateToLocal("GT5U.MBTT.Speed.Base");
-    private static final String TT_StaticEuEff = translateToLocal("GT5U.MBTT.EuDiscount.Base");
     private static final String TT_DynamicParallels = translateToLocal("GT5U.MBTT.Parallel.Additional");
     private static final String TT_DynamicSpeed = translateToLocal("GT5U.MBTT.Speed.Additional");
-    private static final String TT_DynamicEuEff = translateToLocal("GT5U.MBTT.EuDiscount.Additional");
-    private static final String TT_Steam_StaticSteamEff = translateToLocal("GT5U.MBTT.SteamDiscount.Base");
     private static final String TT_structurehint = translateToLocal("GT5U.MBTT.StructureHint");
-    private static final String TT_partinfohint = translateToLocal("GT5U.MBTT.PartInfoHint");
     private static final String TT_air = translateToLocal("GT5U.MBTT.Air");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> translateToLocal("structurelib.blockhint." + i + ".name"))
@@ -205,7 +196,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
 
-        addInfo(TT_StaticSpeed, TooltipHelper.speedText(speed));
+        addInfo("GT5U.MBTT.Speed.Base", TooltipHelper.speedText(speed));
         return this;
     }
 
@@ -228,7 +219,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticEuEffInfo(float euEff) {
-        addInfo(TT_StaticEuEff, TooltipHelper.effText(euEff));
+        addInfo("GT5U.MBTT.EuDiscount.Base", TooltipHelper.effText(euEff));
         return this;
     }
 
@@ -240,7 +231,10 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicEuEffInfo(float euEff, TooltipTier tier) {
-        addInfo(TT_DynamicEuEff, TooltipHelper.effText("-" + percentageFormat.format(euEff)), tier.getValue());
+        addInfo(
+            "GT5U.MBTT.EuDiscount.Additional",
+            TooltipHelper.effText("-" + percentageFormat.format(euEff)),
+            tier.getValue());
         return this;
     }
 
@@ -265,7 +259,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSteamEffInfo(float steamEff) {
-        addInfo(TT_Steam_StaticSteamEff, TooltipHelper.effText(percentageFormat.format(steamEff)));
+        addInfo("GT5U.MBTT.SteamDiscount.Base", TooltipHelper.effText(percentageFormat.format(steamEff)));
         return this;
     }
 
@@ -537,7 +531,7 @@ public class MultiblockTooltipBuilder {
      * @param info   Positional information.
      * @return Instance this method was called on.
      *
-     * @deprecated Use {@link #addStructurePart(String, String)}
+     * @deprecated Use {@link #addStructurePart(String, String, int...)}
      */
     @Deprecated
     public MultiblockTooltipBuilder addOtherStructurePart(String locKey, String info) {
@@ -555,27 +549,31 @@ public class MultiblockTooltipBuilder {
      * @param dots   The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      *
-     * @deprecated Use {@link #addStructurePartHinted(String, String, int...)}
+     * @deprecated Use {@link #addStructurePart(String, String, int...)}
      */
     @Deprecated
     public MultiblockTooltipBuilder addOtherStructurePart(String locKey, String info, int... dots) {
         addOtherStructurePart(locKey, info);
-        for (int dot : dots) hBlocks.put(dot, translateToLocal(locKey));
+        addStructureHint(locKey, dots);
         return this;
     }
 
-    public MultiblockTooltipBuilder addStructurePart(String locKey, String info) {
-        addStructureInfo(
-            "GT5U.MBTT.PartInfo",
-            locKey,
-            info.equals("<casing>") ? "GT5U.MBTT.AnyCasing"
-                : info.equals("<bottom casing>") ? "GT5U.MBTT.AnyBottomCasing" : info);
+    public MultiblockTooltipBuilder addStructurePart(String locKey, String info, String desc, int... hintDots) {
+        if (hintDots.length == 0) {
+            addStructureInfo(desc.isEmpty() ? "GT5U.MBTT.PartInfo" : "GT5U.MBTT.PartInfo_X", locKey, switch (info) {
+                case "<casing>" -> "GT5U.MBTT.AnyCasing";
+                case "<bottom casing>" -> "GT5U.MBTT.AnyBottomCasing";
+                default -> info;
+            }, desc);
+        } else {
+            addStructurePart(locKey, hintLine(info, hintDots), desc);
+            for (int dot : hintDots) hBlocks.put(dot, translateToLocal(locKey));
+        }
         return this;
     }
 
-    public MultiblockTooltipBuilder addStructurePartHinted(String locKey, String info, int... dots) {
-        addStructurePart(locKey, hintLine(info, dots));
-        for (int dot : dots) hBlocks.put(dot, translateToLocal(locKey));
+    public MultiblockTooltipBuilder addStructurePart(String locKey, String info, int... hintDots) {
+        addStructurePart(locKey, info, "", hintDots);
         return this;
     }
 
@@ -692,7 +690,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMaintenanceHatch(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.MaintenanceHatch", info, dots);
+        addStructurePart("GT5U.MBTT.MaintenanceHatch", info, dots);
         return this;
     }
 
@@ -707,7 +705,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMufflerHatch(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.MufflerHatch", info, dots);
+        addStructurePart("GT5U.MBTT.MufflerHatch", info, dots);
         return this;
     }
 
@@ -722,7 +720,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addEnergyHatch(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.EnergyHatch", info, dots);
+        addStructurePart("GT5U.MBTT.EnergyHatch", info, dots);
         return this;
     }
 
@@ -737,7 +735,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamoHatch(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.DynamoHatch", info, dots);
+        addStructurePart("GT5U.MBTT.DynamoHatch", info, dots);
         return this;
     }
 
@@ -752,7 +750,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addInputBus(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.InputBus", info, dots);
+        addStructurePart("GT5U.MBTT.InputBus", info, dots);
         return this;
     }
 
@@ -767,7 +765,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSteamInputBus(String info, int... dots) {
-        addStructurePartHinted("GTPP.MBTT.SteamInputBus", info, dots);
+        addStructurePart("GTPP.MBTT.SteamInputBus", info, dots);
         return this;
     }
 
@@ -782,7 +780,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addInputHatch(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.InputHatch", info, dots);
+        addStructurePart("GT5U.MBTT.InputHatch", info, dots);
         return this;
     }
 
@@ -797,7 +795,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addOutputBus(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.OutputBus", info, dots);
+        addStructurePart("GT5U.MBTT.OutputBus", info, dots);
         return this;
     }
 
@@ -812,7 +810,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSteamOutputBus(String info, int... dots) {
-        addStructurePartHinted("GTPP.MBTT.SteamOutputBus", info, dots);
+        addStructurePart("GTPP.MBTT.SteamOutputBus", info, dots);
         return this;
     }
 
@@ -827,7 +825,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addOutputHatch(String info, int... dots) {
-        addStructurePartHinted("GT5U.MBTT.OutputHatch", info, dots);
+        addStructurePart("GT5U.MBTT.OutputHatch", info, dots);
         return this;
     }
 
@@ -1047,7 +1045,7 @@ public class MultiblockTooltipBuilder {
         String dotStr = (dots.length == 0) ? "???"
             : Joiner.on(SEPARATOR)
                 .join(Ints.asList(dots));
-        return String.format(TT_partinfohint, dotStr);
+        return translate("GT5U.MBTT.PartHintDesc", dotStr);
     }
 
     @Desugar

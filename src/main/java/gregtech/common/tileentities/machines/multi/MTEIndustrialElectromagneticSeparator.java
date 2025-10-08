@@ -220,7 +220,7 @@ public class MTEIndustrialElectromagneticSeparator
                     .getDisplayName(),
                 37,
                 false)
-            .addStructurePartHinted("gt.blockmachines.hatch.mag_hatch.name", "gt.mfe.info.1", 2)
+            .addStructurePart("gt.blockmachines.hatch.mag_hatch.name", "gt.mfe.info.1", 2)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)
             .addEnergyHatch("<casing>", 1)

@@ -317,7 +317,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInputBus("gt.adv_assline.info.5", 4)
             .addInputHatch("gt.adv_assline.info.4", 3)
             .addOutputBus("gt.adv_assline.info.6", 3)
-            .addStructurePartHinted("gt.blockmachines.hatch.dataaccess.name", "gt.adv_assline.info.7", 2)
+            .addStructurePart("gt.blockmachines.hatch.dataaccess.name", "gt.adv_assline.info.7", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
