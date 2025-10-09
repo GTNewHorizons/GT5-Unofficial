@@ -11,6 +11,8 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 /**
@@ -172,5 +174,20 @@ public class GTDataUtils {
         }
 
         return out;
+    }
+
+    public static int[] intersect(int[] a, int[] b) {
+        IntLinkedOpenHashSet a2 = new IntLinkedOpenHashSet(a);
+        IntLinkedOpenHashSet b2 = new IntLinkedOpenHashSet(b);
+
+        IntArrayList out = new IntArrayList();
+
+        a2.forEach((int i) -> {
+            if (b2.contains(i)) {
+                out.add(i);
+            }
+        });
+
+        return out.toIntArray();
     }
 }

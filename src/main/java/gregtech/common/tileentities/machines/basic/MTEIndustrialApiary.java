@@ -20,7 +20,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -111,6 +110,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -639,24 +639,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     aBaseMetaTileEntity.setActive(false);
 
                     if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing) {
-                        final TileEntity tTileEntity2 = aBaseMetaTileEntity
-                            .getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                        final long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                        int tMaxStacks = (int) (tStoredEnergy / 64L);
-                        if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
+                        GTItemTransfer transfer = new GTItemTransfer();
 
-                        moveMultipleItemStacks(
-                            aBaseMetaTileEntity,
-                            tTileEntity2,
-                            aBaseMetaTileEntity.getFrontFacing(),
-                            aBaseMetaTileEntity.getBackFacing(),
-                            null,
-                            false,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1,
-                            tMaxStacks);
+                        transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+
+                        transfer.transfer();
                     }
 
                     if (aBaseMetaTileEntity.isAllowedToWork() && checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE)

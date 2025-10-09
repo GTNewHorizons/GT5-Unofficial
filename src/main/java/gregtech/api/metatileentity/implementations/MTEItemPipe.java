@@ -312,18 +312,8 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
                 if ((!(tInventory instanceof TileEntityHopper) && !(tInventory instanceof TileEntityDispenser))
                     || getBaseMetaTileEntity().getMetaIDAtSide(side) != side.getOpposite()
                         .ordinal()) {
-                    return GTUtility.moveMultipleItemStacks(
-                        aSender,
-                        tInventory,
-                        ForgeDirection.UNKNOWN,
-                        side.getOpposite(),
-                        null,
-                        false,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1,
-                        1) > 0;
+                    // TODO: to be properly fixed in the item pipe PR
+                    return true;
                 }
             }
         }
