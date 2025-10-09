@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -58,6 +59,13 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         super(ID, name, nameRegional);
     }
 
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
+            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
+            .toolTipFinisher(AuthorJulia);
+    }
+
     // spotless:off
     private static final String[][] shape = new String[][] {
         { "CCC", "CCC", "CCC" },
@@ -112,13 +120,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     protected @NotNull MTECokeOvenGUI getGui() {
         return new MTECokeOvenGUI(this);
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
-            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
-            .toolTipFinisher();
     }
 
     @Override
