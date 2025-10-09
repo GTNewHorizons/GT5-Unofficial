@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -254,7 +255,9 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         if (baseMetaTileEntity.isServerSide()) onPostTickServer(baseMetaTileEntity, tick);
     }
 
-    private void onPostTickClient(IGregTechTileEntity baseMetaTileEntity, long tick) {}
+    private void onPostTickClient(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        doActivitySound(SoundResource.GTCEU_LOOP_FURNACE);
+    }
 
     private void onPostTickServer(IGregTechTileEntity baseMetaTileEntity, long tick) {
         checkRecipeProgress(baseMetaTileEntity);
