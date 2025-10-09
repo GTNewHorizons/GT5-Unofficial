@@ -110,22 +110,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
 
     // Only moves items in the first four slots
     protected final void fillStacksIntoFirstSlots() {
-        for (int i = 0; i <= getSlotID_LastInput(); i++) {
-            for (int j = i + 1; j <= getSlotID_LastInput(); j++) {
-                if (mInventory[j] != null
-                    && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
-            }
-        }
+        GTUtility.compactInventory(this, 0, getSlotID_LastInput() + 1);
     }
 
     public final void tryFillUsageSlots() {

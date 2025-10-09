@@ -20,6 +20,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 
 public class MTEItemDistributor extends MTEBuffer {
@@ -114,11 +115,15 @@ public class MTEItemDistributor extends MTEBuffer {
 
     @Override
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        if (aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            GTUtility.compactInventory(this);
+        }
+
         int currentSideOrdinal = currentSide.ordinal();
-        fillStacksIntoFirstSlots();
-        int movedItems;
+
         TileEntity adjacentTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(currentSide);
         int inspectedSides = 0;
+
         while (itemsPerSide[currentSideOrdinal] == 0) {
             currentSideOrdinal = ((currentSideOrdinal + 1) % 6);
             currentSide = ForgeDirection.getOrientation(currentSideOrdinal);
@@ -129,27 +134,27 @@ public class MTEItemDistributor extends MTEBuffer {
                 return;
             }
         }
-        movedItems = GTUtility.moveOneItemStack(
-            aBaseMetaTileEntity,
-            adjacentTileEntity,
-            currentSide,
-            currentSide.getOpposite(),
-            null,
-            false,
-            (byte) 64,
-            (byte) 1,
-            (byte) (itemsPerSide[currentSideOrdinal] - currentSideItemCount),
-            (byte) 1);
-        currentSideItemCount += movedItems;
+
+        GTItemTransfer transfer = new GTItemTransfer();
+
+        transfer.source(aBaseMetaTileEntity, currentSide);
+        transfer.sink(adjacentTileEntity, currentSide.getOpposite());
+
+        transfer.setMaxItemsPerTransfer(itemsPerSide[currentSideOrdinal] - currentSideItemCount);
+
+        int movedItems = transfer.transfer();
+        currentSideItemCount += (byte) movedItems;
+
         if (currentSideItemCount >= itemsPerSide[currentSideOrdinal]) {
             currentSideOrdinal = ((currentSideOrdinal + 1) % 6);
             currentSide = ForgeDirection.getOrientation(currentSideOrdinal);
             currentSideItemCount = 0;
         }
+
         if (movedItems > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
             mSuccess = 50;
+            GTUtility.compactInventory(this);
         }
-        fillStacksIntoFirstSlots();
     }
 
     @Override

@@ -1,8 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.creative;
 
+import java.util.OptionalInt;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.capability.item.AbstractInventorySourceIterator;
+import com.gtnewhorizon.gtnhlib.capability.item.IItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.IItemSource;
+import com.gtnewhorizon.gtnhlib.capability.item.InventorySourceIterator;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -87,5 +98,51 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEInfiniteItemHolder(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    protected IItemSink getItemSink(ForgeDirection side) {
+        return new ItemIO();
+    }
+
+    @Override
+    protected IItemSource getItemSource(ForgeDirection side) {
+        return new ItemIO();
+    }
+
+    @Override
+    protected IItemIO getItemIO(ForgeDirection side) {
+        return new ItemIO();
+    }
+
+    class ItemIO implements IItemIO {
+
+        @Override
+        public ItemStack store(ItemStack stack) {
+            return null;
+        }
+
+        @Override
+        public OptionalInt getStoredAmount(@Nullable ItemStack stack) {
+            return GTUtility.areStacksEqual(stack, mItemStack) ? OptionalInt.of(Integer.MAX_VALUE) : ZERO;
+        }
+
+        @Override
+        public @NotNull InventorySourceIterator iterator() {
+            return new AbstractInventorySourceIterator(new int[] { 0 }) {
+
+                @Override
+                protected ItemStack getStackInSlot(int slot) {
+                    if (slot != 0) return null;
+
+                    return GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, mItemStack);
+                }
+
+                @Override
+                protected void setInventorySlotContents(int slot, ItemStack stack) {
+                    // do nothing
+                }
+            };
+        }
     }
 }
