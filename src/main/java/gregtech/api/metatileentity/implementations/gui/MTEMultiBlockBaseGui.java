@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
@@ -58,8 +59,10 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -93,6 +96,7 @@ public class MTEMultiBlockBaseGui {
         this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
     }
 
+    // TODO: Add Muffle button
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
@@ -101,7 +105,7 @@ public class MTEMultiBlockBaseGui {
             .padding(4);
         return panel.child(
             new Column().sizeRel(1)
-                .child(createTitleTextStyle(guiData, base.getLocalName()))
+                .child(createTitleTextStyle(base.getLocalName()))
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)));
@@ -115,26 +119,18 @@ public class MTEMultiBlockBaseGui {
         return 181 + textBoxToInventoryGap;
     }
 
-    protected IWidget createTitleTextStyle(PosGuiData data, String title) {
-        boolean clientSide = data.isClient();
-        // workaround is slightly better, pretty meh
-        int addedHeight = 0;
-        int width = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 180;
+    private IWidget createTitleTextStyle(String title) {
+        boolean clientSide = GTMod.GT.isClientSide();
 
-        if (width > getBasePanelWidth() - 10) {
-            String[] parts = title.split(" ");
-            int middlepoint = (parts.length / 2);
-            StringBuilder modifiedTitle = new StringBuilder();
-            for (int i = 0; i < parts.length; i++) {
-                parts[i] += " ";
-                if (i == middlepoint) parts[i] += "\n";
-                modifiedTitle.append(parts[i]);
-            }
-            title = modifiedTitle.toString();
-            width = getBasePanelWidth() - 10;
-            addedHeight = clientSide ? (int) (1.3 * IKey.renderer.getFontHeight()) : 20;
+        int borderRadius = 4;
+        int maxWidth = getBasePanelWidth() - borderRadius * 2;
+        int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
+        int widgetWidth = Math.min(maxWidth, titleWidth);
 
-        }
+        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+        int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
+        int height = heightPerRow * rows;
+
         TextWidget titleTextWidget = IKey.str(title)
             .asWidget()
             .alignment(Alignment.TopLeft)
@@ -147,11 +143,11 @@ public class MTEMultiBlockBaseGui {
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
             .leftRel(0, -4, 0)
-            .height(18 + addedHeight)
+            .height(height + 10)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
-                titleTextWidget.height(8 + addedHeight)
-                    .width(width));
+                titleTextWidget.height(height)
+                    .width(widgetWidth));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -324,7 +320,7 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    protected IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
@@ -420,8 +416,53 @@ public class MTEMultiBlockBaseGui {
     }
 
     private void createInputSeparationTooltip(RichTooltip t) {
-        t.addLine(IKey.lang("GT5U.gui.button.input_separation"));
-        if (!base.supportsInputSeparation()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        addDynamicTooltipOfFeatureToButton(
+            t,
+            base::supportsInputSeparation,
+            base::isInputSeparationEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+    }
+
+    /**
+     * Adds a dynamic line to a RichTooltip that displays the status of a multi-block feature.
+     * <p>
+     * The tooltip behavior depends on feature support:
+     * <ul>
+     * <li>If the feature is supported: Shows a dynamic tooltip that updates based on the feature's enabled state</li>
+     * <li>If the feature is not supported: Shows a static tooltip with the current state plus a "forbidden"
+     * message</li>
+     * </ul>
+     *
+     * @param tooltip                the RichTooltip to add the line to
+     * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
+     * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
+     * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
+     * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
+     *
+     * @see gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures#addDynamicTooltipOfFeatureToButton(Widget,
+     *      Supplier, Supplier, String, String) For equivalent method but made for ModularUI
+     */
+    private void addDynamicTooltipOfFeatureToButton(RichTooltip tooltip, Supplier<Boolean> supportsFeature,
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
+
+        if (supportsFeature.get()) {
+            tooltip.addLine(IKey.dynamic(() -> {
+                if (isFeatureEnabled.get()) {
+                    return tooltipFeatureEnabled;
+                } else {
+                    return tooltipFeatureDisabled;
+                }
+            }));
+        } else {
+            if (isFeatureEnabled.get()) {
+                tooltip.addLine(tooltipFeatureEnabled);
+            } else {
+                tooltip.addLine(tooltipFeatureDisabled);
+            }
+
+            tooltip.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        }
     }
 
     protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
@@ -481,8 +522,12 @@ public class MTEMultiBlockBaseGui {
     }
 
     private void createBatchModeTooltip(RichTooltip t) {
-        t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
-        if (!base.supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        addDynamicTooltipOfFeatureToButton(
+            t,
+            base::supportsBatchMode,
+            base::isBatchModeEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
     }
 
     protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
@@ -524,13 +569,18 @@ public class MTEMultiBlockBaseGui {
     }
 
     private void createRecipeLockTooltip(RichTooltip t) {
-        t.addLine(IKey.lang("GT5U.gui.button.lock_recipe"));
-        if (!base.supportsSingleRecipeLocking()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        addDynamicTooltipOfFeatureToButton(
+            t,
+            base::supportsSingleRecipeLocking,
+            base::isRecipeLockingEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
     }
 
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
+        // TODO: add powerfail disable checkbox
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)
