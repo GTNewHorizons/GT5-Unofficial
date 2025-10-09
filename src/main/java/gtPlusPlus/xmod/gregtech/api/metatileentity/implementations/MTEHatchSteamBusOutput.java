@@ -189,4 +189,9 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add2by2Slots(builder);
     }
+
+    @Override
+    public boolean pushOutputInventory() {
+        return false;
+    }
 }
