@@ -51,6 +51,7 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui {
 
         return GTGuis.mteTemplatePanelBuilder(base, guiData, syncManager, uiSettings)
             .build()
+            .child(createMufflerButton(0, -15))
             .child(
                 new Row().alignX(Alignment.CENTER)
                     .alignY(0.25f)
