@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -58,7 +60,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         .build();
 
     @Override
-    public IStructureDefinition getStructureDefinition() {
+    public IStructureDefinition<MTECokeOven> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -89,7 +91,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    protected MTECokeOvenGUI getGui() {
+    protected @NotNull MTECokeOvenGUI getGui() {
         return new MTECokeOvenGUI(this);
     }
 
