@@ -189,8 +189,8 @@ gt.interact.desc.deny_i_invert_o=Deny input, Invert output
 gt.interact.desc.any_i_filter_o=Permit any input, Filter output
 gt.interact.desc.any_i_invert_o=Permit any input, Invert output
 gt.interact.desc.mb.idle.1=Hit with Soft Mallet
-gt.interact.desc.mb.idle.2=to (re-)start the Machine
-gt.interact.desc.mb.idle.3=if it doesn't start.
+gt.interact.desc.mb.idle.2= to (re-)start the Machine
+gt.interact.desc.mb.idle.3= if it doesn't start.
 gt.interact.desc.mb.running=Running perfectly.
 gt.interact.desc.mb.incomplete=Incomplete Structure.
 gt.interact.desc.mb.locking_on=Single recipe locking enabled. Will lock to next recipe.
@@ -1544,6 +1544,14 @@ GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
 GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
+
+
+GT5U.gui.hoverable.runningfine=Running Fine.
+GT5U.gui.hoverable.incomplete=Structure incomplete.
+GT5U.gui.hoverable.powerloss=Lost Power.
+GT5U.gui.hoverable.norepair=Machine too damaged.
+GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
