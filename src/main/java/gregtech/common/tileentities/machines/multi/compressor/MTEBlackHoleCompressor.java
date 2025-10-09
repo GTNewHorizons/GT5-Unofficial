@@ -72,13 +72,13 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -530,52 +530,41 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         if (this.maxProgresstime() != 0) return;
 
+        // spotless:off
+        ItemStack[] catalysts = new ItemStack[] {
+            GTModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32418), // Black Hole Seed
+            GTModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32419), // Black Hole Collapser
+            GTModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32420) // Superstable Catalyst
+        };
+        //spotless:on
+
         for (MTEHatchInputBus bus : filterValidMTEs(mInputBusses)) {
-            for (int i = 0; i < bus.getSizeInventory(); i++) {
-                ItemStack inputItem = bus.getStackInSlot(i);
-                if (inputItem != null) {
-                    if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                        int metaid = inputItem.getItemDamage();
-                        if (metaid == 32418 && (blackHoleStatus == 1)) {
-                            bus.decrStackSize(i, 1);
-                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
-                                setResultIfFailure(aware.endRecipeProcessing(this));
-                                aware.startRecipeProcessing();
-                            }
-                            blackHoleStatus = 2;
-                            createRenderBlock();
-                            return;
-                        } else if (metaid == 32419 && !(blackHoleStatus == 1)) {
-                            bus.decrStackSize(i, 1);
-                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
-                                setResultIfFailure(aware.endRecipeProcessing(this));
-                                aware.startRecipeProcessing();
-                            }
-                            blackHoleStatus = 1;
-                            blackHoleStability = 100;
-                            catalyzingCostModifier = 1;
-                            catalyzingCounter = 0;
-                            if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
-                            collapseTimer = 40;
 
-                            // Update all the utility hatches
-                            for (MTEBlackHoleUtility hatch : utilityHatches) {
-                                hatch.updateRedstoneOutput(false);
-                            }
-
-                            return;
-                        } else if (metaid == 32420 && blackHoleStatus == 1) {
-                            bus.decrStackSize(i, 1);
-                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
-                                setResultIfFailure(aware.endRecipeProcessing(this));
-                                aware.startRecipeProcessing();
-                            }
-                            blackHoleStatus = 4;
-                            createRenderBlock();
-                            return;
-                        }
-                    }
+            ItemStack removed = bus.removeResource(catalysts, 1);
+            if (removed != null) {
+                if (bus instanceof IRecipeProcessingAwareHatch aware) {
+                    setResultIfFailure(aware.endRecipeProcessing(this));
+                    aware.startRecipeProcessing();
                 }
+                int metaid = removed.getItemDamage();
+                if (metaid == 32418 && blackHoleStatus == 1) {
+                    blackHoleStatus = 2;
+                    createRenderBlock();
+                } else if (metaid == 32419 && blackHoleStatus != 1) {
+                    blackHoleStatus = 1;
+                    blackHoleStability = 100;
+                    catalyzingCostModifier = 1;
+                    catalyzingCounter = 0;
+                    if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+                    collapseTimer = 40;
+                    for (MTEBlackHoleUtility hatch : utilityHatches) {
+                        hatch.updateRedstoneOutput(false);
+                    }
+                } else if (metaid == 32420 && blackHoleStatus == 1) {
+                    blackHoleStatus = 4;
+                    createRenderBlock();
+                }
+                return;
             }
         }
     }

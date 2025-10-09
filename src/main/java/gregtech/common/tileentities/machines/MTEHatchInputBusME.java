@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -1275,5 +1276,102 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @Override
+    public ItemStack removeResource(ItemStack[] targets, int amount) {
+        if (targets == null || targets.length == 0 || amount <= 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null || slotStack.stackSize < amount) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    ItemStack removed = decrStackSize(i, amount);
+                    if (removed != null) {
+                        updateSlots();
+                        return removed;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ItemStack removeAllResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        ItemStack result = null;
+        boolean updated = false;
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    ItemStack removed = decrStackSize(i, slotStack.stackSize);
+                    if (removed != null) {
+                        if (result == null) {
+                            result = removed.copy();
+                        } else if (GTUtility.areStacksEqual(result, removed)) {
+                            result.stackSize += removed.stackSize;
+                        }
+                        updated = true;
+                    }
+                }
+            }
+        }
+        if (updated) {
+            updateSlots();
+        }
+        return result;
+    }
+
+    @Override
+    public ItemStack findResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0) {
+            return null;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return slotStack.copy();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
