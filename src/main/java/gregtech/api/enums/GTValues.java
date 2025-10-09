@@ -184,7 +184,7 @@ public class GTValues {
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-        EnumChatFormatting.GREEN.toString(), // IV, 5
+        EnumChatFormatting.BLUE.toString(), // IV, 5
         EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
         EnumChatFormatting.AQUA.toString(), // ZPM, 7
         EnumChatFormatting.DARK_GREEN.toString() + EnumChatFormatting.UNDERLINE, // UV, 8
