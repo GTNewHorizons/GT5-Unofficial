@@ -69,8 +69,8 @@ public class CoverArm extends Cover {
             toSlot = internalSlotId;
         }
 
-        if (fromSlot > 0) transfer.setSourceSlots(fromSlot);
-        if (toSlot > 0) transfer.setSinkSlots(toSlot);
+        if (fromSlot > 0) transfer.setSourceSlots(fromSlot - 1);
+        if (toSlot > 0) transfer.setSinkSlots(toSlot - 1);
 
         transfer.transfer();
     }
