@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,15 +66,19 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.sync.Predicates;
+import gregtech.common.modularui2.widget.CoverTabButton;
 
 public class MTEMultiBlockBaseGui {
 
@@ -132,7 +137,8 @@ public class MTEMultiBlockBaseGui {
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)))
-            .childIf(base.canBeMuffled(), createMufflerButton());
+            .childIf(base.canBeMuffled(), createMufflerButton())
+            .child(createCoverTabs(syncManager, guiData, uiSettings));
     }
 
     protected int getBasePanelWidth() {
@@ -794,6 +800,53 @@ public class MTEMultiBlockBaseGui {
             .rightRel(0, -8, 0)
             .excludeAreaInNEI(true);
 
+    }
+
+    private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
+        Flow column = Flow.column()
+            .coverChildren()
+            .leftRel(0f, 0, 1f)
+            .top(1)
+            .childPadding(2)
+            .excludeAreaInNEI(true);
+
+        for (int i = 0; i < 6; i++) {
+            column.child(
+                getCoverTabButton(
+                    base.getBaseMetaTileEntity(),
+                    ForgeDirection.getOrientation(i),
+                    syncManager,
+                    guiData,
+                    uiSettings));
+        }
+
+        return column;
+    }
+
+    private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side,
+        PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
+        return new CoverTabButton(coverable, side, getCoverPanel(coverable, side, syncManager, guiData, uiSettings));
+    }
+
+    private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side, PanelSyncManager syncManager,
+        PosGuiData guiData, UISettings uiSettings) {
+        String panelKey = "cover_panel_" + side.toString()
+            .toLowerCase();
+        Cover cover = coverable.getCoverAtSide(side);
+
+        CoverGuiData coverGuiData = new CoverGuiData(
+            guiData.getPlayer(),
+            cover.getCoverID(),
+            guiData.getX(),
+            guiData.getY(),
+            guiData.getZ(),
+            side);
+        return syncManager.panel(
+            panelKey,
+            (manager, handler) -> coverable.getCoverAtSide(side)
+                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
+                .child(ButtonWidget.panelCloseButton()),
+            true);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
