@@ -136,7 +136,7 @@ public class MTEMultiBlockBaseGui {
             .childIf(base.canBeMuffled(), createMufflerButton());
     }
 
-    private IWidget createTitleTextStyle(String title) {
+    protected IWidget createTitleTextStyle(String title) {
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
             .leftRel(0, -4, 0)
@@ -266,7 +266,7 @@ public class MTEMultiBlockBaseGui {
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
-    private IWidget createShutdownDurationWidget() {
+    protected IWidget createShutdownDurationWidget() {
         return IKey.dynamic(() -> {
             Duration time = Duration.ofSeconds((base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
             return StatCollector.translateToLocalFormatted(
@@ -284,7 +284,7 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    private IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
+    protected IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
         StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager.getSyncHandler("shutdownDisplayString:0");
         return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
@@ -293,7 +293,7 @@ public class MTEMultiBlockBaseGui {
             .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
     }
 
-    private boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
+    protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
         return base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
             && !baseMetaTileEntity.isAllowedToWork()
             && GTUtility.isStringValid(shutdownString);
@@ -622,7 +622,7 @@ public class MTEMultiBlockBaseGui {
                     .child(makePowerfailEventsToggleRow()));
     }
 
-    private IWidget makeTitleTextWidget() {
+    protected IWidget makeTitleTextWidget() {
         return new TextWidget(
             EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
                 .alignment(Alignment.Center)
@@ -773,7 +773,7 @@ public class MTEMultiBlockBaseGui {
             .tooltipAutoUpdate(true);
     }
 
-    private IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
+    protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .height(76)
             .alignX(0)
