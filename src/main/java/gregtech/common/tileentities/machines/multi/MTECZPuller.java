@@ -22,9 +22,8 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -42,7 +41,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -54,7 +52,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings9;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTECZPullerGui;
 
 public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implements ISurvivalConstructable {
 
@@ -62,14 +59,10 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     public int mHeat = 0;
     public int mAmount = 0;
     public int capacityLimit = 0;
-    private int seedInputAmount = 0;
     private HeatingCoilLevel mCoilLevel = null;
     private static final String TIER_1 = "tier1";
     private static final String TIER_2 = "tier2";
-    private static final int tier1Value = 1;
-    private static final int tier2Value = 2;
     private byte mSpecialTier = 1;
-    private byte mActualTier = 0;
 
     public String materialType;
 
@@ -114,7 +107,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                             {"G         G","           ","    FFF    ","   FHHHF   ","  FH   HF  ","  FH   HF  ","  FH   HF  ","   FHHHF   ","    FFF    ","           ","G         G"},
                             {"G         G","           ","    CCC    ","   CHHHC   ","  CH   HC  ","  CH   HC  ","  CH   HC  ","   CHHHC   ","    CCC    ","           ","G         G"},
                             {"G         G","           ","    CCC    ","   CHHHC   ","  CH   HC  ","  CH   HC  ","  CH   HC  ","   CHHHC   ","    CCC    ","           ","G         G"},
-                            {"GG       GG","G         G","    HZH    ","   GHHHG   ","  HHHHHHH  ","  HHHHHHH  ","  HHHHHHH  ","   GHHHG   ","    HHH    ","G         G","GG       GG"}
+                            {"GG       GG","G         G","    H~H    ","   GHHHG   ","  HHHHHHH  ","  HHHHHHH  ","  HHHHHHH  ","   GHHHG   ","    HHH    ","G         G","GG       GG"}
                     }
             ))
         // spotless:on
@@ -138,7 +131,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement('F', ofFrame(Materials.TengamAttuned))
-        .addElement('G', ofFrame(Materials.SuperconductorZPM))
+        .addElement('G', ofFrame(Materials.NaquadahEnriched))
         .addElement(
             'H',
             buildHatchAdder(MTECZPuller.class)
@@ -177,7 +170,6 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = null;
             mSeedInputBus = (MTEHatchInputBus) aMetaTileEntity;
-            seedInputAmount++;
             return true;
         }
         return false;
@@ -194,35 +186,19 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         tt.addMachineType("CZ Puller")
             .addInfo("Growing your monocrystals")
             .addStructureInfo("")
+            .beginStructureBlock(0, 0, 0, true)
+            .addCasingInfoMin("Antimatter Containment Casing", 512, false)
+            .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
+            .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
+            .addCasingInfoMin("Protomatter Activation Coil", 126, false)
+            .addInputHatch("1-6, Hint block with dot 1", 1)
+            .addEnergyHatch("1-9, Hint block with dot 2", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
+                "16, Hint Block with dot 3",
+                3)
             .toolTipFinisher("Mireska_le_Fay");
         return tt;
-    }
-
-    @Override
-    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        boolean exotic = addExoticEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
-        return super.addToMachineList(aTileEntity, aBaseCasingIndex) || exotic;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    private int getTier() {
-        return mSpecialTier;
-    }
-
-    @Override
-    public void receiveClientEvent(byte aEventID, byte aValue) {
-        if (aEventID == 1) {
-            if ((aValue & tier1Value) == tier1Value) {
-                mSpecialTier = 1;
-            }
-            if ((aValue & tier2Value) == tier2Value) {
-                mSpecialTier = 2;
-            }
-        }
     }
 
     @Override
@@ -233,7 +209,6 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mSpecialTier", mSpecialTier);
         aNBT.setString("czMaterialType", getMaterialType());
         aNBT.setInteger("czMaterialAmount", materialAmount);
     }
@@ -241,18 +216,8 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("mSeparate")) {
-            inputSeparation = aNBT.getBoolean("mSeparate");
-        }
-        mSpecialTier = aNBT.getByte("mSpecialTier");
         materialType = aNBT.getString("czMaterialType");
         materialAmount = aNBT.getInteger("czMaterialAmount");
-
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -280,34 +245,31 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        if (checkTier(TIER_2, 5, 10, 2, 25)) {
+            mSpecialTier = 2;
+            capacityLimit = 65536;
+            return true;
+        }
+        if (checkTier(TIER_1, 2, 8, 0, 15)) {
+            mSpecialTier = 1;
+            capacityLimit = 1024;
+            return true;
+        }
+        mSpecialTier = 0;
+        capacityLimit = 0;
+        return false;
+    }
+
+    private boolean checkTier(String tier, int offsetX, int offsetY, int offsetZ, int minCasings) {
         mCasingAmount = 0;
         mEnergyHatches.clear();
         mExoticEnergyHatches.clear();
-        seedInputAmount = 0;
-
-        boolean t1 = checkPiece(TIER_1, 2, 8, 0);
-        boolean t2 = checkPiece(TIER_2, 5, 10, 2);
-        if (mSpecialTier == 1) {
-            if (!t1) return false;
-            mActualTier = 1;
-        }
-        if (mSpecialTier == 2) {
-            if (!t2) return false;
-            mActualTier = 2;
-        }
-        if (seedInputAmount > 1) return false;
-        if (mEnergyHatches.isEmpty()) return false;
-        if (mEnergyHatches.size() > 2) return false;
-        if (mEnergyHatches.size() == 2 && !(mEnergyHatches.get(0).mTier == mEnergyHatches.get(1).mTier)) return false;
-        if (mExoticEnergyHatches.size() > 1) return false;
-        if (mMaintenanceHatches.size() > 1) return false;
-
-        capacityLimit = switch (mSpecialTier) {
-            case 1 -> 1024;
-            case 2 -> 65536;
-            default -> 0;
-        };
-        return true;
+        mSeedInputBus = null;
+        return checkPiece(tier, offsetX, offsetY, offsetZ) && mCasingAmount >= minCasings
+            && mSeedInputBus != null
+            && (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() <= 1)
+            && mEnergyHatches.size() <= 2
+            && (mEnergyHatches.size() <= 1 || mEnergyHatches.get(0).mTier == mEnergyHatches.get(1).mTier);
     }
 
     @Override
@@ -325,25 +287,21 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        if (mSpecialTier == 1) {
-            buildPiece(TIER_1, stackSize, hintsOnly, 2, 8, 0);
+        switch (stackSize.stackSize) {
+            case 1 -> buildPiece(TIER_1, stackSize, hintsOnly, 2, 8, 0);
+            default -> buildPiece(TIER_2, stackSize, hintsOnly, 5, 10, 2);
         }
-        if (mSpecialTier == 2) {
-            buildPiece(TIER_2, stackSize, hintsOnly, 5, 10, 2);
-        }
-
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
         if (mMachine) return -1;
-        if (mSpecialTier == 1) {
-            built += survivialBuildPiece(TIER_1, stackSize, 2, 8, 0, elementBudget, env, false, true);
-        }
-        if (mSpecialTier == 2) {
-            built += survivialBuildPiece(TIER_2, stackSize, 5, 10, 2, elementBudget, env, false, true);
-        }
+        built += switch (mSpecialTier) {
+            case 1 -> survivialBuildPiece(TIER_1, stackSize, 2, 8, 0, elementBudget, env, false, true);
+            case 2 -> survivialBuildPiece(TIER_2, stackSize, 5, 10, 2, elementBudget, env, false, true);
+            default -> 0;
+        };
         return built;
     }
 
@@ -362,24 +320,12 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         return false;
     }
 
-    @Override
-    public byte getUpdateData() {
-        byte data = 0;
-        if (mSpecialTier == 1) {
-            data += tier1Value;
-        }
-        if (mSpecialTier == 2) {
-            data += tier2Value;
-        }
-        return data;
-    }
-
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] {
                 Textures.BlockIcons.getCasingTextureForId(
-                    getTier() == 1 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)
+                    this.mSpecialTier == 1 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)
                         : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 11)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
@@ -392,7 +338,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                     .build() };
             return new ITexture[] {
                 Textures.BlockIcons.getCasingTextureForId(
-                    getTier() == 1 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)
+                    this.mSpecialTier == 1 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)
                         : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 11)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ENGRAVER)
@@ -405,25 +351,15 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(
-            mSpecialTier == 1 ? ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)
+            this.mSpecialTier == 1 ? ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)
                 : ((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11)) };
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTECZPullerGui(this);
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aTick % 20 == 0) {
             materialType = getMaterialType();
-
         }
     }
 }
