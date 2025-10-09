@@ -4,7 +4,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -12,13 +14,17 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -32,6 +38,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.gui.MTECokeOvenGUI;
 
@@ -155,6 +162,71 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         } else {
             return TEXTURE_CASING;
         }
+    }
+
+    @Override
+    public IAlignmentLimits getAlignmentLimits() {
+        return IAlignmentLimits.UPRIGHT;
+    }
+
+    /**
+     * Draws random flames and smoke particles in front of Primitive Blast Furnace when active
+     * Copied from {@link MTEBrickedBlastFurnace}.
+     *
+     * @param baseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void onRandomDisplayTick(IGregTechTileEntity baseMetaTileEntity) {
+        if (!baseMetaTileEntity.isActive()) return;
+
+        final ForgeDirection frontFacing = baseMetaTileEntity.getFrontFacing();
+
+        final double oX = baseMetaTileEntity.getOffsetX(frontFacing, 1) + 0.5;
+        final double oY = baseMetaTileEntity.getOffsetY(frontFacing, 1);
+        final double oZ = baseMetaTileEntity.getOffsetZ(frontFacing, 1) + 0.5;
+        final double offset = -0.48;
+        final double horizontal = XSTR_INSTANCE.nextDouble() * 8.0 / 16.0 - 4.0 / 16.0;
+        final double vertical = XSTR_INSTANCE.nextDouble() * 10.0 / 16.0 + 5.0 / 16.0;
+
+        switch (frontFacing) {
+            case NORTH -> {
+                final double x = oX + horizontal;
+                final double y = oY + vertical;
+                final double z = oZ - offset;
+                createParticles(baseMetaTileEntity, x, y, z);
+            }
+            case SOUTH -> {
+                final double x = oX + horizontal;
+                final double y = oY + vertical;
+                final double z = oZ + offset;
+                createParticles(baseMetaTileEntity, x, y, z);
+            }
+            case WEST -> {
+                final double x = oX - offset;
+                final double y = oY + vertical;
+                final double z = oZ + horizontal;
+                createParticles(baseMetaTileEntity, x, y, z);
+            }
+            case EAST -> {
+                final double x = oX + offset;
+                final double y = oY + vertical;
+                final double z = oZ + horizontal;
+                createParticles(baseMetaTileEntity, x, y, z);
+            }
+            default -> throw new IllegalStateException("Unexpected facing: " + frontFacing);
+        }
+    }
+
+    private void createParticles(IGregTechTileEntity baseMetaTileEntity, double x, double y, double z) {
+        WorldSpawnedEventBuilder.ParticleEventBuilder particleEventBuilder = new WorldSpawnedEventBuilder.ParticleEventBuilder()
+            .setMotion(0, 0, 0)
+            .setPosition(x, y, z)
+            .setWorld(baseMetaTileEntity.getWorld());
+        particleEventBuilder.setIdentifier(ParticleFX.SMOKE)
+            .run();
+        particleEventBuilder.setIdentifier(ParticleFX.FLAME)
+            .run();
     }
 
     @Override
