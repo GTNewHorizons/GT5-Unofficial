@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 
-import gregtech.common.pollution.Pollution;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,6 +31,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.gui.MTECokeOvenGUI;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
@@ -189,7 +189,9 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
             addOutput();
+            addOutputFluid();
             mOutputItems = null;
+            mOutputFluids = null;
             mProgresstime = 0;
             mMaxProgresstime = 0;
         }
@@ -211,29 +213,55 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
                 if (!GTUtility.areStacksEqual(output, recipeOutput)) return;
             }
 
+            // Check if there is enough space for the fluid.
+            final FluidStack recipeFluid = recipe.getFluidOutput(0);
+            if (fluid != null && recipeFluid != null) {
+                if (fluid.amount + recipeFluid.amount > FLUID_CAPACITY) return;
+                if (!GTUtility.areFluidsEqual(fluid, recipeFluid)) return;
+            }
+
             // Check if input quantity matches. If it is reduced to zero, remove the item stack.
             if (!recipe.isRecipeInputEqual(true, null, input)) return;
             if (input != null && input.stackSize == 0) mInventory[INPUT_SLOT] = null;
 
             mMaxProgresstime = recipe.mDuration;
             mOutputItems = recipe.mOutputs;
+            mOutputFluids = recipe.mFluidOutputs;
         }
     }
 
     private void addOutput() {
         if (mOutputItems == null) return;
-        if (mOutputItems.length < 1) return;
+        if (mOutputItems.length == 0) return;
 
         final ItemStack output = mInventory[OUTPUT_SLOT];
         final ItemStack recipeOutput = mOutputItems[0];
+        if (recipeOutput == null) return;
 
         if (output == null) {
-            mInventory[OUTPUT_SLOT] = GTUtility.copyOrNull(recipeOutput);
+            mInventory[OUTPUT_SLOT] = recipeOutput.copy();
             return;
         }
 
         if (GTUtility.areStacksEqual(output, recipeOutput)) {
             output.stackSize = Math.min(output.getMaxStackSize(), output.stackSize + recipeOutput.stackSize);
+        }
+    }
+
+    private void addOutputFluid() {
+        if (mOutputFluids == null) return;
+        if (mOutputFluids.length == 0) return;
+
+        final FluidStack recipeFluid = mOutputFluids[0];
+        if (recipeFluid == null) return;
+
+        if (fluid == null) {
+            fluid = recipeFluid.copy();
+            return;
+        }
+
+        if (GTUtility.areFluidsEqual(fluid, recipeFluid)) {
+            fluid.amount = Math.min(FLUID_CAPACITY, fluid.amount + recipeFluid.amount);
         }
     }
 
