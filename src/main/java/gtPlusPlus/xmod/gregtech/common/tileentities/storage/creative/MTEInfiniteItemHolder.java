@@ -100,14 +100,18 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
     }
 
     @Override
-    protected ItemSink getItemSink(ForgeDirection side) {
-        return new ItemIOImpl();
+    protected IItemSource createItemSource(ForgeDirection side) {
+        return new ItemIO();
     }
 
     @Override
-    protected ItemSource getItemSource(ForgeDirection side) {
-        return new ItemIOImpl();
+    protected IItemSink createItemSink(ForgeDirection side) {
+        return new ItemIO();
     }
+
+    class ItemIO implements IItemSource, IItemSink {
+
+        public static final OptionalInt ZERO = OptionalInt.of(0);
 
     @Override
     protected ItemIO getItemIO(ForgeDirection side) {

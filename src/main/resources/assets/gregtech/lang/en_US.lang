@@ -1423,6 +1423,7 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.button.compressed_bus_settings=Open Bus Settings
 
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
@@ -1563,6 +1564,9 @@ GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.stack_capacity=Stack Capacity
+GT5U.gui.text.bus_settings=Bus Settings
+GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
@@ -1571,6 +1575,9 @@ GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
 GT5U.gui.hoverable.error=ERROR! REPORT ME!
+GT5U.gui.text.stack_capacity=Stack Capacity
+GT5U.gui.text.bus_settings=Bus Settings
+GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -2017,7 +2024,7 @@ gt.interact.desc.fluid_regulator.L_Sec=L/sec
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
 gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
-gt.interact.desc.Item_Filter.Filter=§8Filter:
+gt.interact.desc.Item_Filter.Filter=§8Filter 
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
 ## Item Meter

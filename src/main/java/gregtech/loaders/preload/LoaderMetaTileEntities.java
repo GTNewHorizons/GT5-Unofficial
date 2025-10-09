@@ -50,6 +50,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -9004,6 +9005,136 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchCokeOven(COKE_OVEN_HATCH.ID, "hatch.cokeoven", "Coke Oven Hatch").getStackForm(1L));
     }
 
+    private static void registerCompressedBus() {
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
+            "hatch.comp-output-bus.tier.00",
+            "Compressed Output Bus (LuV)",
+            VoltageIndex.LuV,
+            16,
+            256);
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
+            "hatch.comp-output-bus.tier.01",
+            "Compressed Output Bus (ZPM)",
+            VoltageIndex.ZPM,
+            16,
+            2048);
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
+            "hatch.comp-output-bus.tier.02",
+            "Compressed Output Bus (UV)",
+            VoltageIndex.UV,
+            16,
+            16384);
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
+            "hatch.comp-output-bus.tier.03",
+            "Compressed Output Bus (UHV)",
+            VoltageIndex.UHV,
+            16,
+            131072);
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_QUANTUM_1.ID,
+            "hatch.quantum-output-bus.tier.00",
+            "Quantum Output Bus (UEV)",
+            VoltageIndex.UEV,
+            16,
+            2097152);
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_QUANTUM_2.ID,
+            "hatch.quantum-output-bus.tier.01",
+            "Quantum Output Bus (UIV)",
+            VoltageIndex.UIV,
+            16,
+            Integer.MAX_VALUE / 64L);
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_QUANTUM_3.ID,
+            "hatch.quantum-output-bus.tier.02",
+            "Quantum Output Bus (UMV)",
+            VoltageIndex.UMV,
+            16,
+            Integer.MAX_VALUE * 64);
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_QUANTUM_4.ID,
+            "hatch.quantum-output-bus.tier.03",
+            "Quantum Output Bus (UXV)",
+            VoltageIndex.UXV,
+            16,
+            Long.MAX_VALUE / 64L);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_1.ID,
+            "hatch.comp-input-bus.tier.00",
+            "Compressed Input Bus (LuV)",
+            VoltageIndex.LuV,
+            16,
+            256);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_2.ID,
+            "hatch.comp-input-bus.tier.01",
+            "Compressed Input Bus (ZPM)",
+            VoltageIndex.ZPM,
+            16,
+            2048);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_3.ID,
+            "hatch.comp-input-bus.tier.02",
+            "Compressed Input Bus (UV)",
+            VoltageIndex.UV,
+            16,
+            16384);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_4.ID,
+            "hatch.comp-input-bus.tier.03",
+            "Compressed Input Bus (UHV)",
+            VoltageIndex.UHV,
+            16,
+            131072);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_QUANTUM_1.ID,
+            "hatch.quantum-input-bus.tier.00",
+            "Quantum Input Bus (UEV)",
+            VoltageIndex.UEV,
+            16,
+            2097152);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_QUANTUM_2.ID,
+            "hatch.quantum-input-bus.tier.01",
+            "Quantum Input Bus (UIV)",
+            VoltageIndex.UIV,
+            16,
+            Integer.MAX_VALUE / 64L);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_QUANTUM_3.ID,
+            "hatch.quantum-input-bus.tier.02",
+            "Quantum Input Bus (UMV)",
+            VoltageIndex.UMV,
+            16,
+            Integer.MAX_VALUE * 64);
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_QUANTUM_4.ID,
+            "hatch.quantum-input-bus.tier.03",
+            "Quantum Input Bus (UXV)",
+            VoltageIndex.UXV,
+            16,
+            Long.MAX_VALUE / 64L);
+    }
+
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
             .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
@@ -9201,42 +9332,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_Output_Bus_MAX.set(
             new MTEHatchOutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9)
                 .getStackForm(1L));
-
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
-            "hatch.output-bus.tier.00",
-            "Compressed Output Bus (UV)",
-            8,
-            16,
-            16);
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
-            "hatch.output-bus.tier.01",
-            "Compressed Output Bus (UHV)",
-            9,
-            16,
-            64);
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
-            "hatch.output-bus.tier.02",
-            "Compressed Output Bus (UEV)",
-            10,
-            16,
-            256);
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
-            "hatch.output-bus.tier.03",
-            "Compressed Output Bus (UIV)",
-            11,
-            16,
-            1024);
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_5.ID,
-            "hatch.output-bus.tier.04",
-            "Compressed Output Bus (UMV)",
-            12,
-            16,
-            Integer.MAX_VALUE / 64);
     }
 
     private static void registerMufflerHatch() {
@@ -10717,6 +10812,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOutputBus();
         registerVoidBus();
         registerCokeOvenHatch();
+        registerCompressedBus();
         registerMufflerHatch();
         registerBoiler();
         registerBatteryBuffer1x1();

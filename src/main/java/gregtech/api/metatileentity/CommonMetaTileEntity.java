@@ -140,6 +140,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return null;
     }
 
+    protected IItemIO getItemIO(ForgeDirection side) {
+        return null;
+    }
+
     @Override
     public void onServerStart() {}
 
