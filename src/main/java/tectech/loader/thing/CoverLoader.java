@@ -38,7 +38,7 @@ public class CoverLoader implements Runnable {
         CoverRegistry.registerCover(
             new ItemStack(ItemEnderFluidLinkCover.INSTANCE, 1, 0),
             TextureFactory.of(ENDERFLUIDLINK_OVERLAY),
-            CoverEnderFluidLink::new);
+            context -> new CoverEnderFluidLink(context, TextureFactory.of(ENDERFLUIDLINK_OVERLAY)));
         CoverRegistry.registerCover(
             new ItemStack(ItemPowerPassUpgradeCover.INSTANCE, 1, 0),
             TextureFactory.of(POWERPASSUPGRADE_OVERLAY),
