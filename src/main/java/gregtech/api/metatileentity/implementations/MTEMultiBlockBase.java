@@ -3667,6 +3667,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return makePowerfailEvents;
     }
 
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
     public void setPowerfailEventCreationStatus(boolean status) {
         makePowerfailEvents = status;
     }
