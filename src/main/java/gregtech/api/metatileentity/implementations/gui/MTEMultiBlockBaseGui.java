@@ -62,7 +62,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
-import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -96,7 +95,6 @@ public class MTEMultiBlockBaseGui {
         this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
     }
 
-    // TODO: Add Muffle button
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
@@ -105,7 +103,7 @@ public class MTEMultiBlockBaseGui {
             .padding(4);
         return panel.child(
             new Column().sizeRel(1)
-                .child(createTitleTextStyle(base.getLocalName()))
+                .child(createTitleTextStyle(guiData, base.getLocalName()))
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)));
@@ -119,8 +117,8 @@ public class MTEMultiBlockBaseGui {
         return 181 + textBoxToInventoryGap;
     }
 
-    private IWidget createTitleTextStyle(String title) {
-        boolean clientSide = GTMod.GT.isClientSide();
+    private IWidget createTitleTextStyle(PosGuiData data, String title) {
+        boolean clientSide = data.isClient();
 
         int borderRadius = 4;
         int maxWidth = getBasePanelWidth() - borderRadius * 2;
