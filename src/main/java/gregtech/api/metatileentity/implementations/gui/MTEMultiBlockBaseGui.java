@@ -124,31 +124,54 @@ public class MTEMultiBlockBaseGui {
         setMachineModeIcons();
         registerSyncValues(syncManager);
 
-        ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(198, 181 + textBoxToInventoryGap)
+        ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(getBasePanelWidth(), getBasePanelHeight())
             .padding(4);
         return panel.child(
             new Column().sizeRel(1)
-                .child(createTitleTextStyle(base.getLocalName()))
+                .child(createTitleTextStyle(guiData, base.getLocalName()))
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)))
             .childIf(base.canBeMuffled(), createMufflerButton());
     }
 
-    protected IWidget createTitleTextStyle(String title) {
+    protected int getBasePanelWidth() {
+        return 198;
+    }
+
+    protected int getBasePanelHeight() {
+        return 181 + textBoxToInventoryGap;
+    }
+
+    protected IWidget createTitleTextStyle(PosGuiData data, String title) {
+        boolean clientSide = data.isClient();
+
+        int borderRadius = 4;
+        int maxWidth = getBasePanelWidth() - borderRadius * 2;
+        int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
+        int widgetWidth = Math.min(maxWidth, titleWidth);
+
+        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+        int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
+        int height = heightPerRow * rows;
+
+        TextWidget titleTextWidget = IKey.str(title)
+            .asWidget()
+            .alignment(Alignment.TopLeft)
+            .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+            .marginLeft(5)
+            .marginRight(5)
+            .marginTop(5)
+            .marginBottom(1);
+
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
             .leftRel(0, -4, 0)
+            .height(height + 10)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
-                IKey.str(title)
-                    .asWidget()
-                    .alignment(Alignment.Center)
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
+                titleTextWidget.height(height)
+                    .width(widgetWidth));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
