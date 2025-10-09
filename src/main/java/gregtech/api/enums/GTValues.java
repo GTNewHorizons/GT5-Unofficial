@@ -13,6 +13,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -30,6 +31,7 @@ import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.GTChunkAssociatedData;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -440,6 +442,7 @@ public class GTValues {
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
+    public static final long[] emptyLongArray = new long[0];
 
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];
@@ -449,11 +452,13 @@ public class GTValues {
     public static final String[] emptyStringArray = new String[0];
     public static final Object[] emptyObjectArray = new Object[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+    @SuppressWarnings("rawtypes")
+    public static final Iterator[] EMPTY_ITERATOR_ARRAY = new Iterator[0];
 
     /**
-     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
-     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
-     * be ran.
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran. If the
+     * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
+     * ran.
      */
     public static boolean DEVENV = Launch.blackboard == null ? true
         : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -587,7 +592,6 @@ public class GTValues {
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
-        text("Author: "),
         animatedText(
             "Noc",
             0,
@@ -610,6 +614,15 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
+
+    public static final Supplier<String> fancyAuthorChrom = chain(
+        animatedText(
+            "Chrom",
+            0,
+            1000,
+            EnumChatFormatting.WHITE + BOLD,
+            EnumChatFormatting.BLUE + BOLD,
+            EnumChatFormatting.GOLD + BOLD));
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
@@ -636,5 +649,10 @@ public class GTValues {
             return StatCollector.translateToLocal(unlocalizedName);
         }
         return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+    }
+
+    public static <T> Iterator<T>[] emptyIteratorArray() {
+        // noinspection unchecked
+        return EMPTY_ITERATOR_ARRAY;
     }
 }

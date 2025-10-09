@@ -83,13 +83,13 @@ public class RecipeLoaderTreeFarm {
         MTETreeFarm.registerTreeProducts( // Brown Mushroom
             new ItemStack(Blocks.brown_mushroom, 1, 0),
             new ItemStack(Blocks.brown_mushroom_block, 1, 0),
-            null,
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "brown_mushroom", 1, 0),
             null);
 
         MTETreeFarm.registerTreeProducts( // Red Mushroom
             new ItemStack(Blocks.red_mushroom, 1, 0),
             new ItemStack(Blocks.red_mushroom_block, 1, 0),
-            null,
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "red_mushroom", 1, 0),
             null);
     }
 

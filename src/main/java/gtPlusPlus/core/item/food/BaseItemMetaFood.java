@@ -31,7 +31,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseItemMetaFood extends ItemFood {
 
@@ -489,7 +488,9 @@ public class BaseItemMetaFood extends ItemFood {
 
         @Override
         public void behaviour(EntityPlayer aPlayer) {
-            EntityUtils.setEntityOnFire(aPlayer, 5);
+            if (!aPlayer.isImmuneToFire()) {
+                aPlayer.setFire(5);
+            }
         }
     }
 }

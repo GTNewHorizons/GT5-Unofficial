@@ -22,6 +22,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,6 +37,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
@@ -85,6 +88,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
     public final ConcurrentHashMap<Short, IToolStats> mToolStats = new ConcurrentHashMap<>();
+
+    public static boolean playSound = true;
 
     /**
      * Creates the Item using these Parameters.
@@ -169,6 +174,16 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (aNBT != null) return aNBT.getByte("Mode");
         }
         return 0;
+    }
+
+    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
+        if (!keyDown) return;
+        ItemStack currentItem = player.inventory.getCurrentItem();
+        if (currentItem == null || (!(currentItem.getItem() instanceof MetaGeneratedTool item))) return;
+        byte maxMode = item.getToolMaxMode(currentItem);
+        if (maxMode <= 1) return;
+        byte newMode = (byte) ((MetaGeneratedTool.getToolMode(currentItem) + 1) % maxMode);
+        MetaGeneratedTool.setToolMode(currentItem, newMode);
     }
 
     /**
@@ -660,16 +675,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return doDamage(aStack, aVanillaDamage * 100L);
     }
 
-    public static boolean playSound = true;
-
-    public final boolean doDamageNoSound(ItemStack aStack, long aAmount) {
-        final boolean previousState = playSound;
-        playSound = false;
-        boolean ret = doDamage(aStack, aAmount);
-        playSound = previousState;
-        return ret;
-    }
-
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
         Long[] tElectric = getElectricStats(aStack);
@@ -743,31 +748,19 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public final ItemStack getContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, true, true);
-    }
-
-    @Override
-    public final boolean hasContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, false, false) != null;
-    }
-
-    private ItemStack getContainerItem(ItemStack aStack, boolean playSound, boolean doDamage) {
         if (!isItemStackUsable(aStack)) return null;
         aStack = GTUtility.copyAmount(1, aStack);
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return null;
 
-        if (doDamage) {
-            if (playSound) {
-                doDamage(aStack, tStats.getToolDamagePerContainerCraft());
-            } else {
-                doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
-            }
-            aStack = aStack != null && aStack.stackSize > 0 ? aStack : null;
-        } else if (playSound) {
-            playSound(tStats);
-        }
-        return aStack;
+        doDamage(aStack, tStats.getToolDamagePerContainerCraft());
+
+        return aStack != null && aStack.stackSize > 0 ? aStack : null;
+    }
+
+    @Override
+    public final boolean hasContainerItem(ItemStack aStack) {
+        return isItemStackUsable(aStack) && getToolStats(aStack) != null;
     }
 
     public IToolStats getToolStats(ItemStack aStack) {
@@ -822,12 +815,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     @Override
-    public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
-        if (player == null) return;
-        if (player.getCurrentEquippedItem() == null) return;
-        IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
-        if (tStats != null) doDamage(player.getCurrentEquippedItem(), tStats.getToolDamagePerEntityAttack());
-    }
+    public void wrenchUsed(EntityPlayer player, int x, int y, int z) {}
 
     @Override
     public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z) {
@@ -852,9 +840,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     @Override
-    public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {
-        wrenchUsed(player, x, y, z);
-    }
+    public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {}
 
     @Override
     public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
