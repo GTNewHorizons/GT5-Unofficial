@@ -62,6 +62,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
+            .addInfo("Turns coal into coke and produces creosote oil as a byproduct.")
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .toolTipFinisher(AuthorJulia);
     }
