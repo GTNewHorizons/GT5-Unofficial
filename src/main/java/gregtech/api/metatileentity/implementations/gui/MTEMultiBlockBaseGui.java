@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import com.cleanroommc.modularui.drawable.text.TextRenderer;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -121,24 +123,16 @@ public class MTEMultiBlockBaseGui {
 
     private IWidget createTitleTextStyle(String title) {
         boolean clientSide = GTMod.GT.isClientSide();
-        // workaround is slightly better, pretty meh
-        int addedHeight = 0;
-        int width = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 180;
 
-        if (width > getBasePanelWidth() - 10) {
-            String[] parts = title.split(" ");
-            int middlepoint = (parts.length / 2);
-            StringBuilder modifiedTitle = new StringBuilder();
-            for (int i = 0; i < parts.length; i++) {
-                parts[i] += " ";
-                if (i == middlepoint) parts[i] += "\n";
-                modifiedTitle.append(parts[i]);
-            }
-            title = modifiedTitle.toString();
-            width = getBasePanelWidth() - 10;
-            addedHeight = clientSide ? (int) (1.3 * IKey.renderer.getFontHeight()) : 20;
+        int borderRadius = 4;
+        int maxWidth = getBasePanelWidth() - borderRadius * 2;
+        int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
+        int widgetWidth = Math.min(maxWidth, titleWidth);
 
-        }
+        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+        int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
+        int height = heightPerRow * rows;
+
         TextWidget titleTextWidget = IKey.str(title)
             .asWidget()
             .alignment(Alignment.TopLeft)
@@ -151,11 +145,11 @@ public class MTEMultiBlockBaseGui {
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
             .leftRel(0, -4, 0)
-            .height(18 + addedHeight)
+            .height(height + 10)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
-                titleTextWidget.height(8 + addedHeight)
-                    .width(width));
+                titleTextWidget.height(height)
+                    .width(widgetWidth));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
