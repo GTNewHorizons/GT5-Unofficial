@@ -642,6 +642,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         GTItemTransfer transfer = new GTItemTransfer();
 
                         transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                        transfer.setStacksToTransfer(mOutputItems.length);
 
                         transfer.transfer();
                     }

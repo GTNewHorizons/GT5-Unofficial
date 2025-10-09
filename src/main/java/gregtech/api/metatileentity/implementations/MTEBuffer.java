@@ -365,6 +365,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
 
                 transfer.setMaxTotalTransferred(toTransfer);
             } else {
+                transfer.setFilter(stack -> stack.stackSize >= mTargetStackSize);
                 transfer.setMaxItemsPerTransfer(mTargetStackSize);
             }
         }
@@ -373,7 +374,9 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
             mSuccess = 50;
 
             GTUtility.cleanInventory(this);
-            GTUtility.compactInventory(this);
+            if (bSortStacks) {
+                GTUtility.compactInventory(this);
+            }
         }
     }
 

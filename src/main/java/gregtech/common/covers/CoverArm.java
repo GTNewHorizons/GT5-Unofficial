@@ -58,14 +58,12 @@ public class CoverArm extends Cover {
         final int fromSlot;
 
         if (export) {
-            transfer.source(tileEntity, coverSide);
-            transfer.sink(coverable.getTileEntityAtSide(coverSide), coverSide.getOpposite());
+            transfer.push(coverable, coverSide);
 
             fromSlot = internalSlotId;
             toSlot = externalSlotId;
         } else {
-            transfer.source(coverable.getTileEntityAtSide(coverSide), coverSide.getOpposite());
-            transfer.sink(tileEntity, coverSide);
+            transfer.pull(coverable, coverSide);
 
             fromSlot = externalSlotId;
             toSlot = internalSlotId;
