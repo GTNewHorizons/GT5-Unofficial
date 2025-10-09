@@ -7,7 +7,11 @@ import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -567,7 +571,7 @@ public class MultiblockTooltipBuilder {
             }, desc);
         } else {
             addStructurePart(locKey, hintLine(info, hintDots), desc);
-            for (int dot : hintDots) hBlocks.put(dot, translateToLocal(locKey));
+            addStructureHint(locKey, hintDots);
         }
         return this;
     }

@@ -3637,6 +3637,7 @@ machtype.mega_abs=Fluid Alloy Cooker, MABS
 machtype.massfab=Mass Fabricator
 machtype.lsaa=Assembler, LSAA
 machtype.qft=Quantum Force Transformer, QFT
+machtype.solar_tower=Solar Tower
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3645,6 +3646,9 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top Center
 
 gt.mb.hint_block=Hint block with dot %d
+
+gt.solar_tower.tips.1=Contributing Green Energy towards the future\nSurround with rings of Solar Reflectors\nThe Reflectors increase the internal heat value of the Tower (see below for formula)\nEach Reflector ring increases tier, the first ring is required for the Tower to work\nInput: %s\nOutput: %s\nEvery cycle (10 seconds), heat increases and all the Cold Solar Salt is heated\nConverting Cold to Hot Solar Salt reduces heat, equal to the amount converted\nThis conversion only happens if heat >= 30000 and controller efficiency = 100%%\nIf there's more Cold Salt than heat, all the heat is used up and returns to 0\nThe heat increase is most efficient at exactly half of maximum heat\nMinimum efficiency at 0 or 100000 heat, maximum efficiency at 50000\nHeat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8] ) / 7000\nHeat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)\nBonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16\nTotal number of reflectors based on how many rings are built:\n1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340
+gt.solar_tower.info.1=min 1
 
 gt.qft.tips.1=Allows Complex processing lines to be performed instantly in one step
 gt.qft.tips.2=§dPulse Manipulator Tier§7 determines maximum recipe tier\nEvery recipe requires a specific §dcatalyst\n§dCatalysts§7 have to be placed in a Bulk Catalyst Housing\nGains %s Parallel per §dCatalyst
