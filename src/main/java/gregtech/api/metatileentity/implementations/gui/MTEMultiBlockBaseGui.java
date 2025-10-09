@@ -228,15 +228,16 @@ public class MTEMultiBlockBaseGui {
                     .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
-            .child(createShutdownDurationWidget())
+            .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
-    protected IWidget createShutdownDurationWidget() {
+    protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
+        LongSyncValue shutdownDurationSyncer = (LongSyncValue) syncManager.getSyncHandler("shutdownDuration:0");
         return IKey.dynamic(() -> {
-            Duration time = Duration.ofSeconds((base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
+            Duration time = Duration.ofSeconds(shutdownDurationSyncer.getValue());
             return StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.shutdown_duration",
                 time.toHours(),
@@ -879,6 +880,11 @@ public class MTEMultiBlockBaseGui {
             baseMetaTileEntity::wasShutdown,
             baseMetaTileEntity::setShutdownStatus);
         syncManager.syncValue("wasShutdown", wasShutDown);
+
+        LongSyncValue shutdownDurationSyncer = new LongSyncValue(
+            () -> (base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
+        syncManager.syncValue("shutdownDuration", shutdownDurationSyncer);
+
         syncManager.syncValue(
             "shutdownReason",
             new GenericSyncValue<ShutDownReason>(
