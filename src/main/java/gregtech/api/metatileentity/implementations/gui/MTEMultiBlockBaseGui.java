@@ -121,8 +121,6 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    // TODO: Add Muffle button
-
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
@@ -135,7 +133,7 @@ public class MTEMultiBlockBaseGui {
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)))
-            .child(createMufflerButton());
+            .childIf(base.canBeMuffled(), createMufflerButton());
     }
 
     private IWidget createTitleTextStyle(String title) {
@@ -199,32 +197,32 @@ public class MTEMultiBlockBaseGui {
         return new ListWidget<>()
             .child(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> !base.mWrench)
+                    .setEnabledIf(widget -> base.mMachine && !base.mWrench)
                     .marginBottom(2)
                     .widthRel(1))
             .child(
                 new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> !base.mScrewdriver)
+                    .setEnabledIf(widget -> base.mMachine && !base.mScrewdriver)
                     .marginBottom(2)
                     .widthRel(1))
             .child(
                 new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> !base.mSoftMallet)
+                    .setEnabledIf(widget -> base.mMachine && !base.mSoftMallet)
                     .marginBottom(2)
                     .widthRel(1))
             .child(
                 new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> !base.mHardHammer)
+                    .setEnabledIf(widget -> base.mMachine && !base.mHardHammer)
                     .marginBottom(2)
                     .widthRel(1))
             .child(
                 new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> !base.mSolderingTool)
+                    .setEnabledIf(widget -> base.mMachine && !base.mSolderingTool)
                     .marginBottom(2)
                     .widthRel(1))
             .child(
                 new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> !base.mCrowbar)
+                    .setEnabledIf(widget -> base.mMachine && !base.mCrowbar)
                     .marginBottom(2)
                     .widthRel(1))
             .child(
@@ -589,7 +587,6 @@ public class MTEMultiBlockBaseGui {
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
-        // TODO: add powerfail disable checkbox
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)
@@ -621,7 +618,8 @@ public class MTEMultiBlockBaseGui {
                         IKey.lang("GTPP.CC.parallel")
                             .asWidget()
                             .marginBottom(4))
-                    .child(makeParallelConfigurator(syncManager)));
+                    .child(makeParallelConfigurator(syncManager))
+                    .child(makePowerfailEventsToggleRow()));
     }
 
     private IWidget makeTitleTextWidget() {
@@ -630,6 +628,25 @@ public class MTEMultiBlockBaseGui {
                 .alignment(Alignment.Center)
                 .size(120, 18)
                 .marginBottom(4);
+    }
+
+    private IWidget makePowerfailEventsToggleRow() {
+        BooleanSyncValue powerfailSyncer = new BooleanSyncValue(
+            base::makesPowerfailEvents,
+            base::setPowerfailEventCreationStatus);
+        return new Row().widthRel(1)
+            .height(18)
+            .paddingLeft(3)
+            .paddingRight(3)
+            .mainAxisAlignment(MainAxis.CENTER)
+            .child(
+                new TextWidget(IKey.lang("GT5U.gui.text.powerfail_events")).height(18)
+                    .marginRight(2))
+            .child(
+                new ToggleButton().size(18, 18)
+                    .value(powerfailSyncer)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS));
     }
 
     private IWidget makeParallelConfigurator(PanelSyncManager syncManager) {
@@ -647,6 +664,7 @@ public class MTEMultiBlockBaseGui {
             base::getPowerPanelMaxParallel,
             base::setPowerPanelMaxParallel);
         return new Row().widthRel(1)
+            .marginBottom(4)
             .height(18)
             .paddingLeft(3)
             .paddingRight(3)
@@ -670,7 +688,8 @@ public class MTEMultiBlockBaseGui {
                                         maxParallelSyncer.getValue()))))
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
                     .size(70, 14)
-                    .marginBottom(4))
+                    .marginBottom(4)
+                    .marginRight(16))
             .child(
                 new ButtonWidget<>().size(18, 18)
                     .overlay(new DynamicDrawable(() -> {
@@ -800,8 +819,13 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
-    protected IWidget createMufflerButton(){
-        return new ToggleButton().syncHandler("isMuffled").tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled"))).overlay(true,GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON).overlay(false,GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF).size(12,12).pos(200,0);
+    protected IWidget createMufflerButton() {
+        return new ToggleButton().syncHandler("mufflerSyncer")
+            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
+            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
+            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
+            .size(12, 12)
+            .pos(200, 0);
 
     }
 
@@ -953,9 +977,8 @@ public class MTEMultiBlockBaseGui {
 
         syncManager.syncValue("maintCount", maintSyncer);
 
-        BooleanSyncValue isMuffled = new BooleanSyncValue(base::isMuffled, base::setMuffled);
-        syncManager.syncValue("isMuffled", isMuffled);
-
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(base::isMuffled, base::setMuffled);
+        syncManager.syncValue("mufflerSyncer", mufflerSyncer);
     }
 
     protected void setMachineModeIcons() {}
