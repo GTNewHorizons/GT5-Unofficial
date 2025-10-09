@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 
 import net.minecraft.item.ItemStack;
@@ -138,12 +139,19 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             .extFacing()
             .build() };
 
+    private static final ITexture[] TEXTURE_CONTROLLER_ACTIVE = {
+        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)),
+        TextureFactory.builder()
+            .addIcon(COKE_OVEN_OVERLAY_ACTIVE)
+            .extFacing()
+            .build() };
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
 
         if (side == facing) {
-            return TEXTURE_CONTROLLER_INACTIVE;
+            return active ? TEXTURE_CONTROLLER_ACTIVE : TEXTURE_CONTROLLER_INACTIVE;
         } else {
             return TEXTURE_CASING;
         }
@@ -206,7 +214,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
             if (recipe == null) return;
 
-            // Check if there is enough space for the outputs.
+            // Check if there is enough space for the output.
             final ItemStack recipeOutput = recipe.getOutput(0);
             if (output != null && recipeOutput != null) {
                 if (output.stackSize + recipeOutput.stackSize > output.getMaxStackSize()) return;
