@@ -7,11 +7,11 @@ import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -67,8 +67,6 @@ public class MultiblockTooltipBuilder {
         : translateToLocal("gt.string.colon");
     private static final String SEPARATOR = translateToLocal("gt.string.separator").equals(",") ? ", "
         : translateToLocal("gt.string.separator");
-    private static final String TT_DynamicParallels = translateToLocal("GT5U.MBTT.Parallel.Additional");
-    private static final String TT_DynamicSpeed = translateToLocal("GT5U.MBTT.Speed.Additional");
     private static final String TT_structurehint = translateToLocal("GT5U.MBTT.StructureHint");
     private static final String TT_air = translateToLocal("GT5U.MBTT.Air");
     private static final String[] TT_dots = IntStream.range(0, 16)
@@ -188,7 +186,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on
      */
     public MultiblockTooltipBuilder addDynamicMultiplicativeParallelInfo(Integer factor, TooltipTier tier) {
-        addInfo(TT_DynamicParallels, TooltipHelper.parallelText(factor.toString() + "x"), tier.getValue());
+        addInfo("GT5U.MBTT.Parallel.Additional", TooltipHelper.parallelText(factor.toString() + "x"), tier.getValue());
         return this;
     }
 
@@ -212,7 +210,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        addInfo(TT_DynamicSpeed, TooltipHelper.speedText("+" + percentageFormat.format(speed)), tier.getValue());
+        addInfo("GT5U.MBTT.Speed.Additional", TooltipHelper.speedText("+" + percentageFormat.format(speed)), tier.getValue());
         return this;
     }
 
@@ -281,30 +279,12 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a number of basic lines of information about this structure
-     *
-     * @param infoStrings The lines to be added.
-     * @return Instance this method was called on.
-     *
-     * @deprecated Use {@link MultiblockTooltipBuilder#addInfo}<br>
-     *             and use {@link GTUtility#YAP_SEPARATOR} ({@code \n}) in lang entries as separator.<br>
-     *             Like {@code gt.a_multiblock.desc.1=Yaps a lot,\nso we have to separate it.}
-     */
-    @Deprecated
-    public MultiblockTooltipBuilder addInfoAll(String... infoStrings) {
-        for (String info : infoStrings) {
-            addInfo(info);
-        }
-        return this;
-    }
-
-    /**
      * Add a separator line
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator() {
-        return addSeparator(EnumChatFormatting.GRAY, 0); // 0 is for backward compat, nothing else
+        return addSeparator(EnumChatFormatting.GRAY);
     }
 
     /**
@@ -312,17 +292,12 @@ public class MultiblockTooltipBuilder {
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
+    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color) {
         switch (GTMod.proxy.separatorStyle) {
             case 0 -> addInfo(" ");
             case 1 -> addInfo(color + "%SEPARATORLINE%");
             default -> addInfo("" + color + EnumChatFormatting.STRIKETHROUGH + "%SEPARATORLINE%");
         }
-        return this;
-    }
-
-    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color) {
-        addSeparator(color, 0);
         return this;
     }
 
@@ -973,7 +948,7 @@ public class MultiblockTooltipBuilder {
      * @param authors Formatted names of the creators of this multiblock machine - if any
      */
     public MultiblockTooltipBuilder toolTipFinisher(@Nullable String... authors) {
-        return toolTipFinisher(EnumChatFormatting.GRAY, 0, authors);
+        return toolTipFinisher(EnumChatFormatting.GRAY, authors);
     }
 
     /**
@@ -988,8 +963,7 @@ public class MultiblockTooltipBuilder {
      * @param authors        Formatted names of the creators of this multiblock machine - if any
      */
 
-    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int length,
-        @Nullable String... authors) {
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, @Nullable String... authors) {
 
         switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
