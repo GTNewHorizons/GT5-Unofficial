@@ -93,7 +93,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             Pair.of(GregTechAPI.sBlockCasings12, 0),
                             Pair.of(GregTechAPI.sBlockCasings12, 1),
                             Pair.of(GregTechAPI.sBlockCasings12, 2)),
-                        -3,
+                        -1,
                         MTEEvolutionChamber::setCasingTier,
                         MTEEvolutionChamber::getCasingTier))))
         .addElement('A', chainAllGlasses())
@@ -195,6 +195,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             FluidStack f = tHatch.getFluid();
+            // add early return when null, if its empty the machine can crash during init for some reason
+            // should be removed when the tank system works.
+            if (f == null) return fill;
             if (currentSpecies.getFinalized()) {
                 if (f.getFluid() == PrimordialSoup.mFluid) fill += f.amount;
             } else {
@@ -283,7 +286,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        casingTier = -3;
+        casingTier = -1;
         bioHatches.clear();
         mEnergyHatches.clear();
 
@@ -350,11 +353,15 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         currentSpecies = new ArtificialOrganism(aNBT);
+        // so that the casing texture is applied on world load
+        casingTier = aNBT.getInteger("casingTier");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
+
         super.saveNBTData(currentSpecies.saveAOToCompound(aNBT));
+        aNBT.setInteger("casingTier", Math.max(0, casingTier));
     }
 
     @Override

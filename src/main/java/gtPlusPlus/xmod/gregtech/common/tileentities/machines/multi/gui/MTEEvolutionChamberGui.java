@@ -229,16 +229,36 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(base, guiData, syncManager, uiSettings)
-            .build();
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        syncManager.registerSlotGroup("culture_slot", 1);
+
         GenericSyncValue<ArtificialOrganism> organismSyncer = new GenericSyncValue<ArtificialOrganism>(
             () -> base.currentSpecies,
             ao -> { base.currentSpecies = ao; },
             new ArtificialOrganismAdapter());
         syncManager.syncValue("ao", organismSyncer);
 
+        // AO Count syncers
+        IntSyncValue aoCapacitySyncer = new IntSyncValue(() -> base.maxAOs);
+        syncManager.syncValue("aoCapacity", aoCapacitySyncer);
+
+        // Nutrient syncers
+        IntSyncValue fillLevelSyncer = new IntSyncValue(() -> base.getFillLevel());
+        syncManager.syncValue("fillLevel", fillLevelSyncer);
+        IntSyncValue internalTankCapacitySyncer = new IntSyncValue(() -> base.INTERNAL_FLUID_TANK_SIZE);
+        syncManager.syncValue("internalTankCapacity", internalTankCapacitySyncer);
+
+    }
+
+    @Override
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        registerSyncValues(syncManager);
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(base, guiData, syncManager, uiSettings)
+            .build();
+
         // This row displays the currently active traits
+        // TODO: change members in the trait row to dynamic drawawbles or adjacent, stuttering bad
         Row traitRow = new Row();
         traitRow.pos(5, 41)
             .size(50, 10)
@@ -250,14 +270,22 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
         // The "tutorial" popup panel
         IPanelHandler infoPanel = syncManager.panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(), true);
 
-        // Inventory slot handler
-        syncManager.registerSlotGroup("culture_slot", 1);
+        // AO count Syncers
+        GenericSyncValue<ArtificialOrganism> organismSyncer = (GenericSyncValue<ArtificialOrganism>) syncManager
+            .getSyncHandler("ao:0");
+        IntSyncValue aoCapacitySyncer = (IntSyncValue) syncManager.getSyncHandler("aoCapacity:0");
+
+        // Nutrient Syncers
+        IntSyncValue fillLevelSyncer = (IntSyncValue) syncManager.getSyncHandler("fillLevel:0");
+        IntSyncValue internalTankCapacitySyncer = (IntSyncValue) syncManager.getSyncHandler("internalTankCapacity:0");
 
         panel
             // AO count progressbar
             .child(
-                new ProgressWidget()
-                    .value(new DoubleSyncValue(() -> (double) base.currentSpecies.getCount() / base.maxAOs))
+                new ProgressWidget().value(
+                    new DoubleSyncValue(
+                        () -> (double) organismSyncer.getValue()
+                            .getCount() / aoCapacitySyncer.getIntValue()))
                     .texture(AO_PROGRESS_COUNT, 16)
                     .direction(ProgressWidget.Direction.UP)
                     .size(16, 64)
@@ -268,12 +296,14 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
                                 "GT5U.artificialorganisms.progress.count",
                                 organismSyncer.getValue()
                                     .getCount(),
-                                new IntSyncValue(() -> base.maxAOs).getIntValue()))))
+                                aoCapacitySyncer.getIntValue()))))
 
             // Nutrient progressbar
             .child(
                 new ProgressWidget()
-                    .value(new DoubleSyncValue(() -> (double) base.getFillLevel() / base.INTERNAL_FLUID_TANK_SIZE))
+                    .value(
+                        new DoubleSyncValue(
+                            () -> (double) fillLevelSyncer.getIntValue() / internalTankCapacitySyncer.getIntValue()))
                     .texture(AO_PROGRESS_NUTRIENTS, 16)
                     .direction(ProgressWidget.Direction.UP)
                     .size(16, 64)
@@ -284,26 +314,29 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
                                 organismSyncer.getValue()
                                     .getFinalized() ? "GT5U.artificialorganisms.progress.nutrients"
                                         : "GT5U.artificialorganisms.progress.soup",
-                                base.getFillLevel(),
-                                base.INTERNAL_FLUID_TANK_SIZE))))
+                                fillLevelSyncer.getIntValue(),
+                                internalTankCapacitySyncer.getIntValue()))))
 
             // Sentience progressbar
             .child(
-                new ProgressWidget().value(new DoubleSyncValue(() -> (double) base.currentSpecies.getSentience() / 100))
+                new ProgressWidget().value(
+                    new DoubleSyncValue(
+                        () -> (double) organismSyncer.getValue()
+                            .getSentience() / 100))
                     .texture(AO_PROGRESS_SENTIENCE, 32)
                     .direction(ProgressWidget.Direction.UP)
                     .size(32, 32)
                     .pos(135, 14)
-                    .tooltipBuilder(tt -> {
+                    .tooltipDynamic(tt -> {
                         tt.add(
                             StatCollector.translateToLocalFormatted(
                                 "GT5U.artificialorganisms.progress.sentience",
                                 organismSyncer.getValue()
                                     .getSentience()));
-                        tt.markDirty();
                     }))
 
             // The actual itemslot for inserting cultures
+            // todo: little cute mushroom icon please - chrom
             .child(
                 new ItemSlot().pos(7, 60)
                     .slot(
@@ -373,17 +406,18 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
 
             // Progress bars for the three primary stats
             .child(
-                new ProgressWidget()
-                    .value(
-                        new DoubleSyncValue(
-                            () -> ((double) base.currentSpecies.getIntelligence() / 32) + ((double) 1 / 32)))
+                new ProgressWidget().value(
+                    new DoubleSyncValue(
+                        () -> ((double) organismSyncer.getValue()
+                            .getIntelligence() / 32) + ((double) 1 / 32)))
                     .texture(AO_PROGRESS_INT, 16)
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
-                            () -> EnumChatFormatting.WHITE
-                                + Integer.toString(
-                                    new IntSyncValue(() -> base.currentSpecies.getIntelligence()).getIntValue())
+                            () -> EnumChatFormatting.WHITE + Integer.toString(
+                                new IntSyncValue(
+                                    () -> organismSyncer.getValue()
+                                        .getIntelligence()).getIntValue())
                                 + "/30")
                             .alignment(Alignment.BottomCenter)
                             .shadow(true)
@@ -394,14 +428,17 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
                     .pos(16, 6))
             .child(
                 new ProgressWidget().value(
-                    new DoubleSyncValue(() -> ((double) base.currentSpecies.getStrength() / 32) + ((double) 1 / 32)))
+                    new DoubleSyncValue(
+                        () -> ((double) organismSyncer.getValue()
+                            .getStrength() / 32) + ((double) 1 / 32)))
                     .texture(AO_PROGRESS_STR, 16)
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
-                            () -> EnumChatFormatting.WHITE
-                                + Integer
-                                    .toString(new IntSyncValue(() -> base.currentSpecies.getStrength()).getIntValue())
+                            () -> EnumChatFormatting.WHITE + Integer.toString(
+                                new IntSyncValue(
+                                    () -> organismSyncer.getValue()
+                                        .getStrength()).getIntValue())
                                 + "/30")
                             .alignment(Alignment.BottomCenter)
                             .shadow(true)
@@ -411,18 +448,19 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
                     .size(32, 8)
                     .pos(16, 18))
             .child(
-                new ProgressWidget()
-                    .value(
-                        new DoubleSyncValue(
-                            () -> ((double) base.currentSpecies.getReproduction() / 32) + ((double) 1 / 32),
-                            ignored -> {}))
+                new ProgressWidget().value(
+                    new DoubleSyncValue(
+                        () -> ((double) organismSyncer.getValue()
+                            .getReproduction() / 32) + ((double) 1 / 32),
+                        ignored -> {}))
                     .texture(AO_PROGRESS_REP, 16)
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
-                            () -> EnumChatFormatting.WHITE
-                                + Integer.toString(
-                                    new IntSyncValue(() -> base.currentSpecies.getReproduction()).getIntValue())
+                            () -> EnumChatFormatting.WHITE + Integer.toString(
+                                new IntSyncValue(
+                                    () -> organismSyncer.getValue()
+                                        .getReproduction()).getIntValue())
                                 + "/30")
                             .alignment(Alignment.BottomCenter)
                             .shadow(true)
@@ -481,6 +519,7 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
                                 StatCollector.translateToLocal(t.descLocKey))));
             }
             if (NetworkUtils.isClient()) {
+                // todo: causes stuttering of the icons as they are redrawn every frame, should be avoided somehow
                 WidgetTree.resize(traitRow);
             }
         });
