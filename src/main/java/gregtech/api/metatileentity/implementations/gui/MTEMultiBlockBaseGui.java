@@ -134,7 +134,8 @@ public class MTEMultiBlockBaseGui {
                 .child(createTitleTextStyle(base.getLocalName()))
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager)));
+                .child(createInventoryRow(panel, syncManager)))
+            .child(createMufflerButton());
     }
 
     private IWidget createTitleTextStyle(String title) {
@@ -799,6 +800,11 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
+    protected IWidget createMufflerButton(){
+        return new ToggleButton().syncHandler("isMuffled").tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled"))).overlay(true,GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON).overlay(false,GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF).size(12,12).pos(200,0);
+
+    }
+
     protected void registerSyncValues(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
@@ -946,6 +952,9 @@ public class MTEMultiBlockBaseGui {
         });
 
         syncManager.syncValue("maintCount", maintSyncer);
+
+        BooleanSyncValue isMuffled = new BooleanSyncValue(base::isMuffled, base::setMuffled);
+        syncManager.syncValue("isMuffled", isMuffled);
 
     }
 
