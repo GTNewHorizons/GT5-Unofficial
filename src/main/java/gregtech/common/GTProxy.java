@@ -564,6 +564,7 @@ public class GTProxy implements IFuelHandler {
     public int mPollutionVegetationLimit = 1000000;
     public int mPollutionSourRainLimit = 2000000;
     public int mPollutionOnExplosion = 100000;
+    public int mPollutionCokeOvenPerSecond = 10;
     public int mPollutionPrimitveBlastFurnacePerSecond = 200;
     public int mPollutionEBFPerSecond = 400;
     public int mPollutionCharcoalPitPerSecond = 100;

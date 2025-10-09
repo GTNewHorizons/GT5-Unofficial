@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 
+import gregtech.common.pollution.Pollution;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,6 +17,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -27,13 +29,17 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.gui.MTECokeOvenGUI;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
 
+    private final static int INPUT_SLOT = 0;
+    private final static int OUTPUT_SLOT = 1;
     private final static int FLUID_CAPACITY = 64_000;
+
     private FluidStack fluid;
 
     public MTECokeOven(String name) {
@@ -98,17 +104,13 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
+            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .toolTipFinisher();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
     }
 
     @Override
@@ -157,6 +159,82 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     public void loadNBTData(NBTTagCompound nbt) {
         super.loadNBTData(nbt);
         fluid = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid"));
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        if (baseMetaTileEntity.isClientSide()) onPostTickClient(baseMetaTileEntity, tick);
+        if (baseMetaTileEntity.isServerSide()) onPostTickServer(baseMetaTileEntity, tick);
+    }
+
+    private void onPostTickClient(IGregTechTileEntity baseMetaTileEntity, long tick) {}
+
+    private void onPostTickServer(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        checkRecipeProgress(baseMetaTileEntity);
+
+        // Polling updates.
+        if (tick % 20 == 0) {
+            this.mMachine = checkMachine(baseMetaTileEntity, null);
+
+            if (baseMetaTileEntity.isActive()) {
+                Pollution.addPollution(baseMetaTileEntity, GTMod.proxy.mPollutionCokeOvenPerSecond);
+            }
+        }
+
+        baseMetaTileEntity.setActive(mMaxProgresstime > 0 && mMachine);
+    }
+
+    private void checkRecipeProgress(IGregTechTileEntity baseMetaTileEntity) {
+        if (!mMachine) return;
+
+        if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
+            addOutput();
+            mOutputItems = null;
+            mProgresstime = 0;
+            mMaxProgresstime = 0;
+        }
+
+        if (mMaxProgresstime == 0 && baseMetaTileEntity.isAllowedToWork()) {
+            final ItemStack input = mInventory[INPUT_SLOT];
+            final ItemStack output = mInventory[OUTPUT_SLOT];
+
+            final GTRecipe recipe = getRecipeMap().findRecipeQuery()
+                .items(input)
+                .find();
+
+            if (recipe == null) return;
+
+            // Check if there is enough space for the outputs.
+            final ItemStack recipeOutput = recipe.getOutput(0);
+            if (output != null && recipeOutput != null) {
+                if (output.stackSize + recipeOutput.stackSize > output.getMaxStackSize()) return;
+                if (!GTUtility.areStacksEqual(output, recipeOutput)) return;
+            }
+
+            // Check if input quantity matches. If it is reduced to zero, remove the item stack.
+            if (!recipe.isRecipeInputEqual(true, null, input)) return;
+            if (input != null && input.stackSize == 0) mInventory[INPUT_SLOT] = null;
+
+            mMaxProgresstime = recipe.mDuration;
+            mOutputItems = recipe.mOutputs;
+        }
+    }
+
+    private void addOutput() {
+        if (mOutputItems == null) return;
+        if (mOutputItems.length < 1) return;
+
+        final ItemStack output = mInventory[OUTPUT_SLOT];
+        final ItemStack recipeOutput = mOutputItems[0];
+
+        if (output == null) {
+            mInventory[OUTPUT_SLOT] = GTUtility.copyOrNull(recipeOutput);
+            return;
+        }
+
+        if (GTUtility.areStacksEqual(output, recipeOutput)) {
+            output.stackSize = Math.min(output.getMaxStackSize(), output.stackSize + recipeOutput.stackSize);
+        }
     }
 
     @Override
