@@ -261,6 +261,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     /**
+     * Sets the fluid this block contains.
+     */
+    public void setFluid(FluidStack fluid) {}
+
+    /**
      * Tries to fill this tank.
      */
     @Override
