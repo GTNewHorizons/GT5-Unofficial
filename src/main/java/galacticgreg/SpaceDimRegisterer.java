@@ -113,7 +113,7 @@ public class SpaceDimRegisterer {
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.Mercury.modDimensionDef);
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.MakeMake.modDimensionDef);
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.Haumea.modDimensionDef);
-        ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.CentauriAlpha.modDimensionDef);
+        ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.CentauriBb.modDimensionDef);
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.VegaB.modDimensionDef);
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.BarnardC.modDimensionDef);
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.BarnardE.modDimensionDef);

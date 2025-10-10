@@ -12,6 +12,7 @@ import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
 import gregtech.api.enums.Mods;
 import gregtech.common.worldgen.HEEIslandScanner;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import toxiceverglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
@@ -138,8 +139,8 @@ public enum DimensionDef {
         DimNames.HAUMEA,
         "galaxyspace.SolarSystem.planets.haumea.dimension.ChunkProviderHaumea",
         DimensionType.Planet)),
-    CentauriAlpha(new ModDimensionDef(
-        DimNames.CENTAURIA,
+    CentauriBb(new ModDimensionDef(
+        DimNames.CENTAURIBB,
         "galaxyspace.ACentauriSystem.planets.aCentauriBb.dimension.ChunkProviderACentauri",
         DimensionType.Planet)),
     VegaB(new ModDimensionDef(
@@ -223,12 +224,21 @@ public enum DimensionDef {
         return DEF_BY_WORLD_NAME.get(worldName);
     }
 
+    public static String getDimensionName(World world) {
+        if (world.provider instanceof WorldProviderSpace worldProviderSpace) {
+            return worldProviderSpace.getCelestialBody()
+                .getName();
+        } else {
+            return world.provider.getDimensionName();
+        }
+    }
+
     public static ModDimensionDef getDefForWorld(World world) {
-        return DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
+        return DEF_BY_WORLD_NAME.get(getDimensionName(world));
     }
 
     public static ModDimensionDef getEffectiveDefForChunk(World world, int chunkX, int chunkZ) {
-        ModDimensionDef def = DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
+        ModDimensionDef def = getDefForWorld(world);
 
         if (def == null) return null;
 
@@ -258,42 +268,42 @@ public enum DimensionDef {
         public static final String TWILIGHT_FOREST = "Twilight Forest";
         public static final String EVERGLADES = "dimensionDarkWorld";
 
-        public static final String MOON = "Moon";
-        public static final String MARS = "Mars";
-        public static final String ASTEROIDS = "Asteroids";
-        public static final String PLUTO = "Pluto";
-        public static final String TRITON = "Triton";
-        public static final String PROTEUS = "Proteus";
-        public static final String OBERON = "Oberon";
-        public static final String TITAN = "Titan";
-        public static final String ROSS128B = "Ross128b";
-        public static final String ROSS128BA = "Ross128ba";
-        public static final String CALLISTO = "Callisto";
-        public static final String GANYMEDE = "Ganymede";
-        public static final String CERES = "Ceres";
-        public static final String DEIMOS = "Deimos";
-        public static final String ENCELADUS = "Enceladus";
-        public static final String IO = "Io";
-        public static final String EUROPA = "Europa";
-        public static final String PHOBOS = "Phobos";
-        public static final String VENUS = "Venus";
-        public static final String MERCURY = "Mercury";
-        public static final String MAKEMAKE = "MakeMake";
-        public static final String HAUMEA = "Haumea";
-        public static final String CENTAURIA = "CentauriA";
-        public static final String VEGAB = "VegaB";
-        public static final String BARNARDC = "BarnardC";
-        public static final String BARNARDE = "BarnardE";
-        public static final String BARNARDF = "BarnardF";
-        public static final String TCETIE = "TcetiE";
-        public static final String MIRANDA = "Miranda";
-        public static final String KUIPERBELT = "Kuiper Belt";
-        public static final String NEPER = "Neper";
-        public static final String MAAHES = "Maahes";
-        public static final String ANUBIS = "Anubis";
-        public static final String HORUS = "Horus";
-        public static final String SETH = "Seth";
-        public static final String MEHENBELT = "Mehen Belt";
+        public static final String MOON = "moon";
+        public static final String MARS = "mars";
+        public static final String ASTEROIDS = "asteroids";
+        public static final String PLUTO = "pluto";
+        public static final String TRITON = "triton";
+        public static final String PROTEUS = "proteus";
+        public static final String OBERON = "oberon";
+        public static final String TITAN = "titan";
+        public static final String ROSS128B = "ross128b";
+        public static final String ROSS128BA = "ross128ba";
+        public static final String CALLISTO = "callisto";
+        public static final String GANYMEDE = "ganymed";
+        public static final String CERES = "ceres";
+        public static final String DEIMOS = "deimos";
+        public static final String ENCELADUS = "enceladus";
+        public static final String IO = "iojupiter";
+        public static final String EUROPA = "europa";
+        public static final String PHOBOS = "phobos";
+        public static final String VENUS = "venus";
+        public static final String MERCURY = "mercury";
+        public static final String MAKEMAKE = "makemake";
+        public static final String HAUMEA = "haumea";
+        public static final String CENTAURIBB = "centauribb";
+        public static final String VEGAB = "vega1";
+        public static final String BARNARDC = "barnarda2";
+        public static final String BARNARDE = "barnarda4";
+        public static final String BARNARDF = "barnarda5";
+        public static final String TCETIE = "tcetie";
+        public static final String MIRANDA = "miranda";
+        public static final String KUIPERBELT = "kuiperbelt";
+        public static final String NEPER = "neper";
+        public static final String MAAHES = "maahes";
+        public static final String ANUBIS = "anubis";
+        public static final String HORUS = "horus";
+        public static final String SETH = "seth";
+        public static final String MEHENBELT = "asteroidbeltmehen";
         public static final String DEEPDARK = "Underdark";
 
     }

@@ -30,6 +30,7 @@ import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
 import com.gtnewhorizon.gtnhlib.util.data.LazyItem;
 
+import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -103,9 +104,11 @@ public enum StoneType implements IStoneType {
     Pluto(StoneBuilder.galaxySpace("Pluto", 5, 4)),
     Haumea(StoneBuilder.galaxySpace("Haumea", 0)),
     MakeMake(StoneBuilder.galaxySpace("MakeMake", "grunt", 1)),
+    Venus(StoneBuilder.galaxySpace("Venus", 1)),
+    Mercury(StoneBuilder.galaxySpace("Mercury", 2, 1)),
     AlphaCentauri(new StoneBuilder()
-        .setStoneNoCobble(GalaxySpace, "acentauribbsubgrunt", 1)
-        .setCoremodDust("CentauriA")),
+        .setStoneNoCobble(GalaxySpace, "acentauribbsubgrunt", 0)
+        .setDust(NewHorizonsCoreMod, "item.CentauriASurfaceDust")),
     TCetiE(StoneBuilder.galaxySpace("TCetiE", 2, 1)),
     VegaB(StoneBuilder.galaxySpace("VegaB", "subgrunt", 0)),
     BarnardaE(new StoneBuilder()
@@ -329,7 +332,6 @@ public enum StoneType implements IStoneType {
             case PackedIce -> false;
             default -> true;
         };
-
     }
 
     @Override
@@ -353,7 +355,7 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean canGenerateInWorld(World world) {
         return builder.allowedDimensions == null
-            || builder.allowedDimensions.contains(world.provider.getDimensionName());
+            || builder.allowedDimensions.contains(DimensionDef.getDimensionName(world));
     }
 
     @Nullable

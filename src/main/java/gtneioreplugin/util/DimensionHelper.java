@@ -6,7 +6,7 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.BARNARDC;
 import static galacticgreg.api.enums.DimensionDef.DimNames.BARNARDE;
 import static galacticgreg.api.enums.DimensionDef.DimNames.BARNARDF;
 import static galacticgreg.api.enums.DimensionDef.DimNames.CALLISTO;
-import static galacticgreg.api.enums.DimensionDef.DimNames.CENTAURIA;
+import static galacticgreg.api.enums.DimensionDef.DimNames.CENTAURIBB;
 import static galacticgreg.api.enums.DimensionDef.DimNames.CERES;
 import static galacticgreg.api.enums.DimensionDef.DimNames.DEEPDARK;
 import static galacticgreg.api.enums.DimensionDef.DimNames.DEIMOS;
@@ -203,7 +203,7 @@ public class DimensionHelper {
             case BARNARDC -> "BC"; // GalaxySpace_BarnardC
             case BARNARDE -> "BE"; // GalaxySpace_BarnardE
             case BARNARDF -> "BF"; // GalaxySpace_BarnardF
-            case CENTAURIA -> "CB"; // GalaxySpace_CentauriA is actually α Centauri Bb
+            case CENTAURIBB -> "CB"; // GalaxySpace_CentauriA
             case TCETIE -> "TE"; // GalaxySpace_TcetiE
             case VEGAB -> "VB"; // GalaxySpace_VegaB
             // T9
@@ -264,7 +264,7 @@ public class DimensionHelper {
             case "BC" -> BARNARDC; // GalaxySpace_BarnardC
             case "BE" -> BARNARDE; // GalaxySpace_BarnardE
             case "BF" -> BARNARDF; // GalaxySpace_BarnardF
-            case "CB" -> CENTAURIA; // GalaxySpace_CentauriA is actually α Centauri Bb
+            case "CB" -> CENTAURIBB; // GalaxySpace_CentauriA
             case "TE" -> TCETIE; // GalaxySpace_TcetiE
             case "VB" -> VEGAB; // GalaxySpace_VegaB
             // T9
@@ -304,7 +304,7 @@ public class DimensionHelper {
             case ENCELADUS, MIRANDA, OBERON, TITAN, ROSS128BA -> T5;
             case PROTEUS, TRITON -> T6;
             case HAUMEA, KUIPERBELT, MAKEMAKE, PLUTO -> T7;
-            case BARNARDC, BARNARDE, BARNARDF, CENTAURIA, TCETIE, VEGAB -> T8;
+            case BARNARDC, BARNARDE, BARNARDF, CENTAURIBB, TCETIE, VEGAB -> T8;
             case ANUBIS, HORUS, MAAHES, MEHENBELT, NEPER, SETH -> T9;
             case DEEPDARK -> T10;
 
@@ -314,7 +314,7 @@ public class DimensionHelper {
 
     /**
      * Gets the lang key for a dimension's name.
-     * 
+     *
      * @param dimName The dimension's full name.
      */
     public static String getDimUnlocalizedName(String dimName) {

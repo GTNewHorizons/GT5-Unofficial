@@ -88,14 +88,8 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Pluto,
         });
         GTBlockOre ores4 = new GTBlockOre(5, new StoneType[] {
-            StoneType.Callisto,
-            StoneType.Enceladus,
-            StoneType.Titan,
-            StoneType.Miranda,
-            StoneType.Oberon,
-            StoneType.Proteus,
-            StoneType.Triton,
-            StoneType.Pluto,
+            StoneType.Venus,
+            StoneType.Mercury,
         });
         GTBlockOre ores5 = new GTBlockOre(6, new StoneType[] {
             StoneType.Haumea,
