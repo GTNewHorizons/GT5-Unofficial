@@ -566,4 +566,3 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         return hasResource(new ItemStack[] { target }, amount);
     }
 }
-}
