@@ -23,6 +23,7 @@ import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -40,9 +41,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
@@ -90,10 +91,26 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
         tt.addInfo("Direct Steam and Coolant Heating")
             .addInfo(
-                "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (25600 * 20)
-                    + "L/s of Superheated Steam")
-            .addInfo("Coolant Heating Mode: Converts " + (long) (192 * 20) + "L/s Coolant to Hot Coolant")
-            .addInfo("Each maintenance issue lowers output efficiency by 10%")
+                "Direct Steam Mode: Consumes " + EnumChatFormatting.BLUE
+                    + "Distilled Water"
+                    + EnumChatFormatting.GRAY
+                    + " to produce "
+                    + EnumChatFormatting.WHITE
+                    + (long) (25600 * 20)
+                    + EnumChatFormatting.GRAY
+                    + "L/s of "
+                    + EnumChatFormatting.WHITE
+                    + "Superheated Steam")
+            .addInfo(
+                "Coolant Heating Mode: Converts " + (long) (192 * 20)
+                    + "L/s "
+                    + EnumChatFormatting.AQUA
+                    + "Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " to "
+                    + EnumChatFormatting.RED
+                    + "Hot Coolant")
+            .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant")
             .addInfo("Base cycle time: 1 tick");
 
@@ -140,7 +157,6 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
@@ -205,8 +221,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        PlayerUtils
-            .messagePlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
