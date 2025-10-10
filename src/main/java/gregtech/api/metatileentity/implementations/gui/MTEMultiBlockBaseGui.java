@@ -150,7 +150,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createTitleTextStyle(PosGuiData data, String title) {
-        boolean clientSide = data.isClient();
+        boolean clientSide = baseMetaTileEntity.isClientSide();
 
         int borderRadius = 4;
         int maxWidth = getBasePanelWidth() - borderRadius * 2;
@@ -799,7 +799,6 @@ public class MTEMultiBlockBaseGui {
             .topRel(0, topRelOffset, 0)
             .rightRel(0, rightRelOffset, 0)
             .excludeAreaInNEI(true);
-
     }
 
     private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
