@@ -1,4 +1,4 @@
-package gregtech.mixin.mixins.late.ic2;
+package gregtech.mixin.mixins.late.tinkersconstruct;
 
 import static gregtech.common.pollution.PollutionHelper.furnaceAddPollutionOnUpdate;
 
@@ -11,23 +11,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import gregtech.common.pollution.FurnacePollution;
-import ic2.core.block.machine.tileentity.TileEntityIronFurnace;
+import tconstruct.tools.logic.FurnaceLogic;
 
-// Merged from ModMixins under the MIT License Copyright bartimaeusnek & GTNewHorizons
-@Mixin(value = TileEntityIronFurnace.class, remap = false)
-public abstract class MixinIC2IronFurnacePollution extends TileEntity {
+@Mixin(FurnaceLogic.class)
+public abstract class MixinFurnaceLogicPollution extends TileEntity {
 
     @Shadow
     public abstract boolean isBurning();
 
-    @Inject(method = "updateEntityServer", at = @At("TAIL"))
-    private void gt5u$updateEntityServer(CallbackInfo ci) {
+    @Inject(method = "updateEntity", at = @At("TAIL"))
+    private void gt5u$addPollution(CallbackInfo ci) {
         if (isBurning()) {
             furnaceAddPollutionOnUpdate(
                 this.worldObj,
                 this.xCoord,
                 this.zCoord,
-                FurnacePollution.IRON_FURNACE.getPollution());
+                FurnacePollution.SLAB_FURNACE.getPollution());
         }
     }
 }
