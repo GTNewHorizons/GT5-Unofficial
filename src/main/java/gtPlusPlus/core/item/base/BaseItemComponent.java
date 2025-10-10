@@ -27,24 +27,18 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class BaseItemComponent extends Item {
-
-    private static final Class<TextureSet> mTextureSetPreload;
-
-    static {
-        mTextureSetPreload = TextureSet.class;
-    }
 
     public final Material componentMaterial;
     public final String materialName;
@@ -52,7 +46,7 @@ public class BaseItemComponent extends Item {
     public final String translatedMaterialName;
     public final ComponentTypes componentType;
     public final int componentColour;
-    public Object extraData;
+    public short[] extraData;
 
     protected IIcon base;
     protected IIcon overlay;
@@ -88,7 +82,7 @@ public class BaseItemComponent extends Item {
         // Handles .'s from fluid internal names.
         String aFormattedNameForFluids;
         if (unlocalName.contains(".")) {
-            aFormattedNameForFluids = StringUtils.splitAndUppercase(unlocalName, ".");
+            aFormattedNameForFluids = StringUtils.splitAndUppercase(unlocalName);
         } else {
             aFormattedNameForFluids = unlocalName;
         }
@@ -110,7 +104,7 @@ public class BaseItemComponent extends Item {
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);
         GameRegistry.registerItem(this, aFormattedNameForFluids);
         GTOreDictUnificator.registerOre(
-            ComponentTypes.CELL.getOreDictName() + Utils.sanitizeStringKeepBrackets(localName),
+            ComponentTypes.CELL.getOreDictName() + StringUtils.sanitizeStringKeepBrackets(localName),
             new ItemStack(this));
         registerComponent();
 
@@ -219,18 +213,10 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                if (!this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                } else if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    String temp = componentMaterial.vChemicalFormula;
-                    temp = temp.replace(" ", "");
-                    temp = temp.replace("-", "");
-                    temp = temp.replace("_", "");
-                    temp = temp.replace("!", "");
-                    temp = temp.replace("@", "");
-                    temp = temp.replace("#", "");
-                    temp = temp.replace(" ", "");
-                    list.add(temp);
+                if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                } else {
+                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
                 }
 
                 if (this.componentMaterial.isRadioactive) {
@@ -274,22 +260,16 @@ public class BaseItemComponent extends Item {
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
-            if (entityHolding instanceof EntityPlayer) {
-                if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    EntityUtils.applyRadiationDamageToEntity(
-                        iStack.stackSize,
-                        this.componentMaterial.vRadiationLevel,
-                        world,
-                        entityHolding);
-                }
-            }
+            EntityUtils.applyRadiationDamageToEntity(
+                iStack.stackSize,
+                this.componentMaterial.vRadiationLevel,
+                world,
+                entityHolding);
         }
     }
 
     /**
-     *
      * Handle Custom Rendering
-     *
      */
     @Override
     @SideOnly(Side.CLIENT)
@@ -312,10 +292,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.componentMaterial == null) {
                 if (extraData != null) {
-                    if (short.class.isInstance(extraData)) {
-                        short[] abc = (short[]) extraData;
-                        return Utils.rgbtoHexValue(abc[0], abc[1], abc[2]);
-                    }
+                    return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
                 }
                 return this.componentColour;
             }

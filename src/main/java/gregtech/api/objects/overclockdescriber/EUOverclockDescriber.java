@@ -48,17 +48,18 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     }
 
     @Override
-    protected String getVoltageString(OverclockCalculator calculator) {
-        String voltageString = super.getVoltageString(calculator);
+    protected String getTierNameWithParentheses(long voltage, OverclockCalculator calculator) {
+        String nameString = super.getTierNameWithParentheses(voltage, calculator);
         if (wasOverclocked(calculator)) {
-            voltageString += StatCollector.translateToLocal("GT5U.nei.display.overclock");
+            nameString = StatCollector.translateToLocal("GT5U.nei.display.overclock") + " " + nameString;
         }
-        return voltageString;
+        return nameString;
     }
 
     /**
      * @return Whole original EU/t usage. Also displays voltage tier if it should be shown.
      */
+    // TODO: when porting frontends to mui2, use mui2 Color, not EnumChatFormatting for customization
     protected String getOriginalEUtDisplay(RecipeDisplayInfo recipeInfo) {
         OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
             .calculate();

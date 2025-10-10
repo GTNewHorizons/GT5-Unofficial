@@ -28,6 +28,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CentrifugeRecipes implements Runnable {
 
     @Override

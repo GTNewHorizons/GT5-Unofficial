@@ -23,9 +23,11 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
+import gregtech.common.covers.Cover;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.widget.CoverTabButton;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
@@ -192,10 +194,19 @@ public final class GTBaseGuiBuilder {
     private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side) {
         String panelKey = "cover_panel_" + side.toString()
             .toLowerCase();
+        Cover cover = coverable.getCoverAtSide(side);
+
+        CoverGuiData coverGuiData = new CoverGuiData(
+            posGuiData.getPlayer(),
+            cover.getCoverID(),
+            posGuiData.getX(),
+            posGuiData.getY(),
+            posGuiData.getZ(),
+            side);
         return syncManager.panel(
             panelKey,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(panelKey, syncManager, uiSettings)
+                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
                 .child(ButtonWidget.panelCloseButton()),
             true);
     }
