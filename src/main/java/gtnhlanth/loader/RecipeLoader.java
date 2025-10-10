@@ -224,7 +224,7 @@ public class RecipeLoader {
 
         // Synchrotron
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.SolderingAlloy.getMolten(42 * INGOTS))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(48 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
@@ -306,8 +306,8 @@ public class RecipeLoader {
         // T1 Antenna Casing
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.SolderingAlloy.getMolten(42 * INGOTS),
-                Materials.Gold.getMolten(28 * INGOTS),
+                Materials.SolderingAlloy.getMolten(48 * INGOTS),
+                Materials.Gold.getMolten(32 * INGOTS),
                 WerkstoffLoader.Xenon.getFluidOrGas(2_000))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1),
@@ -328,8 +328,8 @@ public class RecipeLoader {
         // T2 Antenna Casing
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.SolderingAlloy.getMolten(84 * INGOTS),
-                Materials.Gold.getMolten(42 * INGOTS),
+                Materials.SolderingAlloy.getMolten(96 * INGOTS),
+                Materials.Gold.getMolten(48 * INGOTS),
                 WerkstoffLoader.Xenon.getFluidOrGas(2_000))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenCarbide, 1),
@@ -361,8 +361,8 @@ public class RecipeLoader {
         // Focus Manipulator
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.SolderingAlloy.getMolten(56 * INGOTS),
-                Materials.Gold.getMolten(14 * INGOTS),
+                Materials.SolderingAlloy.getMolten(64 * INGOTS),
+                Materials.Gold.getMolten(16 * INGOTS),
                 Materials.Argon.getGas(1_000))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
@@ -425,8 +425,8 @@ public class RecipeLoader {
         // Target Receptacle, same thing as Focus Manipulator basically
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.SolderingAlloy.getMolten(56 * INGOTS),
-                Materials.Gold.getMolten(14 * INGOTS),
+                Materials.SolderingAlloy.getMolten(64 * INGOTS),
+                Materials.Gold.getMolten(16 * INGOTS),
                 Materials.Argon.getGas(1_000))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
@@ -493,7 +493,7 @@ public class RecipeLoader {
         // Beamline Input Hatch
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.SolderingAlloy.getMolten(42 * INGOTS),
+                Materials.SolderingAlloy.getMolten(64 * INGOTS),
                 Materials.Argon.getGas(1_000),
                 Materials.Helium.getGas(2_000))
             .itemInputs(
@@ -513,7 +513,7 @@ public class RecipeLoader {
         // Beamline Output Hatch
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.SolderingAlloy.getMolten(56 * INGOTS),
+                Materials.SolderingAlloy.getMolten(64 * INGOTS),
                 Materials.Argon.getGas(1_000),
                 Materials.Helium.getGas(6_000))
             .itemInputs(
