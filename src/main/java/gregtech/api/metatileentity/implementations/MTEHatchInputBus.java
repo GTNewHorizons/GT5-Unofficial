@@ -374,7 +374,8 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public int getCircuitSlotY() {
         return 60 + (mTier < 4 ? 0 : 16 * (mTier - 1));
     }
- /**
+
+    /**
      * Removes the specified quantity of items matching any of the target ItemStacks.
      *
      * @param targets Array of target ItemStacks to search for (compared by type and metadata).
