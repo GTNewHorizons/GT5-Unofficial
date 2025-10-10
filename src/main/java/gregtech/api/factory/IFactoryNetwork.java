@@ -10,21 +10,23 @@ import gregtech.api.factory.standard.StandardFactoryNetwork;
  */
 public interface IFactoryNetwork<TSelf extends IFactoryNetwork<TSelf, TElement, TGrid>, TElement extends IFactoryElement<TElement, TSelf, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TSelf>> {
 
-    public void addElement(TElement element);
+    void addElement(TElement element);
 
-    public void removeElement(TElement element);
+    void removeElement(TElement element);
 
-    public default void onNetworkRemoved() {
+    void onElementUpdated(TElement element, boolean topologyChanged);
 
-    }
-
-    public default void onNetworkSubsumedPre(TSelf subsumer) {
+    default void onNetworkRemoved() {
 
     }
 
-    public default void onNetworkSubsumedPost(TSelf subsumer) {
+    default void onNetworkSubsumedPre(TSelf subsumer) {
 
     }
 
-    public Collection<TElement> getElements();
+    default void onNetworkSubsumedPost(TSelf subsumer) {
+
+    }
+
+    Collection<TElement> getElements();
 }

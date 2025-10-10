@@ -22,15 +22,15 @@ public interface IFactoryElement<TSelf extends IFactoryElement<TSelf, TNetwork, 
 
     void setNetwork(TNetwork network);
 
-    default void onNeighbourAdded(TSelf neighbour) {
-        onNeighbourChanged(neighbour);
+    default void onEdgeAdded(TSelf adjacent) {
+        onEdgeChanged(adjacent);
     }
 
-    default void onNeighbourRemoved(TSelf neighbour) {
-        onNeighbourChanged(neighbour);
+    default void onEdgeRemoved(TSelf adjacent) {
+        onEdgeChanged(adjacent);
     }
 
-    default void onNeighbourChanged(TSelf neighbour) {
+    default void onEdgeChanged(TSelf adjacent) {
 
     }
 
@@ -39,7 +39,7 @@ public interface IFactoryElement<TSelf extends IFactoryElement<TSelf, TNetwork, 
      * but it can be anything. In a {@link StandardFactoryNetwork}, components are grouped by their interface and can be
      * queried by the same interface. Components are useful if you want to expose something network-wide so that any
      * element can find it.
-     * 
+     *
      * @return A list of component interfaces and their implementations.
      */
     default List<Pair<Class<?>, Object>> getComponents() {
