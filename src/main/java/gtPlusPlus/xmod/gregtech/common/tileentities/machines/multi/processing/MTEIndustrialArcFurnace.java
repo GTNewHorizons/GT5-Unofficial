@@ -288,6 +288,12 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
+    public int nextMachineMode() {
+        if (mSize <= 5) return MACHINEMODE_ELECTRIC;
+        else return super.nextMachineMode();
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_ELECTRIC_ARC);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC);

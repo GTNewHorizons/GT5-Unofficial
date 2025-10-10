@@ -314,6 +314,12 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
+    public int nextMachineMode() {
+        if (mHeight < 11) return MACHINEMODE_TOWER;
+        else return super.nextMachineMode();
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DTOWER);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLERY);
