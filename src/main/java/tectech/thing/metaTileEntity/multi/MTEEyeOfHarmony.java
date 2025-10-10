@@ -17,8 +17,6 @@ import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.STRIKETHROUGH;
@@ -984,147 +982,46 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Spacetime Manipulator, EOH")
-            .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
-            .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
-            .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
-            .addInfo("your wireless EU network")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
-            .addInfo("recipe once per second. It will store this internally, you can see the totals by")
-            .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
-            .addInfo("each. They are as follows and have the associated effects on the multi:")
-            .addInfo(BLUE + "Spacetime Compression Field Generator:")
-            .addInfo("- The tier of this block determines what recipes can be run. If the multiblocks")
-            .addInfo("  spacetime compression field block exceeds the requirements of the recipe it")
+        tt.addMachineType("machtype.eoh")
+            .addInfo("gt.eoh.tips.1")
+            .addSeparator(GOLD)
             .addInfo(
-                "  will decrease the processing time by " + RED
-                    + formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier over the requirement (multiplicative)")
-            .addInfo(BLUE + "Time Dilation Field Generator:")
+                "gt.eoh.tips.2",
+                formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100),
+                formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100),
+                formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100),
+                formatNumbers(
+                    STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
+                        * 100))
+            .addSeparator(GOLD)
+            .addManyInfo(GOLD, "gt.eoh.tips.3", "gt.eoh.tips.4", "gt.eoh.tips.5", "gt.eoh.tips.6")
+            .addSeparator(GOLD)
             .addInfo(
-                "- Decreases the time required for a recipe by " + RED
-                    + "50%"
-                    + GRAY
-                    + " per tier of block (multiplicative)")
+                "gt.eoh.tips.7",
+                formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER),
+                SPACETIME_FAILURE_BASE,
+                MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material"))
+            .addSeparator(GOLD)
             .addInfo(
-                "  Decreases the probability of a recipe succeeding by " + RED
-                    + formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
-            .addInfo(BLUE + "Stabilisation Field Generator:")
-            .addInfo(
-                "- Increases the probability of a recipe succeeding by " + RED
-                    + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
-            .addInfo(
-                "  Decreases the yield of a recipe by " + RED
-                    + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive). ")
-            .addInfo("  > Low tier stabilisation field generators have a power output penalty")
-            .addInfo(
-                "     The power output penalty for using Crude Stabilisation Field Generators is " + RED
-                    + formatNumbers(
-                        STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
-                            * 100)
-                    + "%")
-            .addInfo(
-                "     This penalty decreases by " + RED
-                    + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance")
-            .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
-            .addInfo(GREEN + "Overflow ratio = (Stored fluid / Recipe requirement) - 1")
-            .addInfo(GREEN + "Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)")
-            .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
-            .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
-            .addInfo("yield. Failure fluid is exempt")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo("This multiblock can only output to ME output buses/hatches")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus")
-            .addInfo("E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected")
-            .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo(
-                "If a recipe fails the EOH will output " + GREEN
-                    + "Success chance * "
-                    + formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER)
-                    + " * ("
-                    + SPACETIME_FAILURE_BASE
-                    + ")^(Recipe tier)"
-                    + GRAY
-                    + "L of molten")
-            .addInfo(
-                MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material")
-                    + " instead of fluid/item outputs and output as much EU as a successful recipe")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo(
-                "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus")
-            .addInfo(
-                "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter")
-            .addInfo(
-                "The maximum amount of stored Astral Arrays is " + formatNumbers(ASTRAL_ARRAY_LIMIT)
-                    + ". Parallel amount is calculated via these formulas:")
-            .addInfo(
-                GREEN + "Parallel exponent = floor(log("
-                    + formatNumbers(PARALLEL_FOR_FIRST_ASTRAL_ARRAY)
-                    + " * Astral Array amount) / log("
-                    + formatNumbers(CONSTANT_FOR_LOG)
-                    + "))")
-            .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
-            .addInfo("If the EOH is running parallel recipes, the power calculation changes")
-            .addInfo("The power needed for parallel processing is calculated as follows:")
-            .addInfo(
-                GREEN + "total EU = ((EU output - EU input * "
-                    + formatNumbers(PARALLEL_MULTIPLIER_CONSTANT)
-                    + ") / "
-                    + formatNumbers(POWER_DIVISION_CONSTANT)
-                    + ") * "
-                    + formatNumbers(POWER_INCREASE_CONSTANT)
-                    + "^(Parallel exponent)")
-            .addInfo(
-                "Furthermore, if parallel recipes are run, the recipes consume "
-                    + MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
-            .addInfo("instead of helium and hydrogen. Overflow penalties still apply")
-            .addInfo(
-                "The required amount of fluid to start a recipe is " + GREEN + "12.4 / 10^6 * Helium amount * Parallel")
-            .addInfo("The success or failure of each parallel is determined independently")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
-            .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
+                "gt.eoh.tips.8",
+                formatNumbers(ASTRAL_ARRAY_LIMIT),
+                formatNumbers(PARALLEL_FOR_FIRST_ASTRAL_ARRAY),
+                formatNumbers(CONSTANT_FOR_LOG),
+                formatNumbers(PARALLEL_MULTIPLIER_CONSTANT),
+                formatNumbers(POWER_DIVISION_CONSTANT),
+                formatNumbers(POWER_INCREASE_CONSTANT),
+                MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
+            .addSeparator(GOLD)
+            .addInfo("gt.eoh.tips.9")
             .beginStructureBlock(33, 33, 33, false)
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "534" + EnumChatFormatting.GRAY + " Reinforced Temporal Structure Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "31"
-                    + EnumChatFormatting.GRAY
-                    + " Infinite SpaceTime Energy Boundary Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "168" + EnumChatFormatting.GRAY + " Time Dilation Field Generator.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Stabilisation Field Generator.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "138" + EnumChatFormatting.GRAY + " Spacetime Compression Field Generator.")
+            .addCasingInfoExactly("gt.blockcasingsBA0.11.name", 896)
+            .addCasingInfoExactly("gt.blockcasingsBA0.10.name", 534)
+            .addCasingInfoExactly("gt.blockcasingsBA0.12.name", 31)
+            .addCasingInfoExactly("GT5U.tooltip.structure.eoh_tdfg", 168)
+            .addCasingInfoExactly("GT5U.tooltip.structure.eoh_sfg", 48)
+            .addCasingInfoExactly("GT5U.tooltip.structure.eoh_scfg", 138)
             .addStructureInfoSeparator()
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
+            .addStructureInfo("gt.eoh.info.1")
             .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
             .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
             .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)

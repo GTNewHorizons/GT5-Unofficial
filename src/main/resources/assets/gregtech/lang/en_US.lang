@@ -3206,6 +3206,9 @@ GT5U.tooltip.structure.lens_housing=Lens Housing
 GT5U.tooltip.structure.lens_indicator=Lens Indicator
 GT5U.tooltip.structure.manipulator=Manipulator
 GT5U.tooltip.structure.shielding=Shielding Core
+GT5U.tooltip.structure.eoh_tdfg=Time Dilation Field Generator
+GT5U.tooltip.structure.eoh_sfg=Stabilisation Field Generator
+GT5U.tooltip.structure.eoh_scfg=Spacetime Compression Field Generator
 
 GT5U.tooltip.fluid.registry=Registry: %s
 GT5U.tooltip.fluid.amount=Amount: %s L
@@ -3638,14 +3641,31 @@ machtype.massfab=Mass Fabricator
 machtype.lsaa=Assembler, LSAA
 machtype.qft=Quantum Force Transformer, QFT
 machtype.solar_tower=Solar Tower
+machtype.eoh=Spacetime Manipulator, EOH
+machtype.windmill=Windmill
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
 gt.mb.corepos.front_center=Front center
 gt.mb.corepos.front_bottom_middle=Front bottom middle
-gt.mb.corepos.top_center=Top Center
+gt.mb.corepos.top_center=Top center
 
 gt.mb.hint_block=Hint block with dot %d
+
+gt.windmill.tips.1=A primitive Grinder powered by Kinetic energy\nSpeed and output will be affected by wind speed, recipe and rotor\nPlease use the Primitive Rotor\nMacerates 16 items at a time
+gt.windmill.info.1=Any Hardened Clay block
+gt.windmill.info.2=0-1, Any Hardened Clay block
+
+gt.eoh.tips.1=Creates a pocket of spacetime that is bigger on the inside using transdimensional engineering\nCertified Time Lord regulation compliant\nThis multi uses too much EU to be handled with conventional means\nAll EU requirements are handled directly by your wireless EU network
+gt.eoh.tips.2=This multiblock will constantly consume hydrogen and helium\nwhen it is not running arecipe once per second.\nIt will store this internally, you can see the totals by using a scanner\nThis multi also has three tiered blocks with §c9§7 tiers each.\nThey are as follows and have the associated effects on the multi:\n§9Spacetime Compression Field Generator:\n- The tier of this block determines what recipes can be run. If the multiblocks\n  spacetime compression field block exceeds the requirements of the recipe it\n  will decrease the processing time by §c%1$s%%§7 per tier over the requirement (multiplicative)\n§9Time Dilation Field Generator:\n- Decreases the time required for a recipe by §c50%%§7 per tier of block (multiplicative)\n  Decreases the probability of a recipe succeeding by §c%2$s%%§7 per tier (additive)\n§9Stabilisation Field Generator:\n- Increases the probability of a recipe succeeding by §c%3$s%%§7 per tier (additive)\n  Decreases the yield of a recipe by §c%3$s%%§7 per tier (additive).\n  > Low tier stabilisation field generators have a power output penalty\n     The power output penalty for using Crude Stabilisation Field Generators is §c%4$s%%\n     This penalty decreases by §c%3$s%%§7 per tier (additive)
+gt.eoh.tips.3=Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance\nAll stored hydrogen and helium is consumed during a craft. The associated formulas are:\n§aOverflow ratio = (Stored fluid / Recipe requirement) - 1\n§aAdjustment value = 1 - exp(-(30 * Overflow ratio)^2)\nThe Adjustment value is then subtracted from the total yield and recipe chance
+gt.eoh.tips.4=It should be noted that base recipe chance is determined per recipe and yield always starts\nat 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the\nyield. Failure fluid is exempt
+gt.eoh.tips.5=This multiblock can only output to ME output buses/hatches
+gt.eoh.tips.6=This multiblock can be overclocked by placing a programmed circuit into the input bus\nE.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected\nAll outputs are equal. All item and fluid output chances & amounts per recipe are unaffected
+gt.eoh.tips.7=If a recipe fails the EOH will output §aSuccess chance * %s * (%s)^(Recipe tier) §7L of molten\n%s instead of fluid/item outputs and output as much EU as a successful recipe
+gt.eoh.tips.8=This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus\nThey are stored internally and can be retrieved via right-clicking the controller with a wire cutter\nThe maximum amount of stored Astral Arrays is %s. Parallel amount is calculated via these formulas:\n§aParallel exponent = floor(log(%s * Astral Array amount) / log(%s))\n§aParallel = 2^(Parallel exponent)\nIf the EOH is running parallel recipes, the power calculation changes\nThe power needed for parallel processing is calculated as follows:\n§atotal EU = ((EU output - EU input * %s) / %s) * %s^(Parallel exponent)\nFurthermore, if parallel recipes are run, the recipes consume %s\ninstead of helium and hydrogen. Overflow penalties still apply\nThe required amount of fluid to start a recipe is §a12.4 / 10^6 * Helium amount * Parallel\nThe success or failure of each parallel is determined independently
+gt.eoh.tips.9=Animations can be disabled by using a screwdriver on the multiblock\nPlanet block can be inserted directly by right-clicking the controller with planet block
+gt.eoh.info.1=Requires §62§7 input hatches\n   Requires §61§7 ME output hatch\n   Requires §61§7 input bus\n   Requires §61§7 ME output bus
 
 gt.solar_tower.tips.1=Contributing Green Energy towards the future\nSurround with rings of Solar Reflectors\nThe Reflectors increase the internal heat value of the Tower (see below for formula)\nEach Reflector ring increases tier, the first ring is required for the Tower to work\nInput: %s\nOutput: %s\nEvery cycle (10 seconds), heat increases and all the Cold Solar Salt is heated\nConverting Cold to Hot Solar Salt reduces heat, equal to the amount converted\nThis conversion only happens if heat >= 30000 and controller efficiency = 100%%\nIf there's more Cold Salt than heat, all the heat is used up and returns to 0\nThe heat increase is most efficient at exactly half of maximum heat\nMinimum efficiency at 0 or 100000 heat, maximum efficiency at 50000\nHeat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8] ) / 7000\nHeat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)\nBonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16\nTotal number of reflectors based on how many rings are built:\n1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340
 gt.solar_tower.info.1=min 1
@@ -3675,7 +3695,7 @@ gt.multi_furnace.info.2=Top Middle
 gt.vf.tips.1=Cools hot ingots and cells
 
 gt.exxonmobil.tips.1=Heavy Industry, now right at your doorstep!\nPlant tier is determined by casing tier\nHatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers
-gt.exxonmobil.tips.2=+20% chance of not damaging catalyst per %s Tier
+gt.exxonmobil.tips.2=+20%% chance of not damaging catalyst per %s Tier
 gt.exxonmobil.tips.3=Any catalyst must be placed in the catalyst housing\nAwakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable
 gt.exxonmobil.info.1=metal machine casing (minimum 70)
 
@@ -3750,12 +3770,6 @@ gt.duplicator.tips.2=Maximum 1x of each bus/hatch\nRequires circuit 1-16 in your
 gt.cyclotron.tips.1=Super Magnetic Speed Shooter
 gt.cyclotron.tips.2=Particles are accelerated over 186 revolutions to 80% light speed\nCan produce a continuous beam current of 2.2 mA at 590 MeV,\nwhich will be extracted from the Isochronous Cyclotron
 gt.cyclotron.tips.3=Similar structure to the Fusion Reactor\nAny external casing can be a hatch/bus, unlike Fusion\nCyclotron Machine Casings around Cyclotron Coil Blocks
-
-# Windmill is To Be Ported
-mb.bw.windmill.desc1=A primitive Grinder powered by Kinetic energy
-mb.bw.windmill.desc2=Speed and output will be affected by wind speed, recipe and rotor
-mb.bw.windmill.desc3=Please use the Primitive Rotor
-mb.bw.windmill.desc4=Macerates %s items at a time
 
 gt.purification_plant.tips.1=Main controller block for the Water Purification Plant\nFreely place §ePurification Units§7 within §4%s§7 blocks along each axis\nLeft click this controller with a data stick, then right click a purification unit to link\nSupplies power to linked purification units.
 gt.purification_plant.tips.2=Works in fixed time processing cycles of §4%s§7 seconds\nAll linked units follow this cycle.
