@@ -154,6 +154,9 @@ public class MTEMultiBlockBaseGui {
 
         int borderRadius = 4;
         int maxWidth = getBasePanelWidth() - borderRadius * 2;
+        // No, there is no setMaxWidth, otherwise i'd just do that because the alignment makes no difference.
+        // -1 means infinite width because i just want the title width
+        IKey.renderer.setAlignment(Alignment.CenterLeft, -1);
         int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
         int widgetWidth = Math.min(maxWidth, titleWidth);
 
@@ -799,7 +802,6 @@ public class MTEMultiBlockBaseGui {
             .topRel(0, topRelOffset, 0)
             .rightRel(0, rightRelOffset, 0)
             .excludeAreaInNEI(true);
-
     }
 
     private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
