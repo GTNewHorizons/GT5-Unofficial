@@ -24,7 +24,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +37,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.structures.AntimatterStructures;
+import goodgenerator.blocks.tileEntity.gui.AntimatterForgeGui;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
@@ -771,19 +771,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + " L" };
     }
 
-    private long getAntimatterAmount() {
+    public long getAntimatterAmount() {
         return this.guiAntimatterAmount;
     }
 
-    private long getPassiveConsumption() {
+    public long getPassiveConsumption() {
         return this.guiPassiveEnergy;
     }
 
     private long getActiveConsumption() {
-        return this.guiActiveEnergy / 20;
+        return this.guiActiveEnergy;
     }
 
-    private long getAntimatterChange() {
+    public long getAntimatterChange() {
         return this.guiAntimatterChange;
     }
 
@@ -842,6 +842,16 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull AntimatterForgeGui getGui() {
+        return new AntimatterForgeGui(this);
     }
 
     @Override
