@@ -51,6 +51,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -72,7 +73,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -532,9 +532,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         // spotless:off
         ItemStack[] catalysts = new ItemStack[] {
-            GTModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32418), // Black Hole Seed
-            GTModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32419), // Black Hole Collapser
-            GTModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32420) // Superstable Catalyst
+            new ItemStack(GameRegistry.findItem("gregtech", "gt.metaitem.01"), 1, 32418), // Black Hole Seed
+            new ItemStack(GameRegistry.findItem("gregtech", "gt.metaitem.01"), 1, 32419), // Black Hole Collapser
+            new ItemStack(GameRegistry.findItem("gregtech", "gt.metaitem.01"), 1, 32420) // Superstable Catalyst
         };
         //spotless:on
 
