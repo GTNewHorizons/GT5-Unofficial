@@ -532,9 +532,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         // spotless:off
         ItemStack[] catalysts = new ItemStack[] {
-            new ItemStack(GameRegistry.findItem("gregtech", "gt.metaitem.01"), 1, 32418), // Black Hole Seed
-            new ItemStack(GameRegistry.findItem("gregtech", "gt.metaitem.01"), 1, 32419), // Black Hole Collapser
-            new ItemStack(GameRegistry.findItem("gregtech", "gt.metaitem.01"), 1, 32420) // Superstable Catalyst
+            ItemList.Black_Hole_Opener.get(1),
+            ItemList.Black_Hole_Closer.get(1),
+            ItemList.Black_Hole_Stabilizer.get(1)
         };
         //spotless:on
 
@@ -547,7 +547,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     aware.startRecipeProcessing();
                 }
                 int metaid = removed.getItemDamage();
-                if (metaid == 32418 && blackHoleStatus == 1) {
+                if (ItemList.Black_Hole_Opener.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 2;
                     createRenderBlock();
                 } else if (metaid == 32419 && blackHoleStatus != 1) {

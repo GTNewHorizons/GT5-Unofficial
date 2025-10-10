@@ -348,10 +348,10 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
         ItemStack result = null;
         int remaining = amount;
-        for (int i = 0; i < mInventory.length && remaining > 0; i++) {
+        for (int i = 0; i < this.getSizeInventory() && remaining > 0; i++) {
             if (i == getCircuitSlot()) continue;
-            ItemStack slotStack = mInventory[i];
-            if (slotStack == null) {
+            ItemStack slotStack = this.getStackInSlot(i);
+            if (slotStack == null || slotStack.stackSize < amount) {
                 continue;
             }
             for (ItemStack target : targets) {
