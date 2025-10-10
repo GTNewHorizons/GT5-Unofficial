@@ -683,13 +683,13 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
+    protected @NotNull AntimatterGeneratorGui getGui() {
+        return new AntimatterGeneratorGui(this);
     }
 
     @Override
-    protected @NotNull AntimatterGeneratorGui getGui() {
-        return new AntimatterGeneratorGui(this);
+    public boolean canBeMuffled() {
+        return false;
     }
 
     public boolean getWirelessMode() {
