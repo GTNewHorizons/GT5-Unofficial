@@ -200,9 +200,10 @@ public class MTEMultiBlockBaseGui {
         return new Column().coverChildren()
             .rightRel(0, 10, 0)
             .bottomRel(0, 10, 0)
-            .childIf(base.supportsShutdownReasonHoverable(),createShutdownReasonHoverableTerminal(syncManager))
-            .childIf(base.supportsMaintenanceIssueHoverable(),createMaintIssueHoverableTerminal(syncManager))
-           .childIf(base.supportsLogo(),
+            .childIf(base.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
+            .childIf(base.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
+            .childIf(
+                base.supportsLogo(),
                 new Widget<>().size(18, 18)
                     .marginTop(4)
                     .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
