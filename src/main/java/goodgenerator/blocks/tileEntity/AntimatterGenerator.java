@@ -22,6 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -41,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
+import goodgenerator.blocks.tileEntity.gui.AntimatterGeneratorGui;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
@@ -409,7 +412,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return tt;
     }
 
-    protected boolean canUseWireless() {
+    public boolean canUseWireless() {
         return true;
     }
 
@@ -501,11 +504,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + " % ⟩₁₀" };
     }
 
-    private long getEnergyProduced() {
+    public long getEnergyProduced() {
         return this.euLastCycle;
     }
 
-    private float getEfficiency() {
+    public float getEfficiency() {
         return this.annihilationEfficiency;
     }
 
@@ -527,7 +530,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         this.avgEffCache = b == 0 ? 0 : b / this.avgEff.size();
     }
 
-    private float getAvgEfficiency() {
+    public float getAvgEfficiency() {
         return this.avgEffCache;
     }
 
@@ -677,6 +680,24 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             return (12 << 7) + 10;
         }
         return (12 << 7) + 9;
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull AntimatterGeneratorGui getGui() {
+        return new AntimatterGeneratorGui(this);
+    }
+
+    public boolean getWirelessMode() {
+        return this.wirelessEnabled;
+    }
+
+    public void setWirelessEnabled(boolean b) {
+        wirelessEnabled = b;
     }
 
     @Override
