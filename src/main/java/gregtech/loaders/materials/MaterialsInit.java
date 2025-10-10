@@ -2257,6 +2257,7 @@ public class MaterialsInit {
     private static Materials loadAnyBronze() {
         return new MaterialBuilder().setName("AnyBronze")
             .setDefaultLocalName("AnyBronze")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
@@ -2266,6 +2267,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("AnyCopper")
             .setDefaultLocalName("AnyCopper")
             .setChemicalFormula("Cu")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Copper)
             .setMaceratingInto(() -> Materials.Copper)
@@ -2278,6 +2280,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("AnyIron")
             .setDefaultLocalName("AnyIron")
             .setChemicalFormula("Fe")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Iron)
             .setMaceratingInto(() -> Materials.Iron)
@@ -2289,6 +2292,7 @@ public class MaterialsInit {
     private static Materials loadAnyRubber() {
         return new MaterialBuilder().setName("AnyRubber")
             .setDefaultLocalName("AnyRubber")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
             .setMaceratingInto(() -> Materials.Rubber)
             .constructMaterial();
@@ -2297,6 +2301,7 @@ public class MaterialsInit {
     private static Materials loadAnySyntheticRubber() {
         return new MaterialBuilder().setName("AnySyntheticRubber")
             .setDefaultLocalName("AnySyntheticRubber")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2304,6 +2309,7 @@ public class MaterialsInit {
     private static Materials loadBrickNether() {
         return new MaterialBuilder().setName("BrickNether")
             .setDefaultLocalName("BrickNether")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_DULL)
             .addOrePrefixBlacklist(OrePrefixes.ingot) // minecraft:netherbrick
             .constructMaterial();
@@ -2312,6 +2318,7 @@ public class MaterialsInit {
     private static Materials loadCobblestone() {
         return new MaterialBuilder().setName("Cobblestone")
             .setDefaultLocalName("Cobblestone")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
@@ -2319,6 +2326,7 @@ public class MaterialsInit {
     private static Materials loadCrystal() {
         return new MaterialBuilder().setName("Crystal")
             .setDefaultLocalName("Crystal")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
             .addSubTag(SubTag.CRYSTAL)
             .addSubTag(SubTag.NO_SMASHING)
@@ -2329,6 +2337,7 @@ public class MaterialsInit {
     private static Materials loadMetal() {
         return new MaterialBuilder().setName("Metal")
             .setDefaultLocalName("Metal")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_METALLIC)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
@@ -2337,6 +2346,7 @@ public class MaterialsInit {
     private static Materials loadOrganic() {
         return new MaterialBuilder().setName("Organic")
             .setDefaultLocalName("Organic")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_LEAF)
             .constructMaterial();
     }
@@ -2344,6 +2354,7 @@ public class MaterialsInit {
     private static Materials loadQuartz() {
         return new MaterialBuilder().setName("Quartz")
             .setDefaultLocalName("Quartz")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_QUARTZ)
             .addSubTag(SubTag.CRYSTAL)
             .addSubTag(SubTag.CRYSTALLISABLE)
@@ -2356,6 +2367,7 @@ public class MaterialsInit {
     private static Materials loadUnknown() {
         return new MaterialBuilder().setName("Unknown")
             .setDefaultLocalName("Unknown")
+            .setUnifiable(false)
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
@@ -8482,7 +8494,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8499,7 +8511,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8516,7 +8528,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8724,7 +8736,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -8757,7 +8769,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -9094,7 +9106,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 
@@ -9111,7 +9123,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 6)
             .addElectrolyzerRecipe()
-            .setCanBeCracked(true)
+            .addCrackingRecipes()
             .constructMaterial();
     }
 

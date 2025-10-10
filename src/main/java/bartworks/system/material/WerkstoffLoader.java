@@ -2061,6 +2061,41 @@ public class WerkstoffLoader {
                 registration.run(werkstoff);
             }
         }
+        addFakeItemDataToInWorldBlocksAndCleanUpFakeData();
+    }
+
+    /**
+     * very hacky way to make my ores/blocks/small ores detectable by gt association in world, well at least the prefix.
+     * used for the miners mostly removing this hacky material from the materials map instantly. we only need the item
+     * data.
+     */
+    private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
+        Materials oreMat = new MaterialBuilder().setName("bwores")
+            .setDefaultLocalName("bwores")
+            .setUnifiable(false)
+            .constructMaterial();
+
+        Materials smallOreMat = new MaterialBuilder().setName("bwsmallores")
+            .setDefaultLocalName("bwsmallores")
+            .setUnifiable(false)
+            .constructMaterial();
+
+        Materials blockMat = new MaterialBuilder().setName("bwblocks")
+            .setDefaultLocalName("bwblocks")
+            .setUnifiable(false)
+            .constructMaterial();
+
+        for (int i = 0; i < 16; i++) {
+            GTOreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres, 1, i), true);
+            GTOreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres, 1, i), true);
+            GTOreDictUnificator.addAssociation(block, blockMat, new ItemStack(BWBlocks, 1, i), true);
+        }
+        Materials.getMaterialsMap()
+            .remove("bwores");
+        Materials.getMaterialsMap()
+            .remove("bwsmallores");
+        Materials.getMaterialsMap()
+            .remove("bwblocks");
     }
 
     public static void removeIC2Recipes() {

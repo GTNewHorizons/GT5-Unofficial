@@ -37,7 +37,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         final short[] rgba = werkstoff.getRGBA();
-        final int argb = (rgba[3] & 0xff << 24) | (rgba[0] & 0xff << 16) | (rgba[1] & 0xff << 8) | rgba[2] & 0xff;
+        final int argb = (rgba[3] & 0xff) << 24 | (rgba[0] & 0xff) << 16 | (rgba[1] & 0xff) << 8 | rgba[2] & 0xff;
         final Werkstoff.Stats stats = werkstoff.getStats();
 
         Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
@@ -55,8 +55,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         final Element[] ELEMENT_VALUES = Element.values();
         for (OrePrefixes prefixes : values()) {
             if (prefixes != cell || !Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
-                if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())
-                    && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
+                if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
                     boolean ElementSet = false;
                     for (Element e : ELEMENT_VALUES) {
                         if (e.toString()

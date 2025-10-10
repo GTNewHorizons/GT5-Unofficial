@@ -979,7 +979,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     private Supplier<Enchantment> mPendingArmorEnchantment;
     public Enchantment mArmorEnchantment;
     public byte mArmorEnchantmentLevel = 0;
-    public boolean mUnificatable;
+    public boolean mUnifiable;
     public boolean mBlastFurnaceRequired = false;
     public boolean mAutoGenerateBlastFurnaceRecipes = true;
     public boolean mAutoGenerateVacuumFreezerRecipes = true;
@@ -1055,6 +1055,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         @Nullable Element element,
         @Nullable String chemicalFormula,
         int metaItemSubID,
+        boolean unifiable,
         TextureSet iconSet,
         Dyes color,
         int argb, int argbMolten,
@@ -1193,7 +1194,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         mCustomOre = false;
         mCustomID = "null";
         mConfigSection = "ore";
-        mUnificatable = true;
         mMaterialInto = this;
 
         // Set material SubTags
@@ -1204,6 +1204,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         // Uncategorized fields
         mHeatDamage = heatDamage;
         mOreMultiplier = oreMultiplier;
+        mUnifiable = unifiable;
 
         // No clue what is going on here...
         int numberOfComponents = 0;
