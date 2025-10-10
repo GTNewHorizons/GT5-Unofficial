@@ -3,9 +3,9 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -88,14 +88,14 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(ItemList.Food_Raw_PotatoChips.get(1L))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(4)
-                    .addTo(slicerRecipes);
+                    .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(aStack, ItemList.Shape_Slicer_Stripes.get(0L))
                     .itemOutputs(ItemList.Food_Raw_Fries.get(1L))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(4)
-                    .addTo(slicerRecipes);
+                    .addTo(cutterRecipes);
 
                 for (Fluid tFluid : waterArray) {
                     GTValues.RA.stdBuilder()
@@ -113,7 +113,7 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(ItemList.Food_Sliced_Lemon.get(4L))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(4)
-                    .addTo(slicerRecipes);
+                    .addTo(cutterRecipes);
 
                 for (Fluid tFluid : waterArray) {
                     GTValues.RA.stdBuilder()
@@ -138,19 +138,19 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 .itemOutputs(ItemList.Food_Sliced_Tomato.get(4L))
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(4)
-                .addTo(slicerRecipes);
+                .addTo(cutterRecipes);
             case "cropCucumber" -> GTValues.RA.stdBuilder()
                 .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.Food_Sliced_Cucumber.get(4L))
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(4)
-                .addTo(slicerRecipes);
+                .addTo(cutterRecipes);
             case "cropOnion" -> GTValues.RA.stdBuilder()
                 .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.Food_Sliced_Onion.get(4L))
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(4)
-                .addTo(slicerRecipes);
+                .addTo(cutterRecipes);
         }
     }
 }

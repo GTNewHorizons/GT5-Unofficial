@@ -9,6 +9,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -36,6 +37,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class MixerRecipes implements Runnable {
 
     @Override
@@ -788,6 +790,27 @@ public class MixerRecipes implements Runnable {
             .eut(16)
             .addTo(mixerRecipes);
 
+        // Molten Red Granite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L))
+            .fluidInputs(Materials.Lava.getFluid(125L))
+            .fluidOutputs(Materials.GraniteRed.getMolten(1 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(mixerRecipes);
+        // Molten Black Granite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L))
+            .fluidInputs(Materials.Lava.getFluid(125L))
+            .fluidOutputs(Materials.GraniteBlack.getMolten(1 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(mixerRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.SFMixture.get(2), GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 1))
             .itemOutputs(ItemList.MSFMixture.get(4))
@@ -1250,14 +1273,6 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         // radiation manufacturing
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), new ItemStack(Items.glowstone_dust, 9))
-            .itemOutputs(ItemList.GlowstoneCell.get(1))
-            .fluidInputs(Materials.Helium.getGas(250))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))

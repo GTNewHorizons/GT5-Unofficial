@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -82,6 +83,10 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import org.lwjgl.input.Keyboard;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Loader;
@@ -97,6 +102,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -131,6 +137,7 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;
@@ -148,19 +155,22 @@ import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
+import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.maglev.TetherManager;
-import gregtech.common.handlers.PowerGogglesEventHandler;
+import gregtech.common.handlers.OffhandToolFunctionalityHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.pollution.Pollution;
+import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
+import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
+import gregtech.common.recipes.CALImprintRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class GTProxy implements IFuelHandler {
 
@@ -674,9 +684,13 @@ public class GTProxy implements IFuelHandler {
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     /** A fast lookup for players. */
     private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
+    private Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
+    public GTPowerfailTracker powerfailTracker;
     public TetherManager tetherManager;
+
+    public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
 
     static {
         oreDictBurnTimes.put("dustTinyWood", 11);
@@ -858,6 +872,13 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
+        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
+        ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
+        ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
+        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
+        ItemList.IC2_Plutonium_Small.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
+        ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
+        ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
         ItemList.IC2_Food_Can_Filled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 0));
         ItemList.IC2_Food_Can_Spoiled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 1));
@@ -1011,13 +1032,18 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
+        MinecraftForge.EVENT_BUS.register(new PowerGogglesWorldSavedData());
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
         FMLCommonHandler.instance()
             .bus()
-            .register(new PowerGogglesEventHandler());
-        MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
+            .register(PowerGogglesEventHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(PowerGogglesEventHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
+        TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
+            .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
+            .registerGlobalListener(MetaGeneratedTool::switchToolMode);
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
@@ -1131,29 +1157,34 @@ public class GTProxy implements IFuelHandler {
         // server, but it's just convenient to be able to write GUI code without side check. This will be reworked with
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
+        CALImprintRecipe.register();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-        GTChunkAssociatedData.clearAll();
-    }
-
-    public void onServerStarting(FMLServerStartingEvent event) {
         // spotless:off
-        GTLog.out.println("GTMod: ServerStarting-Phase started!");
-        PLAYERS_BY_UUID = new Object2ObjectOpenHashMap<>();
+        GTLog.out.println("GTMod: firing FMLServerAboutToStartEvent !");
+        GTChunkAssociatedData.clearAll();
+        PLAYERS_BY_UUID = new HashMap<>();
+        UUID_BY_NAME = new HashMap<>();
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
         spawnEventHandler = new GTSpawnEventHandler();
+        powerfailTracker = new GTPowerfailTracker();
         tetherManager = new TetherManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
+        FMLCommonHandler.instance().bus().register(powerfailTracker);
+        MinecraftForge.EVENT_BUS.register(powerfailTracker);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
+    }
 
+    public void onServerStarting(FMLServerStartingEvent event) {
+        GTLog.out.println("GTMod: firing FMLServerStartingEvent !");
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
@@ -1202,21 +1233,30 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerStopped(FMLServerStoppedEvent event) {
         // spotless:off
+        if (wirelessChargerManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
+        }
         if (spawnEventHandler != null) {
             MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+        }
+        if (powerfailTracker != null) {
+            FMLCommonHandler.instance().bus().unregister(powerfailTracker);
+            MinecraftForge.EVENT_BUS.unregister(powerfailTracker);
         }
         if (tetherManager != null) {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
         }
-        if (wirelessChargerManager != null) {
-            FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
-        }
-        spawnEventHandler = null;
-        tetherManager = null;
         wirelessChargerManager = null;
+        spawnEventHandler = null;
+        powerfailTracker = null;
+        tetherManager = null;
         PLAYERS_BY_UUID = null;
+        UUID_BY_NAME = null;
         // spotless:on
+
+        PowerGogglesEventHandler.getInstance()
+            .onServerStopped(event);
     }
 
     /**
@@ -1909,9 +1949,11 @@ public class GTProxy implements IFuelHandler {
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
+                RunnableMachineUpdate.onBeforeTickLockLocked();
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
+                RunnableMachineUpdate.onAfterTickLockReleased();
                 GTMusicSystem.ServerSystem.tick();
             }
         }
@@ -2012,12 +2054,11 @@ public class GTProxy implements IFuelHandler {
         }
 
         int tCount = 64;
-        for (int i = 0; i < 36; i++) {
-            final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
+        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
+        for (ItemStack tStack : mainInventory) {
             if (tStack == null) {
                 continue;
             }
-
             if (!aEvent.player.capabilities.isCreativeMode) {
                 GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
                 final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
@@ -2037,8 +2078,8 @@ public class GTProxy implements IFuelHandler {
             }
 
         }
-        final ItemStack[] inventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : inventory) {
+        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
+        for (final ItemStack tStack : armorInventory) {
             if (tStack == null) {
                 continue;
             }
@@ -2431,7 +2472,7 @@ public class GTProxy implements IFuelHandler {
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerLoggedIn(PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2441,10 +2482,11 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.put(UUID, player);
+            UUID_BY_NAME.put(player.getCommandSenderName(), UUID);
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void playerMap$onPlayerLeft(PlayerLoggedOutEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2454,10 +2496,11 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.remove(UUID);
+            UUID_BY_NAME.remove(UUID);
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerChangeDim(PlayerChangedDimensionEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2467,10 +2510,11 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.put(UUID, player);
+            UUID_BY_NAME.put(player.getCommandSenderName(), UUID);
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerRespawn(PlayerRespawnEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2480,12 +2524,13 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.put(UUID, player);
+            UUID_BY_NAME.put(player.getCommandSenderName(), UUID);
         }
     }
 
     /**
-     * This method allows fast lookup of EntityPlayerMp from UUID.
-     * It should only ever be called from the ServerThread and while the Server is running.
+     * This method allows fast lookup of EntityPlayerMp from UUID. It should only ever be called from the ServerThread
+     * and while the Server is running.
      *
      * @param uuid - uuid of the EntityPlayerMP
      */
@@ -2500,6 +2545,25 @@ public class GTProxy implements IFuelHandler {
             return PLAYERS_BY_UUID.get(uuid);
         } else {
             throw new NullPointerException("PLAYERS_BY_ID is null because the server is not running!");
+        }
+    }
+
+    /**
+     * This method allows fast lookup of player UUID from their name. It should only ever be called from the
+     * ServerThread and while the Server is running.
+     *
+     * @param playername - the name of the player as returned by getCommandSenderName()
+     */
+    public UUID getPlayersUUID(String playername) {
+        if (!FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
+            throw new RuntimeException("Tried to retrieve a player UUID from outside of the server thread!");
+        }
+        if (UUID_BY_NAME != null) {
+            return UUID_BY_NAME.get(playername);
+        } else {
+            throw new NullPointerException("UUID_BY_NAME is null because the server is not running!");
         }
     }
 

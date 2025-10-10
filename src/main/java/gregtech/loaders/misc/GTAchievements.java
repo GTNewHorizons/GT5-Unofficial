@@ -139,7 +139,7 @@ public class GTAchievements {
             "crushed",
             false);
 
-        registerAchievement("newfuel", -4, 8, ItemList.ThoriumCell_4.get(1), "spinit", false);
+        registerAchievement("newfuel", -4, 8, ItemList.RodThorium4.get(1), "spinit", false);
         registerAchievement(
             "newmetal",
             -4,

@@ -128,10 +128,19 @@ public class Gregtech {
         @Config.DefaultInt(4)
         @Config.RequiresMcRestart
         public int upgradeStackSize;
+
+        @Config.Comment("Speed up machine update thread by skipping cables. Warning: this can cause weird side effects.")
+        @Config.DefaultBoolean(false)
+        @Config.RequiresMcRestart
+        public boolean speedupMachineUpdateThread;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.general")
     public static class General {
+
+        @Config.Comment("if true, batch mode will initially be enabled when multiblocks are placed in the world.")
+        @Config.DefaultBoolean(true)
+        public boolean batchModeInitialValue;
 
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
@@ -533,6 +542,11 @@ public class Gregtech {
         @Config.Comment("If true, Crafting Input Bus/Buffer will drop items and fluids if they cannot be returned to the AE network.")
         @Config.DefaultBoolean(true)
         public boolean allowCribDropItems;
+
+        @Config.Comment("Enables the powerfail notification system.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Enable Powerfail Notifications")
+        public boolean enablePowerfailNotifications;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")

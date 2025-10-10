@@ -209,8 +209,8 @@ public class MTEHeatSensor extends MTEHatch {
                 .setTextureGetter(
                     (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
                         : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                .addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                .addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                 .setPos(10, 8))
             .widget(
                 new TextWidget()
