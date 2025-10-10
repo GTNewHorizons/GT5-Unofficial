@@ -122,6 +122,11 @@ public enum Mixin implements IMixins {
         .addRequiredMod(TargetedMod.BIOMESOPLENTY)
         .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.pollutionBlockRecolor)
         .setPhase(Phase.LATE)),
+    POLLUTION_RENDER_BLOCKS_BETTERFOLIAGE(new MixinBuilder()
+        .addClientMixins("betterfoliage.MixinBlockContextPollution")
+        .addRequiredMod(TargetedMod.BETTERFOLIAGE)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.pollutionBlockRecolor)
+        .setPhase(Phase.LATE)),
     POLLUTION_MINECRAFT_FURNACE(new MixinBuilder()
         .setPhase(Phase.EARLY)
         .addCommonMixins("minecraft.pollution.MixinTileEntityFurnacePollution")
