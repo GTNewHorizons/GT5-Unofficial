@@ -453,7 +453,6 @@ import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Used;
 import static gregtech.common.items.IDMetaItem01.Tool_Matches;
 import static gregtech.common.items.IDMetaItem01.Tool_Scanner;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Lock;
-import static gregtech.common.items.IDMetaItem01.Upgrade_Muffler;
 import static gregtech.common.items.IDMetaItem01.ZPM2;
 import static gregtech.common.items.IDMetaItem01.ZPM3;
 import static gregtech.common.items.IDMetaItem01.ZPM4;
@@ -545,6 +544,7 @@ import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.TranscendentalMetaItemRenderer;
+import gregtech.common.render.items.WireFrameTesseractRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -1705,28 +1705,32 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
-        ItemList.Tesseract.set(
-            addItem(
-                Tesseract.ID,
-                "Raw Tesseract",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.Tesseract
+            .set(
+                addItem(
+                    Tesseract.ID,
+                    "Raw Tesseract",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(0, 0, 0));
         ItemList.GigaChad.set(
             addItem(
                 GigaChad.ID,
                 "Giga Chad Token",
                 "You are worthy",
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1000L)));
-        ItemList.EnergisedTesseract.set(
-            addItem(
-                EnergisedTesseract.ID,
-                "Energised Tesseract",
-                "Higher dimensional engineering",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.EnergisedTesseract
+            .set(
+                addItem(
+                    EnergisedTesseract.ID,
+                    "Energised Tesseract",
+                    "Higher dimensional engineering",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(23, 129, 166));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
@@ -2908,13 +2912,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 6L),
                 OreDictNames.craftingGrinder));
 
-        ItemList.Upgrade_Muffler.set(
-            addItem(
-                Upgrade_Muffler.ID,
-                "Muffler Upgrade",
-                "Makes Machines silent",
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Upgrade_Lock.set(
             addItem(
                 Upgrade_Lock.ID,
@@ -4057,8 +4054,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             int tier = i + 1;
             CoverRegistry.registerCover(
                 ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
-                TextureFactory
-                    .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
+                TextureFactory.of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[0]),
                 context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
                 CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }

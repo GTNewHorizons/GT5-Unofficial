@@ -55,7 +55,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public boolean disableSort;
     public boolean disableFilter = true;
     public boolean disableLimited = true;
-    private int uiButtonCount = 0;
+    protected int uiButtonCount = 0;
 
     public MTEHatchInputBus(int id, String name, String nameRegional, int tier) {
         this(id, name, nameRegional, tier, getSlots(tier) + 1);
@@ -287,7 +287,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         return getSlots(mTier);
     }
 
-    private void addSortStacksButton(ModularWindow.Builder builder) {
+    protected void addSortStacksButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
                 () -> !disableSort,
@@ -296,7 +296,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                 () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
     }
 
-    private void addOneStackLimitButton(ModularWindow.Builder builder) {
+    protected void addOneStackLimitButton(ModularWindow.Builder builder) {
         builder.widget(createToggleButton(() -> !disableLimited, val -> {
             disableLimited = !val;
             updateSlots();

@@ -70,4 +70,9 @@ public class ReasonOutOfItem implements ShutDownReason {
     public boolean wasCritical() {
         return true;
     }
+
+    @Override
+    public String getKey() {
+        return getID();
+    }
 }

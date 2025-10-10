@@ -332,8 +332,7 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Not intended to be used by recipe authors.
-     * Intended for recipe rewrite middlewares.
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
      */
     public GTRecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
         if (skip) return this;
@@ -479,8 +478,7 @@ public class GTRecipeBuilder {
 
     /**
      * Gets metadata already set for this builder. Can return null. Use
-     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)}
-     * if you want to specify default value.
+     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)} if you want to specify default value.
      */
     @Nullable
     public <T> T getMetadata(RecipeMetadataKey<T> key) {
@@ -789,8 +787,8 @@ public class GTRecipeBuilder {
     // endregion
 
     /**
-     * Builds new recipe, without custom behavior of recipemaps. For adding recipe to recipemap,
-     * use {@link #addTo} instead.
+     * Builds new recipe, without custom behavior of recipemaps. For adding recipe to recipemap, use {@link #addTo}
+     * instead.
      *
      * @return Built recipe. Returns empty if failed to build.
      */
