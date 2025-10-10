@@ -780,7 +780,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return this.guiPassiveEnergy;
     }
 
-    private long getActiveConsumption() {
+    public long getActiveConsumption() {
         return this.guiActiveEnergy / 20;
     }
 
@@ -846,13 +846,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
+    protected @NotNull AntimatterForgeGui getGui() {
+        return new AntimatterForgeGui(this);
     }
 
     @Override
-    protected @NotNull AntimatterForgeGui getGui() {
-        return new AntimatterForgeGui(this);
+    public boolean canBeMuffled() {
+        return false;
     }
 
     @Override

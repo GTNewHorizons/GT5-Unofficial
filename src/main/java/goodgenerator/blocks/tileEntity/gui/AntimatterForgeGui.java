@@ -94,7 +94,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
                             + EnumChatFormatting.LIGHT_PURPLE
                             + standardFormat.format(activeConsSync.getLongValue())
                             + EnumChatFormatting.WHITE
-                            + " EU")))
+                            + " EU/t")))
             .child(
                 new TextWidget(
                     IKey.dynamic(
