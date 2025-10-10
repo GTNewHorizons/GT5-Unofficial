@@ -23,7 +23,7 @@ public enum GTPacketTypes {
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
-    // Free ID 18
+    SET_MOLD(18, new GTPacketSetMold()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
     // Free ID 20
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),

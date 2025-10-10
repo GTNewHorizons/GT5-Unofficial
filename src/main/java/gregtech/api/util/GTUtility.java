@@ -491,7 +491,8 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        return "(" + GTValues.VN[getTier(voltage)] + ")";
+        String color = GTValues.TIER_COLORS[getTier(voltage)];
+        return "(" + color + GTValues.VN[getTier(voltage)] + EnumChatFormatting.RESET + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer player, String message) {

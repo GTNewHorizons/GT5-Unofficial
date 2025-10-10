@@ -17,6 +17,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Assembler implements Runnable {
 
     @Override
@@ -44,7 +45,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_BlastFurnace.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Machine_Multi_BlastFurnace.get(64))
             .itemOutputs(ItemRegistry.megaMachines[0])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -52,7 +53,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_VacuumFreezer.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Machine_Multi_VacuumFreezer.get(64))
             .itemOutputs(ItemRegistry.megaMachines[1])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -60,7 +61,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Distillation_Tower.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Distillation_Tower.get(64))
             .itemOutputs(ItemRegistry.megaMachines[2])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -68,7 +69,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
             .itemOutputs(ItemRegistry.megaMachines[3])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -76,7 +77,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.OilCracker.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.OilCracker.get(64))
             .itemOutputs(ItemRegistry.megaMachines[4])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
