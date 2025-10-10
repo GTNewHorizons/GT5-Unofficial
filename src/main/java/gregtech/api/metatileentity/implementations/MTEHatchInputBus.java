@@ -356,16 +356,18 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             }
             for (ItemStack target : targets) {
                 if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
-                    int toRemove = Math.min(remaining, slotStack.stackSize);
-                    ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, toRemove);
-                    if (removed != null) {
-                        if (result == null) {
-                            result = removed.copy();
-                        } else {
-                            result.stackSize += removed.stackSize;
+                    if (result == null || GTUtility.areStacksEqual(result, slotStack)) {
+                        int toRemove = Math.min(remaining, slotStack.stackSize);
+                        ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, toRemove);
+                        if (removed != null) {
+                            if (result == null) {
+                                result = removed.copy();
+                            } else {
+                                result.stackSize += removed.stackSize;
+                            }
+                            remaining -= removed.stackSize;
+                            updateSlots();
                         }
-                        remaining -= removed.stackSize;
-                        updateSlots();
                     }
                 }
             }
@@ -394,14 +396,16 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             }
             for (ItemStack target : targets) {
                 if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
-                    ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, slotStack.stackSize);
-                    if (removed != null) {
-                        if (result == null) {
-                            result = removed.copy();
-                        } else if (GTUtility.areStacksEqual(result, removed)) {
-                            result.stackSize += removed.stackSize;
+                    if (result == null || GTUtility.areStacksEqual(result, slotStack)) {
+                        ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, slotStack.stackSize);
+                        if (removed != null) {
+                            if (result == null) {
+                                result = removed.copy();
+                            } else if (GTUtility.areStacksEqual(result, removed)) {
+                                result.stackSize += removed.stackSize;
+                            }
+                            updated = true;
                         }
-                        updated = true;
                     }
                 }
             }

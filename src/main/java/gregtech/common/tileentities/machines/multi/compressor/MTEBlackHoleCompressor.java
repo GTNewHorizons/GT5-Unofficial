@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -546,11 +547,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     setResultIfFailure(aware.endRecipeProcessing(this));
                     aware.startRecipeProcessing();
                 }
-                int metaid = removed.getItemDamage();
                 if (ItemList.Black_Hole_Opener.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 2;
                     createRenderBlock();
-                } else if (metaid == 32419 && blackHoleStatus != 1) {
+                } else if (ItemList.Black_Hole_Closer.isStackEqual(removed) && blackHoleStatus != 1) {
                     blackHoleStatus = 1;
                     blackHoleStability = 100;
                     catalyzingCostModifier = 1;
@@ -560,7 +560,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     for (MTEBlackHoleUtility hatch : utilityHatches) {
                         hatch.updateRedstoneOutput(false);
                     }
-                } else if (metaid == 32420 && blackHoleStatus == 1) {
+                } else if (ItemList.Black_Hole_Stabilizer.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 4;
                     createRenderBlock();
                 }
