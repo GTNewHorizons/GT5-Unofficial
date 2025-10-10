@@ -154,6 +154,7 @@ public class MTEMultiBlockBaseGui {
 
         int borderRadius = 4;
         int maxWidth = getBasePanelWidth() - borderRadius * 2;
+        IKey.renderer.setAlignment(Alignment.CenterLeft, -1);
         int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
         int widgetWidth = Math.min(maxWidth, titleWidth);
 
