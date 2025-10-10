@@ -2944,6 +2944,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     {
         return true;
     }
+
     public boolean supportsMaintenanceIssueHoverable()
     {
         return this.getDefaultHasMaintenanceChecks();
