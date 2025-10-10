@@ -846,6 +846,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
+    public boolean supportsLogo() {
+        return false;
+    }
+
+    @Override
     protected @NotNull AntimatterForgeGui getGui() {
         return new AntimatterForgeGui(this);
     }

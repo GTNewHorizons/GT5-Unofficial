@@ -57,7 +57,8 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
                     .child(
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
-                            .collapseDisabledChild()));
+                            .collapseDisabledChild()))
+            .child(createTerminalCornerColumn(panel, syncManager));
     }
 
     @Override
