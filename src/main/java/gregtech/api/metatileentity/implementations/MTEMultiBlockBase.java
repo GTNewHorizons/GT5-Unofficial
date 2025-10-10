@@ -2905,7 +2905,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
-            .widget(createMuffleButton( builder, this.canBeMuffled() ))
+            .widget(createMuffleButton(builder, this.canBeMuffled()))
             .widget(createInputSeparationButton(builder))
             .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
