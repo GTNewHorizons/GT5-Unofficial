@@ -18,6 +18,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AssemblyLine implements Runnable {
 
     @Override
