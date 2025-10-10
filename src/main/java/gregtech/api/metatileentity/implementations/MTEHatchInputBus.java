@@ -336,7 +336,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     /**
      * Removes the specified quantity of items matching any of the target ItemStacks.
-     * 
+     *
      * @param targets Array of target ItemStacks to search for (compared by type and metadata).
      * @param amount  Number of items to remove.
      * @return ItemStack of removed items, or null if nothing was removed.
@@ -346,28 +346,36 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             return null;
         }
 
-        for (int i = 0; i < mInventory.length; i++) {
+        ItemStack result = null;
+        int remaining = amount;
+        for (int i = 0; i < mInventory.length && remaining > 0; i++) {
             if (i == getCircuitSlot()) continue;
             ItemStack slotStack = mInventory[i];
-            if (slotStack == null || slotStack.stackSize < amount) {
+            if (slotStack == null) {
                 continue;
             }
             for (ItemStack target : targets) {
                 if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
-                    ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, amount);
+                    int toRemove = Math.min(remaining, slotStack.stackSize);
+                    ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, toRemove);
                     if (removed != null) {
+                        if (result == null) {
+                            result = removed.copy();
+                        } else {
+                            result.stackSize += removed.stackSize;
+                        }
+                        remaining -= removed.stackSize;
                         updateSlots();
-                        return removed;
                     }
                 }
             }
         }
-        return null;
+        return result;
     }
 
     /**
      * Removes all items matching any of the target ItemStacks.
-     * 
+     *
      * @param targets Array of target ItemStacks to search for (compared by type and metadata).
      * @return ItemStack with the total quantity of removed items, or null if nothing was removed.
      */
@@ -406,7 +414,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     /**
      * Finds the first ItemStack matching any of the target ItemStacks.
-     * 
+     *
      * @param targets Array of target ItemStacks to search for (compared by type and metadata).
      * @return First found ItemStack, or null if nothing was found.
      */
@@ -432,7 +440,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     /**
      * Checks if the inventory contains an item matching any of the target ItemStacks.
-     * 
+     *
      * @param targets Array of target ItemStacks to search for (compared by type and metadata).
      * @return true if a matching item is found, false otherwise.
      */
@@ -454,5 +462,63 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the inventory contains at least the specified quantity of items matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @param amount  Number of items to check for.
+     * @return true if at least the specified quantity is found, false otherwise.
+     */
+    public boolean hasResource(ItemStack[] targets, int amount) {
+        if (targets == null || targets.length == 0 || amount <= 0 || mInventory == null) {
+            return false;
+        }
+
+        int total = 0;
+        for (int i = 0; i < mInventory.length; i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = mInventory[i];
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    total += slotStack.stackSize;
+                    if (total >= amount) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // one element target methods
+
+    public ItemStack removeResource(ItemStack target, int amount) {
+        if (target == null) return null;
+        return removeResource(new ItemStack[] { target }, amount);
+    }
+
+    public ItemStack removeAllResource(ItemStack target) {
+        if (target == null) return null;
+        return removeAllResource(new ItemStack[] { target });
+    }
+
+    public ItemStack findResource(ItemStack target) {
+        if (target == null) return null;
+        return findResource(new ItemStack[] { target });
+    }
+
+    public boolean hasResource(ItemStack target) {
+        if (target == null) return false;
+        return hasResource(new ItemStack[] { target });
+    }
+
+    public boolean hasResource(ItemStack target, int amount) {
+        if (target == null) return false;
+        return hasResource(new ItemStack[] { target }, amount);
     }
 }
