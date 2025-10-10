@@ -190,16 +190,16 @@ public class MTEMultiBlockBaseGui {
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .childIf(base.supportsLogoHoverableColumn(), createTerminalCornerColumn(panel, syncManager)));
+                    .childIf(base.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager)));
     }
 
     protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 10, 0)
             .bottomRel(0, 10, 0)
-            .child(createShutdownReasonHoverableTerminal(syncManager))
-            .child(createMaintIssueHoverableTerminal(syncManager))
-            .child(
+            .childIf(base.supportsShutdownReasonHoverable(),createShutdownReasonHoverableTerminal(syncManager))
+            .childIf(base.supportsMaintenanceIssueHoverable(),createMaintIssueHoverableTerminal(syncManager))
+           .childIf(base.supportsLogo(),
                 new Widget<>().size(18, 18)
                     .marginTop(4)
                     .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
