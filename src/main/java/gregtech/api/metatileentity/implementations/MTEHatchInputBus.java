@@ -388,9 +388,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
         ItemStack result = null;
         boolean updated = false;
-        for (int i = 0; i < mInventory.length; i++) {
+        for (int i = 0; i < getSizeInventory(); i++) {
             if (i == getCircuitSlot()) continue;
-            ItemStack slotStack = mInventory[i];
+            ItemStack slotStack = getStackInSlot(i);
             if (slotStack == null) {
                 continue;
             }
@@ -427,9 +427,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             return null;
         }
 
-        for (int i = 0; i < mInventory.length; i++) {
+        for (int i = 0; i < getSizeInventory(); i++) {
             if (i == getCircuitSlot()) continue;
-            ItemStack slotStack = mInventory[i];
+            ItemStack slotStack = getStackInSlot(i);
             if (slotStack == null) {
                 continue;
             }
@@ -453,9 +453,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             return false;
         }
 
-        for (int i = 0; i < mInventory.length; i++) {
+        for (int i = 0; i < getSizeInventory(); i++) {
             if (i == getCircuitSlot()) continue;
-            ItemStack slotStack = mInventory[i];
+            ItemStack slotStack = getStackInSlot(i);
             if (slotStack == null) {
                 continue;
             }
@@ -481,9 +481,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         }
 
         int total = 0;
-        for (int i = 0; i < mInventory.length; i++) {
+        for (int i = 0; i < getSizeInventory(); i++) {
             if (i == getCircuitSlot()) continue;
-            ItemStack slotStack = mInventory[i];
+            ItemStack slotStack = getStackInSlot(i);
             if (slotStack == null) {
                 continue;
             }
