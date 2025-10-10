@@ -1539,6 +1539,10 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialBrewery,
 
+    Machine_Multi_ChamberCentrifuge,
+    Chamber_Casing,
+    Chamber_Grate,
+
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
     Casing_Laser,
@@ -2742,6 +2746,7 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    ManaFly,
     // semicolon after the comment to reduce merge conflicts
     ;
 

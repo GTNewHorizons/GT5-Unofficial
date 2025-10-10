@@ -21,10 +21,40 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CuttingRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Dough_Chocolate.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Raw_Cookie.get(4) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Bun.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Bun.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Bread.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Bread.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Baguette.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Baguette.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
         // silicon wafer recipes
         {
             recipeWithClassicFluids(

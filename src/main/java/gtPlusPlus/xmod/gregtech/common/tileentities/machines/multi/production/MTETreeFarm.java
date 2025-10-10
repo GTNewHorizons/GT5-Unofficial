@@ -395,8 +395,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             if (shouldDamage) {
                 if (!canDamage || GTModHandler.isElectricItem(stack)
                     && !GTModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
-                    depleteInput(stack);
-                    addOutput(stack);
+                    if (addOutputAtomic(stack)) {
+                        depleteInput(stack);
+                    }
                 }
             }
             if (canDamage) {
@@ -497,8 +498,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             // We first try to swap it with a sapling from an input bus to not interrupt existing setups.
             if (!legacyToolSwap()) {
                 // Swap failed, output whatever is blocking the slot.
-                addOutput(controllerSlot);
-                mInventory[1] = null;
+                if (addOutputAtomic(controllerSlot)) {
+                    mInventory[1] = null;
+                } else {
+                    return null;
+                }
             }
         }
 

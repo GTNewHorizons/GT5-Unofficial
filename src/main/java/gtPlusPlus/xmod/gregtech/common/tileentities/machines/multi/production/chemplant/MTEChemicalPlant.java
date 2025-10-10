@@ -155,10 +155,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("Heavy Industry, now right at your doorstep!")
             .addInfo("Plant tier is determined by casing tier")
             .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
-            .addDynamicParallelInfo(2, TooltipTier.ITEM_PIPE_CASING)
+            .addDynamicParallelInfo(2, TooltipTier.PIPE_CASING)
             .addInfo(
-                "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING)
-                    + " Tier")
+                "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.PIPE_CASING) + " Tier")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("Any catalyst must be placed in the catalyst housing")
             .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
@@ -580,7 +579,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
-                    addOutput(CI.getEmptyCatalyst(1));
+                    addOutputPartial(CI.getEmptyCatalyst(1));
                     aStack.stackSize -= 1;
                     return aStack.stackSize == 0;
                 } else {
