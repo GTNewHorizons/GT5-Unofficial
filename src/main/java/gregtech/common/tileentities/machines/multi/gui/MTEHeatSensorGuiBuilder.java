@@ -7,7 +7,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -61,7 +61,7 @@ public class MTEHeatSensorGuiBuilder {
                 new TextFieldWidget().setFormatAsInteger(true)
                     .setNumbers(0, 100)
                     .size(77, 12)
-                    .value(new IntSyncValue(() -> (int) sensor.getThreshold(), sensor::setThreshold))
+                    .value(new DoubleSyncValue(sensor::getThreshold, sensor::setThreshold))
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("GT5U.gui.text.heat_sensor")

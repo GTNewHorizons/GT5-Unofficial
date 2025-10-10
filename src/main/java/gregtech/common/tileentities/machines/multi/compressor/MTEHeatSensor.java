@@ -31,7 +31,7 @@ import gregtech.common.tileentities.machines.multi.gui.MTEHeatSensorGuiBuilder;
 
 public class MTEHeatSensor extends MTEHatch {
 
-    protected float threshold = 0;
+    protected double threshold = 0;
     protected boolean inverted = false;
     private boolean isOn = false;
 
@@ -93,14 +93,14 @@ public class MTEHeatSensor extends MTEHatch {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        threshold = aNBT.getFloat("mThreshold");
+        threshold = aNBT.getDouble("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setFloat("mThreshold", threshold);
+        aNBT.setDouble("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
     }
@@ -144,11 +144,11 @@ public class MTEHeatSensor extends MTEHatch {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
     }
 
-    public float getThreshold() {
+    public double getThreshold() {
         return threshold;
     }
 
-    public void setThreshold(float threshold) {
+    public void setThreshold(double threshold) {
         this.threshold = threshold;
     }
 
@@ -189,7 +189,7 @@ public class MTEHeatSensor extends MTEHatch {
                     .setPos(28, 12))
             .widget(
                 new NumericWidget().setBounds(0, 100)
-                    .setGetter(() -> (double) threshold)
+                    .setGetter(() -> threshold)
                     .setSetter((value) -> threshold = (float) value)
                     .setScrollValues(0.1, 0.01, 1.0)
                     .setMaximumFractionDigits(2)
