@@ -2924,30 +2924,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
-
-
     // For MUI2 corner column toggling
 
     public boolean supportsTerminalCornerColumn() {
         return true;
     }
 
-    public boolean supportsLogo()
-    {
+    public boolean supportsLogo() {
         return true;
     }
 
-    public boolean supportsShutdownReasonHoverable()
-    {
+    public boolean supportsShutdownReasonHoverable() {
         return true;
     }
 
-    public boolean supportsMaintenanceIssueHoverable()
-    {
+    public boolean supportsMaintenanceIssueHoverable() {
         return this.getDefaultHasMaintenanceChecks();
     }
-
-
 
     @Override
     public Pos2d getPowerPanelButtonPos() {
