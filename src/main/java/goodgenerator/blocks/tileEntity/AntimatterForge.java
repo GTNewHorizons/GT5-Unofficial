@@ -780,7 +780,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return this.guiPassiveEnergy;
     }
 
-    private long getActiveConsumption() {
+    public long getActiveConsumption() {
         return this.guiActiveEnergy;
     }
 
