@@ -28,10 +28,27 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidExtractorRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1))
+            .fluidOutputs(Materials.GraniteBlack.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1))
+            .fluidOutputs(Materials.GraniteRed.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Dye_SquidInk.get(1L))

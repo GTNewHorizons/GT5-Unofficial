@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 import com.gtnewhorizon.gtnhmixins.builders.MixinBuilder;
 
-import bartworks.common.configs.Configuration;
 import gregtech.common.config.Gregtech;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -32,11 +31,6 @@ public enum Mixin implements IMixins {
     LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
         .addClientMixins("minecraft.LocaleMixin")
         .setPhase(Phase.EARLY)),
-    CacheCraftingManagerRecipes(
-        new MixinBuilder()
-            .addCommonMixins("minecraft.CraftingManagerMixin")
-            .setApplyIf(() -> Configuration.mixins.enableCraftingManagerRecipeCaching)
-            .setPhase(Phase.EARLY)),
     VANILLA_ACCESSORS(new MixinBuilder()
         .addCommonMixins(
             "minecraft.accessors.BlockStemMixin",
@@ -56,6 +50,12 @@ public enum Mixin implements IMixins {
             "minecraft.accessors.GuiTextFieldMixin",
             "minecraft.accessors.TessellatorMixin")
         .setPhase(Phase.EARLY)),
+    RemoveItemStack(new MixinBuilder()
+        .addCommonMixins(
+            "minecraft.ItemStackMixin_MetaItemRemover"
+        )
+        .setPhase(Phase.EARLY)
+    ),
     ItemMixinCoverFix(new MixinBuilder("Allow cover items to bypass sneak checks")
         .addCommonMixins("minecraft.ItemMixin")
         .setPhase(Phase.EARLY)),
@@ -141,6 +141,21 @@ public enum Mixin implements IMixins {
         .setPhase(Phase.LATE)
         .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
         .addRequiredMod(TargetedMod.THAUMCRAFT)),
+    POLLUTION_TICON_SLAB_FURNACE(new MixinBuilder("Tinker's Contruct Slab Furnace Pollutes")
+        .addCommonMixins("tinkersconstruct.MixinFurnaceLogicPollution")
+        .setPhase(Phase.LATE)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addRequiredMod(TargetedMod.TINKERSCONSTRUCT)),
+    POLLUTION_EFR_FURNACE(new MixinBuilder("Et Futurum Requiem Blast Furnace and Smoker Pollutes")
+        .addCommonMixins("efr.MixinTileEntityBlastFurnacePollution", "efr.MixinTileEntitySmokerPollution")
+        .setPhase(Phase.LATE)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addRequiredMod(TargetedMod.EFR)),
+    POLLUTION_NATURA_NETHER_FURNACE(new MixinBuilder("Natura Nether Furnace Pollutes")
+        .addCommonMixins("natura.MixinNetherrackFurnacePollution")
+        .setPhase(Phase.LATE)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addRequiredMod(TargetedMod.NATURA)),
     POLLUTION_RAILCRAFT(new MixinBuilder("Make Railcraft Pollute")
         .addCommonMixins(
             "railcraft.MixinRailcraftBoilerPollution",
@@ -154,14 +169,7 @@ public enum Mixin implements IMixins {
             .addCommonMixins("galacticraftcore.MixinGalacticraftRocketPollution")
             .setPhase(Phase.LATE)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)),
-    FORESTRY_ACCESSOR(new MixinBuilder()
-        .addCommonMixins(
-            "forestry.TreeDefinitionMixin",
-            "forestry.MutationMixin",
-            "forestry.AlleleEffectThrottledMixin")
-        .setPhase(Phase.LATE)
-        .addRequiredMod(TargetedMod.FORESTRY));
+            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE));
     // spotless:on
 
     private final MixinBuilder builder;

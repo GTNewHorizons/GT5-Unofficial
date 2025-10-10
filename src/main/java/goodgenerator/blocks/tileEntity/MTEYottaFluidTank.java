@@ -445,10 +445,10 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
-            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
-            .addInfo("The max fluid cell tier is limited by the glass tier.")
+            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity")
+            .addInfo("The max fluid cell tier is limited by the glass tier")
             .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-            .addInfo("The max height of the cell blocks is 15.")
+            .addInfo("The max height of the cell blocks is 15")
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
             .addController("Front of the second layer")
             .addCasingInfoExactly("Steel Frame Box", 16, false)

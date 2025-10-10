@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IC2NuclearControl;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.IronChests;
 import static gregtech.api.enums.Mods.IronTanks;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -56,6 +57,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.CustomItemList;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AssemblerRecipes implements Runnable {
 
     @Override
@@ -247,17 +249,6 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Tool_Lighter_Platinum_Empty.get(1L))
                 .duration(12 * SECONDS + 16 * TICKS)
                 .eut(256)
-                .addTo(assemblerRecipes);
-
-            // Muffler Upgrades
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(5 * SECONDS)
-                .eut(30)
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -3270,6 +3261,29 @@ public class AssemblerRecipes implements Runnable {
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Glass, 3),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silver, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Bronze, 1),
+                ItemList.Hull_Bronze_Bricks.get(1L))
+            .itemOutputs(ItemList.Machine_Bronze_Boiler_Solar.get(1L))
+            .duration(20 * SECONDS)
+            .eut(30)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 3L),
+                GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Silver, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Steel, 1),
+                ItemList.Machine_Bronze_Boiler_Solar.get(1L))
+            .itemOutputs(ItemList.Machine_HP_Solar.get(1L))
+            .duration(30 * SECONDS)
+            .eut(30)
+            .addTo(assemblerRecipes);
     }
 
     /**
@@ -4452,7 +4466,7 @@ public class AssemblerRecipes implements Runnable {
         // Void hatch
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 0))
+                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 1))
                 .itemOutputs(ItemList.Hatch_Void.get(1))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

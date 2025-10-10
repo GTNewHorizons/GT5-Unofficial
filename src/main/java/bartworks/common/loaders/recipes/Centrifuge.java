@@ -22,6 +22,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Centrifuge implements Runnable {
 
     @Override

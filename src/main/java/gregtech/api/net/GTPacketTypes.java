@@ -25,7 +25,7 @@ public enum GTPacketTypes {
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
-    // Free ID 18
+    SET_MOLD(18, new GTPacketSetMold()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
     // Free ID 20
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
@@ -41,8 +41,12 @@ public enum GTPacketTypes {
     DEBUG_COVER(31, new PacketDebugRedstoneCover()),
     LMA_CRAFTING_FX(32, new GTPacketLMACraftingFX()),
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
-    LINK_GOGGLES(34, new GTPacketLinkPowerGoggles()),
+    OVERWRITE_POWER_GOGGLES_MEASUREMENTS(34, new GTPacketOverwritePowerGogglesMeasurements()),
     TETHER(35, new GTPacketTether()),
+    UPDATE_POWERFAILS(36, new GTPacketUpdatePowerfails()),
+    ON_POWERFAIL(37, new GTPacketOnPowerfail()),
+    CLEAR_POWERFAIL(38, new GTPacketClearPowerfail()),
+    CHAT(39, new GTPacketChat()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

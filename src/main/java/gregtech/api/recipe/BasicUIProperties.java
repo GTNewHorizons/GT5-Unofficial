@@ -22,8 +22,8 @@ import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
- * Data object to store properties, used to draw both basic machine GUI and NEI recipe GUI, mainly GUI widgets.
- * Not all the info used to draw NEI are listed here, see also {@link NEIRecipeProperties}.
+ * Data object to store properties, used to draw both basic machine GUI and NEI recipe GUI, mainly GUI widgets. Not all
+ * the info used to draw NEI are listed here, see also {@link NEIRecipeProperties}.
  * <p>
  * Use {@link #builder()} for creation.
  */
@@ -72,23 +72,23 @@ public final class BasicUIProperties {
     }
 
     /**
-     * How many item inputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many item inputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * in the recipe.
      */
     public final int maxItemInputs;
     /**
-     * How many item outputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many item outputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * in the recipe.
      */
     public final int maxItemOutputs;
     /**
-     * How many fluid inputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many fluid inputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * in the recipe.
      */
     public final int maxFluidInputs;
     /**
-     * How many fluid outputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * How many fluid outputs does this recipemap usually has at most. It does not actually restrict number of items
+     * used in the recipe.
      */
     public final int maxFluidOutputs;
 
@@ -171,8 +171,8 @@ public final class BasicUIProperties {
     public final IntFunction<List<Pos2d>> fluidOutputPositionsGetter;
 
     /**
-     * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it,
-     * some machine logic also use this variable.
+     * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it, some
+     * machine logic also use this variable.
      */
     public final int amperage;
 

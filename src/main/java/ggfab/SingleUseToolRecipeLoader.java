@@ -23,8 +23,7 @@ import gregtech.api.util.GTUtility;
 class SingleUseToolRecipeLoader implements Runnable {
 
     /*
-     * MARKED FOR DEPRECATION, will be moved to just the fluid solidifer.
-     * REMOVE TOOLCAST SEGMENT IN NEXT MAJOR UPDATE
+     * MARKED FOR DEPRECATION, will be moved to just the fluid solidifer. REMOVE TOOLCAST SEGMENT IN NEXT MAJOR UPDATE
      */
     public static final int RECIPE_DURATION = 6 * SECONDS;
     public static final int OUTPUT_QUANTITY_MIN = 2 * 64;
