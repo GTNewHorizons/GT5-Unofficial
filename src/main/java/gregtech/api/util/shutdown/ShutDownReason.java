@@ -8,4 +8,6 @@ public interface ShutDownReason extends IMachineMessage<ShutDownReason> {
      * @return Whether the reason is critical.
      */
     boolean wasCritical();
+
+    String getKey();
 }

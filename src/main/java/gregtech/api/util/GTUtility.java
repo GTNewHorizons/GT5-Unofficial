@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -251,6 +250,10 @@ public class GTUtility {
     public static int safeInt(long number) {
         return number > V[V.length - 1] ? safeInt(V[V.length - 1], 1)
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
+    }
+
+    public static int longToInt(long number) {
+        return (int) Math.min(Integer.MAX_VALUE, number);
     }
 
     public static Field getField(Object aObject, String aField) {
@@ -489,7 +492,8 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        return "(" + GTValues.VN[getTier(voltage)] + ")";
+        String color = GTValues.TIER_COLORS[getTier(voltage)];
+        return "(" + color + GTValues.VN[getTier(voltage)] + EnumChatFormatting.RESET + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer player, String message) {
@@ -2110,6 +2114,19 @@ public class GTUtility {
         return fluidStack;
     }
 
+    public static Object2LongOpenHashMap<ItemId> getItemStackHistogram(Iterable<ItemStack> stacks) {
+        Object2LongOpenHashMap<ItemId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItem() == null) continue;
+            histogram.addTo(ItemId.create(stack), stack.stackSize);
+        }
+
+        return histogram;
+    }
+
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
         Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)
@@ -3129,19 +3146,17 @@ public class GTUtility {
 
     private static final Int2ObjectOpenHashMap<String> DIMENSION_NAMES = new Int2ObjectOpenHashMap<>();
 
-    public static void loadDimensionNames() {
-        Hashtable<Integer, Integer> dimensions = getFieldValue(DimensionManager.class, "dimensions");
-
-        for (var e : dimensions.entrySet()) {
-            if (DimensionManager.isDimensionRegistered(e.getKey()));
-
-            WorldProvider p = DimensionManager.createProviderFor(e.getKey());
-
-            DIMENSION_NAMES.put((int) e.getKey(), p.getDimensionName());
-        }
-    }
-
     public static String getDimensionName(int dimId) {
+        if (!DIMENSION_NAMES.containsKey(dimId)) {
+            WorldProvider p = DimensionManager.createProviderFor(dimId);
+
+            if (p != null) {
+                DIMENSION_NAMES.put(dimId, p.getDimensionName());
+            } else {
+                DIMENSION_NAMES.put(dimId, "[unknown dimension]");
+            }
+        }
+
         String name = DIMENSION_NAMES.get(dimId);
 
         String key = "gtnop.world." + name;
@@ -4058,6 +4073,32 @@ public class GTUtility {
     public static <T extends Collection<E>, E extends MetaTileEntity> ValidMTEList<T, E> validMTEList(
         T metaTileEntities) {
         return new ValidMTEList<>(metaTileEntities);
+    }
+
+    /**
+     * Filters a list of MTEs into a list of a subclass
+     *
+     * @param mtes     The original list of MTEs
+     * @param mteClass The MTE subclass to filter
+     * @return The filtered list of valid MTEs
+     * @param <MTESuper> The MTE superclass
+     * @param <MTEImpl>  The MTE implementation class/subclass
+     */
+    public static <MTESuper extends MetaTileEntity, MTEImpl extends MTESuper> List<MTEImpl> getMTEsOfType(
+        List<MTESuper> mtes, Class<MTEImpl> mteClass) {
+        List<MTEImpl> out = new ArrayList<>(mtes.size());
+
+        for (int i = 0, mtesSize = mtes.size(); i < mtesSize; i++) {
+            MTESuper mte = mtes.get(i);
+
+            if (mte != null && mte.isValid()) {
+                if (mteClass.isInstance(mte)) {
+                    out.add(mteClass.cast(mte));
+                }
+            }
+        }
+
+        return out;
     }
 
     @Nullable
@@ -5188,6 +5229,13 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        public boolean matches(ItemStack stack) {
+            if (item() != stack.getItem()) return false;
+            if (metaData() != Items.feather.getDamage(stack)) return false;
+
+            return Objects.equals(nbt(), stack.getTagCompound());
         }
     }
 

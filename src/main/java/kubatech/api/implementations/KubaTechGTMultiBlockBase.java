@@ -228,7 +228,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
             list.remove(0);
             wasSomethingRemoved = true;
             for (ItemStack stack : toOutputNow) {
-                addOutput(stack);
+                addOutputPartial(stack);
             }
         }
         return wasSomethingRemoved;
@@ -289,6 +289,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setSize(182, 79));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder, this.canBeMuffled()))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))

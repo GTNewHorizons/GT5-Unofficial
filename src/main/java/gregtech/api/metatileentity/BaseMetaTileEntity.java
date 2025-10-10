@@ -1494,7 +1494,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             return true;
                         }
                     } else {
-                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                        if (aPlayer.isSneaking() && GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
                                 dropCover(effectiveSide, side);
