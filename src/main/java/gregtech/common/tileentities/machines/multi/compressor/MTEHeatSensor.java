@@ -34,7 +34,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class MTEHeatSensor extends MTEHatch {
@@ -181,8 +180,8 @@ public class MTEHeatSensor extends MTEHatch {
                     .size(16, 16))
             .child(
                 IKey.dynamic(
-                    () -> invertedSyncer.getValue() ? GTUtility.trans("INVERTED", "Inverted")
-                        : GTUtility.trans("NORMAL", "Normal"))
+                    () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
+                        : translateToLocal("gt.interact.desc.normal"))
                     .asWidget())
             .coverChildren()
             .childPadding(2);
