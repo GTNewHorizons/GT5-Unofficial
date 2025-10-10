@@ -36,6 +36,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -284,6 +285,12 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     @Override
     public boolean supportsMachineModeSwitch() {
         return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_ELECTRIC_ARC);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC);
     }
 
     @Override

@@ -38,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.TierEU;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -271,6 +272,17 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     public int getMaxParallelRecipes() {
         return machineMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_UUMATTER);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SCRAP);
     }
 
     @Override

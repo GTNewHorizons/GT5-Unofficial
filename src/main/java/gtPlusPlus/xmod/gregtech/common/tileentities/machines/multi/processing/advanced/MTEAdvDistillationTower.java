@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.fluid.IFluidStore;
@@ -305,6 +306,17 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             machineMode = aNBT.getByte("mMode");
         }
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DTOWER);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLERY);
     }
 
     @Override
