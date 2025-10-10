@@ -466,7 +466,7 @@ public class GTValues {
     /**
      * Pretty formatting for author names.
      */
-    public static final String Colen = "" + EnumChatFormatting.DARK_RED
+    public static final String AuthorColen = "" + EnumChatFormatting.DARK_RED
         + EnumChatFormatting.BOLD
         + EnumChatFormatting.ITALIC
         + EnumChatFormatting.UNDERLINE
@@ -492,8 +492,7 @@ public class GTValues {
         + EnumChatFormatting.UNDERLINE
         + "n";
 
-    public static final String AuthorColen = "Author: " + Colen;
-    public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED
+    public static final String AuthorKuba = "" + EnumChatFormatting.DARK_RED
         + EnumChatFormatting.BOLD
         + "k"
         + EnumChatFormatting.RED
@@ -518,19 +517,19 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "0";
 
-    public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
+    public static final String AuthorBlueWeabo = "" + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
         + "Blue"
         + EnumChatFormatting.AQUA
         + EnumChatFormatting.BOLD
         + "Weabo";
 
-    public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
+    public static final String Authorminecraft7771 = "" + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
 
     public static final Supplier<String> AuthorCloud = chain(
-        text("Author: " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
+        text("" + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
         animatedText(
             "C",
             1,
@@ -553,18 +552,15 @@ public class GTValues {
             DARK_AQUA + OBFUSCATED + BOLD + "X",
             DARK_AQUA + BOLD + "\u29BC"));
 
-    public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
-    public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
-    public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
+    public static final String AuthorQuerns = "" + EnumChatFormatting.RED + "Querns";
+    public static final String AuthorSilverMoon = "" + EnumChatFormatting.AQUA + "SilverMoon";
+    public static final String AuthorTheEpicGamer274 = "" + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
-    public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
+    public static final String authorBaps = "" + EnumChatFormatting.GOLD
         + "Ba"
         + EnumChatFormatting.LIGHT_PURPLE
         + "ps";
-    public static final String AuthorOmdaCZ = "Author: " + EnumChatFormatting.BLUE
-        + "Omda"
-        + EnumChatFormatting.RED
-        + "CZ";
+    public static final String AuthorOmdaCZ = "" + EnumChatFormatting.BLUE + "Omda" + EnumChatFormatting.RED + "CZ";
 
     public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
         + EnumChatFormatting.BOLD
@@ -575,21 +571,21 @@ public class GTValues {
         + EnumChatFormatting.GOLD
         + EnumChatFormatting.BOLD
         + "Gold";
-    public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
+    public static final String AuthorVolence = "" + EnumChatFormatting.AQUA + "Volence";
 
-    public static final String AuthorEigenRaven = "Author: " + EnumChatFormatting.DARK_PURPLE
+    public static final String AuthorEigenRaven = "" + EnumChatFormatting.DARK_PURPLE
         + "Eigen"
         + EnumChatFormatting.BOLD
         + "Raven";
 
-    public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
+    public static final String AuthorNotAPenguin = "" + EnumChatFormatting.WHITE
         + EnumChatFormatting.BOLD
         + "Not"
         + EnumChatFormatting.AQUA
         + EnumChatFormatting.BOLD
         + "APenguin";
 
-    public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
+    public static final String AuthorPineapple = "" + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
         animatedText(
@@ -604,7 +600,7 @@ public class GTValues {
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
-    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
+    public static final String AuthorPureBluez = "" + EnumChatFormatting.WHITE
         + "Pure"
         + EnumChatFormatting.AQUA
         + "B"

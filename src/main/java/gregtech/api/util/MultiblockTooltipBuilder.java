@@ -16,8 +16,6 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -210,7 +208,10 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
-        addInfo("GT5U.MBTT.Speed.Additional", TooltipHelper.speedText("+" + percentageFormat.format(speed)), tier.getValue());
+        addInfo(
+            "GT5U.MBTT.Speed.Additional",
+            TooltipHelper.speedText("+" + percentageFormat.format(speed)),
+            tier.getValue());
         return this;
     }
 
@@ -947,7 +948,7 @@ public class MultiblockTooltipBuilder {
      *
      * @param authors Formatted names of the creators of this multiblock machine - if any
      */
-    public MultiblockTooltipBuilder toolTipFinisher(@Nullable String... authors) {
+    public MultiblockTooltipBuilder toolTipFinisher(String... authors) {
         return toolTipFinisher(EnumChatFormatting.GRAY, authors);
     }
 
@@ -963,7 +964,7 @@ public class MultiblockTooltipBuilder {
      * @param authors        Formatted names of the creators of this multiblock machine - if any
      */
 
-    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, @Nullable String... authors) {
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, String... authors) {
 
         switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
@@ -973,9 +974,8 @@ public class MultiblockTooltipBuilder {
         }
 
         addInfo("GT5U.MBTT.HoldDisplay");
-        if (authors != null && authors.length > 0) {
+        if (authors.length > 0) {
             String[] processedAuthors = Arrays.stream(authors)
-                .map(author -> author.startsWith("Author: ") ? author.substring("Author: ".length()) : author)
                 .toArray(String[]::new);
 
             addInfo(
