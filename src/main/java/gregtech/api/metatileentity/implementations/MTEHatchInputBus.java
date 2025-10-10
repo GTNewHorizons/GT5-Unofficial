@@ -423,7 +423,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
      * @return First found ItemStack, or null if nothing was found.
      */
     public ItemStack findResource(ItemStack[] targets) {
-        if (targets == null || targets.length == 0 || mInventory == null) {
+        if (targets == null || targets.length == 0 || getSizeInventory() == 0) {
             return null;
         }
 
@@ -449,7 +449,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
      * @return true if a matching item is found, false otherwise.
      */
     public boolean hasResource(ItemStack[] targets) {
-        if (targets == null || targets.length == 0 || mInventory == null) {
+        if (targets == null || targets.length == 0 || getSizeInventory() == 0) {
             return false;
         }
 
@@ -476,7 +476,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
      * @return true if at least the specified quantity is found, false otherwise.
      */
     public boolean hasResource(ItemStack[] targets, int amount) {
-        if (targets == null || targets.length == 0 || amount <= 0 || mInventory == null) {
+        if (targets == null || targets.length == 0 || amount <= 0 || getSizeInventory() == 0) {
             return false;
         }
 
