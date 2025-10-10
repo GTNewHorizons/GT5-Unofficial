@@ -150,7 +150,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createTitleTextStyle(PosGuiData data, String title) {
-        boolean clientSide = baseMetaTileEntity.isClientSide();
+        boolean clientSide = data.isClient();
 
         int borderRadius = 4;
         int maxWidth = getBasePanelWidth() - borderRadius * 2;
