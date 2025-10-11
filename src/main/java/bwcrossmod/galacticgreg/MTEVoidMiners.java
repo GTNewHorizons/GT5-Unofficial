@@ -147,8 +147,8 @@ public class MTEVoidMiners {
                     EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
-                .addInputBus("Ores, optional, any base casing")
-                .addInputHatch("Optional noble gas, any base casing")
+                .addInputBus("(Optional) For mining pipes or ores, any base casing")
+                .addInputHatch("For noble gas, any base casing")
                 .addOutputBus("Any base casing")
                 .toolTipFinisher();
             return tt;
