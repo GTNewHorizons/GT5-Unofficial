@@ -1,6 +1,8 @@
 package gregtech.loaders.postload.chains;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
+import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
@@ -17,6 +19,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.electrolyzerNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
@@ -50,8 +53,8 @@ public class EnderLineRecipes {
             // GoG recipe only
 
             GTValues.RA.stdBuilder()
-                .itemInputs(getModItem(EtFuturumRequiem.ID, "chorus_flower", 16, 1), GTUtility.getIntegratedCircuit(24))
-                .itemOutputs(getModItem(EtFuturumRequiem.ID, "chorus_fruit_popped", 8, 1))
+                .itemInputs(getModItem(EtFuturumRequiem.ID, "chorus_flower", 16, 0), GTUtility.getIntegratedCircuit(24))
+                .itemOutputs(getModItem(EtFuturumRequiem.ID, "chorus_fruit_popped", 8, 0))
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("molten.uraniumtetrafluoride"), 1440),
                     new FluidStack(FluidRegistry.getFluid("vapor_of_levity"), 10),
@@ -196,6 +199,29 @@ public class EnderLineRecipes {
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
+
+            // Neutron activator seed
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.TeleportatiumUnstableAmalgam.getGas(1000))
+                .itemInputs(
+                    getModItem(EtFuturumRequiem.ID, "chorus_flower", 16, 0),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderiumBase, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.Netherite, 1L),
+                    ItemRefer.Neutron_Source.get(8))
+                .itemOutputs(
+                    ItemList.Teleportium_Stable_Seed.get(8),
+                    getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 8, 6, missing),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.HeeEndium, 2L))
+                .outputChances(100, 90, 50, 25)
+                .fluidOutputs(Materials.TeleportatiumStable.getGas(1))
+                .duration(100 * SECONDS)
+                .eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(1100, 500))
+                .addTo(neutronActivatorRecipes);
         }
 
         EnderLineRecipes.addEncasedTeleportatiumParts();
