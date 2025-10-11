@@ -249,6 +249,22 @@ public class EnderLineRecipes {
 
             // Ender Goo recipe
 
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Teleportium_Stable_Seed.get(1),
+                    getModItem(HardcoreEnderExpansion.ID, "stardust", 1L, 0))
+                .fluidInputs(
+                    Materials.EnderAirPyrostable.getGas(20000),
+                    Materials.EnderAirCryostable.getGas(20000),
+                    Materials.EnderAirFortified.getGas(20000),
+                    Materials.EnderAirBalanced.getGas(20000))
+                .fluidOutputs(
+                    Materials.EnderAirUnstable.getGas(10000),
+                    new FluidStack(FluidRegistry.getFluid("endergoo"), 60000))
+                .duration(33 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .metadata(CHEMPLANT_CASING_TIER, 5)
+                .addTo(chemicalPlantRecipes);
             // QFT Recipe and catalyst
 
             GTValues.RA.stdBuilder()
