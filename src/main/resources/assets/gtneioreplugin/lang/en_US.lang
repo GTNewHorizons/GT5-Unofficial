@@ -42,9 +42,10 @@ gtnop.nei.genPositionInfo=In the center of each chunk
 gtnop.world.Overworld=Overworld
 gtnop.world.Nether=Nether
 gtnop.world.TheEnd=The End
-gtnop.world.Twilight=Twilight Forest
+gtnop.world.TwilightForest=Twilight Forest
 gtnop.world.EndAsteroid=Far End Asteroids
 gtnop.world.Vanilla EndAsteroids=Vanilla End Asteroids
+gtnop.world.dimensionDarkWorld=The Toxic Everglades
 gtnop.world.Moon=Moon
 gtnop.world.Mars=Mars
 gtnop.world.Phobos=Phobos
@@ -66,7 +67,7 @@ gtnop.world.Oberon=Oberon
 gtnop.world.Proteus=Proteus
 gtnop.world.Triton=Triton
 gtnop.world.Pluto=Pluto
-gtnop.world.Kuiperbelt=Kuiper Belt
+gtnop.world.KuiperBelt=Kuiper Belt
 gtnop.world.Haumea=Haumea
 gtnop.world.MakeMake=Makemake
 gtnop.world.CentauriA=α Centauri Bb
@@ -83,6 +84,18 @@ gtnop.world.Neper=Neper
 gtnop.world.Seth=Seth
 gtnop.world.Underdark=Deep Dark
 
+# world tiers
+gtnop.tier.0=%s
+gtnop.tier.1=T1: %s
+gtnop.tier.2=T2: %s
+gtnop.tier.3=T3: %s
+gtnop.tier.4=T4: %s
+gtnop.tier.5=T5: %s
+gtnop.tier.6=T6: %s
+gtnop.tier.7=T7: %s
+gtnop.tier.8=T8: %s
+gtnop.tier.9=T9: %s
+gtnop.tier.10=T10: %s
 
 # biome names
 gtnop.biome.none.name=None
