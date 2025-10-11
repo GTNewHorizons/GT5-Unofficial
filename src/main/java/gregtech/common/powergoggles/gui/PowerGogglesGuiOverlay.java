@@ -31,6 +31,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ColorPickerDialog;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
@@ -207,13 +208,12 @@ public class PowerGogglesGuiOverlay {
         return new Row().size(230, 18)
             .marginBottom(4)
             .child(
-                IKey.lang(textKey)
-                    .color(Color.WHITE.main)
-                    .asWidget()
-                    .paddingLeft(3)
-                    .width(106)
-                    .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                new TextWidget<>(
+                    IKey.lang(textKey)
+                        .color(Color.WHITE.main)).paddingLeft(3)
+                            .width(106)
+                            .marginRight(14)
+                            .alignment(Alignment.CenterRight))
             .child(
                 new SliderWidget().size(110, 18)
                     .background(GuiTextures.MC_BUTTON)
@@ -311,12 +311,11 @@ public class PowerGogglesGuiOverlay {
         return new Row().size(230, 18)
             .marginBottom(4)
             .child(
-                IKey.lang(buttonKey)
-                    .color(Color.WHITE.main)
-                    .asWidget()
-                    .size(106, 18)
-                    .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                new TextWidget<>(
+                    IKey.lang(buttonKey)
+                        .color(Color.WHITE.main)).size(106, 18)
+                            .marginRight(14)
+                            .alignment(Alignment.CenterRight))
             .child(
                 new ButtonWidget<>().size(18, 18)
                     .overlay(new DynamicDrawable(() -> new Rectangle().setColor(colorSupplier.get())))

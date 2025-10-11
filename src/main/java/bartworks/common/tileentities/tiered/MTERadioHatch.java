@@ -407,17 +407,16 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                 .size(18, 48))
             .child(createDurationMeterContainer(syncManager))
             .child(
-                IKey.dynamic(() -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
-                    .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
-                    .asWidget()
-                    .pos(65, 62))
+                new com.cleanroommc.modularui.widgets.TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
+                        .alignment(com.cleanroommc.modularui.utils.Alignment.Center)).pos(65, 62))
             .child(
-                IKey.dynamic(
-                    () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
-                    .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                    .asWidget()
-                    .pos(60, 72)
-                    .size(80, 8))
+                new com.cleanroommc.modularui.widgets.TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
+                        .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)).pos(60, 72)
+                            .size(80, 8))
             .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
                 popupPanel.openPanel();
                 return popupPanel.isPanelOpen();
@@ -438,10 +437,9 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         IntSyncValue coverageSyncer = (IntSyncValue) syncManager.getSyncHandler("coverage:0");
         return createPopUpPanel("bw:radio_hatch_shutter", false, false).size(176, 107)
             .child(
-                IKey.str("Radiation Shutter Control")
-                    .color(this.COLOR_TITLE.get())
-                    .asWidget()
-                    .pos(10, 9))
+                new com.cleanroommc.modularui.widgets.TextWidget<>(
+                    IKey.str("Radiation Shutter Control")
+                        .color(this.COLOR_TITLE.get())).pos(10, 9))
             .child(
                 GTGuiTextures.PICTURE_RADIATION_SHUTTER_FRAME.asWidget()
                     .pos(14, 27)

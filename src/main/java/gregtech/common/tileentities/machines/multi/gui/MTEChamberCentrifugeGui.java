@@ -100,13 +100,13 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                     .child(
                         new Column().size(100, 120)
                             .paddingRight(40)
-                            .child(new TextWidget(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20))
-                            .child(new TextWidget(IKey.dynamic(() -> "Speed: " + speedSync.getValue())).size(80, 20))
+                            .child(new TextWidget<>(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20))
+                            .child(new TextWidget<>(IKey.dynamic(() -> "Speed: " + speedSync.getValue())).size(80, 20))
                             .child(
-                                new TextWidget(IKey.dynamic(() -> "Rotational Power: " + RPSync.getValue()))
+                                new TextWidget<>(IKey.dynamic(() -> "Rotational Power: " + RPSync.getValue()))
                                     .size(80, 20))
                             .child(
-                                new TextWidget(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)))
+                                new TextWidget<>(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)))
                     .child(
                         new SliderWidget().size(15, 110)
                             .background(GuiTextures.MC_BUTTON)
@@ -159,7 +159,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                             .widgetTheme("backgroundPopup")
                             .marginRight(20)
                             .child(
-                                new TextWidget("Turbines").size(60, 18)
+                                new TextWidget<>("Turbines").size(60, 18)
                                     .alignment(Alignment.Center)
                                     .marginBottom(5))
                             .child(
@@ -181,7 +181,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                             .padding(x = 0, y = 3)
                             .widgetTheme("backgroundPopup")
                             .child(
-                                new TextWidget("T2\nFluid").size(40, 18)
+                                new TextWidget<>("T2\nFluid").size(40, 18)
                                     .alignment(Alignment.Center))
                             .marginBottom(5)
                             .crossAxisAlignment(Alignment.CrossAxis.CENTER)

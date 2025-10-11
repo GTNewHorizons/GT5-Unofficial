@@ -72,7 +72,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .marginRight(buttonRowSpacing ? 74 : 2))
-            .child(new TextWidget(IKey.lang("gt.interact.desc.privfreq")).marginRight(20))
+            .child(new TextWidget<>(IKey.lang("gt.interact.desc.privfreq")).marginRight(20))
             .marginBottom(4);
     }
 

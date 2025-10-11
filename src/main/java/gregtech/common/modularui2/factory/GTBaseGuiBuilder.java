@@ -182,8 +182,8 @@ public final class GTBaseGuiBuilder {
         for (int i = 0; i < 6; i++) {
             column.child(getCoverTabButton(mte.getBaseMetaTileEntity(), ForgeDirection.getOrientation(i)));
         }
-        uiSettings.getNEISettings()
-            .addNEIExclusionArea(column);
+        uiSettings.getRecipeViewerSettings()
+            .addRecipeViewerExclusionArea(column);
         return column;
     }
 
