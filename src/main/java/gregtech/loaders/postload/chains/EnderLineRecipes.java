@@ -91,7 +91,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirCryostable.getGas(20000))
 
-                .fluidOutputs(Materials.TeleportatiumUnstableVolatile.getGas(16400)
+                .fluidOutputs(Materials.TeleportatiumUnstableVolatile.getGas(16400))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(distillationTowerRecipes);
@@ -111,7 +111,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirBalanced.getGas(20000))
 
-                .fluidOutputs(Materials.TeleportatiumUnstableUnbalanced.getGas(15400)
+                .fluidOutputs(Materials.TeleportatiumUnstableUnbalanced.getGas(15400))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(electrolyzerNonCellRecipes);
@@ -128,7 +128,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirFortified.getGas(20000))
 
-                .fluidOutputs(Materials.TeleportatiumUnstableSemifluid.getGas(14400)
+                .fluidOutputs(Materials.TeleportatiumUnstableSemifluid.getGas(14400))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(sifterRecipes);
@@ -154,7 +154,7 @@ public class EnderLineRecipes {
                     getModItem(HardcoreEnderExpansion.ID, "essence", 1L,0)
                     )
                 .outputChances(5000, 4000, 2000, 1000, 500, 250)
-                .fluidOutputs(Materials.TeleportatiumUnstableHypercritical.getGas(13400)
+                .fluidOutputs(Materials.TeleportatiumUnstableHypercritical.getGas(13400))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeNonCellRecipes);
