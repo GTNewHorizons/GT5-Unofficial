@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,6 +18,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.capability.item.AbstractInventorySourceIterator;
+import com.gtnewhorizon.gtnhlib.capability.item.IItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.IItemSource;
+import com.gtnewhorizon.gtnhlib.capability.item.InventorySourceIterator;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -384,6 +393,21 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
+    protected IItemSink getItemSink(ForgeDirection side) {
+        return new ItemIO();
+    }
+
+    @Override
+    protected IItemSource getItemSource(ForgeDirection side) {
+        return new ItemIO();
+    }
+
+    @Override
+    protected IItemIO getItemIO(ForgeDirection side) {
+        return new ItemIO();
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
@@ -457,5 +481,78 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
                     value -> clientItemCount = value));
 
+    }
+
+    class ItemIO implements IItemIO {
+
+        @Override
+        public ItemStack store(ItemStack stack) {
+            ItemStack existing = getItemStack();
+
+            if (GTUtility.isStackValid(existing) && !GTUtility.areStacksEqual(existing, stack)) return stack;
+
+            int capacity = getMaxItemCount();
+            int toInsert = Math.min(capacity - getItemCount(), stack.stackSize);
+
+            stack.stackSize -= toInsert;
+
+            setItemStack(GTUtility.copyAmount(1, stack));
+            setItemCount(getItemCount() + toInsert);
+            meInventoryHandler.notifyListeners(toInsert, stack);
+
+            markDirty();
+
+            return stack.stackSize == 0 ? null : stack;
+        }
+
+        @Override
+        public OptionalInt getStoredAmount(@Nullable ItemStack stack) {
+            ItemStack existing = getItemStack();
+
+            if (!GTUtility.areStacksEqual(existing, stack)) return ZERO;
+
+            return OptionalInt.of(existing.stackSize);
+        }
+
+        private static final int[] SLOTS = { 0 };
+
+        @Override
+        public @NotNull InventorySourceIterator iterator() {
+            return new AbstractInventorySourceIterator(SLOTS) {
+
+                @Override
+                protected ItemStack getStackInSlot(int slot) {
+                    if (slot != 0) return null;
+
+                    return GTUtility.copyAmountUnsafe(getItemCount(), getItemStack());
+                }
+
+                @Override
+                protected void setInventorySlotContents(int slot, @Nullable ItemStack stack) {
+                    if (slot != 0) return;
+
+                    ItemStack current = getStackInSlot(0);
+
+                    setItemStack(GTUtility.copyAmount(1, stack));
+                    setItemCount(stack == null ? 0 : stack.stackSize);
+
+                    if (current != null && !GTUtility.areStacksEqual(stack, current)) {
+                        meInventoryHandler.notifyListeners(-current.stackSize, current);
+                        current = null;
+                    }
+
+                    if (stack != null) {
+                        int previouslyStored = current != null ? current.stackSize : 0;
+
+                        meInventoryHandler.notifyListeners(stack.stackSize - previouslyStored, stack);
+                    }
+                }
+
+                @Override
+                protected void markDirty() {
+                    MTEDigitalChestBase.this.markDirty();
+                }
+            };
+        }
     }
 }

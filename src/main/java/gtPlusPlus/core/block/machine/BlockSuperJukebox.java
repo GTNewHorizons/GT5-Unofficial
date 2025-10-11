@@ -342,21 +342,13 @@ public class BlockSuperJukebox extends BlockJukebox {
                 if (g != null && aSlotCounter <= 17) {
                     Logger.INFO("b3 - " + g.getDisplayName());
                     if (GTUtility.areStacksEqual(g, aRecordToPlay, true)) {
-                        IInventory aThisInv = this.getInventory();
-                        if (aThisInv.getStackInSlot(20) != null) {
+                        IInventory inv = this.getInventory();
+                        if (inv.getStackInSlot(20) != null) {
                             openDiscDrive();
                         }
 
-                        GTUtility.moveStackFromSlotAToSlotB(
-                            aThisInv,
-                            aThisInv,
-                            aSlotCounter,
-                            20,
-                            (byte) 1,
-                            (byte) 1,
-                            (byte) 1,
-                            (byte) 1);
-                        setCurrentRecord(aThisInv.getStackInSlot(20));
+                        GTUtility.swapSlots(inv, 20, aSlotCounter);
+                        setCurrentRecord(inv.getStackInSlot(20));
 
                         World aWorld = this.worldObj;
                         int aX = this.xCoord;
@@ -416,9 +408,9 @@ public class BlockSuperJukebox extends BlockJukebox {
                 g = this.getInventory()
                     .getInventory()[i];
                 if (g == null) {
-                    IInventory aThisInv = this.getInventory();
-                    GTUtility
-                        .moveStackFromSlotAToSlotB(aThisInv, aThisInv, 20, i, (byte) 1, (byte) 1, (byte) 1, (byte) 1);
+                    IInventory inv = this.getInventory();
+                    GTUtility.swapSlots(inv, 20, i);
+
                     vanillaStopJukebox();
                     Logger.INFO("b++");
                     this.markDirty();

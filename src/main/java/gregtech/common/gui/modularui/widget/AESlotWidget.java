@@ -6,16 +6,21 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.api.storage.IItemDisplayRegistry.ItemRenderHook;
+import appeng.api.storage.data.IAEItemStack;
 import appeng.client.render.AppEngRenderItem;
 import appeng.core.AELog;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 
 public class AESlotWidget extends SlotWidget {
 
@@ -39,6 +44,14 @@ public class AESlotWidget extends SlotWidget {
         super(slot);
     }
 
+    public IAEItemStack getAEStack() {
+        if (getMcSlot() instanceof AEBaseSlot aeSlot) {
+            return aeSlot.getAEStack();
+        } else {
+            return Platform.getAEStackInSlot(getMcSlot());
+        }
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     protected void drawSlot(Slot slotIn) {
@@ -46,7 +59,8 @@ public class AESlotWidget extends SlotWidget {
         AppEngRenderItem.POST_HOOKS.add(HookHolder.SKIP_ITEM_STACK_SIZE_HOOK);
         final RenderItem pIR = this.setItemRender(aeRenderItem);
         try {
-            aeRenderItem.setAeStack(Platform.getAEStackInSlot(slotIn));
+            aeRenderItem.setAeStack(getAEStack());
+
             super.drawSlot(slotIn, true);
         } catch (final Exception err) {
             AELog.warn("[AppEng] AE prevented crash while drawing slot: " + err);
@@ -60,5 +74,19 @@ public class AESlotWidget extends SlotWidget {
         final RenderItem ri = ModularGui.getItemRenderer();
         ModularGui.setItemRenderer(item);
         return ri;
+    }
+
+    private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    @Override
+    protected @NotNull String getAmountText(int amount, String format) {
+        return numberFormat
+            .formatWithSuffix(getAEStack().getStackSize(), new StringBuffer(format == null ? "" : format))
+            .toString();
+    }
+
+    @Override
+    protected String getAmountTooltip() {
+        return GTUtility.translate("modularui.amount", getAEStack().getStackSize());
     }
 }

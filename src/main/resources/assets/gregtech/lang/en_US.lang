@@ -1410,6 +1410,7 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.button.compressed_bus_settings=Open Bus Settings
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
@@ -1544,6 +1545,9 @@ GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
 GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
+GT5U.gui.text.stack_capacity=Stack Capacity
+GT5U.gui.text.bus_settings=Bus Settings
+GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation

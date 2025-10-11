@@ -303,11 +303,16 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         }, GTUITextures.OVERLAY_BUTTON_ONE_STACK_LIMIT, () -> mTooltipCache.getData(ONE_STACK_LIMIT_TOOLTIP)));
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    protected void addInputBusUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addCloseListener(() -> uiButtonCount = 0);
         addSortStacksButton(builder);
         addOneStackLimitButton(builder);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        addInputBusUIWidgets(builder, buildContext);
+
         // Remove one for ghost circuit slot
         int slotCount = getSizeInventory();
         if (allowSelectCircuit()) {
