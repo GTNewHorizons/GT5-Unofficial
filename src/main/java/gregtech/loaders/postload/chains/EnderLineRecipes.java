@@ -85,10 +85,18 @@ public class EnderLineRecipes {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(Materials.EnderAirCryostable.getGas(20000))
-
-                .fluidOutputs(Materials.TeleportatiumUnstableVolatile.getGas(16400))
-                .duration(24 * SECONDS)
+                .fluidInputs(Materials.EnderAirCryostable.getGas(200000))
+                .fluidOutputs(
+                    Materials.Radon.getFluid(1500),
+                    new FluidStack(FluidRegistry.getFluid("xenon"), 2000),
+                    new FluidStack(FluidRegistry.getFluid("krypton"), 10000),
+                    Materials.Tritium.getGas(14000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(16040),
+                    Materials.Helium.getGas(30000),
+                    Materials.Deuterium.getGas(100000),
+                    Materials.NitrogenDioxide.getGas(122000))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 80))
+                .duration(100 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(distillationTowerRecipes);
 
