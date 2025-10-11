@@ -44,7 +44,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -96,6 +95,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public boolean isDead = false;
 
     private final ChunkCoordinates mReturnedCoordinates = new ChunkCoordinates();
+
+    private boolean hasSide, isRemote;
 
     public static ForgeDirection getSideForPlayerPlacing(Entity player, ForgeDirection defaultFacing,
         boolean[] aAllowedFacings) {
@@ -164,21 +165,41 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final boolean isServerSide() {
-        if (worldObj == null) {
-            return FMLCommonHandler.instance()
-                .getEffectiveSide() == Side.SERVER;
+    public void setWorldObj(World worldIn) {
+        super.setWorldObj(worldIn);
+
+        if (worldIn != null) {
+            isRemote = worldIn.isRemote;
+            hasSide = true;
         }
-        return !worldObj.isRemote;
+    }
+
+    @Override
+    public final boolean isServerSide() {
+        if (worldObj != null) return !worldObj.isRemote;
+
+        if (!hasSide) {
+            isRemote = FMLCommonHandler.instance()
+                .getEffectiveSide()
+                .isClient();
+            hasSide = true;
+        }
+
+        return !isRemote;
     }
 
     @Override
     public final boolean isClientSide() {
-        if (worldObj == null) {
-            return FMLCommonHandler.instance()
-                .getEffectiveSide() == Side.CLIENT;
+        if (worldObj != null) return worldObj.isRemote;
+
+        if (!hasSide) {
+            isRemote = FMLCommonHandler.instance()
+                .getEffectiveSide()
+                .isClient();
+            hasSide = true;
         }
-        return worldObj.isRemote;
+
+        return isRemote;
     }
 
     @Override
