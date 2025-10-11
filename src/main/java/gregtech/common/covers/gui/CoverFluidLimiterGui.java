@@ -17,8 +17,8 @@ public class CoverFluidLimiterGui extends CoverGui<CoverFluidLimiter> {
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         column.child(
             IKey.lang("GT5U.gui.text.fluid_limiter.threshold")
-                .asWidget()
                 .color(Color.GREY.darker(1))
+                .asWidget()
                 .marginBottom(4)
                 .marginLeft(4))
             .child(

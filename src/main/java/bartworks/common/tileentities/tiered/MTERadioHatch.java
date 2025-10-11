@@ -413,7 +413,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     .pos(65, 62))
             .child(
                 IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
+                    () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
                     .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                     .asWidget()
                     .pos(60, 72)
