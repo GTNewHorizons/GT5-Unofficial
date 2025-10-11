@@ -137,7 +137,7 @@ public class MTEMultiBlockBaseGui {
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager))
-                .childIf(base.canBeMuffled(), createMufflerButton(-4, -17)))
+                .childIf(base.canBeMuffled(), createMufflerButton()))
             .child(createCoverTabs(syncManager, guiData, uiSettings));
     }
 
@@ -794,14 +794,16 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
-    protected IWidget createMufflerButton(int topRelOffset, int rightRelOffset) {
+    protected IWidget createMufflerButton() {
+        int borderRadius = 4;
+        int panelColumnToRightEdge = 17;
         return new ToggleButton().syncHandler("mufflerSyncer")
             .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
             .size(12, 12)
-            .topRel(0, topRelOffset, 0)
-            .rightRel(0, rightRelOffset, 0)
+            .topRel(0, -borderRadius, 0)
+            .rightRel(0, -panelColumnToRightEdge, 0)
             .excludeAreaInRecipeViewer(true);
     }
 
