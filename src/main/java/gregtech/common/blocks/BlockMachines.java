@@ -84,17 +84,59 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         this.useNeighborBrightness = true;
     }
 
+    public enum Tool {
+
+        // spotless:off
+        WrenchLevel0 ( 0, 0,  "wrench"),
+        WrenchLevel1 ( 1, 1,  "wrench"),
+        WrenchLevel2 ( 2, 2,  "wrench"),
+        WrenchLevel3 ( 3, 3,  "wrench"),
+        CutterLevel0 ( 8, 0,  "cutter"),
+        CutterLevel1 ( 9, 1,  "cutter"),
+        CutterLevel2 (10, 2,  "cutter"),
+        CutterLevel3 (11, 3,  "cutter"),
+        PickaxeLevel0(12, 0, "pickaxe"),
+        ;
+        // spotless:on
+
+        private final int meta;
+        private final int harvestLevel;
+        private final String harvestTool;
+
+        Tool(int meta, int harvestLevel, String harvestTool) {
+            this.meta = meta;
+            this.harvestLevel = harvestLevel;
+            this.harvestTool = harvestTool;
+        }
+
+        public static Tool fromMeta(int meta) {
+            return switch (meta) {
+                case 0 -> WrenchLevel0;
+                case 1 -> WrenchLevel1;
+                case 2 -> WrenchLevel2;
+                case 3 -> WrenchLevel3;
+                case 8 -> CutterLevel0;
+                case 9 -> CutterLevel1;
+                case 10 -> CutterLevel2;
+                case 11 -> CutterLevel3;
+                case 12 -> PickaxeLevel0;
+                default -> throw new IllegalArgumentException("Unknown tool meta: " + meta);
+            };
+        }
+
+        public byte toTileEntityBaseType() {
+            return (byte) meta;
+        }
+    }
+
     @Override
     public String getHarvestTool(int aMeta) {
-        if (aMeta >= 8 && aMeta <= 11) {
-            return "cutter";
-        }
-        return "wrench";
+        return Tool.fromMeta(aMeta).harvestTool;
     }
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return aMeta % 4;
+        return Tool.fromMeta(aMeta).harvestLevel;
     }
 
     @Override

@@ -41,6 +41,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.common.blocks.BlockMachines;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.gui.MTECokeOvenGUI;
 
@@ -247,6 +248,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     public void loadNBTData(NBTTagCompound nbt) {
         super.loadNBTData(nbt);
         fluid = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid"));
+    }
+
+    @Override
+    public byte getTileEntityBaseType() {
+        return BlockMachines.Tool.PickaxeLevel0.toTileEntityBaseType();
     }
 
     @Override

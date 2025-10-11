@@ -127,6 +127,7 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
+import gregtech.common.blocks.BlockMachines;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
@@ -467,7 +468,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public byte getTileEntityBaseType() {
-        return 2;
+        return BlockMachines.Tool.WrenchLevel2.toTileEntityBaseType();
     }
 
     /**
