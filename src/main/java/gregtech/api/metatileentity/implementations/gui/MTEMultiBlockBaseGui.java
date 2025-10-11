@@ -136,8 +136,8 @@ public class MTEMultiBlockBaseGui {
                 .child(createTitleTextStyle(guiData, base.getLocalName()))
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager)))
-            .childIf(base.canBeMuffled(), createMufflerButton(-4, -9))
+                .child(createInventoryRow(panel, syncManager))
+                .childIf(base.canBeMuffled(), createMufflerButton(-4, -17)))
             .child(createCoverTabs(syncManager, guiData, uiSettings));
     }
 
@@ -198,8 +198,8 @@ public class MTEMultiBlockBaseGui {
 
     protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
-            .rightRel(0, 10, 0)
-            .bottomRel(0, 10, 0)
+            .rightRel(0, 6, 0)
+            .bottomRel(0, 6, 0)
             .childIf(base.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
             .childIf(base.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
             .childIf(
@@ -561,7 +561,7 @@ public class MTEMultiBlockBaseGui {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            .rightRel(0, 6, 0)
+            .right(2)
             .marginTop(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
