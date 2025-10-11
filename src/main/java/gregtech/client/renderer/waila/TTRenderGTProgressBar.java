@@ -15,9 +15,11 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
 
     int maxStringW;
 
+    static final int width = DisplayUtil.getDisplayWidth("00.0s / 00.0s (00.0%)");
+
     @Override
     public Dimension getSize(String[] params, IWailaCommonAccessor accessor) {
-        return new Dimension(0, 12);
+        return new Dimension(width, 12);
     }
 
     @Override
