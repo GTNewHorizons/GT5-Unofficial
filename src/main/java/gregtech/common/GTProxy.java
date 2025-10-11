@@ -672,6 +672,14 @@ public class GTProxy implements IFuelHandler {
     public boolean mWailaTransformerVoltageTier = true;
     /** This enables showing the cpu load in nanoseconds via waila. */
     public boolean wailaAverageNS = false;
+    /** First color of the progress bar. */
+    public int wailaProgressBarColor1 = 0xFFDD5555;
+    /** Second color of the progress bar. */
+    public int wailaProgressBarColor2 = 0xFFDD2222;
+    /** First color of the progress bar's border (top and left). */
+    public int wailaProgressBorderColor1 = 0xFF505050;
+    /** Second color of the progress bar's border (bottom and right). */
+    public int wailaProgressBorderColor2 = 0xFF505050;
 
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 

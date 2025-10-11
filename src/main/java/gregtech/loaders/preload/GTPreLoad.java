@@ -548,6 +548,28 @@ public class GTPreLoad {
 
         GTMod.proxy.mWailaTransformerVoltageTier = Client.waila.wailaTransformerVoltageTier;
         GTMod.proxy.wailaAverageNS = Client.waila.wailaAverageNS;
+        try {
+            GTMod.proxy.wailaProgressBarColor1 = 0xFF000000 + Integer.parseInt(Client.waila.wailaProgressBarColor1, 16);
+        } catch (NumberFormatException e) {
+            GTMod.proxy.wailaProgressBarColor1 = 0xFF3333DA;
+        }
+        try {
+            GTMod.proxy.wailaProgressBarColor2 = 0xFF000000 + Integer.parseInt(Client.waila.wailaProgressBarColor2, 16);
+        } catch (NumberFormatException e) {
+            GTMod.proxy.wailaProgressBarColor2 = 0xFF2020D0;
+        }
+        try {
+            GTMod.proxy.wailaProgressBorderColor1 = 0xFF000000
+                + Integer.parseInt(Client.waila.wailaProgressBorderColor1, 16);
+        } catch (NumberFormatException e) {
+            GTMod.proxy.wailaProgressBorderColor1 = 0xFF505050;
+        }
+        try {
+            GTMod.proxy.wailaProgressBorderColor2 = 0xFF000000
+                + Integer.parseInt(Client.waila.wailaProgressBorderColor2, 16);
+        } catch (NumberFormatException e) {
+            GTMod.proxy.wailaProgressBorderColor2 = 0xFF505050;
+        }
 
         GTMod.proxy.reloadNEICache();
     }

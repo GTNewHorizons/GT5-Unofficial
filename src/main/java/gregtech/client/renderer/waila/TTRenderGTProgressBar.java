@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.StatCollector;
 
+import gregtech.GTMod;
 import mcp.mobius.waila.api.IWailaCommonAccessor;
 import mcp.mobius.waila.api.IWailaVariableWidthTooltipRenderer;
 import mcp.mobius.waila.overlay.DisplayUtil;
@@ -21,12 +22,20 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
 
     @Override
     public void draw(String[] params, IWailaCommonAccessor accessor) {
-        drawThickBeveledBox(0, 0, maxStringW, 12, 1, 0xFF505050, 0xFF505050, -1);
+        drawThickBeveledBox(
+            0,
+            0,
+            maxStringW,
+            12,
+            1,
+            GTMod.proxy.wailaProgressBorderColor1,
+            GTMod.proxy.wailaProgressBorderColor2,
+            -1);
         int progresstime = Integer.parseInt(params[0]);
         int maxProgresstime = Integer.parseInt(params[1]);
         int progress = (int) (maxStringW * ((double) progresstime / maxProgresstime));
         for (int xx = 1; xx < progress; xx++) {
-            int color = (xx & 1) == 0 ? 0xFFDD0000 : 0xFF900000;
+            int color = (xx & 1) == 0 ? GTMod.proxy.wailaProgressBarColor1 : GTMod.proxy.wailaProgressBarColor2;
             drawVerticalLine(xx, 1, 12 - 1, color);
         }
         DisplayUtil.drawString(

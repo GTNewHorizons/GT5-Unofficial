@@ -251,6 +251,22 @@ public class Client {
         @Config.Comment("if true, enables showing voltage tier of transformer for Waila, instead of raw voltage number.")
         @Config.DefaultBoolean(false)
         public boolean wailaAverageNS;
+
+        @Config.Comment("First color (in hex RGB) of the progress bar.")
+        @Config.DefaultString("3333DA")
+        public String wailaProgressBarColor1;
+
+        @Config.Comment("Second color (in hex RGB) of the progress bar.")
+        @Config.DefaultString("2020D0")
+        public String wailaProgressBarColor2;
+
+        @Config.Comment("First color (in hex RGB) of the progress bar's border (top and left).")
+        @Config.DefaultString("505050")
+        public String wailaProgressBorderColor1;
+
+        @Config.Comment("Second color (in hex RGB) of the progress bar's border (bottom and right).")
+        @Config.DefaultString("505050")
+        public String wailaProgressBorderColor2;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")
