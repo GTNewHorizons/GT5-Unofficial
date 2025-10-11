@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
@@ -282,7 +283,10 @@ public class RedstoneSnifferGuiBuilder {
                                 .setTextColor(textColor)
                                 .value(SyncHandlers.string(() -> ownerFilter, filter -> { ownerFilter = filter; }))))
                 .child(data));
-        panel.background(new Rectangle().setColor(Color.rgb(53, 46, 77)));
+
+        IDrawable background = new Rectangle().setColor(Color.rgb(53, 46, 77));
+        panel.background(background)
+            .hoverBackground(background);
         return panel;
     }
 
