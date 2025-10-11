@@ -381,7 +381,7 @@ public class EyeOfHarmonyRecipe {
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             else if (byProductMaterial.contains(SubTag.WASHING_SODIUMPERSULFATE)) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (index > 3) outputMap
+            else if (index >= 3) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             // EOH is better than other ore processing so it can get products that normally cannot get.
         }
