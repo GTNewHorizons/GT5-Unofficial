@@ -1965,10 +1965,12 @@ gt.interact.desc.facade.Items=§8Items
 ## FluidFilter
 gt.interact.desc.FluidFilter.FilterInput=Filter Input
 gt.interact.desc.FluidFilter.FilterOutput=Filter Output
-gt.interact.desc.FluidFilter.BlockOutput=Block Output
+
 gt.interact.desc.FluidFilter.AllowOutput=Allow Output
-gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
-gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
+gt.interact.desc.FluidFilter.AllowInput=Allow Input
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.BlockInput=Block Input
+
 gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
 gt.interact.desc.FluidFilter.Type=§8IFilter Type
 gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
