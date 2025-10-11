@@ -18,6 +18,7 @@ import org.mockito.MockedStatic;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -87,7 +88,7 @@ public class BlockMachinesSubclassTest {
 
         @Override
         public byte getTileEntityBaseType() {
-            return 0;
+            return HarvestTool.WrenchLevel0.toTileEntityBaseType();
         }
 
         @Override
