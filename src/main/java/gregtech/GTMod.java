@@ -223,9 +223,14 @@ public class GTMod {
         GTValues.NW = new GTNetwork();
         GTValues.RA = new RecipeAdder();
 
+        // TEs that can be wrenched.
         for (int i = 0; i < 4; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> GregTechAPI.constructBaseMetaTileEntity());
         }
+
+        // TEs that can be mined.
+        GregTechAPI.registerTileEntityConstructor(12, i2 -> GregTechAPI.constructBaseMetaTileEntity());
+
         for (int i = 4; i < 12; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
         }
