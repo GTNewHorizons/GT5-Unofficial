@@ -1965,6 +1965,7 @@ gt.interact.desc.facade.Items=§8Items
 ## FluidFilter
 gt.interact.desc.FluidFilter.FilterInput=Filter Input
 gt.interact.desc.FluidFilter.FilterOutput=Filter Output
+gt.interact.desc.FluidFilter.FilterChat=Filter Fluid:
 
 gt.interact.desc.FluidFilter.AllowOutput=Allow Output
 gt.interact.desc.FluidFilter.AllowInput=Allow Input
