@@ -81,11 +81,10 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Produces Elemental Material from UU Matter")
+            .addInfo("Produces raw elements from UU-Matter")
             .addBulkMachineInfo(8, 2f, 1f)
-            .addInfo("Maximum 1x of each bus/hatch")
-            .addInfo("Requires circuit 1-16 in your Data Orb Repository")
-            .addInfo("depending on what Data Orb you want to prioritize")
+            .addInfo("Maximum 1x Data Orb Repository")
+            .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
@@ -99,7 +98,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("Modulator III", 16, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "1x",
+                "Any 1 dot hint (1x)",
                 1)
             .addInputHatch("Any 1 dot hint", 1)
             .addOutputBus("Any 1 dot hint", 1)
