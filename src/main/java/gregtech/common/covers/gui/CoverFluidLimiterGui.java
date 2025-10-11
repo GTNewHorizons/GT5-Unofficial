@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.common.covers.CoverFluidLimiter;
@@ -17,10 +16,11 @@ public class CoverFluidLimiterGui extends CoverGui<CoverFluidLimiter> {
 
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         column.child(
-            new TextWidget<>(
-                IKey.lang("GT5U.gui.text.fluid_limiter.threshold")
-                    .color(Color.GREY.darker(1))).marginBottom(4)
-                        .marginLeft(4))
+            IKey.lang("GT5U.gui.text.fluid_limiter.threshold")
+                .asWidget()
+                .color(Color.GREY.darker(1))
+                .marginBottom(4)
+                .marginLeft(4))
             .child(
                 makeNumberField().setNumbers(0, 100)
                     .setFocusOnGuiOpen(true)
