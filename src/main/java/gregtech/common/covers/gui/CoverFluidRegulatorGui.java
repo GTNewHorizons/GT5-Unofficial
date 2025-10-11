@@ -3,6 +3,8 @@ package gregtech.common.covers.gui;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -17,7 +19,6 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
@@ -64,7 +65,7 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
                         .build())
                     .width(80))
             .child(
-                IKey.str(GTUtility.trans("229", "Export/Import"))
+                IKey.str(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.ExpImp"))
                     .asWidget());
     }
 
@@ -81,7 +82,7 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
                             .build())
                     .width(80))
             .child(
-                IKey.str(GTUtility.trans("230", "Conditional"))
+                IKey.str(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Conditional"))
                     .asWidget());
     }
 
@@ -92,13 +93,13 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
                     .setNumbers(cover::getMinSpeed, cover::getMaxSpeed)
                     .setFocusOnGuiOpen(true))
             .child(
-                IKey.str(GTUtility.trans("208", " L"))
+                IKey.str(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L"))
                     .asWidget())
             .child(
                 makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi))
                     .setValidator(this::validateTickRateText))
             .child(
-                IKey.str(GTUtility.trans("209", " ticks"))
+                IKey.str(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Ticks"))
                     .asWidget());
     }
 
@@ -144,9 +145,9 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
     }
 
     private @NotNull String getAverageSpeedText() {
-        return GTUtility.trans("210.1", "Average:") + " "
+        return StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Average") + " "
             + numberFormat.format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
             + " "
-            + GTUtility.trans("210.2", "L/sec");
+            + StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L_Sec");
     }
 }
