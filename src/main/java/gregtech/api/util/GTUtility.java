@@ -3161,11 +3161,7 @@ public class GTUtility {
 
         String key = "gtnop.world." + name;
 
-        if (StatCollector.canTranslate(key)) {
-            return StatCollector.translateToLocal(key);
-        } else {
-            return name;
-        }
+        return tryTranslate(key, name);
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,
@@ -3932,6 +3928,10 @@ public class GTUtility {
         return StatCollector.translateToLocalFormatted(key, parameters);
     }
 
+    public static String tryTranslate(String key, String fallback, Object... parameters) {
+        return StatCollector.canTranslate(key) ? translate(key, parameters) : fallback;
+    }
+
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
@@ -4460,6 +4460,9 @@ public class GTUtility {
         "bartworks.system.material.BWMetaGeneratedOres",
         "bartworks.system.material.BWMetaGeneratedSmallOres",
         "gtPlusPlus.core.block.base.BlockBaseOre");
+
+    public static final String LOC_SEPARATOR = "\u001F";
+    public static final String YAP_SEPARATOR = "\\n";
 
     public static boolean isOre(Block aBlock, int aMeta) {
         return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
