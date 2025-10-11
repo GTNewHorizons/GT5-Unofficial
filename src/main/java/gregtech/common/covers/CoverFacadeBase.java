@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -199,10 +200,18 @@ public abstract class CoverFacadeBase extends Cover {
         mFlags = ((mFlags + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
-            ((mFlags & REDSTONE_PASS_FLAG) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((mFlags & ENERGY_PASS_FLAG) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((mFlags & FLUID_PASS_FLAG) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((mFlags & ITEM_PASS_FLAG) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+            ((mFlags & REDSTONE_PASS_FLAG) != 0
+                ? StatCollector.translateToLocal("gt.interact.desc.facade.Redstone") + " "
+                : "")
+                + ((mFlags & ENERGY_PASS_FLAG) != 0
+                    ? StatCollector.translateToLocal("gt.interact.desc.facade.Energy") + " "
+                    : "")
+                + ((mFlags & FLUID_PASS_FLAG) != 0
+                    ? StatCollector.translateToLocal("gt.interact.desc.facade.Fluids") + " "
+                    : "")
+                + ((mFlags & ITEM_PASS_FLAG) != 0
+                    ? StatCollector.translateToLocal("gt.interact.desc.facade.Items") + " "
+                    : ""));
     }
 
     @Override

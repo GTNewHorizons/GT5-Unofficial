@@ -1,14 +1,15 @@
 package gregtech.common.covers.modes;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 
 import gregtech.api.interfaces.modularui.KeyProvider;
-import gregtech.api.util.GTUtility;
 
 public enum FilterType implements KeyProvider {
 
-    WHITELIST(IKey.str(GTUtility.trans("125.1", "Whitelist Mode"))),
-    BLACKLIST(IKey.str(GTUtility.trans("124.1", "Blacklist Mode")));
+    WHITELIST(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Whitelist_Mode"))),
+    BLACKLIST(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Blacklist_Mode")));
 
     private final IKey key;
 

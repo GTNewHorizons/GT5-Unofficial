@@ -200,7 +200,7 @@ public class CoverFluidfilter extends Cover {
                 mFluidID = aFluid;
                 final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
                 GTUtility
-                    .sendChatToPlayer(aPlayer, GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
+                    .sendChatToPlayer(aPlayer, translateToLocal("Filter Fluid:") + " " + sFluid.getLocalizedName());
             }
             return true;
         }

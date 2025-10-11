@@ -1,6 +1,7 @@
 package gregtech.common.covers.gui;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -13,7 +14,6 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFacadeBase;
 
 public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
@@ -42,28 +42,28 @@ public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(GTUtility.trans("128", "Redstone"))
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Redstone"))
                         .asWidget())
                 .row(
                     new ToggleButton().value(new BooleanSyncValue(cover::getEnergyPass, cover::setEnergyPass))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(GTUtility.trans("129", "Energy"))
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Energy"))
                         .asWidget())
                 .row(
                     new ToggleButton().value(new BooleanSyncValue(cover::getFluidPass, cover::setFluidPass))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(GTUtility.trans("130", "Fluids"))
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Fluids"))
                         .asWidget())
                 .row(
                     new ToggleButton().value(new BooleanSyncValue(cover::getItemPass, cover::setItemPass))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(GTUtility.trans("131", "Items"))
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Items"))
                         .asWidget()));
     }
 

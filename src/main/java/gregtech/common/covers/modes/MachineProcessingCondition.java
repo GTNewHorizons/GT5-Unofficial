@@ -1,15 +1,16 @@
 package gregtech.common.covers.modes;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 
 import gregtech.api.interfaces.modularui.KeyProvider;
-import gregtech.api.util.GTUtility;
 
 public enum MachineProcessingCondition implements KeyProvider {
 
-    ALWAYS(IKey.str(GTUtility.trans("224", "Always On"))),
-    CONDITIONAL(IKey.str(GTUtility.trans("343", "Use Machine Processing " + "State"))),
-    INVERTED(IKey.str(GTUtility.trans("343.1", "Use Inverted Machine " + "Processing State")));
+    ALWAYS(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Pump.AlwaysOn"))),
+    CONDITIONAL(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Pump.MachProcState"))),
+    INVERTED(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Pump.InvertedMachProcState")));
 
     private final IKey key;
 
