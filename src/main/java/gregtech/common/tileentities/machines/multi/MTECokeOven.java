@@ -80,7 +80,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     private static final IStructureDefinition<MTECokeOven> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECokeOven>builder()
         .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings12, 0))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings14, 0))
         .build();
 
     @Override
@@ -145,17 +145,17 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     private static final ITexture[] TEXTURE_CASING = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)) };
+        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings14, 0)) };
 
     private static final ITexture[] TEXTURE_CONTROLLER_INACTIVE = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)),
+        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings14, 0)),
         TextureFactory.builder()
             .addIcon(COKE_OVEN_OVERLAY_INACTIVE)
             .extFacing()
             .build() };
 
     private static final ITexture[] TEXTURE_CONTROLLER_ACTIVE = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)),
+        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings14, 0)),
         TextureFactory.builder()
             .addIcon(COKE_OVEN_OVERLAY_ACTIVE)
             .extFacing()
