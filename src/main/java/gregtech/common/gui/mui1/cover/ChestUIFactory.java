@@ -64,7 +64,7 @@ public class ChestUIFactory extends CoverUIFactory<CoverChest> {
             // ???
             return;
         }
-        h = cover.getItems();
+        h = cover.getLegacyItems();
         SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3)
             .build();
         if (getUIBuildContext().isAnotherWindow()) {

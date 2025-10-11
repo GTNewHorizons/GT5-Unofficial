@@ -16,12 +16,12 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
 
     @Override
     public void onCoverRemoval() {
-        GregTechAPI.sWirelessRedstone.remove(coverData);
+        GregTechAPI.sWirelessRedstone.remove(getMapFrequency());
     }
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        GregTechAPI.sWirelessRedstone.put(coverData, aInputRedstone);
+        GregTechAPI.sWirelessRedstone.put(getMapFrequency(), aInputRedstone);
     }
 
     @Override
@@ -34,16 +34,10 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
     protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagInt nbtInt) {
             int data = nbtInt.func_150287_d();
-            if (data != coverData) {
-                GregTechAPI.sWirelessRedstone.remove(coverData);
-            }
-            coverData = nbtInt.func_150287_d();
+            processCoverData(getFlagFrequency(data), getFlagCheckbox(data));
             return;
         }
         NBTTagCompound tag = (NBTTagCompound) nbt;
-        if (tag.hasKey("frequency") && !(tag.getInteger("frequency") == coverData)) {
-            GregTechAPI.sWirelessRedstone.remove(coverData);
-        }
-        coverData = tag.getInteger("frequency");
+        processCoverData(tag.getInteger("frequency"), tag.getBoolean("privateChannel"));
     }
 }
