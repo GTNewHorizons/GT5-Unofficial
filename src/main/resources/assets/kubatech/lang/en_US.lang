@@ -2,6 +2,7 @@
 
 #RecipeMaps
 kubatech.defusioncrafter=Draconic Evolution Fusion Crafter
+kubatech.htgrrecipes=High Temperature Gas Reactor
 
 #NEI
 kubatech.defusioncrafter.tier=Tier Casing: %s
@@ -148,6 +149,15 @@ kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
 kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
 
+#HTGR
+kubatech.infodata.htgr.stored_fuel=Stored Fuel:
+kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s
+kubatech.infodata.htgr.burned_fuel=Burned Fuel:
+kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% to output
+kubatech.infodata.htgr.helium_supply=Helium Supply: §6%sL
+kubatech.infodata.htgr.coolant_per_tick=Coolant per tick: §6%sL
+kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
+
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
 kubatech.waila.eec.no_mob=None
@@ -171,6 +181,12 @@ kubaitem.defc_schematic_t1.tip=This Schematic can be found in Pluto Dungeons
 kubaitem.defc_schematic_t2.name=Wyvern Core Schematic
 kubaitem.defc_schematic_t3.name=Awakened Core Schematic
 kubaitem.defc_schematic_t4.name=Chaotic Core Schematic
+
+item.htgr_item.0.name=TRISO Fuel Mixture (%s)
+item.htgr_item.1.name=Incomplete BISO Fuel (%s)
+item.htgr_item.2.name=Incomplete TRISO Fuel (%s)
+item.htgr_item.3.name=TRISO Fuel (%s)
+item.htgr_item.4.name=Burned Out TRISO Fuel (%s)
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
@@ -259,3 +275,5 @@ kubatech.tooltip.tea_storage.0=Extends Tea Storage by %s
 kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
 
 kubatech.tooltip.structure.flowers=Flowers
+
+kubatech.tooltip.htgr_material=Material for High Temperature Gas-cooled Reactor

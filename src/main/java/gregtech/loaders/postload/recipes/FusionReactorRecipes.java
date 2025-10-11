@@ -98,12 +98,28 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Promethium.getMolten(1 * NUGGETS), Materials.Hydrogen.getGas(3 * NUGGETS))
+            .fluidOutputs(Materials.Europium.getMolten(1 * NUGGETS))
+            .duration(4 * TICKS)
+            .eut(24576)
+            .metadata(FUSION_THRESHOLD, 150_000_000L)
+            .addTo(fusionRecipes); // FT1 - alternative europium
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Lutetium.getMolten(1 * NUGGETS), Materials.Chrome.getMolten(1 * NUGGETS))
             .fluidOutputs(Materials.Americium.getMolten(1 * NUGGETS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Lutetium.getMolten(1 * NUGGETS), Materials.Promethium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Americium.getMolten(1 * NUGGETS))
+            .duration(12 * TICKS)
+            .eut(38764)
+            .metadata(FUSION_THRESHOLD, 200_000_000L)
+            .addTo(fusionRecipes); // FT2 - alternative americium
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium.getMolten(1 * NUGGETS), Materials.Thorium.getMolten(1 * NUGGETS))
