@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverPlayerDetector;
 import gregtech.common.covers.modes.PlayerDetectionMode;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
@@ -47,21 +46,26 @@ public class CoverPlayerDetectorGui extends CoverGui<CoverPlayerDetector> {
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.ANY_PLAYER))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltipLine(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_Player_Close")))
+                        .addTooltipLine(
+                            StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_Player_Close"))
                         .size(16),
                     IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Any_Player"))
                         .asWidget())
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.OTHER_PLAYERS))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltipLine(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_Player_No_Close")))
+                        .addTooltipLine(
+                            IKey.str(
+                                StatCollector
+                                    .translateToLocal("gt.interact.desc.Player_Detector.Emit_Player_No_Close")))
                         .size(16),
                     IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Other_Players"))
                         .asWidget())
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.ONLY_OWNER))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltipLine(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_You_Close")))
+                        .addTooltipLine(
+                            StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_You_Close"))
                         .size(16),
                     IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Only_Owner"))
                         .asWidget()));
