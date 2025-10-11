@@ -1991,7 +1991,7 @@ gt.interact.desc.fluid_regulator.L_Sec=L/sec
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
 gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
-gt.interact.desc.Item_Filter.Filter=§8Filter
+gt.interact.desc.Item_Filter.Filter=§8Filter:
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
 ## Item Meter
