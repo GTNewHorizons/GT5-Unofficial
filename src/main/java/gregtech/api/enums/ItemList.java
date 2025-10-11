@@ -2747,6 +2747,14 @@ public enum ItemList implements IItemContainer {
     MagLevHarness,
 
     ManaFly,
+    CZPuller,
+    Silicon_Seed_Crystal,
+    AlGaAs_Seed_Crystal,
+    AlGaAs_Monocrystal,
+    Raw_Crude_Si_Wafer,
+    Crude_Si_Wafer,
+    Diamond_Infused_Wire_Saw
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
