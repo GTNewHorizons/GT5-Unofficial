@@ -367,7 +367,6 @@ public class EyeOfHarmonyRecipe {
 
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
-            index++;
             if (index < 3) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
@@ -384,6 +383,8 @@ public class EyeOfHarmonyRecipe {
             else if (index >= 3) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             // EOH is better than other ore processing so it can get products that normally cannot get.
+
+            index++;
         }
 
         for (int i = index; i < 3; i++) {
