@@ -568,4 +568,5 @@ public class GTUITextures {
     public static final UITexture PICTURE_ITEM_OUT = UITexture.fullImage(GregTech.ID, "gui/picture/item_out");
     public static final UITexture PICTURE_FLUID_IN = UITexture.fullImage(GregTech.ID, "gui/picture/fluid_in");
     public static final UITexture PICTURE_FLUID_OUT = UITexture.fullImage(GregTech.ID, "gui/picture/fluid_out");
+    public static final UITexture SCREWDRIVER = UITexture.fullImage(GregTech.ID, "gui/overlay_button/screwdriver");
 }
