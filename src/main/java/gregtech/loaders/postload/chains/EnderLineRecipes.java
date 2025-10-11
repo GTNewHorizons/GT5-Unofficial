@@ -9,9 +9,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
-import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -23,15 +21,12 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.electrolyzerNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 
-import goodgenerator.util.ItemRefer;
-import gregtech.api.enums.MaterialsGTNH;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -40,6 +35,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 
 public class EnderLineRecipes {
@@ -55,9 +51,7 @@ public class EnderLineRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(EtFuturumRequiem.ID, "chorus_flower", 16, 1), GTUtility.getIntegratedCircuit(24))
-                .itemOutputs(
-                            getModItem(EtFuturumRequiem.ID, "chorus_fruit_popped", 8, 1)
-                )
+                .itemOutputs(getModItem(EtFuturumRequiem.ID, "chorus_fruit_popped", 8, 1))
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("molten.uraniumtetrafluoride"), 1440),
                     new FluidStack(FluidRegistry.getFluid("vapor_of_levity"), 10),
@@ -81,7 +75,9 @@ public class EnderLineRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CallistoIce, 8))
-                .fluidInputs(Materials.EnderAirUnstable.getGas(10000),new FluidStack(FluidRegistry.getFluid("cryotheum"), 1000))
+                .fluidInputs(
+                    Materials.EnderAirUnstable.getGas(10000),
+                    new FluidStack(FluidRegistry.getFluid("cryotheum"), 1000))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 8))
                 .fluidOutputs(Materials.EnderAirCryostable.getGas(10000))
                 .duration(15 * SECONDS)
@@ -100,8 +96,13 @@ public class EnderLineRecipes {
 
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirUnstable.getGas(10000))
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.EndSteel, 8),GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ichorium, 8), GTUtility.getIntegratedCircuit(3))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Tungsten, 4),GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Ichorium, 4))
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.EndSteel, 8),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ichorium, 8),
+                    GTUtility.getIntegratedCircuit(3))
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Tungsten, 4),
+                    GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Ichorium, 4))
                 .fluidOutputs(Materials.EnderAirBalanced.getGas(10000))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
@@ -110,7 +111,12 @@ public class EnderLineRecipes {
 
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirBalanced.getGas(20000))
-
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thaumium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
+                .outputChances(7500, 5000, 2500, 1000)
                 .fluidOutputs(Materials.TeleportatiumUnstableUnbalanced.getGas(15400))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
@@ -119,7 +125,10 @@ public class EnderLineRecipes {
             // Ender Air Fortified
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(Materials.EnderAirUnstable.getGas(10000), Materials.Galgadorian.getFluid(100), Materials.ReinforceGlass.getFluid(1000))
+                .fluidInputs(
+                    Materials.EnderAirUnstable.getGas(10000),
+                    Materials.Galgadorian.getFluid(100),
+                    Materials.ReinforceGlass.getFluid(1000))
                 .fluidOutputs(Materials.EnderAirFortified.getGas(10000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
@@ -127,7 +136,11 @@ public class EnderLineRecipes {
 
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirFortified.getGas(20000))
-
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 10L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 5L),
+                    getModItem(HardcoreEnderExpansion.ID, "end_powder", 4L, 0))
+                .outputChances(5000, 2500, 2000)
                 .fluidOutputs(Materials.TeleportatiumUnstableSemifluid.getGas(14400))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
@@ -136,8 +149,12 @@ public class EnderLineRecipes {
             // Ender Air Pyro
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(Materials.EnderAirUnstable.getGas(10000),new FluidStack(FluidRegistry.getFluid("pyrotheum"), 1000))
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 8),GTOreDictUnificator.get(OrePrefixes.dust, MaterialsAlloy.ENERGYCRYSTAL, 8))
+                .fluidInputs(
+                    Materials.EnderAirUnstable.getGas(10000),
+                    new FluidStack(FluidRegistry.getFluid("pyrotheum"), 1000))
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 8),
+                    GTOreDictUnificator.get(OrePrefixes.dust, MaterialsAlloy.ENERGYCRYSTAL, 8))
                 .fluidOutputs(Materials.EnderAirPyrostable.getGas(10000))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
@@ -148,19 +165,15 @@ public class EnderLineRecipes {
                 .itemOutputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 10L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 5L),
-                    getModItem(HardcoreEnderExpansion.ID, "stardust", 5L,0),
+                    getModItem(HardcoreEnderExpansion.ID, "stardust", 5L, 0),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 2L),
-                    getModItem(HardcoreEnderExpansion.ID, "essence", 2L,1),
-                    getModItem(HardcoreEnderExpansion.ID, "essence", 1L,0)
-                    )
+                    getModItem(HardcoreEnderExpansion.ID, "essence", 2L, 1),
+                    getModItem(HardcoreEnderExpansion.ID, "essence", 1L, 0))
                 .outputChances(5000, 4000, 2000, 1000, 500, 250)
                 .fluidOutputs(Materials.TeleportatiumUnstableHypercritical.getGas(13400))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeNonCellRecipes);
-
-
-
 
         }
 
