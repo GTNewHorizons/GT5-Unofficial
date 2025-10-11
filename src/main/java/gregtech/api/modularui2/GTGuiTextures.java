@@ -31,6 +31,14 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_BRONZE, GTTextureIds.BACKGROUND_STEEL, GTTextureIds.BACKGROUND_PRIMITIVE)
         .build();
+    private static final UITexture BACKGROUND_ORGANIC = UITexture.builder()
+        .location(GregTech.ID, "gui/background/organic")
+        .imageSize(176, 166)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_ORGANIC)
+        .build();
+
     public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/title_dark")
         .imageSize(28, 28)
@@ -49,13 +57,12 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
     private static final UITexture BACKGROUND_TITLE_ORGANIC = UITexture.builder()
-        .location(GregTech.ID, "gui/background/organic")
-        .imageSize(176, 166)
+        .location(GregTech.ID, "gui/tab/title_dark_organic")
+        .imageSize(28, 28)
         .adaptable(4)
         .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_ORGANIC)
+        .name(GTTextureIds.BACKGROUND_TITLE_ORGANIC)
         .build();
-
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
         .imageSize(195, 136)
@@ -142,6 +149,13 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .build();
+    public static final UITexture SLOT_ITEM_ORGANIC = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_organic")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_ORGANIC)
+        .build();
     public static final UITexture SLOT_FLUID_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_standard")
         .imageSize(18, 18)
@@ -169,7 +183,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_PRIMITIVE)
         .build();
-
+    public static final UITexture SLOT_FLUID_ORGANIC = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/fluid_organic")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_FLUID_ORGANIC)
+        .build();
     public static final UITexture SLOT_EMPTY = UITexture.builder()
         .location(GregTech.ID, "gui/slot/empty")
         .imageSize(18, 18)

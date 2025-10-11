@@ -153,5 +153,9 @@ public final class GTGuiThemes {
         .panel(GTTextureIds.BACKGROUND_ORGANIC)
         .color(Dyes.dyeWhite.toInt())
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_ORGANIC)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_ORGANIC)
+        .itemSlot(GTTextureIds.SLOT_ITEM_ORGANIC)
+        .fluidSlot(GTTextureIds.SLOT_FLUID_ORGANIC)
+
         .build();
 }

@@ -165,7 +165,7 @@ public final class GTBaseGuiBuilder {
         // client side assumed
         String title = mte.getLocalName();
 
-        int borderRadius = 4;
+        int borderRadius = 5;
         int maxWidth = width - borderRadius * 2;
         int titleWidth = TextRenderer.getFontRenderer()
             .getStringWidth(title);
