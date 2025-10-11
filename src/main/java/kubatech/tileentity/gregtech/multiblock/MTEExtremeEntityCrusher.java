@@ -1209,6 +1209,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private static final class EECMachineStatusWidget extends CycleButtonWidget {
 
         private final MTEExtremeEntityCrusher mEEC;

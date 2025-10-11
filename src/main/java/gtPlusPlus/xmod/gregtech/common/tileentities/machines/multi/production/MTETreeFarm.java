@@ -190,6 +190,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public boolean isBatchModeEnabled() {
         return false;
     }

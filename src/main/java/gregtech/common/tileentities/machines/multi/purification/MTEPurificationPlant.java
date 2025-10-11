@@ -787,4 +787,9 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         aNBT.setBoolean("debugMode", debugMode);
 
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

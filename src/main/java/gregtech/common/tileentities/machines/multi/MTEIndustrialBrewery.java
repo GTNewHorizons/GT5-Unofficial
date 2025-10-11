@@ -212,9 +212,4 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     public boolean supportsInputSeparation() {
         return true;
     }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
 }

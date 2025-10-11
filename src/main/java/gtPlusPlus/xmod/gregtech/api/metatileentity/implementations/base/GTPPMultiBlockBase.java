@@ -762,7 +762,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        if (!supportsMachineModeSwitch()) super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         clearRecipeMapForAllInputHatches();
         onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
         mLastRecipe = null;

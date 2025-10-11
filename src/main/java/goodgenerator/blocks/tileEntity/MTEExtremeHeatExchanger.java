@@ -162,6 +162,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         transformed = aNBT.getBoolean("transformed");
         if (aNBT.hasKey("hotName", Constants.NBT.TAG_STRING)) {
