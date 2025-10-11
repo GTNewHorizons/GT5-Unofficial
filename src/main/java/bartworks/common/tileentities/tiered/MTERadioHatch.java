@@ -407,16 +407,17 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                 .size(18, 48))
             .child(createDurationMeterContainer(syncManager))
             .child(
-                new com.cleanroommc.modularui.widgets.TextWidget<>(
-                    IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
-                        .alignment(com.cleanroommc.modularui.utils.Alignment.Center)).pos(65, 62))
+                IKey.dynamic(() -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
+                    .asWidget()
+                    .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
+                    .pos(65, 62))
             .child(
-                new com.cleanroommc.modularui.widgets.TextWidget<>(
-                    IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
-                        .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)).pos(60, 72)
-                            .size(80, 8))
+                IKey.dynamic(
+                    () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
+                    .asWidget()
+                    .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                    .pos(60, 72))
+            .size(80, 8)
             .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
                 popupPanel.openPanel();
                 return popupPanel.isPanelOpen();
