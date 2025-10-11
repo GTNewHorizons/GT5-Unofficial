@@ -22,7 +22,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
             return;
         }
 
-        if (!aMaterial.mUnificatable) {
+        if (!aMaterial.mUnifiable) {
             return;
         }
 

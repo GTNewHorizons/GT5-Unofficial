@@ -125,6 +125,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -2071,9 +2072,21 @@ public class WerkstoffLoader {
      * data.
      */
     private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
-        Materials oreMat = new Materials(-1, null, 0, 0, 0, false, "bwores", "bwores", null, true, null);
-        Materials smallOreMat = new Materials(-1, null, 0, 0, 0, false, "bwsmallores", "bwsmallores", null, true, null);
-        Materials blockMat = new Materials(-1, null, 0, 0, 0, false, "bwblocks", "bwblocks", null, true, null);
+        Materials oreMat = new MaterialBuilder().setName("bwores")
+            .setDefaultLocalName("bwores")
+            .setUnifiable(false)
+            .constructMaterial();
+
+        Materials smallOreMat = new MaterialBuilder().setName("bwsmallores")
+            .setDefaultLocalName("bwsmallores")
+            .setUnifiable(false)
+            .constructMaterial();
+
+        Materials blockMat = new MaterialBuilder().setName("bwblocks")
+            .setDefaultLocalName("bwblocks")
+            .setUnifiable(false)
+            .constructMaterial();
+
         for (int i = 0; i < 16; i++) {
             GTOreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres, 1, i), true);
             GTOreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres, 1, i), true);

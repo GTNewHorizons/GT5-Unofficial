@@ -191,7 +191,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         }
                     }
                 } else {
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         if (GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1) != null) {
                             GTValues.RA.stdBuilder()
@@ -270,7 +270,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1) != null) {
@@ -324,7 +324,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 if (!aNoWorking) {
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Crafting recipes
                         {
                             if (aSpecialRecipeReq) {
@@ -371,7 +371,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1) != null) {
@@ -449,7 +449,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1) != null) {
