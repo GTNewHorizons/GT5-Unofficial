@@ -2000,7 +2000,7 @@ gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
 gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
 
 ## Liquid Meter (Fluid meter)
-gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+gt.interact.desc.Fluid_Meter.FluidThreshold=§8Fluid threshold
 
 ## Player Detector
 gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
