@@ -977,6 +977,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxGas;
     public static Materials RadoxPolymer;
 
+    // Nether line Materials
+
     public static Materials NetherAir;
     public static Materials NetherSemiFluid;
     public static Materials NefariousGas;
@@ -994,6 +996,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PrismaticAcid;
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
+
+    // Ender line Materials
+
+    public static Materials EnderAir;
+    public static Materials EnderAirUnstable;
+    public static Materials EnderAirCryostable;
+    public static Materials EnderAirBalanced;
+    public static Materials EnderAirFortified;
+    public static Materials EnderAirPyrostable;
+    public static Materials TeleportatiumStable;
+    public static Materials TeleportatiumSemistable;
+    public static Materials TeleportatiumUnstableVolatile;
+    public static Materials TeleportatiumUnstableUnbalanced;
+    public static Materials TeleportatiumUnstableSemifluid;
+    public static Materials TeleportatiumUnstableHypercritical;
+    public static Materials TeleportatiumUnstableAmalgam;
+    public static Materials TeleportatiumEncased;
 
     // Misc GT Magic Materials
     public static Materials ComplexityCatalyst;
