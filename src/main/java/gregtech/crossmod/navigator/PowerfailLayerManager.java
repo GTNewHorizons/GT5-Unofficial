@@ -100,4 +100,13 @@ public class PowerfailLayerManager extends InteractableLayerManager {
             }
         }
     }
+
+    public void removePowerfail(long coord) {
+        if (getCurrentDimCache().getOrDefault(coord, null) != null) {
+            removeLocation(coord);
+        }
+        if (wrappers.containsKey(coord)) {
+            wrappers.remove(coord);
+        }
+    }
 }
