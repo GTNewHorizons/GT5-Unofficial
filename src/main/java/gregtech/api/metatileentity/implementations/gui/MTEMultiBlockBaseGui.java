@@ -137,7 +137,7 @@ public class MTEMultiBlockBaseGui {
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)))
-            .childIf(base.canBeMuffled(), createMufflerButton())
+            .childIf(base.canBeMuffled(), createMufflerButton(-4, -9))
             .child(createCoverTabs(syncManager, guiData, uiSettings));
     }
 
@@ -154,6 +154,9 @@ public class MTEMultiBlockBaseGui {
 
         int borderRadius = 4;
         int maxWidth = getBasePanelWidth() - borderRadius * 2;
+        // No, there is no setMaxWidth, otherwise i'd just do that because the alignment makes no difference.
+        // -1 means infinite width because i just want the title width
+        IKey.renderer.setAlignment(Alignment.CenterLeft, -1);
         int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
         int widgetWidth = Math.min(maxWidth, titleWidth);
 
@@ -190,16 +193,17 @@ public class MTEMultiBlockBaseGui {
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .childIf(base.supportsLogoHoverableColumn(), createTerminalCornerColumn(panel, syncManager)));
+                    .childIf(base.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager)));
     }
 
     protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 10, 0)
             .bottomRel(0, 10, 0)
-            .child(createShutdownReasonHoverableTerminal(syncManager))
-            .child(createMaintIssueHoverableTerminal(syncManager))
-            .child(
+            .childIf(base.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
+            .childIf(base.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
+            .childIf(
+                base.supportsLogo(),
                 new Widget<>().size(18, 18)
                     .marginTop(4)
                     .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
@@ -790,16 +794,15 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
-    protected IWidget createMufflerButton() {
+    protected IWidget createMufflerButton(int topRelOffset, int rightRelOffset) {
         return new ToggleButton().syncHandler("mufflerSyncer")
             .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
             .size(12, 12)
-            .topRel(0, -4, 0)
-            .rightRel(0, -8, 0)
+            .topRel(0, topRelOffset, 0)
+            .rightRel(0, rightRelOffset, 0)
             .excludeAreaInNEI(true);
-
     }
 
     private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {

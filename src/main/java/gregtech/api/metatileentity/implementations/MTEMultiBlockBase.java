@@ -2905,15 +2905,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
+            .widget(createMuffleButton(builder, this.canBeMuffled()))
             .widget(createInputSeparationButton(builder))
             .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
             .widget(createStructureUpdateButton(builder));
-
-        if (canBeMuffled()) {
-            builder.widget(createMuffleButton(builder));
-        }
 
         if (supportsPowerPanel()) {
             builder.widget(createPowerPanelButton(builder));
@@ -2927,8 +2924,22 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
-    public boolean supportsLogoHoverableColumn() {
+    // For MUI2 corner column toggling
+
+    public boolean supportsTerminalCornerColumn() {
         return true;
+    }
+
+    public boolean supportsLogo() {
+        return true;
+    }
+
+    public boolean supportsShutdownReasonHoverable() {
+        return true;
+    }
+
+    public boolean supportsMaintenanceIssueHoverable() {
+        return this.getDefaultHasMaintenanceChecks();
     }
 
     @Override
