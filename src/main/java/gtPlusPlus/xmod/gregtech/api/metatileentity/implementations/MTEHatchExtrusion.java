@@ -1,39 +1,34 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate4by4;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.net.GTPacketSetShape;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.modularui2.widget.GhostShapeSlotWidget;
 
-public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets {
+public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     public static final int shapeSlot = 2;
     public static final int circuitSlot = 3;
@@ -58,6 +53,8 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
         // Containers, Misc
         ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
         ItemList.Shape_Extruder_Cell.get(1) };
+
+    private boolean oneStackLimit = false;
 
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -91,18 +88,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
         return null;
     }
 
-    private class ShapeContainer extends BaseSlot {
-
-        public ShapeContainer(IItemHandlerModifiable inventory, int index) {
-            super(inventory, index, true);
-        }
-
-        @Override
-        public boolean isItemValidPhantom(ItemStack stack) {
-            return super.isItemValidPhantom(stack) && getBaseMetaTileEntity().isItemValidForSlot(getSlotIndex(), stack);
-        }
-    }
-
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == shapeSlot) return findMatchingShape(aStack) != null;
@@ -129,102 +114,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
         GTValues.NW.sendToServer(new GTPacketSetShape(this, selected));
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addCloseListener(() -> uiButtonCount = 0);
-        addSortStacksButton(builder);
-        addOneStackLimitButton(builder);
-
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int row = 0; row * 4 < inventoryHandler.getSlots() - 1; row++) {
-            int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4 - 2, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                int slotIndex = row * 4 + column;
-                if (slotIndex >= shapeSlot) slotIndex++;
-                if (slotIndex >= circuitSlot) slotIndex++;
-                scrollable.widget(
-                    new SlotWidget(inventoryHandler, slotIndex).setPos(column * 18, row * 18)
-                        .setSize(18, 18));
-            }
-        }
-        builder.widget(
-            scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(52, 7));
-
-        final AtomicBoolean dialogOpened = new AtomicBoolean(false);
-        builder.widget(new SlotWidget(new ShapeContainer(inventoryHandler, shapeSlot)) {
-
-            @Override
-            protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                final ItemStack current = inventoryHandler.getStackInSlot(shapeSlot);
-                final int currentIndex = current != null ? findMatchingShapeIndex(current) : -1;
-                ItemStack newShape = current;
-                if (clickData.shift && clickData.mouseButton == 0) {
-                    if (NetworkUtils.isClient() && !dialogOpened.get()) {
-                        openSelectShapeDialog(getContext(), dialogOpened);
-                    }
-                    return;
-                } else {
-                    int newIndex = currentIndex;
-                    if (clickData.mouseButton == 0) newIndex++;
-                    else if (clickData.mouseButton == 1) newIndex--;
-                    newIndex = Math.floorMod(newIndex, extruderShapes.length);
-                    newShape = extruderShapes[newIndex];
-                }
-                setShape(newShape);
-            }
-
-            @Override
-            protected void phantomScroll(int direction) {
-                if (GTMod.proxy.invertCircuitScrollDirection) {
-                    phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
-                } else {
-                    phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
-                }
-            }
-
-            @Override
-            public List<String> getExtraTooltip() {
-                return Arrays.asList(
-                    EnumChatFormatting.DARK_GRAY + EnumChatFormatting.getTextWithoutFormattingCodes(
-                        StatCollector.translateToLocal("GT5U.machines.select_shape.tooltip.1")),
-                    EnumChatFormatting.DARK_GRAY + EnumChatFormatting.getTextWithoutFormattingCodes(
-                        StatCollector.translateToLocal("GT5U.machines.select_shape.tooltip.2")));
-            }
-        }.setOverwriteItemStackTooltip(list -> {
-            list.removeIf(
-                line -> line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.0"))
-                    || line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.1")));
-            return list;
-        })
-            .disableShiftInsert()
-            .setHandlePhantomActionClient(true)
-            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_EXTRUDER_SHAPE)
-            .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_shape.tooltip"))
-            .setTooltipShowUpDelay(10)
-            .setPos(132, 34));
-    }
-
-    protected void openSelectShapeDialog(ModularUIContext uiContext, AtomicBoolean dialogOpened) {
-        final IItemHandlerModifiable inv = getInventoryHandler();
-        if (inv == null) return;
-        uiContext.openClientWindow(
-            player -> new SelectItemUIFactory(
-                GTUtility.translate("GT5U.machines.select_shape"),
-                getStackForm(0),
-                this::onShapeSelected,
-                Arrays.asList(extruderShapes),
-                findMatchingShapeIndex(inv.getStackInSlot(shapeSlot))).setAnotherWindow(true, dialogOpened)
-                    .setGuiTint(getGUIColorization())
-                    .setCurrentGetter(() -> inv.getStackInSlot(shapeSlot))
-                    .createWindow(new UIBuildContext(player)));
-    }
-
-    protected void onShapeSelected(ItemStack selected) {
-        setShape(selected);
-    }
-
-    private int findMatchingShapeIndex(ItemStack stack) {
+    public int findMatchingShapeIndex(ItemStack stack) {
         for (int i = 0; i < extruderShapes.length; i++) {
             if (GTUtility.areStacksEqual(extruderShapes[i], stack, true)) return i;
         }
@@ -251,6 +141,13 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
             }
         }
         if (!disableSort) fillStacksIntoFirstSlots();
+        if (oneStackLimit) {
+            for (ItemStack itemStack : mInventory) {
+                if (itemStack != null) {
+                    itemStack.stackSize = Math.min(1, itemStack.stackSize);
+                }
+            }
+        }
     }
 
     @Override
@@ -280,5 +177,45 @@ public class MTEHatchExtrusion extends MTEHatchInputBus implements IAddUIWidgets
     @Override
     public int getCircuitSlot() {
         return circuitSlot;
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        syncManager.registerSlotGroup("item_inv", 1);
+        syncManager.registerSlotGroup("shape_slot", 1);
+        syncManager.registerSlotGroup("circuit_slot", 1);
+
+        syncManager.syncValue("oneStackLimit", new BooleanSyncValue(() -> oneStackLimit, v -> oneStackLimit = v));
+
+        IntSyncValue shapeSyncHandler = new IntSyncValue(() -> {
+            ItemStack current = inventoryHandler.getStackInSlot(shapeSlot);
+            return current != null ? findMatchingShapeIndex(current) : -1;
+        }, index -> {
+            if (index >= 0 && index < extruderShapes.length) {
+                setShape(extruderShapes[index]);
+            } else {
+                setShape(null);
+            }
+        });
+
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .build();
+
+        panel.child(gridTemplate4by4(index -> {
+            if (index >= shapeSlot) index++;
+            if (index >= circuitSlot) index++;
+            return new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"));
+        }).pos(52, 7));
+
+        panel.child(
+            new GhostShapeSlotWidget(this).slot(new ModularSlot(inventoryHandler, shapeSlot))
+                .pos(132, 34));
+
+        return panel;
     }
 }
