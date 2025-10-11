@@ -3,13 +3,33 @@ package gregtech.loaders.postload.chains;
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.electrolyzerNonCellRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 
+import goodgenerator.util.ItemRefer;
+import gregtech.api.enums.MaterialsGTNH;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -18,6 +38,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 
 public class EnderLineRecipes {
@@ -25,6 +46,125 @@ public class EnderLineRecipes {
     static ItemStack missing = new ItemStack(Blocks.fire);
 
     public static void run() {
+
+        // Ender Air Processing
+        if (EtFuturumRequiem.isModLoaded()) {
+
+            // GoG recipe only
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(EtFuturumRequiem.ID, "chorus_flower", 16, 1), GTUtility.getIntegratedCircuit(24))
+                .itemOutputs(
+                            getModItem(EtFuturumRequiem.ID, "chorus_fruit_popped", 8, 1)
+                )
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("molten.uraniumtetrafluoride"), 1440),
+                    new FluidStack(FluidRegistry.getFluid("vapor_of_levity"), 10),
+                    new FluidStack(FluidRegistry.getFluid("liquid_sunshine"), 10))
+                .fluidOutputs(Materials.EnderAir.getGas(1440))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(multiblockChemicalReactorRecipes);
+
+            // Ender Air fusion
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAir.getGas(144), new FluidStack(FluidRegistry.getFluid("ender"), 144))
+                .fluidOutputs(Materials.EnderAirUnstable.getGas(144))
+                .duration(3 * SECONDS + 12 * TICKS)
+                .eut(3145728)
+                .metadata(FUSION_THRESHOLD, 240_000_000L)
+                .addTo(fusionRecipes);
+
+            // Ender Air Cryo
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CallistoIce, 8))
+                .fluidInputs(Materials.EnderAirUnstable.getGas(10000),new FluidStack(FluidRegistry.getFluid("cryotheum"), 1000))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 8))
+                .fluidOutputs(Materials.EnderAirCryostable.getGas(10000))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(vacuumFreezerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAirCryostable.getGas(20000))
+
+                .fluidOutputs(Materials.TeleportatiumUnstableVolatile.getGas()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(distillationTowerRecipes);
+
+            // Ender Air Balanced
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAirUnstable.getGas(10000))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.EndSteel, 8),GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ichorium, 8), GTUtility.getIntegratedCircuit(3))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Tungsten, 4),GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Ichorium, 4))
+                .fluidOutputs(Materials.EnderAirBalanced.getGas(10000))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .metadata(COIL_HEAT, 9001)
+                .addTo(blastFurnaceRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAirBalanced.getGas(20000))
+
+                .fluidOutputs(Materials.TeleportatiumUnstableUnbalanced.getGas()
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(electrolyzerNonCellRecipes);
+
+            // Ender Air Fortified
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAirUnstable.getGas(10000), Materials.Galgadorian.getFluid(100), Materials.ReinforceGlass.getFluid(1000))
+                .fluidOutputs(Materials.EnderAirFortified.getGas(10000))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(multiblockChemicalReactorRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAirFortified.getGas(20000))
+
+                .fluidOutputs(Materials.TeleportatiumUnstableSemifluid.getGas()
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sifterRecipes);
+
+            // Ender Air Pyro
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAirUnstable.getGas(10000),new FluidStack(FluidRegistry.getFluid("pyrotheum"), 1000))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 8),GTOreDictUnificator.get(OrePrefixes.dust, MaterialsAlloy.ENERGYCRYSTAL, 8))
+                .fluidOutputs(Materials.EnderAirPyrostable.getGas(10000))
+                .duration(2 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(mixerNonCellRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(Materials.EnderAirPyrostable.getGas(20000))
+
+                .fluidOutputs(Materials.TeleportatiumUnstableHypercritical.getGas()
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeNonCellRecipes);
+
+
+        }
+
+        // L3 and Teleportatium processing
+        {
+            // Neutron source alternate recipe
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemRefer.High_Density_Uranium.get(8))
+                .fluidInputs(Materials.Steel.getFluid(41472))
+                .itemOutputs(ItemRefer.Neutron_Source.get(8))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(autoclaveRecipes);
+        }
 
         EnderLineRecipes.addEncasedTeleportatiumParts();
     }
