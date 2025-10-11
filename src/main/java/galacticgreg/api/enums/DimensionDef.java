@@ -8,6 +8,7 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
 
+import cpw.mods.fml.common.Optional;
 import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
 import gregtech.api.enums.Mods;
@@ -225,12 +226,23 @@ public enum DimensionDef {
     }
 
     public static String getDimensionName(World world) {
+        if (Mods.GalacticraftCore.isModLoaded()) {
+            String name = getGCDimensionName(world);
+
+            if (name != null) return name;
+        }
+
+        return world.provider.getDimensionName();
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.GALACTICRAFT_CORE)
+    private static String getGCDimensionName(World world) {
         if (world.provider instanceof WorldProviderSpace worldProviderSpace) {
             return worldProviderSpace.getCelestialBody()
                 .getName();
-        } else {
-            return world.provider.getDimensionName();
         }
+
+        return null;
     }
 
     public static ModDimensionDef getDefForWorld(World world) {
