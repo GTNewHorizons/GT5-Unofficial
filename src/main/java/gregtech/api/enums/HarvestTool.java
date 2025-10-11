@@ -33,6 +33,7 @@ public enum HarvestTool {
     }
 
     public static HarvestTool fromMeta(int meta) {
+        // If the enum grows more, replace this with a static lookup table.
         return switch (meta) {
             // spotless:off
             case  0 -> WrenchLevel0;
