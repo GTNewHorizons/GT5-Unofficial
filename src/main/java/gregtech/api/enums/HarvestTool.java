@@ -47,6 +47,9 @@ public enum HarvestTool {
             case 10 -> CutterLevel2;
             case 11 -> CutterLevel3;
             case 12 -> PickaxeLevel0;
+            case 13 -> PickaxeLevel1;
+            case 14 -> PickaxeLevel2;
+            case 15 -> PickaxeLevel3;
             default -> throw new IllegalArgumentException("Unknown tool meta: " + meta);
         };
     }
