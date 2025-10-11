@@ -57,6 +57,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.CustomItemList;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AssemblerRecipes implements Runnable {
 
     @Override
@@ -4465,7 +4466,7 @@ public class AssemblerRecipes implements Runnable {
         // Void hatch
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 0))
+                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 1))
                 .itemOutputs(ItemList.Hatch_Void.get(1))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

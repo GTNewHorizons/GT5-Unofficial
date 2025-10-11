@@ -83,9 +83,11 @@ public class ItemEjectionHelper {
         List<ItemParallelData> outputParallels = new ArrayList<>(outputs.size());
 
         PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(
-            Comparator.comparingInt(output -> -output.remaining.stackSize));
+            Comparator.comparingDouble(output -> -output.remaining.stackSize / (double) output.perParallel));
 
         for (var e : Object2LongMaps.fastIterable(GTUtility.getItemStackHistogram(outputs))) {
+            if (e.getLongValue() <= 0) continue;
+
             GTUtility.ItemId id = e.getKey();
             int amount = GTUtility.longToInt(e.getLongValue());
 
