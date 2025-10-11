@@ -255,11 +255,11 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 3))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 1))
-            .fluidInputs(GTModHandler.getDistilledWater(1_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 15))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 36))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 7))
+            .fluidInputs(GTModHandler.getDistilledWater(14_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(20_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
