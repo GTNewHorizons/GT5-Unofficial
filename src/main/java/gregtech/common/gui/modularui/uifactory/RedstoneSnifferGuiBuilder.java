@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
@@ -44,6 +43,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.CoverPosition;
 import gregtech.common.items.ItemRedstoneSniffer;
@@ -284,10 +284,7 @@ public class RedstoneSnifferGuiBuilder {
                                 .value(SyncHandlers.string(() -> ownerFilter, filter -> { ownerFilter = filter; }))))
                 .child(data));
 
-        IDrawable background = new Rectangle().setColor(Color.rgb(53, 46, 77));
-        panel.background(background)
-            .hoverBackground(background);
-        return panel;
+        return panel.widgetTheme(GTWidgetThemes.BACKGROUND_REDSTONE_SNIFFER);
     }
 
     public boolean canSeeCovers(GuiData guiData, String uuid) {

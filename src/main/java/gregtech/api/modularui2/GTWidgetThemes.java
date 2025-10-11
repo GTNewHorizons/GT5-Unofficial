@@ -46,6 +46,13 @@ public final class GTWidgetThemes {
         .defaultHoverTheme(null)
         .register();
 
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_REDSTONE_SNIFFER = themeApi
+        .widgetThemeKeyBuilder("backgroundRedstoneSniffer", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_REDSTONE_SNIFFER, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
+
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_DUST = registerThemedItemSlot("overlayItemSlotDust");
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_INGOT = registerThemedItemSlot("overlayItemSlotIngot");
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_FURNACE = registerThemedItemSlot(
@@ -75,10 +82,6 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
     public static WidgetThemeKey<WidgetTheme> PICTURE_LOGO = registerThemedTexture("pictureLogo");
-
-    public static void register() {
-
-    }
 
     private static WidgetThemeKey<WidgetTheme> registerThemedTexture(String textureThemeId) {
         return themeApi.widgetThemeKeyBuilder(textureThemeId, WidgetTheme.class)

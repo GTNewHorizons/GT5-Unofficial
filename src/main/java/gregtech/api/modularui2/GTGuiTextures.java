@@ -73,6 +73,13 @@ public final class GTGuiTextures {
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
+
+    public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
+        .location(GregTech.ID, "gui/background/redstone_sniffer")
+        .imageSize(195, 136)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_REDSTONE_SNIFFER)
+        .build();
     // endregion background
 
     // region overlay
