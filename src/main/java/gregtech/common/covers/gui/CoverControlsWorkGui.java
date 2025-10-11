@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -11,7 +13,6 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverControlsWork;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
