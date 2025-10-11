@@ -8,15 +8,18 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -159,18 +162,34 @@ public final class GTBaseGuiBuilder {
     }
 
     private IWidget createTitle() {
+        // client side assumed
         String title = mte.getLocalName();
-        return new ParentWidget<>().coverChildren()
+
+        int borderRadius = 4;
+        int maxWidth = width - borderRadius * 2;
+        int titleWidth = TextRenderer.getFontRenderer()
+            .getStringWidth(title);
+        int widgetWidth = Math.min(maxWidth, titleWidth);
+
+        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+        int heightPerRow = (int) (IKey.renderer.getFontHeight());
+        int height = heightPerRow * rows;
+
+        TextWidget titleTextWidget = IKey.str(title)
+            .asWidget()
+            .alignment(Alignment.TopLeft)
+            .marginLeft(5)
+            .marginRight(5)
+            .marginTop(5)
+            .marginBottom(4);
+
+        return new SingleChildWidget<>().coverChildren()
             .topRelAnchor(0, 1)
+            .height(height + 10)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
-                IKey.str(title)
-                    .asWidget()
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
+                titleTextWidget.height(height)
+                    .width(widgetWidth));
     }
 
     private IWidget createCoverTabs() {
