@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
@@ -17,12 +18,17 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
+import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
+import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
+import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.electrolyzerNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -39,6 +45,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 
 public class EnderLineRecipes {
@@ -222,6 +229,68 @@ public class EnderLineRecipes {
                 .eut(0)
                 .metadata(NKE_RANGE, computeRangeNKE(1100, 500))
                 .addTo(neutronActivatorRecipes);
+
+            // Unstable Amalgam
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.HeeEndium, 2L))
+                .fluidInputs(
+                    Materials.TeleportatiumUnstableVolatile.getGas(4020),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(4020),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(4020),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(4020))
+                .fluidOutputs(
+                    Materials.TeleportatiumUnstableAmalgam.getGas(8080),
+                    new FluidStack(FluidRegistry.getFluid("sludge"), 6000))
+                .duration(33 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .metadata(CHEMPLANT_CASING_TIER, 7)
+                .addTo(chemicalPlantRecipes);
+
+            // Ender Goo recipe
+
+            // QFT Recipe and catalyst
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 64L),
+                    getModItem(EtFuturumRequiem.ID, "chorus_flower", 64, 0),
+                    Materials.Glowstone.getNanite(64),
+                    getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 64L, 6, missing),
+                    GregtechItemList.PinkMetalCatalyst.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TeleportatiumEncased, 1L),
+                    GTUtility.getIntegratedCircuit(10))
+                .fluidInputs(Materials.TeleportatiumUnstableAmalgam.getGas(10000))
+                .itemOutputs(GregtechItemList.TeleportiumCatalyst.get(1))
+                .duration(3 * SECONDS + 4 * TICKS)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 64L),
+                    getModItem(EtFuturumRequiem.ID, "chorus_flower", 64, 0))
+                .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 64L, 6, missing))
+                .fluidInputs(
+                    Materials.NefariousOil.getGas(10000),
+                    Materials.EnderAirUnstable.getGas(10000),
+                    Materials.TeleportatiumUnstableAmalgam.getGas(1000),
+                    new FluidStack(FluidRegistry.getFluid("endergoo"), 4000))
+                .fluidOutputs(
+                    Materials.TeleportatiumStable.getGas(800),
+                    Materials.TeleportatiumUnstableVolatile.getGas(1000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(1000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(1000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(1000),
+                    Materials.EnderAir.getGas(1000))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UEV)
+                .metadata(QFT_CATALYST, GregtechItemList.TeleportiumCatalyst.get(0))
+                .metadata(QFT_FOCUS_TIER, 3)
+                .addTo(quantumForceTransformerRecipes);
+
         }
 
         EnderLineRecipes.addEncasedTeleportatiumParts();
