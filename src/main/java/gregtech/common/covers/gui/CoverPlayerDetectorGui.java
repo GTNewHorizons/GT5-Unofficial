@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -45,23 +47,23 @@ public class CoverPlayerDetectorGui extends CoverGui<CoverPlayerDetector> {
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.ANY_PLAYER))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltipLine(IKey.str(GTUtility.trans("068.1", "Emit if any Player is close")))
+                        .addTooltipLine(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_Player_Close")))
                         .size(16),
-                    IKey.str(GTUtility.trans("319", "Any player"))
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Any_Player"))
                         .asWidget())
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.OTHER_PLAYERS))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltipLine(IKey.str(GTUtility.trans("069.1", "Emit if other Player is close")))
+                        .addTooltipLine(IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_Player_No_Close")))
                         .size(16),
-                    IKey.str(GTUtility.trans("320", "Other players"))
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Other_Players"))
                         .asWidget())
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.ONLY_OWNER))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltipLine(IKey.str(GTUtility.trans("070", "Emit if you are close")))
+                        .addTooltipLine(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Emit_You_Close")))
                         .size(16),
-                    IKey.str(GTUtility.trans("321", "Only owner"))
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.Player_Detector.Only_Owner"))
                         .asWidget()));
     }
 }
