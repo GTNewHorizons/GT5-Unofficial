@@ -38,12 +38,6 @@ public final class GTWidgetThemes {
         .defaultHoverTheme(null)
         .register();
 
-    // themeApi.registerWidgetTheme(
-    // "textTitle",
-    // new WidgetTheme(0, 0, null, Color.WHITE.main, 0x404040, false, 0),
-    // null,
-    // WidgetTheme::new);
-
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_POPUP = registerThemedTexture("backgroundPopup");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
@@ -51,11 +45,6 @@ public final class GTWidgetThemes {
         .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TEXT_FIELD, Color.WHITE.main, 0xFAFAFA, false, 0))
         .defaultHoverTheme(null)
         .register();
-    // themeApi.registerWidgetTheme(
-    // "backgroundTerminal",
-    // new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TEXT_FIELD, Color.WHITE.main, 0xFAFAFA, false, 0),
-    // null,
-    // WidgetTheme::new);
 
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_DUST = registerThemedItemSlot("overlayItemSlotDust");
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_INGOT = registerThemedItemSlot("overlayItemSlotIngot");
@@ -74,21 +63,11 @@ public final class GTWidgetThemes {
             new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54))
         .defaultHoverTheme(null)
         .register();
-    // themeApi.registerWidgetTheme(
-    // "progressbarBoilerHeat",
-    // new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54),
-    // null,
-    // ProgressbarWidgetTheme::new);
     public static WidgetThemeKey<WidgetTheme> PROGRESSBAR_FUEL = themeApi
         .widgetThemeKeyBuilder("progressbarFuel", WidgetTheme.class)
         .defaultTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
         .defaultHoverTheme(null)
         .register();
-    // themeApi.registerWidgetTheme(
-    // "progressbarFuel",
-    // new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14),
-    // null,
-    // ProgressbarWidgetTheme::new);
 
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_ENABLED = registerThemedButton("buttonCoverTabEnabled");
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_DISABLED = registerThemedButton(
