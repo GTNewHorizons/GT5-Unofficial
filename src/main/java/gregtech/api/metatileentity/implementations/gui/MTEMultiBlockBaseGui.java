@@ -139,6 +139,7 @@ public class MTEMultiBlockBaseGui {
             .doesAddGregTechLogo(false)
             // Has to be replaced with inventory row to fit buttons
             .doesBindPlayerInventory(false)
+            .doesAddMufflerButton(base.canBeMuffled())
             .build();
     }
 
