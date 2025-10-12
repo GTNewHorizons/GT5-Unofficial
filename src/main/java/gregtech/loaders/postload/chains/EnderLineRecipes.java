@@ -195,7 +195,7 @@ public class EnderLineRecipes {
 
         }
 
-        // L3 and Teleportatium processing
+        // Teleportatium processing
         {
             // Neutron source alternate recipe
 
@@ -265,6 +265,7 @@ public class EnderLineRecipes {
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(CHEMPLANT_CASING_TIER, 5)
                 .addTo(chemicalPlantRecipes);
+
             // QFT Recipe and catalyst
 
             GTValues.RA.stdBuilder()
@@ -309,6 +310,88 @@ public class EnderLineRecipes {
 
         }
 
+        // L3 Teleportatium processing ( Move from EXXON chem to new multiblock when done)
+        {
+
+            // FORMATION
+
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(10000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(10000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(10000))
+                .fluidOutputs(
+                    Materials.TeleportatiumSemistable.getFluid(3000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(1000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .metadata(CHEMPLANT_CASING_TIER, 7)
+                .addTo(chemicalPlantRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(10000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(10000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(10000))
+                .fluidOutputs(
+                    Materials.TeleportatiumSemistable.getFluid(3000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(1000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .metadata(CHEMPLANT_CASING_TIER, 7)
+                .addTo(chemicalPlantRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(10000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(10000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(10000))
+                .fluidOutputs(
+                    Materials.TeleportatiumSemistable.getFluid(3000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(1000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .metadata(CHEMPLANT_CASING_TIER, 7)
+                .addTo(chemicalPlantRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(10000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(10000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(10000))
+                .fluidOutputs(
+                    Materials.TeleportatiumSemistable.getFluid(3000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(1000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .metadata(CHEMPLANT_CASING_TIER, 7)
+                .addTo(chemicalPlantRecipes);
+
+            // STABILIZATION
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    getModItem(EtFuturumRequiem.ID, "chorus_fruit_popped", 8, 0),
+                    ItemList.Teleportium_Stable_Seed.get(1))
+                .fluidInputs(
+                    Materials.Grade4PurifiedWater.getFluid(4000),
+                    Materials.TeleportatiumSemistable.getFluid(10000))
+                .fluidOutputs(Materials.TeleportatiumStable.getFluid(7500))
+                .itemOutputs(getModItem(HardcoreEnderExpansion.ID, "instability_orb", 1, 0))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .metadata(CHEMPLANT_CASING_TIER, 8)
+                .addTo(chemicalPlantRecipes);
+        }
+
         EnderLineRecipes.addEncasedTeleportatiumParts();
     }
 
@@ -346,7 +429,7 @@ public class EnderLineRecipes {
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.TeleportatiumEncased, multiplier))
             .fluidInputs(
                 // new FluidStack(solderUEV, 144),
-                Materials.TeleportatiumStable.getFluid(144L * inverseMultiplier),
+                Materials.TeleportatiumStable.getFluid(288L * inverseMultiplier),
                 Materials.EnderAirFortified.getFluid(144L * inverseMultiplier),
                 Materials.EnderAirBalanced.getFluid(144L * inverseMultiplier))
             .metadata(IGRecipeMaps.MODULE_TIER, 1)
@@ -363,7 +446,7 @@ public class EnderLineRecipes {
                 getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 2, 4),
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4L * inverseMultiplier, 6, missing))
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.TeleportatiumEncased, multiplier))
-            .fluidInputs(Materials.TeleportatiumStable.getMolten(144L * inverseMultiplier))
+            .fluidInputs(Materials.TeleportatiumStable.getMolten(288L * inverseMultiplier))
             .fluidOutputs(Materials.EnderAir.getGas(14L * inverseMultiplier))
             .metadata(IGRecipeMaps.MODULE_TIER, 1)
             .duration(10 * SECONDS)
