@@ -2441,15 +2441,15 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public boolean isItemStackUsable(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mEnchantmentTools != null)) {
-            Enchantment tEnchant = aMaterial.mEnchantmentTools == Enchantment.fortune ? Enchantment.looting
-                : aMaterial.mEnchantmentTools;
+        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
+            Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
+                : aMaterial.mToolEnchantment;
             if (tEnchant.type == EnumEnchantmentType.weapon) {
                 NBTTagCompound tNBT = GTUtility.ItemNBT.getNBT(aStack);
                 if (!tNBT.getBoolean("GT.HasBeenUpdated")) {
                     tNBT.setBoolean("GT.HasBeenUpdated", true);
                     GTUtility.ItemNBT.setNBT(aStack, tNBT);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mEnchantmentToolsLevel);
+                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
                 }
             }
         }

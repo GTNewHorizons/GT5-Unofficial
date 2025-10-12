@@ -135,7 +135,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
         }
 
-        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial) {
+        if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial) {
 
             if (!aNoSmashing) {
 
@@ -412,7 +412,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial && !aNoSmashing) {
+        if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial && !aNoSmashing) {
 
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
