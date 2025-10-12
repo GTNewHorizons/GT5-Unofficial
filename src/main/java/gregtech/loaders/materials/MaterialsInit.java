@@ -3610,7 +3610,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Glowstone")
             .setDefaultLocalName("Glowstone")
             .setMetaItemSubID(811)
-            .setIconSet(TextureSet.SET_SHINY)
+            .setIconSet(TextureSet.SET_GLOWSTONE)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ffff00)
             .addDustItems()
