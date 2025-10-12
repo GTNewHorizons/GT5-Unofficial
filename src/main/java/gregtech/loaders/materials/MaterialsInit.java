@@ -14898,47 +14898,169 @@ public class MaterialsInit {
     }
 
     private static Materials loadEnderAir() {
-
+        return new MaterialBuilder().setName("EnderAir")
+            .setDefaultLocalName("Ender Air")
+            .setMetaItemSubID(477)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00197545)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadEnderAirUnstable() {
-
+        return new MaterialBuilder().setName("EnderAirUnstable")
+            .setDefaultLocalName("Unstable Ender Air")
+            .setMetaItemSubID(478)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00036916)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadEnderAirCryostable() {
-
+        return new MaterialBuilder().setName("EnderAirCryostable")
+            .setDefaultLocalName("Cryostable Ender Air")
+            .setMetaItemSubID(479)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x005cedd3)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadEnderAirBalanced() {
-
+        return new MaterialBuilder().setName("EnderAirBalanced")
+            .setDefaultLocalName("Balanced Ender Air")
+            .setMetaItemSubID(480)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x005fb509)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadEnderAirFortified() {
-
+        return new MaterialBuilder().setName("EnderAirFortified")
+            .setDefaultLocalName("Fortified Ender Air")
+            .setMetaItemSubID(481)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x001c361a)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadEnderAirPyrostable() {
-
+        return new MaterialBuilder().setName("EnderAirPyrostable")
+            .setDefaultLocalName("Pyrostable Ender Air")
+            .setMetaItemSubID(482)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00e4f07d)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumStable() {
-
+        return new MaterialBuilder().setName("TeleportatiumStable")
+            .setDefaultLocalName("Teleportatium")
+            .setMetaItemSubID(483)
+            .setIconSet(new TextureSet("Teleportatium", true))
+            .setARGB(0x00ffffff)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumSemistable() {
-
+        return new MaterialBuilder().setName("TeleportatiumSemistable")
+            .setDefaultLocalName("Semistable Teleportatium")
+            .setMetaItemSubID(484)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x003718b5)
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumUnstableVolatile() {
-
+        return new MaterialBuilder().setName("TeleportatiumUnstableVolatile")
+            .setDefaultLocalName("Volatile Teleportatium")
+            .setMetaItemSubID(487)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00c47b74)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumUnstableUnbalanced() {
-
+        return new MaterialBuilder().setName("TeleportatiumUnstableUnbalanced")
+            .setDefaultLocalName("Unbalanced Teleportatium")
+            .setMetaItemSubID(953)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00cca2f2)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumUnstableSemifluid() {
-
+        return new MaterialBuilder().setName("TeleportatiumUnstableSemifluid")
+            .setDefaultLocalName("Semifluid Teleportatium")
+            .setMetaItemSubID(954)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x000f1d4a)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumUnstableHypercritical() {
-
+        return new MaterialBuilder().setName("TeleportatiumUnstableHypercritical")
+            .setDefaultLocalName("Hypercritical Teleportatium")
+            .setMetaItemSubID(955)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00400c0b)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumUnstableAmalgam() {
-
+        return new MaterialBuilder().setName("TeleportatiumUnstableAmalgam")
+            .setDefaultLocalName("Unstable Amalgam")
+            .setMetaItemSubID(958)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x0017064f)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
     }
+
     public static Materials loadTeleportatiumEncased() {
-        
+        return new MaterialBuilder().setName("TeleportatiumEncased")
+            .setDefaultLocalName("Encased Teleportatium")
+            .setMetaItemSubID(959)
+            .setIconSet(new TextureSet("teleportatiumencased", true))
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0xffffffff)
+            .addMetalItems()
+            .addGearItems()
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addSubTag(SubTag.NO_RECIPES)
+            .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefixBlacklist(OrePrefixes.cellMolten)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .addOrePrefixBlacklist(OrePrefixes.spring)
+            .addOrePrefixBlacklist(OrePrefixes.springSmall)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
     }
-
 
 }
