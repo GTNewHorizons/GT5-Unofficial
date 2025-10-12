@@ -18,7 +18,7 @@
  * spotless:on
  */
 
-package kubatech.loaders.item.items;
+package kubatech.loaders.item.kubaitem.items;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +41,7 @@ import net.minecraftforge.common.AchievementPage;
 
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.ItemLoader;
-import kubatech.loaders.item.ItemProxy;
+import kubatech.loaders.item.kubaitem.ItemProxy;
 
 public class ItemTeaCollection extends ItemProxy {
 
