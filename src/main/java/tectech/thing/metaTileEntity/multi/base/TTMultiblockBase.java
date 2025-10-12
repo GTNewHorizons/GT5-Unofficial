@@ -62,6 +62,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -821,12 +822,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
-    /**
-     * mining level...
-     */
     @Override
     public byte getTileEntityBaseType() {
-        return 3;
+        return HarvestTool.WrenchLevel3.toTileEntityBaseType();
     }
 
     // endregion
