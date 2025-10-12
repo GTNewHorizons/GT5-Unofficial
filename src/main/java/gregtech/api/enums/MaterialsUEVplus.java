@@ -340,7 +340,6 @@ public class MaterialsUEVplus {
             .setColor(Dyes.dyePurple)
             .setARGB(0xff6401ff)
             .addCell()
-            .addPlasma()
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
@@ -391,7 +390,6 @@ public class MaterialsUEVplus {
             .setColor(Dyes.dyePurple)
             .setARGB(0xff6401ff)
             .addCell()
-            .addPlasma()
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
@@ -404,7 +402,6 @@ public class MaterialsUEVplus {
             .setColor(Dyes.dyePurple)
             .setARGB(0xff6401ff)
             .addCell()
-            .addPlasma()
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
