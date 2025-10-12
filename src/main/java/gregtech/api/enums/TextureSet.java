@@ -73,7 +73,8 @@ public class TextureSet {
         SET_CRYSTALLINE = new TextureSet("crystalline", true), SET_MELODIC = new TextureSet("melodic", true),
         SET_STELLAR = new TextureSet("stellar", true), SET_VIVID = new TextureSet("vivid", true),
         SET_DRACONIUM = new TextureSet("draconium", false),
-        SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false);;
+        SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false),
+        SET_ELECTROTINE = new TextureSet("electrotine", false);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
