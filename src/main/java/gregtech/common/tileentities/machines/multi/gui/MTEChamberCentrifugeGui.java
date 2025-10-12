@@ -126,7 +126,8 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
         IPanelHandler turbinePanel = syncManager // calls the panel itself.
             .panel("turbinePanel", (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            .rightRel(0, 28, 0)
+            //power control + button size + margin, to be changed in panel gap refactor
+            .right(2 + 18 + 4)
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
