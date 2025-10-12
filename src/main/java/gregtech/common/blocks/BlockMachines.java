@@ -38,6 +38,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -86,15 +87,14 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public String getHarvestTool(int aMeta) {
-        if (aMeta >= 8 && aMeta <= 11) {
-            return "cutter";
-        }
-        return "wrench";
+        return HarvestTool.fromMeta(aMeta)
+            .getHarvestTool();
     }
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return aMeta % 4;
+        return HarvestTool.fromMeta(aMeta)
+            .getHarvestLevel();
     }
 
     @Override
