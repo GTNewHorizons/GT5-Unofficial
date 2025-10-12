@@ -123,8 +123,6 @@ public class MTEMultiBlockBaseGui {
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
-        int mufflerButtonPosFromTop = 0;
-        int parentWidgetToRightEdge = 13;
 
         ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
         return panel.child(
@@ -133,7 +131,6 @@ public class MTEMultiBlockBaseGui {
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)));
-        // .childIf(base.canBeMuffled(), createMufflerButton(mufflerButtonPosFromTop, parentWidgetToRightEdge)));
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -762,17 +759,6 @@ public class MTEMultiBlockBaseGui {
 
     protected boolean isPowerSwitchDisabled() {
         return false;
-    }
-
-    protected IWidget createMufflerButton(int posFromTop, int posFromRightOutwards) {
-        return new ToggleButton().syncHandler("mufflerSyncer")
-            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
-            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
-            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
-            .size(12, 12)
-            .top(posFromTop)
-            .right(-posFromRightOutwards)
-            .excludeAreaInRecipeViewer(true);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
