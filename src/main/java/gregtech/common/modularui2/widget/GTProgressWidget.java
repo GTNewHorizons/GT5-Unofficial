@@ -5,7 +5,7 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.widget.Interactable;
-import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
@@ -74,8 +74,8 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
 
     @Override
     public void onInit() {
-        WidgetTheme widgetTheme = getWidgetTheme(getContext().getTheme());
-        if (widgetTheme instanceof ProgressbarWidgetTheme progressbarWidgetTheme) {
+        WidgetThemeEntry<?> widgetTheme = getWidgetTheme(getContext().getTheme());
+        if (widgetTheme.getTheme() instanceof ProgressbarWidgetTheme progressbarWidgetTheme) {
             texture(
                 progressbarWidgetTheme.getEmptyTexture(),
                 progressbarWidgetTheme.getFullTexture(),
