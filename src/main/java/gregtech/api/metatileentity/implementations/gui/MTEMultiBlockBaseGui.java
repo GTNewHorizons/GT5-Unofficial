@@ -300,7 +300,7 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    //TODO: separate panel gap into 'left row' and 'right row', for easier usage
+    // TODO: separate panel gap into 'left row' and 'right row', for easier usage
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
