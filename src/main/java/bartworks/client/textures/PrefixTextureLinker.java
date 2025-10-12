@@ -29,8 +29,8 @@ import gregtech.api.interfaces.IIconContainer;
 @SideOnly(Side.CLIENT)
 public class PrefixTextureLinker implements Runnable {
 
-    public static Map<OrePrefixes, HashMap<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
-    public static Map<OrePrefixes, HashMap<TextureSet, IIconContainer>> texMapBlocks = new HashMap<>();
+    public static Map<OrePrefixes, Map<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
+    public static Map<OrePrefixes, Map<TextureSet, IIconContainer>> texMapBlocks = new HashMap<>();
     public static Map<TextureSet, Short> blockTexMap = new HashMap<>();
 
     private static void fillBlockTexMap() {
