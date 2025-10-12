@@ -322,8 +322,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (!aBaseMetaTileEntity.isServerSide() || aTick % 5 != 0 || currentSpecies == null || !finalizedSpecies)
-            return;
+        if (!mMachine || !aBaseMetaTileEntity.isServerSide()
+            || aTick % 5 != 0
+            || currentSpecies == null
+            || !currentSpecies.getFinalized()) return;
 
         if (status == 1) {
             return;
@@ -353,13 +355,13 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         currentSpecies = new ArtificialOrganism(aNBT);
+
         // so that the casing texture is applied on world load
         casingTier = aNBT.getInteger("casingTier");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-
         super.saveNBTData(currentSpecies.saveAOToCompound(aNBT));
         aNBT.setInteger("casingTier", Math.max(0, casingTier));
     }
@@ -372,11 +374,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -395,8 +392,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         }
         return false;
     }
-
-    Boolean finalizedSpecies = false;
 
     public void createNewAOs() {
 
@@ -417,7 +412,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         nutrientUsage = new FluidStack(type, amount);
 
-        finalizedSpecies = true;
         currentSpecies.finalize(maxAOs);
         for (MTEHatchAOOutput hatch : bioHatches) hatch.setSpecies(currentSpecies);
     }

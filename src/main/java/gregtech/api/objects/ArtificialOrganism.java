@@ -110,7 +110,9 @@ public class ArtificialOrganism {
     }
 
     public void increaseSentience(int amount) {
-        sentience += amount;
+        if (sentience < 100) {
+            sentience = Math.min(100, sentience + amount);
+        }
     }
 
     public int getIntelligence() {
