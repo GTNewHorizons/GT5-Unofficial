@@ -117,7 +117,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.PRIMITIVE;
+        return GTGuiThemes.COKE_OVEN;
     }
 
     @Override

@@ -623,6 +623,14 @@ public final class GTGuiTextures {
         "overlay_slot/overlay_coke_oven_fluid_slot_gauge");
     public static final UITexture BACKGROUND_COKE_OVEN_FLUID_SLOT = fullImageColorableGT(
         "overlay_slot/background_coke_oven_fluid_slot.png");
+    public static final UITexture BACKGROUND_COKE_OVEN_COAL = fullImageColorableGT("overlay_slot/coke_oven_coal.png");
+    public static final UITexture BACKGROUND_COKE_OVEN = UITexture.builder()
+        .location(GregTech.ID, "gui/background/coke_oven")
+        .imageSize(176, 166)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_COKE_OVEN)
+        .build();
 
     // endregion machine modes
     /**

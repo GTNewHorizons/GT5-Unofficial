@@ -39,7 +39,7 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui {
 
         final ItemSlot outputSlot = new ItemSlot()
             .slot(new ModularSlot(base.inventoryHandler, 1).accessibility(false, true))
-            .background(GTGuiTextures.SLOT_ITEM_PRIMITIVE, GTGuiTextures.OVERLAY_SLOT_COAL_STANDARD);
+            .background(GTGuiTextures.SLOT_ITEM_PRIMITIVE, GTGuiTextures.BACKGROUND_COKE_OVEN_COAL);
 
         final FluidSlot fluidSlot = new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTank).canFillSlot(false))
             .alwaysShowFull(false)

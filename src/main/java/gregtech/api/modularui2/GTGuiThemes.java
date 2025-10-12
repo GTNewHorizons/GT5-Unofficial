@@ -147,4 +147,32 @@ public final class GTGuiThemes {
         .themedButton(GTWidgetThemes.BUTTON_COVER_TAB_DISABLED, GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
+    public static final GTGuiTheme COKE_OVEN = GTGuiTheme.builder("gregtech:primitive")
+        .parent(STANDARD)
+        .panel(GTTextureIds.BACKGROUND_COKE_OVEN)
+        .itemSlot(GTTextureIds.SLOT_ITEM_PRIMITIVE)
+        .fluidSlot(GTTextureIds.SLOT_FLUID_PRIMITIVE)
+        .color(Dyes.dyeWhite.toInt())
+        .textColor(0xfafaff)
+        .customTextColor(GTWidgetThemes.TEXT_TITLE, 0xfafaff)
+        .button(GTTextureIds.BUTTON_PRIMITIVE)
+        .simpleToggleButton(GTTextureIds.BUTTON_PRIMITIVE, GTTextureIds.BUTTON_PRIMITIVE_PRESSED, Dyes.dyeWhite.toInt())
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
+        .progressbar(
+            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
+            GTTextureIds.SLOT_FLUID_PRIMITIVE,
+            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
+            54)
+        .themedButton(
+            GTWidgetThemes.BUTTON_COVER_TAB_ENABLED,
+            GTTextureIds.BUTTON_COVER_TAB_NORMAL_PRIMITIVE,
+            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE)
+        .themedButton(GTWidgetThemes.BUTTON_COVER_TAB_DISABLED, GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
 }
