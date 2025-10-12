@@ -76,7 +76,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import gregtech.api.enums.MaterialBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;

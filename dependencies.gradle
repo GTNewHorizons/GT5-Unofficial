@@ -58,7 +58,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.75:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta59:dev') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta60:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.45:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.0:dev") { transitive = false }
@@ -75,7 +75,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:EnderCore:0.5.0:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.5.0:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.121-GTNH:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.12.13-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.13.0-GTNH:dev") { transitive = false }
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.4-GTNH:dev")
 
@@ -139,7 +139,7 @@ dependencies {
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.4:dev')
 
     // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta59:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta60:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
