@@ -47,7 +47,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -545,11 +544,10 @@ public class MTEMultiBlockBaseGui {
     }
 
     private ModularPanel openPowerControlPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
 
-        return new ModularPanel("powerPanel").pos(x, y)
+        return new ModularPanel("powerPanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
             .size(120, 130)
             .child(
                 new Column().sizeRel(1)
