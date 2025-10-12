@@ -623,7 +623,6 @@ public class BWUtil {
 
         return new GTShapedRecipe(
             GTUtility.copy(aResult),
-            aDismantleable,
             aRemovable,
             aKeepNBT,
             aEnchantmentsAdded,

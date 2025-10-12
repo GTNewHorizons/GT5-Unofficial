@@ -16,7 +16,7 @@ public class GTShapedRecipe extends ShapedOreRecipe implements IGTCraftingRecipe
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
 
-    // leave this along please, this is used for addons.
+    @Deprecated
     public GTShapedRecipe(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT,
         Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
         this(aResult, aRemovableByGT, aKeepingNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe);
