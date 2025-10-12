@@ -90,9 +90,10 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         return (ButtonWidget) button;
     }
 
-    default ButtonWidget createMuffleButton(IWidgetBuilder<?> builder) {
+    default ButtonWidget createMuffleButton(IWidgetBuilder<?> builder, boolean canBeMuffled) {
         return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setMuffled(!isMuffled()); })
             .setPlayClickSound(true)
+            .setEnabled(canBeMuffled)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isMuffled()) {
