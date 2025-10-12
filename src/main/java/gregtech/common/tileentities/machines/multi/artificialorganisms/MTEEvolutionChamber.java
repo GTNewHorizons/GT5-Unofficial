@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -75,8 +76,30 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         .<MTEEvolutionChamber>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            new String[][] { { "BBB", "BAB", "BAB", "BAB", "B~B" }, { "BBB", "A A", "A A", "A A", "BBB" },
-                { "BBB", "BAB", "BAB", "BAB", "BBB" } })
+            new String[][] {
+                { "           ", " BBBCCCBBB ", " AAC   CAA ", " AAC   CAA ", " AAC   CAA ", " AAC   CAA ",
+                    " AAC   CAA ", " AAC   CAA ", " AAC   CAA ", " BBB   BBB " },
+                { "  CCCCCCC  ", "BBBBBBBBBBB", "A--BAAAB--A", "A--BAAAB--A", "A--BCCCB--A", "A--BAAAB--A",
+                    "A--BCCCB--A", "A--BAAAB--A", "A--BAAAB--A", "BBBBB~BBBBB" },
+                { " CBBBBBBBC ", "BBB-----BBB", "A---------A", "A---------A", "A---------A", "A---------A",
+                    "A---------A", "A---------A", "A---------A", "BBBBBBBBBBB" },
+                { " CBBBBBBBC ", "BB-------BB", "CB-------BC", "CB-------BC", "CB-------BC", "CB-------BC",
+                    "CB-------BC", "CB-------BC", "CB-------BC", "BBBBBBBBBBB" },
+                { " CBBBBBBBC ", "CB-------BC", " A-------A ", " A-------A ", " C-------C ", " A-------A ",
+                    " C-------C ", " A-------A ", " A-------A ", " BBBBBBBBB " },
+                { " CBBBBBBBC ", "CB-------BC", " A-------A ", " A-------A ", " C-------C ", " A-------A ",
+                    " C-------C ", " A-------A ", " A-------A ", " BBBBBBBBB " },
+                { " CBBBBBBBC ", "CB-------BC", " A-------A ", " A-------A ", " C-------C ", " A-------A ",
+                    " C-------C ", " A-------A ", " A-------A ", " BBBBBBBBB " },
+                { " CBBBBBBBC ", "BB-------BB", "CB-------BC", "CB-------BC", "CB-------BC", "CB-------BC",
+                    "CB-------BC", "CB-------BC", "CB-------BC", "BBBBBBBBBBB" },
+                { " CBBBBBBBC ", "BBB-----BBB", "A---------A", "A---------A", "A---------A", "A---------A",
+                    "A---------A", "A---------A", "A---------A", "BBBBBBBBBBB" },
+                { "  CCCCCCC  ", "BBBBBBBBBBB", "A--BAAAB--A", "A--BAAAB--A", "A--BCCCB--A", "A--BAAAB--A",
+                    "A--BCCCB--A", "A--BAAAB--A", "A--BAAAB--A", "BBBBBBBBBBB" },
+                { "           ", " BBBCCCBBB ", " AAC   CAA ", " AAC   CAA ", " AAC   CAA ", " AAC   CAA ",
+                    " AAC   CAA ", " AAC   CAA ", " AAC   CAA ", " BBB   BBB " } })
+        .addElement('A', chainAllGlasses())
         .addElement(
             'B',
             ofChain(
@@ -96,7 +119,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         -1,
                         MTEEvolutionChamber::setCasingTier,
                         MTEEvolutionChamber::getCasingTier))))
-        .addElement('A', chainAllGlasses())
+        .addElement('C', ofFrame(Materials.Netherite))
         .build();
 
     private enum SpecialHatchElement implements IHatchElement<MTEEvolutionChamber> {
@@ -268,13 +291,13 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 9, 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 9, 1, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -290,7 +313,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         bioHatches.clear();
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1)) return false;
         if (casingTier < 1) return false;
         updateTextures();
         maxAOs = 500000 * casingTier;
