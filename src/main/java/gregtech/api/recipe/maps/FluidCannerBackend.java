@@ -39,6 +39,7 @@ public class FluidCannerBackend extends RecipeMapBackend {
                         .fluidInputs(fluidToTake)
                         .duration(Math.max(fluidToTake.amount / 64, 16))
                         .eut(1)
+                        .nbtSensitive()
                         .noBuffer()
                         .build()
                         .orElse(null);
