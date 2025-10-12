@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +46,6 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -66,20 +64,16 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
-import gregtech.common.modularui2.widget.CoverTabButton;
 
 public class MTEMultiBlockBaseGui {
 
@@ -154,40 +148,6 @@ public class MTEMultiBlockBaseGui {
 
     protected int getBasePanelHeight() {
         return 181 + textBoxToInventoryGap;
-    }
-
-    protected IWidget createTitleTextStyle(PosGuiData data, String title) {
-        boolean clientSide = data.isClient();
-
-        int borderRadius = 4;
-        int maxWidth = getBasePanelWidth() - borderRadius * 2;
-        // No, there is no setMaxWidth, otherwise i'd just do that because the alignment makes no difference.
-        // -1 means infinite width because i just want the title width
-        IKey.renderer.setAlignment(Alignment.CenterLeft, -1);
-        int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
-        int widgetWidth = Math.min(maxWidth, titleWidth);
-
-        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-        int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
-        int height = heightPerRow * rows;
-
-        TextWidget<?> titleTextWidget = IKey.str(title)
-            .asWidget()
-            .alignment(Alignment.TopLeft)
-            .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-            .marginLeft(5)
-            .marginRight(5)
-            .marginTop(5)
-            .marginBottom(1);
-
-        return new SingleChildWidget<>().coverChildren()
-            .topRel(0, -4, 1)
-            .leftRel(0, -4, 0)
-            .height(height + 10)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                titleTextWidget.height(height)
-                    .width(widgetWidth));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -811,53 +771,6 @@ public class MTEMultiBlockBaseGui {
             .top(borderRadius)
             .right(-parentWidgetToRightEdge)
             .excludeAreaInRecipeViewer(true);
-    }
-
-    private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
-        Flow column = Flow.column()
-            .coverChildren()
-            .leftRel(0f, 0, 1f)
-            .top(1)
-            .childPadding(2)
-            .excludeAreaInRecipeViewer(true);
-
-        for (int i = 0; i < 6; i++) {
-            column.child(
-                getCoverTabButton(
-                    base.getBaseMetaTileEntity(),
-                    ForgeDirection.getOrientation(i),
-                    syncManager,
-                    guiData,
-                    uiSettings));
-        }
-
-        return column;
-    }
-
-    private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side,
-        PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
-        return new CoverTabButton(coverable, side, getCoverPanel(coverable, side, syncManager, guiData, uiSettings));
-    }
-
-    private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side, PanelSyncManager syncManager,
-        PosGuiData guiData, UISettings uiSettings) {
-        String panelKey = "cover_panel_" + side.toString()
-            .toLowerCase();
-        Cover cover = coverable.getCoverAtSide(side);
-
-        CoverGuiData coverGuiData = new CoverGuiData(
-            guiData.getPlayer(),
-            cover.getCoverID(),
-            guiData.getX(),
-            guiData.getY(),
-            guiData.getZ(),
-            side);
-        return syncManager.panel(
-            panelKey,
-            (manager, handler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
-                .child(ButtonWidget.panelCloseButton()),
-            true);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
