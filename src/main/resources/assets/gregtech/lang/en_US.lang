@@ -1969,10 +1969,13 @@ gt.interact.desc.facade.Items=§8Items
 ## FluidFilter
 gt.interact.desc.FluidFilter.FilterInput=Filter Input
 gt.interact.desc.FluidFilter.FilterOutput=Filter Output
-gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.FilterChat=Filter Fluid:
+
 gt.interact.desc.FluidFilter.AllowOutput=Allow Output
-gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
-gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
+gt.interact.desc.FluidFilter.AllowInput=Allow Input
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.BlockInput=Block Input
+
 gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
 gt.interact.desc.FluidFilter.Type=§8IFilter Type
 gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
@@ -1993,7 +1996,7 @@ gt.interact.desc.fluid_regulator.L_Sec=L/sec
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
 gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
-gt.interact.desc.Item_Filter.Filter=§8Filter
+gt.interact.desc.Item_Filter.Filter=§8Filter:
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
 ## Item Meter
@@ -2002,7 +2005,7 @@ gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
 gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
 
 ## Liquid Meter (Fluid meter)
-gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+gt.interact.desc.Fluid_Meter.FluidThreshold=§8Fluid threshold
 
 ## Player Detector
 gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
