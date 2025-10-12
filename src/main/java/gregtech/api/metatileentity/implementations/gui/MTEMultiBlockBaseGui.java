@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,15 +66,19 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.sync.Predicates;
+import gregtech.common.modularui2.widget.CoverTabButton;
 
 public class MTEMultiBlockBaseGui {
 
@@ -132,7 +137,8 @@ public class MTEMultiBlockBaseGui {
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)))
-            .childIf(base.canBeMuffled(), createMufflerButton());
+            .childIf(base.canBeMuffled(), createMufflerButton(-4, -9))
+            .child(createCoverTabs(syncManager, guiData, uiSettings));
     }
 
     protected int getBasePanelWidth() {
@@ -148,6 +154,9 @@ public class MTEMultiBlockBaseGui {
 
         int borderRadius = 4;
         int maxWidth = getBasePanelWidth() - borderRadius * 2;
+        // No, there is no setMaxWidth, otherwise i'd just do that because the alignment makes no difference.
+        // -1 means infinite width because i just want the title width
+        IKey.renderer.setAlignment(Alignment.CenterLeft, -1);
         int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
         int widgetWidth = Math.min(maxWidth, titleWidth);
 
@@ -184,16 +193,17 @@ public class MTEMultiBlockBaseGui {
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .childIf(base.supportsLogoHoverableColumn(), createTerminalCornerColumn(panel, syncManager)));
+                    .childIf(base.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager)));
     }
 
     protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 10, 0)
             .bottomRel(0, 10, 0)
-            .child(createShutdownReasonHoverableTerminal(syncManager))
-            .child(createMaintIssueHoverableTerminal(syncManager))
-            .child(
+            .childIf(base.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
+            .childIf(base.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
+            .childIf(
+                base.supportsLogo(),
                 new Widget<>().size(18, 18)
                     .marginTop(4)
                     .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
@@ -222,15 +232,16 @@ public class MTEMultiBlockBaseGui {
                     .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
-            .child(createShutdownDurationWidget())
+            .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
-    protected IWidget createShutdownDurationWidget() {
+    protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
+        LongSyncValue shutdownDurationSyncer = (LongSyncValue) syncManager.getSyncHandler("shutdownDuration:0");
         return IKey.dynamic(() -> {
-            Duration time = Duration.ofSeconds((base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
+            Duration time = Duration.ofSeconds(shutdownDurationSyncer.getValue());
             return StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.shutdown_duration",
                 time.toHours(),
@@ -783,16 +794,62 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
-    protected IWidget createMufflerButton() {
+    protected IWidget createMufflerButton(int topRelOffset, int rightRelOffset) {
         return new ToggleButton().syncHandler("mufflerSyncer")
             .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
             .size(12, 12)
-            .topRel(0, -4, 0)
-            .rightRel(0, -8, 0)
+            .topRel(0, topRelOffset, 0)
+            .rightRel(0, rightRelOffset, 0)
+            .excludeAreaInNEI(true);
+    }
+
+    private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
+        Flow column = Flow.column()
+            .coverChildren()
+            .leftRel(0f, 0, 1f)
+            .top(1)
+            .childPadding(2)
             .excludeAreaInNEI(true);
 
+        for (int i = 0; i < 6; i++) {
+            column.child(
+                getCoverTabButton(
+                    base.getBaseMetaTileEntity(),
+                    ForgeDirection.getOrientation(i),
+                    syncManager,
+                    guiData,
+                    uiSettings));
+        }
+
+        return column;
+    }
+
+    private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side,
+        PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
+        return new CoverTabButton(coverable, side, getCoverPanel(coverable, side, syncManager, guiData, uiSettings));
+    }
+
+    private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side, PanelSyncManager syncManager,
+        PosGuiData guiData, UISettings uiSettings) {
+        String panelKey = "cover_panel_" + side.toString()
+            .toLowerCase();
+        Cover cover = coverable.getCoverAtSide(side);
+
+        CoverGuiData coverGuiData = new CoverGuiData(
+            guiData.getPlayer(),
+            cover.getCoverID(),
+            guiData.getX(),
+            guiData.getY(),
+            guiData.getZ(),
+            side);
+        return syncManager.panel(
+            panelKey,
+            (manager, handler) -> coverable.getCoverAtSide(side)
+                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
+                .child(ButtonWidget.panelCloseButton()),
+            true);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
@@ -826,6 +883,11 @@ public class MTEMultiBlockBaseGui {
             baseMetaTileEntity::wasShutdown,
             baseMetaTileEntity::setShutdownStatus);
         syncManager.syncValue("wasShutdown", wasShutDown);
+
+        LongSyncValue shutdownDurationSyncer = new LongSyncValue(
+            () -> (base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
+        syncManager.syncValue("shutdownDuration", shutdownDurationSyncer);
+
         syncManager.syncValue(
             "shutdownReason",
             new GenericSyncValue<ShutDownReason>(
