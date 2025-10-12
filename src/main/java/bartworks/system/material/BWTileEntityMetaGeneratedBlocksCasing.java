@@ -14,37 +14,11 @@
 package bartworks.system.material;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import bartworks.API.SideReference;
-import bartworks.client.textures.PrefixTextureLinker;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.TextureFactory;
 
 public class BWTileEntityMetaGeneratedBlocksCasing extends TileEntityMetaGeneratedBlock {
 
     @Override
-    protected Block GetProperBlock() {
+    protected Block getProperBlock() {
         return WerkstoffLoader.BWBlockCasings;
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
-        if (SideReference.Side.Client) {
-            Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
-            if (aMaterial != null) {
-                TextureSet set = aMaterial.getTexSet();
-                ITexture aIconSet = TextureFactory.of(
-                    PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasing)
-                        .getOrDefault(set, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]),
-                    aMaterial.getRGBA());
-                return new ITexture[] { TextureFactory.of(Blocks.iron_block), aIconSet };
-            }
-        }
-        return new ITexture[] { TextureFactory.of(Blocks.iron_block),
-            TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]) };
     }
 }
