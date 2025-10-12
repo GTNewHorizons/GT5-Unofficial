@@ -87,6 +87,7 @@ public class MTEMultiBlockBaseGui {
     private final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
+    private final int borderRadius = 4;
     protected final int textBoxToInventoryGap = 26;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
@@ -130,20 +131,21 @@ public class MTEMultiBlockBaseGui {
         setMachineModeIcons();
         registerSyncValues(syncManager);
 
-        ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(getBasePanelWidth(), getBasePanelHeight())
-            .padding(4);
+        ModularPanel panel = new GTBaseGuiBuilder(base, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())
+            .setHeight(getBasePanelHeight())
+            .doesAddGregTechLogo(false)
+            // Has to be replaced with inventory row to fit buttons
+            .doesBindPlayerInventory(false)
+            .build();
 
-        int borderRadius = 4;
-        int parentWidgetToRightEdge = 17;
-        return new GTBaseGuiBuilder(base, guiData, syncManager, uiSettings).build();
-        // return panel.child(
-        // new Column().sizeRel(1)
-        // .child(createTitleTextStyle(guiData, base.getLocalName()))
-        // .child(createTerminalRow(panel, syncManager))
-        // .child(createPanelGap(panel, syncManager))
-        // .child(createInventoryRow(panel, syncManager))
-        // .childIf(base.canBeMuffled(), createMufflerButton(borderRadius, parentWidgetToRightEdge)))
-        // .child(createCoverTabs(syncManager, guiData, uiSettings));
+        int parentWidgetToRightEdge = 13;
+        return panel.child(
+            Flow.column()
+                .padding(borderRadius)
+                .child(createTerminalRow(panel, syncManager))
+                .child(createPanelGap(panel, syncManager))
+                .child(createInventoryRow(panel, syncManager))
+                .childIf(base.canBeMuffled(), createMufflerButton(borderRadius, parentWidgetToRightEdge)));
     }
 
     protected int getBasePanelWidth() {
@@ -806,8 +808,8 @@ public class MTEMultiBlockBaseGui {
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
             .size(12, 12)
-            .topRel(0, -borderRadius, 0)
-            .rightRel(0, -parentWidgetToRightEdge, 0)
+            .top(borderRadius)
+            .right(-parentWidgetToRightEdge)
             .excludeAreaInRecipeViewer(true);
     }
 
