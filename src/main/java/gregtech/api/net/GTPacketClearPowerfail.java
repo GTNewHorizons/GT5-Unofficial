@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.crossmod.navigator.PowerfailLayerManager;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketClearPowerfail extends GTPacket {
@@ -78,7 +79,9 @@ public class GTPacketClearPowerfail extends GTPacket {
 
     @SideOnly(Side.CLIENT)
     private void clearClient() {
-        GTMod.clientProxy().powerfailRenderer.powerfails.remove(CoordinatePacker.pack(x, y, z));
+        long coord = CoordinatePacker.pack(x, y, z);
+        GTMod.clientProxy().powerfailRenderer.powerfails.remove(coord);
+        PowerfailLayerManager.INSTANCE.removePowerfail(coord);
     }
 
     private void clearServer() {

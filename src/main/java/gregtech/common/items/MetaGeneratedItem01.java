@@ -3632,7 +3632,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
         // Materials has a plasma fluid
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
-            if (aMaterial.mHasPlasma) return true;
+            if (aMaterial.hasPlasma()) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)
