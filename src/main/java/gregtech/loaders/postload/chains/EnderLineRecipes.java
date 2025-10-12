@@ -210,7 +210,7 @@ public class EnderLineRecipes {
             // Neutron activator seed
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(Materials.TeleportatiumUnstableAmalgam.getGas(1000))
+                .fluidInputs(Materials.TeleportatiumUnstableAmalgam.getGas(8000))
                 .itemInputs(
                     getModItem(EtFuturumRequiem.ID, "chorus_flower", 16, 0),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 4L),
@@ -324,7 +324,8 @@ public class EnderLineRecipes {
                     Materials.TeleportatiumUnstableVolatile.getGas(10000))
                 .fluidOutputs(
                     Materials.TeleportatiumSemistable.getFluid(3000),
-                    Materials.TeleportatiumUnstableHypercritical.getGas(1000))
+                    Materials.TeleportatiumUnstableHypercritical.getGas(1000),
+                    Materials.TeleportatiumUnstableAmalgam.getGas(1296))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -339,7 +340,8 @@ public class EnderLineRecipes {
                     Materials.TeleportatiumUnstableVolatile.getGas(10000))
                 .fluidOutputs(
                     Materials.TeleportatiumSemistable.getFluid(3000),
-                    Materials.TeleportatiumUnstableSemifluid.getGas(1000))
+                    Materials.TeleportatiumUnstableSemifluid.getGas(1000),
+                    Materials.TeleportatiumUnstableAmalgam.getGas(1296))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -354,7 +356,8 @@ public class EnderLineRecipes {
                     Materials.TeleportatiumUnstableVolatile.getGas(10000))
                 .fluidOutputs(
                     Materials.TeleportatiumSemistable.getFluid(3000),
-                    Materials.TeleportatiumUnstableUnbalanced.getGas(1000))
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(1000),
+                    Materials.TeleportatiumUnstableAmalgam.getGas(1296))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -369,7 +372,8 @@ public class EnderLineRecipes {
                     Materials.TeleportatiumUnstableUnbalanced.getGas(10000))
                 .fluidOutputs(
                     Materials.TeleportatiumSemistable.getFluid(3000),
-                    Materials.TeleportatiumUnstableVolatile.getGas(1000))
+                    Materials.TeleportatiumUnstableVolatile.getGas(1000),
+                    Materials.TeleportatiumUnstableAmalgam.getGas(1296))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(CHEMPLANT_CASING_TIER, 7)
