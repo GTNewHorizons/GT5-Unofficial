@@ -265,6 +265,9 @@ gt.interact.desc.issues=%s Issues
 gt.interact.desc.issue_rotor_low=Rotor < 20%
 gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
 
+# GT Tile Entity Descriptions
+gt.te.black_hole_util_hatch.desc=Optional hatch for Pseudostable Black Hole Containment Field.\nStatic Mode: Emit a constant redstone signal when a black hole is open\nPulse Mode: Emit a pulse every second while a black hole is open\nPulse is perfectly synced to the internal timing of the machine\nRight click to open the GUI and change settings.
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
@@ -3645,6 +3648,8 @@ machtype.qft=Quantum Force Transformer, QFT
 machtype.solar_tower=Solar Tower
 machtype.eoh=Spacetime Manipulator, EOH
 machtype.windmill=Windmill
+machtype.adv_nt_compressor=Advanced Neutronium Compressor,
+machtype.bhc=BHC
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3653,6 +3658,16 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 gt.mb.hint_block=Hint block with dot %d
+
+# Multiblock Tooltip lines
+gt.bhc.tips.1=§dUses the immense power of the event horizon to compress things\n§dNo longer requires heat management to perform superdense compression\n§dCan create advanced singularities!
+gt.bhc.tips.2=Insert a §fBlack Hole Seed§7 to open a black hole\nThe black hole will begin its life at §c100§7 stability and slowly decay\nStability decays by §c1/s§7 until it reaches 0\nAt 0 stability, the black hole is §4UNSTABLE\nOnce the black hole becomes unstable, it will void recipes and eventually close itself!
+gt.bhc.tips.3=The decay can be §lhalted§r§7 by inserting 1 L/s of spacetime into specific hatches\nEvery §c30§7 total seconds saved by spacetime insertion will §cdouble§7 the cost per second!\nInsert a §fBlack Hole Collapser§7 to close the black hole\nTo restore stability and reset spacetime costs, close the black hole and open a new one
+gt.bhc.tips.4=§fUse circuit 20 for Compressor and 21 for Neutronium Compressor
+gt.bhc.tips.5=§c2x/4x§7 parallels when stability is BELOW §c50/20
+gt.bhc.tips.6=§cRecipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier\n§cLimited to one energy hatch if using a Multi-Amp or Laser hatch
+gt.bhc.info.1=Spacetime Insertion, Behind Laser
+gt.bhc.info.2=Any Radiation Absorbent Casing
 
 gt.windmill.tips.1=A primitive Grinder powered by Kinetic energy\nSpeed and output will be affected by wind speed, recipe and rotor\nPlease use the Primitive Rotor\nMacerates 16 items at a time
 gt.windmill.info.1=Any Hardened Clay block
