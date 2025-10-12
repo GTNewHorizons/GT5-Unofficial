@@ -264,6 +264,52 @@ public class EnderLineRecipes {
                 .metadata(CHEMPLANT_CASING_TIER, 5)
                 .addTo(chemicalPlantRecipes);
 
+            // Formation Mixer vanish recipes
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(
+                    FluidRegistry.getFluidStack("endergoo", 3000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(10000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(10000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(10000))
+                .fluidOutputs(Materials.TeleportatiumUnstableAmalgam.getGas(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(mixerNonCellRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(
+                    FluidRegistry.getFluidStack("endergoo", 3000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(10000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(10000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(10000))
+                .fluidOutputs(Materials.TeleportatiumUnstableAmalgam.getGas(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(mixerNonCellRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(
+                    FluidRegistry.getFluidStack("endergoo", 3000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(10000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(10000),
+                    Materials.TeleportatiumUnstableVolatile.getGas(10000))
+                .fluidOutputs(Materials.TeleportatiumUnstableAmalgam.getGas(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(mixerNonCellRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(
+                    FluidRegistry.getFluidStack("endergoo", 3000),
+                    Materials.TeleportatiumUnstableHypercritical.getGas(10000),
+                    Materials.TeleportatiumUnstableSemifluid.getGas(10000),
+                    Materials.TeleportatiumUnstableUnbalanced.getGas(10000))
+                .fluidOutputs(Materials.TeleportatiumUnstableAmalgam.getGas(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(mixerNonCellRecipes);
+
             // QFT Recipe and catalyst
 
             GTValues.RA.stdBuilder()
@@ -314,7 +360,6 @@ public class EnderLineRecipes {
             // FORMATION
 
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableSemifluid.getGas(10000),
@@ -330,7 +375,6 @@ public class EnderLineRecipes {
                 .addTo(chemicalPlantRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableHypercritical.getGas(10000),
@@ -346,7 +390,6 @@ public class EnderLineRecipes {
                 .addTo(chemicalPlantRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableHypercritical.getGas(10000),
@@ -362,7 +405,6 @@ public class EnderLineRecipes {
                 .addTo(chemicalPlantRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableHypercritical.getGas(10000),
