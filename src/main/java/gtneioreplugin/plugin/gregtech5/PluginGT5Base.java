@@ -4,33 +4,34 @@ import net.minecraft.client.resources.I18n;
 
 import codechicken.lib.gui.GuiDraw;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.PluginBase;
 
 public abstract class PluginGT5Base extends PluginBase {
 
-    public static String getGTOreLocalizedName(short index) {
-        String name = Materials
-            .getLocalizedNameForItem(GTLanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000);
-        if (!name.contains("Awakened")) return name;
-        else return "Aw. Draconium Ore";
+    protected String getGTOreLocalizedName(IOreMaterial ore, boolean small) {
+        if (ore == Materials.DraconiumAwakened) return "Aw. Draconium Ore";
+
+        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+            info.material = ore;
+            info.isSmall = small;
+
+            return OreManager.getLocalizedName(info);
+        }
     }
 
-    protected static String getGTOreUnlocalizedName(short index) {
-        return "gt.blockores." + index + ".name";
-    }
+    protected void drawLine(String lineKey, String value, int x, int y) {
+        String text = I18n.format(lineKey) + ": " + value;
 
-    static void drawLine(String lineKey, String value, int x, int y) {
-        GuiDraw.drawString(I18n.format(lineKey) + ": " + value, x, y, 0x404040, false);
-    }
+        String text2 = text;
 
-    protected int getMaximumMaterialIndex(short meta, boolean smallOre) {
-        int offset = smallOre ? 16000 : 0;
-        if (!getGTOreLocalizedName((short) (meta + offset + 5000))
-            .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 7;
-        else if (!getGTOreLocalizedName((short) (meta + offset + 5000))
-            .equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 6;
-        else return 5;
+        if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth()) {
+            text2 = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - 10);
+        }
+
+        GuiDraw.drawString(text2 + (text2.length() < text.length() ? "..." : ""), x, y, 0x404040, false);
     }
 
     /**
