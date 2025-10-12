@@ -30,6 +30,8 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -48,7 +50,7 @@ import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsInit;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
-public class Materials implements IColorModulationContainer, ISubTagContainer {
+public class Materials implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
 
     // Elements
     public static Materials Aluminium;
@@ -1329,6 +1331,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
+
+        Hydrogen.add(SubTag.ICE_ORE);
+        Nitrogen.add(SubTag.ICE_ORE);
+        Oxygen.add(SubTag.ICE_ORE);
+        Methane.add(SubTag.ICE_ORE);
+        CarbonDioxide.add(SubTag.ICE_ORE);
+        SulfurDioxide.add(SubTag.ICE_ORE);
+        Ammonia.add(SubTag.ICE_ORE);
+
     }
 
     private static void setToolEnchantments() {
@@ -1804,8 +1815,45 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     @Override
+    public TextureSet getTextureSet() {
+        return mIconSet;
+    }
+
+    @Override
     public String toString() {
         return this.mName;
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return mLocalizedName;
+    }
+
+    @Override
+    public int getId() {
+        return mMetaItemSubID;
+    }
+
+    public boolean isValidForStone(IStoneType stoneType) {
+        if (contains(SubTag.ICE_ORE)) {
+            return stoneType.getCategory() == StoneCategory.Ice;
+        } else {
+            return stoneType.getCategory() == StoneCategory.Stone;
+        }
+    }
+
+    @Override
+    public List<IStoneType> getValidStones() {
+        if (contains(SubTag.ICE_ORE)) {
+            return StoneType.ICES;
+        } else {
+            return StoneType.STONES;
+        }
+    }
+
+    @Override
+    public String getInternalName() {
+        return mName;
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {

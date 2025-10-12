@@ -118,6 +118,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ManualOreDictTweaks;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
@@ -168,6 +169,7 @@ import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
+import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -548,7 +550,6 @@ public class GTProxy implements IFuelHandler {
     private boolean mOreDictActivated = false;
     public boolean mChangeHarvestLevels = false;
     public boolean mGTBees = true;
-    public boolean mHideUnusedOres = true;
     public boolean mPollution = true;
     public boolean mExplosionItemDrop = false;
     public int mMaxEqualEntitiesAtOneSpot = 3;
@@ -609,10 +610,15 @@ public class GTProxy implements IFuelHandler {
     public boolean crashOnNullRecipeInput = false;
 
     public enum OreDropSystem {
+        /** Will always drop the block version. */
         Block,
+        /** Will drop the dimension-specific block version, or stone. */
         PerDimBlock,
+        /** Will always drop the stone block version. */
         UnifiedBlock,
+        /** Drops raw ore, and is affected by fortune. */
         FortuneItem,
+        /** Drops raw ore, and is not affected by fortune. */
         Item
     }
 
@@ -1230,6 +1236,9 @@ public class GTProxy implements IFuelHandler {
         GTMusicSystem.ServerSystem.reset();
         GregTechAPI.sWirelessRedstone.clear();
         GregTechAPI.sAdvancedWirelessRedstone.clear();
+        if (Mods.HardcoreEnderExpansion.isModLoaded()) {
+            HEEIslandScanner.clearCache();
+        }
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {

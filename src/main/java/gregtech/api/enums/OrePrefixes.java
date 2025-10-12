@@ -30,7 +30,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -739,6 +738,22 @@ public enum OrePrefixes {
         dust.mGeneratedItems.addAll(dustRefined.mGeneratedItems);
         dustTiny.mGeneratedItems.addAll(dust.mGeneratedItems);
         dustSmall.mGeneratedItems.addAll(dust.mGeneratedItems);
+
+        ore.mGeneratedItems.add(Materials.Hydrogen);
+        ore.mGeneratedItems.add(Materials.Nitrogen);
+        ore.mGeneratedItems.add(Materials.Oxygen);
+        ore.mGeneratedItems.add(Materials.Methane);
+        ore.mGeneratedItems.add(Materials.CarbonDioxide);
+        ore.mGeneratedItems.add(Materials.SulfurDioxide);
+        ore.mGeneratedItems.add(Materials.Ammonia);
+
+        rawOre.mGeneratedItems.add(Materials.Hydrogen);
+        rawOre.mGeneratedItems.add(Materials.Nitrogen);
+        rawOre.mGeneratedItems.add(Materials.Oxygen);
+        rawOre.mGeneratedItems.add(Materials.Methane);
+        rawOre.mGeneratedItems.add(Materials.CarbonDioxide);
+        rawOre.mGeneratedItems.add(Materials.SulfurDioxide);
+        rawOre.mGeneratedItems.add(Materials.Ammonia);
         // -----
 
         toolHeadFile.mCondition = new ICondition.And<>(
@@ -1016,10 +1031,48 @@ public enum OrePrefixes {
         return aOre;
     }
 
-    public static Pair<OrePrefixes, String> detectPrefix(String oredictName) {
+    public static class ParsedOreDictName {
+
+        public final OrePrefixes prefix;
+        public final String material;
+
+        public ParsedOreDictName(OrePrefixes prefix, String material) {
+            this.prefix = prefix;
+            this.material = material;
+        }
+
+        @Override
+        public String toString() {
+            return "ParsedOreDictName [prefix=" + prefix + ", material=" + material + "]";
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+            result = prime * result + ((material == null) ? 0 : material.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
+            ParsedOreDictName other = (ParsedOreDictName) obj;
+            if (prefix != other.prefix) return false;
+            if (material == null) {
+                if (other.material != null) return false;
+            } else if (!material.equals(other.material)) return false;
+            return true;
+        }
+    }
+
+    public static ParsedOreDictName detectPrefix(String oredictName) {
         for (OrePrefixes prefix : values()) {
             if (oredictName.startsWith(prefix.name())) {
-                return Pair.of(
+                return new ParsedOreDictName(
                     prefix,
                     oredictName.substring(
                         prefix.name()
@@ -1030,11 +1083,11 @@ public enum OrePrefixes {
         return null;
     }
 
-    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>>> PREFIX_CACHE = ThreadLocal
+    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<ParsedOreDictName>>> PREFIX_CACHE = ThreadLocal
         .withInitial(Object2ObjectLinkedOpenHashMap::new);
 
-    public static ImmutableList<Pair<OrePrefixes, String>> detectPrefix(ItemStack stack) {
-        Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>> cache = PREFIX_CACHE.get();
+    public static List<ParsedOreDictName> detectPrefix(ItemStack stack) {
+        Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<ParsedOreDictName>> cache = PREFIX_CACHE.get();
 
         ItemId itemId = ItemId.create(stack);
 
@@ -1042,17 +1095,17 @@ public enum OrePrefixes {
 
         if (cacheResult != null) return cacheResult;
 
-        ImmutableList.Builder<Pair<OrePrefixes, String>> result = ImmutableList.builder();
+        ImmutableList.Builder<ParsedOreDictName> result = ImmutableList.builder();
 
         for (int id : OreDictionary.getOreIDs(stack)) {
-            Pair<OrePrefixes, String> p = detectPrefix(OreDictionary.getOreName(id));
+            ParsedOreDictName p = detectPrefix(OreDictionary.getOreName(id));
 
             if (p != null) {
                 result.add(p);
             }
         }
 
-        ImmutableList<Pair<OrePrefixes, String>> prefixes = result.build();
+        ImmutableList<ParsedOreDictName> prefixes = result.build();
 
         cache.putAndMoveToFirst(itemId, prefixes);
 
@@ -1317,6 +1370,19 @@ public enum OrePrefixes {
                 }
             }
         }
+
+        if (aMaterial.contains(SubTag.ICE_ORE) && (this == rawOre || this == ore)) {
+            return mLocalizedMaterialPre + "%material" + " Ice";
+        }
+
+        if (this == ore) {
+            return switch (aMaterial.mName) {
+                case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
+                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
+                default -> mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
+            };
+        }
+
         // Use Standard Localization
         return mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
     }
