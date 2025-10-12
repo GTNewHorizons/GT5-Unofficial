@@ -8,13 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -160,12 +161,26 @@ public final class GTBaseGuiBuilder {
 
     private IWidget createTitle() {
         String title = mte.getLocalName();
-        return new ParentWidget<>().coverChildren()
+        boolean clientSide = posGuiData.isClient();
+
+        int borderRadius = 5;
+        int maxWidth = width - borderRadius * 2;
+
+        int titleWidth = clientSide ? TextRenderer.getFontRenderer()
+            .getStringWidth(title) : 0;
+        int widgetWidth = Math.min(maxWidth, titleWidth);
+
+        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+        int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
+        int height = heightPerRow * rows;
+
+        return new SingleChildWidget<>().coverChildren()
             .topRelAnchor(0, 1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
                 IKey.str(title)
                     .asWidget()
+                    .size(widgetWidth, height)
                     .widgetTheme(GTWidgetThemes.TEXT_TITLE)
                     .marginLeft(5)
                     .marginRight(5)

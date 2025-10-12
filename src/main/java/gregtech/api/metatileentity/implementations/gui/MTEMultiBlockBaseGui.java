@@ -77,6 +77,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
+import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 import gregtech.common.modularui2.widget.CoverTabButton;
 
@@ -134,14 +135,15 @@ public class MTEMultiBlockBaseGui {
 
         int borderRadius = 4;
         int parentWidgetToRightEdge = 17;
-        return panel.child(
-            new Column().sizeRel(1)
-                .child(createTitleTextStyle(guiData, base.getLocalName()))
-                .child(createTerminalRow(panel, syncManager))
-                .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager))
-                .childIf(base.canBeMuffled(), createMufflerButton(borderRadius, parentWidgetToRightEdge)))
-            .child(createCoverTabs(syncManager, guiData, uiSettings));
+        return new GTBaseGuiBuilder(base, guiData, syncManager, uiSettings).build();
+        // return panel.child(
+        // new Column().sizeRel(1)
+        // .child(createTitleTextStyle(guiData, base.getLocalName()))
+        // .child(createTerminalRow(panel, syncManager))
+        // .child(createPanelGap(panel, syncManager))
+        // .child(createInventoryRow(panel, syncManager))
+        // .childIf(base.canBeMuffled(), createMufflerButton(borderRadius, parentWidgetToRightEdge)))
+        // .child(createCoverTabs(syncManager, guiData, uiSettings));
     }
 
     protected int getBasePanelWidth() {
