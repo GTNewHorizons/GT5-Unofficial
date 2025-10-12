@@ -295,6 +295,7 @@ public class GTMod {
         GTGuiTextures.init();
         GTGuiTheme.registerThemes();
 
+        // Load enchantments
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();

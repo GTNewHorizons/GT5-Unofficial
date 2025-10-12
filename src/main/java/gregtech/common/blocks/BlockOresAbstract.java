@@ -76,7 +76,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
                     GTLanguageManager.addStringLocalization(
                         getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_TOOLTIP,
                         GregTechAPI.sGeneratedMaterials[i].getToolTip());
-                    if ((GregTechAPI.sGeneratedMaterials[i].mTypes & 0x8) != 0
+                    if ((GregTechAPI.sGeneratedMaterials[i].hasOresItems())
                         && !aBlockedOres.contains(GregTechAPI.sGeneratedMaterials[i])) {
                         if (this.getProcessingPrefix()[j] != null && this.getProcessingPrefix()[j].mIsUnificatable) {
                             GTOreDictUnificator.set(
@@ -328,7 +328,7 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTechAPI.sGeneratedMaterials[i];
-            if ((tMaterial != null) && ((tMaterial.mTypes & 0x8) != 0) && !aBlockedOres.contains(tMaterial)) {
+            if (tMaterial != null && tMaterial.hasOresItems() && !aBlockedOres.contains(tMaterial)) {
                 for (int meta = i; meta < 23000 + i; meta += 1000) {
                     if (!(new ItemStack(aItem, 1, meta).getDisplayName()
                         .contains(DOT_NAME))) aList.add(new ItemStack(aItem, 1, meta));
