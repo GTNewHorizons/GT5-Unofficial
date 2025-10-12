@@ -39,10 +39,12 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui {
 
         final ItemSlot outputSlot = new ItemSlot()
             .slot(new ModularSlot(base.inventoryHandler, 1).accessibility(false, true))
-            .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
+            .background(GTGuiTextures.SLOT_ITEM_PRIMITIVE, GTGuiTextures.OVERLAY_SLOT_COAL_STANDARD);
 
         final FluidSlot fluidSlot = new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTank).canFillSlot(false))
-            .alwaysShowFull(false);
+            .alwaysShowFull(false)
+            .size(18, 54)
+            .overlayTexture(GTGuiTextures.OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE);
 
         final ProgressWidget progressArrow = new GTProgressWidget().neiTransferRect(base.getRecipeMap())
             .value(new DoubleSyncValue(() -> (double) base.mProgresstime / base.mMaxProgresstime))
@@ -50,6 +52,7 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui {
             .size(20, 18);
 
         return GTGuis.mteTemplatePanelBuilder(base, guiData, syncManager, uiSettings)
+            .moveGregtechLogoPos(8, 63)
             .build()
             .child(createMufflerButton(0, -15))
             .child(
@@ -58,7 +61,7 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui {
                     .size(72, 18)
                     .child(inputSlot.marginRight(8))
                     .child(progressArrow.marginRight(8))
-                    .child(outputSlot.marginRight(8))
+                    .child(outputSlot.marginRight(18))
                     .child(fluidSlot));
     }
 }

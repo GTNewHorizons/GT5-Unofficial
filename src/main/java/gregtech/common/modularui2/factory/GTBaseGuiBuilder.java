@@ -66,6 +66,8 @@ public final class GTBaseGuiBuilder {
     private boolean doesAddCoverTabs = true;
     private boolean doesAddGhostCircuitSlot;
     private boolean doesAddGregTechLogo;
+    private int gregtechLogoPosX = 152;
+    private int gregtechLogoPosY = 63;
 
     public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         this.mte = mte;
@@ -131,6 +133,15 @@ public final class GTBaseGuiBuilder {
      */
     public GTBaseGuiBuilder doesAddGregTechLogo(boolean doesAddGregTechLogo) {
         this.doesAddGregTechLogo = doesAddGregTechLogo;
+        return this;
+    }
+
+    /**
+     * Sets a new position for the Gregtech Logo
+     */
+    public GTBaseGuiBuilder moveGregtechLogoPos(int X, int Y) {
+        this.gregtechLogoPosX = X;
+        this.gregtechLogoPosY = Y;
         return this;
     }
 
@@ -233,6 +244,6 @@ public final class GTBaseGuiBuilder {
     private IWidget createGregTechLogo() {
         return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
             .size(17, 17) // todo: size
-            .pos(152, 63);
+            .pos(gregtechLogoPosX, gregtechLogoPosY);
     }
 }

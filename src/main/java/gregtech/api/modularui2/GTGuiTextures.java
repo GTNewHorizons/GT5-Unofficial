@@ -619,6 +619,9 @@ public final class GTGuiTextures {
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
 
+    public static final UITexture OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE = fullImageColorableGT(
+        "overlay_slot/overlay_coke_oven_fluid_slot_gauge");
+
     // endregion machine modes
     /**
      * Creates texture of full image. Theme of GUI does not affect how the texture is drawn.
