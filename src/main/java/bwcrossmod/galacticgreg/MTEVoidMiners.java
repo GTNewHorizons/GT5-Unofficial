@@ -148,7 +148,7 @@ public class MTEVoidMiners {
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
                 .addInputBus("(Optional) For mining pipes or ores, any base casing")
-                .addInputHatch("For noble gas, any base casing")
+                .addInputHatch("(Optional) For noble gas, any base casing")
                 .addOutputBus("Any base casing")
                 .toolTipFinisher();
             return tt;
