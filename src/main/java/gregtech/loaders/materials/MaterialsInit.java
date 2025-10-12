@@ -51,6 +51,7 @@ public class MaterialsInit {
         loadSuperconductorBases();
         loadSuperconductors();
         loadWaterLineChemicals();
+        loadArtificialOrganisms();
         loadRadoxLine();
         loadNetheriteLine();
         loadPrismaticAcidLine();
@@ -2233,6 +2234,65 @@ public class MaterialsInit {
             .setMeltingPoint(273)
             .addAspect(TCAspects.AQUA, 1)
             .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static void loadArtificialOrganisms() {
+        Materials.PrimordialSoup = loadPrimordialSoup();
+        Materials.NutrientBroth = loadNutrientBroth();
+        Materials.SterilizationFluid = loadSterilizationFluid();
+        Materials.NeuralFluid = loadNeuralFluid();
+    }
+
+    private static Materials loadPrimordialSoup()
+    {
+        return new MaterialBuilder().setName("PrimordialSoup")
+            .setDefaultLocalName("Primordial Soup")
+            .setMetaItemSubID(571)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setMeltingPoint(273)
+            .setARGB(28)
+            .setColor(Dyes.dyeBrown)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadNutrientBroth()
+    {
+        return new MaterialBuilder().setName("NutrientBroth")
+            .setDefaultLocalName("Nutrient Broth")
+            .setMetaItemSubID(572)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setMeltingPoint(273)
+            .setARGB(92)
+            .setColor(Dyes.dyeOrange)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadSterilizationFluid()
+    {
+        return new MaterialBuilder().setName("SterilizationFluid")
+            .setDefaultLocalName("Sterilization Fluid")
+            .setMetaItemSubID(573)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setMeltingPoint(273)
+            .setARGB(223)
+            .setColor(Dyes.dyeWhite)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadNeuralFluid()
+    {
+        return new MaterialBuilder().setName("NeuralFluid")
+            .setDefaultLocalName("Neural Fluid")
+            .setMetaItemSubID(574)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setMeltingPoint(273)
+            .setARGB(72)
+            .setColor(Dyes.dyePurple)
+            .addFluid()
             .constructMaterial();
     }
 

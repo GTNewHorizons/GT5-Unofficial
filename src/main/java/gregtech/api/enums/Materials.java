@@ -156,6 +156,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Grade7PurifiedWater;
     public static Materials Grade8PurifiedWater;
 
+    // Artificial Organisms
+    public static Materials PrimordialSoup;
+    public static Materials NutrientBroth;
+    public static Materials SterilizationFluid;
+    public static Materials NeuralFluid;
+
     // Random
     public static Materials AnyBronze;
     public static Materials AnyCopper;
