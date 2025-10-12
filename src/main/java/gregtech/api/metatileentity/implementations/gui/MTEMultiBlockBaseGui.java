@@ -132,8 +132,8 @@ public class MTEMultiBlockBaseGui {
                 .padding(borderRadius)
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager))
-                .childIf(base.canBeMuffled(), createMufflerButton(mufflerButtonPosFromTop, parentWidgetToRightEdge)));
+                .child(createInventoryRow(panel, syncManager)));
+        // .childIf(base.canBeMuffled(), createMufflerButton(mufflerButtonPosFromTop, parentWidgetToRightEdge)));
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
