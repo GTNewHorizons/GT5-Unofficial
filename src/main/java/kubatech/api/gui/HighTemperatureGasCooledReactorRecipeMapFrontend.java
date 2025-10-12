@@ -28,7 +28,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
-import kubatech.api.enums.ItemList;
 import kubatech.loaders.HTGRLoader;
 
 public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapFrontend {
@@ -41,14 +40,10 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
             uiPropertiesBuilder.progressBarTexture(new FallbackableUITexture(PROGRESSBAR))
                 .progressBarPos(new Pos2d(3, 3))
                 .progressBarDirection(ProgressBar.Direction.DOWN)
-                .logoPos(new Pos2d(150, 237))
+                .logoPos(new Pos2d(145, 237))
                 .logo(PICTURE_KUBATECH_LOGO)
                 .logoSize(new Size(13, 15)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 245))
-                .handlerInfoCreator(
-                    builder -> builder.setMaxRecipesPerPage(1)
-                        .setDisplayStack(ItemList.HighTemperatureGasCooledReactor.get(1))));
-
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 245)));
     }
 
     @Override
