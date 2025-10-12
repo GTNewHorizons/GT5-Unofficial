@@ -124,12 +124,7 @@ public class MTEMultiBlockBaseGui {
         setMachineModeIcons();
         registerSyncValues(syncManager);
 
-        ModularPanel panel = new GTBaseGuiBuilder(base, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())
-            .setHeight(getBasePanelHeight())
-            .doesAddGregTechLogo(false)
-            // Has to be replaced with inventory row to fit buttons
-            .doesBindPlayerInventory(false)
-            .build();
+        ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
 
         int mufflerButtonPosFromTop = 0;
         int parentWidgetToRightEdge = 13;
@@ -140,6 +135,15 @@ public class MTEMultiBlockBaseGui {
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager))
                 .childIf(base.canBeMuffled(), createMufflerButton(mufflerButtonPosFromTop, parentWidgetToRightEdge)));
+    }
+
+    protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new GTBaseGuiBuilder(base, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())
+            .setHeight(getBasePanelHeight())
+            .doesAddGregTechLogo(false)
+            // Has to be replaced with inventory row to fit buttons
+            .doesBindPlayerInventory(false)
+            .build();
     }
 
     protected int getBasePanelWidth() {
