@@ -76,6 +76,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import gregtech.api.enums.MaterialBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -122,7 +123,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -251,7 +251,7 @@ public class WerkstoffLoader {
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().onlyDust()
             .enforceUnification(), // No autoadd here to gate this material
-                                   // by hand
+        // by hand
         6,
         TextureSet.SET_DULL,
         Pair.of(Materials.Yttrium, 2),
