@@ -3,6 +3,7 @@ package gregtech.api.modularui2;
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GregTech;
 
+import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
@@ -72,11 +73,39 @@ public final class GTGuiTextures {
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
+
+    public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
+        .location(GregTech.ID, "gui/background/redstone_sniffer")
+        .imageSize(195, 136)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_REDSTONE_SNIFFER)
+        .build();
     // endregion background
 
     // region overlay
     public static final UITexture OVERLAY_GREGTECH_LOGO = fullImageGT("picture/gt_logo_standard");
 
+    public static final UITexture OVERLAY_NEEDS_CROWBAR = UITexture.fullImage(GregTech.ID, "gui/icons/needsCrowbar");
+    public static final UITexture OVERLAY_NEEDS_HARDHAMMER = UITexture
+        .fullImage(GregTech.ID, "gui/icons/needsHardhammer");
+    public static final UITexture OVERLAY_NEEDS_SCREWDRIVER = UITexture
+        .fullImage(GregTech.ID, "gui/icons/needsScrewdriver");
+    public static final UITexture OVERLAY_NEEDS_SOFTHAMMER = UITexture
+        .fullImage(GregTech.ID, "gui/icons/needsSofthammer");
+    public static final UITexture OVERLAY_NEEDS_SOLDERING = UITexture
+        .fullImage(GregTech.ID, "gui/icons/needsSoldering");
+    public static final UITexture OVERLAY_NEEDS_WRENCH = UITexture.fullImage(GregTech.ID, "gui/icons/needsWrench");
+
+    public static final UITexture OVERLAY_TOO_DAMAGED = UITexture.fullImage(GregTech.ID, "gui/icons/needsWrench");
+    public static final UITexture OVERLAY_POWER_LOSS = UITexture
+        .fullImage(GregTech.ID, "gui/picture/stalled_electricity");
+    public static final UITexture OVERLAY_STRUCTURE_INCOMPLETE = UITexture
+        .fullImage(GregTech.ID, "gui/icons/structureIncomplete");
+    public static final UITexture OVERLAY_MANUAL_SHUTDOWN = UITexture
+        .fullImage(GregTech.ID, "gui/icons/manualShutdown");
+    public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
+
+    public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
     // endregion overlay
     // region slot
 
@@ -140,6 +169,14 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_PRIMITIVE)
+        .build();
+
+    public static final UITexture SLOT_EMPTY = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/empty")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_EMPTY)
         .build();
 
     // endregion slot
@@ -258,19 +295,19 @@ public final class GTGuiTextures {
         .build();
 
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ITEM = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_item")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_FLUID = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_fluid")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
         .build();
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
@@ -316,12 +353,12 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
 
-    public static final UITexture OVERLAY_ROBOT_ARM_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
-    public static final UITexture OVERLAY_ROBOT_ARM_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
+    public static final UITexture OVERLAY_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
+    public static final UITexture OVERLAY_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/bounding_box")
         .fullImage()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .build();
 
     // endregion slot overlay
@@ -608,6 +645,6 @@ public final class GTGuiTextures {
      * @return Texture of full image
      */
     private static UITexture fullImageColorableGT(String path) {
-        return fullImage(GregTech.ID, "gui/" + path, true);
+        return fullImage(GregTech.ID, "gui/" + path, ColorType.DEFAULT);
     }
 }

@@ -65,7 +65,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
@@ -225,9 +224,16 @@ public class GTMod {
         GTValues.NW = new GTNetwork();
         GTValues.RA = new RecipeAdder();
 
+        // TEs that can be wrenched.
         for (int i = 0; i < 4; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> GregTechAPI.constructBaseMetaTileEntity());
         }
+
+        // TEs that can be mined.
+        for (int i = 12; i < 16; i++) {
+            GregTechAPI.registerTileEntityConstructor(i, i2 -> GregTechAPI.constructBaseMetaTileEntity());
+        }
+
         for (int i = 4; i < 12; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
         }
@@ -290,8 +296,8 @@ public class GTMod {
         GTGuis.registerFactories();
         GTGuiTextures.init();
         GTGuiTheme.registerThemes();
-        GTWidgetThemes.register();
 
+        // Load enchantments
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();

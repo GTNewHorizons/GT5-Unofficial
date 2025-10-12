@@ -18,6 +18,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:bg_title_primitive";
 
     public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
+    public static final String BACKGROUND_REDSTONE_SNIFFER = "gregtech:bg_redstone_sniffer";
 
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
     public static final String SLOT_ITEM_BRONZE = "gregtech:slot_item_bronze";
@@ -28,6 +29,7 @@ public final class GTTextureIds {
     public static final String SLOT_FLUID_BRONZE = "gregtech:slot_fluid_bronze";
     public static final String SLOT_FLUID_STEEL = "gregtech:slot_fluid_steel";
     public static final String SLOT_FLUID_PRIMITIVE = "gregtech:slot_fluid_primitive";
+    public static final String SLOT_EMPTY = "gregtech:slot_fluid_empty";
 
     public static final String OVERLAY_SLOT_BLOCK_STANDARD = "gregtech:overlay_slot_block_standard";
     public static final String OVERLAY_SLOT_BLOCK_BRONZE = "gregtech:overlay_slot_block_bronze";

@@ -771,6 +771,7 @@ public class GTProxy implements IFuelHandler {
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
+        // Register previously registered oredict entries (from Forge) with the GT oredict handler.
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
                 registerOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
@@ -1098,7 +1099,7 @@ public class GTProxy implements IFuelHandler {
         }
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
-            if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
+            if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
@@ -1832,7 +1833,7 @@ public class GTProxy implements IFuelHandler {
                                     }
                                     default -> {}
                                 }
-                                if (aPrefix.mIsUnificatable && !aMaterial.mUnificatable) {
+                                if (aPrefix.mIsUnificatable && !aMaterial.mUnifiable) {
                                     return;
                                 }
                             } else {
