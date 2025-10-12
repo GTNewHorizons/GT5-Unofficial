@@ -1539,6 +1539,8 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialBrewery,
 
+    Machine_Multi_LocalityLockingLattice,
+
     Machine_Multi_ChamberCentrifuge,
     Chamber_Casing,
     Chamber_Grate,

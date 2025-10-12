@@ -1852,6 +1852,9 @@ public enum MetaTileEntityIDs {
     WaterPump(31085),
     Controller_SteamAlloySmelterMulti(31086),
     Controller_SteamFurnaceMulti(31087),
+    Locality_Locking_Lattice(31088),
+    // Free IDs here
+
     GT4_Electric_Auto_Workbench_LV(31091),
     GT4_Electric_Auto_Workbench_MV(31092),
     GT4_Electric_Auto_Workbench_HV(31093),
