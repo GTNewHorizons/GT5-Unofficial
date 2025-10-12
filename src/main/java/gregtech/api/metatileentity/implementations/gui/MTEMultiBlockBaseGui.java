@@ -123,11 +123,10 @@ public class MTEMultiBlockBaseGui {
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
-
-        ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
-
         int mufflerButtonPosFromTop = 0;
         int parentWidgetToRightEdge = 13;
+
+        ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
         return panel.child(
             Flow.column()
                 .padding(borderRadius)
