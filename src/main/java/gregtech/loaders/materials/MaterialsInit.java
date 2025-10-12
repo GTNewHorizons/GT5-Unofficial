@@ -2244,8 +2244,7 @@ public class MaterialsInit {
         Materials.NeuralFluid = loadNeuralFluid();
     }
 
-    private static Materials loadPrimordialSoup()
-    {
+    private static Materials loadPrimordialSoup() {
         return new MaterialBuilder().setName("PrimordialSoup")
             .setDefaultLocalName("Primordial Soup")
             .setMetaItemSubID(571)
@@ -2253,12 +2252,13 @@ public class MaterialsInit {
             .setMeltingPoint(273)
             .setARGB(28)
             .setColor(Dyes.dyeBrown)
+            .addCell()
             .addFluid()
+            .addAspect(TCAspects.TERRA, 1)
             .constructMaterial();
     }
 
-    private static Materials loadNutrientBroth()
-    {
+    private static Materials loadNutrientBroth() {
         return new MaterialBuilder().setName("NutrientBroth")
             .setDefaultLocalName("Nutrient Broth")
             .setMetaItemSubID(572)
@@ -2266,12 +2266,13 @@ public class MaterialsInit {
             .setMeltingPoint(273)
             .setARGB(92)
             .setColor(Dyes.dyeOrange)
+            .addCell()
             .addFluid()
+            .addAspect(TCAspects.SANO, 1)
             .constructMaterial();
     }
 
-    private static Materials loadSterilizationFluid()
-    {
+    private static Materials loadSterilizationFluid() {
         return new MaterialBuilder().setName("SterilizationFluid")
             .setDefaultLocalName("Sterilization Fluid")
             .setMetaItemSubID(573)
@@ -2279,12 +2280,13 @@ public class MaterialsInit {
             .setMeltingPoint(273)
             .setARGB(223)
             .setColor(Dyes.dyeWhite)
+            .addCell()
             .addFluid()
+            .addAspect(TCAspects.MORTUUS, 1)
             .constructMaterial();
     }
 
-    private static Materials loadNeuralFluid()
-    {
+    private static Materials loadNeuralFluid() {
         return new MaterialBuilder().setName("NeuralFluid")
             .setDefaultLocalName("Neural Fluid")
             .setMetaItemSubID(574)
@@ -2292,7 +2294,9 @@ public class MaterialsInit {
             .setMeltingPoint(273)
             .setARGB(72)
             .setColor(Dyes.dyePurple)
+            .addCell()
             .addFluid()
+            .addAspect(TCAspects.COGNITIO, 1)
             .constructMaterial();
     }
 

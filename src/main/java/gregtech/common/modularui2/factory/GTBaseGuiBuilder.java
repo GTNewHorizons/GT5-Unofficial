@@ -175,7 +175,7 @@ public final class GTBaseGuiBuilder {
         int heightPerRow = (int) (IKey.renderer.getFontHeight());
         int height = heightPerRow * rows;
 
-        TextWidget titleTextWidget = IKey.str(title)
+        TextWidget<?> titleTextWidget = IKey.str(title)
             .asWidget()
             .alignment(Alignment.TopLeft)
             .marginLeft(5)

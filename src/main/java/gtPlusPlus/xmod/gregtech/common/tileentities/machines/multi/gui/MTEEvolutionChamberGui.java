@@ -1,3 +1,4 @@
+// WHAT????
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui;
 
 import static gregtech.api.enums.Mods.GregTech;
@@ -104,36 +105,34 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui {
         list.pos(4, 4);
 
         list.child(
-            new TextWidget(
-                EnumChatFormatting.UNDERLINE
-                    + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.header")));
-        list.child(new TextWidget(""));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.1")));
-
-        list.child(new TextWidget(""));
+            createInfoTextWidget("GT5U.artificialorganisms.infopanelintro.header", EnumChatFormatting.UNDERLINE));
+        list.child(new TextWidget<>(""));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelintro.1", null));
+        list.child(new TextWidget<>(""));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelhmc.header", EnumChatFormatting.UNDERLINE));
+        list.child(new TextWidget<>(""));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelhmc.1", null));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelhmc.2", null));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelhmc.3", null));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelhmc.4", null));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelhmc.5", null));
+        list.child(createInfoTextWidget("GT5U.artificialorganisms.infopanelhmc.6", null));
+        list.child(new TextWidget<>(""));
         list.child(
-            new TextWidget(
-                EnumChatFormatting.UNDERLINE
-                    + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.header")));
-        list.child(new TextWidget(""));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.1")));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.2")));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.3")));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.4")));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.5")));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.6")));
-
-        list.child(new TextWidget(""));
-        list.child(
-            new TextWidget(
-                EnumChatFormatting.UNDERLINE
-                    + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.header")));
-        list.child(new TextWidget(""));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.1")));
-        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.2")));
-
+            createInfoTextWidget("GT5U.artificialorganisms.infopanelnetworks.header", EnumChatFormatting.UNDERLINE));
+        list.child(new TextWidget<>(""));
+        list.child(createInfoTextWidget(" GT5U.artificialorganisms.infopanelnetworks.1", null));
+        list.child(createInfoTextWidget(" GT5U.artificialorganisms.infopanelnetworks.2", null));
         popup.child(list);
         return popup;
+    }
+
+    private final int maxTextWidgetWidth = 168 - 4;
+
+    private TextWidget<?> createInfoTextWidget(String langkey, EnumChatFormatting specifier) {
+
+        return new TextWidget<>((specifier == null ? "" : specifier) + StatCollector.translateToLocal(langkey))
+            .maxWidth(maxTextWidgetWidth);
     }
 
     private ModularPanel getTraitPopup() {
