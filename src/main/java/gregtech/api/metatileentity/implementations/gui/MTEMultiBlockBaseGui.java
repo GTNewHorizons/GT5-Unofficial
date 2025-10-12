@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,9 +46,7 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -66,19 +63,16 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.covers.Cover;
+import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
-import gregtech.common.modularui2.widget.CoverTabButton;
 
 public class MTEMultiBlockBaseGui {
 
@@ -86,6 +80,7 @@ public class MTEMultiBlockBaseGui {
     private final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
+    private final int borderRadius = 4;
     protected final int textBoxToInventoryGap = 26;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
@@ -129,19 +124,23 @@ public class MTEMultiBlockBaseGui {
         setMachineModeIcons();
         registerSyncValues(syncManager);
 
-        ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(getBasePanelWidth(), getBasePanelHeight())
-            .padding(4);
-
-        int borderRadius = 4;
-        int parentWidgetToRightEdge = 17;
+        ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
         return panel.child(
-            new Column().sizeRel(1)
-                .child(createTitleTextStyle(guiData, base.getLocalName()))
+            Flow.column()
+                .padding(borderRadius)
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager))
-                .childIf(base.canBeMuffled(), createMufflerButton(borderRadius, parentWidgetToRightEdge)))
-            .child(createCoverTabs(syncManager, guiData, uiSettings));
+                .child(createInventoryRow(panel, syncManager)));
+    }
+
+    protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new GTBaseGuiBuilder(base, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())
+            .setHeight(getBasePanelHeight())
+            .doesAddGregTechLogo(false)
+            // Has to be replaced with inventory row to fit buttons
+            .doesBindPlayerInventory(false)
+            .doesAddMufflerButton(base.canBeMuffled())
+            .build();
     }
 
     protected int getBasePanelWidth() {
@@ -150,40 +149,6 @@ public class MTEMultiBlockBaseGui {
 
     protected int getBasePanelHeight() {
         return 181 + textBoxToInventoryGap;
-    }
-
-    protected IWidget createTitleTextStyle(PosGuiData data, String title) {
-        boolean clientSide = data.isClient();
-
-        int borderRadius = 4;
-        int maxWidth = getBasePanelWidth() - borderRadius * 2;
-        // No, there is no setMaxWidth, otherwise i'd just do that because the alignment makes no difference.
-        // -1 means infinite width because i just want the title width
-        IKey.renderer.setAlignment(Alignment.CenterLeft, -1);
-        int titleWidth = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 0;
-        int widgetWidth = Math.min(maxWidth, titleWidth);
-
-        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-        int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
-        int height = heightPerRow * rows;
-
-        TextWidget<?> titleTextWidget = IKey.str(title)
-            .asWidget()
-            .alignment(Alignment.TopLeft)
-            .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-            .marginLeft(5)
-            .marginRight(5)
-            .marginTop(5)
-            .marginBottom(1);
-
-        return new SingleChildWidget<>().coverChildren()
-            .topRel(0, -4, 1)
-            .leftRel(0, -4, 0)
-            .height(height + 10)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                titleTextWidget.height(height)
-                    .width(widgetWidth));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -581,11 +546,10 @@ public class MTEMultiBlockBaseGui {
     }
 
     private ModularPanel openPowerControlPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
 
-        return new ModularPanel("powerPanel").pos(x, y)
+        return new ModularPanel("powerPanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
             .size(120, 130)
             .child(
                 new Column().sizeRel(1)
@@ -796,64 +760,6 @@ public class MTEMultiBlockBaseGui {
 
     protected boolean isPowerSwitchDisabled() {
         return false;
-    }
-
-    protected IWidget createMufflerButton(int borderRadius, int parentWidgetToRightEdge) {
-        return new ToggleButton().syncHandler("mufflerSyncer")
-            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
-            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
-            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
-            .size(12, 12)
-            .topRel(0, -borderRadius, 0)
-            .rightRel(0, -parentWidgetToRightEdge, 0)
-            .excludeAreaInRecipeViewer(true);
-    }
-
-    private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
-        Flow column = Flow.column()
-            .coverChildren()
-            .leftRel(0f, 0, 1f)
-            .top(1)
-            .childPadding(2)
-            .excludeAreaInRecipeViewer(true);
-
-        for (int i = 0; i < 6; i++) {
-            column.child(
-                getCoverTabButton(
-                    base.getBaseMetaTileEntity(),
-                    ForgeDirection.getOrientation(i),
-                    syncManager,
-                    guiData,
-                    uiSettings));
-        }
-
-        return column;
-    }
-
-    private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side,
-        PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
-        return new CoverTabButton(coverable, side, getCoverPanel(coverable, side, syncManager, guiData, uiSettings));
-    }
-
-    private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side, PanelSyncManager syncManager,
-        PosGuiData guiData, UISettings uiSettings) {
-        String panelKey = "cover_panel_" + side.toString()
-            .toLowerCase();
-        Cover cover = coverable.getCoverAtSide(side);
-
-        CoverGuiData coverGuiData = new CoverGuiData(
-            guiData.getPlayer(),
-            cover.getCoverID(),
-            guiData.getX(),
-            guiData.getY(),
-            guiData.getZ(),
-            side);
-        return syncManager.panel(
-            panelKey,
-            (manager, handler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
-                .child(ButtonWidget.panelCloseButton()),
-            true);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
