@@ -25,6 +25,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
@@ -179,7 +180,7 @@ public final class GTBaseGuiBuilder {
         if (doesAddGregTechLogo) {
             panel.child(createGregTechLogo());
         }
-        if (doesAddMufflerButton) {
+        if (doesAddMufflerButton && mte instanceof MTEMultiBlockBase && ((MTEMultiBlockBase) mte).canBeMuffled()) {
             panel.child(createMufflerButton());
         }
         syncManager.addCloseListener($ -> mte.markDirty());
