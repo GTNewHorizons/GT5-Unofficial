@@ -123,8 +123,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(2)
                             .addTo(compressorRecipes);
                     }
-                    // This is so disgustingly bad.
-                    // It really is.
                     if (((OrePrefixes.block.isIgnored(aMaterial))
                         || (null == GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L)))
                         && (aMaterial != Materials.GraniteRed)
@@ -428,7 +426,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
-                        .outputChances(9000)
+                        .outputChances(aPrefix == OrePrefixes.dustPure ? 9500 : 9000)
                         .fluidInputs(Materials.Water.getFluid(200L))
                         .duration(1 * MINUTES + 40 * SECONDS)
                         .eut(24)
@@ -436,7 +434,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(2))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
-                        .outputChances(9500)
+                        .outputChances(aPrefix == OrePrefixes.dustPure ? 10000 : 9500)
                         .fluidInputs(GTModHandler.getDistilledWater(100L))
                         .duration(1 * MINUTES + 15 * SECONDS)
                         .eut(24)

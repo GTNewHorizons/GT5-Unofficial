@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -128,7 +127,6 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -178,8 +176,8 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -251,6 +249,10 @@ public class GTUtility {
     public static int safeInt(long number) {
         return number > V[V.length - 1] ? safeInt(V[V.length - 1], 1)
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
+    }
+
+    public static int longToInt(long number) {
+        return (int) Math.min(Integer.MAX_VALUE, number);
     }
 
     public static Field getField(Object aObject, String aField) {
@@ -489,7 +491,8 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        return "(" + GTValues.VN[getTier(voltage)] + ")";
+        String color = GTValues.TIER_COLORS[getTier(voltage)];
+        return "(" + color + GTValues.VN[getTier(voltage)] + EnumChatFormatting.RESET + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer player, String message) {
@@ -2110,6 +2113,19 @@ public class GTUtility {
         return fluidStack;
     }
 
+    public static Object2LongOpenHashMap<ItemId> getItemStackHistogram(Iterable<ItemStack> stacks) {
+        Object2LongOpenHashMap<ItemId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItem() == null) continue;
+            histogram.addTo(ItemId.create(stack), stack.stackSize);
+        }
+
+        return histogram;
+    }
+
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
         Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)
@@ -2435,6 +2451,26 @@ public class GTUtility {
         return false;
     }
 
+    public static <A, B> int indexOf(A[] array, B value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) return i;
+        }
+
+        return -1;
+    }
+
+    public static <A, B> boolean contains(A[] array, B value) {
+        return indexOf(array, value) != -1;
+    }
+
+    public static <T> T getIndexSafe(T[] array, int index) {
+        return index < 0 || index >= array.length ? null : array[index];
+    }
+
+    public static <T> T getIndexSafe(List<T> list, int index) {
+        return index < 0 || index >= list.size() ? null : list.get(index);
+    }
+
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2685,10 +2721,10 @@ public class GTUtility {
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
-            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
+            if (tData.mMaterial.mMaterial.mArmorEnchantment instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.mArmorEnchantmentLevel;
+            if (tData.mMaterial.mMaterial.mToolEnchantment instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.mToolEnchantmentLevel;
         }
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
@@ -3129,19 +3165,17 @@ public class GTUtility {
 
     private static final Int2ObjectOpenHashMap<String> DIMENSION_NAMES = new Int2ObjectOpenHashMap<>();
 
-    public static void loadDimensionNames() {
-        Hashtable<Integer, Integer> dimensions = getFieldValue(DimensionManager.class, "dimensions");
-
-        for (var e : dimensions.entrySet()) {
-            if (DimensionManager.isDimensionRegistered(e.getKey()));
-
-            WorldProvider p = DimensionManager.createProviderFor(e.getKey());
-
-            DIMENSION_NAMES.put((int) e.getKey(), p.getDimensionName());
-        }
-    }
-
     public static String getDimensionName(int dimId) {
+        if (!DIMENSION_NAMES.containsKey(dimId)) {
+            WorldProvider p = DimensionManager.createProviderFor(dimId);
+
+            if (p != null) {
+                DIMENSION_NAMES.put(dimId, p.getDimensionName());
+            } else {
+                DIMENSION_NAMES.put(dimId, "[unknown dimension]");
+            }
+        }
+
         String name = DIMENSION_NAMES.get(dimId);
 
         String key = "gtnop.world." + name;
@@ -3982,6 +4016,14 @@ public class GTUtility {
         return null;
     }
 
+    public static int hashCode(int... values) {
+        return Arrays.hashCode(values);
+    }
+
+    public static long hashCode(long... values) {
+        return Arrays.hashCode(values);
+    }
+
     public static boolean eraseBlockByFakePlayer(FakePlayer aPlayer, int aX, int aY, int aZ, boolean isSimulate) {
         if (aPlayer == null) return false;
         World aWorld = aPlayer.worldObj;
@@ -4058,6 +4100,32 @@ public class GTUtility {
     public static <T extends Collection<E>, E extends MetaTileEntity> ValidMTEList<T, E> validMTEList(
         T metaTileEntities) {
         return new ValidMTEList<>(metaTileEntities);
+    }
+
+    /**
+     * Filters a list of MTEs into a list of a subclass
+     *
+     * @param mtes     The original list of MTEs
+     * @param mteClass The MTE subclass to filter
+     * @return The filtered list of valid MTEs
+     * @param <MTESuper> The MTE superclass
+     * @param <MTEImpl>  The MTE implementation class/subclass
+     */
+    public static <MTESuper extends MetaTileEntity, MTEImpl extends MTESuper> List<MTEImpl> getMTEsOfType(
+        List<MTESuper> mtes, Class<MTEImpl> mteClass) {
+        List<MTEImpl> out = new ArrayList<>(mtes.size());
+
+        for (int i = 0, mtesSize = mtes.size(); i < mtesSize; i++) {
+            MTESuper mte = mtes.get(i);
+
+            if (mte != null && mte.isValid()) {
+                if (mteClass.isInstance(mte)) {
+                    out.add(mteClass.cast(mte));
+                }
+            }
+        }
+
+        return out;
     }
 
     @Nullable
@@ -4415,16 +4483,10 @@ public class GTUtility {
             && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
-        "bartworks.system.material.BWMetaGeneratedOres",
-        "bartworks.system.material.BWMetaGeneratedSmallOres",
-        "gtPlusPlus.core.block.base.BlockBaseOre");
+    public static boolean isOre(Block block, int meta) {
+        if (OreManager.isOre(block, meta)) return true;
 
-    public static boolean isOre(Block aBlock, int aMeta) {
-        return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
-            || ORE_BLOCK_CLASSES.contains(
-                aBlock.getClass()
-                    .getName());
+        return isOre(new ItemStack(block, 1, meta));
     }
 
     public static boolean isOre(ItemStack aStack) {
@@ -5188,6 +5250,13 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        public boolean matches(ItemStack stack) {
+            if (item() != stack.getItem()) return false;
+            if (metaData() != Items.feather.getDamage(stack)) return false;
+
+            return Objects.equals(nbt(), stack.getTagCompound());
         }
     }
 

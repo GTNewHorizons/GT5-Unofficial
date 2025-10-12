@@ -1,11 +1,12 @@
 package gregtech.common.gui.mui1.cover;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -56,16 +57,16 @@ public class ControlsWorkUIFactory extends CoverLegacyDataUIFactory {
                         widget -> widget.setPos(spaceX * 0, spaceY * 3))
                     .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("243", "Enable with Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.MachContr.EnRedstone"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("244", "Disable with Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.MachContr.DisRedstone"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(GTUtility.trans("245", "Disable machine")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.MachContr.DisMachine"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(GTUtility.trans("507", "Safe Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.MachContr.SafeMode"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
     }
 
