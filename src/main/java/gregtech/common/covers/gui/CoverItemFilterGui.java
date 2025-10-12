@@ -52,7 +52,8 @@ public class CoverItemFilterGui extends CoverGui<CoverItemFilter> {
                             IKey.str(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.CheckMode"))
                                 .asWidget()))
                 .child(
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Filter") + " " ).asWidget()
+                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Filter") + " ")
+                        .asWidget()
                         .marginTop(WIDGET_MARGIN))
                 .child(
                     new PhantomItemSlot().slot(new ModularSlot(cover.getFilter(), 0))
