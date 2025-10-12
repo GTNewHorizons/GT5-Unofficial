@@ -6,14 +6,11 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.Materials.NutrientBroth;
-import static gregtech.api.enums.Materials.PrimordialSoup;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,18 +18,25 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -63,13 +67,14 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEEvolutionChamberGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolutionChamber>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, IMTERenderer {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEEvolutionChamber> STRUCTURE_DEFINITION = StructureDefinition
@@ -163,6 +168,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private int status = 0;
 
+    private int fluidAmount = 0;
     public final int INTERNAL_FLUID_TANK_SIZE = 64000;
 
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
@@ -214,21 +220,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     // Returns the fill level of either nutrient broth or primordial soup
     public int getFillLevel() {
-        int fill = 0;
-
-        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-            FluidStack f = tHatch.getFluid();
-            // add early return when null, if its empty the machine can crash during init for some reason
-            // should be removed when the tank system works.
-            if (f == null) return fill;
-            if (currentSpecies.getFinalized()) {
-                if (f.getFluid() == PrimordialSoup.mFluid) fill += f.amount;
-            } else {
-                if (f.getFluid() == NutrientBroth.mFluid) fill += f.amount;
-            }
-        }
-
-        return fill;
+        return tank.getFluidAmount();
     }
 
     @Override
@@ -354,6 +346,18 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             return;
         }
 
+        boolean fluidChanged = false;
+        if (tank.getFluidAmount() < tank.getCapacity()) {
+            for (MTEHatchInput hatch : mInputHatches) {
+                int remaining = tank.getCapacity() - tank.getFluidAmount();
+                FluidStack drain = hatch.drain(remaining, true);
+                if (drain.amount > 0) fluidChanged = true;
+                tank.fill(drain, true);
+            }
+        }
+
+        if (fluidChanged) aBaseMetaTileEntity.issueTileUpdate();
+
         currentSpecies.setMaxAOs(maxAOs);
         // TODO: REMOVE THIS
         currentSpecies.doReproduction();
@@ -374,6 +378,30 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
          */
     }
 
+    FluidTank tank = new FluidTank(INTERNAL_FLUID_TANK_SIZE);
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        if (tank.getFluid() != null) {
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            tank.getFluid()
+                .writeToNBT(fluidTag);
+            tag.setTag("fluidTank", fluidTag);
+        }
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound tag) {
+        if (tag.hasKey("fluidTank")) {
+            FluidStack fluid = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("fluidTank"));
+            tank.setFluid(fluid);
+        } else {
+            tank.setFluid(null);
+        }
+    }
+
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
@@ -381,12 +409,26 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         // so that the casing texture is applied on world load
         casingTier = aNBT.getInteger("casingTier");
+
+        if (aNBT.hasKey("fluidTank")) {
+            FluidStack fluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("fluidTank"));
+            tank.setFluid(fluid);
+        } else {
+            tank.setFluid(null);
+        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(currentSpecies.saveAOToCompound(aNBT));
         aNBT.setInteger("casingTier", Math.max(0, casingTier));
+
+        if (tank.getFluid() != null) {
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            tank.getFluid()
+                .writeToNBT(fluidTag);
+            aNBT.setTag("fluidTank", fluidTag);
+        }
     }
 
     @Override
@@ -485,6 +527,81 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     protected @NotNull MTEMultiBlockBaseGui getGui() {
         return new MTEEvolutionChamberGui(this);
+    }
+
+    @Override
+    public void renderTESR(double x, double y, double z, float partialTicks) {
+        FluidTankInfo info = tank.getInfo();
+        FluidStack fluid = info.fluid;
+        if (fluid == null || fluid.amount <= 0) return;
+
+        float fillRatio = (float) fluid.amount / INTERNAL_FLUID_TANK_SIZE;
+        float fluidHeight = fillRatio * 7;
+
+        // Get fluid icon and color
+        IIcon icon = fluid.getFluid()
+            .getIcon();
+        int color = fluid.getFluid()
+            .getColor(fluid);
+        float r = ((color >> 16) & 0xFF) / 255.0f;
+        float g = ((color >> 8) & 0xFF) / 255.0f;
+        float b = (color & 0xFF) / 255.0f;
+
+        // Bind texture
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(TextureMap.locationBlocksTexture);
+
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glTranslated(x + 1, y + 1, z - 3);
+        GL11.glColor4f(r, g, b, 0.99f);
+
+        Tessellator tess = Tessellator.instance;
+        tess.startDrawingQuads();
+
+        // front
+        tess.addVertexWithUV(0, fluidHeight, 0, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(7, fluidHeight, 0, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(7, 0, 0, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(0, 0, 0, icon.getMinU(), icon.getMinV());
+
+        // Back face (z = 7)
+        tess.addVertexWithUV(0, fluidHeight, 7, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(0, 0, 7, icon.getMinU(), icon.getMinV());
+        tess.addVertexWithUV(7, 0, 7, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(7, fluidHeight, 7, icon.getMaxU(), icon.getMaxV());
+
+        // Left face (x = 0)
+        tess.addVertexWithUV(0, 0, 0, icon.getMinU(), icon.getMinV());
+        tess.addVertexWithUV(0, 0, 7, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(0, fluidHeight, 7, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(0, fluidHeight, 0, icon.getMinU(), icon.getMaxV());
+
+        // Right face (x = 7)
+        tess.addVertexWithUV(7, fluidHeight, 0, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(7, fluidHeight, 7, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(7, 0, 7, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(7, 0, 0, icon.getMinU(), icon.getMinV());
+
+        // Top face (y = fluidHeight)
+        tess.addVertexWithUV(0, fluidHeight, 7, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(7, fluidHeight, 7, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(7, fluidHeight, 0, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(0, fluidHeight, 0, icon.getMinU(), icon.getMinV());
+
+        // Bottom face (y = 0)
+        tess.addVertexWithUV(0, 0, 0, icon.getMinU(), icon.getMinV());
+        tess.addVertexWithUV(7, 0, 0, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(7, 0, 7, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(0, 0, 7, icon.getMinU(), icon.getMaxV());
+
+        tess.draw();
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
     }
 
 }
