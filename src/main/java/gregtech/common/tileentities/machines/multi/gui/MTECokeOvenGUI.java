@@ -44,6 +44,7 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui {
         final FluidSlot fluidSlot = new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTank).canFillSlot(false))
             .alwaysShowFull(false)
             .size(18, 54)
+            .background(GTGuiTextures.BACKGROUND_COKE_OVEN_FLUID_SLOT)
             .overlayTexture(GTGuiTextures.OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE);
 
         final ProgressWidget progressArrow = new GTProgressWidget().neiTransferRect(base.getRecipeMap())

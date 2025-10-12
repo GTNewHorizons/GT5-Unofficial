@@ -621,6 +621,8 @@ public final class GTGuiTextures {
 
     public static final UITexture OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE = fullImageColorableGT(
         "overlay_slot/overlay_coke_oven_fluid_slot_gauge");
+    public static final UITexture BACKGROUND_COKE_OVEN_FLUID_SLOT = fullImageColorableGT(
+        "overlay_slot/background_coke_oven_fluid_slot.png");
 
     // endregion machine modes
     /**
