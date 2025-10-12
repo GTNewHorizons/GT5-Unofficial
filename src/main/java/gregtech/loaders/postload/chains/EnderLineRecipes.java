@@ -241,7 +241,7 @@ public class EnderLineRecipes {
                     Materials.TeleportatiumUnstableHypercritical.getGas(4020))
                 .fluidOutputs(
                     Materials.TeleportatiumUnstableAmalgam.getGas(8080),
-                    new FluidStack(FluidRegistry.getFluid("sludge"), 6000))
+                    FluidRegistry.getFluidStack("sludge", 6000))
                 .duration(33 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -258,9 +258,7 @@ public class EnderLineRecipes {
                     Materials.EnderAirCryostable.getGas(20000),
                     Materials.EnderAirFortified.getGas(20000),
                     Materials.EnderAirBalanced.getGas(20000))
-                .fluidOutputs(
-                    Materials.EnderAirUnstable.getGas(10000),
-                    new FluidStack(FluidRegistry.getFluid("endergoo"), 60000))
+                .fluidOutputs(Materials.EnderAirUnstable.getGas(10000), FluidRegistry.getFluidStack("endergoo", 60000))
                 .duration(33 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -294,7 +292,7 @@ public class EnderLineRecipes {
                     Materials.NefariousOil.getGas(10000),
                     Materials.EnderAirUnstable.getGas(10000),
                     Materials.TeleportatiumUnstableAmalgam.getGas(1000),
-                    new FluidStack(FluidRegistry.getFluid("endergoo"), 4000))
+                    FluidRegistry.getFluidStack("endergoo", 4000))
                 .fluidOutputs(
                     Materials.TeleportatiumStable.getGas(800),
                     Materials.TeleportatiumUnstableVolatile.getGas(1000),
@@ -318,7 +316,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs()
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableSemifluid.getGas(10000),
                     Materials.TeleportatiumUnstableUnbalanced.getGas(10000),
                     Materials.TeleportatiumUnstableVolatile.getGas(10000))
@@ -334,7 +332,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs()
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableHypercritical.getGas(10000),
                     Materials.TeleportatiumUnstableUnbalanced.getGas(10000),
                     Materials.TeleportatiumUnstableVolatile.getGas(10000))
@@ -350,7 +348,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs()
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableHypercritical.getGas(10000),
                     Materials.TeleportatiumUnstableSemifluid.getGas(10000),
                     Materials.TeleportatiumUnstableVolatile.getGas(10000))
@@ -366,7 +364,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs()
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("endergoo"), 3000),
+                    FluidRegistry.getFluidStack("endergoo", 3000),
                     Materials.TeleportatiumUnstableHypercritical.getGas(10000),
                     Materials.TeleportatiumUnstableSemifluid.getGas(10000),
                     Materials.TeleportatiumUnstableUnbalanced.getGas(10000))
