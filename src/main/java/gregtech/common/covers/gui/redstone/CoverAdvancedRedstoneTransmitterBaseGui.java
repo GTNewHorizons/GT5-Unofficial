@@ -35,7 +35,7 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
                         .marginRight(4))
                 .child(
-                    new TextWidget(
+                    new TextWidget<>(
                         IKey.dynamic(
                             () -> invertedSyncer.getBoolValue() ? translateToLocal("gt.interact.desc.inverted")
                                 : translateToLocal("gt.interact.desc.normal"))).height(16)));
@@ -51,7 +51,7 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
                     .value(physicalSyncer)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK))
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> translateToLocal(
                             physicalSyncer.getValue() ? "gt.cover.wirelessdetector.redstone.1"
