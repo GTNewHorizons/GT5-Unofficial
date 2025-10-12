@@ -43,6 +43,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.CoverPosition;
 import gregtech.common.items.ItemRedstoneSniffer;
@@ -156,11 +157,11 @@ public class RedstoneSnifferGuiBuilder {
                             bgStripe.get() % 2 == 0 ? new Rectangle().setColor(stripe1)
                                 : new Rectangle().setColor(stripe2))
                         .child(
-                            new TextWidget(entry.freq).widthRel(0.5f)
+                            new TextWidget<>(entry.freq).widthRel(0.5f)
                                 .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
-                            new TextWidget(
+                            new TextWidget<>(
                                 entry.isPrivate ? IKey.lang("gui.yes")
                                     .toString()
                                     : IKey.lang("gui.no")
@@ -176,11 +177,11 @@ public class RedstoneSnifferGuiBuilder {
             new Column().child(
                 new Row().heightRel(0.1f)
                     .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
+                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
                             .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
+                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
                             .color(textColor)
                             .alignment(Alignment.Center)))
                 .child(
@@ -231,19 +232,19 @@ public class RedstoneSnifferGuiBuilder {
             new Column().child(
                 new Row().heightRel(0.1f)
                     .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
+                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
                             .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
+                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
                             .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
+                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
                             .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
+                        new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
                             .color(textColor)
                             .alignment(Alignment.Center)))
                 .child(
@@ -266,7 +267,7 @@ public class RedstoneSnifferGuiBuilder {
                     new Row().heightRel(0.1f)
                         .marginBottom(10)
                         .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
                                 .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
@@ -274,7 +275,7 @@ public class RedstoneSnifferGuiBuilder {
                                 .setTextColor(textColor)
                                 .value(SyncHandlers.string(() -> freqFilter, filter -> freqFilter = filter)))
                         .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
                                 .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
@@ -282,8 +283,8 @@ public class RedstoneSnifferGuiBuilder {
                                 .setTextColor(textColor)
                                 .value(SyncHandlers.string(() -> ownerFilter, filter -> { ownerFilter = filter; }))))
                 .child(data));
-        panel.background(new Rectangle().setColor(Color.rgb(53, 46, 77)));
-        return panel;
+
+        return panel.widgetTheme(GTWidgetThemes.BACKGROUND_REDSTONE_SNIFFER);
     }
 
     public boolean canSeeCovers(GuiData guiData, String uuid) {
@@ -316,15 +317,15 @@ public class RedstoneSnifferGuiBuilder {
                             : new Rectangle().setColor(stripe2))
                     .expanded()
                     .child(
-                        new TextWidget(entry.owner).widthRel(0.15f)
+                        new TextWidget<>(entry.owner).widthRel(0.15f)
                             .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(entry.freq).widthRel(0.35f)
+                        new TextWidget<>(entry.freq).widthRel(0.35f)
                             .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(cover.getDimName()).widthRel(0.25f)
+                        new TextWidget<>(cover.getDimName()).widthRel(0.25f)
                             .color(textColor)
                             .alignment(Alignment.Center))
                     .child(

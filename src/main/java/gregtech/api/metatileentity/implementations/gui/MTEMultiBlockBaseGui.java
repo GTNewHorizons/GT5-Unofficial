@@ -131,13 +131,16 @@ public class MTEMultiBlockBaseGui {
 
         ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(getBasePanelWidth(), getBasePanelHeight())
             .padding(4);
+
+        int borderRadius = 4;
+        int parentWidgetToRightEdge = 17;
         return panel.child(
             new Column().sizeRel(1)
                 .child(createTitleTextStyle(guiData, base.getLocalName()))
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager)))
-            .childIf(base.canBeMuffled(), createMufflerButton(-4, -9))
+                .child(createInventoryRow(panel, syncManager))
+                .childIf(base.canBeMuffled(), createMufflerButton(borderRadius, parentWidgetToRightEdge)))
             .child(createCoverTabs(syncManager, guiData, uiSettings));
     }
 
@@ -164,7 +167,7 @@ public class MTEMultiBlockBaseGui {
         int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
         int height = heightPerRow * rows;
 
-        TextWidget titleTextWidget = IKey.str(title)
+        TextWidget<?> titleTextWidget = IKey.str(title)
             .asWidget()
             .alignment(Alignment.TopLeft)
             .widgetTheme(GTWidgetThemes.TEXT_TITLE)
@@ -198,8 +201,8 @@ public class MTEMultiBlockBaseGui {
 
     protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
-            .rightRel(0, 10, 0)
-            .bottomRel(0, 10, 0)
+            .rightRel(0, 6, 0)
+            .bottomRel(0, 6, 0)
             .childIf(base.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
             .childIf(base.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
             .childIf(
@@ -228,7 +231,7 @@ public class MTEMultiBlockBaseGui {
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return new ListWidget<>()
             .child(
-                new TextWidget(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
+                new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
@@ -300,6 +303,7 @@ public class MTEMultiBlockBaseGui {
 
     }
 
+    // TODO: separate panel gap into 'left row' and 'right row', for easier usage
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
@@ -561,7 +565,7 @@ public class MTEMultiBlockBaseGui {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            .rightRel(0, 6, 0)
+            .right(2)
             .marginTop(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
@@ -596,7 +600,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget makeTitleTextWidget() {
-        return new TextWidget(
+        return new TextWidget<>(
             EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
                 .alignment(Alignment.Center)
                 .size(120, 18)
@@ -613,7 +617,7 @@ public class MTEMultiBlockBaseGui {
             .paddingRight(3)
             .mainAxisAlignment(MainAxis.CENTER)
             .child(
-                new TextWidget(IKey.lang("GT5U.gui.text.powerfail_events")).height(18)
+                new TextWidget<>(IKey.lang("GT5U.gui.text.powerfail_events")).height(18)
                     .marginRight(2))
             .child(
                 new ToggleButton().size(18, 18)
@@ -794,15 +798,15 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
-    protected IWidget createMufflerButton(int topRelOffset, int rightRelOffset) {
+    protected IWidget createMufflerButton(int borderRadius, int parentWidgetToRightEdge) {
         return new ToggleButton().syncHandler("mufflerSyncer")
             .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
             .size(12, 12)
-            .topRel(0, topRelOffset, 0)
-            .rightRel(0, rightRelOffset, 0)
-            .excludeAreaInNEI(true);
+            .topRel(0, -borderRadius, 0)
+            .rightRel(0, -parentWidgetToRightEdge, 0)
+            .excludeAreaInRecipeViewer(true);
     }
 
     private IWidget createCoverTabs(PanelSyncManager syncManager, PosGuiData guiData, UISettings uiSettings) {
@@ -811,7 +815,7 @@ public class MTEMultiBlockBaseGui {
             .leftRel(0f, 0, 1f)
             .top(1)
             .childPadding(2)
-            .excludeAreaInNEI(true);
+            .excludeAreaInRecipeViewer(true);
 
         for (int i = 0; i < 6; i++) {
             column.child(
