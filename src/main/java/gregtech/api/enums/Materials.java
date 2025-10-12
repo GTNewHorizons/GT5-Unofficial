@@ -947,7 +947,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials TeleportatiumUnstableAmalgam;
     public static Materials TeleportatiumEncased;
 
-    // Misc GT Magic Materials
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;

@@ -55,6 +55,7 @@ public class MaterialsInit {
         loadNetheriteLine();
         loadPrismaticAcidLine();
         loadMagicMaterials();
+        loadEnderAirLine();
     }
 
     private static void loadElements() {
@@ -14877,4 +14878,67 @@ public class MaterialsInit {
             .addCell()
             .constructMaterial();
     }
+
+    private static void loadEnderAirLine() {
+        Materials.EnderAir = loadEnderAir();
+        Materials.EnderAirUnstable = loadEnderAirUnstable();
+        Materials.EnderAirCryostable = loadEnderAirCryostable();
+        Materials.EnderAirBalanced = loadEnderAirBalanced();
+        Materials.EnderAirFortified = loadEnderAirFortified();
+        Materials.EnderAirPyrostable = loadEnderAirPyrostable();
+        Materials.TeleportatiumStable = loadTeleportatiumStable();
+        Materials.TeleportatiumSemistable = loadTeleportatiumSemistable();
+        Materials.TeleportatiumUnstableVolatile = loadTeleportatiumUnstableVolatile();
+        Materials.TeleportatiumUnstableUnbalanced = loadTeleportatiumUnstableUnbalanced();
+        Materials.TeleportatiumUnstableSemifluid = loadTeleportatiumUnstableSemifluid();
+        Materials.TeleportatiumUnstableHypercritical = loadTeleportatiumUnstableHypercritical();
+        Materials.TeleportatiumUnstableAmalgam = loadTeleportatiumUnstableAmalgam();
+        Materials.TeleportatiumEncased = loadTeleportatiumEncased();
+
+    }
+
+    private static Materials loadEnderAir() {
+
+    }
+    public static Materials loadEnderAirUnstable() {
+
+    }
+    public static Materials loadEnderAirCryostable() {
+
+    }
+    public static Materials loadEnderAirBalanced() {
+
+    }
+    public static Materials loadEnderAirFortified() {
+
+    }
+    public static Materials loadEnderAirPyrostable() {
+
+    }
+    public static Materials loadTeleportatiumStable() {
+
+    }
+    public static Materials loadTeleportatiumSemistable() {
+
+    }
+    public static Materials loadTeleportatiumUnstableVolatile() {
+
+    }
+    public static Materials loadTeleportatiumUnstableUnbalanced() {
+
+    }
+    public static Materials loadTeleportatiumUnstableSemifluid() {
+
+    }
+    public static Materials loadTeleportatiumUnstableHypercritical() {
+
+    }
+    public static Materials loadTeleportatiumUnstableAmalgam() {
+
+    }
+    public static Materials loadTeleportatiumEncased() {
+        
+    }
+
+
 }
