@@ -2,6 +2,8 @@ package gregtech.common.modularui2.widget;
 
 import java.util.Arrays;
 
+import com.cleanroommc.modularui.api.UpOrDown;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -42,7 +44,7 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     }
 
     @Override
-    public IDrawable getCurrentBackground(ITheme theme, WidgetTheme widgetTheme) {
+    public IDrawable getCurrentBackground(ITheme theme, WidgetThemeEntry<?> widgetTheme) {
         IDrawable background = super.getCurrentBackground(theme, widgetTheme);
         return new DrawableStack(background, GTGuiTextures.OVERLAY_SLOT_EXTRUDER_SHAPE);
     }
@@ -61,7 +63,7 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     }
 
     @Override
-    public boolean onMouseScroll(ModularScreen.UpOrDown scrollDirection, int amount) {
+    public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
         if (getSyncHandler() != null) {
             MouseData mouseData = MouseData.create(scrollDirection.modifier);
