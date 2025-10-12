@@ -76,4 +76,12 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
     public int getMaxStringW() {
         return maxStringW;
     }
+
+    public enum ProgressBarColor {
+        Green,
+        LightBlue,
+        DarkBlue,
+        Red,
+        Custom
+    }
 }
