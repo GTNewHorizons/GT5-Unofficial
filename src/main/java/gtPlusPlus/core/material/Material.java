@@ -7,6 +7,7 @@ import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +23,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -37,10 +41,11 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
-public class Material {
+public class Material implements IOreMaterial {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
     public static final HashMap<String, Material> mMaterialCache = new HashMap<>();
+    public static final HashMap<String, Material> mMaterialsByName = new HashMap<>();
     public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<>();
     public static final HashMap<String, String> sChemicalFormula = new HashMap<>();
 
@@ -88,6 +93,9 @@ public class Material {
     public short werkstoffID;
 
     public static ArrayList<Materials> invalidMaterials = new ArrayList<>();
+
+    /** A cache field for raw ores to prevent constant map lookups. */
+    private ItemStack rawOre;
 
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, inputs);
@@ -383,6 +391,7 @@ public class Material {
             this.translatedName = GTLanguageManager
                 .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
             mMaterialCache.put(getLocalizedName().toLowerCase(), this);
+            mMaterialsByName.put(unlocalizedName, this);
             Logger.INFO("Stored " + getLocalizedName() + " to cache with key: " + getLocalizedName().toLowerCase());
 
             this.materialState = defaultState;
@@ -687,6 +696,7 @@ public class Material {
         }
     }
 
+    @Override
     public final TextureSet getTextureSet() {
         synchronized (this) {
             return textureSet;
@@ -797,11 +807,39 @@ public class Material {
         return Materials.Gold.mIconSet;
     }
 
+    @Override
     public final String getLocalizedName() {
         if (this.localizedName != null) {
             return this.localizedName;
         }
         return "ERROR BAD LOCALIZED NAME";
+    }
+
+    @Override
+    public int getId() {
+        ItemStack dust = getDust(1);
+
+        if (dust != null) return Item.getIdFromItem(dust.getItem());
+
+        ItemStack ingot = getIngot(1);
+
+        if (ingot != null) return Item.getIdFromItem(ingot.getItem());
+
+        ItemStack ore = getOre(1);
+
+        if (ore != null) return Item.getIdFromItem(ore.getItem());
+
+        return 0;
+    }
+
+    @Override
+    public List<IStoneType> getValidStones() {
+        return StoneType.STONE_ONLY;
+    }
+
+    @Override
+    public String getInternalName() {
+        return getUnlocalizedName();
     }
 
     public final String getUnlocalizedName() {
@@ -829,6 +867,7 @@ public class Material {
         return new short[] { 255, 0, 0 };
     }
 
+    @Override
     public final short[] getRGBA() {
         if (this.RGBA != null) {
             if (this.RGBA.length == 4) {
@@ -1077,15 +1116,21 @@ public class Material {
         return getComponentByPrefix(OrePrefixes.cableGt16, stacksize);
     }
 
+    private ItemStack ore;
+
     /**
      * Ore Components
      *
      * @return
      */
     public final ItemStack getOre(final int stacksize) {
-        return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "ore" + StringUtils.sanitizeString(this.getUnlocalizedName()),
-            stacksize);
+        if (ore == null) {
+            ore = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                "ore" + StringUtils.sanitizeString(this.getUnlocalizedName()),
+                1);
+        }
+
+        return GTUtility.copyAmount(stacksize, ore);
     }
 
     public final Block getOreBlock(final int stacksize) {
@@ -1140,7 +1185,11 @@ public class Material {
     }
 
     public final ItemStack getRawOre(final int stacksize) {
-        return getComponentByPrefix(OrePrefixes.rawOre, stacksize);
+        if (rawOre == null) {
+            rawOre = getComponentByPrefix(OrePrefixes.rawOre, 1);
+        }
+
+        return GTUtility.copyAmount(stacksize, rawOre);
     }
 
     public final boolean hasSolidForm() {
