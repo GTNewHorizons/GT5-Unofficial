@@ -161,17 +161,16 @@ public final class GTBaseGuiBuilder {
 
     private IWidget createTitle() {
         String title = mte.getLocalName();
-        boolean clientSide = posGuiData.isClient();
 
         int borderRadius = 5;
         int maxWidth = width - borderRadius * 2;
 
-        int titleWidth = clientSide ? TextRenderer.getFontRenderer()
-            .getStringWidth(title) : 0;
+        int titleWidth = TextRenderer.getFontRenderer()
+            .getStringWidth(title);
         int widgetWidth = Math.min(maxWidth, titleWidth);
 
         int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-        int heightPerRow = clientSide ? (int) (IKey.renderer.getFontHeight()) : 0;
+        int heightPerRow = (int) (IKey.renderer.getFontHeight());
         int height = heightPerRow * rows;
 
         return new SingleChildWidget<>().coverChildren()
