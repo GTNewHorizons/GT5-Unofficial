@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GTUtility.appendParams;
 import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.GTUtility.tryTranslate;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
@@ -1064,18 +1065,7 @@ public class MultiblockTooltipBuilder {
     @NotNull
     private String[] getStrings(List<TooltipLine> xLines) {
         return xLines.stream()
-            .map(line -> {
-                if (line.params.length == 0) {
-                    return line.text;
-                } else {
-                    StringBuilder sb = new StringBuilder(line.text);
-                    for (Object param : line.params) {
-                        sb.append(GTUtility.LOC_SEPARATOR)
-                            .append(param.toString());
-                    }
-                    return sb.toString();
-                }
-            })
+            .map(line -> appendParams(line.text, line.params))
             .toArray(String[]::new);
     }
 }

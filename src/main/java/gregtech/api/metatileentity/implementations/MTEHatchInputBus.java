@@ -72,10 +72,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             nameRegional,
             tier,
             slots,
-            ArrayExt.of(
-                "Item Input for Multiblocks",
-                "Shift + right click with screwdriver to turn Sort mode on/off",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+            ArrayExt.of(GTUtility.appendParams("gt.te.input_bus.desc", getSlots(tier))));
     }
 
     public MTEHatchInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

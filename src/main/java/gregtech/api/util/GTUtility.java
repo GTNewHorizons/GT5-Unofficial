@@ -5371,4 +5371,25 @@ public class GTUtility {
             .getName()
             .contains("Fake");
     }
+
+    /**
+     * Different from translateToLocalFormatted, it's to make sure<br>
+     * nothing gets hardcoded on startup (requires a full relaunch to see changes to lang)
+     * for a seamless translation experience
+     */
+    public static String appendParams(String locKey, Object... params) {
+        if (params == null || params.length == 0) {
+            return locKey;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(locKey);
+
+        for (Object param : params) {
+            sb.append(LOC_SEPARATOR);
+            sb.append(param != null ? param.toString() : "");
+        }
+
+        return sb.toString();
+    }
 }

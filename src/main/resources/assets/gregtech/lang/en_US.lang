@@ -266,6 +266,8 @@ gt.interact.desc.issue_rotor_low=Rotor < 20%
 gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
 
 # GT Tile Entity Descriptions
+gt.te.input_hatch.desc=Fluid Input for Multiblocks\nRight click with screwdriver to toggle input filter\nCapacity: %sL
+gt.te.input_bus.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s stack(s)
 gt.te.black_hole_util_hatch.desc=Optional hatch for Pseudostable Black Hole Containment Field.\nStatic Mode: Emit a constant redstone signal when a black hole is open\nPulse Mode: Emit a pulse every second while a black hole is open\nPulse is perfectly synced to the internal timing of the machine\nRight click to open the GUI and change settings.
 
 # GT++ items
