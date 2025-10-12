@@ -64,7 +64,7 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                     }
                 },
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                    .addTooltip(translateToLocal("gt.interact.desc.export"))
+                    .addTooltip(translateToLocal("gt.interact.desc.export.tooltip"))
                     .setPos(spaceX * 0, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -79,7 +79,7 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                         }
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                        .addTooltip(translateToLocal("gt.interact.desc.import"))
+                        .addTooltip(translateToLocal("gt.interact.desc.import.tooltip"))
                         .setPos(spaceX * 1, spaceY * 0))
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
