@@ -215,6 +215,7 @@ public enum Mods implements IMod {
     ToroHealth(ModIDs.TORO_HEALTH),
     Translocator(ModIDs.TRANSLOCATOR),
     UniversalSingularities(ModIDs.UNIVERSAL_SINGULARITIES),
+    VendingMachine(ModIDs.VENDING_MACHINE),
     VisualProspecting(ModIDs.VISUAL_PROSPECTING),
     WailaPlugins(ModIDs.WAILA_PLUGINS),
     WailaHarvestability(ModIDs.WAILA_HARVESTABILITY),
@@ -274,7 +275,15 @@ public enum Mods implements IMod {
     Witchery(ModIDs.WITCHERY),
     ZTones(ModIDs.Z_TONES),
 
-    Minecraft(ModIDs.MINECRAFT),
+    Minecraft(ModIDs.MINECRAFT) {
+
+        {
+            // instance initializer to avoid having to override isModLoaded
+            checked = true;
+            modLoaded = true;
+        }
+
+    },
 
     Aroma1997Core(ModIDs.AROMA1997_CORE),
     ExtraCells2(ModIDs.EXTRA_CELLS2),
@@ -289,17 +298,19 @@ public enum Mods implements IMod {
 
     public final String ID;
     public final String resourceDomain;
-    private Boolean modLoaded;
+    protected boolean checked, modLoaded;
 
     Mods(String ID) {
         this.ID = ID;
         this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
     }
 
+    // isModLoaded is final to allow the JIT to inline this
     @Override
-    public boolean isModLoaded() {
-        if (this.modLoaded == null) {
+    public final boolean isModLoaded() {
+        if (!this.checked) {
             this.modLoaded = Loader.isModLoaded(ID);
+            this.checked = true;
         }
         return this.modLoaded;
     }
@@ -544,6 +555,7 @@ public enum Mods implements IMod {
         public static final String TORO_HEALTH = "torohealthmod";
         public static final String TRANSLOCATOR = "Translocator";
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
+        public static final String VENDING_MACHINE = "vendingmachine";
         public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA_PLUGINS = "wailaplugins";
         public static final String WAILA_HARVESTABILITY = "WailaHarvestability";
