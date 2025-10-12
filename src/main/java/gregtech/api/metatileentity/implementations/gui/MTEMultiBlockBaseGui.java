@@ -131,6 +131,7 @@ public class MTEMultiBlockBaseGui {
             .doesBindPlayerInventory(false)
             .build();
 
+        int mufflerButtonPosFromTop = 0;
         int parentWidgetToRightEdge = 13;
         return panel.child(
             Flow.column()
@@ -138,7 +139,7 @@ public class MTEMultiBlockBaseGui {
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager))
-                .childIf(base.canBeMuffled(), createMufflerButton(borderRadius, parentWidgetToRightEdge)));
+                .childIf(base.canBeMuffled(), createMufflerButton(mufflerButtonPosFromTop, parentWidgetToRightEdge)));
     }
 
     protected int getBasePanelWidth() {
@@ -760,14 +761,14 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
-    protected IWidget createMufflerButton(int borderRadius, int parentWidgetToRightEdge) {
+    protected IWidget createMufflerButton(int posFromTop, int posFromRightOutwards) {
         return new ToggleButton().syncHandler("mufflerSyncer")
             .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
             .size(12, 12)
-            .top(borderRadius)
-            .right(-parentWidgetToRightEdge)
+            .top(posFromTop)
+            .right(-posFromRightOutwards)
             .excludeAreaInRecipeViewer(true);
     }
 
