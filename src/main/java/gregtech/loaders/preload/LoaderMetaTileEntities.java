@@ -162,6 +162,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -569,6 +570,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.DecayWarehouse.set(
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
                 .getStackForm(1));
+
+        ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

@@ -1279,4 +1279,12 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .frontend(IsotopeDecayFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> cableRecipes = RecipeMapBuilder
+        .of("gt.recipe.cable", RecipeMapBackend::new)
+        .maxIO(9, 1, 1, 0)
+        .minInputs(1, 1)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CIRCUIT : null)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .build();
 }

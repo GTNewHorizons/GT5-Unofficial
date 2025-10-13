@@ -6081,5 +6081,15 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                Materials.Rubber.getMolten(1152L),
+                (Materials.StyreneButadieneRubber.getMolten(864L)),
+                (Materials.Silicone.getMolten(576L)),
+                (Materials.PolyphenyleneSulfide.getMolten(288L)))
+            .fluidOutputs(Materials.ElasticSCRubber.getMolten(288L))
+            .duration(180 * SECONDS)
+            .eut(480)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 }

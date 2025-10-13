@@ -633,6 +633,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Butadiene;
     public static Materials RawStyreneButadieneRubber;
     public static Materials StyreneButadieneRubber;
+    public static Materials ElasticSCRubber;
     public static Materials Toluene;
     public static Materials Epichlorohydrin;
     public static Materials PolyvinylChloride;
@@ -1748,6 +1749,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
+        ElasticSCRubber.mOreReRegistrations.add(AnyRubber);
+        ElasticSCRubber.mOreReRegistrations.add(AnySyntheticRubber);
     }
 
     private static void setHeatDamage() {
