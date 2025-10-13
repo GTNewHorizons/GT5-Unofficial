@@ -52,7 +52,8 @@ public class EnderLineRecipes {
     public static void run() {
 
         // Ender Air Processing
-        if (EtFuturumRequiem.isModLoaded()) {
+        // if (EtFuturumRequiem.isModLoaded())
+        {
 
             // GoG recipe only
 
@@ -94,7 +95,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirCryostable.getFluid(200000))
                 .fluidOutputs(
-                    Materials.Radon.getFluid(1500),
+                    Materials.Radon.getGas(1500),
                     new FluidStack(FluidRegistry.getFluid("xenon"), 2000),
                     new FluidStack(FluidRegistry.getFluid("krypton"), 10000),
                     Materials.Tritium.getGas(14000),
@@ -102,7 +103,7 @@ public class EnderLineRecipes {
                     Materials.Helium.getGas(30000),
                     Materials.Deuterium.getGas(100000),
                     Materials.NitrogenDioxide.getGas(122000))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 80))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 8))
                 .duration(100 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(distillationTowerRecipes);
@@ -115,9 +116,7 @@ public class EnderLineRecipes {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.EndSteel, 8),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ichorium, 8),
                     GTUtility.getIntegratedCircuit(3))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Tungsten, 4),
-                    GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Ichorium, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Tungsten, 4))
                 .fluidOutputs(Materials.EnderAirBalanced.getFluid(10000))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
@@ -198,7 +197,7 @@ public class EnderLineRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemRefer.High_Density_Uranium.get(8))
-                .fluidInputs(Materials.Steel.getFluid(41472))
+                .fluidInputs(Materials.Steel.getMolten(41472))
                 .itemOutputs(ItemRefer.Neutron_Source.get(8))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
