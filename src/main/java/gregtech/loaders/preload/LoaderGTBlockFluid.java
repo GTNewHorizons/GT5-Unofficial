@@ -75,7 +75,7 @@ import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockNanoForgeRenderer;
-import gregtech.common.blocks.BlockOres;
+import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
@@ -97,6 +97,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
@@ -265,9 +266,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodThorium2.set(
             new ItemRadioactiveCellIC(
                 "rodThorium2",
@@ -276,9 +278,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodThorium4.set(
             new ItemRadioactiveCellIC(
                 "rodThorium4",
@@ -287,9 +290,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium4.get(1),
-                false));
+                false,
+                1F));
 
         // Uranium
         ItemList.DepletedRodUranium.set(new ItemDepletedCell("depletedRodUranium", "Fuel Rod (Depleted Uranium)", 1));
@@ -306,9 +310,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodUranium2.set(
             new ItemRadioactiveCellIC(
                 "rodUranium2",
@@ -317,9 +322,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodUranium4.set(
             new ItemRadioactiveCellIC(
                 "rodUranium4",
@@ -328,9 +334,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium4.get(1),
-                false));
+                false,
+                1F));
 
         // MOX
         ItemList.DepletedRodMOX.set(new ItemDepletedCell("depletedRodMOX", "Fuel Rod (Depleted MOX)", 1));
@@ -345,9 +352,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodMOX2.set(
             new ItemRadioactiveCellIC(
                 "rodMOX2",
@@ -356,9 +364,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX2.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodMOX4.set(
             new ItemRadioactiveCellIC(
                 "rodMOX4",
@@ -367,9 +376,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX4.get(1),
-                true));
+                true,
+                1.5F));
 
         // High Density Uranium
         ItemList.DepletedRodHighDensityUranium.set(
@@ -391,33 +401,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (High Density Uranium)",
                 1,
                 70_000,
-                100,
-                800,
+                4,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodHighDensityUranium2.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityUranium2",
                 "Dual Fuel Rod (High Density Uranium)",
                 2,
                 70_000,
-                100,
-                1_600,
+                4,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodHighDensityUranium4.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityUranium4",
                 "Quad Fuel Rod (High Density Uranium)",
                 4,
                 70_000,
-                100,
-                3_200,
+                4,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium4.get(1),
-                false));
+                false,
+                1F));
 
         // High Density Plutonium
         ItemList.DepletedRodHighDensityPlutonium.set(
@@ -439,33 +452,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (High Density Plutonium)",
                 1,
                 70_000,
-                50,
-                1_000,
+                2,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium.get(1),
-                true));
+                true,
+                6F));
         ItemList.RodHighDensityPlutonium2.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityPlutonium2",
                 "Dual Fuel Rod (High Density Plutonium)",
                 2,
                 70_000,
-                50,
-                2_000,
+                2,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium2.get(1),
-                true));
+                true,
+                6F));
         ItemList.RodHighDensityPlutonium4.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityPlutonium4",
                 "Quad Fuel Rod (High Density Plutonium)",
                 4,
                 70_000,
-                50,
-                4_000,
+                2,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium4.get(1),
-                true));
+                true,
+                6F));
 
         // Excited Uranium
         ItemList.DepletedRodExcitedUranium
@@ -481,33 +497,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (Excited Uranium)",
                 1,
                 6_000,
-                1_200,
-                8_000,
+                48,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodExcitedUranium2.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedUranium2",
                 "Dual Fuel Rod (Excited Uranium)",
                 2,
                 6_000,
-                1_200,
-                8_000,
+                48,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodExcitedUranium4.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedUranium4",
                 "Quad Fuel Rod (Excited Uranium)",
                 4,
                 6_000,
-                1_200,
-                8_000,
+                48,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium4.get(1),
-                false));
+                false,
+                1F));
 
         // Excited Plutonium
         ItemList.DepletedRodExcitedPlutonium
@@ -523,33 +542,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (Excited Plutonium)",
                 1,
                 10_000,
-                1_600,
-                10_000,
+                64,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium.get(1),
-                true));
+                true,
+                2F));
         ItemList.RodExcitedPlutonium2.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedPlutonium2",
-                "Fuel Rod (Excited Plutonium)",
+                "Dual Fuel Rod (Excited Plutonium)",
                 2,
                 10_000,
-                1_600,
-                10_000,
+                64,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium2.get(1),
-                true));
+                true,
+                2F));
         ItemList.RodExcitedPlutonium4.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedPlutonium4",
-                "Fuel Rod (Excited Plutonium)",
+                "Quad Fuel Rod (Excited Plutonium)",
                 4,
                 10_000,
-                1_600,
-                10_000,
+                64,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium4.get(1),
-                true));
+                true,
+                2F));
 
         // Naquadah
         ItemList.DepletedRodNaquadah
@@ -568,9 +590,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodNaquadah2.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadah2",
@@ -579,9 +602,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodNaquadah4.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadah4",
@@ -592,7 +616,8 @@ public class LoaderGTBlockFluid implements Runnable {
                 1,
                 1F,
                 ItemList.DepletedRodNaquadah4.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodNaquadah32.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadah32",
@@ -601,9 +626,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 8F,
                 32,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah32.get(1),
-                false));
+                false,
+                1F));
 
         // Naquadria
         ItemList.DepletedRodNaquadria
@@ -621,9 +647,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodNaquadria2.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadria2",
@@ -632,9 +659,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria2.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodNaquadria4.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadria4",
@@ -643,9 +671,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria4.get(1),
-                true));
+                true,
+                1.5F));
 
         // Tiberium
         ItemList.DepletedRodTiberium
@@ -663,9 +692,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodTiberium2.set(
             new ItemRadioactiveCellIC(
                 "rodTiberium2",
@@ -674,9 +704,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodTiberium4.set(
             new ItemRadioactiveCellIC(
                 "rodTiberium4",
@@ -685,9 +716,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium4.get(1),
-                false));
+                false,
+                1F));
 
         GTLog.out.println("GTMod: Adding Blocks.");
         GregTechAPI.sBlockMachines = new BlockMachines();
@@ -708,7 +740,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
-        GregTechAPI.sBlockOres1 = new BlockOres();
+        GregTechAPI.sBlockOres1 = new BlockOresLegacy();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sDroneRender = new BlockDrone();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
@@ -717,6 +749,8 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
         GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
+
+        GTOreAdapter.INSTANCE.init();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -1694,7 +1728,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     GTMod.proxy.addAutogeneratedMoltenFluid(tMaterial.mSmeltInto);
                 }
             }
-            if (tMaterial.mElement != null || (tMaterial.mHasPlasma && !tMaterial.mIconSet.is_custom)) {
+            if (tMaterial.mElement != null || (tMaterial.hasPlasma() && !tMaterial.mIconSet.is_custom)) {
                 GTMod.proxy.addAutogeneratedPlasmaFluid(tMaterial);
             }
             if (tMaterial.hasCorrespondingFluid()) {

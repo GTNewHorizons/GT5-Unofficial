@@ -580,7 +580,6 @@ public enum ItemList implements IItemContainer {
     Fuel_Can_Plastic_Filled,
     Upgrade_Battery,
     Upgrade_Overclocker,
-    Upgrade_Muffler,
     Upgrade_SteamEngine,
     Upgrade_Lock,
     Item_Redstone_Sniffer,
@@ -1539,6 +1538,10 @@ public enum ItemList implements IItemContainer {
     Black_Hole_Stabilizer,
 
     Machine_Multi_IndustrialBrewery,
+
+    Machine_Multi_ChamberCentrifuge,
+    Chamber_Casing,
+    Chamber_Grate,
 
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
@@ -2744,6 +2747,7 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    ManaFly,
     // semicolon after the comment to reduce merge conflicts
     ;
 

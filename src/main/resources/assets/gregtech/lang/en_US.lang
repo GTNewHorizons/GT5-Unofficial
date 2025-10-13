@@ -97,7 +97,7 @@ gt.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
 gt.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
 gt.tileentity.eup_amount=Amperage: §e%d§7
 gt.tileentity.eup_store=Capacity: §9%d§7 EU
-gt.tileentity.has_muffler=has Muffler Upgrade
+gt.tileentity.has_muffler=is Muffled
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)
 
@@ -189,8 +189,8 @@ gt.interact.desc.deny_i_invert_o=Deny input, Invert output
 gt.interact.desc.any_i_filter_o=Permit any input, Filter output
 gt.interact.desc.any_i_invert_o=Permit any input, Invert output
 gt.interact.desc.mb.idle.1=Hit with Soft Mallet
-gt.interact.desc.mb.idle.2=to (re-)start the Machine
-gt.interact.desc.mb.idle.3=if it doesn't start.
+gt.interact.desc.mb.idle.2= to (re-)start the Machine
+gt.interact.desc.mb.idle.3= if it doesn't start.
 gt.interact.desc.mb.running=Running perfectly.
 gt.interact.desc.mb.incomplete=Incomplete Structure.
 gt.interact.desc.mb.locking_on=Single recipe locking enabled. Will lock to next recipe.
@@ -198,6 +198,8 @@ gt.interact.desc.mb.locking_off=Single recipe locking disabled.
 gt.interact.desc.mb.mode=§fRunning mode: §6%s
 gt.interact.desc.export=Export
 gt.interact.desc.import=Import
+gt.interact.desc.export.tooltip=Export
+gt.interact.desc.import.tooltip=Import
 gt.interact.desc.export_cond=Export (conditional)
 gt.interact.desc.import_cond=Import (conditional)
 gt.interact.desc.export_invert_cond=Export (invert cond)
@@ -215,14 +217,29 @@ gt.interact.desc.input_from_output_on=Input from Output Side allowed
 gt.interact.desc.input_from_output_off=Input from Output Side forbidden
 gt.interact.desc.public=Public
 gt.interact.desc.private=Private
-gt.interact.desc.set_perm=Public/Private
-gt.interact.desc.set_io=Import/Export
-gt.interact.desc.channel=Channel
-gt.interact.desc.freq=Frequency
-gt.interact.desc.freq_format=Frequency: %s
+gt.interact.desc.privfreq=Use Private Frequency
+gt.interact.desc.gatemode=Gate Mode
+gt.interact.desc.andgate=AND Gate
+gt.interact.desc.nandgate=NAND Gate
+gt.interact.desc.orgate=OR Gate
+gt.interact.desc.norgate=NOR Gate
+gt.interact.desc.analogmode=ANALOG Mode
+gt.interact.desc.recipeprogress=Recipe Progress
+gt.interact.desc.machineidle=Machine Idle
+gt.interact.desc.fluidthreshold=Fluid Threshold
+gt.interact.desc.itemthreshold=Item Threshold
+gt.interact.desc.item_slot=Item In Slot
+gt.interact.desc.any_slot=-1 is Any Slot
+gt.interact.desc.set_perm=§8Public/Private
+gt.interact.desc.set_io=§8Import/Export
+gt.interact.desc.channel=§8Channel
+gt.interact.desc.freq=§8Frequency
+gt.interact.desc.freq_format=Frequency: %s Private: %s
 gt.interact.desc.freq_perm=Frequency: %s, Transmission: %s
-gt.interact.desc.normal=Normal
-gt.interact.desc.inverted=Inverted
+gt.interact.desc.normal=§8Normal
+gt.interact.desc.normal.tooltip=Normal
+gt.interact.desc.inverted=§8Inverted
+gt.interact.desc.inverted.tooltip=Inverted
 gt.interact.desc.inverted_b=(Inverted)
 gt.interact.desc.ready=Ready to work
 gt.interact.desc.not_ready=Not ready to work
@@ -727,7 +744,7 @@ GT5U.power_goggles_config.text_good=Good Text Color
 GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
 
 GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pylon
-GT5U.maglevHarness.pylons=§4YOU MUST CONSTRUCT ADDITIONAL PYLONS!
+GT5U.maglevHarness.pylons=§9YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
@@ -774,17 +791,28 @@ GT5U.MBTT.InputData=Data Reception Connector
 GT5U.MBTT.OutputData=Data Transmission Connector
 GT5U.MBTT.Causes=Causes
 GT5U.MBTT.Produces=Produces
-GT5U.MBTT.PPS=pollution per second
+GT5U.MBTT.PPS=Pollution per second
 GT5U.MBTT.Hold=Hold
 GT5U.MBTT.Display=to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
 GT5U.MBTT.ParallelBase=Processes %s items per %s Tier
+GT5U.MBTT.ParallelBase_Singular=Processes %s item per %s Tier
 GT5U.MBTT.SpeedBase=%s faster than single block machines of the same voltage
 GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, per %s Tier
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
+GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
+
+GT5U.MBTT.Parallel.Base=%s Parallels
+GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
+GT5U.MBTT.Parallel.Singular=%s Parallel
+GT5U.MBTT.Speed.Base=%s Speed
+GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.EuDiscount.Base=%s EU Usage
+GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
+GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
 GT5U.MBTT.Tiers.Voltage=Voltage
 GT5U.MBTT.Tiers.Machine=Machine
 GT5U.MBTT.Tiers.Coil=Heating Coil
@@ -793,23 +821,25 @@ GT5U.MBTT.Tiers.MetalMachineCasing=Metal Machine Casing
 GT5U.MBTT.Tiers.ItemPipe=Item Pipe Casing
 GT5U.MBTT.Tiers.FluidPipe=Pipe Casing
 GT5U.MBTT.Tiers.Solenoid=Solenoid
+GT5U.MBTT.Tiers.Turbine=Sum of Turbine
+GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
 GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
-GT5U.MBTT.Structure.MinGlassForLaser=-tier glass required for §9Tec§1Tech§7 Laser Hatches.
-GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by Glass tier
-GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier Glass unlocks all.
-GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier.
-GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier.
-GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy.
+GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
+GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by §fGlass§7 Tier
+GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
+GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
+GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
+GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchDots= (dots: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
-GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked.
+GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber
 GT5U.MBTT.PCB.RotBio=Bio Rotation
@@ -1086,6 +1116,9 @@ GT5U.machines.separatebus=Input buses are separated
 GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
+GT5U.machines.muffled=Sound Muffling
+GT5U.machines.muffled.on=Sound Muffling: §aEnabled§r
+GT5U.machines.muffled.off=Sound Muffling: §cDisabled§r
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
 GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
@@ -1111,6 +1144,10 @@ GT5U.machines.select_circuit.tooltip.configuration.none=None
 GT5U.machines.select_circuit.tooltip.1=§7LMB/RMB/scroll to cycle through the list
 GT5U.machines.select_circuit.tooltip.2=§7Shift left click to open GUI
 GT5U.machines.select_circuit.tooltip.3=§7Shift right click to clear
+GT5U.machines.select_mold.tooltip=Ghost Mold Slot
+GT5U.machines.select_mold.tooltip.1=§7LMB/RMB/scroll to cycle through the list
+GT5U.machines.select_mold.tooltip.2=§7Shift left click to open GUI
+GT5U.machines.select_mold=Configure Mold
 GT5U.machines.extra_tooltips_toggle.tooltip=Additional information
 GT5U.machines.fluid_transfer.tooltip=Fluid Auto-Output
 GT5U.machines.fluid_transfer.tooltip.extended=§6Screwdriver:§7 Right click machine to
@@ -1160,6 +1197,9 @@ GT5U.GTPP_MULTI_WASH_PLANT.mode.1=Simple Washer
 GT5U.GTPP_MULTI_WASH_PLANT.mode.2=Chemical Bath
 GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode.0=Bending
 GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode.1=Forming Press
+GT5U.GTPP_MULTI_STEAM_FURNACE.mode.0=Furnace
+GT5U.GTPP_MULTI_STEAM_FURNACE.mode.1=Blasting
+GT5U.GTPP_MULTI_STEAM_FURNACE.mode.2=Smoking
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.0=Separator
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.1=Polarizer
 GT5U.MULTI_CANNER.mode.0=Canner
@@ -1190,6 +1230,8 @@ GT5U.machines.oreprocessor.Sifter=Sifter
 GT5U.machines.oreprocessor.Chemical_Bathing=Chemical Bathing
 GT5U.machines.oreprocessor.Ore_Washer=Ore Washer
 GT5U.machines.oreprocessor.Thermal_Centrifuge=Thermal Centrifuge
+GT5U.machines.oreprocessor.Forge_Hammer=Forge Hammer
+GT5U.machines.oreprocessor.Simple_Washer=Simple Washer
 GT5U.machines.oreprocessor.WRONG_MODE=Something went wrong
 GT5U.machines.industrialapiary.cancel.tooltip=§cCancel process
 GT5U.machines.industrialapiary.cancel.tooltip.1=§7Will also disable machine (soft mallet)
@@ -1254,7 +1296,6 @@ GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional pa
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
 GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
 GT5U.machines.stocking_bus.force_check=Recipe Check on change
-GT5U.machines.stocking_bus.hatch_warning=Requires a fresh structure check to apply (Reboot/Replace controller)
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
@@ -1292,10 +1333,11 @@ GT5U.machines.nano_forge.t4_info_tooltip=Click for T4 info
 GT5U.machines.nano_forge.t4_info_header=Nano Forge Tier 4
 GT5U.machines.nano_forge.t4_info_text.1=Upgrading the Nano Forge to T4 by placing an eternity nanite into the controller completely transforms the structure and unlocks both a scaling speed boost and parallel for mass nanite creation.
 GT5U.machines.nano_forge.t4_info_text.2=The Nano Forge can be supplied with molten magmatter to increase its maximum parallels. At the start of a recipe cycle ALL supplied magmatter is consumed and converted to parallels via the following formula:
-GT5U.machines.nano_forge.t4_info_text.3=Maximum Parallel = Max((Magmatter Amount / (144 / 2^(4 - Recipe Tier))), 1)
-GT5U.machines.nano_forge.t4_info_text.4=To actually apply the parallels to the recipe, a copy of the output nanite has to be supplied in an input bus and will be consumed.
+GT5U.machines.nano_forge.t4_info_text.3=Maximum Parallel = Max((Magmatter Amount / (288 / 2^(4 - Recipe Tier))), 1)
+GT5U.machines.nano_forge.t4_info_text.4=To actually apply the parallels to the recipe, a copy of the output nanite has to be supplied in an input bus and will be consumed. If other types of nanites are present this wont work.
 GT5U.machines.nano_forge.t4_info_text.5=A recipe time multiplier is also granted based on maximum parallels via the following formula:
 GT5U.machines.nano_forge.t4_info_text.6=Recipe Time Multiplier = 0.9999^(Maximum Parallel)
+GT5U.machines.nano_forge.t4_info_text.7=Additionally, tier 1 & 2 nanites will receive unconditional perfect overclocks, while perfect OCs on tier 3 nanites require parallels to be above 1. Tier 4 nanites do not get perfect overclocks.
 GT5U.machines.antimatter_forge.enableRender=Enable Antimatter Forge Render
 GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
 
@@ -1326,7 +1368,7 @@ channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generato
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
 
-GT5U.gui.select.current=Current:
+GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
 GT5U.gui.button.liquid_filling_ON=§7Liquid Filling: §aON
 GT5U.gui.button.power_switch=Power Switch
@@ -1367,6 +1409,8 @@ GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.turbinemenu=Open Chamber Controller
+GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
@@ -1452,6 +1496,7 @@ GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
 GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
 GT5U.gui.text.power_loss=§4Shut down due to power loss.
+GT5U.gui.text.no_void_mining=§4Cannot void mine this dimension (%s).
 GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
@@ -1474,6 +1519,7 @@ GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
+GT5U.gui.text.powerfail_events=Powerfail Events
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
@@ -1500,6 +1546,15 @@ GT5U.gui.text.cluster=Cluster Decay
 GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
+GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
+
+
+GT5U.gui.hoverable.runningfine=Running Fine.
+GT5U.gui.hoverable.incomplete=Structure incomplete.
+GT5U.gui.hoverable.powerloss=Lost Power.
+GT5U.gui.hoverable.norepair=Machine too damaged.
+GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -1529,7 +1584,6 @@ GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
 GT5U.gui.config.machine_stats.teleporter=Teleporter
 GT5U.gui.config.machine_stats.cleanroom=Cleanroom
 GT5U.gui.config.worldgen=Worldgen
-GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
 
 GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
@@ -1544,18 +1598,18 @@ GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
 GT5U.gui.tooltip.redstone_receiver.analog=ANALOG Mode\nOnly use this mode with ONE transmitter in total,\nno logic involved
 GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
 GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
-GT5U.gui.text.fluid_limiter.threshold=Percent threshold
+GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
 GT5U.gui.text.volumetric_flask.confirm=Confirm
 
-GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=No Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=>= 1 Issue
-GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=>= 2 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=>= 3 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=>= 4 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=>= 5 Issues
-GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=Rotor < 20%
-GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=Rotor ≈ 0%
+GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=§8No Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=§8>= 1 Issue
+GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=§8>= 2 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=§8>= 3 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=§8>= 4 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=§8>= 5 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=§8Rotor < 20%
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=§8Rotor ≈ 0%
 
 GT5U.gui.text.fusion_computer.hit_to_start=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
 GT5U.gui.text.fusion_computer.running_perfectly=Running perfectly.
@@ -1639,6 +1693,39 @@ GT5U.gui.circuit.timer.description=Pulses Redstone
 GT5U.gui.circuit.timer.data_description.pulses=Pulses
 GT5U.gui.circuit.timer.data_description.time=Time
 
+GT5U.gui.text.second=%s second
+GT5U.gui.text.second.plural=%s seconds
+GT5U.gui.text.minute=%s minute
+GT5U.gui.text.minute.plural=%s minutes
+GT5U.gui.text.hour=%s hour
+GT5U.gui.text.hour.plural=%s hours
+GT5U.gui.text.day=%s day
+GT5U.gui.text.day.plural=%s days
+
+GT5U.gui.text.show-powerfail-layer=Show Powerfails
+GT5U.gui.chat.powerfail=%s at %s in %s powerfailed %s time %s ago
+GT5U.gui.chat.powerfail.plural=%s at %s in %s powerfailed %s times %s ago
+GT5U.gui.chat.powerfail.waypoint=%s (%s time, %s ago)
+GT5U.gui.chat.powerfail.waypoint.plural=%s (%s times, %s ago)
+
+GT5U.gui.chat.powerfail.waypoint.tooltip=Machine: %s\nLocation: %s\nCount: %s\nLast Occurrence: %s\nPress %s to clear
+
+GT5U.gui.chat.powerfail.hint=§7Use /powerfails help for more info.
+
+GT5U.gui.chat.powerfail.login=You have %s uncleared powerfail.
+GT5U.gui.chat.powerfail.login.plural=You have %s uncleared powerfails.
+
+GT5U.gui.chat.powerfail.cleared=Cleared all of your powerfails.
+GT5U.gui.chat.powerfail.cleared-dim=Cleared all of your powerfails in the current dimension.
+
+GT5U.gui.chat.powerfail.list.none=No powerfails have occurred.
+GT5U.gui.chat.powerfail.list.uncleared-header=Uncleared powerfails:
+GT5U.gui.chat.powerfail.list.entry=- %s
+GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
+
+GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
+GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -1682,6 +1769,8 @@ gt.behaviour.paintspray.infinite.tooltip.pick=MMB: On a Surface block to Copy co
 gt.behaviour.paintspray.infinite.tooltip.lock=Sneak + MMB: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=MMB: Open color choice GUI
 gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s + MMB: Toggle Color Cycle Lock
+gt.behaviour.paintspray.infinite.tooltip.author_byline=§o"Try using this in your offhand!"§r -§cQuerns§r
+
 GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cycle Lock
 
 
@@ -1828,6 +1917,151 @@ GT5U.interface.coverTabs.redstone.west=west
 GT5U.interface.coverTabs.redstone.east=east
 GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
+## Redstone Receiver
+GT5U.gui.tooltip.redstone_receiver.GateMode=§8Gate Mode
+GT5U.gui.tooltip.redstone_receiver.AND_Gate=AND Gate
+GT5U.gui.tooltip.redstone_receiver.NAND_Gate=NAND Gate
+GT5U.gui.tooltip.redstone_receiver.OR_Gate=OR Gate
+GT5U.gui.tooltip.redstone_receiver.NOR_Gate=NOR Gate
+
+## Arm
+gt.interact.desc.arm.any=Any
+gt.interact.desc.arm.Internal_Slot=§8Internal slot#
+gt.interact.desc.arm.Adjacent_Slot=§8Adjacent slot#
+
+## Machine Controller Cover
+gt.interact.desc.MachContr.EnRedstone=§8Enable with Redstone
+gt.interact.desc.MachContr.DisRedstone=§8Disable with Redstone
+gt.interact.desc.MachContr.DisMachine=§8Disable machine
+gt.interact.desc.MachContr.SafeMode=§8Safe Mode
+
+## Conveyor
+gt.interact.desc.conveyor.AlwaysOn=Always On
+gt.interact.desc.conveyor.MachProcState=Use Machine Processing State
+gt.interact.desc.conveyor.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.conveyor.AllowIn=Allow Input
+gt.interact.desc.conveyor.AllowOut=Allow Output
+gt.interact.desc.conveyor.BlockIn=Block Input
+gt.interact.desc.conveyor.BlockOut=Block Output
+gt.interact.desc.conveyor.ExpImp=§8Export/Import
+gt.interact.desc.conveyor.Conditional=§8Conditional
+gt.interact.desc.conveyor.InputBlock=§8Input Blocking
+gt.interact.desc.conveyor.OutputBlock=§8Output Blocking
+
+## DoesWorkUI
+gt.interact.desc.MachineEnabled=§8Machine enabled
+gt.interact.desc.MachineIdle=§8Machine idle
+gt.interact.desc.RecipeProgress=§8Recipe progress
+
+## EU MEter
+gt.interact.desc.EnergyTHR=§8Energy threshold
+
+## Facade
+gt.interact.desc.facade.Redstone=§8Redstone
+gt.interact.desc.facade.Energy=§8Energy
+gt.interact.desc.facade.Fluids=§8Fluids
+gt.interact.desc.facade.Items=§8Items
+
+## FluidFilter
+gt.interact.desc.FluidFilter.FilterInput=Filter Input
+gt.interact.desc.FluidFilter.FilterOutput=Filter Output
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.AllowOutput=Allow Output
+gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
+gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
+gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
+gt.interact.desc.FluidFilter.Type=§8IFilter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
+gt.interact.desc.FluidFilter.Empty=§8IFilter Empty
+
+## Fluid Regulator
+gt.interact.desc.fluid_regulator.AlwaysOn=Always On
+gt.interact.desc.fluid_regulator.MachProcState=Use Machine Processing State
+gt.interact.desc.fluid_regulator.InvertedMachProcState=Use Inverted Machine Processing State
+
+gt.interact.desc.fluid_regulator.ExpImp=§8Export/Import
+gt.interact.desc.fluid_regulator.Conditional=§8Conditional
+gt.interact.desc.fluid_regulator.L=§8 L
+gt.interact.desc.fluid_regulator.Ticks=§8 ticks
+gt.interact.desc.fluid_regulator.Average=Average:
+gt.interact.desc.fluid_regulator.L_Sec=L/sec
+
+## Item Filter
+gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
+gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
+gt.interact.desc.Item_Filter.Filter=§8Filter
+gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
+
+## Item Meter
+gt.interact.desc.Item_Meter.All=All
+gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
+gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
+
+## Liquid Meter (Fluid meter)
+gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+
+## Player Detector
+gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
+gt.interact.desc.Player_Detector.Emit_Player_No_Close=Emit if other Player is close
+gt.interact.desc.Player_Detector.Emit_You_Close=Emit if you are close
+gt.interact.desc.Player_Detector.Any_Player=§8Any player
+gt.interact.desc.Player_Detector.Other_Players=§8Other players
+gt.interact.desc.Player_Detector.Only_Owner=§8Only owner
+
+## Pump
+gt.interact.desc.Pump.AlwaysOn=Always On
+gt.interact.desc.Pump.MachProcState=Use Machine Processing State
+gt.interact.desc.Pump.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.Pump.AllowIn=Allow Input
+gt.interact.desc.Pump.AllowOut=Allow Output
+gt.interact.desc.Pump.BlockIn=Block Input
+gt.interact.desc.Pump.BlockOut=Block Output
+gt.interact.desc.Pump.ExpImp=§8Export/Import
+gt.interact.desc.Pump.Conditional=§8Conditional
+gt.interact.desc.Pump.InputBlock=§8Input Blocking
+gt.interact.desc.Pump.OutputBlock=§8Output Blocking
+
+## RedstoneWirelessBase
+gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq=§8Use Private Frequency
+
+## Shutter
+gt.interact.desc.Shutter.Open_Enabled=§8Open if work enabled
+gt.interact.desc.Shutter.Open_Disabled=§8Open if work disabled
+gt.interact.desc.Shutter.OutAllow=§8Only Output allowed
+gt.interact.desc.Shutter.InAllow=§8Only Input allowed
+
+## Wireless Activity
+
+gt.interact.desc.Wireless_Activity.Enabled=§8Machine enabled
+gt.interact.desc.Wireless_Activity.Idle=§8Machine idle
+gt.interact.desc.Wireless_Activity.Recipe_Progress=§8Recipe progress
+
+gt.interact.tooltip.Wireless_Activity.Recipe_Progress=Recipe progress
+gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
+gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
+
+## Wireless Fluid Detector
+gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
+
+## Wireless Item Detector
+gt.interact.desc.Item_Item_Detector.All=All
+gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
+
+## Energy Detector
+gt.interact.desc.Energy_Detector.universal=§8Universal
+gt.interact.desc.Energy_Detector.universal.tooltip=§fUniversal Storage
+gt.interact.desc.Energy_Detector.electricity=§8Int. EU
+gt.interact.desc.Energy_Detector.electricity.tooltip=§fElectricity Storage
+gt.interact.desc.Energy_Detector.steam=§8Steam
+gt.interact.desc.Energy_Detector.steam.tooltip=§fSteam Storage
+gt.interact.desc.Energy_Detector.average_in=§8Avg. Input
+gt.interact.desc.Energy_Detector.average_in.tooltip=§fAverage Electric Input
+gt.interact.desc.Energy_Detector.average_out=§8Avg. Output
+gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
+gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
+gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
@@ -1840,7 +2074,7 @@ GT5U.nei.display.usage.original=Original usage: %s EU/t %s
 GT5U.nei.display.usage.steam=Usage: %s L/s of Steam
 GT5U.nei.display.voltage=Voltage: %s EU/t %s
 GT5U.nei.display.amperage=Amperage: %s A
-GT5U.nei.display.overclock= (OC)
+GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
 
 GT5U.biomes.humidity=Humidity:
@@ -1878,7 +2112,7 @@ GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 GT5U.waila.drone_downlink.noConnection=Not connected
-GT5U.waila.drone_downlink.connection=Connect to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
 GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
 GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
 GT5U.waila.producing=Producing:
@@ -2379,7 +2613,7 @@ achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item 
 achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
 achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
-achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Oil/Gas/Fluid Drilling Rig
+achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Fluid Drilling Rig
 achievement.gt.blockmachines.multimachine.oildrillinfinite.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.oreprocessor=Integrated Ore Factory
 achievement.gt.blockmachines.multimachine.oreprocessor.desc=Processing all those ores.
@@ -2583,7 +2817,15 @@ for.bees.species.fireessence=Fire Essence
 for.bees.species.unknownwater=Unknown Liquid
 for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
-for.bees.species.dragonblood=Dragonblood
+for.bees.species.manasteel=Manasteel
+for.bees.species.elvenelementium=Elven Elementium
+for.bees.species.terrasteel=Terrasteel
+for.bees.species.gaiaspirit=Gaia Spirit
+for.bees.species.mmm=M-M-M
+for.bees.species.dragonstone=Dragonstone
+
+for.bees.authority.mmm=ignThree
+for.bees.authority.gaia=ignThree
 
 for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Aditya & Noila
 
@@ -2779,8 +3021,8 @@ gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
 gt.cover.info.button.bounds_notification.minimum=§7 (minimum)§r
 gt.cover.info.button.bounds_notification.maximum=§7 (maximum)§r
 gt.cover.wirelessdetector.redstone.tooltip=Changes this covers Redstone output behavior
-gt.cover.wirelessdetector.redstone.0=Only a wireless signal
-gt.cover.wirelessdetector.redstone.1=Wireless signal & direct Redstone
+gt.cover.wirelessdetector.redstone.0=§8Only a wireless signal
+gt.cover.wirelessdetector.redstone.1=§8Wireless signal & direct Redstone
 gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
@@ -2819,14 +3061,14 @@ GT5U.gui.text.no_tools=§7Missing applicable tools
 
 # Cover Overflow Valve
 GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
-GTPP.gui.text.cover_overflow_valve_overflow_point=Overflow Point
-GTPP.gui.text.cover_overflow_valve_voiding_rate=Voiding Rate
-GTPP.gui.text.cover_overflow_valve_allow_fluid_input=Allow Fluid Input
-GTPP.gui.text.cover_overflow_valve_block_fluid_input=Block Fluid Input
-GTPP.gui.text.cover_overflow_valve_allow_fluid_output=Allow Fluid Output
-GTPP.gui.text.cover_overflow_valve_block_fluid_output=Block Fluid Output
-GTPP.gui.text.cover_overflow_valve_liter=L
-GTPP.gui.text.cover_overflow_valve_l_per_update=L/update
+GTPP.gui.text.cover_overflow_valve_overflow_point=§8Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=§8Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=§8Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§8Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=§8Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_liter=§8L
+GTPP.gui.text.cover_overflow_valve_l_per_update=§8L/update
 
 GTPP.EBF.heat=Heat capacity
 
@@ -3405,3 +3647,9 @@ item.gt.depletedRodNaquadah32.name=The Core (Depleted)
 item.gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
+
+# Entities
+entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
+
+#mui1
+mui.button.close=x

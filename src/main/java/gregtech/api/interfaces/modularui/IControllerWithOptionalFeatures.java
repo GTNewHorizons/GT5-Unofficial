@@ -53,6 +53,10 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
 
     void enableWorking();
 
+    void setMuffled(boolean value);
+
+    boolean isMuffled();
+
     Pos2d getPowerSwitchButtonPos();
 
     default ButtonWidget createPowerSwitchButton(IWidgetBuilder<?> builder) {
@@ -84,6 +88,27 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .setPos(getPowerSwitchButtonPos())
             .setSize(16, 16);
         return (ButtonWidget) button;
+    }
+
+    default ButtonWidget createMuffleButton(IWidgetBuilder<?> builder, boolean canBeMuffled) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setMuffled(!isMuffled()); })
+            .setPlayClickSound(true)
+            .setEnabled(canBeMuffled)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isMuffled()) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
+            .setPos(200, 0)
+            .setSize(12, 12);
     }
 
     Pos2d getVoidingModeButtonPos();

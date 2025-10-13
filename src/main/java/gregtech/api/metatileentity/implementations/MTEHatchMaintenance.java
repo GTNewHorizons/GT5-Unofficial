@@ -55,6 +55,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
+import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
 public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAlignment {
 
@@ -175,10 +176,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         float aX, float aY, float aZ) {
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aBaseMetaTileEntity.isClientSide()) return true;
-            // only allow OC robot fake player
-            if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile()
-                .getName()
-                .endsWith(".robot")) return false;
+            // only allow OC robot & dynamism tablet fake player
+            if (aPlayer instanceof FakePlayer) {
+                if (!(aPlayer instanceof TabletFakePlayer) && !aPlayer.getGameProfile()
+                    .getName()
+                    .endsWith(".robot")) {
+                    return false;
+                }
+            }
             ItemStack tStack = aPlayer.getCurrentEquippedItem();
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
@@ -231,7 +236,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
         IGregTechTileEntity tMte = getBaseMetaTileEntity();
 
-        if (tMte == null || tMte.hasMufflerUpgrade()) return;
+        if (tMte == null || tMte.isMuffled()) return;
 
         if (mMaintenanceSound == null) {
             setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
@@ -358,22 +363,22 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (GTUtility.isStackInList(aStack, GregTechAPI.sWrenchList) && !mWrench
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mWrench = true;
-            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sScrewdriverList) && !mScrewdriver
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mScrewdriver = true;
-            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sSoftMalletList) && !mSoftMallet
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mSoftMallet = true;
-            setMaintenanceSound(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mHardHammer = true;
-            setMaintenanceSound(SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F);
+            setMaintenanceSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1.0F);
         }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sCrowbarList) && !mCrowbar
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {

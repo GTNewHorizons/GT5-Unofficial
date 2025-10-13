@@ -92,7 +92,7 @@ public class RadioHatchMaterialLoader {
                 radioHatchMaterialAdder(
                     GTOreDictUnificator.get(OrePrefixes.stick, specialMaterial[i], 1),
                     specialValue[i],
-                    (byte) 2);
+                    (byte) 1);
             }
 
             if (GTOreDictUnificator.get(OrePrefixes.stickLong, specialMaterial[i], 1) != null) {

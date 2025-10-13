@@ -1,8 +1,13 @@
 package tectech.thing.metaTileEntity.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings4;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -28,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
@@ -54,6 +60,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  */
 public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable {
 
+    private static final int CASING_INDEX = 49;
     // region variables
     private boolean hasBeenPausedThisCycle = false;
     // endregion
@@ -79,7 +86,14 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                     { "AAAAA", "A---A", "A---A", "A---A", "AAAAA" }, { "AA~AA", "A---A", "A---A", "A---A", "AAAAA" },
                     { "ABBBA", "BAAAB", "BAAAB", "BAAAB", "ABBBA" } }))
         .addElement('A', ofBlock(sBlockCasings4, 1))
-        .addElement('B', ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
+        .addElement(
+            'B',
+            ofChain(
+                buildHatchAdder(MTEMicrowave.class).atLeast(Maintenance, Energy, OutputBus)
+                    .dot(1)
+                    .casingIndex(CASING_INDEX)
+                    .buildAndChain(sBlockCasings4, 1),
+                ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, CASING_INDEX, 1, sBlockCasings4, 1)))
         .build();
     // endregion
 
@@ -298,10 +312,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         return hasBeenPausedThisCycle || super.onRunningTick(aStack); // consume eu and other resources if not paused
     }
 
-    // TODO Why is the basetype 1??
     @Override
     public byte getTileEntityBaseType() {
-        return 1;
+        return HarvestTool.WrenchLevel1.toTileEntityBaseType();
     }
 
     @Override

@@ -23,6 +23,7 @@ import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -90,10 +91,26 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
         tt.addInfo("Direct Steam and Coolant Heating")
             .addInfo(
-                "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (25600 * 20)
-                    + "L/s of Superheated Steam")
-            .addInfo("Coolant Heating Mode: Converts " + (long) (192 * 20) + "L/s Coolant to Hot Coolant")
-            .addInfo("Each maintenance issue lowers output efficiency by 10%")
+                "Direct Steam Mode: Consumes " + EnumChatFormatting.BLUE
+                    + "Distilled Water"
+                    + EnumChatFormatting.GRAY
+                    + " to produce "
+                    + EnumChatFormatting.WHITE
+                    + (long) (25600 * 20)
+                    + EnumChatFormatting.GRAY
+                    + "L/s of "
+                    + EnumChatFormatting.WHITE
+                    + "Superheated Steam")
+            .addInfo(
+                "Coolant Heating Mode: Converts " + (long) (192 * 20)
+                    + "L/s "
+                    + EnumChatFormatting.AQUA
+                    + "Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " to "
+                    + EnumChatFormatting.RED
+                    + "Hot Coolant")
+            .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant")
             .addInfo("Base cycle time: 1 tick");
 

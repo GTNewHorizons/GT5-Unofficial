@@ -266,24 +266,24 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
                     + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + " to operate.")
+                    + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
                     + OUTPUT_WASTE.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + " that can be recycled.")
+                    + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
                     + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + " in the input hatch.")
+                    + " in the input hatch")
             .addInfo(
                 "At the end of the recipe, for every " + EnumChatFormatting.RED
                     + INPUT_CHEMICAL_PER_LEVEL

@@ -57,6 +57,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.CustomItemList;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AssemblerRecipes implements Runnable {
 
     @Override
@@ -248,17 +249,6 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Tool_Lighter_Platinum_Empty.get(1L))
                 .duration(12 * SECONDS + 16 * TICKS)
                 .eut(256)
-                .addTo(assemblerRecipes);
-
-            // Muffler Upgrades
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(5 * SECONDS)
-                .eut(30)
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -4476,7 +4466,7 @@ public class AssemblerRecipes implements Runnable {
         // Void hatch
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 0))
+                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 1))
                 .itemOutputs(ItemList.Hatch_Void.get(1))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

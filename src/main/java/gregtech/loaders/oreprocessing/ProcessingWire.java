@@ -91,7 +91,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
 
                 // crafting recipe
-                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)
                     && (aMaterial.getProcessingMaterialTierEU() < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(

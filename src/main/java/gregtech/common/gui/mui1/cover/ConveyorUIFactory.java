@@ -9,7 +9,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverLegacyData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -41,31 +40,31 @@ public class ConveyorUIFactory extends CoverLegacyDataUIFactory {
                         0,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(translateToLocal("gt.interact.desc.export"))
+                            .addTooltip(translateToLocal("gt.interact.desc.export.tooltip"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addToggleButton(
                         1,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(translateToLocal("gt.interact.desc.import"))
+                            .addTooltip(translateToLocal("gt.interact.desc.import.tooltip"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addToggleButton(
                         2,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                            .addTooltip(GTUtility.trans("224", "Always On"))
+                            .addTooltip(translateToLocal("gt.interact.desc.conveyor.AlwaysOn"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addToggleButton(
                         3,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                            .addTooltip(GTUtility.trans("343", "Use Machine " + "Processing State"))
+                            .addTooltip(translateToLocal("gt.interact.desc.conveyor.MachProcState"))
                             .setPos(spaceX * 1, spaceY * 1))
                     .addToggleButton(
                         4,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                            .addTooltip(GTUtility.trans("343.1", "Use " + "Inverted Machine Processing State"))
+                            .addTooltip(translateToLocal("gt.interact.desc.conveyor.InvertedMachProcState"))
                             .setPos(spaceX * 2, spaceY * 1))
                     .addToggleButton(5, CoverDataFollowerToggleButtonWidget.ofDisableable(), widget -> {
                         mAllowWidget = widget;
@@ -77,8 +76,8 @@ public class ConveyorUIFactory extends CoverLegacyDataUIFactory {
                             .dynamicTooltip(
                                 () -> Collections.singletonList(
                                     coverMatches(ConveyorUIFactory::isExportModeSelected)
-                                        ? GTUtility.trans("314", "Allow Input")
-                                        : GTUtility.trans("312", "Allow " + "Output")))
+                                        ? translateToLocal("gt.interact.desc.conveyor.AllowIn")
+                                        : translateToLocal("gt.interact.desc.conveyor.AllowOut")))
                             .setPos(spaceX * 0, spaceY * 2);
                     })
                     .addToggleButton(6, CoverDataFollowerToggleButtonWidget.ofDisableable(), widget -> {
@@ -91,25 +90,24 @@ public class ConveyorUIFactory extends CoverLegacyDataUIFactory {
                             .dynamicTooltip(
                                 () -> Collections.singletonList(
                                     coverMatches(ConveyorUIFactory::isExportModeSelected)
-                                        ? GTUtility.trans("313", "Block Input")
-                                        : GTUtility.trans("311", "Block " + "Output")))
+                                        ? translateToLocal("gt.interact.desc.conveyor.BlockIn")
+                                        : translateToLocal("gt.interact.desc.conveyor.BlockOut")))
                             .setPos(spaceX * 1, spaceY * 2);
                     })
                     .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.conveyor.ExpImp"))
                     .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.conveyor.Conditional"))
                     .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 1))
             .widget(
                 TextWidget
                     .dynamicString(
                         () -> coverMatches(ConveyorUIFactory::isExportModeSelected)
-                            ? GTUtility.trans("344", "Input Blocking")
-                            : GTUtility.trans("344.1", "Output Blocking"))
+                            ? translateToLocal("gt.interact.desc.conveyor.InputBlock")
+                            : translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
                     .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 2));
     }
 
