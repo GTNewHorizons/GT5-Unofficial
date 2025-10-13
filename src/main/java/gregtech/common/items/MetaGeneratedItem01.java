@@ -3633,16 +3633,12 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
      * @param z          The Z coordinate of the cauldron
      */
     static void cancelMovementAndTeleport(EntityItem entityItem, int x, int y, int z) {
-        try {
-            entityItem.motionX = 0;
-            entityItem.motionY = 0;
-            entityItem.motionZ = 0;
-            entityItem.posX = x + 0.5;
-            entityItem.posY = y + 1.5;
-            entityItem.posZ = z + 0.5;
-        } catch (NoSuchFieldError ignored) {
-            // There's some Thermos trickery going on here, so just in case.
-        }
+        entityItem.motionX = 0;
+        entityItem.motionY = 0;
+        entityItem.motionZ = 0;
+        entityItem.posX = x + 0.5;
+        entityItem.posY = y + 1.5;
+        entityItem.posZ = z + 0.5;
     }
 
     @Override
