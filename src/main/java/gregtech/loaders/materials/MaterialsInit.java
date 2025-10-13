@@ -370,6 +370,7 @@ public class MaterialsInit {
             .setTool(64, 2, 1.0f)
             .addOreItems()
             .addDustItems()
+            .addOreItems()
             .addMetalItems()
             .addCell()
             .addPlasma()
