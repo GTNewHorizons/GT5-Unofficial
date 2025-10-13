@@ -368,7 +368,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlack)
             .setARGB(0x00141414)
             .setTool(64, 2, 1.0f)
-            .addOreItems()
             .addDustItems()
             .addOreItems()
             .addMetalItems()
