@@ -369,6 +369,7 @@ public class MaterialsInit {
             .setARGB(0x00141414)
             .setTool(64, 2, 1.0f)
             .addDustItems()
+            .addOreItems()
             .addMetalItems()
             .addCell()
             .addPlasma()
@@ -753,8 +754,8 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0xf00000ff)
             .setFuel(MaterialBuilder.FuelType.Gas, 20)
-            .addOreItems()
-            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -762,6 +763,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AQUA, 1)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
@@ -1230,8 +1232,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_GEM_HORIZONTAL)
             .setColor(Dyes.dyeCyan)
             .setARGB(0xf00096c8)
-            .addOreItems()
-            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -1239,6 +1241,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AER, 2)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
@@ -1314,8 +1317,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_GEM_VERTICAL)
             .setColor(Dyes.dyeWhite)
             .setARGB(0xf00064c8)
-            .addOreItems()
-            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -1323,6 +1326,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AER, 1)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
@@ -5983,8 +5987,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_EMERALD)
             .setColor(Dyes.dyeBlue)
             .setARGB(0x003f3480)
-            .addOreItems()
-            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addGas()
@@ -5992,6 +5996,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 3)
             .addElectrolyzerRecipe()
             .addSubTag(SubTag.ICE_ORE)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
@@ -6304,8 +6309,8 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeLightBlue)
             .setARGB(0xf0a9d0f5)
-            .addOreItems()
-            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addGas()
@@ -6315,6 +6320,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 2)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
@@ -7192,14 +7198,15 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeMagenta)
             .setFuel(MaterialBuilder.FuelType.Gas, 104)
-            .addOreItems()
-            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 4)
             .addSubTag(SubTag.ICE_ORE)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
@@ -9230,14 +9237,15 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FINE)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00c8c819)
-            .addOreItems()
-            .addOrePrefixBlacklist(OrePrefixes.dust)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addGas()
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Oxygen, 2)
             .addSubTag(SubTag.ICE_ORE)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
