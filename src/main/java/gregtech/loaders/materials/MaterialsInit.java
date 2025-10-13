@@ -14988,7 +14988,7 @@ public class MaterialsInit {
     public static Materials loadTeleportatiumUnstableVolatile() {
         return new MaterialBuilder().setName("TeleportatiumUnstableVolatile")
             .setDefaultLocalName("Volatile Teleportatium")
-            .setMetaItemSubID(487)
+            .setMetaItemSubID(421)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00c47b74)
             .addCell()
@@ -14999,7 +14999,7 @@ public class MaterialsInit {
     public static Materials loadTeleportatiumUnstableUnbalanced() {
         return new MaterialBuilder().setName("TeleportatiumUnstableUnbalanced")
             .setDefaultLocalName("Unbalanced Teleportatium")
-            .setMetaItemSubID(953)
+            .setMetaItemSubID(453)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00cca2f2)
             .addCell()
@@ -15010,7 +15010,7 @@ public class MaterialsInit {
     public static Materials loadTeleportatiumUnstableSemifluid() {
         return new MaterialBuilder().setName("TeleportatiumUnstableSemifluid")
             .setDefaultLocalName("Semifluid Teleportatium")
-            .setMetaItemSubID(954)
+            .setMetaItemSubID(454)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x000f1d4a)
             .addCell()
@@ -15021,7 +15021,7 @@ public class MaterialsInit {
     public static Materials loadTeleportatiumUnstableHypercritical() {
         return new MaterialBuilder().setName("TeleportatiumUnstableHypercritical")
             .setDefaultLocalName("Hypercritical Teleportatium")
-            .setMetaItemSubID(955)
+            .setMetaItemSubID(455)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00400c0b)
             .addCell()
@@ -15032,7 +15032,7 @@ public class MaterialsInit {
     public static Materials loadTeleportatiumUnstableAmalgam() {
         return new MaterialBuilder().setName("TeleportatiumUnstableAmalgam")
             .setDefaultLocalName("Unstable Amalgam")
-            .setMetaItemSubID(958)
+            .setMetaItemSubID(456)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x0017064f)
             .addCell()
@@ -15043,7 +15043,7 @@ public class MaterialsInit {
     public static Materials loadTeleportatiumEncased() {
         return new MaterialBuilder().setName("TeleportatiumEncased")
             .setDefaultLocalName("Encased Teleportatium")
-            .setMetaItemSubID(959)
+            .setMetaItemSubID(457)
             .setIconSet(new TextureSet("teleportatiumencased", true))
             .setColor(Dyes.dyeGreen)
             .setARGB(0xffffffff)
