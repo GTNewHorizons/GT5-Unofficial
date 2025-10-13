@@ -369,6 +369,7 @@ public class MaterialsInit {
             .setARGB(0x00141414)
             .setTool(64, 2, 1.0f)
             .addDustItems()
+            .addOreItems()
             .addMetalItems()
             .addCell()
             .addPlasma()
