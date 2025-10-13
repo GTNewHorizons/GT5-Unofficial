@@ -73,6 +73,13 @@ public final class GTGuiTextures {
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
+
+    public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
+        .location(GregTech.ID, "gui/background/redstone_sniffer")
+        .imageSize(195, 136)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_REDSTONE_SNIFFER)
+        .build();
     // endregion background
 
     // region overlay
@@ -288,19 +295,19 @@ public final class GTGuiTextures {
         .build();
 
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ITEM = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_item")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_FLUID = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_fluid")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture.builder()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
         .build();
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
@@ -351,7 +358,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/bounding_box")
         .fullImage()
-        .canApplyTheme(true)
+        .canApplyTheme()
         .build();
 
     // endregion slot overlay
@@ -658,6 +665,6 @@ public final class GTGuiTextures {
      * @return Texture of full image
      */
     private static UITexture fullImageColorableGT(String path) {
-        return fullImage(GregTech.ID, "gui/" + path, true);
+        return fullImage(GregTech.ID, "gui/" + path, ColorType.DEFAULT);
     }
 }

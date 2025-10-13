@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -83,15 +82,14 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
 
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
-        Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
         IntSyncValue RPSync = (IntSyncValue) syncManager.getSyncHandler("RP:0");
         IntSyncValue paraSync = (IntSyncValue) syncManager.getSyncHandler("Parallels:0");
         StringSyncValue speedSync = (StringSyncValue) syncManager.getSyncHandler("Speed:0");
         StringSyncValue typeSTRSync = (StringSyncValue) syncManager.getSyncHandler("modeString:0");
         DoubleSyncValue typeVALSync = (DoubleSyncValue) syncManager.getSyncHandler("modeValue:0");
-        return new ModularPanel("statsPanel").pos(x, y)
+        return new ModularPanel("statsPanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
@@ -100,13 +98,13 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                     .child(
                         new Column().size(100, 120)
                             .paddingRight(40)
-                            .child(new TextWidget(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20))
-                            .child(new TextWidget(IKey.dynamic(() -> "Speed: " + speedSync.getValue())).size(80, 20))
+                            .child(new TextWidget<>(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20))
+                            .child(new TextWidget<>(IKey.dynamic(() -> "Speed: " + speedSync.getValue())).size(80, 20))
                             .child(
-                                new TextWidget(IKey.dynamic(() -> "Rotational Power: " + RPSync.getValue()))
+                                new TextWidget<>(IKey.dynamic(() -> "Rotational Power: " + RPSync.getValue()))
                                     .size(80, 20))
                             .child(
-                                new TextWidget(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)))
+                                new TextWidget<>(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)))
                     .child(
                         new SliderWidget().size(15, 110)
                             .background(GuiTextures.MC_BUTTON)
@@ -126,7 +124,8 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
         IPanelHandler turbinePanel = syncManager // calls the panel itself.
             .panel("turbinePanel", (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            .rightRel(0, 28, 0)
+            // power control + button size + margin, to be changed in panel gap refactor
+            .right(2 + 18 + 4)
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
@@ -142,10 +141,9 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
     }
 
     private ModularPanel openTurbinePanel(PanelSyncManager syncManager, ModularPanel parent) {
-        Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
-        return new ModularPanel("turbinePanel").pos(x, y)
+        return new ModularPanel("turbinePanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
@@ -159,7 +157,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                             .widgetTheme("backgroundPopup")
                             .marginRight(20)
                             .child(
-                                new TextWidget("Turbines").size(60, 18)
+                                new TextWidget<>("Turbines").size(60, 18)
                                     .alignment(Alignment.Center)
                                     .marginBottom(5))
                             .child(
@@ -178,10 +176,10 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child( // column that holds a button to toggle Tier1Fluid
                         new Column().size(50, 60)
-                            .padding(x = 0, y = 3)
+                            .padding(0, 3)
                             .widgetTheme("backgroundPopup")
                             .child(
-                                new TextWidget("T2\nFluid").size(40, 18)
+                                new TextWidget<>("T2\nFluid").size(40, 18)
                                     .alignment(Alignment.Center))
                             .marginBottom(5)
                             .crossAxisAlignment(Alignment.CrossAxis.CENTER)

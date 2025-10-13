@@ -28,7 +28,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)
+        if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_WORKING)) {
             ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L);
             ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L);

@@ -109,8 +109,11 @@ public class CoverGui<T extends Cover> {
                 .marginBottom(4)
                 .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
                 .child(
-                    new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName()).marginLeft(4)
+                    IKey.str(coverItem.getDisplayName())
+                        .asWidget()
+                        .marginLeft(4)
                         .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
+
     }
 
     /**
