@@ -2067,12 +2067,15 @@ public class WerkstoffLoader {
     private static void addOreByProductsForBridgeMaterials() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             Materials bridgeMaterial = werkstoff.getBridgeMaterial();
+            List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
+            if (mOreByProducts.size() > 0) throw new ClassCastException("Test: mOreByProducts.size() == " + mOreByProducts.size() + ".(" + bridgeMaterial.mName);
+
             int size = werkstoff.getNoOfByProducts();
             for (int i = 0; i < size; i++) {
                 ISubTagContainer material = werkstoff.getOreByProductRaw(i); // At least not duplicate now.
-                if (material instanceof Materials) bridgeMaterial.addOreByProduct(((Materials) material));
+                if (material instanceof Materials) mOreByProducts.add(((Materials) material));
                 else if (material instanceof Werkstoff)
-                    bridgeMaterial.addOreByProduct(((Werkstoff) material).getBridgeMaterial());
+                    mOreByProducts.add(((Werkstoff) material).getBridgeMaterial());
                 else throw new ClassCastException();
             }
             if (size < 3) bridgeMaterial.addOreByProduct(werkstoff.getBridgeMaterial());
