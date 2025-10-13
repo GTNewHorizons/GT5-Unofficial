@@ -32,6 +32,7 @@ import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
 import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.renderer.HTGRItemRenderer;
@@ -69,6 +70,7 @@ public class HTGRLoader {
                     items.add(fuel.getLeft());
                 }
             }
+            items.add(GTUtility.getIntegratedCircuit(1));
 
             // mixer
             GTValues.RA.stdBuilder()
