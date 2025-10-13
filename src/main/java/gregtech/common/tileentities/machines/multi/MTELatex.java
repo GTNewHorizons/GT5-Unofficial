@@ -18,6 +18,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.Objects;
 
@@ -258,10 +259,8 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addInfo(EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
             .addInfo("Always make sure to cover it up.")
             .addInfo("Recipes have a 6.25% rubber discount based on casing tier.")
-            .addInfo("The Rubber Singularity grants an additional 25% rubber discount.")
-            .addStaticSpeedInfo(2F)
-            .addStaticEuEffInfo(0.85F)
-
+            .addInfo("The Rubber Singularity grants an additional 25% rubber discount and 2x parallels.")
+            .addBulkMachineInfo(8, 2F, 0.85F)
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
@@ -273,6 +272,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addInfo(GREEN + "Supports Multi-Amp energy hatches")
             .toolTipFinisher();
         return tt;
     }
