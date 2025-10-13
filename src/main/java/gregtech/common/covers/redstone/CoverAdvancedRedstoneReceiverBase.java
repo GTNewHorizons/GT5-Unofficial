@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -78,20 +77,20 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
 
     public enum GateMode implements KeyProvider {
 
-        AND(IKey.lang("gt.interact.desc.andgate")),
-        NAND(IKey.lang("gt.interact.desc.nandgate")),
-        OR(IKey.lang("gt.interact.desc.orgate")),
-        NOR(IKey.lang("gt.interact.desc.norgate")),
-        SINGLE_SOURCE(IKey.lang("gt.interact.desc.analogmode"));
+        AND("gt.interact.desc.andgate"),
+        NAND("gt.interact.desc.nandgate"),
+        OR("gt.interact.desc.orgate"),
+        NOR("gt.interact.desc.norgate"),
+        SINGLE_SOURCE("gt.interact.desc.analogmode");
 
-        private final IKey key;
+        private final String key;
 
-        GateMode(IKey key) {
+        GateMode(String key) {
             this.key = key;
         }
 
         @Override
-        public IKey getKey() {
+        public String getKey() {
             return this.key;
         }
     }
