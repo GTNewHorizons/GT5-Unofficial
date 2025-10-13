@@ -1749,8 +1749,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
-        ElasticSCRubber.mOreReRegistrations.add(AnyRubber);
-        ElasticSCRubber.mOreReRegistrations.add(AnySyntheticRubber);
     }
 
     private static void setHeatDamage() {
