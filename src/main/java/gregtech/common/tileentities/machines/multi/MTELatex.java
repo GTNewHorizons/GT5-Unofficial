@@ -137,15 +137,14 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTELatex::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
-        .addElement('D', ofFrame(Materials.ElasticSCRubber))
+        .addElement('D', ofFrame(Materials.PolyvinylChloride))
         .build();
 
     private int itemPipeTier = -1;
     private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
-        Materials.Silicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L),
-        Materials.ElasticSCRubber.getMolten(1L) };
+        Materials.Silicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L)};
 
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -156,7 +155,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         }.setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.85F);
-
     }
 
     @Nullable
@@ -265,7 +263,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Elastic Supercomposite Rubber Frame Box", 16, false)
+            .addCasingInfoExactly("Polyvinyl Chloride Frame Box", 16, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)

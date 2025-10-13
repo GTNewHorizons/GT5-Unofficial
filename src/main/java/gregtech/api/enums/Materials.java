@@ -633,7 +633,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Butadiene;
     public static Materials RawStyreneButadieneRubber;
     public static Materials StyreneButadieneRubber;
-    public static Materials ElasticSCRubber;
     public static Materials Toluene;
     public static Materials Epichlorohydrin;
     public static Materials PolyvinylChloride;

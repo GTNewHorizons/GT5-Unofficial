@@ -481,14 +481,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(calculateRecipeEU(aMaterial, 8))
                     .addTo(cableRecipes);
 
-                GTValues.RA.stdBuilder()
-                    .itemInputs(aStack, GTUtility.getIntegratedCircuit(1))
-                    .itemOutputs(GTOreDictUnificator.get(correspondingCable, aMaterial, 1L))
-                    .fluidInputs(Materials.ElasticSCRubber.getMolten(costMultiplier * 9))
-                    .duration(5 * SECONDS)
-                    .eut(calculateRecipeEU(aMaterial, 8))
-                    .addTo(cableRecipes);
-
                 for (Materials dielectric : dielectrics) {
                     for (Materials syntheticRubber : syntheticRubbers) {
                         GTValues.RA.stdBuilder()
