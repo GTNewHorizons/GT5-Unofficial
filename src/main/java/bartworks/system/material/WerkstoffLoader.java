@@ -2069,8 +2069,7 @@ public class WerkstoffLoader {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             Materials bridgeMaterial = werkstoff.getBridgeMaterial();
             List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
-            if (mOreByProducts.size() > 0) throw new ClassCastException(
-                "Test: mOreByProducts.size() == " + mOreByProducts.size() + ".(" + bridgeMaterial.mName);
+            if (mOreByProducts.size() > 0) continue; // Not to add if there're already oreByProducts.
 
             int size = werkstoff.getNoOfByProducts();
             for (int i = 0; i < size; i++) {
