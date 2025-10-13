@@ -3783,8 +3783,8 @@ gt.wwxl.info.3=Distilled water, any bottom layer casing
 gt.wwxl.info.4=Cold fluid, top center casing
 gt.wwxl.info.5=Steam/SH Steam, any bottom layer casing
 
-gt.duplicator.tips.1=Produces Elemental Material from UU Matter
-gt.duplicator.tips.2=Maximum 1x of each bus/hatch\nRequires circuit 1-16 in your Data Orb Repository\ndepending on what Data Orb you want to prioritize
+gt.duplicator.tips.1=Produces raw elements from UU-Matter
+gt.duplicator.tips.2=Maximum 1x Data Orb Repository\nThe programmed circuit selects which Data Orb to use (1-16)
 
 gt.cyclotron.tips.1=Super Magnetic Speed Shooter
 gt.cyclotron.tips.2=Particles are accelerated over 186 revolutions to 80% light speed\nCan produce a continuous beam current of 2.2 mA at 590 MeV,\nwhich will be extracted from the Isochronous Cyclotron
