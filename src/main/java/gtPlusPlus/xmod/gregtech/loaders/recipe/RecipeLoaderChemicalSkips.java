@@ -625,6 +625,21 @@ public class RecipeLoaderChemicalSkips {
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 64L),
+                    getModItem(EtFuturumRequiem.ID, "chorus_flower", 64, 0),
+                    Materials.Glowstone.getNanite(64),
+                    getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 64L, 6),
+                    GregtechItemList.PinkMetalCatalyst.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TeleportatiumEncased, 1L),
+                    GTUtility.getIntegratedCircuit(10))
+                .fluidInputs(Materials.TeleportatiumUnstableAmalgam.getFluid(10000))
+                .itemOutputs(GregtechItemList.TeleportiumCatalyst.get(1))
+                .duration(3 * SECONDS + 4 * TICKS)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(assemblerRecipes);
         }
         GTValues.RA.stdBuilder()
             .itemInputs(

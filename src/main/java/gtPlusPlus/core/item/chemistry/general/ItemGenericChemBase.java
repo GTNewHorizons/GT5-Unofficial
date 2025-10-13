@@ -45,7 +45,7 @@ public class ItemGenericChemBase extends Item {
      * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 29 - Limpid Water
      * Catalyst (for early waterline skip) 30 - Flawless Water Catalyst (for advanced waterline skip) 33 - Algagenic
      * Growth Promoter Catalyst (for seaweed skip) 34 - Hellish Force Catalyst (for Netherite skip) 35 - Crystal
-     * Colorization Catalyst (for Prismatic Acid)
+     * Colorization Catalyst (for Prismatic Acid) 36 - Teleportatium Catalyst (for Ender Air Line)
      */
 
     public ItemGenericChemBase() {

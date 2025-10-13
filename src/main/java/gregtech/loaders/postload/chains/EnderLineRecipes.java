@@ -8,7 +8,6 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
@@ -42,7 +41,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 
 public class EnderLineRecipes {
@@ -308,23 +306,6 @@ public class EnderLineRecipes {
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(mixerNonCellRecipes);
-
-            // QFT Recipe and catalyst
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 64L),
-                    getModItem(EtFuturumRequiem.ID, "chorus_flower", 64, 0),
-                    Materials.Glowstone.getNanite(64),
-                    getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 64L, 6, missing),
-                    GregtechItemList.PinkMetalCatalyst.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TeleportatiumEncased, 1L),
-                    GTUtility.getIntegratedCircuit(10))
-                .fluidInputs(Materials.TeleportatiumUnstableAmalgam.getFluid(10000))
-                .itemOutputs(GregtechItemList.TeleportiumCatalyst.get(1))
-                .duration(3 * SECONDS + 4 * TICKS)
-                .eut(TierEU.RECIPE_UEV)
-                .addTo(assemblerRecipes);
 
         }
 
