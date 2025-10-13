@@ -368,6 +368,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlack)
             .setARGB(0x00141414)
             .setTool(64, 2, 1.0f)
+            .addOreItems()
             .addDustItems()
             .addMetalItems()
             .addCell()
@@ -753,6 +754,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0xf00000ff)
             .setFuel(MaterialBuilder.FuelType.Gas, 20)
+            .addOreItems()
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -760,6 +762,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AQUA, 1)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
             .constructMaterial();
     }
 
@@ -1228,6 +1231,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeCyan)
             .setARGB(0xf00096c8)
+            .addOreItems()
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -1235,6 +1239,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AER, 2)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
             .constructMaterial();
     }
 
@@ -1310,6 +1315,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
             .setARGB(0xf00064c8)
+            .addOreItems()
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -1317,6 +1323,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AER, 1)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
             .constructMaterial();
     }
 
@@ -5977,6 +5984,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
             .setARGB(0x003f3480)
+            .addOreItems()
             .setOreMultiplier(4)
             .addCell()
             .addGas()
@@ -5984,6 +5992,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 3)
             .addElectrolyzerRecipe()
             .addSubTag(SubTag.ICE_ORE)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
             .constructMaterial();
     }
 
@@ -6296,6 +6305,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLightBlue)
             .setARGB(0xf0a9d0f5)
+            .addOreItems()
             .setOreMultiplier(4)
             .addCell()
             .addGas()
@@ -6305,6 +6315,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 2)
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
             .constructMaterial();
     }
 
@@ -7182,12 +7193,14 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeMagenta)
             .setFuel(MaterialBuilder.FuelType.Gas, 104)
+            .addOreItems()
             .setOreMultiplier(4)
             .addCell()
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 4)
             .addSubTag(SubTag.ICE_ORE)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
             .constructMaterial();
     }
 
@@ -9218,12 +9231,14 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00c8c819)
+            .addOreItems()
             .setOreMultiplier(4)
             .addCell()
             .addGas()
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Oxygen, 2)
             .addSubTag(SubTag.ICE_ORE)
+            .addOrePrefixBlacklist(OrePrefixes.dust)
             .constructMaterial();
     }
 
