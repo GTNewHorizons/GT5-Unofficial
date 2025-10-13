@@ -10,6 +10,7 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
@@ -37,6 +38,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -411,6 +413,15 @@ public class EnderLineRecipes {
         addEncasedTeleportatiumPartsRecipe(OrePrefixes.stickLong, 1, 1);
         addEncasedTeleportatiumPartsRecipe(OrePrefixes.gearGt, 1, 4);
 
+        // Encased teleportatium custom parts
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.TeleportatiumEncased, 64))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TeleportatiumEncased, 1))
+            .duration(500 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(CompressionTierKey.INSTANCE, 1)
+            .addTo(compressorRecipes);
     }
 
     private static void addEncasedTeleportatiumPartsRecipe(OrePrefixes prefix, int multiplier, int inverseMultiplier) {
