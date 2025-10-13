@@ -319,7 +319,7 @@ public class RecipeLoaderChemicalSkips {
                     Materials.TeleportatiumUnstableAmalgam.getFluid(1_000),
                     FluidRegistry.getFluidStack("endergoo", 4_000))
                 .fluidOutputs(
-                    Materials.TeleportatiumStable.getFluid(800),
+                    Materials.TeleportatiumStable.getFluid(8_000),
                     Materials.TeleportatiumUnstableVolatile.getFluid(1_000),
                     Materials.TeleportatiumUnstableUnbalanced.getFluid(1_000),
                     Materials.TeleportatiumUnstableSemifluid.getFluid(1_000),
