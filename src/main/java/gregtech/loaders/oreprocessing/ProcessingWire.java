@@ -255,7 +255,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .duration(5 * SECONDS)
                             .eut(8)
                             .addTo(assemblerRecipes);
-
                         GTValues.RA.stdBuilder()
                             .itemInputs(aStack, GTUtility.getIntegratedCircuit(24))
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, aMaterial, 1L))
@@ -264,14 +263,13 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .duration(5 * SECONDS)
                             .eut(8)
                             .addTo(assemblerRecipes);
-
                         GTValues.RA.stdBuilder()
                             .itemInputs(aStack, GTUtility.getIntegratedCircuit(1))
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, aMaterial, 1L))
                             .fluidInputs(Materials.Silicone.getMolten((long) costMultiplier * HALF_INGOTS))
                             .duration(5 * SECONDS)
                             .eut(8)
-                            .addTo(cableRecipes);
+                            .addTo(assemblerRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(aStack, GTUtility.getIntegratedCircuit(1))
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, aMaterial, 1L))
@@ -279,7 +277,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .duration(5 * SECONDS)
                             .eut(8)
                             .addTo(cableRecipes);
-
                         GTValues.RA.stdBuilder()
                             .itemInputs(aStack, GTUtility.getIntegratedCircuit(1))
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, aMaterial, 1L))
@@ -288,6 +285,14 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .duration(5 * SECONDS)
                             .eut(8)
                             .addTo(cableRecipes);
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(aStack, GTUtility.getIntegratedCircuit(1))
+                            .itemOutputs(GTOreDictUnificator.get(correspondingCable, aMaterial, 1L))
+                            .fluidInputs(Materials.Silicone.getMolten((long) costMultiplier * HALF_INGOTS))
+                            .duration(5 * SECONDS)
+                            .eut(8)
+                            .addTo(cableRecipes);
+
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(aStack, GTUtility.getIntegratedCircuit(1))
