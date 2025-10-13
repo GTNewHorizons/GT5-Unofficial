@@ -40,6 +40,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -458,6 +459,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return false;
     }
 
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
+    }
+
     public void createNewAOs() {
 
         // Generate the nutrient cost for this species
@@ -559,6 +565,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         ForgeDirection direction = getDirection();
         GL11.glTranslated(x - 3 + (direction.offsetX * -4), y + 1, z - 3 + (direction.offsetZ * -4));
+        Rotation rotation = getRotation();
         GL11.glColor4f(r, g, b, 0.99f);
 
         Tessellator tess = Tessellator.instance;
