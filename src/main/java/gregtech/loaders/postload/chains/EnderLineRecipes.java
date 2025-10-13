@@ -168,7 +168,7 @@ public class EnderLineRecipes {
                     new FluidStack(FluidRegistry.getFluid("pyrotheum"), 2_000))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 8),
-                    MaterialsAlloy.ENERGYCRYSTAL.getDust(8))
+                    MaterialsAlloy.ARCANITE.getDust(8))
                 .fluidOutputs(Materials.EnderAirPyrostable.getFluid(10_000))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
