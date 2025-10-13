@@ -463,7 +463,7 @@ public class EnderLineRecipes {
                 getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 2, 4),
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4L * inverseMultiplier, 6, missing))
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.TeleportatiumEncased, multiplier))
-            .fluidInputs(Materials.TeleportatiumStable.getMolten(288L * inverseMultiplier))
+            .fluidInputs(Materials.TeleportatiumStable.getFluid(288L * inverseMultiplier))
             .fluidOutputs(Materials.EnderAir.getFluid(14L * inverseMultiplier))
             .metadata(IGRecipeMaps.MODULE_TIER, 1)
             .duration(10 * SECONDS)
