@@ -114,7 +114,9 @@ dependencies {
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.0:dev')
 
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.2-GTNH:dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.2-GTNH:dev") {
+    //     exclude group: "com.github.GTNewHorizons", module: "GT5-Unofficial"
+    // }
 
     // For testing EEC multiblock
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.0:dev") { transitive = false }
