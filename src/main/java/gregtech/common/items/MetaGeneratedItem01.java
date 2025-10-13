@@ -3539,8 +3539,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                             GTOreDictUnificator
                                 .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
                         aItemEntity.delayBeforeCanPickup = 0;
-                        aItemEntity.setVelocity(0, 0, 0);
-                        aItemEntity.setPosition(tX + 0.5d, tY + 1.5d, tZ + 0.5d);
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3552,8 +3551,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                             GTOreDictUnificator
                                 .get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
                         aItemEntity.delayBeforeCanPickup = 0;
-                        aItemEntity.setVelocity(0, 0, 0);
-                        aItemEntity.setPosition(tX + 0.5d, tY + 1.5d, tZ + 0.5d);
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3563,8 +3561,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(ItemList.Food_Dough.get(aItemEntity.getEntityItem().stackSize));
                         aItemEntity.delayBeforeCanPickup = 0;
-                        aItemEntity.setVelocity(0, 0, 0);
-                        aItemEntity.setPosition(tX + 0.5d, tY + 1.5d, tZ + 0.5d);
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3625,6 +3622,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         }
 
         return null;
+    }
+
+    /**
+     * Cancels the movement of an EntityItem and teleports it above the cauldron.
+     *
+     * @param entityItem The item entity to move
+     * @param x          The X coordinate of the cauldron
+     * @param y          The Y coordinate of the cauldron
+     * @param z          The Z coordinate of the cauldron
+     */
+    static void cancelMovementAndTeleport(EntityItem entityItem, int x, int y, int z) {
+        try {
+            entityItem.motionX = 0;
+            entityItem.motionY = 0;
+            entityItem.motionZ = 0;
+            entityItem.posX = x + 0.5;
+            entityItem.posY = y + 1.5;
+            entityItem.posZ = z + 0.5;
+        } catch (NoSuchFieldError ignored) {
+            // There's some Thermos trickery going on here, so just in case.
+        }
     }
 
     @Override
