@@ -15055,6 +15055,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.TRANSPARENT)
+            .addSubTag(SubTag.NO_RECYCLING_RECIPES)
+            .addSubTag(SubTag.NO_RECYCLING)
             .addOrePrefixBlacklist(OrePrefixes.cellMolten)
             .addOrePrefixBlacklist(OrePrefixes.nugget)
             .addOrePrefixBlacklist(OrePrefixes.spring)
