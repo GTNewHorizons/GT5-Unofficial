@@ -72,7 +72,11 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             nameRegional,
             tier,
             slots,
-            ArrayExt.of(GTUtility.appendParams("gt.te.input_bus.desc", getSlots(tier))));
+            ArrayExt.of(
+                GTUtility.appendParams(
+                    "gt.te.input_bus.desc",
+                    getSlots(tier),
+                    (getSlots(tier) >= 2 ? "gt.te.stack.plural" : "gt.te.stack.singular"))));
     }
 
     public MTEHatchInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
