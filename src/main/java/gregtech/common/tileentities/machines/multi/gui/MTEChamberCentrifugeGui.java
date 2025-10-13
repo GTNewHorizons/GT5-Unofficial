@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -83,15 +82,14 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
 
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
-        Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
         IntSyncValue RPSync = (IntSyncValue) syncManager.getSyncHandler("RP:0");
         IntSyncValue paraSync = (IntSyncValue) syncManager.getSyncHandler("Parallels:0");
         StringSyncValue speedSync = (StringSyncValue) syncManager.getSyncHandler("Speed:0");
         StringSyncValue typeSTRSync = (StringSyncValue) syncManager.getSyncHandler("modeString:0");
         DoubleSyncValue typeVALSync = (DoubleSyncValue) syncManager.getSyncHandler("modeValue:0");
-        return new ModularPanel("statsPanel").pos(x, y)
+        return new ModularPanel("statsPanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
@@ -143,10 +141,9 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
     }
 
     private ModularPanel openTurbinePanel(PanelSyncManager syncManager, ModularPanel parent) {
-        Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
-        return new ModularPanel("turbinePanel").pos(x, y)
+        return new ModularPanel("turbinePanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
@@ -179,7 +176,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child( // column that holds a button to toggle Tier1Fluid
                         new Column().size(50, 60)
-                            .padding(x = 0, y = 3)
+                            .padding(0, 3)
                             .widgetTheme("backgroundPopup")
                             .child(
                                 new TextWidget<>("T2\nFluid").size(40, 18)
